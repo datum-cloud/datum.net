@@ -17,3 +17,20 @@ $ npx decap-server
 ```
 
 CMS is now running at http://localhost:8000/admin
+
+
+### Progress
+
+- [x] Tailwind style
+- [x] Homepage
+- [x] Static Pages (ex: About, Contact)
+- [x] Sitemap
+- [x] Blog
+- [x] Blog Post
+- [x] Changelog
+- [x] SEO
+- [x] OpenGraph
+- [ ] Guides
+- [ ] Docs
+- [ ] eCommerce
+- [ ] Netlify / Vercel deployment

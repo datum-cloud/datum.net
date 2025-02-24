@@ -1,7 +1,5 @@
 import CMS from 'decap-cms-app'
 
-console.log('process.env.CMS_LOCAL_BACKEND', process.env.CMS_LOCAL_BACKEND)
-
 const baseConfig = {
   	local_backend: Boolean(process.env.CMS_LOCAL_BACKEND).valueOf() || false,
     backend: {

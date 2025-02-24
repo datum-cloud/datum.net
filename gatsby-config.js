@@ -58,8 +58,24 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
-        extensions: [`.mdx`, `.md`]
+        extensions: [`.mdx`, `.md`],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1200,
+              quality: 90,
+            },
+          },
+        ],
       }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blogImages`,
+        path: `${__dirname}/content/images/blog`, // Ensure this is correct
+      },
     },
     {
       resolve: `gatsby-plugin-next-seo`,

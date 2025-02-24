@@ -3,13 +3,15 @@ title: My 4th Published Post
 date: 2025-02-23T20:09:00.000Z
 slug: my-fourth-post
 description: This is a second published blog post about an interesting topic.
-keywords:
-  - blog
-  - publish
-  - example
+keywords: 
+ - blog
+ - publish
+ - example
 status: publish
+thumbnail: ../images/blog/post-1-thumb.png
+featuredImage: ../images/blog/post-1.png
 ---
-# this is first headings
+# Heading 1
 
 This is the new content of my second published blog post. It will appear on the blog landing page, homepage, and detail page because its status is set to "publish".
 

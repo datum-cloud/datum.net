@@ -6,7 +6,7 @@ image: /img/blog.jpg
 keywords: [home, welcome]
 ---
 
-# Welcome to Website
+# Welcome to Homepage
 
 This is the homepage of our blog site. Here, you can find a brief introduction, latest news, or any additional content you want to showcase.
 

@@ -3,7 +3,10 @@ title: My Draft Post
 date: 2025-02-19
 slug: my-draft-post
 description: This is a draft blog post that shouldn't be publicly visible yet.
-keywords: [draft, private, example]
+keywords: 
+ - blog
+ - publish
+ - example
 status: draft
 ---
 

@@ -8,6 +8,8 @@ keywords:
  - publish
  - example
 status: publish
+thumbnail: ../images/blog/post-3-thumb.png
+featuredImage: ../images/blog/post-3.png
 ---
 
 # this is first heading

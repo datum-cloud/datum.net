@@ -3,8 +3,13 @@ title: My Published Post
 date: 2025-02-18
 slug: my-published-post
 description: This is a published blog post about an interesting topic.
-keywords: [blog, publish, example]
+keywords: 
+ - blog
+ - publish
+ - example
 status: publish
+thumbnail: ../images/blog/post-2-thumb.png
+featuredImage: ../images/blog/post-2.png
 ---
 
 # this is first heading

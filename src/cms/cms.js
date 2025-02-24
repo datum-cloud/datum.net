@@ -71,7 +71,9 @@ const baseConfig = {
             widget: 'select',
             options: ['draft', 'publish'],
             default: 'draft'
-          }
+          },
+          { name: 'thumbnail', label: 'Thumbnail', widget: 'image', required: false, media_library: { folder: 'content/images/blog/' } },
+          { name: 'featuredImage', label: 'Featured Image', widget: 'image', required: false, media_library: { folder: 'content/images/blog/' } },
         ],
       },
       {

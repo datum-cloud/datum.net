@@ -3,11 +3,13 @@ title: My 3rd Published Post
 date: 2025-02-19
 slug: my-third-post
 description: This is a second published blog post about an interesting topic.
-keywords:
-  - blog
-  - publish
-  - example
+keywords: 
+ - blog
+ - publish
+ - example
 status: publish
+thumbnail: ../images/blog/post-1-thumb.png
+featuredImage: ../images/blog/post-1.png
 ---
 
 # this is first heading

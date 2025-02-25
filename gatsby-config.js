@@ -31,6 +31,7 @@ module.exports = {
       options: {
         modulePath: `${__dirname}/src/cms/cms.js`,
         publicPath: `admin`,
+        manualInit: true,
       },
     },
     {
@@ -69,13 +70,6 @@ module.exports = {
           },
         ],
       }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `blogImages`,
-        path: `${__dirname}/content/images/blog`, // Ensure this is correct
-      },
     },
     {
       resolve: `gatsby-plugin-next-seo`,

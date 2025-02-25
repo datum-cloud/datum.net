@@ -5,6 +5,7 @@ import { graphql } from "gatsby"
 import { Link } from "gatsby"
 import { GatsbySeo } from 'gatsby-plugin-next-seo'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import Aside from "../components/aside"
 
 const shortcodes = { Link }
 
@@ -37,18 +38,17 @@ const BlogPost = ({ data: { mdx }, children }) => {
         }}
       />
       
-      <div className="prose mx-auto">
-        <h1>{mdx.frontmatter.title}</h1>
-        <p>{mdx.frontmatter.date}</p>
-        
-        {featuredImage ? (
-          <GatsbyImage image={featuredImage} alt={`${mdx.frontmatter.title} featured image`} className="mb-6" />
-        ) : mdx.frontmatter.featuredImage ? (
-          <img src={mdx.frontmatter.featuredImage} alt={`${mdx.frontmatter.title} featured image`} className="mb-6" />
-        ) : null}
-        
+      <div className="flex flex-col lg:flex-row container mx-auto px-4 py-8">
+        <Aside tableOfContents={mdx.tableOfContents} />
 
-        {children}
+        <main className="w-full lg:w-3/4 prose">
+          {featuredImage && (
+            <GatsbyImage image={featuredImage} alt={`${mdx.frontmatter.title} featured image`} className="mb-6" />
+          )}
+          <h1>{mdx.frontmatter.title}</h1>
+          <p>{mdx.frontmatter.date}</p>
+          {children} {/* Blog post body rendered here */}
+        </main>
       </div>
     </Layout>
   )
@@ -59,6 +59,7 @@ export const query = graphql`
     mdx(id: { eq: $id }, frontmatter: { status: { eq: "publish" } }) {
       id
       body
+      tableOfContents(maxDepth: 3)
       frontmatter {
         title
         date(formatString: "MMMM D, YYYY")

@@ -1,7 +1,8 @@
-import { getBlogs } from "@/libs/contents"
+import { getBlogs, getChangelogs } from "@/libs/contents"
 
 export default function sitemap() {
   const blogs = getBlogs();
+  const changelogs = getChangelogs();
 
   var sitemaps = [
       {
@@ -33,6 +34,15 @@ export default function sitemap() {
   blogs.forEach((blog) => {
     sitemaps.push({
       url: 'http://localhost:3000/blog/' + blog.slug,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 1,
+    });
+  });
+
+  changelogs.forEach((log) => {
+    sitemaps.push({
+      url: 'http://localhost:3000/changelog/' + log.slug,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 1,

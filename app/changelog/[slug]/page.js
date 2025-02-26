@@ -4,11 +4,6 @@ import markdownit from 'markdown-it';
 
 const md = markdownit();
 
-async function fetchDetail(slug) {
-    const changelogs = getChangelogs();
-    return changelogs.find((changelog) => changelog.slug === slug);
-}
-
 export default async function ChangelogDetailPage ({ params }) {
     const changelog = await fetchDetail(params.slug);
 
@@ -23,4 +18,9 @@ export default async function ChangelogDetailPage ({ params }) {
             <div dangerouslySetInnerHTML={{__html: HTMLcontent}} className={'mt-4'}></div>
         </div>
     );
+}
+
+async function fetchDetail(slug) {
+    const changelogs = getChangelogs();
+    return changelogs.find((changelog) => changelog.slug === slug);
 }

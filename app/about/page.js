@@ -4,7 +4,7 @@ const pages = getPages();
 
 export default function AboutPage() {
   return (
-    <div dangerouslySetInnerHTML={{ __html: pages.about.content }}></div>
+    <main dangerouslySetInnerHTML={{ __html: pages.about.content }}></main>
   );
 }
 

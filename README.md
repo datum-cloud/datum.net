@@ -20,6 +20,14 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 Decap + React 19 is not officially supported yet: https://github.com/decaporg/decap-cms/issues/7375
 
+## Packages
+- https://github.com/sanity-io/next-sanity
+    sanity.cli.js
+    sanity.config.js
+    sanity/*
+    app/studio
+- https://github.com/markdown-it/markdown-it
+- https://github.com/jonschlinkert/gray-matter
 
 ### Progress
 
@@ -34,6 +42,6 @@ Decap + React 19 is not officially supported yet: https://github.com/decaporg/de
 - [x] OpenGraph
 - [ ] Guides
 - [ ] Docs
-- [ ] eCommerce
+- [x] eCommerce
 - [ ] Sanity
 - [ ] Netlify / Vercel deployment

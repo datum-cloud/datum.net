@@ -10,7 +10,7 @@ import Aside from "@/components/aside"
 const md = markdownit();
 
 
-async function fetchDetail(slug) {
+async function fetchDetail({ slug }) {
   const blogs = getBlogs();
   return blogs.find((blog) => blog.slug === slug);
 }
@@ -18,7 +18,7 @@ async function fetchDetail(slug) {
 
 export default async function BlogDetailPage ({ params }) {
   const param = await params;
-  const blog = await fetchDetail(param.slug);
+  const blog = await fetchDetail(param);
 
   if (!blog) notFound();
 

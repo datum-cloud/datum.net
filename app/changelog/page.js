@@ -56,4 +56,4 @@ export const metadata = {
     card: 'summary_large_image',
     images: ['https://cdn.prod.website-files.com/66dab18c1311fe77f4eb9370/66fcee96f9f4b328f7454f5a_Datum%20Opengraph.jpg'],
   },
-};
+}

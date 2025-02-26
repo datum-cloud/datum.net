@@ -7,7 +7,7 @@ export default function BlogPage() {
   const blogs = getBlogs();
 
   return (
-    <div>
+    <main>
       <p dangerouslySetInnerHTML={{ __html: pages.blog.content }}></p>
       
       <div className="flex flex-wrap gap-4 mx-auto px-4 py-8">
@@ -29,7 +29,7 @@ export default function BlogPage() {
             </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
 

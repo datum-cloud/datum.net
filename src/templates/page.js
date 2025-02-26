@@ -2,9 +2,26 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layouts/light"
 
-const PageTemplate = ({ data: { mdx }, children }) => {
+const PageTemplate = ({ data: { mdx }, children, location }) => {
+  const seoProps = {
+    title: mdx.frontmatter.title,
+    description: mdx.frontmatter.description,
+    openGraph: {
+      title: mdx.frontmatter.title,
+      description: mdx.frontmatter.description,
+      type: 'article',
+      article: {
+        publishedTime: mdx.frontmatter.date,
+      },
+    },
+    twitter: {
+      cardType: 'summary_large_image',
+    },
+    path: location.pathname
+  }
+
   return (
-    <Layout title={mdx.frontmatter.title} description={mdx.frontmatter.description}>
+    <Layout {...seoProps}>
       <div className="prose mx-auto">
         <h1>{mdx.frontmatter.title}</h1>
         <div  className="py-4">

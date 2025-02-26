@@ -1,28 +1,30 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-import { GatsbySeo } from 'gatsby-plugin-next-seo'
 import Layout from "../components/layouts/light"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
-const BlogList = ({ data, pageContext }) => {
+const BlogList = ({ data, pageContext, location }) => {
   const posts = data.allMdx.edges
   const { currentPage, numPages, limit, skip } = pageContext // Destructure limit and skip from pageContext
   
+  const title = `Blog - Page ${currentPage} of ${numPages}`
+  const seoProps = {
+    title: title,
+    description: "Check out our latest blog posts",
+    openGraph: {
+      title: title,
+      description: "Check out our latest blog posts",
+      type: 'website',
+    },
+    twitter: {
+      cardType: 'summary_large_image',
+    },
+    path: location.pathname + (currentPage === 1) ? '' : currentPage
+  }
+
   return (
-    <Layout>
-      <GatsbySeo
-        title={`Blog - Page ${currentPage} of ${numPages}`}
-        description="Check out our latest blog posts"
-        openGraph={{
-          title: `Blog - Page ${currentPage} of ${numPages}`,
-          description: "Check out our latest blog posts",
-          url: `https://your-site-url.com/blog/${currentPage === 1 ? '' : currentPage}`,
-          type: 'website',
-        }}
-        twitter={{
-          cardType: 'summary_large_image',
-        }}
-      />
+    <Layout {...seoProps}>
+      
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Blog</h1>
         

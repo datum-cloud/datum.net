@@ -1,26 +1,30 @@
 import React from 'react'
 import { graphql, Link } from 'gatsby'
-import { GatsbySeo } from 'gatsby-plugin-next-seo'
 import Markdown from 'react-markdown'
 import Layout from "../components/layouts/light"
 
-const ChangelogPage = ({ data, pageContext, children }) => {
+const ChangelogPage = ({ data, pageContext, children, location }) => {
   const entries = data.allMdx.edges
   const { currentPage, numPages } = pageContext
 
+  const title = `Changelog - Page ${currentPage} of ${numPages}`
+  const description = "Stay updated with the latest changes, features, and fixes in our project."
+  const seoProps = {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      type: 'website',
+    },
+    twitter: {
+      cardType: 'summary_large_image',
+    },
+    path: location.pathname
+  }
+
   return (
-    <Layout>
-      <GatsbySeo
-        title={`Changelog - Page ${currentPage} of ${numPages}`}
-        description="Latest updates and changes to our project."
-        openGraph={{
-          title: `Changelog - Page ${currentPage} of ${numPages}`,
-          description: 'Latest updates and changes to our project.',
-          url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://your-site-url.com'}/changelog/${currentPage === 1 ? '' : currentPage}`,
-          type: 'website',
-        }}
-        twitter={{ cardType: 'summary_large_image' }}
-      />
+    <Layout {...seoProps}>   
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Changelog</h1>
         <p className="text-gray-600 mb-8">

@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import { getPages, getBlogs } from "@/libs/contents"
+import Link from 'next/link';
+import { getPages, getBlogs } from "@/libs/contents";
 
 const pages = getPages();
 
@@ -9,16 +9,16 @@ export default function BlogPage() {
   return (
     <div>
       <p dangerouslySetInnerHTML={{ __html: pages.blog.content }}></p>
-
+      
       <div className="flex flex-wrap gap-4 mx-auto px-4 py-8">
         { blogs.map(blog => (
             <div key={blog.slug} className={"max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"}>
                 <Link href={`/blog/${blog.slug}`}>
-                    <h5 className={"mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"}>{blog.title}</h5>
+                    <h5 className={"mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"}>{ blog.title }</h5>
                 </Link>
                 <div className={"mb-3 font-normal text-gray-700 dark:text-gray-400"}>
-                  <small>{blog.date.toISOString().substr(0,10)}</small>
-                  <p>{blog.description}</p>
+                  <small>{ blog.date.toISOString().substr(0,10) }</small>
+                  <p>{ blog.description }</p>
                 </div>
                 <Link href={`/blog/${blog.slug}`} className={"inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"}>
                   Read more

@@ -10,8 +10,8 @@ const Header = () => {
           src="/icon.png"
           width={32}
           height={32}
-          style={{ width: 'auto', height: 'auto' }}
           alt="logo"
+          priority={false}
         />
         <h1 className="text-lg font-bold mr-6">Datum</h1>
       </div>

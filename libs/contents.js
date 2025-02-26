@@ -44,6 +44,28 @@ export function getBlogs() {
       return {
         slug,
         ...data,
+        url: path.join(blogDir, slug),
+        content,
+      };
+    }
+  });
+}
+
+export function getChangelogs() {
+  const blogDir = contentsDir + '/changelog';
+  const fileNames = fs.readdirSync(blogDir);
+
+  return fileNames.map((fileName) => {
+    const slug = fileName.replace(/\.md$/, '');
+    const filePath = path.join(blogDir, fileName);
+
+    if (!fs.lstatSync(filePath).isDirectory()) {
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      const { data, content } = matter(fileContents);
+    
+      return {
+        slug,
+        ...data,
         content,
       };
     }

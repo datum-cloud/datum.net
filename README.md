@@ -19,3 +19,21 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 ## Notes
 
 Decap + React 19 is not officially supported yet: https://github.com/decaporg/decap-cms/issues/7375
+
+
+### Progress
+
+- [x] Tailwind style
+- [x] Homepage
+- [x] Static Pages (ex: About, Contact)
+- [x] Sitemap
+- [x] Blog
+- [x] Blog Post
+- [x] Changelog
+- [x] SEO
+- [x] OpenGraph
+- [ ] Guides
+- [ ] Docs
+- [ ] eCommerce
+- [ ] Sanity
+- [ ] Netlify / Vercel deployment

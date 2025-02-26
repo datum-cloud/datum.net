@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #312847;
+  --foreground: #312847;
+  --sunglow: #f27a67;
+  --winter-sky-800: #eff3f3;
+  --blackberry-900: #312847;
+  --white: white;
+  --light-green: #84e1bc;
+  --winter-sky-900: #e1ebea;
+  --winter-sky-700: #f7fafa;
+  --cta-tier-1-border: 0px;
+}
+
+body {
+  color: var(--dcddddd);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}

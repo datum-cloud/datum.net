@@ -21,6 +21,15 @@ module.exports = {
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
+      resolve: `gatsby-source-shopify`,
+      options: {
+        password: process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+        storeUrl: process.env.SHOPIFY_STORE_URL,
+        shopifyConnections: ['collections'],
+        apiVersion: process.env.SHOPIFY_API_VERSION,
+      },
+    },
+    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         "icon": "src/img/icon.png"

@@ -10,6 +10,7 @@ const Navigation = () => {
         <li><Link to="/about" className="text-blue-600 hover:underline">About</Link></li>
         <li><Link to="/contact" className="text-blue-600 hover:underline">Contact</Link></li>
         <li><Link to="/changelog" className="text-blue-600 hover:underline">Changelog</Link></li>
+        <li><Link to="/shop" className="text-blue-600 hover:underline">Shop</Link></li>
       </ul>
     </nav>
   )

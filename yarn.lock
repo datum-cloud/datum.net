@@ -6879,6 +6879,19 @@ gatsby-source-filesystem@^5.14.0:
     valid-url "^1.0.9"
     xstate "^4.38.0"
 
+gatsby-source-shopify@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-source-shopify/-/gatsby-source-shopify-9.0.0.tgz#19b13bf0a654f8decc24ffa09a6a49bbecd82a28"
+  integrity sha512-LRCW0Jm1+sNIt/xa8l0JWaarqW03RwOVeP2sBKQeJXP9lkKIfeuL7WBnbw/eDO7QbtRdLcAMfYhnfTU6UE7ZpA==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    gatsby-core-utils "^4.14.0"
+    gatsby-plugin-utils "^4.14.0"
+    gatsby-source-filesystem "^5.14.0"
+    node-fetch "^2.6.11"
+    sharp "^0.32.6"
+    shift-left "^0.1.5"
+
 gatsby-transformer-sharp@^5.14.0:
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/gatsby-transformer-sharp/-/gatsby-transformer-sharp-5.14.0.tgz#f94d1cbee764127a99eab6a4bb204a948faf5a46"
@@ -7880,6 +7893,11 @@ inquirer@^7.0.0:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
     through "^2.3.6"
+
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/install/-/install-0.13.0.tgz#6af6e9da9dd0987de2ab420f78e60d9c17260776"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
 
 internal-slot@^1.1.0:
   version "1.1.0"
@@ -12415,6 +12433,16 @@ shell-quote@^1.7.3:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.8.2.tgz#d2d83e057959d53ec261311e9e9b8f51dcb2934a"
   integrity sha512-AzqKpGKjrj7EM6rKVQEPpB288oCfnrEIuyoT9cyF4nmGa7V8Zk6f7RRqYisX8X9m+Q7bd632aZW4ky7EhbQztA==
+
+shift-left@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/shift-left/-/shift-left-0.1.5.tgz#4a61a9d0412b1b32f9abbd97f72466c9c74a6be1"
+  integrity sha512-55d8QaP1YmuL1D52fhgq8CT1tXksM/2WPZ6980RtkMbl0Cze++kuJy50GLMnXwostk/YG9hasaJmP3r+d3yUtQ==
+
+shopify-buy@^2.22.0:
+  version "2.22.0"
+  resolved "https://registry.yarnpkg.com/shopify-buy/-/shopify-buy-2.22.0.tgz#1b3cac7e696680e3823d07bfcac82607dc3a383e"
+  integrity sha512-Y7FXmgX+By5VjF449oGj6+f8wBEKSupeAS/7bz9MXnvFmhT4C3ka/mzTjVDZTmq0arJdx3EyxUgpaWez3ztoKg==
 
 side-channel-list@^1.0.0:
   version "1.0.0"

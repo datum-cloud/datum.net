@@ -13,6 +13,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const changelogListTemplate = path.resolve(`./src/templates/changelog.js`)
   const homepageTemplate = path.resolve(`./src/templates/homepage.js`)
   const pageTemplate = path.resolve(`./src/templates/page.js`)
+  const productsTemplate = path.resolve(`./src/pages/products.js`)
   // const previewTemplate = path.resolve(`./src/pages/preview.js`)
 
   const result = await graphql(`
@@ -88,6 +89,13 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
+      },
+      allShopifyProduct {
+        edges {
+          node {
+            handle
+          }
+        }
       }
     }
   `)
@@ -101,8 +109,9 @@ exports.createPages = async ({ graphql, actions }) => {
   const posts = result.data.blog.edges
   const pages = result.data.pages.edges
   const changelogs = result.data.changelog.edges
+  const products = result.data.allShopifyProduct.edges
 
-  console.log('changelogs',changelogs.length)
+  console.log('==> allShopifyProduct', products.length)
 
   // Create changelog landing with pagination
   const changelogPerPage = 3

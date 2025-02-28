@@ -31,6 +31,6 @@ CMS is now running at http://localhost:8000/admin
 - [x] SEO
 - [x] OpenGraph
 - [ ] Guides
-- [ ] Docs
-- [ ] eCommerce
-- [ ] Netlify / Vercel deployment
+- [x] Docs (landing, detail)
+- [x] eCommerce (landing)
+- [x] Netlify / Vercel (https://datum-gatsby.netlify.app/)

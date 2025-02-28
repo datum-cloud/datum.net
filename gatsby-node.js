@@ -14,7 +14,8 @@ exports.createPages = async ({ graphql, actions }) => {
   const homepageTemplate = path.resolve(`./src/templates/homepage.js`)
   const pageTemplate = path.resolve(`./src/templates/page.js`)
   const productsTemplate = path.resolve(`./src/pages/products.js`)
-  // const previewTemplate = path.resolve(`./src/pages/preview.js`)
+  const docsLandingTemplate = path.resolve(`./src/templates/docs.js`)
+  const docsDetailTemplate = path.resolve(`./src/templates/docs-detail.js`)
 
   const result = await graphql(`
     query {
@@ -89,7 +90,30 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
-      },
+      }
+      docs: allMdx(
+        filter: {
+          internal: {contentFilePath: {regex: "/docs/"  } }
+        }
+      ) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+            internal {
+              contentFilePath
+            }
+            parent {
+              ... on File {
+                name
+                relativeDirectory
+              }
+            }
+          }
+        }
+      }
       allShopifyProduct {
         edges {
           node {
@@ -110,22 +134,35 @@ exports.createPages = async ({ graphql, actions }) => {
   const pages = result.data.pages.edges
   const changelogs = result.data.changelog.edges
   const products = result.data.allShopifyProduct.edges
+  const docs = result.data.docs.edges
 
-  console.log('==> allShopifyProduct', products.length)
+  console.log('==> docs', docs.length)
+  
+  // Create docs pages
+  docs.forEach(({ node }) => {
+    const isIndex = node.parent.name === 'index' && node.parent.relativeDirectory === 'docs'
+    const template = isIndex ? docsLandingTemplate : docsDetailTemplate
+    const path = isIndex ? '/docs' : node.fields.slug
+    
+    createPage({
+      path,
+      component: `${template}?__contentFilePath=${node.internal.contentFilePath}`,
+      context: {
+        id: node.id,
+      },
+    })
+  })
 
   // Create changelog landing with pagination
-  const changelogPerPage = 3
+  const changelogPerPage = 10
   const numChangelogPages = Math.ceil(changelogs.length / changelogPerPage)
 
   Array.from({ length: numChangelogPages }).forEach((_, i) => {
     const pagePath = i === 0 ? `/changelog` : `/changelog/${i + 1}`
     const firstEntry = changelogs[i * changelogPerPage]
     const changelogTemplate = `${changelogListTemplate}?__contentFilePath=${changelogs[i].node.internal.contentFilePath}`
-    console.log('\nchangelogTemplate ---> ', changelogs[i].node.internal.contentFilePath)
     createPage({
       path: pagePath,
-      // component: `${changelogListTemplate}?__contentFilePath=${firstEntry ? firstEntry.node.internal.contentFilePath : ''}`,
-      // component: changelogListTemplate,
       component: `${changelogListTemplate}?__contentFilePath=${changelogs[i].node.internal.contentFilePath}`,
       context: {
         limit: changelogPerPage,
@@ -210,9 +247,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
   if (node.internal.type === `MarkdownRemark` || node.internal.type === 'Mdx') {
     const value = createFilePath({ node, getNode })
-    
-    // console.log('node.internal.type', node.internal.type)
-    // console.log('value' , value);
     
     createNodeField({
       name: `slug`,

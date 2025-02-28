@@ -5,12 +5,14 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
-const siteUrl = 'https://datum.net'
+const siteUrl = process.env.GATSBY_SITE_URL ? process.env.GATSBY_SITE_URL : 'https://datum.net'
 const siteUrlDev = 'http://localhost:8000'
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Decap`,
+    title: process.env.GATSBY_SITE_TITLE || 'Datum Inc.',
+    description: process.env.GATSBY_SITE_DESCRIPTION || 'Datum Website',
+    url: process.env.NODE_ENV === 'development' ? siteUrlDev : siteUrl,
     siteUrl: process.env.NODE_ENV === 'development' ? siteUrlDev : siteUrl,
   },
   plugins: [
@@ -104,4 +106,4 @@ module.exports = {
     },
     "gatsby-plugin-netlify", // make sure to keep it last in the array
   ]
-};
+}

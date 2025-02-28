@@ -1,30 +1,31 @@
 import React from "react"
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 import Layout from "../components/layouts/light"
 import { GatsbySeo } from 'gatsby-plugin-next-seo'
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import { formatPrice } from "../utils/formatPrice"
 import ProductCard from "../components/product/card"
 
-const ProductsPage = ({ data }) => {
+const ProductsPage = ({ data, location }) => {
   const products = data.allShopifyProduct.edges
 
+  const title = `Shop`
+  const description = `Explore our swag available on Datum Inc.`
+
+  const seoProps = {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      type: 'website',
+    },
+    twitter: {
+      cardType: 'summary_large_image',
+    },
+    path: location.pathname
+  }
+
   return (
-    <Layout>
-      <GatsbySeo
-        title="Products"
-        description="Explore our products available on Datum Inc."
-        openGraph={{
-          title: "Products",
-          description: "Explore our products available on Datum Inc.",
-          url: "https://your-site-url.com/products",
-          type: 'website',
-        }}
-        twitter={{
-          cardType: 'summary_large_image',
-        }}
-      />
-      
+    <Layout {...seoProps}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Shop</h1>
         <div class="grid grid-cols-3 gap-4">

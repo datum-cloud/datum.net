@@ -6,8 +6,7 @@ const Aside = ({ tableOfContents }) => {
   if (!tableOfContents?.items || tableOfContents.items.length === 0) return null
 
   return (
-    <aside className="w-full lg:w-1/4 lg:pr-8 mb-8 lg:mb-0 sticky top-8 h-fit">
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+    <aside className="w-full h-fit">
         <h3 className="text-lg font-semibold mb-4">Contents</h3>
         <ul className="list-disc pl-5 space-y-2">
           {tableOfContents.items.map((item, index) => (
@@ -30,7 +29,6 @@ const Aside = ({ tableOfContents }) => {
             </li>
           ))}
         </ul>
-      </div>
     </aside>
   )
 }

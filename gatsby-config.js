@@ -22,6 +22,7 @@ module.exports = {
     "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    'gatsby-plugin-netlify-identity-widget',
     {
       resolve: `gatsby-source-shopify`,
       options: {

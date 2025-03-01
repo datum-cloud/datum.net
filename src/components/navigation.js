@@ -12,6 +12,7 @@ const Navigation = () => {
         <li><Link to="/changelog" className="text-blue-600 hover:underline">Changelog</Link></li>
         <li><Link to="/docs" className="text-blue-600 hover:underline">Docs</Link></li>
         <li><Link to="/shop" className="text-blue-600 hover:underline">Shop</Link></li>
+        <li><Link to="/admin" className="text-blue-600 hover:underline">Admin</Link></li>
       </ul>
     </nav>
   )

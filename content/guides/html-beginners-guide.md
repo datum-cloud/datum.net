@@ -13,7 +13,6 @@ keywords:
 - HTML5
 - web pages
 status: publish
-thumbnail: "/images/html-beginners-guide.jpg"
 ---
 
 # Getting Started with HTML: A Beginner's Guide to Building Web Pages

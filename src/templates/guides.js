@@ -6,7 +6,7 @@ import Aside from "../components/aside"
 const GuidesTemplate = ({ data, location, children }) => {
   const { mdx, allMdx } = data
   const guides = allMdx.edges
-  console.log('====guides====',guides);
+
   const seoProps = {
     title: mdx.frontmatter.title,
     description: mdx.frontmatter.description,

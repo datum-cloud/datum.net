@@ -13,7 +13,6 @@ keywords:
  - DOM manipulation
  - JS basics
 status: publish
-thumbnail: "/images/introduction-to-javascript-website-interactivity.jpg"
 ---
 
 # Introduction to JavaScript: Adding Interactivity to Your Website

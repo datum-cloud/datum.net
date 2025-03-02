@@ -12,7 +12,6 @@ keywords:
  - personal profile page
  - coding tutorial
 status: publish
-thumbnail: "/images/first-web-project.jpg"
 ---
 
 # Creating Your First Web Page: A Simple HTML and CSS Project

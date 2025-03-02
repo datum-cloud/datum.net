@@ -15,7 +15,6 @@ keywords:
  - website
  - DNS
 status: publish
-thumbnail: "/images/web-hosting-guide.jpg"
 ---
 
 # Understanding Web Hosting: How to Get Your Website Online

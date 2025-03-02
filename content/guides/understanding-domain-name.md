@@ -10,7 +10,6 @@ keywords:
  - DNS
  - choosing a domain
 status: publish
-thumbnail: '/images/understanding-domain-names.jpg'
 ---
 
 # Understanding Domain Names: How to Choose and Register Your Own

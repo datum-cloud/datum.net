@@ -14,7 +14,6 @@ keywords:
  - backlinks
  - content optimization
 status: draft
-thumbnail: "/images/basic-seo-tips-beginners.jpg"
 ---
 
 # Basic SEO Tips for Beginners: How to Make Your Website Visible

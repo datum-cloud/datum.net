@@ -11,7 +11,6 @@ keywords:
  - HTML
  - user experience
 status: publish
-thumbnail: "/images/introduction-to-web-browsers.jpg"
 ---
 
 # Introduction to Responsive Design: Making Your Website Mobile-Friendly

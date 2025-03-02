@@ -12,7 +12,6 @@ keywords:
  - JavaScript
  - HTTP
 status: publish
-thumbnail: '/images/introduction-to-web-browsers.jpg'
 ---
 
 # Introduction to Web Browsers: How They Work and Why They Matter

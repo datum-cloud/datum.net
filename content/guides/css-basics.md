@@ -13,7 +13,6 @@ keywords:
  - frontend
  - web pages
 status: publish
-thumbnail: "/images/css-basics-guide.jpg"
 ---
 
 # CSS Basics: Styling Your First Web Page

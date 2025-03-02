@@ -14,7 +14,6 @@ keywords:
  - website launch
  - beginners guide
 status: publish
-thumbnail: "/images/first-website-setup.jpg"
 ---
 
 # How to Set Up Your First Website: A Step-by-Step Guide

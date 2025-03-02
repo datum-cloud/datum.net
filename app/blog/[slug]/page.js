@@ -7,11 +7,6 @@ import markdownit from 'markdown-it';
 
 const md = markdownit();
 
-async function fetchDetail({ slug }) {
-  const blogs = getBlogs();
-  return blogs.find((blog) => blog.slug === slug);
-}
-
 export default async function BlogDetailPage ({ params }) {
   const param = await params;
   const blog = await fetchDetail(param);
@@ -30,6 +25,11 @@ export default async function BlogDetailPage ({ params }) {
       </div>
     </div>
   );
+}
+
+async function fetchDetail({ slug }) {
+  const blogs = getBlogs();
+  return blogs.find((blog) => blog.slug === slug);
 }
 
 export const metadata = {

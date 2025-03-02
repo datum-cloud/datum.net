@@ -3,7 +3,9 @@ title: Welcome to Datum
 slug: /
 description: Discover our latest articles, insights, and stories on this blog.
 image: /img/blog.jpg
-keywords: [home, welcome]
+keywords: 
+ - home
+ - welcome
 ---
 
 # Welcome to Homepage

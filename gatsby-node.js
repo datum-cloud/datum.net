@@ -15,13 +15,15 @@ exports.createPages = async ({ graphql, actions }) => {
   const pageTemplate = path.resolve(`./src/templates/page.js`)
   const productsTemplate = path.resolve(`./src/pages/products.js`)
   const docsLandingTemplate = path.resolve(`./src/templates/docs.js`)
-  const docsDetailTemplate = path.resolve(`./src/templates/docs-detail.js`)
+  const docDetailTemplate = path.resolve(`./src/templates/docs-detail.js`)
+  const guidesTemplate = path.resolve(`./src/templates/guides.js`)
+  const guideDetailTemplate = path.resolve(`./src/templates/guides-detail.js`)
 
   const result = await graphql(`
     query {
       allMdx(
         sort: { frontmatter: { date: ASC } }
-        filter: { 
+        filter: {
           frontmatter: { title: { ne: "" } }
         }
       ) {
@@ -114,6 +116,29 @@ exports.createPages = async ({ graphql, actions }) => {
           }
         }
       }
+      guides: allMdx(
+        filter: {
+          internal: {contentFilePath: {regex: "/guides/"  } }
+        }
+      ) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+            internal {
+              contentFilePath
+            }
+            parent {
+              ... on File {
+                name
+                relativeDirectory
+              }
+            }
+          }
+        }
+      }
       allShopifyProduct {
         edges {
           node {
@@ -135,15 +160,27 @@ exports.createPages = async ({ graphql, actions }) => {
   const changelogs = result.data.changelog.edges
   const products = result.data.allShopifyProduct.edges
   const docs = result.data.docs.edges
+  const guides = result.data.guides.edges
 
-  console.log('==> docs', docs.length)
-  
+  // Create guides pages
+  guides.forEach(({ node }) => {
+    const isIndex = node.parent.name === 'index' && node.parent.relativeDirectory === 'guides'
+
+    createPage({
+      path: node.fields.slug,
+      component: `${guideDetailTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
+      context: {
+        id: node.id,
+      },
+    })
+  })
+
   // Create docs pages
   docs.forEach(({ node }) => {
     const isIndex = node.parent.name === 'index' && node.parent.relativeDirectory === 'docs'
-    const template = isIndex ? docsLandingTemplate : docsDetailTemplate
+    const template = isIndex ? docsLandingTemplate : docDetailTemplate
     const path = isIndex ? '/docs' : node.fields.slug
-    
+
     createPage({
       path,
       component: `${template}?__contentFilePath=${node.internal.contentFilePath}`,
@@ -188,7 +225,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   // Create blog list pages with pagination
   const postsPerPage = 2 // Number of posts per page
-  const publishedPosts = posts.filter(({ node }) => 
+  const publishedPosts = posts.filter(({ node }) =>
     node.frontmatter && node.frontmatter.status === "publish"
   )
   if (publishedPosts.length === 0) {
@@ -200,7 +237,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   Array.from({ length: numPages }).forEach((_, i) => {
     const pagePath = i === 0 ? `/blog` : `/blog/${i + 1}`
-  
+
     createPage({
       path: pagePath,
       component: blogListTemplate,
@@ -216,19 +253,21 @@ exports.createPages = async ({ graphql, actions }) => {
   // Create static pages (About, Contact)
   pages.forEach(({ node }) => {
     let template
-    
+
     if (node.internal.contentFilePath.includes('about')) {
       template = aboutTemplate
     } else if (node.internal.contentFilePath.includes('contact')) {
       template = contactTemplate
     } else if (node.internal.contentFilePath.includes('homepage')) {
       template = homepageTemplate
+    } else if (node.internal.contentFilePath.includes('guides')) {
+      template = guidesTemplate
     } else {
       return // Skip other files not in pages or blog
     }
-    
+
     template = template || pageTemplate
-    
+
     createPage({
       path: node.frontmatter.slug,
       component: `${template}?__contentFilePath=${node.internal.contentFilePath}`,
@@ -247,7 +286,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
   if (node.internal.type === `MarkdownRemark` || node.internal.type === 'Mdx') {
     const value = createFilePath({ node, getNode })
-    
+
     createNodeField({
       name: `slug`,
       node,

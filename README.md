@@ -30,7 +30,8 @@ CMS is now running at http://localhost:8000/admin
 - [x] Changelog
 - [x] SEO
 - [x] OpenGraph
-- [ ] Guides
+- [x] Guides
 - [x] Docs (landing, detail)
 - [x] eCommerce (landing)
+- [x] CMS (Decap-cms) https://datum-gatsby.netlify.app/admin/ user:ronggur.mh@gmail.com password:datumdotnet
 - [x] Netlify / Vercel (https://datum-gatsby.netlify.app/)

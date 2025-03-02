@@ -40,8 +40,8 @@ Decap + React 19 is not officially supported yet: https://github.com/decaporg/de
 - [x] Changelog
 - [x] SEO
 - [x] OpenGraph
-- [ ] Guides
-- [ ] Docs
+- [x] Guides
+- [x] Docs
 - [x] eCommerce (https://shopify.dev/docs/api/storefront)
 - [ ] Sanity
-- [ ] Netlify / Vercel deployment
+- [ ] Vercel deployment

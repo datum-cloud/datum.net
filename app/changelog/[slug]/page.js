@@ -5,7 +5,8 @@ import markdownit from 'markdown-it';
 const md = markdownit();
 
 export default async function ChangelogDetailPage ({ params }) {
-    const changelog = await fetchDetail(params.slug);
+    const param = await params;
+    const changelog = await fetchDetail(param);
 
     if (!changelog) notFound();
 
@@ -20,7 +21,7 @@ export default async function ChangelogDetailPage ({ params }) {
     );
 }
 
-async function fetchDetail(slug) {
+async function fetchDetail({ slug }) {
     const changelogs = getChangelogs();
     return changelogs.find((changelog) => changelog.slug === slug);
 }

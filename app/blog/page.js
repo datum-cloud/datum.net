@@ -8,7 +8,7 @@ export default function BlogPage() {
 
   return (
     <main>
-      <p dangerouslySetInnerHTML={{ __html: pages.blog.content }}></p>
+      <div dangerouslySetInnerHTML={{ __html: pages.blog.content }}></div>
       
       <div className="flex flex-wrap gap-4 mx-auto px-4 py-8">
         { blogs.map(blog => (

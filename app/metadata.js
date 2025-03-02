@@ -1,4 +1,5 @@
 export const data = {
+  metadataBase: new URL('http://localhost'),
   title: "Datum - Connectivity Infrastructure to Power your Advantage",
   description: "We help grow your ecosystem with a network cloud you can run anywhere. Backed by open source. is sample site for Datum",
   keywords: ['Datum'],

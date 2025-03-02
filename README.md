@@ -31,7 +31,7 @@ Decap + React 19 is not officially supported yet: https://github.com/decaporg/de
 
 ### Progress
 
-- [x] Tailwind style
+- [x] Tailwind style (https://tailwindcss.com)
 - [x] Homepage
 - [x] Static Pages (ex: About, Contact)
 - [x] Sitemap
@@ -42,6 +42,6 @@ Decap + React 19 is not officially supported yet: https://github.com/decaporg/de
 - [x] OpenGraph
 - [ ] Guides
 - [ ] Docs
-- [x] eCommerce
+- [x] eCommerce (https://shopify.dev/docs/api/storefront)
 - [ ] Sanity
 - [ ] Netlify / Vercel deployment

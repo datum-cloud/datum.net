@@ -1,6 +1,6 @@
 import React from "react"
 
-const Footer = () => {
+function Footer () {
   return (
     <footer className="bg-blackberry text-white p-4 text-center my-4">
       <p>© {new Date().getFullYear()} Datum Inc. All rights reserved.</p>
@@ -8,4 +8,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default Footer;

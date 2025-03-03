@@ -68,7 +68,7 @@ export const metadata = {
 }
 
 
-export async function shopifyFetch({ query, variables }) {
+async function shopifyFetch({ query, variables }) {
   const endpoint = process.env.SHOPIFY_STORE_DOMAIN;
   const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
   const version = process.env.SHOPIFY_API_VERSION;
@@ -96,7 +96,7 @@ export async function shopifyFetch({ query, variables }) {
   }
 }
 
-export async function getAllProducts() {
+async function getAllProducts() {
   return shopifyFetch({
     query: `{
         products(sortKey: TITLE, first: 10) {

@@ -16,11 +16,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-## Notes
-
-Decap + React 19 is not officially supported yet: https://github.com/decaporg/decap-cms/issues/7375
 
 ## Packages
+ 
+- https://www.sanity.io/help/react-19
 - https://github.com/sanity-io/next-sanity
     sanity.cli.js
     sanity.config.js
@@ -28,6 +27,12 @@ Decap + React 19 is not officially supported yet: https://github.com/decaporg/de
     app/studio
 - https://github.com/markdown-it/markdown-it
 - https://github.com/jonschlinkert/gray-matter
+
+```bash
+$ npm i -g @sanity/cli
+$ sanity init
+$ sanity install markdown
+```
 
 ### Progress
 

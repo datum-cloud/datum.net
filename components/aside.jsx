@@ -3,7 +3,6 @@ import React from "react"
 import { Link } from "next/link"
 
 const Aside = ({ tableOfContents }) => {
-  console.log(tableOfContents);
   if (!tableOfContents || tableOfContents.length === 0) return null
 
   return (

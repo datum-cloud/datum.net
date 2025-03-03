@@ -11,7 +11,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 export default async function Page(props) {
   const params = await props.params;
   const page = guidesSource.getPage(params.slug);
-  console.log(page);
+  
   if (!page) notFound();
 
   const MDX = page.data.body;

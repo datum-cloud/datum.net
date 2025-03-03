@@ -1,8 +1,8 @@
 import React from "react"
-import Navigation from "../components/navigation";
+import Navigation from "./navigation"
 import Image from 'next/image'
 
-const Header = () => {
+function Header() {
   return (
     <header className="flex bg-blackberry-900 text-white m-8">
       <div className="flex">
@@ -20,4 +20,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;

@@ -15,6 +15,7 @@ const Navigation = () => {
         <li><Link href="/blog" className={ (pathName=='/blog') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Blog</Link></li>
         <li><Link href="/docs" className={ (pathName=='/docs') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Docs</Link></li>
         <li><Link href="/guides" className={ (pathName=='/guides') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Guides</Link></li>
+        <li><Link href="/events" className={ (pathName=='/events') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Events</Link></li>
         <li><Link href="/changelog" className={ (pathName=='/changelog') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Changelog</Link></li>
         <li><Link href="/contact" className={ (pathName=='/contact') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>Contact</Link></li>
         <li><Link href="/shop" className={ (pathName=='/shop') ? 'pointer-events-none text-white-600' : 'text-gray-400 hover:underline' }>

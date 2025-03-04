@@ -13,10 +13,6 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
 
@@ -40,5 +36,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+## outputs
+.turbo
+/.next/
+/out/
+dist
+.contentlayer
+.eslintcache
 # fumadoc
 .source

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get the about content
+const aboutContent = await getCollection('about');
+const about = aboutContent.find(item => item.id === 'about.mdx');
+
+// Render the MDX content
+const { Content } = await about.render();
+---
+
+<Layout title="About | My Astro Site">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+      <h1 class="text-4xl font-bold mb-6 font-heading">About</h1>
+      <div class="prose lg:prose-xl max-w-none">
+        <Content />
+      </div>
+    </div>
+    
+    <div class="bg-primary/10 rounded-lg p-8 mt-8">
+      <h2 class="text-2xl font-bold mb-4 font-heading text-primary">Get In Touch</h2>
+      <p class="mb-6">
+        Interested in working together or have questions about this website? 
+        Feel free to reach out!
+      </p>
+      <a href="mailto:contact@example.com" class="btn btn-primary">
+        Contact Me
+      </a>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,45 @@
+{
+    "main": [
+      {
+        "href": "/",
+        "text": "Home",
+        "isExternal": false
+      },
+      {
+        "href": "/about",
+        "text": "About",
+        "isExternal": false
+      }
+    ],
+    "footer": [
+      {
+        "href": "/privacy",
+        "text": "Privacy Policy"
+      },
+      {
+        "href": "/terms",
+        "text": "Terms of Service"
+      },
+      {
+        "href": "/sitemap",
+        "text": "Sitemap"
+      }
+    ],
+    "social": [
+      {
+        "href": "https://twitter.com/datumcloud",
+        "text": "Twitter",
+        "icon": "twitter"
+      },
+      {
+        "href": "https://github.com/datum-cloud",
+        "text": "GitHub",
+        "icon": "github"
+      },
+      {
+        "href": "https://www.linkedin.com/company/datum-cloud/",
+        "text": "LinkedIn",
+        "icon": "linkedin"
+      }
+    ]
+  }

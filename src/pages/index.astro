@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get the home content
+const homeContent = await getCollection('home');
+const intro = homeContent.find(item => item.id === 'intro.mdx');
+
+// Render the MDX content
+const { Content } = await intro.render();
+---
+
+<Layout title="Home | My Astro Site">
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h1 class="text-5xl font-bold font-heading mb-4 text-gray-900">
+          Building the Modern Web
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          A showcase site built with Astro, MDX, and TailwindCSS.
+        </p>
+        <div class="mt-8 flex justify-center space-x-4">
+          <a href="/about" class="btn btn-primary">Learn More</a>
+          <a href="#features" class="btn btn-outline">See Features</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="content" class="py-12 bg-white rounded-lg shadow-sm">
+    <div class="max-w-3xl mx-auto prose lg:prose-xl">
+      <Content />
+    </div>
+  </section>
+
+  <section id="features" class="py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-12 font-heading">Key Features</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-bold mb-3 font-heading">Performance First</h3>
+          <p class="text-gray-600">Lightning-fast page loads with minimal JavaScript, thanks to Astro's architecture.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-bold mb-3 font-heading">MDX Content</h3>
+          <p class="text-gray-600">Write content in Markdown, enhance it with React components when needed.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-bold mb-3 font-heading">Modern Styling</h3>
+          <p class="text-gray-600">TailwindCSS provides utility classes for rapid development without sacrificing customization.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

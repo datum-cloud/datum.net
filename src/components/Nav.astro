@@ -1,0 +1,37 @@
+---
+import navData from '../data/navigation.json';
+
+interface Props {
+  location: 'header' | 'footer';
+  classList?: string;
+}
+
+const { location = 'header', classList = '' } = Astro.props;
+const navItems = location === 'header' ? navData.main : navData.footer;
+const currentPath = Astro.url.pathname;
+---
+
+<nav class={classList}>
+  <ul class="flex flex-wrap space-x-2 md:space-x-6">
+    {navItems.map(item => (
+      <li>
+        <a 
+          href={item.href}
+          class={`
+            transition duration-150 font-medium
+            ${location === 'header' ? 'text-gray-600 hover:text-primary' : 'text-gray-300 hover:text-white'}
+            ${currentPath === item.href ? 'text-primary font-semibold' : ''}
+          `}
+          target={item.isExternal ? "_blank" : undefined}
+          rel={item.isExternal ? "noopener noreferrer" : undefined}
+          aria-current={currentPath === item.href ? 'page' : undefined}
+        >
+          {item.text}
+          {item.isExternal && (
+            <span class="ml-1 text-xs">↗</span>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

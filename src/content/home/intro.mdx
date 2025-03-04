@@ -1,0 +1,40 @@
+---
+title: Welcome to My Astro MDX Website
+description: A modern website built with Astro, MDX, and TailwindCSS
+publishDate: 2025-03-04
+---
+
+# Hello, World!
+
+Welcome to my new website built with **Astro**, **MDX**, and **TailwindCSS**!
+
+## What makes this site special?
+
+- **Fast Performance**: Astro's partial hydration means we only ship JavaScript when necessary
+- **MDX Support**: Write content in Markdown with JSX components
+- **Modern Styling**: TailwindCSS makes styling a breeze
+- **SEO Friendly**: Static site generation provides excellent SEO capabilities
+
+Here's a sample of what you can do with MDX:
+
+```js
+// You can include code snippets
+const greeting = "Hello, world!";
+console.log(greeting);
+```
+
+And you can include interactive components within your markdown!
+
+export const Highlight = ({children, color}) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '2px',
+      color: '#fff',
+      padding: '0.2rem 0.4rem',
+    }}>
+    {children}
+  </span>
+);
+
+<Highlight color="#25c2a0">Styled content using JSX components in MDX!</Highlight>

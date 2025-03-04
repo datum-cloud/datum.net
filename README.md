@@ -47,6 +47,6 @@ $ sanity install markdown
 - [x] OpenGraph
 - [x] Guides
 - [x] Docs
+- [x] Events [Sanity](https://vercel.com/earia-projects/datum-net)
 - [x] eCommerce (https://shopify.dev/docs/api/storefront)
-- [ ] Sanity
-- [ ] Vercel deployment
+- [x] [Vercel deployment](datum-6jvpea4uo-edos-projects-454fd6b3.vercel.app)

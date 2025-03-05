@@ -2,15 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-// Get the about content
-const aboutContent = await getCollection('about');
-const about = aboutContent.find(item => item.id === 'about.mdx');
+const pagesCollection = await getCollection('pages');
+const page = pagesCollection.find(page => 
+  page.id.toLowerCase() === 'about.mdx' || page.data.slug === '/about'
+)
 
 // Render the MDX content
-const { Content } = await about.render();
+const { Content } = await page.render();
 ---
 
-<Layout title="About | My Astro Site">
+<Layout title=`About | ${page.data.title}` description={page.data.description}>
   <div class="max-w-4xl mx-auto">
     <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
       <h1 class="text-4xl font-bold mb-6 font-heading">About</h1>

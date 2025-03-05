@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  
+  return pages
+    .filter(page => !page.data.isHomePage)
+    .map(page => {
+      const slug = page.data.slug || `/${page.id.replace(/\.mdx$/, '')}`;
+      
+      return {
+        params: { 
+          slug: slug.replace(/^\//, '')
+        },
+        props: { page }
+      };
+    });
+}
+
+const { page } = Astro.props;
+const { Content } = await page.render();
+---
+
+<Layout title={page.data.title} description={page.data.description}>
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+      <h1 class="text-4xl font-bold mb-6 font-heading">{page.data.title}</h1>
+      
+      <div class="prose lg:prose-xl max-w-none">
+        <Content />
+      </div>
+    </div>
+  </div>
+</Layout>

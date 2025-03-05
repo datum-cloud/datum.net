@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const changelogs = await getCollection('changelog');
+  const sortedChangelogs = changelogs.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+  
+  const pageSize = 3;
+  const totalPages = Math.ceil(sortedChangelogs.length / pageSize);
+  
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const pageNum = i + 2; // Start from page 2
+    const start = (pageNum - 1) * pageSize;
+    const end = start + pageSize;
+    
+    return {
+      params: { page: pageNum.toString() },
+      props: { 
+        entries: sortedChangelogs.slice(start, end),
+        currentPage: pageNum,
+        totalPages: totalPages,
+        prevUrl: pageNum > 2 ? `/changelog/${pageNum - 1}` : '/changelog',
+        nextUrl: pageNum < totalPages ? `/changelog/${pageNum + 1}` : undefined
+      }
+    };
+  });
+}
+
+const { entries, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
+
+const renderedEntries = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await entry.render();
+    return { entry, Content };
+  })
+);
+---
+
+<Layout title="Changelog | Datum Inc. Site">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+      <h1 class="text-4xl font-bold mb-6 font-heading">Changelog</h1>
+      <p class="text-gray-600 mb-8">
+        Track all updates and improvements to our product in one place.
+      </p>
+      
+      <div class="space-y-12">
+        {renderedEntries.map(({ entry, Content }) => (
+          <div class="border-b border-gray-200 pb-12 mb-12 last:border-0">
+            <div class="flex items-center mb-2">
+              <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full">
+                {new Date(entry.data.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
+              {entry.data.version && (
+                <span class="ml-2 bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">
+                  v{entry.data.version}
+                </span>
+              )}
+            </div>
+            <h2 class="text-2xl font-bold font-heading mb-2">
+              {entry.data.title}
+            </h2>
+            <p class="text-gray-600 mb-6">
+              {entry.data.summary}
+            </p>
+            
+            <!-- Full MDX Content -->
+            <div class="prose prose-sm mt-6 max-w-none">
+              <Content />
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Pagination -->
+      {totalPages > 1 && (
+        <div class="flex justify-center mt-12 space-x-2">
+          {prevUrl && (
+            <a 
+              href={prevUrl} 
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded transition"
+              aria-label="Previous page"
+            >
+              &larr;
+            </a>
+          )}
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <a
+              href={pageNum === 1 ? `/changelog` : `/changelog/${pageNum}`}
+              class={`px-4 py-2 rounded transition ${
+                pageNum === currentPage
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+              aria-label={`Page ${pageNum}`}
+              aria-current={pageNum === currentPage ? 'page' : undefined}
+            >
+              {pageNum}
+            </a>
+          ))}
+          
+          {nextUrl && (
+            <a 
+              href={nextUrl}
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded transition"
+              aria-label="Next page"
+            >
+              &rarr;
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>

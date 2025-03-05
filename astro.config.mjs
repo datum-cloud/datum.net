@@ -1,23 +1,37 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config'
+import mdx from '@astrojs/mdx'
+import tailwind from '@astrojs/tailwind'
+import sitemap from '@astrojs/sitemap'
+import robotsTxt from 'astro-robots-txt'
 
 export default defineConfig({
+  site: 'https://datum.net',
   integrations: [
     mdx(),
     tailwind(),
+    sitemap(),
+    robotsTxt({
+      sitemap: true,
+      policy: [
+        {
+          userAgent: '*',
+          allow: '/',
+          disallow: ['/admin', '/api'],
+          crawlDelay: 10,
+        }
+      ]
+    }),
   ],
-  // Enable content collections for MDX files
   content: {
     collections: [
       {
-        name: 'home',
-        directory: './src/content/home'
+        name: 'pages',
+        directory: './src/content/pages'
       },
       {
-        name: 'about',
-        directory: './src/content/about'
+        name: 'changelog',
+        directory: './src/content/changelog'
       }
     ]
   }

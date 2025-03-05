@@ -2,13 +2,19 @@
     "main": [
       {
         "href": "/",
-        "text": "Home",
-        "isExternal": false
+        "text": "Home"
       },
       {
         "href": "/about",
-        "text": "About",
-        "isExternal": false
+        "text": "About"
+      },
+      {
+        "href": "/contact",
+        "text": "Contact"
+      },
+      {
+        "href": "/changelog",
+        "text": "Changelog"
       }
     ],
     "footer": [

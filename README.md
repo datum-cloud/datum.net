@@ -20,11 +20,11 @@ All commands are run from the root of the project, from a terminal:
 - [x] Tailwind style
 - [x] Homepage
 - [x] Static Pages (ex: About, Contact)
-- [ ] Sitemap
+- [x] Sitemap
 - [ ] Blog
 - [ ] Blog Post
-- [ ] Changelog
-- [ ] SEO
+- [x] Changelog
+- [x] SEO
 - [ ] OpenGraph
 - [ ] Guides
 - [ ] Docs (landing, detail)

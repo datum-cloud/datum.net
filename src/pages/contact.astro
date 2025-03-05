@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const pagesCollection = await getCollection('pages');
+const page = pagesCollection.find(page => 
+  page.id.toLowerCase() === 'contact.mdx' || page.data.slug === '/contact'
+);
+
+// Only render MDX content if it exists
+const Content = page ? (await page.render()).Content : null;
+---
+
+<Layout 
+  title="Contact Us | Datum Inc. Site" 
+  description="Get in touch with Datum Inc. We'd love to hear from you!"
+>
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+      <h1 class="text-4xl font-bold mb-6 font-heading">Contact Us</h1>
+      
+      {Content ? (
+        <div class="prose lg:prose-xl max-w-none mb-8">
+          <Content />
+        </div>
+      ) : (
+        <p class="text-lg text-gray-600 mb-8">
+          Have a question or want to work with us? Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+      )}
+      
+      <form class="grid grid-cols-1 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">
+            Subject
+          </label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+        
+        <div>
+          <label for="message" class="block text-sm font-medium text-gray-700 mb-1">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+          ></textarea>
+        </div>
+        
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="privacy"
+            name="privacy"
+            required
+            class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+          />
+          <label for="privacy" class="ml-2 block text-sm text-gray-700">
+            I agree to the <a href="/privacy" class="text-primary hover:underline">Privacy Policy</a>
+          </label>
+        </div>
+        
+        <div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Send Message
+          </button>
+          <p class="text-sm text-gray-500 mt-2">
+            This is a static form for demonstration purposes only. To make it functional, you'll need to add server-side processing.
+          </p>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</Layout>

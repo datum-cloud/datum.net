@@ -2,15 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-// Get the home content
-const homeContent = await getCollection('home');
-const intro = homeContent.find(item => item.id === 'intro.mdx');
+const pagesCollection = await getCollection('pages');
+const pageContent = pagesCollection.find(page => page.data.isHomePage === true);
 
-// Render the MDX content
-const { Content } = await intro.render();
+const page = pageContent || pagesCollection.find(page => 
+  page.id.toLowerCase() === 'home.mdx' || page.data.slug === '/'
+)
+
+const { Content } = await page.render();
 ---
 
-<Layout title="Home | My Astro Site">
+<Layout title=`About | ${page.data.title}` description={page.data.description}>
   <section class="py-12">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-12">

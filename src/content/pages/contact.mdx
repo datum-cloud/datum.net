@@ -1,7 +1,7 @@
 ---
 title: Contact Us
 description: "Get in touch with Datum Inc. We'd love to hear from you!"
-slug: "/contact"
+slug: "contact"
 ---
 
 # We'd Love to Hear From You
@@ -15,3 +15,84 @@ Whether you have a question about our services, need help with something, or jus
 3. If needed, we'll schedule a call to discuss your needs in detail
 
 *We respect your privacy and will never share your information with third parties.*
+
+<form className="grid grid-cols-1 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        Name
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+      />
+    </div>
+    
+    <div>
+      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        Email
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+      />
+    </div>
+  </div>
+  
+  <div>
+    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+      Subject
+    </label>
+    <input
+      type="text"
+      id="subject"
+      name="subject"
+      required
+      className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+    />
+  </div>
+  
+  <div>
+    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+      Message
+    </label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      required
+      className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+    ></textarea>
+  </div>
+  
+  <div className="flex items-center">
+    <input
+      type="checkbox"
+      id="privacy"
+      name="privacy"
+      required
+      className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+    />
+    <label htmlFor="privacy" className="ml-2 block text-sm text-gray-700">
+      I agree to the <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
+    </label>
+  </div>
+  
+  <div>
+    <button
+      type="submit"
+      className="btn btn-primary"
+    >
+      Send Message
+    </button>
+    <p className="text-sm text-gray-500 mt-2">
+      This is a static form for demonstration purposes only. To make it functional, you'll need to add server-side processing.
+    </p>
+  </div>
+</form>

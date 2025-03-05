@@ -25,9 +25,9 @@ All commands are run from the root of the project, from a terminal:
 - [ ] Blog Post
 - [x] Changelog
 - [x] SEO
-- [ ] OpenGraph
+- [x] OpenGraph
 - [ ] Guides
 - [ ] Docs (landing, detail)
 - [ ] eCommerce (landing)
 - [ ] CMS
-- [ ] Vercel
+- [x] Vercel https://datum-net-astro.vercel.app/

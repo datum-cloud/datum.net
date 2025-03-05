@@ -1,18 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
-const pagesCollection = await getCollection('pages');
-const pageContent = pagesCollection.find(page => page.data.isHomePage === true);
-
-const page = pageContent || pagesCollection.find(page => 
-  page.id.toLowerCase() === 'home.mdx' || page.data.slug === '/'
-)
-
-const { Content } = await page.render();
+const page = await getEntry('pages', '/')
+const Content = page ? (await page.render()).Content : null
 ---
 
-<Layout title=`About | ${page.data.title}` description={page.data.description}>
+<Layout title=`${page.data.title}` description={page.data.description}>
   <section class="py-12">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-12">

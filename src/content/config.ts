@@ -12,9 +12,10 @@ const changelogCollection = defineCollection({
 
 // Define pages collections
 const pagesCollection = defineCollection({
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string().optional(),
+    featuredImage: image().optional(),
     isHomePage: z.boolean().optional().default(false),
     slug: z.string().optional(),
     order: z.number().optional().default(999)

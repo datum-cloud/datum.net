@@ -20,7 +20,7 @@ All commands are run from the root of the project, from a terminal:
 - [x] Tailwind style
 - [x] Homepage
 - [x] Static Pages (ex: About, Contact)
-- [x] Sitemap
+- [x] Sitemap https://datum-net-astro.vercel.app/sitemap-index.xml, https://datum-net-astro.vercel.app/sitemap-0.xml
 - [x] Blog
 - [x] Blog Post
 - [x] Changelog

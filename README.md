@@ -30,4 +30,4 @@ All commands are run from the root of the project, from a terminal:
 - [ ] Docs (landing, detail)
 - [ ] eCommerce (landing)
 - [ ] CMS
-- [ ] Vercel
+- [x] Vercel https://datum-net-astro.vercel.app/

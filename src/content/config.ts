@@ -22,8 +22,22 @@ const pagesCollection = defineCollection({
   }),
 });
 
+// Add to src/content/config.ts
+const blogCollection = defineCollection({
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.date(),
+    author: z.string().optional(),
+    thumbnail: image().optional(),
+    featuredImage: image().optional(),
+    draft: z.boolean().optional().default(false)
+  }),
+});
+
 // Export all collections
 export const collections = {
   'pages': pagesCollection,
   'changelog': changelogCollection,
+  'blog': blogCollection,
 };

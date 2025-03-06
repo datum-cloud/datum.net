@@ -21,8 +21,8 @@ All commands are run from the root of the project, from a terminal:
 - [x] Homepage
 - [x] Static Pages (ex: About, Contact)
 - [x] Sitemap
-- [ ] Blog
-- [ ] Blog Post
+- [x] Blog
+- [x] Blog Post
 - [x] Changelog
 - [x] SEO
 - [x] OpenGraph

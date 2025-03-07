@@ -15,6 +15,10 @@
       {
         "href": "/changelog",
         "text": "Changelog"
+      },
+      {
+        "href": "/store",
+        "text": "Store"
       }
     ],
     "footer": [

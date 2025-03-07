@@ -1,10 +1,10 @@
 ---
 import { SEO } from 'astro-seo'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
-import Nav from '../components/Nav.astro'
-import '../styles/global.css'
-import config from '../data/siteConfig.json'
+import Header from '@components/Header.astro'
+import Footer from '@components/Footer.astro'
+import Nav from '@components/Nav.astro'
+import '@styles/global.css'
+import config from '@data/siteConfig.json'
 
 const siteMeta = config.meta
 
@@ -76,7 +76,7 @@ const imageUrl = new URL(image, Astro.site).href;
         ],
         link: [
           { rel: "icon", href: "/favicon.png" },
-          { rel: "mask-icon", href: "/favicon.svg", color: "#3b82f6" },
+          { rel: "mask-icon", href: "/favicon.svg" },
           { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
         ],
       }}

@@ -1,6 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import CartDrawer from "@components/store/CartDrawer.svelte";
 
 const pagesCollection = await getCollection('pages');
 const pageContent = pagesCollection.find(page => page.data.isHomePage === true);
@@ -19,6 +20,7 @@ const { Content } = await page.render();
         <h1 class="text-5xl font-bold font-heading mb-4 text-gray-900">
           Building the Modern Web
         </h1>
+        <CartDrawer client:idle />
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
           A showcase site built with Astro, MDX, and TailwindCSS.
         </p>

@@ -14,6 +14,9 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Shopify
+- Token: https://admin.shopify.com/store/discdisc/headless/50508/storefront_api
+
 
 ## Progress
 

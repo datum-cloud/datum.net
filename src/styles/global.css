@@ -3,12 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
   }
 }
 

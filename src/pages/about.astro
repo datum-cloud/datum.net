@@ -1,20 +1,19 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
-const pagesCollection = await getCollection('pages');
-const page = pagesCollection.find(page => 
-  page.id.toLowerCase() === 'about.mdx' || page.data.slug === '/about'
-)
-
-// Render the MDX content
-const { Content } = await page.render();
+const page = await getEntry('pages', 'about')
+const {Content, headings} = page ? (await page.render()) : null
 ---
 
-<Layout title=`About | ${page.data.title}` description={page.data.description}>
+<Layout title=`${page.data.title}` description={page.data.description}>
   <div class="max-w-4xl mx-auto">
     <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
       <h1 class="text-4xl font-bold mb-6 font-heading">About</h1>
+      <div class=" overflow-hidden p-4 border border-gray-100 mb-8">  
+        <Image src={page.data.featuredImage} alt={page.data.title} />
+      </div>
       <div class="prose lg:prose-xl max-w-none">
         <Content />
       </div>

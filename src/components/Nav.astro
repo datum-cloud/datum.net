@@ -9,6 +9,14 @@ interface Props {
 const { location = 'header', classList = '' } = Astro.props;
 const navItems = location === 'header' ? navData.main : navData.footer;
 const currentPath = Astro.url.pathname;
+
+function isActive(itemHref: string, currentPath: string) {
+  if (itemHref === '/' && currentPath !== '/') {
+    return false;
+  }
+  
+  return currentPath.startsWith(itemHref);
+}
 ---
 
 <nav class={classList}>
@@ -20,11 +28,11 @@ const currentPath = Astro.url.pathname;
           class={`
             transition duration-150 font-medium
             ${location === 'header' ? 'text-gray-600 hover:text-primary' : 'text-gray-300 hover:text-white'}
-            ${currentPath === item.href ? 'text-primary font-semibold' : ''}
+            ${isActive(item.href, currentPath) ? 'text-primary font-semibold' : ''}
           `}
           target={item.isExternal ? "_blank" : undefined}
           rel={item.isExternal ? "noopener noreferrer" : undefined}
-          aria-current={currentPath === item.href ? 'page' : undefined}
+          aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
         >
           {item.text}
           {item.isExternal && (

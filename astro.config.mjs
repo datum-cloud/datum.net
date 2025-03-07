@@ -27,6 +27,10 @@ export default defineConfig({
         directory: './src/content/pages'
       },
       {
+        name: 'blog',
+        directory: './src/content/blog'
+      },
+      {
         name: 'changelog',
         directory: './src/content/changelog'
       }

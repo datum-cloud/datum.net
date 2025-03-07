@@ -7,8 +7,11 @@ import robotsTxt from 'astro-robots-txt'
 
 import svelte from '@astrojs/svelte';
 
+import vercel from '@astrojs/vercel';
+
 export default defineConfig({
   site: 'https://datum.net',
+
   integrations: [mdx(), tailwind(), sitemap(), robotsTxt({
     sitemap: true,
     policy: [
@@ -20,6 +23,7 @@ export default defineConfig({
       }
     ]
   }), svelte()],
+
   content: {
     collections: [
       {
@@ -35,5 +39,7 @@ export default defineConfig({
         directory: './src/content/changelog'
       }
     ]
-  }
+  },
+
+  adapter: vercel()
 });

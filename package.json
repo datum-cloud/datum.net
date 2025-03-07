@@ -16,6 +16,7 @@
     "@astrojs/svelte": "^7.0.5",
     "@astrojs/tailwind": "^6.0.0",
     "@astrojs/ts-plugin": "^1.10.4",
+    "@astrojs/vercel": "^8.1.1",
     "@nanostores/persistent": "^0.10.2",
     "@shopify/hydrogen-react": "^2025.1.2",
     "@tailwindcss/typography": "^0.5.16",

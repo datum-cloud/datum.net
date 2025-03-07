@@ -31,6 +31,6 @@ All commands are run from the root of the project, from a terminal:
 - [x] OpenGraph
 - [ ] Guides
 - [ ] Docs (landing, detail)
-- [ ] eCommerce (landing)
+- [x] eCommerce spotify (landing, detail)
 - [ ] CMS
 - [x] Vercel https://datum-net-astro.vercel.app/

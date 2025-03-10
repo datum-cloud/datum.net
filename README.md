@@ -36,3 +36,7 @@ All commands are run from the root of the project, from a terminal:
 - [x] eCommerce spotify (landing, detail)
 - [x] Tina CMS (https://datum-net-astro.vercel.app/admin)
 - [x] Vercel https://datum-net-astro.vercel.app/
+
+## Notes
+
+* Self Hosted Tina CMS https://github.com/tinacms/tinacms/discussions/3589

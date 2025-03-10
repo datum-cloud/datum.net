@@ -23,3 +23,11 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Tina CMS
+.tina/__generated__/
+admin/
+tina/__generated__/
+
+# Vercel
+.vercel

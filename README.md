@@ -13,6 +13,8 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm run tina:dev`        | Starts local dev server with Tina CMS            |
+| `tina:build`              | Build your production site with Tina CMS         |
 
 ## Shopify
 - Token: https://admin.shopify.com/store/discdisc/headless/50508/storefront_api
@@ -32,5 +34,5 @@ All commands are run from the root of the project, from a terminal:
 - [ ] Guides
 - [ ] Docs (landing, detail)
 - [x] eCommerce spotify (landing, detail)
-- [ ] CMS
+- [x] Tina CMS (https://datum-net-astro.vercel.app/admin)
 - [x] Vercel https://datum-net-astro.vercel.app/

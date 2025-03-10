@@ -4,13 +4,11 @@ import mdx from '@astrojs/mdx'
 import tailwind from '@astrojs/tailwind'
 import sitemap from '@astrojs/sitemap'
 import robotsTxt from 'astro-robots-txt'
-
 import svelte from '@astrojs/svelte';
-
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://datum.net',
+  site: import.meta.env.SITE_URL || 'https://datum.net',
 
   integrations: [mdx(), tailwind(), sitemap(), robotsTxt({
     sitemap: true,

@@ -1,6 +1,16 @@
 {
-    "buildCommand": "npm run build",
+    "buildCommand": "npm run tina:build",
     "outputDirectory": "dist",
     "framework": "astro",
-    "devCommand": "npm run dev"
+    "devCommand": "npm run tina:dev",
+    "rewrites": [
+      {
+        "source": "/admin",
+        "destination": "/admin/index.html"
+      },
+      {
+        "source": "/admin/:path*",
+        "destination": "/admin/:path*"
+      }
+    ]
   }

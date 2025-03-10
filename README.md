@@ -32,7 +32,7 @@ All commands are run from the root of the project, from a terminal:
 - [x] SEO
 - [x] OpenGraph
 - [ ] Guides
-- [ ] Docs (landing, detail)
+- [x] Docs https://datum-net-astro.vercel.app/docs/
 - [x] eCommerce spotify (landing, detail)
 - [x] Tina CMS (https://datum-net-astro.vercel.app/admin)
 - [x] Vercel https://datum-net-astro.vercel.app/

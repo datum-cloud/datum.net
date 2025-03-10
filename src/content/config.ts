@@ -1,4 +1,6 @@
 import { z, defineCollection } from 'astro:content';
+import { docsLoader } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
 
 // Define the schema for changelog entries
 const changelogCollection = defineCollection({
@@ -40,4 +42,5 @@ export const collections = {
   'pages': pagesCollection,
   'changelog': changelogCollection,
   'blog': blogCollection,
+  'docs': defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

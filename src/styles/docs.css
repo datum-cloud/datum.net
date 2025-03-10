@@ -1,0 +1,8 @@
+/* Custom styles for documentation */
+:root {
+  --sl-content-width: 50rem;
+  --sl-text-base: 1rem;
+  --sl-nav-pad-x: 1rem;
+}
+
+/* Add any custom styles for your documentation here */ 

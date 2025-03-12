@@ -31,7 +31,7 @@ All commands are run from the root of the project, from a terminal:
 - [x] Changelog
 - [x] SEO
 - [x] OpenGraph
-- [ ] Guides
+- [x] Guides https://datum-net-astro.vercel.app/docs/ (include mermaid support)
 - [x] Docs https://datum-net-astro.vercel.app/docs/
 - [x] eCommerce spotify (landing, detail)
 - [x] Tina CMS (https://datum-net-astro.vercel.app/admin)

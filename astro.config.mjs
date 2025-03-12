@@ -10,7 +10,6 @@ import starlight from '@astrojs/starlight'
 
 export default defineConfig({
   site: import.meta.env.SITE_URL || 'https://datum.net',
-
   integrations: [
     starlight({
       title: 'Datum',
@@ -18,12 +17,18 @@ export default defineConfig({
       social: {
         github: 'http://github.com/datum-cloud/datum.net'
       },
-      sidebar: [
-        {
-          label: 'Start Here',
-          autogenerate: { directory: 'docs' }
-        }
-      ]
+      components: {
+        Sidebar: '@components/starlightSidebar.astro',
+      },
+      sidebar:
+      [{
+        label: 'Docs',
+        autogenerate: { directory: 'docs' }
+      },
+      {
+        label: 'Guides',
+        autogenerate: { directory: 'guides' }
+      }],
     }),
     mdx(),
     tailwind(),
@@ -41,23 +46,5 @@ export default defineConfig({
     }),
     svelte()
   ],
-
-  content: {
-    collections: [
-      {
-        name: 'pages',
-        directory: './src/content/pages'
-      },
-      {
-        name: 'blog',
-        directory: './src/content/blog'
-      },
-      {
-        name: 'changelog',
-        directory: './src/content/changelog'
-      }
-    ]
-  },
-
   adapter: vercel()
 });

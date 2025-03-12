@@ -1,0 +1,55 @@
+---
+export interface Props {
+  title?: string;
+}
+const { title = "" } = Astro.props;
+---
+<script>
+import mermaid from "mermaid";
+mermaid.initialize({ startOnLoad: false });
+
+  function extractMermaidCode() {
+    // Find all mermaid components
+    const mermaidElements = document.querySelectorAll("figure.expandable-diagram");
+    mermaidElements.forEach((element) => {
+      // Find the `copy` button for each component
+      const copyButton = element.querySelector(".copy button");
+      // Extract the code from the `data-code` attribute
+      let code = copyButton.dataset.code;
+      // Replace the U+007f character with `\n` to simulate new lines
+      code = code.replace(/\u007F/g, "\n");
+      // Construct the `pre` element for the diagram code
+      const preElement = document.createElement("pre");
+      preElement.className = "mermaid not-prose";
+      preElement.innerHTML = code;
+      // Find the diagram content container and override it's content
+      const diagramContainer = element.querySelector(".diagram-content");
+      // remove detail
+      console.log(element);
+      let elDetails = element.getElementsByTagName('details');
+      for (var index = 0, len = elDetails.length; index < len; index++) {
+        elDetails[index].parentNode?.removeChild(elDetails[index]);
+      }
+      
+      diagramContainer.replaceChild(preElement, diagramContainer.firstChild);
+    });
+  }
+
+// Wait for the DOM to be fully loaded
+document.addEventListener("DOMContentLoaded", async () => {
+    extractMermaidCode();
+    mermaid.initialize({ startOnLoad: true });
+});
+</script>
+
+<figure class="expandable-diagram">
+    <figcaption>{title}</figcaption>
+  
+    <div class="diagram-content">Loading diagram...</div>
+  
+    <details>
+      <summary>Source</summary>
+      <slot />
+    </details>
+  </figure>
+  

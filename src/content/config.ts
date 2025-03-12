@@ -43,4 +43,5 @@ export const collections = {
   'changelog': changelogCollection,
   'blog': blogCollection,
   'docs': defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+  'guides': defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

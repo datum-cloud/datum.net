@@ -1,12 +1,7 @@
 import type { z } from "zod";
 import { atom } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
-import {
-  getCart,
-  addCartLines,
-  createCart,
-  removeCartLines,
-} from "../utils/shopify";
+import { getCart, addCartLines, createCart, removeCartLines } from "../utils/shopify";
 import type { CartResult } from "../utils/schemas";
 
 // Cart drawer state (open or closed) with initial value (false) and no persistent state (local storage)
@@ -24,14 +19,10 @@ const emptyCart = {
 };
 
 // Cart store with persistent state (local storage) and initial value
-export const cart = persistentAtom<z.infer<typeof CartResult>>(
-  "cart",
-  emptyCart,
-  {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-  }
-);
+export const cart = persistentAtom<z.infer<typeof CartResult>>("cart", emptyCart, {
+  encode: JSON.stringify,
+  decode: JSON.parse,
+});
 
 // Fetch cart data if a cart exists in local storage, this is called during session start only
 // This is useful to validate if the cart still exists in Shopify and if it's not empty

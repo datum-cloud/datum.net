@@ -1,45 +1,45 @@
 ---
-import navData from '@data/navigation.json';
+import navData from "@data/navigation.json";
 
 interface Props {
-  location: 'header' | 'footer';
+  location: "header" | "footer";
   classList?: string;
 }
 
-const { location = 'header', classList = '' } = Astro.props;
-const navItems = location === 'header' ? navData.main : navData.footer;
+const { location = "header", classList = "" } = Astro.props;
+const navItems = location === "header" ? navData.main : navData.footer;
 const currentPath = Astro.url.pathname;
 
 function isActive(itemHref: string, currentPath: string) {
-  if (itemHref === '/' && currentPath !== '/') {
+  if (itemHref === "/" && currentPath !== "/") {
     return false;
   }
-  
+
   return currentPath.startsWith(itemHref);
 }
 ---
 
 <nav class={classList}>
   <ul class="flex flex-wrap space-x-2 md:space-x-6">
-    {navItems.map(item => (
-      <li>
-        <a 
-          href={item.href}
-          class={`
-            transition duration-150 font-medium
-            ${location === 'header' ? 'text-gray-600 hover:text-primary' : 'text-gray-300 hover:text-white'}
-            ${isActive(item.href, currentPath) ? 'text-primary font-semibold' : ''}
+    {
+      navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`
+            font-medium transition duration-150
+            ${location === "header" ? "text-gray-600 hover:text-primary" : "text-gray-300 hover:text-white"}
+            ${isActive(item.href, currentPath) ? "font-semibold text-primary" : ""}
           `}
-          target={item.isExternal ? "_blank" : undefined}
-          rel={item.isExternal ? "noopener noreferrer" : undefined}
-          aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
-        >
-          {item.text}
-          {item.isExternal && (
-            <span class="ml-1 text-xs">↗</span>
-          )}
-        </a>
-      </li>
-    ))}
+            target={item.isExternal ? "_blank" : undefined}
+            rel={item.isExternal ? "noopener noreferrer" : undefined}
+            aria-current={isActive(item.href, currentPath) ? "page" : undefined}
+          >
+            {item.text}
+            {item.isExternal && <span class="ml-1 text-xs">↗</span>}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </nav>

@@ -1,18 +1,18 @@
 ---
-import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro'
-import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro'
+import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
+import SidebarSublist from "@astrojs/starlight/components/SidebarSublist.astro";
 
-const { sidebar } = Astro.locals.starlightRoute
-const { slug } = Astro.params
-var explSlug = slug?.split('/') ?? ''
-var filteredSideBar = new Array()
-sidebar.forEach((sb) => {
-    if (sb.label.toLowerCase() == explSlug[0].toLowerCase()) {
-        filteredSideBar.push(sb);
-    }
-})
+const { sidebar } = Astro.locals.starlightRoute;
+const { slug } = Astro.params;
+var explSlug = slug?.split("/") ?? "";
+var filteredSideBar = [];
+sidebar.forEach((menu: { label: string }) => {
+  if (menu.label.toLowerCase() == explSlug[0].toLowerCase()) {
+    filteredSideBar.push(menu);
+  }
+});
 ---
 
 <SidebarPersister>
-	<SidebarSublist sublist={filteredSideBar} />
+  <SidebarSublist sublist={filteredSideBar} />
 </SidebarPersister>

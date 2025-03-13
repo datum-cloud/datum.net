@@ -52,7 +52,7 @@ const makeShopifyRequest = async (
   }
 
   const response = await fetch(apiUrl, getOptions());
-  
+
   if (!response.ok) {
     const body = await response.text();
     throw new Error(`${response.status} ${body}`);
@@ -67,24 +67,21 @@ const makeShopifyRequest = async (
 };
 
 // Get all products or a limited number of products (default: 10)
-export const getProducts = async (options: {
-  limit?: number;
-  buyerIP: string;
-}) => {
+export const getProducts = async (options: { limit?: number; buyerIP: string }) => {
   const { limit = 10, buyerIP } = options;
-  
-  const data = await makeShopifyRequest(
-    ProductsQuery,
-    { first: limit },
-    buyerIP
-  );
+
+  const data = await makeShopifyRequest(ProductsQuery, { first: limit }, buyerIP);
   const { products } = data;
-  
+
   if (!products) {
     throw new Error("No products found");
   }
 
-  const productsList = products.edges.map((edge: any) => edge.node);
+  interface ProductEdge {
+    node: unknown;
+  }
+
+  const productsList = products.edges.map((edge: ProductEdge) => edge.node);
   const ProductsResult = z.array(ProductResult);
   const parsedProducts = ProductsResult.parse(productsList);
 
@@ -92,17 +89,10 @@ export const getProducts = async (options: {
 };
 
 // Get a product by its handle (slug)
-export const getProductByHandle = async (options: {
-  handle: string;
-  buyerIP: string;
-}) => {
+export const getProductByHandle = async (options: { handle: string; buyerIP: string }) => {
   const { handle, buyerIP } = options;
 
-  const data = await makeShopifyRequest(
-    ProductByHandleQuery,
-    { handle },
-    buyerIP
-  );
+  const data = await makeShopifyRequest(ProductByHandleQuery, { handle }, buyerIP);
   const { product } = data;
 
   const parsedProduct = ProductResult.parse(product);
@@ -141,11 +131,7 @@ export const createCart = async (id: string, quantity: number) => {
 };
 
 // Add a line item to an existing cart (by ID) and return the updated cart object
-export const addCartLines = async (
-  id: string,
-  merchandiseId: string,
-  quantity: number
-) => {
+export const addCartLines = async (id: string, merchandiseId: string, quantity: number) => {
   const data = await makeShopifyRequest(AddCartLinesMutation, {
     cartId: id,
     merchandiseId,
@@ -181,3 +167,41 @@ export const getCart = async (id: string) => {
 
   return parsedCart;
 };
+
+const endpoint = `https://${import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
+const storefrontAccessToken = import.meta.env.PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+export async function shopifyFetch<T>({
+  query,
+  variables,
+}: {
+  query: string;
+  variables?: Record<string, unknown>;
+}): Promise<T> {
+  try {
+    const result = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
+      },
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    });
+
+    const body = await result.json();
+
+    if (body.errors) {
+      throw body.errors[0];
+    }
+
+    return body.data as T;
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("An error occurred while fetching from Shopify");
+  }
+}

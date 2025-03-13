@@ -1,5 +1,5 @@
 ---
-export const prerender = false
+export const prerender = false;
 
 import { getProductByHandle } from "@utils/shopify";
 import { setCache } from "@utils/cache";
@@ -41,10 +41,7 @@ setCache.short(Astro);
           </div>
 
           <div class="mt-8 lg:col-span-5 lg:mt-0">
-            <ProductInformations
-              title={product.title}
-              price={firstVariant?.price}
-            />
+            <ProductInformations title={product.title} price={firstVariant?.price} />
 
             <div>
               <AddToCartForm
@@ -54,7 +51,6 @@ setCache.short(Astro);
                 variantAvailableForSale={firstVariant?.availableForSale}
               />
             </div>
-
           </div>
         </div>
       </section>

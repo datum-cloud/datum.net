@@ -1,20 +1,20 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const pages = await getCollection('pages');
-  
+  const pages = await getCollection("pages");
+
   return pages
-    .filter(page => !page.data.isHomePage)
-    .map(page => {
-      const slug = page.data.slug || `/${page.id.replace(/\.mdx$/, '')}`;
-      
+    .filter((page) => !page.data.isHomePage)
+    .map((page) => {
+      const slug = page.data.slug || `/${page.id.replace(/\.mdx$/, "")}`;
+
       return {
-        params: { 
-          slug: slug.replace(/^\//, '')
+        params: {
+          slug: slug.replace(/^\//, ""),
         },
-        props: { page }
+        props: { page },
       };
     });
 }
@@ -24,11 +24,11 @@ const { Content } = await page.render();
 ---
 
 <Layout title={page.data.title} description={page.data.description}>
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-      <h1 class="text-4xl font-bold mb-6 font-heading">{page.data.title}</h1>
-      
-      <div class="prose lg:prose-xl max-w-none">
+  <div class="mx-auto max-w-4xl">
+    <div class="mb-8 rounded-lg bg-white p-8 shadow-sm">
+      <h1 class="mb-6 font-heading text-4xl font-bold">{page.data.title}</h1>
+
+      <div class="prose max-w-none lg:prose-xl">
         <Content />
       </div>
     </div>

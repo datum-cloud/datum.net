@@ -1,25 +1,24 @@
 ---
-import { SEO } from 'astro-seo'
-import Header from '@components/Header.astro'
-import Footer from '@components/Footer.astro'
-import Nav from '@components/Nav.astro'
-import '@styles/global.css'
-import config from '@data/siteConfig.json'
+import { SEO } from "astro-seo";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import "@styles/global.css";
+import config from "@data/siteConfig.json";
 
-const siteMeta = config.meta
+const siteMeta = config.meta;
 
 export interface Props {
   title: string;
-  description?: string
-  image?: string
-  article?: boolean
-  publishDate?: Date
-  author?: string
-  noindex?: boolean
-  canonical?: string
+  description?: string;
+  image?: string;
+  article?: boolean;
+  publishDate?: Date;
+  author?: string;
+  noindex?: boolean;
+  canonical?: string;
 }
 
-const { 
+const {
   title = siteMeta.title || "Datum Inc. Site",
   description = siteMeta.description || "A modern website built with Astro, MDX, and TailwindCSS",
   image = "/images/og-default.jpg", // Ensure this exists in your public folder
@@ -54,12 +53,14 @@ const imageUrl = new URL(image, Astro.site).href;
           siteName: "Datum Inc. Site",
           locale: "en_US",
         },
-        ...(article && publishDate ? {
-          article: {
-            publishedTime: publishDate.toISOString(),
-            authors: [author || "Datum Inc."],
-          }
-        } : {})
+        ...(article && publishDate
+          ? {
+              article: {
+                publishedTime: publishDate.toISOString(),
+                authors: [author || "Datum Inc."],
+              },
+            }
+          : {}),
       }}
       twitter={{
         card: "summary_large_image",
@@ -87,11 +88,14 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <title>{title}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+  <body class="flex min-h-screen flex-col bg-gray-50 text-gray-800">
     <Header />
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <main class="container mx-auto flex-grow px-4 py-8">
       <slot />
     </main>
     <Footer />

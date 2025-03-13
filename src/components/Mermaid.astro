@@ -4,9 +4,10 @@ export interface Props {
 }
 const { title = "" } = Astro.props;
 ---
+
 <script>
-import mermaid from "mermaid";
-mermaid.initialize({ startOnLoad: false });
+  import mermaid from "mermaid";
+  mermaid.initialize({ startOnLoad: false });
 
   function extractMermaidCode() {
     // Find all mermaid components
@@ -26,30 +27,29 @@ mermaid.initialize({ startOnLoad: false });
       const diagramContainer = element.querySelector(".diagram-content");
       // remove detail
       console.log(element);
-      let elDetails = element.getElementsByTagName('details');
+      let elDetails = element.getElementsByTagName("details");
       for (var index = 0, len = elDetails.length; index < len; index++) {
         elDetails[index].parentNode?.removeChild(elDetails[index]);
       }
-      
+
       diagramContainer.replaceChild(preElement, diagramContainer.firstChild);
     });
   }
 
-// Wait for the DOM to be fully loaded
-document.addEventListener("DOMContentLoaded", async () => {
+  // Wait for the DOM to be fully loaded
+  document.addEventListener("DOMContentLoaded", async () => {
     extractMermaidCode();
     mermaid.initialize({ startOnLoad: true });
-});
+  });
 </script>
 
 <figure class="expandable-diagram">
-    <figcaption>{title}</figcaption>
-  
-    <div class="diagram-content">Loading diagram...</div>
-  
-    <details>
-      <summary>Source</summary>
-      <slot />
-    </details>
-  </figure>
-  
+  <figcaption>{title}</figcaption>
+
+  <div class="diagram-content">Loading diagram...</div>
+
+  <details>
+    <summary>Source</summary>
+    <slot />
+  </details>
+</figure>

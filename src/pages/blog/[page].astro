@@ -1,36 +1,36 @@
 ---
 // src/pages/blog/[page].astro
-import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
-import config from '../../data/siteConfig.json'
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import config from "../../data/siteConfig.json";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog', ({ data }) => {
+  const allPosts = await getCollection("blog", ({ data }) => {
     return !data.draft && new Date(data.date) <= new Date();
   });
-  
+
   const sortedPosts = allPosts.sort((a, b) => {
     return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
   });
-  
+
   const pageSize = config.pageSize;
   const totalPages = Math.ceil(sortedPosts.length / pageSize);
-  
+
   return Array.from({ length: totalPages - 1 }, (_, i) => {
     const pageNum = i + 2; // Start from page 2
     const start = (pageNum - 1) * pageSize;
     const end = start + pageSize;
-    
+
     return {
       params: { page: pageNum.toString() },
-      props: { 
+      props: {
         posts: sortedPosts.slice(start, end),
         currentPage: pageNum,
         totalPages: totalPages,
-        prevUrl: pageNum > 2 ? `/blog/${pageNum - 1}` : '/blog',
-        nextUrl: pageNum < totalPages ? `/blog/${pageNum + 1}` : undefined
-      }
+        prevUrl: pageNum > 2 ? `/blog/${pageNum - 1}` : "/blog",
+        nextUrl: pageNum < totalPages ? `/blog/${pageNum + 1}` : undefined,
+      },
     };
   });
 }
@@ -38,96 +38,112 @@ export async function getStaticPaths() {
 const { posts, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
 ---
 
-<Layout title={`Blog - Page ${currentPage} | Datum Inc. Site`} description="Latest articles and insights from our team">
-  <div class="max-w-7xl mx-auto">
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-      <h1 class="text-4xl font-bold mb-6 font-heading">Blog</h1>
-      <p class="text-gray-600 mb-8">
-        Latest articles, tutorials, and insights from our team.
-      </p>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <article class="bg-white rounded-lg overflow-hidden shadow-sm transition hover:shadow-md">
-            {post.data.thumbnail && (
-              <a href={`/blog/${post.slug}`} class="block aspect-video overflow-hidden">
-                <Image 
-                  src={post.data.thumbnail} 
-                  alt={post.data.title}
-                  class="w-full h-full object-cover transition hover:scale-105"
-                  widths={[400, 600, 800]}
-                  sizes="(max-width: 640px) 400px, (max-width: 1024px) 600px, 800px"
-                />
-              </a>
-            )}
-            <div class="p-6">
-              <div class="flex items-center text-sm text-gray-500 mb-2">
-                <time datetime={post.data.date.toISOString()}>
-                  {new Date(post.data.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-              </div>
-              <h2 class="text-xl font-bold font-heading mb-2 line-clamp-2">
-                <a href={`/blog/${post.slug}`} class="hover:text-primary">
-                  {post.data.title}
+<Layout
+  title={`Blog - Page ${currentPage} | Datum Inc. Site`}
+  description="Latest articles and insights from our team"
+>
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-8 rounded-lg bg-white p-8 shadow-sm">
+      <h1 class="mb-6 font-heading text-4xl font-bold">Blog</h1>
+      <p class="mb-8 text-gray-600">Latest articles, tutorials, and insights from our team.</p>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {
+          posts.map((post) => (
+            <article class="overflow-hidden rounded-lg bg-white shadow-sm transition hover:shadow-md">
+              {post.data.thumbnail && (
+                <a href={`/blog/${post.slug}`} class="block aspect-video overflow-hidden">
+                  <Image
+                    src={post.data.thumbnail}
+                    alt={post.data.title}
+                    class="h-full w-full object-cover transition hover:scale-105"
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 640px) 400px, (max-width: 1024px) 600px, 800px"
+                  />
                 </a>
-              </h2>
-              <p class="text-gray-600 line-clamp-3 mb-4">
-                {post.data.description}
-              </p>
-              <a 
-                href={`/blog/${post.slug}`} 
-                class="text-primary font-medium hover:underline inline-flex items-center"
-              >
-                Read More 
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
-          </article>
-        ))}
+              )}
+              <div class="p-6">
+                <div class="mb-2 flex items-center text-sm text-gray-500">
+                  <time datetime={post.data.date.toISOString()}>
+                    {new Date(post.data.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                </div>
+                <h2 class="mb-2 line-clamp-2 font-heading text-xl font-bold">
+                  <a href={`/blog/${post.slug}`} class="hover:text-primary">
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="mb-4 line-clamp-3 text-gray-600">{post.data.description}</p>
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="inline-flex items-center font-medium text-primary hover:underline"
+                >
+                  Read More
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="ml-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </article>
+          ))
+        }
       </div>
-      
+
       <!-- Pagination -->
-      <div class="flex justify-center mt-12 space-x-2">
-        {prevUrl && (
-          <a 
-            href={prevUrl} 
-            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded transition"
-            aria-label="Previous page"
-          >
-            &larr;
-          </a>
-        )}
-        
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-          <a
-            href={pageNum === 1 ? `/blog` : `/blog/${pageNum}`}
-            class={`px-4 py-2 rounded transition ${
-              pageNum === currentPage
-                ? 'bg-primary text-white'
-                : 'bg-gray-100 hover:bg-gray-200'
-            }`}
-            aria-label={`Page ${pageNum}`}
-            aria-current={pageNum === currentPage ? 'page' : undefined}
-          >
-            {pageNum}
-          </a>
-        ))}
-        
-        {nextUrl && (
-          <a 
-            href={nextUrl}
-            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded transition"
-            aria-label="Next page"
-          >
-            &rarr;
-          </a>
-        )}
+      <div class="mt-12 flex justify-center space-x-2">
+        {
+          prevUrl && (
+            <a
+              href={prevUrl}
+              class="rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200"
+              aria-label="Previous page"
+            >
+              &larr;
+            </a>
+          )
+        }
+
+        {
+          Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <a
+              href={pageNum === 1 ? `/blog` : `/blog/${pageNum}`}
+              class={`rounded px-4 py-2 transition ${
+                pageNum === currentPage ? "bg-primary text-white" : "bg-gray-100 hover:bg-gray-200"
+              }`}
+              aria-label={`Page ${pageNum}`}
+              aria-current={pageNum === currentPage ? "page" : undefined}
+            >
+              {pageNum}
+            </a>
+          ))
+        }
+
+        {
+          nextUrl && (
+            <a
+              href={nextUrl}
+              class="rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200"
+              aria-label="Next page"
+            >
+              &rarr;
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

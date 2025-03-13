@@ -1,67 +1,67 @@
 {
-    "main": [
-      {
-        "href": "/",
-        "text": "Home"
-      },
-      {
-        "href": "/about",
-        "text": "About"
-      },
-      {
-        "href": "/contact",
-        "text": "Contact"
-      },
-      {
-        "href": "/blog",
-        "text": "Blog"
-      },
-      {
-        "href": "/changelog",
-        "text": "Changelog"
-      },
-      {
-        "href": "/docs",
-        "text": "Docs"
-      },
-      {
-        "href": "/guides",
-        "text": "Guides"
-      },
-      {
-        "href": "/store",
-        "text": "Store"
-      }
-    ],
-    "footer": [
-      {
-        "href": "/privacy",
-        "text": "Privacy Policy"
-      },
-      {
-        "href": "/terms",
-        "text": "Terms of Service"
-      },
-      {
-        "href": "/sitemap",
-        "text": "Sitemap"
-      }
-    ],
-    "social": [
-      {
-        "href": "https://twitter.com/datumcloud",
-        "text": "Twitter",
-        "icon": "twitter"
-      },
-      {
-        "href": "https://github.com/datum-cloud",
-        "text": "GitHub",
-        "icon": "github"
-      },
-      {
-        "href": "https://www.linkedin.com/company/datum-cloud/",
-        "text": "LinkedIn",
-        "icon": "linkedin"
-      }
-    ]
-  }
+  "main": [
+    {
+      "href": "/",
+      "text": "Home"
+    },
+    {
+      "href": "/about",
+      "text": "About"
+    },
+    {
+      "href": "/contact",
+      "text": "Contact"
+    },
+    {
+      "href": "/blog",
+      "text": "Blog"
+    },
+    {
+      "href": "/changelog",
+      "text": "Changelog"
+    },
+    {
+      "href": "/docs",
+      "text": "Docs"
+    },
+    {
+      "href": "/guides",
+      "text": "Guides"
+    },
+    {
+      "href": "/store",
+      "text": "Store"
+    }
+  ],
+  "footer": [
+    {
+      "href": "/privacy",
+      "text": "Privacy Policy"
+    },
+    {
+      "href": "/terms",
+      "text": "Terms of Service"
+    },
+    {
+      "href": "/sitemap",
+      "text": "Sitemap"
+    }
+  ],
+  "social": [
+    {
+      "href": "https://twitter.com/datumcloud",
+      "text": "Twitter",
+      "icon": "twitter"
+    },
+    {
+      "href": "https://github.com/datum-cloud",
+      "text": "GitHub",
+      "icon": "github"
+    },
+    {
+      "href": "https://www.linkedin.com/company/datum-cloud/",
+      "text": "LinkedIn",
+      "icon": "linkedin"
+    }
+  ]
+}

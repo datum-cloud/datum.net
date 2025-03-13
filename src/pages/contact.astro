@@ -1,27 +1,28 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import { getCollection, getEntry } from 'astro:content'
+import Layout from "../layouts/Layout.astro";
+import { getEntry } from "astro:content";
 
-const page = await getEntry('pages', 'contact')
-const Content = page ? (await page.render()).Content : null
+const page = await getEntry("pages", "contact");
+const Content = page ? (await page.render()).Content : null;
 ---
 
 <Layout title=`${page.data.title}` description={page.data.description}>
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-      <h1 class="text-4xl font-bold mb-6 font-heading">Contact Us</h1>
-      
-      {Content ? (
-        <div class="prose lg:prose-xl max-w-none mb-8">
-          <Content />
-        </div>
-      ) : (
-        <p class="text-lg text-gray-600 mb-8">
-          Have a question or want to work with us? Fill out the form below and we'll get back to you as soon as possible.
-        </p>
-      )}
-      
+  <div class="mx-auto max-w-4xl">
+    <div class="mb-8 rounded-lg bg-white p-8 shadow-sm">
+      <h1 class="mb-6 font-heading text-4xl font-bold">Contact Us</h1>
+
+      {
+        Content ? (
+          <div class="prose mb-8 max-w-none lg:prose-xl">
+            <Content />
+          </div>
+        ) : (
+          <p class="mb-8 text-lg text-gray-600">
+            Have a question or want to work with us? Fill out the form below and
+            we'll get back to you as soon as possible.
+          </p>
+        )
+      }
     </div>
-    
   </div>
 </Layout>

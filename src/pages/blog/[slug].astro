@@ -1,13 +1,13 @@
 ---
 // src/pages/blog/[slug].astro
-import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
-  
-  return blogEntries.map(entry => ({
+  const blogEntries = await getCollection("blog");
+
+  return blogEntries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
@@ -17,13 +17,13 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 
 // Format the date
-const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
+const formattedDate = new Date(entry.data.date).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 });
 
-// For SEO, you need the image URL. When using the image helper, 
+// For SEO, you need the image URL. When using the image helper,
 // we need to convert the image path to a URL
 const getImageUrl = (img) => {
   if (!img) return undefined;
@@ -32,14 +32,14 @@ const getImageUrl = (img) => {
   return new URL(img.src, Astro.url).href;
 };
 
-const metaImage = entry.data.featuredImage 
-  ? getImageUrl(entry.data.featuredImage) 
-  : entry.data.thumbnail 
-    ? getImageUrl(entry.data.thumbnail) 
+const metaImage = entry.data.featuredImage
+  ? getImageUrl(entry.data.featuredImage)
+  : entry.data.thumbnail
+    ? getImageUrl(entry.data.thumbnail)
     : undefined;
 ---
 
-<Layout 
+<Layout
   title={entry.data.title + " | Datum Inc. Blog"}
   description={entry.data.description}
   image={metaImage}
@@ -47,54 +47,58 @@ const metaImage = entry.data.featuredImage
   publishDate={entry.data.date}
   author={entry.data.author}
 >
-  <article class="max-w-4xl mx-auto">
+  <article class="mx-auto max-w-4xl">
     <!-- Hero section -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
-      {entry.data.featuredImage && (
-        <div class="w-full aspect-video relative">
-          <Image 
-            src={entry.data.featuredImage} 
-            alt={entry.data.title} 
-            class="w-full h-full object-cover"
-            widths={[800, 1200, 1600]}
-            sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
-          />
-        </div>
-      )}
-      
+    <div class="mb-8 overflow-hidden rounded-lg bg-white shadow-sm">
+      {
+        entry.data.featuredImage && (
+          <div class="relative aspect-video w-full">
+            <Image
+              src={entry.data.featuredImage}
+              alt={entry.data.title}
+              class="h-full w-full object-cover"
+              widths={[800, 1200, 1600]}
+              sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
+            />
+          </div>
+        )
+      }
+
       <div class="p-8">
         <!-- Post metadata -->
-        <div class="flex flex-wrap items-center text-sm text-gray-500 mb-4">
+        <div class="mb-4 flex flex-wrap items-center text-sm text-gray-500">
           <time datetime={entry.data.date.toISOString()}>
             {formattedDate}
           </time>
         </div>
-        
-        <h1 class="text-4xl font-bold font-heading mb-6">
+
+        <h1 class="mb-6 font-heading text-4xl font-bold">
           {entry.data.title}
         </h1>
-        
-        {entry.data.description && (
-          <p class="text-xl text-gray-600 mb-6 font-light leading-relaxed">
-            {entry.data.description}
-          </p>
-        )}
-        
-        {entry.data.author && (
-          <div class="flex items-center mb-8">
-            <div class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center mr-3">
-              <span class="text-lg font-bold text-gray-600">
-                {entry.data.author.charAt(0)}
-              </span>
+
+        {
+          entry.data.description && (
+            <p class="mb-6 text-xl font-light leading-relaxed text-gray-600">
+              {entry.data.description}
+            </p>
+          )
+        }
+
+        {
+          entry.data.author && (
+            <div class="mb-8 flex items-center">
+              <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
+                <span class="text-lg font-bold text-gray-600">{entry.data.author.charAt(0)}</span>
+              </div>
+              <div>
+                <p class="font-medium">{entry.data.author}</p>
+              </div>
             </div>
-            <div>
-              <p class="font-medium">{entry.data.author}</p>
-            </div>
-          </div>
-        )}
-        
+          )
+        }
+
         <!-- Post content -->
-        <div class="prose lg:prose-xl max-w-none">
+        <div class="prose max-w-none lg:prose-xl">
           <Content />
         </div>
       </div>

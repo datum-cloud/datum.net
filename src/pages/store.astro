@@ -1,7 +1,7 @@
 ---
-export const prerender = false
+export const prerender = false;
 
-import Layout from '@layouts/Layout.astro';
+import Layout from "@layouts/Layout.astro";
 import { getProducts } from "@utils/shopify";
 import Shop from "@components/store/Store.astro";
 import { setCache } from "@utils/cache";
@@ -15,6 +15,5 @@ setCache.short(Astro);
 ---
 
 <Layout title={title}>
-    <Shop products={products} />
+  <Shop products={products} />
 </Layout>
-  

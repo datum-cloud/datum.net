@@ -1,4 +1,3 @@
-
 const CART_FRAGMENT = `#graphql
 fragment cartFragment on Cart {
   id

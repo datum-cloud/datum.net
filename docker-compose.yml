@@ -1,0 +1,47 @@
+services:
+  dev:
+    build:
+      context: .
+      target: development
+    ports:
+      - '4321:4321'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SITE_URL=${SITE_URL}
+      - SHOPIFY_STORE_DOMAIN=${SHOPIFY_STORE_DOMAIN}
+      - SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN=${SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN}
+      - SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN=${SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN}
+      - SHOPIFY_API_VERSION=${SHOPIFY_API_VERSION}
+      - TINA_CLIENT_ID=${TINA_CLIENT_ID}
+      - TINA_TOKEN=${TINA_TOKEN}
+      - TINA_USERNAME=${TINA_USERNAME}
+      - TINA_PASSWORD=${TINA_PASSWORD}
+    networks:
+      - datum-network
+    command: npm run dev -- --host 0.0.0.0 --port 4321
+
+  prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - '4321:4321'
+    environment:
+      - NODE_ENV=production
+      - SITE_URL=${SITE_URL}
+      - SHOPIFY_STORE_DOMAIN=${SHOPIFY_STORE_DOMAIN}
+      - SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN=${SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN}
+      - SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN=${SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN}
+      - SHOPIFY_API_VERSION=${SHOPIFY_API_VERSION}
+      - TINA_CLIENT_ID=${TINA_CLIENT_ID}
+      - TINA_TOKEN=${TINA_TOKEN}
+      - TINA_USERNAME=${TINA_USERNAME}
+      - TINA_PASSWORD=${TINA_PASSWORD}
+    restart: unless-stopped
+
+networks:
+  datum-network:
+    driver: bridge

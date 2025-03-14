@@ -1,0 +1,53 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build output
+dist
+.astro
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing
+coverage
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Tina CMS generated files
+.tina/__generated__/
+admin/
+tina/__generated__/
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Vercel
+.vercel 

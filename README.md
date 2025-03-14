@@ -37,6 +37,149 @@ This is the official website for Datum Inc., built with Astro.
    npm run dev
    ```
 
+## Docker Setup
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Development with Docker
+
+1. Set up environment variables:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` with your configuration. Required variables:
+
+   - `SITE_URL`
+   - `SHOPIFY_STORE_DOMAIN`
+   - `SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN`
+   - `SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN`
+   - `SHOPIFY_API_VERSION`
+   - `TINA_CLIENT_ID`
+   - `TINA_TOKEN`
+   - `TINA_USERNAME`
+   - `TINA_PASSWORD`
+
+2. Start the development environment:
+
+   ```bash
+   docker compose up dev
+   ```
+
+   This will:
+
+   - Build the development image using Node.js 22 Alpine
+   - Mount your local codebase for hot-reloading
+   - Start the development server with Tina CMS
+   - Make the app available at http://localhost:4321
+
+3. Development Features:
+   - Hot-reloading enabled
+   - Source code mounted from host
+   - Node modules cached in Docker volume
+   - Full access to development tools
+   - Network access from other devices via host IP
+
+### Production with Docker
+
+1. Build and run the production environment:
+
+   ```bash
+   docker compose up prod
+   ```
+
+   This will:
+
+   - Build an optimized production image
+   - Run the application in production mode
+   - Enable automatic restarts unless stopped
+   - Make the app available at http://localhost:4321
+
+2. Manual production deployment:
+
+   ```bash
+   # Build the production image
+   docker build -t datum-website --target production .
+
+   # Run the production container
+   docker run -p 4321:4321 \
+     -e NODE_ENV=production \
+     -e SITE_URL=your-site-url \
+     -e SHOPIFY_STORE_DOMAIN=your-store \
+     -e SHOPIFY_PUBLIC_STOREFRONT_ACCESS_TOKEN=your-token \
+     -e SHOPIFY_PRIVATE_STOREFRONT_ACCESS_TOKEN=your-token \
+     -e SHOPIFY_API_VERSION=your-version \
+     -e TINA_CLIENT_ID=your-tina-id \
+     -e TINA_TOKEN=your-tina-token \
+     -e TINA_USERNAME=your-tina-username \
+     -e TINA_PASSWORD=your-tina-password \
+     datum-website
+   ```
+
+### Docker Configuration Details
+
+The setup uses a multi-stage Dockerfile:
+
+1. Base stage (`node:22-alpine`)
+
+   - Minimal Alpine Linux with Node.js 22
+   - Common workspace setup
+
+2. Development stage
+
+   - Full development dependencies
+   - Source code mounting
+   - Hot-reload enabled
+   - Development-specific configurations
+
+3. Production stage
+   - Multi-stage build for optimization
+   - Only production dependencies
+   - Pre-built assets
+   - Minimal final image size
+
+### Network Configuration
+
+- Host: `0.0.0.0` (allows external access)
+- Port: 4321 (configurable via environment)
+- Docker network: `datum-network` (bridge mode)
+- Volume mounts (development):
+  - `.:/app`: Source code
+  - `/app/node_modules`: Dependencies
+
+### Troubleshooting
+
+1. If the development server isn't accessible:
+
+   ```bash
+   # Rebuild the development image
+   docker compose up dev --build
+   ```
+
+2. To view logs:
+
+   ```bash
+   # Development logs
+   docker compose logs dev
+
+   # Production logs
+   docker compose logs prod
+   ```
+
+3. To clean up:
+
+   ```bash
+   # Stop and remove containers
+   docker compose down
+
+   # Remove volumes too
+   docker compose down -v
+   ```
+
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.

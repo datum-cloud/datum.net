@@ -1,0 +1,66 @@
+{
+  "main": [
+    {
+      "text": "Product",
+      "href": "/#",
+      "isExternal": false
+    },
+    {
+      "text": "Team",
+      "href": "/#",
+      "isExternal": false
+    },
+    {
+      "text": "Blog",
+      "href": "/#",
+      "isExternal": false
+    },
+    {
+      "text": "Swag",
+      "href": "/#",
+      "isExternal": false
+    },
+    {
+      "text": "Get Involved",
+      "href": "/#",
+      "isExternal": false
+    }
+  ],
+  "footer": [
+    {
+      "href": "/privacy",
+      "text": "Privacy Policy",
+      "isExternal": false
+    },
+    {
+      "href": "/terms",
+      "text": "Terms of Service",
+      "isExternal": false
+    },
+    {
+      "href": "/sitemap",
+      "text": "Sitemap",
+      "isExternal": false
+    }
+  ],
+  "social": [
+    {
+      "href": "https://twitter.com/datumcloud",
+      "text": "Twitter",
+      "icon": "twitter",
+      "isExternal": true
+    },
+    {
+      "href": "https://github.com/datum-cloud",
+      "text": "GitHub",
+      "icon": "github",
+      "isExternal": true
+    },
+    {
+      "href": "https://www.linkedin.com/company/datum-cloud/",
+      "text": "LinkedIn",
+      "icon": "linkedin",
+      "isExternal": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply antialiased;
+  }
+}
+
+@theme {
+  --color-blackberry: oklch(0.302 0.0557 296.27);
+  --color-orange: oklch(0.713 0.1513 30.51);
+  --color-navy: oklch(0.335 0.0331 260.91);
+}

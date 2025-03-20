@@ -1,0 +1,31 @@
+services:
+  dev:
+    build:
+      context: .
+      target: development
+    ports:
+      - '4321:4321'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SITE_URL=${SITE_URL}
+    networks:
+      - datum-network
+    command: npm run dev -- --host 0.0.0.0 --port 4321
+
+  prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - '4321:4321'
+    environment:
+      - NODE_ENV=production
+      - SITE_URL=${SITE_URL}
+    restart: unless-stopped
+
+networks:
+  datum-network:
+    driver: bridge

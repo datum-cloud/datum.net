@@ -1,0 +1,17 @@
+---
+import Nav from './Nav.astro';
+import { Image } from 'astro:assets';
+
+import logo from '@assets/images/logo.svg';
+---
+
+<header class="bg-blackberry shadow-sm">
+  <div class="container mx-auto px-4 py-5">
+    <div class="flex items-center justify-between">
+      <Image src={logo} alt="Datum Inc. Site" class="h-auto w-auto" />
+      <div class="hidden md:block">
+        <Nav location="header" />
+      </div>
+    </div>
+  </div>
+</header>

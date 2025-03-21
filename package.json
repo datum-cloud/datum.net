@@ -21,7 +21,6 @@
     "@astrojs/mdx": "^4.2.1",
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/ts-plugin": "^1.10.4",
-    "@astrojs/vercel": "^8.1.2",
     "@nanostores/persistent": "^0.10.2",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.14",

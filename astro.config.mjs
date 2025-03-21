@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
-import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 import { loadEnv } from 'vite';
@@ -31,5 +30,4 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  adapter: vercel(),
 });

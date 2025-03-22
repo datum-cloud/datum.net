@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const page = await getEntry('pages', '/');
+const Content = page ? (await page.render()).Content : null;
+---
+
+<Layout title=`${page?.data.title}` description={page?.data.description}>
+  <section id="content" class="rounded-lg bg-white py-12 shadow-sm">
+    <div class="prose lg:prose-xl mx-auto max-w-3xl">
+      <Content />
+    </div>
+  </section>
+</Layout>

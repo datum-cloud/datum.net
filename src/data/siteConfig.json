@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "Datum Inc. Site",
+    "description": "A modern website built with Astro, MDX, and TailwindCSS",
+    "url": "https://www.datum.net",
+    "logo": "/images/logo.svg",
+    "favicon": "/favicon.png"
+  },
+  "socials": {
+    "twitter": {
+      "handle": "@datumcloud",
+      "url": "https://twitter.com/datumcloud"
+    },
+    "github": {
+      "url": "https://github.com/datum-cloud",
+      "icon": "github"
+    },
+    "linkedin": {
+      "url": "https://www.linkedin.com/company/datum-cloud/",
+      "icon": "linkedin"
+    }
+  },
+  "pageSize": 3
+}

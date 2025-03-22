@@ -1,0 +1,49 @@
+Header Navigation
+
+- Why Datum?
+	- Our Vision 
+		- About (/about)
+		- Team (/about/team)
+	- Our Thoughts
+		- Blog (example) (/blog)
+		- Newsletter (/newsletter)
+	- Our Community
+		- Events (/connect/events)
+		- Swag (/connect/swag)
+
+- Features
+	- Our Platform (/features)
+	- Big Ass Proxy (/features/proxy)
+	- Galactic VPC (/product/vpc)
+	- Backbone as Code (/features/backbone)
+	- Snoozy Workloads (/features/workloads)
+	- It’s Always F***ING DNS (/features/dns)
+
+- Open Source
+	- Overview (/open-source)
+		- Internetworker (/open-source/internetworker)
+		- Patch (/open-source/patch)
+		- Jarvis (/open-source/jarvis)
+	- Maintainer Program (/open-source/maintainers)
+
+- Developers
+	- Docs (/docs)
+		- Getting Started (/docs/docs)
+		- Guides (/docs/guides)
+		- FAQ (/docs/faq)
+	- API Reference (/docs/api)
+	- Changelog (/docs/changelog)
+	- Public Slack (/docs/slack)
+
+- Handbook (/handbook)
+
+- Get Started (cloud.datum.net)
+
+
+Footer Navigation
+
+- Styleguide  (/style-guide)
+- Glossary (/glossary)
+- Brand (/brand)
+- AI Manifest (/ai-manifest)
+- Legal (/legal)

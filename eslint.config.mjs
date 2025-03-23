@@ -125,6 +125,25 @@ export default defineConfig([
     },
   },
   {
+    files: ['**/*.mdx', '**/*.md'],
+
+    extends: compat.extends('plugin:mdx/recommended'),
+
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    },
+
+    settings: {
+      'mdx/code-blocks': true,
+      'mdx/language-mapper': {},
+    },
+
+    rules: {
+      'mdx/remark': 'off',
+    },
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
 
     extends: compat.extends(

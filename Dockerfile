@@ -20,20 +20,24 @@ FROM base AS build
 ENV NODE_ENV=production
 # Install dependencies
 COPY package*.json ./
-RUN npm ci
+# Skip all lifecycle scripts including husky
+RUN npm install --ignore-scripts
 # Copy source code
 COPY . .
+# Build the application
+RUN npm run build
 
 # Production stage
 FROM node:22-alpine AS production
 ENV NODE_ENV=production
 WORKDIR /app
-# Copy built assets from build stage
+# Copy built assets and package files from build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/package-lock.json ./package-lock.json
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN npm install --omit=dev --ignore-scripts
 # Expose production port
 EXPOSE 4321
-# Start production server
-CMD ["node", "./dist/server/entry.mjs"]
+# Start production server using Astro preview
+CMD ["npm", "run", "preview", "--", "--host"]

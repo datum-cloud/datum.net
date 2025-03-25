@@ -54,6 +54,9 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.8.2"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-arm64-gnu": "4.36.0"
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
       "npm run typecheck",

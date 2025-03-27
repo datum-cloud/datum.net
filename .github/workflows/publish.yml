@@ -39,7 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/datum-cloud/datum.net
+          images: ghcr.io/datum-cloud/public-website
           tags: |
             type=ref,event=pr
             type=ref,event=branch

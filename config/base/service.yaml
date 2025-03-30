@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: public-website
+    app.kubernetes.io/name: public-website
+    app.kubernetes.io/version: 1.0.0
+  name: public-website
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 4321
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/instance: public-website
+    app.kubernetes.io/name: public-website
+  sessionAffinity: None
+  type: ClusterIP

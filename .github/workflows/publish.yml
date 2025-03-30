@@ -58,3 +58,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: production
+
+  publish-kustomize-bundles:
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.1.0
+    with:
+      bundle-name: ghcr.io/datum-cloud/public-website-kustomize
+      bundle-path: config/base
+    secrets: inherit

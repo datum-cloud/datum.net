@@ -174,6 +174,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run lint:md:fix`     | Automatically fix markdown linting issues        |
 | `npm run format`          | Format all files using Prettier                  |
 | `npm run format:check`    | Check if files are formatted correctly           |
+| `npm run typecheck`       | Astro typescript check                           |
 
 ## Code Quality
 

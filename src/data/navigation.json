@@ -1,47 +1,108 @@
 {
   "main": [
     {
-      "text": "Product",
-      "href": "/#",
-      "isExternal": false
+      "text": "Why Datum?",
+      "href": "#",
+      "isMegaDropdown": true,
+      "children": [
+        {
+          "title": "Our Vision",
+          "items": [
+            { "text": "About", "href": "/about" },
+            { "text": "Team", "href": "/about/team" }
+          ]
+        },
+        {
+          "title": "Our Thoughts",
+          "items": [
+            { "text": "Blog", "href": "/blog" },
+            { "text": "Newsletter", "href": "/newsletter" }
+          ]
+        },
+        {
+          "title": "Our Community",
+          "items": [
+            { "text": "Events", "href": "/connect/events" },
+            { "text": "Swag", "href": "/connect/swag" }
+          ]
+        }
+      ]
     },
     {
-      "text": "Team",
-      "href": "/#",
-      "isExternal": false
+      "text": "Features",
+      "href": "#",
+      "children": [
+        {
+          "items": [
+            { "text": "Our Platform", "href": "/features" },
+            { "text": "Big Ass Proxy", "href": "/features/proxy" },
+            { "text": "Galactic VPC", "href": "/product/vpc" },
+            { "text": "Backbone as Code", "href": "/features/backbone" },
+            { "text": "Snoozy Workloads", "href": "/features/workloads" },
+            { "text": "It's Always F***ING DNS", "href": "/features/dns" }
+          ]
+        }
+      ]
     },
     {
-      "text": "Blog",
-      "href": "/#",
-      "isExternal": false
+      "text": "Open Source",
+      "href": "#",
+      "isMegaDropdown": true,
+      "children": [
+        {
+          "title": "Projects",
+          "items": [
+            { "text": "Overview", "href": "/open-source" },
+            { "text": "Internetworker", "href": "/open-source/internetworker" },
+            { "text": "Patch", "href": "/open-source/patch" },
+            { "text": "Jarvis", "href": "/open-source/jarvis" }
+          ]
+        },
+        {
+          "title": "Community",
+          "items": [{ "text": "Maintainer Program", "href": "/open-source/maintainers" }]
+        }
+      ]
     },
     {
-      "text": "Swag",
-      "href": "/#",
-      "isExternal": false
+      "text": "Developers",
+      "href": "#",
+      "isMegaDropdown": true,
+      "children": [
+        {
+          "title": "Documentation",
+          "items": [
+            { "text": "Getting Started", "href": "/docs/docs" },
+            { "text": "Guides", "href": "/docs/guides" },
+            { "text": "FAQ", "href": "/docs/faq" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "items": [
+            { "text": "API Reference", "href": "/docs/api" },
+            { "text": "Changelog", "href": "/docs/changelog" },
+            { "text": "Public Slack", "href": "/docs/slack" }
+          ]
+        }
+      ]
     },
     {
-      "text": "Get Involved",
-      "href": "/#",
-      "isExternal": false
+      "text": "Handbook",
+      "href": "/handbook"
+    },
+    {
+      "text": "Get Started",
+      "href": "https://cloud.datum.net",
+      "isExternal": true
     }
   ],
   "footer": [
-    {
-      "href": "/privacy",
-      "text": "Privacy Policy",
-      "isExternal": false
-    },
-    {
-      "href": "/terms",
-      "text": "Terms of Service",
-      "isExternal": false
-    },
-    {
-      "href": "/sitemap",
-      "text": "Sitemap",
-      "isExternal": false
-    }
+    { "text": "Styleguide", "href": "/style-guide" },
+    { "text": "Glossary", "href": "/glossary" },
+    { "text": "Brand", "href": "/brand" },
+    { "text": "AI Manifest", "href": "/ai-manifest" },
+    { "text": "Legal", "href": "/legal" }
   ],
   "social": [
     {

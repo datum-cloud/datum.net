@@ -1,0 +1,53 @@
+---
+// src/pages/blog/index.astro
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import config from '@data/siteConfig.json';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import Pagination from '@components/Pagination.astro';
+import BlogCard from '@components/BlogCard.astro';
+
+// Get blog landing page from blog/index.mdx
+const page = await getCollectionEntry('pages', '/blog');
+
+// Get all published blog posts and sort them by date (newest first)
+const allPosts = await getCollection('blog', ({ data }) => {
+  return !data.draft && new Date(data.date) <= new Date();
+});
+
+const sortedPosts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+// Set up pagination variables for the first page
+const pageSize = config.pageSize;
+const currentPage = 1;
+const totalItems = sortedPosts.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+const currentPageData = sortedPosts.slice(0, pageSize);
+// console.log(currentPageData);
+---
+
+<Layout title={page.data.title || 'Datum'} description={page.data.description}>
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-8">
+      <h1 class="font-heading mb-6 text-4xl font-bold">Blog</h1>
+      <p class="mb-8 text-gray-600">Latest articles, tutorials, and insights from our team.</p>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {currentPageData.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      {
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl="/blog"
+            nextUrl={totalPages > 1 ? '/blog/2' : undefined}
+          />
+        )
+      }
+    </div>
+  </div>
+</Layout>

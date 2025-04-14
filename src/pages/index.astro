@@ -1,8 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getPageEntry } from '@utils/pages';
+import { getCollectionEntry } from '@utils/collectionUtils';
 
-const page = await getPageEntry('/');
+const page = await getCollectionEntry('pages', '/');
 const { Content } = await page.render();
 ---
 

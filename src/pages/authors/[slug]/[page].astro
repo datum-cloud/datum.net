@@ -1,0 +1,127 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import config from '@data/siteConfig.json';
+import Pagination from '@components/Pagination.astro';
+import BlogCard from '@components/BlogCard.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return !data.draft && new Date(data.date) <= new Date();
+  });
+
+  const paths = [];
+  for (const author of authors) {
+    const authorPosts = allPosts.filter((post) => post.data.author === author.slug);
+    const totalPages = Math.ceil(authorPosts.length / config.pageSize);
+
+    for (let page = 1; page <= totalPages; page++) {
+      paths.push({
+        params: { slug: author.slug, page: page.toString() },
+        props: { author, currentPage: page },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { author, currentPage } = Astro.props;
+const { slug } = Astro.params;
+
+// Get all blog posts by this author
+const allPosts = await getCollection('blog', ({ data }) => {
+  return !data.draft && data.author === slug && new Date(data.date) <= new Date();
+});
+
+const sortedPosts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+// Set up pagination
+const pageSize = config.pageSize;
+const totalItems = sortedPosts.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+const start = (currentPage - 1) * pageSize;
+const end = start + pageSize;
+const currentPageData = sortedPosts.slice(start, end);
+---
+
+<Layout title={`${author.data.name} - Author - Page ${currentPage}`} description={author.data.bio}>
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-8">
+      <div class="mb-8 flex items-center gap-4">
+        {
+          author.data.avatar && (
+            <Image
+              src={author.data.avatar}
+              alt={author.data.name}
+              class="h-24 w-24 rounded-full object-cover"
+              width={96}
+              height={96}
+            />
+          )
+        }
+        <div>
+          <h1 class="font-heading text-4xl font-bold">{author.data.name}</h1>
+          <p class="text-gray-600">{author.data.bio}</p>
+          {
+            author.data.social && (
+              <div class="mt-4 flex gap-4">
+                {author.data.social.twitter && (
+                  <a
+                    href={author.data.social.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-blue-500 hover:text-blue-600"
+                  >
+                    Twitter
+                  </a>
+                )}
+                {author.data.social.github && (
+                  <a
+                    href={author.data.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-gray-700 hover:text-gray-800"
+                  >
+                    GitHub
+                  </a>
+                )}
+                {author.data.social.linkedin && (
+                  <a
+                    href={author.data.social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-blue-700 hover:text-blue-800"
+                  >
+                    LinkedIn
+                  </a>
+                )}
+              </div>
+            )
+          }
+        </div>
+      </div>
+
+      <h2 class="font-heading mb-6 text-2xl font-bold">Latest Articles</h2>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {currentPageData.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      {
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl={`/authors/${slug}`}
+            nextUrl={currentPage < totalPages ? `/authors/${slug}/${currentPage + 1}` : undefined}
+            prevUrl={currentPage > 1 ? `/authors/${slug}/${currentPage - 1}` : undefined}
+          />
+        )
+      }
+    </div>
+  </div>
+</Layout>

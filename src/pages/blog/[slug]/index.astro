@@ -1,0 +1,60 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import config from '@data/siteConfig.json';
+import Pagination from '@components/Pagination.astro';
+import BlogCard from '@components/BlogCard.astro';
+
+export async function getStaticPaths() {
+  const categories = await getCollection('categories');
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const { slug } = Astro.params;
+
+// Get all blog posts in this category
+const allPosts = await getCollection('blog', ({ data }) => {
+  return !data.draft && data.categories?.includes(slug) && new Date(data.date) <= new Date();
+});
+
+const sortedPosts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+// Set up pagination
+const pageSize = config.pageSize;
+const currentPage = 1;
+const totalItems = sortedPosts.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+const currentPageData = sortedPosts.slice(0, pageSize);
+---
+
+<Layout title={`${category.data.name} - Category`} description={category.data.description}>
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-8">
+      <div class="mb-8">
+        <h1 class="font-heading text-4xl font-bold">{category.data.name}</h1>
+        {category.data.description && <p class="mt-2 text-gray-600">{category.data.description}</p>}
+      </div>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {currentPageData.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      {
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl={`/blog/${slug}`}
+            nextUrl={totalPages > 1 ? `/blog/${slug}/${currentPage + 1}` : undefined}
+          />
+        )
+      }
+    </div>
+  </div>
+</Layout>

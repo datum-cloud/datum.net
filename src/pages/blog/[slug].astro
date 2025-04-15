@@ -1,0 +1,141 @@
+---
+// src/pages/blog/[slug].astro
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getMetaImageUrl } from '@utils/imageUtils';
+import { formatLongDate, formatISODate } from '@utils/dateUtils';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  const authors = await getCollection('authors');
+
+  return blogEntries.map((entry) => {
+    // Find the author data if it exists
+    const authorData = authors.find((author) => author.slug === entry.data.author);
+
+    return {
+      params: { slug: entry.slug },
+      props: { entry, authorData },
+    };
+  });
+}
+
+const { entry, authorData } = Astro.props;
+const { Content } = await entry.render();
+const formattedDate = formatLongDate(entry.data.date);
+const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
+
+// Get category data for each category
+const categoryData = await Promise.all(
+  (entry.data.categories || []).map(async (categorySlug) => {
+    return await getCollectionEntry('categories', categorySlug);
+  })
+);
+---
+
+<Layout
+  title={entry.data.title + ' | Datum Inc. Blog'}
+  description={entry.data.description}
+  image={metaImage}
+  article={true}
+  publishDate={entry.data.date}
+  author={entry.data.author}
+>
+  <article class="mx-auto max-w-4xl">
+    <!-- Hero section -->
+    <div class="mb-8 overflow-hidden">
+      {
+        entry.data.featuredImage && (
+          <div class="relative aspect-video w-full">
+            <Image
+              src={entry.data.featuredImage}
+              alt={entry.data.title}
+              class="h-full w-full object-cover"
+              widths={[800, 1200, 1600]}
+              sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
+            />
+          </div>
+        )
+      }
+
+      <div class="py-8">
+        <!-- Post metadata -->
+        <div class="mb-4 flex flex-wrap items-center text-sm text-gray-500">
+          <time datetime={formatISODate(entry.data.date)}>
+            {formattedDate}
+          </time>
+        </div>
+
+        <h1 class="font-heading mb-6 text-4xl font-bold">
+          {entry.data.title}
+        </h1>
+
+        {
+          entry.data.description && (
+            <p class="mb-6 text-xl leading-relaxed font-light text-gray-600">
+              {entry.data.description}
+            </p>
+          )
+        }
+
+        {
+          entry.data.author && (
+            <div class="mb-8 flex items-center">
+              <a
+                href={`/authors/${entry.data.author}`}
+                class="flex items-center transition-opacity hover:opacity-80"
+              >
+                {authorData?.data.avatar ? (
+                  <Image
+                    src={authorData.data.avatar}
+                    alt={authorData.data.name || entry.data.author}
+                    class="mr-3 h-10 w-10 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                  />
+                ) : (
+                  <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
+                    <span class="text-lg font-bold text-gray-600">
+                      {(authorData?.data.name || entry.data.author).charAt(0)}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <p class="font-medium">{authorData?.data.name || entry.data.author}</p>
+                  {authorData?.data.bio && (
+                    <p class="line-clamp-1 text-sm text-gray-500">{authorData.data.title}</p>
+                  )}
+                </div>
+              </a>
+            </div>
+          )
+        }
+
+        <!-- Categories -->
+        {
+          categoryData.length > 0 && (
+            <div class="mb-8">
+              <div class="flex flex-wrap gap-2">
+                {categoryData.map((category) => (
+                  <a
+                    href={`/blog/${category.slug}`}
+                    class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                  >
+                    {category.data.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+
+        <!-- Post content -->
+        <div class="prose lg:prose-xl max-w-none">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>

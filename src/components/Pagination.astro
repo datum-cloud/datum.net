@@ -1,0 +1,52 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as Props;
+---
+
+<div class="mt-12 flex justify-center space-x-2">
+  {
+    prevUrl && (
+      <a
+        href={prevUrl}
+        class="rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200"
+        aria-label="Previous page"
+      >
+        &larr;
+      </a>
+    )
+  }
+
+  {
+    Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+      <a
+        href={pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`}
+        class={`rounded px-4 py-2 transition ${
+          pageNum === currentPage ? 'bg-primary' : 'bg-gray-100 hover:bg-gray-200'
+        }`}
+        aria-label={`Page ${pageNum}`}
+        aria-current={pageNum === currentPage ? 'page' : undefined}
+      >
+        {pageNum}
+      </a>
+    ))
+  }
+
+  {
+    nextUrl && (
+      <a
+        href={nextUrl}
+        class="rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200"
+        aria-label="Next page"
+      >
+        &rarr;
+      </a>
+    )
+  }
+</div>

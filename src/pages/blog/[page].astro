@@ -1,0 +1,66 @@
+---
+// src/pages/blog/[page].astro
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import config from '@data/siteConfig.json';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import Pagination from '@components/Pagination.astro';
+import BlogCard from '@components/BlogCard.astro';
+
+// Get blog landing page from blog/index.mdx
+const page = await getCollectionEntry('pages', '/blog');
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return !data.draft && new Date(data.date) <= new Date();
+  });
+
+  const sortedPosts = allPosts.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+
+  const pageSize = config.pageSize;
+  const totalPages = Math.ceil(sortedPosts.length / pageSize);
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const pageNum = i + 2; // Start from page 2
+    const start = (pageNum - 1) * pageSize;
+    const end = start + pageSize;
+
+    return {
+      params: { page: pageNum.toString() },
+      props: {
+        posts: sortedPosts.slice(start, end),
+        currentPage: pageNum,
+        totalPages: totalPages,
+        prevUrl: pageNum > 2 ? `/blog/${pageNum - 1}` : '/blog',
+        nextUrl: pageNum < totalPages ? `/blog/${pageNum + 1}` : undefined,
+      },
+    };
+  });
+}
+
+const { posts, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
+---
+
+<Layout title={page.data.title || 'Datum'} description={page.data.description}>
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-8">
+      <h1 class="font-heading mb-6 text-4xl font-bold">Blog</h1>
+      <p class="mb-8 text-gray-600">Latest articles, tutorials, and insights from our team.</p>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      <!-- Pagination -->
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        baseUrl="/blog"
+        prevUrl={prevUrl}
+        nextUrl={nextUrl}
+      />
+    </div>
+  </div>
+</Layout>

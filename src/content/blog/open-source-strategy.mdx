@@ -1,0 +1,93 @@
+---
+title: "Our OSS strategy, explained"
+date: 2025-02-19
+slug: "open-source-strategy"
+description: "This is a draft blog post that shouldn't be publicly visible yet."
+thumbnail: ../../assets/images/blog/post-1-thumb.png
+featuredImage: ../../assets/images/blog/post-1.png
+author: zac
+categories: ["open-source", "business-strategy"]
+---
+
+When starting Datum, I knew the business should be as open as possible. 
+
+To a large degree that was driven by instinct, plus a strong affinity for the open source ethos that transformed the internet and defined my career over the last two decades. 
+
+Even more important is the idea of trust — how to gain it and how to keep it efficiently. Here's how that led us to adopt an AGPL-3.0 license for our core technology. 
+
+## Always start with the "why"
+
+Some people love noodling on technical problems or organizing product roadmaps and customer features. Me? I love thinking about big, ten-year cycles at the intersection of business, society, and technology. That's my jam!
+
+On any given day I meet with 5-10 people, seeking to expand and calibrate my worldview and sense of the market. Over time — usually with the assistance of very long walks around Lower Manhattan and some killer playlists — I try to synthesize what I've learned and formulate an answer to an ever present set of related questions: 
+
+*   What in our world needs to exist or work differently? 
+*   What are the ingredients to make it possible?  
+*   How could we get there?
+*   Can I help?
+
+I've been chewing on the same general problem set for a while now, which is how to help ambitious companies "play to win" in a technology-led world. This is predicated on a belief that technology innovation is a critical ingredient in solving the world's pressing problems, and that more opinions at the table is better. It's what led me to start Packet, and why I'm back in the game today.
+
+Over the last year I've determined that the top tech-led companies need a neutral operating partner to help connect them with their unique ecosystem (customers, partners, providers). This platform needs to be software led and provide value that can be used anywhere. 
+
+Finally, it needs to enable a wide array of incumbent and new specialty providers, from network and security vendors to the emerging crop of AI startups, verticalized SaaS solutions and new consumer experiences. 
+
+Ends up, that's a lot of surface area to support. Which makes gaining and keeping trust with extremely demanding customers a critical priority. Cue our open source strategy.  🙂
+
+## Lowering the Cost of Trust
+
+So how do you gain trust with enterprise customers, fast-scaling startups, and incumbent providers all at once while remaining lean and nimble? This is a particularly thorny question when providing fundamental infrastructure that simply _has_ to work – entire businesses depend on it!  
+
+While it's a tricky needle to thread, it is way more possible when the underlying technology is built in the open and available under a clear, permissive license. In its best implementations, the commercial open source (COSS) approach allows customers to poke and prod at the tech, contribute features, influence roadmap, run it where they need to, and fork it if needs diverge!  
+
+As an early partner to Joseph Jacks at [OSS Capital](https://oss.capital/) and many other open source startups, I've seen how much of a "nitro" effect this can be for small teams gaining trust with big ideas. 
+
+## Value creation over value capture
+
+Another thing I love about COSS business models is that it allows teams to spend more resources investing in value creation (product/service) and less on GTM (value capture), especially during the early stages. 
+
+The idea is simple: spend your time shipping features, getting engagement, and encouraging adoption instead of selling folks on subscriptions, services or contracts. Granted, commercial friction can be reduced in other ways — such as generous free tiers in the SaaS world — but can also be quite expensive for infrastructure focused businesses. Plus, we recognize that there is no way for Datum to be "everywhere" our customers might need our value.
+
+For clarity, I'm a huge believer in sales, which is the hardest job at any company. Open source doesn't relieve a company of building a world-class go-to-market capability, but I do believe it opens up a lot of fertile ground at a low cost.
+
+## No really, use it anywhere
+
+In the first era of the Internet and then Cloud, most innovation happened in a few centralized locations. Think US-EAST (Ashburn, VA), Silicon Valley, Amsterdam, Singapore, etc.  
+
+These hubs grew as the result of a network effect (literally cables and wires!) that allowed companies to access the vast majority of the internet by showing up in a few of the right datacenters. 
+
+This has changed dramatically over the past decade. 
+
+First off, the Internet and Cloud ecosystem has grown, with AWS alone boasting over 100 Availability Zones in 30+ countries. Formerly far-flung "tier 3" cities are now robust hubs of connectivity, including streaming, application hosting, security and traffic analysis. Retail outlets have their own mini "datacenters" with even worn-torn Ukraine featuring a chain of convenience stores that runs thousands of independent Kubernetes clusters to power their point of sale, security and front office systems.  Being able to offer the same experience to federated, private or 3rd party clouds and datacenters as one would in a central managed cloud experience is just as critical to the economics of the Datum business as it is to the use cases and technical requirements of today's distributed applications.
+
+And then there is the developer workflow – builds, dev environments and more happen on MacBooks everywhere. But those pesky VPC's, network ecosystems, global WAFs, load balancers and other required components that connect each and every application to other services and networks are somehow not normally part of that software stack workflow.
+
+As we considered these changes and how to deliver on our promise of "connectivity infrastructure to power your unique advantage", I knew we had to ship a lot of our value literally everywhere. While this could be done via closed source binaries, I think it makes the most sense to enable our users and future customers, partners and contributors to do su under a permissive open source license. 
+
+It's how I would want it, and I think it's how most software builders — who are looking to build repeatable, scalable products and experience — would feel empowered to jump in with both feet.
+
+## So, about the money!
+
+If "open" is a good way to earn trust, find product fit, and get traction with users then how and when do we make money?
+
+I've watched many of my friends, former colleagues, and mentors grow businesses over the last few years: Alexis at Datadog, Spencer at CockroachDB, Kris at NS1 and now NetBox Labs, Avi at Kentik, and so many others. 
+
+However, the one I'm most intimate with is Grafana Labs. Raj and much of the founding team at Grafana were partners at Voxel (the first startup I helped build back in the early 2000's), and I think their early focus and clarity on how they planned to make money has been key to their success. While Grafana is open source and zillions of people download and use it without ever paying a dime, Grafana Labs has a thriving revenue engine built squarely around Grafana Cloud (metrics and logs storage) and enterprise licensing, including on the major public clouds, in private datacenters and even more far flungs places. 
+
+I think this clarity and consistency has made all the difference. We've all seen examples where thriving open source projects evolved to embrace a business reality, which can be disruptive and hard to swallow. I believe that Datum can start with those lessons in mind. 
+
+While we don't have all the answers yet, we expect to make money in three ways:
+
+1.  Running a cloud control plane, operational tools and other integrated software for customers
+2.  Renting customers network, compute, and storage capacity (infrastructure) 
+3.  Making and maintaining private connections
+
+## Choosing the AGPLv3 path
+
+With all of this in mind, the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) (AGPLv3) was an obvious choice for Datum. Unlike other licenses, AGPLv3 ensures that even if our software is accessed over a network (e.g. cloud services), any modifications made must also be shared with the community.
+
+This "network copyleft" provision ensures that work remains open and that direct competitors to the Datum business model can't use our software as the basis for proprietary solutions without contributing back. Companies like [Grafana Labs have adopted AGPLv3](https://grafana.com/licensing/) successfully, striking a balance between openness and developing a sustainable revenue engine. 
+
+One of things I love about adopting AGPLv3 from the beginning is that it draws a line in the sand that encourages the right conversations, and helps folks calibrate their investment with our business model in mind. We want lots of companies to run Datum's technology anywhere they need to, and expect to be very flexible with our software to ensure that happens. But if you want to develop a direct competitor to our core service, we'll prefer you develop your own technology or community (or work with us to figure out the right contract!) instead of building on ours. 
+
+Make sense? I hope so, but feedback is certainly welcome.

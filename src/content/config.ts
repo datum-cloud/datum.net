@@ -61,5 +61,5 @@ export const collections = {
   'blog': blogCollection,
   'authors': authorsCollection,
   'categories': categoriesCollection,
-  'handbook': defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+  'docs': defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

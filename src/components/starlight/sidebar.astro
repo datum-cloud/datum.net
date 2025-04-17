@@ -1,6 +1,6 @@
 ---
 import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
-import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+// import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
 
 const { sidebar } = Astro.locals.starlightRoute;
 const { slug } = Astro.params;
@@ -16,5 +16,5 @@ sidebar.forEach((menu: { label: string }) => {
 ---
 
 <SidebarPersister>
-  <SidebarSublist sublist={filteredSideBar} />
+  <!-- <SidebarSublist sublist={filteredSideBar} /> -->
 </SidebarPersister>

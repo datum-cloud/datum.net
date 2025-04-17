@@ -2,7 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const handbooks = await getCollection('handbook');
+const handbooks = await getCollection('docs');
 var handbookCollection: {
   [key: string]: { id: string; title: string; category: string; url: string; order: number }[];
 } = {};

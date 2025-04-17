@@ -231,6 +231,36 @@ The linter will only check files in the `/src/content/` directory, including:
 - Changelog entries
 - Static pages
 
+### Git Hooks with Husky
+
+This project uses Husky to manage Git hooks, ensuring code quality checks are run before commits and pushes.
+
+#### Pre-commit Hook
+
+The pre-commit hook runs automatically before each commit and performs the following checks:
+
+1. Linting check (`npm run lint`)
+2. Type checking (`npm run typecheck`)
+
+If any of these checks fail, your commit will be blocked. To fix:
+
+1. Review the error messages in your terminal
+2. Fix the reported issues
+3. Stage your changes (`git add .`)
+4. Try committing again
+
+If the pre-commit hook isn't running, ensure it's executable:
+
+```bash
+chmod +x .husky/pre-commit
+```
+
+To temporarily bypass the pre-commit hook (not recommended):
+
+```bash
+git commit -m "your message" --no-verify
+```
+
 ### VS Code Setup
 
 For the best development experience, install the following VS Code extensions:

@@ -1,0 +1,71 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const handbooks = await getCollection('handbook');
+var handbookCollection: {
+  [key: string]: { id: string; title: string; category: string; url: string; order: number }[];
+} = {};
+
+handbooks.forEach((handbook) => {
+  if (!handbook.data.draft) {
+    let urlSplit = handbook.id.split('/');
+    let order = handbook.data.sidebar.order || 0;
+    let category = String(urlSplit[1]).charAt(0).toUpperCase() + String(urlSplit[1]).slice(1);
+    let collection = {
+      id: handbook.id,
+      title: handbook.data.title,
+      category,
+      url: '/' + handbook.id,
+      order,
+    };
+
+    if (!handbookCollection[category]) {
+      handbookCollection[category] = [];
+    }
+
+    handbookCollection[category].push(collection);
+  }
+});
+---
+
+<Layout title="Datum" description="Datum Handbook">
+  <section id="content" class="rounded-lg bg-white py-12 shadow-sm">
+    <div class="prose lg:prose-xl mx-auto max-w-3xl">
+      <h1>Handbook</h1>
+
+      {
+        Object.keys(handbookCollection).map((category) => {
+          // except for index
+          if (category.toLowerCase() !== 'undefined') {
+            return (
+              <div class="mb-4 block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {category}
+                </div>
+                <ul>
+                  {handbookCollection[category]
+                    .sort(function (a, b) {
+                      return a.order - b.order;
+                    })
+                    .map((handbook) => {
+                      return (
+                        <li>
+                          <a
+                            href={handbook.url}
+                            class="font-normal text-gray-700 hover:underline dark:text-gray-400"
+                          >
+                            {handbook.title}
+                          </a>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
+            );
+          }
+        })
+      }
+    </div>
+  </section>
+</Layout>

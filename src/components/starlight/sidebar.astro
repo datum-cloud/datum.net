@@ -1,0 +1,20 @@
+---
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+
+const { sidebar } = Astro.locals.starlightRoute;
+const { slug } = Astro.params;
+
+var explSlug = slug?.split('/') ?? '';
+var filteredSideBar: { label: string }[] = [];
+
+sidebar.forEach((menu: { label: string }) => {
+  if (menu.label.toLowerCase() == explSlug[0].toLowerCase()) {
+    filteredSideBar.push(menu);
+  }
+});
+---
+
+<SidebarPersister>
+  <SidebarSublist sublist={filteredSideBar} />
+</SidebarPersister>

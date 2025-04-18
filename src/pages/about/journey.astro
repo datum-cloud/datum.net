@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get the journey page
+const pages = await getCollection('pages', ({ data }) => {
+  return data.slug === 'about/journey';
+});
+
+const page = pages[0];
+
+// If no page was found, redirect to 404
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+// Render the page content
+const { Content } = await page.render();
+---
+
+<Layout title={page.data.title}>
+  <main class="container mx-auto px-4 py-8">
+    <article class="prose max-w-none">
+      <Content />
+    </article>
+  </main>
+</Layout>

@@ -5,33 +5,14 @@ import Footer from '@components/Footer.astro';
 import '@styles/global.css';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
+import type { LayoutProps } from '../types/common';
 
-const siteMeta = config.meta;
-
-export interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  article?: boolean;
-  publishDate?: Date;
-  author?: string;
-  noindex?: boolean;
-  canonical?: string;
-}
-
-const {
-  title = siteMeta.title || 'Datum Inc. Site',
-  description = siteMeta.description || 'A modern website built with Astro, MDX, and TailwindCSS',
-  image = '/images/og-default.jpg', // Ensure this exists in your public folder
-  article = false,
-  publishDate,
-  author,
-  noindex = false,
-  canonical,
-} = Astro.props;
+const { title, description, image, article, publishDate, author, noindex, canonical } =
+  Astro.props as LayoutProps;
 
 const pageUrl = Astro.url.href;
-const imageUrl = new URL(image, Astro.site).href;
+const defaultImage = new URL('/images/default-og.jpg', Astro.site).href;
+const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
 ---
 
 <!doctype html>

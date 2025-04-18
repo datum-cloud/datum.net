@@ -1,13 +1,7 @@
 ---
-interface Props {
-  currentPage: number;
-  totalPages: number;
-  baseUrl: string;
-  prevUrl?: string;
-  nextUrl?: string;
-}
+import type { PaginationProps } from '../types/common';
 
-const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as Props;
+const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as PaginationProps;
 ---
 
 <div class="mt-12 flex justify-center space-x-2">

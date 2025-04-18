@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const aboutContent = await getEntry('pages', 'about');
+if (!aboutContent) {
+  return Astro.redirect('/404');
+}
+const { Content } = await aboutContent.render();
+---
+
+<Layout title={aboutContent.data.title}>
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="mb-6 text-4xl font-bold">About Us</h1>
+    <div class="prose max-w-none">
+      <p>Welcome to our about page. Here you can learn more about our company and mission.</p>
+
+      <nav class="mt-8">
+        <h2 class="mb-4 text-2xl font-semibold">Explore More</h2>
+        <ul class="space-y-2">
+          <li>
+            <a href="/about/team" class="text-blue-600 hover:text-blue-800"> Meet Our Team </a>
+          </li>
+          <!-- Add more links as you create new about pages -->
+        </ul>
+      </nav>
+    </div>
+    <article class="prose max-w-none">
+      <Content />
+    </article>
+  </main>
+</Layout>

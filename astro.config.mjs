@@ -29,6 +29,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    preview: {
+      allowedHosts: true
+    },
     server: {
       allowedHosts: true
     },

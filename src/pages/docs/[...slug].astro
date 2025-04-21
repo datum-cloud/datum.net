@@ -1,0 +1,80 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import { formatDate } from '@utils/dateUtils';
+
+// Define getStaticPaths to generate all possible paths at build time
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc },
+  }));
+}
+
+// Get the doc from props
+const { doc: currentDoc } = Astro.props;
+
+// Render the content to get headings
+const { Content, headings } = await render(currentDoc);
+
+// Create table of contents from headings
+const toc = headings.map((heading) => ({
+  title: heading.text,
+  id: heading.slug,
+  level: heading.depth,
+}));
+---
+
+<Layout
+  title={`${currentDoc.data.title} | Datum Documentation`}
+  description={currentDoc.data.description || `Documentation for ${currentDoc.data.title}`}
+>
+  <div class="mx-auto max-w-6xl">
+    <div class="flex flex-col gap-8 lg:flex-row">
+      <!-- Sidebar with TOC -->
+      <div class="w-full lg:w-1/4">
+        <div class="sticky top-8 rounded-lg border border-gray-200 bg-white p-6">
+          <h2 class="mb-4 text-xl font-bold">On this page</h2>
+          <nav>
+            <ul class="space-y-2">
+              {
+                toc.map((item) => (
+                  <li class={item.level === 3 ? 'ml-4' : ''}>
+                    <a href={`#${item.id}`} class="text-blue-600 hover:underline">
+                      {item.title}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="w-full lg:w-3/4">
+        <article class="prose prose-blue max-w-none rounded-lg border border-gray-200 bg-white p-8">
+          <header class="mb-8 border-b border-gray-200 pb-6">
+            <h1 class="mb-2 text-3xl font-bold">{currentDoc.data.title}</h1>
+            {
+              currentDoc.data.description && (
+                <p class="text-xl text-gray-700">{currentDoc.data.description}</p>
+              )
+            }
+            {
+              currentDoc.data.date && (
+                <p class="mt-2 text-sm text-gray-500">
+                  Last updated: {formatDate(currentDoc.data.date)}
+                </p>
+              )
+            }
+          </header>
+
+          <Content />
+        </article>
+      </div>
+    </div>
+  </div>
+</Layout>

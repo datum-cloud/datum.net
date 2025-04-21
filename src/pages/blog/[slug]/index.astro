@@ -8,7 +8,7 @@ import BlogCard from '@components/BlogCard.astro';
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
   return categories.map((category) => ({
-    params: { slug: category.slug },
+    params: { slug: category.id },
     props: { category },
   }));
 }

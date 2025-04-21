@@ -1,7 +1,7 @@
 ---
 // src/pages/blog/[slug].astro
 import Layout from '@layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
 import { formatLongDate, formatISODate } from '@utils/dateUtils';
@@ -13,17 +13,17 @@ export async function getStaticPaths() {
 
   return blogEntries.map((entry) => {
     // Find the author data if it exists
-    const authorData = authors.find((author) => author.slug === entry.data.author);
+    const authorData = authors.find((author) => author.id === entry.data.author);
 
     return {
-      params: { slug: entry.slug },
+      params: { slug: entry.id },
       props: { entry, authorData },
     };
   });
 }
 
 const { entry, authorData } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const formattedDate = formatLongDate(entry.data.date);
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
 

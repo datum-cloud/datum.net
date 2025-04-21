@@ -1,12 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 
 const aboutContent = await getEntry('pages', 'about');
 if (!aboutContent) {
   return Astro.redirect('/404');
 }
-const { Content } = await aboutContent.render();
+const { Content } = await render(aboutContent);
 ---
 
 <Layout title={aboutContent.data.title}>

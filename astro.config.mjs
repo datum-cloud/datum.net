@@ -30,10 +30,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     preview: {
-      allowedHosts: true
+      allowedHosts: ['website.staging.env.datum.net'],
     },
     server: {
-      allowedHosts: true
+      allowedHosts: true,
     },
   },
   experimental: {},

@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   // Get all pages in the pages collection
@@ -9,13 +9,13 @@ export async function getStaticPaths() {
   // Filter for about pages
   const aboutPages = pages.filter((entry) => {
     // Get the slug from the entry, not from data
-    const slug = entry.slug;
+    const slug = entry.id;
     return slug.startsWith('about') && slug !== 'about/index';
   });
 
   return aboutPages.map((page) => {
     // Get the last part of the slug after 'about/'
-    const slugPart = page.slug.replace('about/', '');
+    const slugPart = page.id.replace('about/', '');
 
     return {
       params: { slug: slugPart },
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 
 // Render the content
-const { Content } = await page.render();
+const { Content } = await render(page);
 const title = page.data.title;
 ---
 

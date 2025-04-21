@@ -1,9 +1,10 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
+import { render } from 'astro:content';
 
 const page = await getCollectionEntry('pages', '/');
-const { Content } = await page.render();
+const { Content } = await render(page);
 ---
 
 <Layout title={page.data.title || 'Datum'} description={page.data.description}>

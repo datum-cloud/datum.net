@@ -14,12 +14,12 @@ export async function getStaticPaths() {
 
   const paths = [];
   for (const author of authors) {
-    const authorPosts = allPosts.filter((post) => post.data.author === author.slug);
+    const authorPosts = allPosts.filter((post) => post.data.author === author.id);
     const totalPages = Math.ceil(authorPosts.length / config.pageSize);
 
     for (let page = 1; page <= totalPages; page++) {
       paths.push({
-        params: { slug: author.slug, page: page.toString() },
+        params: { slug: author.id, page: page.toString() },
         props: { author, currentPage: page },
       });
     }

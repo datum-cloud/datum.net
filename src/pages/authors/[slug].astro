@@ -9,7 +9,7 @@ import { Image } from 'astro:assets';
 export async function getStaticPaths() {
   const authors = await getCollection('authors');
   return authors.map((author) => ({
-    params: { slug: author.slug },
+    params: { slug: author.id },
     props: { author },
   }));
 }

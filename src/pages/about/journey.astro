@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 // Get the journey page
 const pages = await getCollection('pages', ({ data }) => {
@@ -15,7 +15,7 @@ if (!page) {
 }
 
 // Render the page content
-const { Content } = await page.render();
+const { Content } = await render(page);
 ---
 
 <Layout title={page.data.title}>

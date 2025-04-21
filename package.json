@@ -15,7 +15,8 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "prepare": "husky",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "precommit": "npm run typecheck && npm run lint && npm run lint:md && npm run lint:md:fix && npm run format && npm run format:check"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.4",

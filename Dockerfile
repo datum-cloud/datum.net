@@ -5,8 +5,6 @@ WORKDIR /app
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
-# Vite allowed host
-ENV __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=website.staging.env.datum.net
 # Install dependencies
 COPY package*.json ./
 RUN npm install
@@ -15,7 +13,7 @@ COPY . .
 # Expose development port
 EXPOSE 4321
 # Start development server
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]
 
 # Production build stage
 FROM base AS build
@@ -43,4 +41,4 @@ RUN npm install --omit=dev --ignore-scripts
 EXPOSE 4321
 
 # Start production server using Astro preview
-CMD ["npm", "run", "preview", "--", "--host"]
+CMD ["npm", "run", "preview", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]

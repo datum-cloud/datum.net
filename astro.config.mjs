@@ -33,7 +33,7 @@ export default defineConfig({
       allowedHosts: ['website.staging.env.datum.net'],
     },
     server: {
-      allowedHosts: true,
+      allowedHosts: ['website.staging.env.datum.net'],
     },
   },
   experimental: {},

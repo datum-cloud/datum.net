@@ -39,5 +39,9 @@ COPY --from=build /app/package-lock.json ./package-lock.json
 RUN npm install --omit=dev --ignore-scripts
 # Expose production port
 EXPOSE 4321
+
+# Vite allowed host
+ENV __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=website.staging.env.datum.net npm astro preview
+
 # Start production server using Astro preview
 CMD ["npm", "run", "preview", "--", "--host"]

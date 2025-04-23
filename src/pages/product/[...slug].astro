@@ -7,15 +7,15 @@ export async function getStaticPaths() {
   const pages = await getCollection('pages');
 
   // Filter for feature pages
-  const featurePages = pages.filter((entry) => {
+  const productPages = pages.filter((entry) => {
     // Get the slug from the entry, not from data
     const slug = entry.id;
-    return slug.startsWith('features') && slug !== 'features/index';
+    return slug.startsWith('product') && slug !== 'product/index';
   });
 
-  return featurePages.map((page) => {
+  return productPages.map((page) => {
     // Get the last part of the slug after 'fea/'
-    const slugPart = page.id.replace('features/', '');
+    const slugPart = page.id.replace('product/', '');
 
     return {
       params: { slug: slugPart },

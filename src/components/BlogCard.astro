@@ -23,7 +23,7 @@ const categoryData = await Promise.all(
 <article class="overflow-hidden transition">
   {
     post.data.thumbnail && (
-      <a href={`/blog/${post.slug}`} class="block aspect-video overflow-hidden">
+      <a href={`/blog/${post.id}`} class="block aspect-video overflow-hidden">
         <Image
           src={post.data.thumbnail}
           alt={post.data.title}
@@ -48,7 +48,7 @@ const categoryData = await Promise.all(
       }
     </div>
     <h2 class="font-heading mb-2 line-clamp-2 text-xl font-bold">
-      <a href={`/blog/${post.slug}`} class="hover:text-primary">
+      <a href={`/blog/${post.id}`} class="hover:text-primary">
         {post.data.title}
       </a>
     </h2>
@@ -61,7 +61,7 @@ const categoryData = await Promise.all(
           <div class="flex flex-wrap gap-2">
             {categoryData.map((category) => (
               <a
-                href={`/blog/${category.slug}`}
+                href={`/blog/${category.id}`}
                 class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200"
               >
                 {category.data.name}
@@ -73,7 +73,7 @@ const categoryData = await Promise.all(
     }
 
     <a
-      href={`/blog/${post.slug}`}
+      href={`/blog/${post.id}`}
       class="text-primary inline-flex items-center font-medium hover:underline"
     >
       Read More

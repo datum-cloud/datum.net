@@ -54,8 +54,7 @@
           "items": [
             { "text": "Overview", "href": "/open-source" },
             { "text": "Internetworker", "href": "/open-source/internetworker" },
-            { "text": "Patch", "href": "/open-source/patch" },
-            { "text": "Jarvis", "href": "/open-source/jarvis" }
+            { "text": "Patch", "href": "/open-source/patch" }
           ]
         },
         {

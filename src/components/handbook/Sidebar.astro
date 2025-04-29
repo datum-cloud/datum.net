@@ -1,0 +1,183 @@
+---
+import { getCollection } from 'astro:content';
+
+const collections = await getCollection('handbooks');
+
+var badgeColor = {
+  info: 'border-green-400 bg-green-100',
+  caution: 'border-yellow-400 bg-yellow-100',
+  danger: 'border-red-400 bg-red-100',
+};
+var menuCollection: {
+  [key: string]: {
+    id: string;
+    index: number;
+    order: number;
+    label: string;
+    category: string;
+    url: string;
+    badge?: { text: string; variant?: 'info' | 'caution' | 'danger' };
+  }[];
+} = {};
+
+collections.forEach((collection) => {
+  if (!collection.data.draft) {
+    // let urlSplit = collection.id.split('/');
+    let label = collection.data.sidebar.label || collection.data.title;
+    let order = collection.data.sidebar.order || 0;
+    let category = getCategory(collection.id);
+
+    let temp = {
+      id: collection.id,
+      index: 0,
+      order,
+      label,
+      category,
+      url: '/handbook/' + collection.id,
+      badge: collection.data.sidebar.badge,
+    };
+
+    if (!menuCollection[category]) {
+      menuCollection[category] = [];
+    }
+
+    menuCollection[category].push(temp);
+    menuCollection[category].sort(function (a, b) {
+      return a.order - b.order;
+    });
+  }
+});
+
+const { current } = Astro.props;
+
+export const getCategory = (url: string) => {
+  let urlSplit = url.split('/');
+  return String(urlSplit[0]).charAt(0).toUpperCase() + String(urlSplit[0]).slice(1);
+};
+
+let selectedCategory = getCategory(current);
+---
+
+{
+  collections ? (
+    <aside class="text-blackberry-600 relative flex h-full min-h-[3.75rem] w-full flex-col gap-y-4 overflow-y-auto pt-6 text-sm md:sticky md:top-16 md:w-56 md:pt-2">
+      <div class="text-blackberry-900 border-blackberry-200 focus-within:border-blackberry-900 focus-within:text-blackberry-900 relative hidden w-full overflow-hidden rounded border border-solid md:block">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 15 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          class="absolute top-[calc(50%+.0625rem)] left-[.625rem] -translate-y-1/2 transform"
+        >
+          <path
+            d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464C13.0488 12.3417 13.0488 12.6583 12.8536 12.8536C12.6583 13.0488 12.3417 13.0488 12.1464 12.8536L9.30884 10.0159Z"
+            fill="currentColor"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <input
+          placeholder="Search"
+          class="placeholder:text-blackberry-900 w-full bg-transparent px-3 py-2 pl-8 focus:ring-transparent focus:outline-none focus-visible:ring-transparent"
+          type="text"
+          value=""
+        />
+      </div>
+
+      <nav class="flex items-start justify-start gap-3">
+        <ul class="flex shrink grow basis-0 flex-col gap-y-4">
+          <li class="py-2 md:block md:px-2">
+            <div data-orientation="vertical">
+              <div
+                data-state="open"
+                data-orientation="vertical"
+                class="rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)]"
+              >
+                {Object.keys(menuCollection).map((category) => {
+                  if (category.toLowerCase() !== 'undefined') {
+                    return (
+                      <div class="mb-4 max-w-sm">
+                        <h3 data-orientation="vertical" data-state="open" class="flex flex-row">
+                          <button
+                            type="button"
+                            aria-controls="radix-«r3q»"
+                            aria-expanded="true"
+                            data-state="open"
+                            data-orientation="vertical"
+                            id="radix-«r3p»"
+                            class="group text-blackberry-600 hover:text-blackberry-900 flex w-full cursor-pointer items-center text-left hover:font-extrabold"
+                            data-radix-collection-item=""
+                          >
+                            <svg
+                              width="15"
+                              height="15"
+                              viewBox="0 0 15 15"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true"
+                              class="mt-[-.0625rem] mr-2 inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)] md:group-data-[state=open]:rotate-90"
+                            >
+                              <path
+                                d="M6.1584 3.13508C6.35985 2.94621 6.67627 2.95642 6.86514 3.15788L10.6151 7.15788C10.7954 7.3502 10.7954 7.64949 10.6151 7.84182L6.86514 11.8418C6.67627 12.0433 6.35985 12.0535 6.1584 11.8646C5.95694 11.6757 5.94673 11.3593 6.1356 11.1579L9.565 7.49985L6.1356 3.84182C5.94673 3.64036 5.95694 3.32394 6.1584 3.13508Z"
+                                fill="currentColor"
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+
+                            <div class="flex shrink grow basis-0 items-center justify-start gap-1">
+                              <span
+                                class={
+                                  category == selectedCategory
+                                    ? 'text-blackberry-900 font-extrabold capitalize'
+                                    : 'capitalize'
+                                }
+                              >
+                                {category}
+                              </span>
+                            </div>
+                          </button>
+                        </h3>
+
+                        <ul class="before:bg-blackberry-200 relative mt-5 hidden flex-col gap-4 pl-7 leading-loose before:absolute before:top-1/2 before:left-[.4375rem] before:h-full before:w-px before:-translate-y-1/2 md:flex">
+                          {menuCollection[category].map((menu) => {
+                            return (
+                              <li>
+                                <a
+                                  href={menu.url}
+                                  class={
+                                    menu.id == current
+                                      ? 'text-blackberry-900 hover:text-blackberry-800 font-extrabold'
+                                      : 'hover:text-blackberry-900 hover:font-extrabold'
+                                  }
+                                >
+                                  {menu.label}{' '}
+                                </a>
+                                {menu.badge ? (
+                                  <span
+                                    class={`${badgeColor[menu.badge.variant || 'info']} ml-2 rounded-md border p-1 text-[9px]`}
+                                  >
+                                    {menu.badge.text}
+                                  </span>
+                                ) : null}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+  ) : (
+    ''
+  )
+}

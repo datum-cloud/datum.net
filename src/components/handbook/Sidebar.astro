@@ -81,7 +81,7 @@ let selectedCategory = getCategory(current);
 
         <input
           placeholder="Search"
-          class="placeholder:text-blackberry-900 w-full bg-transparent px-3 py-2 pl-8 focus:ring-transparent focus:outline-none focus-visible:ring-transparent"
+          class="placeholder:text-blackberry-900 text-md w-full bg-transparent px-3 py-2 pl-8 focus:ring-transparent focus:outline-none focus-visible:ring-transparent"
           type="text"
           value=""
         />
@@ -108,7 +108,7 @@ let selectedCategory = getCategory(current);
                             data-state="open"
                             data-orientation="vertical"
                             id="radix-«r3p»"
-                            class="group text-blackberry-600 hover:text-blackberry-900 flex w-full cursor-pointer items-center text-left hover:font-extrabold"
+                            class="group text-blackberry-600 flex w-full items-center text-left"
                             data-radix-collection-item=""
                           >
                             <svg
@@ -132,8 +132,8 @@ let selectedCategory = getCategory(current);
                               <span
                                 class={
                                   category == selectedCategory
-                                    ? 'text-blackberry-900 font-extrabold capitalize'
-                                    : 'capitalize'
+                                    ? 'text-blackberry-900 text-md font-extrabold capitalize'
+                                    : 'text-md capitalize'
                                 }
                               >
                                 {category}
@@ -142,7 +142,7 @@ let selectedCategory = getCategory(current);
                           </button>
                         </h3>
 
-                        <ul class="before:bg-blackberry-200 relative mt-5 hidden flex-col gap-4 pl-7 leading-loose before:absolute before:top-1/2 before:left-[.4375rem] before:h-full before:w-px before:-translate-y-1/2 md:flex">
+                        <ul class="before:bg-blackberry-200 text-md relative mt-5 hidden flex-col gap-4 pl-7 leading-loose before:absolute before:top-1/2 before:left-[.4375rem] before:h-full before:w-px before:-translate-y-1/2 md:flex">
                           {menuCollection[category].map((menu) => {
                             return (
                               <li>

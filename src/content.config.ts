@@ -65,10 +65,45 @@ const categoriesCollection = defineCollection({
     }),
 });
 
+const handbooksCollection = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/handbook' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      slug: z.string().optional(),
+      draft: z.boolean().optional(),
+      readingTime: z.string().optional(),
+      updatedDate: z.string().optional(),
+      authors: z.string().optional(),
+      sidebar: z.object({
+        label: z.string().optional(),
+        order: z.number().optional(),
+        badge: z
+          .object({
+            text: z.string(),
+            variant: z.enum(['info', 'caution', 'danger']).optional(),
+          })
+          .optional(),
+      }),
+      hero: z
+        .object({
+          tagline: z.string(),
+          image: z.object({
+            file: z.string(),
+            alt: z.string().optional(),
+          }),
+        })
+        .optional(),
+      featuredImage: image().optional(),
+    }),
+});
+
 // Export all collections
 export const collections = {
   pages: pagesCollection,
   blog: blogCollection,
   authors: authorsCollection,
   categories: categoriesCollection,
+  handbooks: handbooksCollection,
 };

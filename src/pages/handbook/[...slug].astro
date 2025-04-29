@@ -9,10 +9,16 @@ import Nav from '@components/handbook/Nav.astro';
 
 export async function getStaticPaths() {
   const handbooks = await getCollection('handbooks');
-  // handbooks.sort((a, b) => (a.data?.sidebar?.order ?? 0) - (b.data?.sidebar?.order ?? 0));
-  // handbooks[category].sort(function (a, b) {
-  //   return a.order - b.order;
-  // });
+
+  handbooks.sort(function (a, b) {
+    let aSlugSplit = a.id.split('/');
+    let bSlugSplit = b.id.split('/');
+
+    // sort by order with category
+    return ('' + aSlugSplit[0] + a.data.sidebar.order).localeCompare(
+      '' + bSlugSplit[0] + b.data.sidebar.order
+    );
+  });
 
   return handbooks.map((entry) => {
     return {
@@ -24,7 +30,6 @@ export async function getStaticPaths() {
 
 const { entry, handbooks } = Astro.props;
 const { Content } = await entry; // { headings } to collect headings
-
 const currentPostIndex = handbooks.findIndex((post) => post.id == Astro.params.slug);
 
 let authors = handbooks[currentPostIndex].data.authors
@@ -37,8 +42,6 @@ for (const author of authors) {
   let data = await getCollectionEntry('authors', author);
   authorData.push(data);
 }
-
-console.log(authorData);
 ---
 
 <Layout title="Datum" description="Datum Handbook">
@@ -105,7 +108,7 @@ console.log(authorData);
           }
 
           <Content />
-          <Nav currentIndex={currentPostIndex} />
+          <Nav currentIndex={currentPostIndex} collection={handbooks} />
         </p>
       </div>
     </div>

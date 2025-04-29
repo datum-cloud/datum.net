@@ -25,7 +25,6 @@ collections.forEach((collection) => {
     // let urlSplit = collection.id.split('/');
     let label = collection.data.sidebar.label || collection.data.title;
     let order = collection.data.sidebar.order || 0;
-    // let category = String(urlSplit[0]).charAt(0).toUpperCase() + String(urlSplit[0]).slice(1);
     let category = getCategory(collection.id);
 
     let temp = {
@@ -48,8 +47,6 @@ collections.forEach((collection) => {
     });
   }
 });
-
-console.log(menuCollection);
 
 const { current } = Astro.props;
 

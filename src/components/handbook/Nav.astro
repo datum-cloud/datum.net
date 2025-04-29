@@ -1,19 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+const { currentIndex, collection } = Astro.props;
 
-const handbooks = await getCollection('handbooks');
-const { currentIndex } = Astro.props;
-
-const previousPost = currentIndex + 1 === 0 ? undefined : handbooks[currentIndex - 1];
-const nextPost = currentIndex === handbooks.length - 1 ? undefined : handbooks[currentIndex + 1];
-
-console.log(
-  '\n===================================================================',
-  '\ncurrentIndex: ' + currentIndex,
-  '\npreviousPost: ' + previousPost?.id,
-  '\nnextPost: ' + nextPost?.id,
-  '\n===================================================================\n\n'
-);
+const previousPost = currentIndex + 1 === 0 ? undefined : collection[currentIndex - 1];
+const nextPost = currentIndex === collection.length - 1 ? undefined : collection[currentIndex + 1];
 ---
 
 {

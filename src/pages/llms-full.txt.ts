@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import config from '@data/siteConfig.json';
+
+const port = parseInt(import.meta.env.PORT || '4321');
 
 // Function to extract the frontmatter as text
 const extractFrontmatter = (content: string | undefined): string => {
@@ -49,7 +50,7 @@ export const GET: APIRoute = async () => {
   try {
     // Get project info
     const projectName = 'Datum Cloud Network Solutions';
-    const siteUrl = config.meta.url || 'https://www.datum.net';
+    const siteUrl = import.meta.env.SITE_URL || `http://localhost:${port}`;
 
     // Base structure for llms.txt
     let llmsContent = `# ${projectName} Documentation\n\n`;

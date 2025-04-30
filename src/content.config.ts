@@ -32,6 +32,7 @@ const blogCollection = defineCollection({
     }),
 });
 
+// Define authos collections
 const authorsCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/authors' }),
   schema: ({ image }) =>
@@ -54,6 +55,7 @@ const authorsCollection = defineCollection({
     }),
 });
 
+// Define categories collections
 const categoriesCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/categories' }),
   schema: ({ image }) =>
@@ -65,6 +67,7 @@ const categoriesCollection = defineCollection({
     }),
 });
 
+// Define handbook collections
 const handbooksCollection = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/handbook' }),
   schema: ({ image }) =>
@@ -99,6 +102,21 @@ const handbooksCollection = defineCollection({
     }),
 });
 
+// Define docs collections
+const docsCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/docs' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      date: z.date().optional(),
+      slug: z.string().optional(),
+      thumbnail: image().optional(),
+      draft: z.boolean().optional().default(false),
+      weight: z.number().optional().default(999),
+    }),
+});
+
 // Export all collections
 export const collections = {
   pages: pagesCollection,
@@ -106,4 +124,5 @@ export const collections = {
   authors: authorsCollection,
   categories: categoriesCollection,
   handbooks: handbooksCollection,
+  docs: docsCollection,
 };

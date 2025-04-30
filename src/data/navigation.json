@@ -71,7 +71,7 @@
         {
           "title": "Documentation",
           "items": [
-            { "text": "Getting Started", "href": "/docs/docs" },
+            { "text": "Getting Started", "href": "/docs" },
             { "text": "Guides", "href": "/docs/guides" },
             { "text": "FAQ", "href": "/docs/faq" }
           ]

@@ -26,3 +26,5 @@ pnpm-debug.log*
 
 # pagefind for search
 public/pagefind/*
+
+error-build.txt

@@ -1,31 +1,28 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 
-export async function getStaticPaths() {
-  // Get all pages in the pages collection
-  const pages = await getCollection('pages');
+export const prerender = false;
 
-  // Filter for feature pages
-  const productPages = pages.filter((entry) => {
-    // Get the slug from the entry, not from data
-    const slug = entry.id;
-    return slug.startsWith('product') && slug !== 'product/index';
-  });
+const { slug } = Astro.params;
+let page;
+let Content;
 
-  return productPages.map((page) => {
-    // Get the last part of the slug after 'fea/'
-    const slugPart = page.id.replace('product/', '');
+try {
+  // Use getEntry to fetch a single entry directly
+  page = await getEntry('pages', `product/${slug}`);
 
-    return {
-      params: { slug: slugPart },
-      props: { page },
-    };
-  });
+  if (page) {
+    const rendered = await render(page);
+    Content = rendered.Content;
+  } else {
+    // Redirect to 404 if page not found
+    return Astro.redirect('/404', 404);
+  }
+} catch (error) {
+  console.error('Error loading product page:', error);
+  return Astro.redirect('/404', 500);
 }
-
-const { page } = Astro.props;
-const { Content } = await render(page);
 ---
 
 <Layout title={page.data.title} description={page.data.description}>

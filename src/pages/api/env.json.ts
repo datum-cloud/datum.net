@@ -3,6 +3,8 @@ import { loadEnv } from 'vite';
 import path from 'path';
 import fs from 'fs';
 
+export const prerender = false;
+
 export const GET: APIRoute = ({ request: _request }) => {
   // Initialize empty objects for all environment types
   let metaEnv: Record<string, any> = {};

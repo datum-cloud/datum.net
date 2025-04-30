@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
@@ -16,6 +17,10 @@ const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
+  output: 'static',
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [
     sitemap(),
     robotsTxt({
@@ -84,10 +89,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     preview: {
-      allowedHosts: ['website.staging.env.datum.net'],
+      allowedHosts: ['website.staging.env.datum.net', 'datum.test'],
     },
     server: {
-      allowedHosts: ['website.staging.env.datum.net'],
+      allowedHosts: ['website.staging.env.datum.net', 'datum.test'],
+      host: true,
     },
   },
   experimental: {},

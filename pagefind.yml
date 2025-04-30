@@ -1,2 +1,2 @@
-site: dist/
+site: dist/client/
 glob: 'handbook/**/*.{html}'

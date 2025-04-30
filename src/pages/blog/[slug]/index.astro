@@ -16,6 +16,11 @@ export async function getStaticPaths() {
 const { category } = Astro.props;
 const { slug } = Astro.params;
 
+// Redirect if category is undefined
+if (!category) {
+  return Astro.redirect('/blog');
+}
+
 // Get all blog posts in this category
 const allPosts = await getCollection('blog', ({ data }) => {
   return !data.draft && data.categories?.includes(slug) && new Date(data.date) <= new Date();

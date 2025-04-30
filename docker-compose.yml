@@ -16,17 +16,36 @@ services:
       - datum-network
     command: npm run dev -- --host 0.0.0.0 --port 4321
 
+  # Preview service for static site
+  preview:
+    build:
+      context: .
+      target: preview
+    ports:
+      - '4321:4321'
+    environment:
+      - NODE_ENV=production
+      - SITE_URL=${SITE_URL}
+    restart: unless-stopped
+    networks:
+      - datum-network
+
+  # Production service using SSR
   prod:
     build:
       context: .
       target: production
     ports:
       - '4321:4321'
-    environment:
-      - NODE_ENV=production
     env_file:
       - .env
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
     restart: unless-stopped
+    networks:
+      - datum-network
 
 networks:
   datum-network:

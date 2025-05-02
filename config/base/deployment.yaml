@@ -37,7 +37,7 @@ spec:
               protocol: TCP
           env:
             - name: SITE_URL
-              value: http://website.staging.env.datum.net/
+              value: https://website.staging.env.datum.net/
             - name: API_URL
               value: https://api.datum.net
             - name: SITE_GITHUB

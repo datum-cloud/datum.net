@@ -35,6 +35,13 @@ spec:
             - containerPort: 4321
               name: http
               protocol: TCP
+          env:
+            - name: SITE_URL
+              value: http://website.staging.env.datum.net/
+            - name: API_URL
+              value: https://api.datum.net
+            - name: SITE_GITHUB
+              value: https://github.com/datum-cloud/public-website
           resources:
             requests:
               cpu: 500m

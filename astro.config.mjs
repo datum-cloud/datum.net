@@ -8,10 +8,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
-const port = parseInt(env.PORT || '4321');
+// Also check process.env for environment variables
+const siteUrl = process.env.SITE_URL || env.SITE_URL;
+const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
-  site: env.SITE_URL || `http://localhost:${port}`,
+  site: siteUrl || `http://localhost:${port}`,
   integrations: [
     mdx(),
     sitemap(),

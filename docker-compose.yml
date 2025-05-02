@@ -10,7 +10,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - SITE_URL=${SITE_URL}
+    env_file:
+      - .env
     networks:
       - datum-network
     command: npm run dev -- --host 0.0.0.0 --port 4321
@@ -23,7 +24,8 @@ services:
       - '4321:4321'
     environment:
       - NODE_ENV=production
-      - SITE_URL=${SITE_URL}
+    env_file:
+      - .env
     restart: unless-stopped
 
 networks:

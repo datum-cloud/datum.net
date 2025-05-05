@@ -18,6 +18,8 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 # Production build stage
 FROM base AS build
 ENV NODE_ENV=production
+# Add empty .env file
+RUN touch .env
 # Install dependencies
 COPY package*.json ./
 # Skip all lifecycle scripts including husky

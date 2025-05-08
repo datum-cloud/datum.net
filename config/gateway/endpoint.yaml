@@ -1,0 +1,15 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: public-website
+addressType: FQDN
+ports:
+  - name: https
+    protocol: TCP
+    appProtocol: https
+    port: 443
+endpoints:
+  - addresses:
+      - "website.staging.env.datum.net"
+    conditions:
+      ready: true

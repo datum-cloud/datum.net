@@ -1,12 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
-      "matchDepTypes": ["dependencies", "devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "rangeStrategy": "bump"
+      "matchManagers": ["npm"],
+      "updateLockFiles": true,
+      "rangeStrategy": "bump",
+      "groupName": "npm dependencies"
     }
   ]
 }

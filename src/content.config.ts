@@ -117,6 +117,18 @@ const docsCollection = defineCollection({
     }),
 });
 
+// Define changelog collections
+const changelogCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/changelog' }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      date: z.date().optional(),
+      description: z.string().optional(),
+      version: z.string(),
+    }),
+});
+
 // Export all collections
 export const collections = {
   pages: pagesCollection,
@@ -125,4 +137,5 @@ export const collections = {
   categories: categoriesCollection,
   handbooks: handbooksCollection,
   docs: docsCollection,
+  changelog: changelogCollection,
 };

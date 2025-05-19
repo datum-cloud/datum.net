@@ -80,7 +80,7 @@
           "title": "Resources",
           "items": [
             { "text": "API Reference", "href": "/docs/api" },
-            { "text": "Changelog", "href": "/docs/changelog" },
+            { "text": "Changelog", "href": "/changelog" },
             { "text": "Public Slack", "href": "/docs/slack" }
           ]
         }

@@ -25,36 +25,130 @@ const toc = headings.map((heading) => ({
   id: heading.slug,
   level: heading.depth,
 }));
+
+// Get all docs and organize by section
+const allDocs = await getCollection('docs');
+
+// Group docs by their first directory level
+const sections = allDocs.reduce(
+  (acc, doc) => {
+    // For root level files, use the filename without extension as the section
+    const parts = doc.id.split('/');
+    const section = parts.length === 1 ? parts[0].replace('.md', '') : parts[0];
+
+    if (!acc[section]) {
+      acc[section] = [];
+    }
+    acc[section].push(doc);
+    return acc;
+  },
+  {} as Record<string, typeof allDocs>
+);
+
+// Sort each section by weight
+const sortByWeight = (a: { data: { weight?: number } }, b: { data: { weight?: number } }) =>
+  (a.data.weight || 999) - (b.data.weight || 999);
+
+// Sort docs within each section
+Object.values(sections).forEach((docs) => docs.sort(sortByWeight));
+
+// Helper function to check if a doc is a root-level file
+const isRootLevelFile = (doc: (typeof allDocs)[0]) => doc.id.split('/').length === 1;
+// Helper function to check if a doc is a directory index.md
+const isDirectoryIndex = (doc: (typeof allDocs)[0]) =>
+  doc.id.split('/').length === 2 && doc.id.endsWith('/index');
+// Helper function to check if a section should render only a link (no heading)
+const shouldRenderOnlyLink = (docs: typeof allDocs) => {
+  if (docs.length !== 1) return false;
+  const doc = docs[0];
+  return isRootLevelFile(doc) || isDirectoryIndex(doc);
+};
 ---
 
 <Layout
   title={`${currentDoc.data.title} | Datum Documentation`}
   description={currentDoc.data.description || `Documentation for ${currentDoc.data.title}`}
+  fluid={true}
 >
-  <div class="mx-auto max-w-6xl">
-    <div class="flex flex-col gap-8 lg:flex-row">
-      <!-- Sidebar with TOC -->
-      <div class="w-full lg:w-1/4">
-        <div class="sticky top-8 rounded-lg border border-gray-200 bg-white p-6">
-          <h2 class="mb-4 text-xl font-bold">On this page</h2>
-          <nav>
-            <ul class="space-y-2">
+  <div class="mx-auto max-w-[2000px]">
+    <div class="flex gap-8">
+      <!-- Left Sidebar - Navigation -->
+      <div class="w-64 shrink-0">
+        <div class="sticky top-8">
+          <div class="rounded-lg border border-gray-200 bg-white p-6">
+            <h2 class="mb-4 text-xl font-bold">Documentation</h2>
+            <nav class="space-y-6">
               {
-                toc.map((item) => (
-                  <li class={item.level === 3 ? 'ml-4' : ''}>
-                    <a href={`#${item.id}`} class="text-blue-600 hover:underline">
-                      {item.title}
-                    </a>
-                  </li>
-                ))
+                Object.entries(sections).map(([section, docs]) => {
+                  console.log('Section:', section);
+                  console.log(
+                    'Docs in section:',
+                    docs.map((d) => ({ id: d.id, title: d.data.title }))
+                  );
+
+                  if (shouldRenderOnlyLink(docs)) {
+                    const doc = docs[0];
+                    // Remove .md for root-level files in href
+                    const href = isRootLevelFile(doc)
+                      ? `/docs/${doc.id.replace(/\.md$/, '')}`
+                      : `/docs/${doc.id}`;
+                    return (
+                      <a
+                        href={href}
+                        class={`block text-blue-600 hover:underline ${
+                          doc.id === currentDoc.id ? 'font-bold' : ''
+                        }`}
+                      >
+                        {doc.data.title}
+                      </a>
+                    );
+                  }
+                  // Otherwise, render heading and list
+                  // Find index.md for this section - either 'section/index' or just 'section'
+                  const indexDoc = docs.find(
+                    (doc) =>
+                      doc.id === section || // matches 'api' or 'tutorials'
+                      doc.id.split('/').pop() === 'index' // matches 'section/index'
+                  );
+
+                  // List all docs except index.md
+                  const nonIndexDocs = docs.filter((doc) => doc !== indexDoc);
+                  return (
+                    <div>
+                      {indexDoc ? (
+                        <h3 class="mb-2 font-semibold text-gray-900 capitalize">
+                          <a href={`/docs/${indexDoc.id}`} class="hover:underline">
+                            {indexDoc.data.title}
+                          </a>
+                        </h3>
+                      ) : (
+                        <h3 class="mb-2 font-semibold text-gray-900 capitalize">{section}</h3>
+                      )}
+                      <ul class="space-y-2">
+                        {nonIndexDocs.map((doc) => (
+                          <li>
+                            <a
+                              href={`/docs/${doc.id}`}
+                              class={`text-blue-600 hover:underline ${
+                                doc.id === currentDoc.id ? 'font-bold' : ''
+                              }`}
+                            >
+                              {doc.data.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })
               }
-            </ul>
-          </nav>
+            </nav>
+          </div>
         </div>
       </div>
 
       <!-- Main content -->
-      <div class="w-full lg:w-3/4">
+      <div class="min-w-0 flex-1">
         <article class="prose prose-blue max-w-none rounded-lg border border-gray-200 bg-white p-8">
           <header class="mb-8 border-b border-gray-200 pb-6">
             <h1 class="mb-2 text-3xl font-bold">{currentDoc.data.title}</h1>
@@ -74,6 +168,28 @@ const toc = headings.map((heading) => ({
 
           <Content />
         </article>
+      </div>
+
+      <!-- Right Sidebar - TOC -->
+      <div class="w-64 shrink-0">
+        <div class="sticky top-8">
+          <div class="rounded-lg border border-gray-200 bg-white p-6">
+            <h2 class="mb-4 text-xl font-bold">On this page</h2>
+            <nav>
+              <ul class="space-y-2">
+                {
+                  toc.map((item) => (
+                    <li class={item.level === 3 ? 'ml-4' : ''}>
+                      <a href={`#${item.id}`} class="text-blue-600 hover:underline">
+                        {item.title}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
     </div>
   </div>

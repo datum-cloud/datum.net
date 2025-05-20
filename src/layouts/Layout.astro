@@ -7,8 +7,17 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '../types/common';
 
-const { title, description, image, article, publishDate, author, noindex, canonical } =
-  Astro.props as LayoutProps;
+const {
+  title,
+  description,
+  image,
+  article,
+  publishDate,
+  author,
+  noindex,
+  canonical,
+  fluid = false,
+} = Astro.props as LayoutProps;
 
 const pageUrl = Astro.url.href;
 const defaultImage = new URL('/images/default-og.jpg', Astro.site).href;
@@ -77,7 +86,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
   </head>
   <body class="flex min-h-screen flex-col bg-gray-50 text-gray-800">
     <Header />
-    <main class="container mx-auto flex-grow px-4 py-8">
+    <main class={`flex-grow px-4 py-8 ${fluid ? 'w-full' : 'container mx-auto'}`}>
       <slot />
     </main>
     <Footer />

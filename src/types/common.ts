@@ -7,6 +7,7 @@ export interface LayoutProps {
   author?: string;
   noindex?: boolean;
   canonical?: string;
+  fluid?: boolean;
 }
 
 export interface NotFoundProps {

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import { getEntry } from 'astro:content';
+import { getCollectionEntry } from '@utils/collectionUtils';
 import { formatLongDate, formatISODate } from '@utils/dateUtils';
 
 const changelogEntries = await getCollection('changelog');
@@ -10,7 +10,8 @@ const sortedEntries = changelogEntries.sort((a, b) => {
   const versionB = parseFloat(b.data.version);
   return versionB - versionA;
 });
-const page = await getEntry('pages', 'changelog');
+
+const page = await getCollectionEntry('pages', 'changelog');
 ---
 
 <Layout title={page?.data.title || 'Datum'} description={page?.data.description}>

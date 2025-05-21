@@ -28,6 +28,32 @@ This is the official website for Datum Inc., built with Astro.
    npm run dev
    ```
 
+## Project Structure
+
+```
+.
+├── src/                # Source code
+│   ├── assets/         # Static assets (images, fonts, etc.)
+│   ├── components/     # Reusable UI components
+│   ├── content/        # MDX content files
+│   ├── data/           # Static data files
+│   ├── layouts/        # Page layouts and templates
+│   ├── pages/          # Page components and routing
+│   ├── styles/         # Global styles and CSS
+│   ├── types/          # TypeScript type definitions
+│   └── utils/          # Utility functions and helpers
+├── public/             # Static files served as-is
+├── config/             # Configuration files
+├── .github/            # GitHub configuration and workflows
+├── .vscode/            # VS Code settings
+├── astro.config.mjs    # Astro configuration
+├── docker-compose.yml  # Docker Compose configuration
+├── Dockerfile          # Docker build configuration
+├── package.json        # Project dependencies and scripts
+├── tailwind.config.mjs # Tailwind CSS configuration
+└── tsconfig.json       # TypeScript configuration
+```
+
 ## Docker Setup
 
 ### Prerequisites
@@ -160,21 +186,22 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-| `npm run lint`            | Check for linting and formatting issues          |
-| `npm run lint:fix`        | Automatically fix linting and formatting issues  |
-| `npm run lint:md`         | Check for markdown linting issues                |
-| `npm run lint:md:fix`     | Automatically fix markdown linting issues        |
-| `npm run format`          | Format all files using Prettier                  |
-| `npm run format:check`    | Check if files are formatted correctly           |
-| `npm run typecheck`       | Astro typescript check                           |
+| Command                   | Action                                                 |
+| :------------------------ | :----------------------------------------------------- |
+| `npm install`             | Installs dependencies                                  |
+| `npm run dev`             | Starts local dev server at `localhost:4321`            |
+| `npm run build`           | Build your production site to `./dist/`                |
+| `npm run preview`         | Preview your build locally, before deploying           |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`       |
+| `npm run astro -- --help` | Get help using the Astro CLI                           |
+| `npm run lint`            | Check for linting and formatting issues                |
+| `npm run lint:fix`        | Automatically fix linting and formatting issues        |
+| `npm run lint:md`         | Check for markdown linting issues                      |
+| `npm run lint:md:fix`     | Automatically fix markdown linting issues              |
+| `npm run format`          | Format all files using Prettier                        |
+| `npm run format:check`    | Check if files are formatted correctly                 |
+| `npm run typecheck`       | Astro typescript check                                 |
+| `npm run precommit`       | Run all checks (typecheck, lint, format) before commit |
 
 ## Code Quality
 

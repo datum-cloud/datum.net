@@ -196,7 +196,7 @@ let selectedCategory = urlSplit[0];
 
   <script>
     const search = document.getElementById('search');
-    const pagefind = await import('/pagefind/pagefind.js');
+    const pagefind = await import('public/pagefind/pagefind.js');
 
     async function handleFocus() {
       if (pagefind) {
@@ -218,10 +218,8 @@ let selectedCategory = urlSplit[0];
       const searchString = (e.target as HTMLInputElement)?.value.toString().trim();
 
       if (searchString.length > 1) {
-        // console.log('==SEARCH:' + searchString);
-        searchCollection(searchString, 3).then((result) => {
+        searchCollection(searchString).then((result) => {
           const elements = mainElement?.getElementsByClassName('menu_category');
-          console.log(result);
           Array.from(elements ?? []).forEach((element) => {
             if (!result.categories.includes(element.id)) {
               element.classList.add('hidden');
@@ -250,19 +248,23 @@ let selectedCategory = urlSplit[0];
       }
     });
 
-    async function searchCollection(searchString: string, categorySegment: number = 2) {
+    async function searchCollection(searchString: string) {
       const results = await (await pagefind.search(searchString)).results;
+
+      // let categorySegment = 0;
       let filterCategory = [];
       let filterItems = [];
 
       for (const result of results) {
         const data = await result.data();
-        const splitURL = data.url.split('/');
+        const splitURL = data.raw_url.split('/');
 
-        if (filterCategory.indexOf(splitURL[categorySegment]) === -1) {
-          filterCategory.push(splitURL[categorySegment]);
+        if (filterCategory.indexOf(splitURL[2]) === -1 && splitURL[2] !== '') {
+          filterCategory.push(splitURL[2]);
         }
-        filterItems.push(window.location.origin + '/' + data.url.split('/').slice(2).join('/'));
+        filterItems.push(
+          window.location.origin + '/' + splitURL[1] + '/' + splitURL.slice(2).join('/')
+        );
       }
 
       return { categories: filterCategory, items: filterItems };

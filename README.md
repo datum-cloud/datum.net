@@ -29,7 +29,7 @@ cp .env.example .env
 npm run build
 ```
 
-3. Start the development server:
+4. Start the development server:
 
 ```bash
 npm run dev

@@ -194,12 +194,13 @@ let selectedCategory = urlSplit[0];
     </ul>
   </nav>
 
-  <script>
+  <script defer is:inline>
+    let pagefind;
     const search = document.getElementById('search');
-    const pagefind = await import('public/pagefind/pagefind.js');
 
-    async function handleFocus() {
-      if (pagefind) {
+    async function initPagefind() {
+      if (!pagefind) {
+        pagefind = await import('/pagefind/pagefind.js');
         await pagefind.options({
           ranking: {
             // Decreasing the pageLength parameter is a good way to suppress
@@ -211,11 +212,11 @@ let selectedCategory = urlSplit[0];
       }
     }
 
-    search?.addEventListener('focus', handleFocus);
+    search?.addEventListener('focus', initPagefind);
 
     search?.addEventListener('keyup', function (e) {
       const mainElement = document.getElementById('menu');
-      const searchString = (e.target as HTMLInputElement)?.value.toString().trim();
+      const searchString = e.target?.value.toString().trim();
 
       if (searchString.length > 1) {
         searchCollection(searchString).then((result) => {
@@ -248,7 +249,7 @@ let selectedCategory = urlSplit[0];
       }
     });
 
-    async function searchCollection(searchString: string) {
+    async function searchCollection(searchString) {
       const results = await (await pagefind.search(searchString)).results;
 
       // let categorySegment = 0;

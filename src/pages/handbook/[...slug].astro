@@ -5,7 +5,7 @@ import { Image } from 'astro:assets';
 
 import Layout from '@layouts/Handbook.astro';
 import Sidebar from '@components/handbook/Sidebar.astro';
-import Nav from '@components/handbook/Nav.astro';
+import PageNav from '@components/handbook/PageNav.astro';
 
 export async function getStaticPaths() {
   const handbooks = await getCollection('handbooks');
@@ -107,10 +107,10 @@ for (const author of authors) {
             ) : null
           }
 
-          <div class="prose lg:prose-xl max-w-none">
+          <div class="prose lg:prose-xl max-w-none" data-pagefind-body>
             <Content />
           </div>
-          <Nav currentIndex={currentPostIndex} collection={handbooks} />
+          <PageNav currentIndex={currentPostIndex} collection={handbooks} />
         </p>
       </div>
     </div>

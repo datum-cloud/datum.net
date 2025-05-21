@@ -33,8 +33,8 @@ function isActive(itemHref: string, currentPath: string) {
           <li class="group relative">
             <a
               href={item.href}
-              class={`text-gray-300 transition duration-150 hover:text-white ${
-                isActive(item.href, currentPath) ? 'font-semibold text-white' : ''
+              class={`transition duration-150 hover:text-white ${
+                isActive(item.href, currentPath) ? 'font-semibold text-white' : 'text-gray-300'
               }`}
               target={item.isExternal ? '_blank' : undefined}
               rel={item.isExternal ? 'noopener noreferrer' : undefined}

@@ -12,21 +12,28 @@ This is the official website for Datum Inc., built with Astro.
 
 1. Install dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 2. Set up environment variables:
 
-   ```bash
-   $ cp .env.example .env
-   # Edit .env with your configuration
-   ```
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+3. Build file to enable pagefind in dev mode
+
+```bash
+npm run build
+```
 
 3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+
+```bash
+npm run dev
+```
 
 ## Project Structure
 

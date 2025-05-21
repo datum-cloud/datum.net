@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: public-website
-          image: ghcr.io/datum-cloud/public-website:latest
+          image: ghcr.io/datum-cloud/datum.net:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 4321
@@ -41,7 +41,7 @@ spec:
             - name: API_URL
               value: https://api.datum.net
             - name: SITE_GITHUB
-              value: https://github.com/datum-cloud/public-website
+              value: https://github.com/datum-cloud/datum.net
           resources:
             requests:
               cpu: 500m

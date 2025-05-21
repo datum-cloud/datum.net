@@ -35,7 +35,6 @@ ENV NODE_ENV=production
 WORKDIR /app
 # Copy built assets and package files from build stage
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/dist/pagefind ./public/pagefind
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/package-lock.json ./package-lock.json
 # Install only production dependencies

@@ -8,7 +8,7 @@
     "dev:astro": "astro dev --host --typecheck",
     "build:astro": "astro check && astro build",
     "dev": "npm run build:pagefind && npm run copy:pagefind && npm run dev:astro",
-    "build": "npm run build:astro && npm run build:pagefind && npm run copy:pagefind",
+    "build": "npm run build:pagefind && npm run copy:pagefind && npm run build:astro",
     "start": "astro dev",
     "preview": "astro preview",
     "astro": "astro",

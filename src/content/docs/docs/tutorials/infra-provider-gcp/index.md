@@ -8,7 +8,7 @@ weight: 1
 
 This tutorial assumes you have already
 [registered an account](/docs/get-started),
-[installed and configured the necessary tools](/docs/tasks/tools.md) to
+[installed and configured the necessary tools](/docs/tasks/tools) to
 interact with Datum, and have [created a Datum project](/docs/tasks/create-project).
 
 ### Grant Datum Cloud access to your GCP project

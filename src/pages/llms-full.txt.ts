@@ -198,6 +198,7 @@ export const GET: APIRoute = async () => {
     llmsContent += `### Documentation Content\n\n`;
 
     // Add tutorials content
+    /*
     if (tutorials.length > 0) {
       llmsContent += `#### Tutorials\n\n`;
       for (const doc of tutorials) {
@@ -223,8 +224,10 @@ export const GET: APIRoute = async () => {
         llmsContent += '---\n\n';
       }
     }
+    */
 
     // Add tasks content
+    /*
     if (tasks.length > 0) {
       llmsContent += `#### Tasks\n\n`;
       for (const doc of tasks) {
@@ -250,8 +253,10 @@ export const GET: APIRoute = async () => {
         llmsContent += '---\n\n';
       }
     }
+    */
 
     // Add API docs content
+    /*
     if (api.length > 0) {
       llmsContent += `#### API Documentation\n\n`;
       for (const doc of api) {
@@ -277,8 +282,10 @@ export const GET: APIRoute = async () => {
         llmsContent += '---\n\n';
       }
     }
+    */
 
     // Add other docs content
+    /*
     if (other.length > 0) {
       llmsContent += `#### Other Documentation\n\n`;
       for (const doc of other) {
@@ -304,6 +311,7 @@ export const GET: APIRoute = async () => {
         llmsContent += '---\n\n';
       }
     }
+    */
 
     // Get all handbook entries
     const handbooks = await getCollection('handbooks', ({ data }) => !data.draft);

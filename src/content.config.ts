@@ -1,5 +1,7 @@
 import { z, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { docsLoader } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
 
 // Define pages collections
 const pagesCollection = defineCollection({
@@ -103,19 +105,19 @@ const handbooksCollection = defineCollection({
 });
 
 // Define docs collections
-const docsCollection = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/docs' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      description: z.string().optional(),
-      date: z.date().optional(),
-      slug: z.string().optional(),
-      thumbnail: image().optional(),
-      draft: z.boolean().optional().default(false),
-      weight: z.number().optional().default(999),
-    }),
-});
+// const docsCollection = defineCollection({
+//   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/docs/docs' }),
+//   schema: ({ image }) =>
+//     z.object({
+//       title: z.string(),
+//       description: z.string().optional(),
+//       date: z.date().optional(),
+//       slug: z.string().optional(),
+//       thumbnail: image().optional(),
+//       draft: z.boolean().optional().default(false),
+//       weight: z.number().optional().default(999),
+//     }),
+// });
 
 // Define changelog collections
 const changelogCollection = defineCollection({
@@ -136,6 +138,7 @@ export const collections = {
   authors: authorsCollection,
   categories: categoriesCollection,
   handbooks: handbooksCollection,
-  docs: docsCollection,
+  // olddocs: docsCollection,
+  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
   changelog: changelogCollection,
 };

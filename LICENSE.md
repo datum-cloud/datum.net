@@ -1,4 +1,4 @@
-# For all content except the /contents/ folder
+# For all content except the /src/content// folder
 
 Copyright (c) 2024-2025 Datum Technology, Inc.
 
@@ -8,7 +8,7 @@ commercial use.
 We're happy for you to use our logo for the purposes of referencing Datum, but 
 not for you to pretend to be us.
 
-# For content in the /contents/ folder
+# For content in the /src/content// folder
 
 Copyright (c) 2024-2025 Datum Technology, Inc.
 

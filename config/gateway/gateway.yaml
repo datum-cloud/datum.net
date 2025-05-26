@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: public-website-gateway
+  name: datum-net-gateway
 spec:
   gatewayClassName: datum-external-global-proxy
   listeners:

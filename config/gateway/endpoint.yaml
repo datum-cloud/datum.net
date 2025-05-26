@@ -1,7 +1,7 @@
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: public-website
+  name: datum-net
 addressType: FQDN
 ports:
   - name: https

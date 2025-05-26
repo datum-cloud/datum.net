@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/instance: public-website
-    app.kubernetes.io/name: public-website
+    app.kubernetes.io/instance: datum-net
+    app.kubernetes.io/name: datum-net
     app.kubernetes.io/version: 1.0.0
-  name: public-website
+  name: datum-net
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
@@ -13,8 +13,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: frontend
-      app.kubernetes.io/instance: public-website
-      app.kubernetes.io/name: public-website
+      app.kubernetes.io/instance: datum-net
+      app.kubernetes.io/name: datum-net
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -24,11 +24,11 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/component: frontend
-        app.kubernetes.io/instance: public-website
-        app.kubernetes.io/name: public-website
+        app.kubernetes.io/instance: datum-net
+        app.kubernetes.io/name: datum-net
     spec:
       containers:
-        - name: public-website
+        - name: datum-net
           image: ghcr.io/datum-cloud/datum.net:latest
           imagePullPolicy: Always
           ports:

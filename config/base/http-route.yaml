@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
-  name: public-website
+  name: datum-net
 spec:
   parentRefs:
     # This should be overridden at the environment level if needed to configure
@@ -14,7 +14,7 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: public-website
+        - name: datum-net
           kind: Service
           group: ''
           port: 4321

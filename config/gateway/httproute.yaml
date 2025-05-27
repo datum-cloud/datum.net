@@ -1,17 +1,17 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: public-website-http-route
+  name: datum-net-http-route
 spec:
   parentRefs:
   - group: gateway.networking.k8s.io
     kind: Gateway
-    name: public-website-gateway
+    name: datum-net-gateway
   rules:
   - backendRefs:
     - group: discovery.k8s.io
       kind: EndpointSlice
-      name: public-website
+      name: datum-net
       port: 443
       weight: 1
     filters:

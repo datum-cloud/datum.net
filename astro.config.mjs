@@ -8,6 +8,7 @@ import alpinejs from '@astrojs/alpinejs';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
+import db from '@astrojs/db';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
@@ -80,6 +81,7 @@ export default defineConfig({
       ],
     }),
     mdx(),
+    db(),
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -92,4 +94,7 @@ export default defineConfig({
   },
   experimental: {},
   prefetch: true,
+  session: {
+    driver: 'redis',
+  },
 });

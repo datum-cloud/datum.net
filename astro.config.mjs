@@ -49,6 +49,12 @@ export default defineConfig({
         PageFrame: '@components/starlight/PageFrame.astro',
         Header: '@components/starlight/Header.astro',
       },
+      expressiveCode: {
+        themes: ['github-dark', 'github-light'],
+        styleOverrides: {
+          borderRadius: '0.5rem',
+        },
+      },
       sidebar: [
         {
           label: 'Docs',

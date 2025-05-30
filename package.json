@@ -25,9 +25,9 @@
   "dependencies": {
     "@alpinejs/collapse": "^3.14.9",
     "@astrojs/alpinejs": "^0.4.8",
-    "@astrojs/db": "^0.14.14",
-    "@astrojs/mdx": "^4.2.4",
-    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/db": "^0.15.0",
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/sitemap": "^3.4.0",
     "@astrojs/starlight": "^0.34.3",
     "@astrojs/ts-plugin": "^1.10.4",
     "@nanostores/persistent": "^1.0.0",

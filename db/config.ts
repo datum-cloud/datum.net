@@ -7,8 +7,16 @@ const ProjectVotes = defineTable({
   },
 });
 
+const Project = defineTable({
+  columns: {
+    updated_at: column.date(),
+    data: column.text(),
+  },
+});
+
 export default defineDb({
   tables: {
     ProjectVotes,
+    Project,
   },
 });

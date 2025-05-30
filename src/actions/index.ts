@@ -19,7 +19,6 @@ export const server = {
         // Increment the vote count if the vote already exists
         await db.update(ProjectVotes).set({ vote: newValue }).where(eq(ProjectVotes.id, input.id));
       } else {
-        console.log('Vote added: ', input.id);
         // Create a new vote entry if it doesn't exist
         await db.insert(ProjectVotes).values({
           id: input.id,

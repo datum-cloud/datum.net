@@ -1,40 +1,73 @@
-import { db, ProjectVotes } from 'astro:db';
+import { db, ProjectVotes, Project } from 'astro:db';
 import { marked } from 'marked';
+import { graphql } from '@octokit/graphql';
 
 type GitHubGraphQLResponse = {
   data: {
     organization: {
       projectV2: {
         items: {
-          nodes: any[];
+          nodes: [
+            {
+              content: {
+                id: string;
+                databaseId: string;
+                title: string;
+                body: string;
+                url: string;
+                labels: {
+                  nodes: Array<{
+                    name: string;
+                  }>;
+                };
+              };
+            },
+          ];
         };
       };
     };
   };
-  [key: string]: any;
 };
 
-// TODO: use the real GitHub GraphQL API endpoint
-const graphQL = async (token: string, query: string): Promise<GitHubGraphQLResponse> => {
-  const api_url = 'http://localhost:4321/roadmap.json'; // 'https://api.github.com/graphql';
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  };
+function isOverOneHourAgo(date: Date): boolean {
+  const oneHourAgo = new Date();
+  oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+  return date < oneHourAgo;
+}
 
-  console.log('Query:', query);
-  const response = await fetch(api_url, {
-    method: 'GET',
-    headers: headers,
-    // body: JSON.stringify({ query }),
-  });
+/**
+ * Fetches the roadmap from the database or GitHub GraphQL API (Enhancements (projectNumber: 22)).
+ * If the projects are already in the database and were updated yesterday, it fetches them from GitHub.
+ * Otherwise, it retrieves the projects from the database or fetches them from GitHub if they don't exist.
+ *
+ * @returns A promise that resolves to an array of project objects
+ */
+async function getRoadmap() {
+  const currentIssues = await db.select().from(Project);
+  let issues: object[] = [];
 
-  const responseData = await response.json();
-  return responseData;
-};
+  if (currentIssues.length > 0) {
+    if (isOverOneHourAgo(currentIssues[0].updated_at)) {
+      // console.log('Over a hour ago, fetching issues from GitHub GraphQL API');
+      issues = await issuesLabeledRoadmap();
+      await db.delete(Project);
+      await db.insert(Project).values({ updated_at: new Date(), data: JSON.stringify(issues) });
+    } else {
+      // console.log('Using existing issues from the database');
+      issues = JSON.parse(currentIssues[0].data);
+    }
+  } else {
+    // console.log('No issues in the database, fetching from GitHub GraphQL API');
+    const issues = await issuesLabeledRoadmap();
+    await db.delete(Project);
+    await db.insert(Project).values({ updated_at: new Date(), data: JSON.stringify(issues) });
+  }
 
-async function normalizeData(source: object): Promise<object[]> {
-  const newProjects: object[] = [];
+  return issues;
+}
+
+async function normalizeIssues(source: object): Promise<object[]> {
+  const newIssues: object[] = [];
 
   // add vote to projects
   const votes = await db.select().from(ProjectVotes);
@@ -44,58 +77,73 @@ async function normalizeData(source: object): Promise<object[]> {
     throw new TypeError('Expected source to be an array');
   }
 
-  for (const project of source) {
-    const projectId = project.content.id;
-    const projectVote = votesMap.get(projectId);
+  for (const issue of source) {
+    const issueId = issue.node.id;
+    const issueVote = votesMap.get(issueId);
 
     const modifyProject = {
       content: {
-        id: project.content.id,
-        title: project.content.title,
-        body: marked.parse(project.content.body),
-        url: project.content.url,
-        labels: project.content.labels,
+        id: issue.node.id,
+        title: issue.node.title,
+        body: issue.node.body ? marked.parse(issue.node.body) : '',
+        url: issue.node.url,
+        labels: issue.node.labels,
       },
     };
 
-    if (projectVote) {
-      newProjects.push({
+    if (issueVote) {
+      newIssues.push({
         ...modifyProject,
-        vote: projectVote.vote,
+        vote: issueVote.vote,
       });
     } else {
-      newProjects.push({
+      newIssues.push({
         ...modifyProject,
         vote: 0,
       });
     }
   }
 
-  // console.log(newProjects);
-  return newProjects;
+  return newIssues;
 }
 
-async function getProjects(): Promise<object[]> {
-  const token = import.meta.env.GITHUB_TOKEN;
-  const jsonData: GitHubGraphQLResponse = await graphQL(
-    token,
+async function issuesLabeledRoadmap(): Promise<object[]> {
+  const appId = import.meta.env.GITHUB_APP_ID;
+  const privateKey = import.meta.env.GITHUB_APP_PRIVATE_KEY;
+  const installationId = parseInt(import.meta.env.GITHUB_APP_INSTALLATION_ID, 10);
+
+  if (!appId || !privateKey || isNaN(installationId)) {
+    throw new Error(
+      'GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY, and GITHUB_APP_INSTALLATION_ID must be set'
+    );
+  }
+
+  const { createAppAuth } = await import('@octokit/auth-app');
+  const auth = createAppAuth({
+    appId,
+    privateKey,
+    installationId,
+  });
+  const graphqlWithAuth = graphql.defaults({
+    request: {
+      hook: auth.hook,
+    },
+  });
+
+  const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
-    query {
-      organization(login: "datum-cloud") {
-        projectV2(number: 2) {
-          items(first: 10) {
-            nodes {
-              content {
-                ... on Issue  {
-                  databaseId
-                  id
-                  title
-                  body
-                  url
-                  labels {
-                    nodes{
-                      name
-                    }
+      query {
+        search(type: ISSUE, first: 10, query:"repo:datum-cloud/enhancements state:open label:\\"Roadmap Vote\\""){
+          edges {
+            node {
+              ... on Issue {
+                id
+                title
+                body
+                url
+                labels (first: 10) {
+                  nodes {
+                    name
                   }
                 }
               }
@@ -103,16 +151,10 @@ async function getProjects(): Promise<object[]> {
           }
         }
       }
-    }
-  `
+    `
   );
 
-  // TODO: handle errors and check if jsonData is valid
-  const projects = jsonData.data.organization.projectV2.items.nodes;
-
-  // TODO: filter projects by labels
-
-  return normalizeData(projects);
+  return normalizeIssues(Object(jsonData).search.edges);
 }
 
-export { getProjects };
+export { getRoadmap };

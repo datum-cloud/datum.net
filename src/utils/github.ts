@@ -4,27 +4,25 @@ import { graphql } from '@octokit/graphql';
 
 type GitHubGraphQLResponse = {
   data: {
-    organization: {
-      projectV2: {
-        items: {
-          nodes: [
-            {
-              content: {
-                id: string;
-                databaseId: string;
-                title: string;
-                body: string;
-                url: string;
-                labels: {
-                  nodes: Array<{
-                    name: string;
-                  }>;
-                };
+    search: {
+      edges: [
+        {
+          node: {
+            content: {
+              id: string;
+              databaseId: string;
+              title: string;
+              body: string;
+              url: string;
+              labels: {
+                nodes: Array<{
+                  name: string;
+                }>;
               };
-            },
-          ];
-        };
-      };
+            };
+          };
+        },
+      ];
     };
   };
 };
@@ -37,7 +35,7 @@ function isOverOneHourAgo(date: Date): boolean {
 
 /**
  * Fetches the roadmap from the database or GitHub GraphQL API (Enhancements (projectNumber: 22)).
- * If the projects are already in the database and were updated yesterday, it fetches them from GitHub.
+ * If the projects are already in the database and were updated more than one hour ago, it fetches them from GitHub.
  * Otherwise, it retrieves the projects from the database or fetches them from GitHub if they don't exist.
  *
  * @returns A promise that resolves to an array of project objects
@@ -58,7 +56,7 @@ async function getRoadmap() {
     }
   } else {
     // console.log('No issues in the database, fetching from GitHub GraphQL API');
-    const issues = await issuesLabeledRoadmap();
+    issues = await issuesLabeledRoadmap();
     await db.delete(Project);
     await db.insert(Project).values({ updated_at: new Date(), data: JSON.stringify(issues) });
   }
@@ -154,6 +152,7 @@ async function issuesLabeledRoadmap(): Promise<object[]> {
     `
   );
 
+  console.log(Object(jsonData));
   return normalizeIssues(Object(jsonData).search.edges);
 }
 

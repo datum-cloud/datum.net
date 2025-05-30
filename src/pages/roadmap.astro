@@ -5,7 +5,6 @@ import { marked } from 'marked';
 
 export const prerender = false;
 
-// Fetching the datum projects
 let projects = await getRoadmap();
 ---
 
@@ -129,6 +128,7 @@ let projects = await getRoadmap();
       </a>
     </div>
   </main>
+
   <script>
     import { actions } from 'astro:actions';
 

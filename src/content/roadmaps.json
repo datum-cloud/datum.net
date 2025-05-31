@@ -1,0 +1,56 @@
+{
+  "data": {
+    "organization": {
+      "projectV2": {
+        "items": {
+          "nodes": [
+            {
+              "content": {
+                "databaseId": 3084547286,
+                "id": "I_kwDON48okM632nTW",
+                "title": "Documentation and API",
+                "body": "We want to make sure that our documentation is clear and easy to use. We also want to make sure that our API is well documented and easy to use.\n\n**Question for community**\n\n- What do you think about our current documentation?\n- What do you think about our current API?\n- What would you like to see in our documentation and API?",
+                "url": "https://github.com/TukangKetik/datumdotnet/issues/3",
+                "labels": {
+                  "nodes": [
+                    {
+                      "name": "good first issue"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "content": {
+                "databaseId": 3084547856,
+                "id": "I_kwDON48okM632ncQ",
+                "title": "Ticketing System",
+                "body": "We want to build a ticketing system that allows users to generate tickets/bug reports, assign tickets to your team, and message users when a ticket is created / responded to / resolved.\n\n**The basics would be:**\n\n- A way of users generating tickets/bug reports\n- Assigning tickets to your team\n- Messaging users when a ticket is created / responded to / resolved\n\n**We are unclear on (feedback hugely appreciated):**\n\n- If early stage companies would need it to work with discord/slack or if that's unusual\n- If you are excited about this because you would happily replace an existing product - which one? Or if you'd just use us as you're not using anything else at the moment\n\n**Beyond this:**\n\n- Some way of prioritizing tickets based on user data\n- Integrating session replay and errors into the ticket automatically",
+                "url": "https://github.com/TukangKetik/datumdotnet/issues/4",
+                "labels": {
+                  "nodes": [
+                    {
+                      "name": "documentation"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "content": {
+                "databaseId": 3084574894,
+                "id": "I_kwDON48okM632uCu",
+                "title": "Roadmap page",
+                "body": "We want to build a roadmap page that allows users to see what we are working on, what is coming next, and what is planned for the future.\n\n**The basics would be:**\n\n- A way of users seeing what we are working on\n- A way of users seeing what is coming next\n- A way of users seeing what is planned for the future\n\n**We are unclear on (feedback hugely appreciated):**\n\n- If early stage companies would need it to work with discord/slack or if that's unusual\n- If you are excited about this because you would happily replace an existing product - which one? Or if you'd just use us as you're not using anything else at the moment",
+                "url": "https://github.com/TukangKetik/datumdotnet/issues/5",
+                "labels": {
+                  "nodes": []
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ import alpinejs from '@astrojs/alpinejs';
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import db from '@astrojs/db';
+import node from '@astrojs/node';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
@@ -17,6 +18,7 @@ const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
+
   integrations: [
     sitemap(),
     robotsTxt({
@@ -83,6 +85,7 @@ export default defineConfig({
     mdx(),
     db(),
   ],
+
   vite: {
     plugins: [tailwindcss()],
     preview: {
@@ -92,9 +95,15 @@ export default defineConfig({
       allowedHosts: ['website.staging.env.datum.net'],
     },
   },
+
   experimental: {},
   prefetch: true,
+
   session: {
     driver: 'redis',
   },
+
+  adapter: node({
+    mode: 'standalone',
+  }),
 });

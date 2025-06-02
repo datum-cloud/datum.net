@@ -5,6 +5,8 @@ WORKDIR /app
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
+ENV ASTRO_DB_REMOTE_URL="libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"
+
 # Install dependencies
 COPY package*.json ./
 RUN npm install
@@ -18,6 +20,8 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 # Production build stage
 FROM base AS build
 ENV NODE_ENV=production
+ENV ASTRO_DB_REMOTE_URL="libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"
+
 # Add empty .env file
 RUN touch .env
 # Install dependencies

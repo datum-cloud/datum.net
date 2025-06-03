@@ -58,6 +58,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: production
+          build-args: |
+            APP_PRIVATE_KEY=${{ secrets.APP_PRIVATE_KEY }}
+            APP_INSTALLATION_ID=${{ vars.APP_INSTALLATION_ID }}
+            APP_ID=${{ vars.APP_ID }}
+            ASTRO_DB_APP_TOKEN=${{ secrets.ASTRO_DB_APP_TOKEN }}
+            ASTRO_STUDIO_APP_TOKEN=${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
+            ASTRO_DB_REMOTE_URL=${{ vars.ASTRO_DB_REMOTE_URL }}
 
   publish-kustomize-bundles:
     permissions:

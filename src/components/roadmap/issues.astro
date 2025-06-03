@@ -1,0 +1,181 @@
+---
+import { getRoadmap } from '@utils/github';
+import { marked } from 'marked';
+
+export const prerender = false;
+
+let projects = await getRoadmap();
+---
+
+<>
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="mb-8 text-4xl font-bold">Roadmap</h1>
+
+    <div class="mx-auto space-y-12">
+      <ul
+        class="m-0 mt-10 list-none space-y-10 p-0"
+        x-data={`{ projects: ${JSON.stringify(projects)} }`}
+      >
+        {
+          Array.prototype.map.call(
+            projects,
+            (project: {
+              vote: number;
+              content: {
+                id: string;
+                title: string;
+                body: string;
+                url?: string;
+              };
+            }) => (
+              <li class="vote-item">
+                <div class="relative">
+                  <span>
+                    <div class="flex space-x-4">
+                      <div class="bg-blackberry-200 relative flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center text-center">
+                        <p class="m-0 leading-none">
+                          <>
+                            <strong class="text-lg leading-none" id={`${project.content.id}-value`}>
+                              {project.vote}
+                            </strong>
+                            <br />
+                          </>
+                          <span class="text-sm">votes</span>
+                        </p>
+                      </div>
+                      <div>
+                        <h3 class="m-0 text-2xl leading-tight font-extrabold">
+                          {project.content.title}
+                        </h3>
+                        <div class="mt-1 text-[15px]">
+                          <div set:html={marked.parse(project.content.body)} class="prose" />
+                        </div>
+
+                        {project.content.url && (
+                          <a
+                            rel="noopener noreferrer"
+                            href={project.content.url}
+                            class="group relative top-1"
+                            target="_blank"
+                          >
+                            <span class="group inline-flex items-center justify-center">
+                              <span class="font-semibold">Learn more on GitHub</span>
+                              <svg
+                                class="LemonIcon text-primary relative size-4 opacity-50 group-hover:opacity-90"
+                                width="100%"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M7.995 5.75a.75.75 0 0 1 .75-.75h8.505c.966 0 1.75.784 1.75 1.75v9.496a.75.75 0 0 1-1.5 0V7.56L7.03 18.03a.75.75 0 0 1-1.06-1.061L16.44 6.5H8.744a.75.75 0 0 1-.75-.75Z"
+                                  clip-rule="evenodd"
+                                />
+                              </svg>
+                            </span>
+                          </a>
+                        )}
+
+                        <div class="flex space-x-2">
+                          <button
+                            class="bg-blackberry-600 border-button group btnVote relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white disabled:cursor-not-allowed disabled:opacity-30"
+                            data-projectid={project.content.id}
+                          >
+                            <span class="bg-blackberry-800 text-primary hover:text-primary border-button relative mx-[-1.5px] block w-auto translate-y-[-2px] rounded-[6px] border-[1.5px] px-3.5 py-1.5 text-center text-[13px] font-bold select-none hover:translate-y-[-3px] group-disabled:hover:!translate-y-[-2px] active:translate-y-[-1px] active:transition-all active:duration-100">
+                              <span class="flex items-center space-x-1">
+                                <svg
+                                  class="LemonIcon h-6 w-4"
+                                  width="100%"
+                                  fill="currentColor"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M10.054 2.949A1.75 1.75 0 0 1 11.611 2a2.753 2.753 0 0 1 2.722 3.174L13.893 8h4.366a3.75 3.75 0 0 1 3.707 4.314l-.837 5.5A3.75 3.75 0 0 1 17.422 21H3.75A1.75 1.75 0 0 1 2 19.25v-7.5c0-.966.784-1.75 1.75-1.75h2.671l3.633-7.051ZM6 11.5H3.75a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25H6v-8Zm1.5 8h9.922a2.25 2.25 0 0 0 2.224-1.912l.837-5.5A2.25 2.25 0 0 0 18.26 9.5h-5.243a.75.75 0 0 1-.74-.866l.575-3.691A1.253 1.253 0 0 0 11.61 3.5a.252.252 0 0 0-.224.136L7.5 11.182V19.5Z"
+                                  />
+                                </svg>
+                                <span>Vote</span>
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </li>
+            )
+          )
+        }
+      </ul>
+    </div>
+
+    <div class="mt-16 flex justify-center">
+      <a
+        href="https://github.com/datum-cloud/enhancements/issues"
+        target="_blank"
+        class="bg-blackberry-600 border-button group btnVote relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white"
+      >
+        <span
+          class="bg-blackberry-800 text-primary hover:text-primary border-button relative mx-[-1.5px] block w-auto translate-y-[-2px] rounded-[6px] border-[1.5px] px-3 py-4.5 text-center text-[16px] font-bold select-none hover:translate-y-[-3px] group-disabled:hover:!translate-y-[-2px] active:translate-y-[-1px] active:transition-all active:duration-100"
+        >
+          <span class="flex items-center space-x-1"> Request more features </span>
+        </span>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    import { actions } from 'astro:actions';
+
+    // document.cookie = 'voted='; // Clear the cookie for testing purposes
+    const voteItems = document.querySelectorAll('.vote-item');
+    let voted = getCookie('voted')?.split(',') ?? [];
+
+    function setCookie(key: string, value: string[], exdays?: number | null) {
+      var exdate = new Date();
+      if (exdays != null) {
+        exdate.setDate(exdate.getDate() + exdays);
+      }
+      var newValue = value.join(',') + (exdays == null ? '' : ';expires=' + exdate.toUTCString());
+      document.cookie = key + '=' + newValue;
+    }
+
+    function getCookie(name: string) {
+      let matches = document.cookie.match(
+        new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
+      );
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    voteItems.forEach((item) => {
+      const btnVote = item.querySelector('.btnVote');
+
+      voted.forEach((votedProjectId) => {
+        if (votedProjectId === (btnVote as HTMLButtonElement)?.dataset.projectid) {
+          (btnVote as HTMLButtonElement).disabled = true;
+        }
+      });
+
+      btnVote?.addEventListener('click', async function (this: HTMLButtonElement) {
+        if (!this.dataset.projectid) {
+          throw new Error('Project ID is missing');
+        }
+        const projectId = this.dataset.projectid;
+        actions.voting({ id: projectId }).then((response) => {
+          if (!response || !response.data) {
+            throw new Error('Failed to update vote count');
+          }
+
+          voted.push(projectId);
+          setCookie('voted', voted);
+          this.disabled = true;
+          item.querySelector('#' + projectId + '-value')!.textContent = String(response.data);
+        });
+      });
+    });
+  </script>
+</>

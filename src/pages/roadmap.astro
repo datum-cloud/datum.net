@@ -1,0 +1,12 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Issues from '@components/roadmap/issues.astro';
+import Skeleton from '@components/roadmap/skeleton.astro';
+export const prerender = false;
+---
+
+<Layout title={'Datum Roadmap'} description={'Datum Roadmap'}>
+  <Issues server:defer>
+    <Skeleton slot="fallback" />
+  </Issues>
+</Layout>

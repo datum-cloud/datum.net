@@ -6,6 +6,8 @@ on:
       - 'README.md'
       - 'env.example'
       - '.vscode/**'
+      - 'public/pagefind/**'
+      - '**/pagefind/**'
 
   release:
     types: ['published']

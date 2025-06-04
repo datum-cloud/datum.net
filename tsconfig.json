@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "exclude": ["node_modules", "dist", "public/pagefind", "**/pagefind/**"],
   "compilerOptions": {
     "strictNullChecks": true,
     "allowJs": true,

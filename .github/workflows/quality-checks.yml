@@ -8,6 +8,8 @@ on:
       - 'README.md'
       - 'env.example'
       - '.vscode/**'
+      - 'public/pagefind/**'
+      - '**/pagefind/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

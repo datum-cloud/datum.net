@@ -24,6 +24,8 @@ services:
       - '4321:4321'
     environment:
       - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
     env_file:
       - .env
     restart: unless-stopped

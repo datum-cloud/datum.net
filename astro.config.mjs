@@ -18,7 +18,10 @@ const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
-
+  output: 'static',
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [
     sitemap(),
     robotsTxt({
@@ -35,6 +38,7 @@ export default defineConfig({
     alpinejs({ entrypoint: '/src/entrypoint' }),
     starlight({
       title: 'Datum',
+      disable404Route: true,
       logo: {
         src: '/public/favicon.png',
       },
@@ -98,7 +102,4 @@ export default defineConfig({
 
   experimental: {},
   prefetch: true,
-  adapter: node({
-    mode: 'standalone',
-  }),
 });

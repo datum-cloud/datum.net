@@ -44,6 +44,8 @@ export default defineConfig([
     '**/pnpm-lock.yaml',
     '**/public/',
     'src/content/',
+    'public/pagefind',
+    '**/pagefind/**',
   ]),
   {
     extends: compat.extends(

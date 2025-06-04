@@ -3,6 +3,17 @@ services:
     build:
       context: .
       target: development
+      args:
+        - SITE_URL=${SITE_URL}
+        - API_URL=${API_URL}
+        - SITE_GITHUB=${SITE_GITHUB}
+        - APP_PRIVATE_KEY=${APP_PRIVATE_KEY}
+        - APP_INSTALLATION_ID=${APP_INSTALLATION_ID}
+        - APP_ID=${APP_ID}
+        - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+        - ASTRO_STUDIO_APP_TOKEN=${ASTRO_STUDIO_APP_TOKEN}
+        - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+        - ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
     ports:
       - '4321:4321'
     volumes:
@@ -20,6 +31,17 @@ services:
     build:
       context: .
       target: production
+      args:
+        - SITE_URL=${SITE_URL}
+        - API_URL=${API_URL}
+        - SITE_GITHUB=${SITE_GITHUB}
+        - APP_PRIVATE_KEY=${APP_PRIVATE_KEY}
+        - APP_INSTALLATION_ID=${APP_INSTALLATION_ID}
+        - APP_ID=${APP_ID}
+        - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+        - ASTRO_STUDIO_APP_TOKEN=${ASTRO_STUDIO_APP_TOKEN}
+        - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+        - ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
     ports:
       - '4321:4321'
     environment:

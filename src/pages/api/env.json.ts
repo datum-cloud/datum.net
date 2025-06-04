@@ -54,50 +54,57 @@ export const GET: APIRoute = ({ request: _request }) => {
     processEnv = { ...process.env };
   }
 
-  // Function to filter sensitive variables and remove "_" variables
+  // Function to filter sensitive variables and mask their values
   const filterSensitiveVars = (envVars: Record<string, any>) => {
     return Object.fromEntries(
-      Object.entries(envVars).filter(([key, value]) => {
-        // Filter out variables whose name is exactly "_"
-        if (key === '_') return false;
+      Object.entries(envVars)
+        .map(([key, value]) => {
+          // Filter out variables whose name is exactly "_"
+          if (key === '_') return [key, undefined];
 
-        const lowerKey = key.toLowerCase();
+          const lowerKey = key.toLowerCase();
 
-        // Check for common sensitive variable patterns in keys
-        const sensitiveKeyPatterns = [
-          'key',
-          'secret',
-          'password',
-          'token',
-          'auth',
-          'credential',
-          'private',
-          'user',
-          'home',
-          'dir',
-          'path',
-          'id',
-          'login',
-          'pwd',
-          'logname',
-          'shell',
-          'pass',
-          'cwd',
-          'npm',
-        ];
+          // Check for common sensitive variable patterns in keys
+          const sensitiveKeyPatterns = [
+            'key',
+            'secret',
+            'password',
+            'token',
+            'auth',
+            'credential',
+            'private',
+            'user',
+            'home',
+            'dir',
+            'path',
+            'id',
+            'login',
+            'pwd',
+            'logname',
+            'shell',
+            'pass',
+            'cwd',
+            'npm',
+          ];
 
-        // Check if any sensitive pattern exists in the key
-        const hasSensitivePattern = sensitiveKeyPatterns.some((pattern) =>
-          lowerKey.includes(pattern)
-        );
+          // Check if any sensitive pattern exists in the key
+          const hasSensitivePattern = sensitiveKeyPatterns.some((pattern) =>
+            lowerKey.includes(pattern)
+          );
 
-        // Check if value contains file paths with usernames
-        const isValueWithUserPath =
-          typeof value === 'string' &&
-          (value.includes('/Users/') || value.includes('/home/') || value.includes('\\Users\\'));
+          // Check if value contains file paths with usernames
+          const isValueWithUserPath =
+            typeof value === 'string' &&
+            (value.includes('/Users/') || value.includes('/home/') || value.includes('\\Users\\'));
 
-        return !(hasSensitivePattern || isValueWithUserPath);
-      })
+          // If sensitive and value is not empty, mask the value
+          if ((hasSensitivePattern || isValueWithUserPath) && value) {
+            return [key, '***'];
+          }
+
+          return [key, value];
+        })
+        .filter(([_, value]) => value !== undefined)
     );
   };
 

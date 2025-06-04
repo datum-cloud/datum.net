@@ -2,15 +2,35 @@
 FROM node:22.16.0-alpine3.22 AS base
 WORKDIR /app
 
+# Define build arguments
+ARG SITE_URL
+ARG API_URL
+ARG SITE_GITHUB
+ARG APP_PRIVATE_KEY
+ARG APP_INSTALLATION_ID
+ARG APP_ID
+ARG ASTRO_DB_APP_TOKEN
+ARG ASTRO_STUDIO_APP_TOKEN
+ARG ASTRO_DB_REMOTE_URL="libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"
+ARG ASTRO_TELEMETRY_DISABLED
+
+# Set common environment variables
+ENV SITE_URL=${SITE_URL}
+ENV API_URL=${API_URL}
+ENV SITE_GITHUB=${SITE_GITHUB}
+ENV APP_PRIVATE_KEY=${APP_PRIVATE_KEY}
+ENV APP_INSTALLATION_ID=${APP_INSTALLATION_ID}
+ENV APP_ID=${APP_ID}
+ENV ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+ENV ASTRO_STUDIO_APP_TOKEN=${ASTRO_STUDIO_APP_TOKEN}
+ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+ENV ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
+ENV HOST=0.0.0.0
+ENV PORT=4321
+
 # Development stage
 FROM base AS development
-
 ENV NODE_ENV=development
-ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL:-"libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"}
-ENV ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
-ENV ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
-ENV HOST=0.0.0.
-ENV PORT=4321
 
 # Install dependencies
 COPY package*.json ./
@@ -25,13 +45,7 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 
 # Production build stage
 FROM base AS build
-
 ENV NODE_ENV=production
-ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL:-"libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"}
-ENV ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
-ENV ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
-ENV HOST=0.0.0.0
-ENV PORT=4321
 
 # Add empty .env file
 RUN touch .env
@@ -48,9 +62,8 @@ RUN npm run build
 # Production stage
 FROM base AS production
 ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=4321
 WORKDIR /app
+
 # Copy built assets and package files from build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./

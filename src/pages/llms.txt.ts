@@ -46,7 +46,8 @@ export const GET: APIRoute = async () => {
   try {
     // Get project info
     const projectName = 'Datum Cloud Network Solutions';
-    const siteUrl = import.meta.env.SITE_URL || `http://localhost:${port}`;
+    const siteUrl =
+      import.meta.env.SITE_URL ?? (process.env.SITE_URL || `http://localhost:${port}`);
 
     // Base structure for llms.txt
     let llmsContent = `# ${projectName} Documentation\n\n`;

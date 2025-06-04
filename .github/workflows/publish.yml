@@ -61,6 +61,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           target: production
           build-args: |
+            SITE_URL=${{ vars.SITE_URL }}
             APP_PRIVATE_KEY=${{ secrets.APP_PRIVATE_KEY }}
             APP_INSTALLATION_ID=${{ vars.APP_INSTALLATION_ID }}
             APP_ID=${{ vars.APP_ID }}

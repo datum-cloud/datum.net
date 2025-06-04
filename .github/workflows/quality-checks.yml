@@ -85,12 +85,14 @@ jobs:
       - name: Build
         run: npm run build
         env:
+          SITE_URL: ${{ vars.SITE_URL }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
           APP_INSTALLATION_ID: ${{ vars.APP_INSTALLATION_ID }}
           APP_ID: ${{ vars.APP_ID }}
           ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
           ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
           ASTRO_DB_REMOTE_URL: ${{ vars.ASTRO_DB_REMOTE_URL }}
+          ASTRO_TELEMETRY_DISABLED: '1'
 
   status-check:
     needs: [install, quality, build]

@@ -42,16 +42,11 @@ spec:
               value: https://api.datum.net
             - name: SITE_GITHUB
               value: https://github.com/datum-cloud/datum.net
-            - name: APP_PRIVATE_KEY
-              value: ${{ secrets.APP_PRIVATE_KEY }}
-            - name: APP_INSTALLATION_ID
-              value: ${{ vars.APP_INSTALLATION_ID }}
             - name: APP_ID
               value: ${{ vars.APP_ID }}
-            - name: ASTRO_DB_APP_TOKEN
-              value: ${{ secrets.ASTRO_DB_APP_TOKEN }}
-            - name: ASTRO_DB_REMOTE_URL
-              value: ${{ vars.ASTRO_DB_REMOTE_URL }}
+          envFrom:
+            - secretRef:
+                name: datum-net
           resources:
             requests:
               cpu: 500m

@@ -6,9 +6,6 @@ WORKDIR /app
 FROM base AS development
 
 ENV NODE_ENV=development
-ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL:-"libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"}
-ENV ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
-ENV ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
 ENV HOST=0.0.0.
 ENV PORT=4321
 
@@ -27,9 +24,6 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 FROM base AS build
 
 ENV NODE_ENV=production
-ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL:-"libsql://roadmap-ariaedo.aws-ap-northeast-1.turso.io"}
-ENV ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
-ENV ASTRO_TELEMETRY_DISABLED=${ASTRO_TELEMETRY_DISABLED}
 ENV HOST=0.0.0.0
 ENV PORT=4321
 

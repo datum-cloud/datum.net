@@ -3,12 +3,30 @@ import { loadEnv } from 'vite';
 import path from 'path';
 import fs from 'fs';
 
+// Define types for environment variables
+type EnvValue = string | number | boolean | undefined;
+type EnvRecord = Record<string, EnvValue>;
+
+// Define types for debug info
+interface DebugInfo {
+  env_file_path?: string;
+  env_file_exists?: boolean;
+  env_file_first_line?: string;
+  env_file_read_error?: string;
+  loadEnv_error?: string;
+  site_url_sources?: {
+    meta_env: 'present' | 'absent';
+    loaded_env: 'present' | 'absent';
+    process_env: 'present' | 'absent';
+  };
+}
+
 export const GET: APIRoute = ({ request: _request }) => {
   // Initialize empty objects for all environment types
-  let metaEnv: Record<string, any> = {};
-  let loadedEnv: Record<string, any> = {};
-  let processEnv: Record<string, any> = {};
-  const debugInfo: Record<string, any> = {};
+  let metaEnv: EnvRecord = {};
+  let loadedEnv: EnvRecord = {};
+  let processEnv: EnvRecord = {};
+  const debugInfo: DebugInfo = {};
 
   // Check if import.meta.env is available (Astro/Vite)
   if (typeof import.meta.env !== 'undefined') {
@@ -55,11 +73,11 @@ export const GET: APIRoute = ({ request: _request }) => {
   }
 
   // Function to filter sensitive variables and remove "_" variables
-  const filterSensitiveVars = (envVars: Record<string, any>) => {
+  const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
     return Object.fromEntries(
-      Object.entries(envVars).filter(([key, value]) => {
+      Object.entries(envVars).map(([key, value]) => {
         // Filter out variables whose name is exactly "_"
-        if (key === '_') return false;
+        if (key === '_') return [key, undefined];
 
         const lowerKey = key.toLowerCase();
 
@@ -96,7 +114,13 @@ export const GET: APIRoute = ({ request: _request }) => {
           typeof value === 'string' &&
           (value.includes('/Users/') || value.includes('/home/') || value.includes('\\Users\\'));
 
-        return !(hasSensitivePattern || isValueWithUserPath);
+        // If sensitive, return the key with masked value
+        if (hasSensitivePattern || isValueWithUserPath) {
+          return [key, value ? '***' : ''];
+        }
+
+        // If not sensitive, return as is
+        return [key, value];
       })
     );
   };

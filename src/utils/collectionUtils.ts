@@ -16,10 +16,12 @@ export async function getCollectionEntry(
   options: {
     errorMessage?: string;
   } = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const { errorMessage } = options;
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = await getEntry(collection as any, slug);
 
     if (!data) {

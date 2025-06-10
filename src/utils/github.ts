@@ -116,7 +116,7 @@ async function issuesLabeledRoadmap(): Promise<object[]> {
 
   const graphqlWithAuth = graphql.defaults({
     headers: {
-      authorization: `token ${token}`,
+      authorization: `Bearer ${token}`,
     },
   });
 
@@ -124,7 +124,7 @@ async function issuesLabeledRoadmap(): Promise<object[]> {
     `
       query {
         repository(owner: "datum-cloud", name: "enhancements") {
-          issues(last: 100, filterBy: {states: OPEN, labels: ["Roadmap Vote"]}) {
+          issues(last: 50, filterBy: {states: OPEN, labels: ["Roadmap Vote"]}) {
             nodes {
               id
               title

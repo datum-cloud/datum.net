@@ -298,3 +298,71 @@ These files ignore:
 - Editor directories and files
 - Package manager files
 - Public assets
+
+## End-to-End Testing
+
+This project uses Playwright for end-to-end testing, providing reliable testing across multiple browsers.
+
+### Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Install Playwright browsers:
+
+```bash
+npx playwright install
+```
+
+### Running Tests
+
+| Command                   | Action                                       |
+| :------------------------ | :------------------------------------------- |
+| `npm run test:e2e`        | Run all tests in headless mode               |
+| `npm run test:e2e:ui`     | Run tests with UI mode (recommended for dev) |
+| `npm run test:e2e:debug`  | Run tests in debug mode                      |
+| `npm run test:e2e:report` | Show the last test report                    |
+
+### Test Structure
+
+Tests are located in the `tests/e2e` directory:
+
+```
+tests/
+└── e2e/
+    ├── home.spec.ts    # Homepage tests
+    └── ...            # Other test files
+```
+
+### Test Reports
+
+- Test reports are generated in the `playwright-report` directory
+- Screenshots and videos of failures are saved in `test-results`
+- Reports are not committed to the repository (see `.gitignore`)
+
+### Writing Tests
+
+Example test structure:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Feature Name', () => {
+  test('should do something specific', async ({ page }) => {
+    await page.goto('/');
+    // Test implementation
+  });
+});
+```
+
+### CI/CD Integration
+
+The tests are configured to run in CI environments:
+
+- Retries failed tests in CI
+- Generates HTML reports
+- Takes screenshots on failures
+- Supports parallel test execution

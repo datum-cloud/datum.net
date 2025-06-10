@@ -26,3 +26,10 @@ pnpm-debug.log*
 
 # pagefind for search
 public/pagefind/*
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+tech-spec.md
+result.txt

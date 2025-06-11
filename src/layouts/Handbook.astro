@@ -26,7 +26,7 @@ const {
   article = false,
   publishDate,
   author,
-  noindex = false,
+  // noindex = false,
   canonical,
 } = Astro.props;
 
@@ -41,7 +41,8 @@ const imageUrl = new URL(image, Astro.site).href;
       title={title}
       description={description}
       canonical={canonical || pageUrl}
-      noindex={noindex}
+      noindex={true}
+      nofollow={true}
       openGraph={{
         basic: {
           title: title,

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2025-06-12)
+
+## What's Changed
+* chore: update release message by @ronggur in https://github.com/datum-cloud/datum.net/pull/121
+
+
+**Full Changelog**: https://github.com/datum-cloud/datum.net/compare/v1.0.0...v1.0.1
+
 ## 1.0.0 (2025-06-12)
 
 ## What's Changed

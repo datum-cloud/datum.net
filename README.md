@@ -189,6 +189,53 @@ The setup uses a multi-stage Dockerfile:
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
+## Version Management
+
+This project uses [Release Please](https://github.com/googleapis/release-please) for automated version management. To bump the version, follow these commit message conventions:
+
+### Version Bump Types
+
+1. **Patch Version (0.0.x)** - For bug fixes:
+
+   ```bash
+   git commit -m "fix: resolve bug in search functionality"
+   ```
+
+2. **Minor Version (0.x.0)** - For new features:
+
+   ```bash
+   git commit -m "feat: add new search feature"
+   ```
+
+3. **Major Version (x.0.0)** - For breaking changes:
+
+   ```bash
+   git commit -m "feat!: completely redesign the UI"
+   # or
+   git commit -m "feat: new API design
+
+   BREAKING CHANGE: This changes the entire API structure"
+   ```
+
+### Other Commit Types
+
+These types don't trigger version bumps but are included in the changelog:
+
+```bash
+git commit -m "docs: update README"
+git commit -m "chore: update dependencies"
+git commit -m "style: format code"
+git commit -m "refactor: restructure components"
+```
+
+After pushing commits to the main branch:
+
+1. Release Please will create a PR with the version bump
+2. The PR will include updated:
+   - `package.json` version
+   - `CHANGELOG.md`
+3. When the PR is merged, it will create a new release
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:

@@ -25,7 +25,6 @@ const currentPage = 1;
 const totalItems = sortedPosts.length;
 const totalPages = Math.ceil(totalItems / pageSize);
 const currentPageData = sortedPosts.slice(0, pageSize);
-// console.log(currentPageData);
 ---
 
 <Layout title={page.data.title || 'Datum'} description={page.data.description}>

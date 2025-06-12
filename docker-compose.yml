@@ -20,15 +20,30 @@ services:
     build:
       context: .
       target: production
+      secrets:
+        - astro_studio_app_token
+      args:
+        - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
     ports:
       - '4321:4321'
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
       - PORT=4321
-    env_file:
-      - .env
+      - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+      - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
+      - PUBLIC_HARDCODED=hello_from_compose
+      - SITE_URL=${SITE_URL}
+      - SITE_GITHUB=${SITE_GITHUB}
+      - ASTRO_STUDIO_APP_TOKEN=${ASTRO_STUDIO_APP_TOKEN}
+    # env_file:
+    # - .env
     restart: unless-stopped
+
+secrets:
+  astro_studio_app_token:
+    environment: ASTRO_STUDIO_APP_TOKEN
 
 networks:
   datum-network:

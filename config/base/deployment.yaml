@@ -42,8 +42,6 @@ spec:
               value: https://api.datum.net
             - name: SITE_GITHUB
               value: https://github.com/datum-cloud/datum.net
-            - name: GH_ACCESS_TOKEN
-              value: ${{ secrets.GH_ACCESS_TOKEN }}
           envFrom:
             - secretRef:
                 name: datum-net

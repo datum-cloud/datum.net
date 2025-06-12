@@ -95,5 +95,6 @@
       "npm run format:check",
       "npm run format"
     ]
-  }
+  },
+  "version": "1.0.0"
 }

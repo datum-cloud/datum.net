@@ -8,9 +8,7 @@
       "bump-patch-for-minor-pre-major": true,
       "draft": false,
       "prerelease": false,
-      "release-message": "chore: release ${version}\n\n${changelog}",
-      "pull-request-title-pattern": "chore: release ${version}",
-      "pull-request-header": "## Release ${version}\n\nThis release includes the following changes:\n\n",
+      "pull-request-header": "🚀 This PR prepares the next release.\nPlease review the changelog and approve for publishing.",
       "changelog-sections": [
         {
           "type": "feat",

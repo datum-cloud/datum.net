@@ -1,23 +1,23 @@
 module.exports = {
-  plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
     {
-      files: "*.astro",
+      files: '*.astro',
       options: {
-        parser: "astro",
-        plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+        parser: 'astro',
+        plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
       },
     },
     {
-      files: "*.mdx",
+      files: '*.mdx',
       options: {
-        parser: "mdx",
+        parser: 'mdx',
       },
     },
   ],
   semi: true,
   singleQuote: true,
   tabWidth: 2,
-  trailingComma: "es5",
+  trailingComma: 'es5',
   printWidth: 100,
 };

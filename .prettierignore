@@ -41,3 +41,6 @@ src/content/
 
 # Public assets
 public/
+
+# Release Please generated files
+CHANGELOG.md

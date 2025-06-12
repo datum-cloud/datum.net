@@ -32,22 +32,15 @@ let projects = await getRoadmap();
                 <div class="relative">
                   <span>
                     <div class="flex space-x-4">
-                      {project.vote > 0 && (
-                        <div class="bg-blackberry-200 relative flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center text-center">
-                          <p class="m-0 leading-none">
-                            <>
-                              <strong
-                                class="text-lg leading-none"
-                                id={`${project.content.id}-value`}
-                              >
-                                {project.vote}
-                              </strong>
-                              <br />
-                            </>
-                            <span class="text-sm">votes</span>
-                          </p>
-                        </div>
-                      )}
+                      <div class="bg-blackberry-200 relative flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center text-center">
+                        <p class="m-0 leading-none">
+                          <strong class="text-lg leading-none" id={`${project.content.id}-value`}>
+                            {Math.max(0, project.vote)}
+                          </strong>
+                          <br />
+                          <span class="text-sm">votes</span>
+                        </p>
+                      </div>
 
                       <div>
                         <h3 class="m-0 text-2xl leading-tight font-extrabold">
@@ -83,33 +76,31 @@ let projects = await getRoadmap();
                           </a>
                         )}
 
-                        {project.vote > 0 && (
-                          <div class="flex space-x-2">
-                            <button
-                              class="bg-blackberry-600 border-button group btnVote relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white disabled:cursor-not-allowed disabled:opacity-30"
-                              data-projectid={project.content.id}
-                            >
-                              <span class="bg-blackberry-800 text-primary hover:text-primary border-button relative mx-[-1.5px] block w-auto translate-y-[-2px] rounded-[6px] border-[1.5px] px-3.5 py-1.5 text-center text-[13px] font-bold select-none hover:translate-y-[-3px] group-disabled:hover:!translate-y-[-2px] active:translate-y-[-1px] active:transition-all active:duration-100">
-                                <span class="flex items-center space-x-1">
-                                  <svg
-                                    class="LemonIcon h-6 w-4"
-                                    width="100%"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M10.054 2.949A1.75 1.75 0 0 1 11.611 2a2.753 2.753 0 0 1 2.722 3.174L13.893 8h4.366a3.75 3.75 0 0 1 3.707 4.314l-.837 5.5A3.75 3.75 0 0 1 17.422 21H3.75A1.75 1.75 0 0 1 2 19.25v-7.5c0-.966.784-1.75 1.75-1.75h2.671l3.633-7.051ZM6 11.5H3.75a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25H6v-8Zm1.5 8h9.922a2.25 2.25 0 0 0 2.224-1.912l.837-5.5A2.25 2.25 0 0 0 18.26 9.5h-5.243a.75.75 0 0 1-.74-.866l.575-3.691A1.253 1.253 0 0 0 11.61 3.5a.252.252 0 0 0-.224.136L7.5 11.182V19.5Z"
-                                    />
-                                  </svg>
-                                  <span>Vote</span>
-                                </span>
+                        <div class="flex space-x-2">
+                          <button
+                            class="bg-blackberry-600 border-button group btnVote relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white disabled:cursor-not-allowed disabled:opacity-30"
+                            data-projectid={project.content.id}
+                          >
+                            <span class="bg-blackberry-800 text-primary hover:text-primary border-button relative mx-[-1.5px] block w-auto translate-y-[-2px] rounded-[6px] border-[1.5px] px-3.5 py-1.5 text-center text-[13px] font-bold select-none hover:translate-y-[-3px] group-disabled:hover:!translate-y-[-2px] active:translate-y-[-1px] active:transition-all active:duration-100">
+                              <span class="flex items-center space-x-1">
+                                <svg
+                                  class="LemonIcon h-6 w-4"
+                                  width="100%"
+                                  fill="currentColor"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M10.054 2.949A1.75 1.75 0 0 1 11.611 2a2.753 2.753 0 0 1 2.722 3.174L13.893 8h4.366a3.75 3.75 0 0 1 3.707 4.314l-.837 5.5A3.75 3.75 0 0 1 17.422 21H3.75A1.75 1.75 0 0 1 2 19.25v-7.5c0-.966.784-1.75 1.75-1.75h2.671l3.633-7.051ZM6 11.5H3.75a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25H6v-8Zm1.5 8h9.922a2.25 2.25 0 0 0 2.224-1.912l.837-5.5A2.25 2.25 0 0 0 18.26 9.5h-5.243a.75.75 0 0 1-.74-.866l.575-3.691A1.253 1.253 0 0 0 11.61 3.5a.252.252 0 0 0-.224.136L7.5 11.182V19.5Z"
+                                  />
+                                </svg>
+                                <span>Vote</span>
                               </span>
-                            </button>
-                          </div>
-                        )}
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </span>

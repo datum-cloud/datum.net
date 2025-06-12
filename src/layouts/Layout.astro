@@ -21,6 +21,8 @@ const {
 const pageUrl = Astro.url.href;
 const defaultImage = new URL('/images/default-og.jpg', Astro.site).href;
 const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
+
+// console.log(process.env);
 ---
 
 <!doctype html>
@@ -83,6 +85,12 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
     />
   </head>
   <body class="flex min-h-screen flex-col bg-gray-50 text-gray-800">
+    <script>
+      const config = {
+        hardcoded: process.env.PUBLIC_HARDCODED,
+      };
+      console.log(config);
+    </script>
     <Header />
     <main class={`flex-grow px-4 py-8 ${fluid ? 'w-full' : 'container mx-auto'}`}>
       <slot />

@@ -10,6 +10,7 @@ import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import db from '@astrojs/db';
 import node from '@astrojs/node';
+
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables

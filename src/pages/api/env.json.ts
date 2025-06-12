@@ -28,6 +28,25 @@ export const GET: APIRoute = ({ request: _request }) => {
   let processEnv: EnvRecord = {};
   const debugInfo: DebugInfo = {};
 
+  /*
+  // Only allow in development mode
+  if (process.env.NODE_ENV === 'production') {
+    return new Response(JSON.stringify({ error: 'Not available in production' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Simple auth check
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== 'Bearer debug-token-123') {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  */
+
   // Check if import.meta.env is available (Astro/Vite)
   if (typeof import.meta.env !== 'undefined') {
     metaEnv = { ...import.meta.env };

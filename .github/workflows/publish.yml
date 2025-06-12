@@ -60,7 +60,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: production
+          secrets: |
+            "astro_studio_app_token=${{ secrets.ASTRO_STUDIO_APP_TOKEN }}"
           build-args: |
+            ASTRO_DB_REMOTE_URL=${{ vars.ASTRO_DB_REMOTE_URL }}
             GH_ACCESS_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}
             ASTRO_TELEMETRY_DISABLED=1
 

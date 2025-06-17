@@ -33,3 +33,5 @@ test-results/
 playwright/.cache/
 tech-spec.md
 result.txt
+build-log.txt
+Dockerfile.bak

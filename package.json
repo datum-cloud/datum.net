@@ -5,7 +5,7 @@
   "scripts": {
     "build:pagefind": "npx pagefind",
     "copy:pagefind": "npx shx cp -r dist/pagefind public/",
-    "dev:astro": "astro dev --host --typecheck",
+    "dev:astro": "astro dev --host --typecheck --remote",
     "build:astro": "astro check --skip-playwright && astro build --remote",
     "dev": "npm run dev:astro && npm run build:pagefind && npm run copy:pagefind",
     "build": "npm run build:astro && npm run build:pagefind",

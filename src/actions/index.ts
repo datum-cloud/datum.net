@@ -1,4 +1,4 @@
-import { voting } from './db.js';
+import { voting } from './db.ts';
 
 export const server = {
   voting,

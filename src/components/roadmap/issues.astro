@@ -137,7 +137,7 @@ let projects = await getRoadmap();
   <script>
     import { actions } from 'astro:actions';
 
-    // document.cookie = 'voted='; // Clear the cookie for testing purposes
+    document.cookie = 'voted='; // Clear the cookie for testing purposes
     const voteItems = document.querySelectorAll('.vote-item');
     let voted = getCookie('voted')?.split(',') ?? [];
 
@@ -171,15 +171,15 @@ let projects = await getRoadmap();
           throw new Error('Project ID is missing');
         }
         const projectId = this.dataset.projectid;
-        actions.voting({ id: projectId }).then((response) => {
-          if (!response || !response.data) {
+        actions.voting({ id: projectId }).then((result) => {
+          if (!result.data) {
             throw new Error('Failed to update vote count');
           }
 
           voted.push(projectId);
           setCookie('voted', voted, 1);
           this.disabled = true;
-          item.querySelector('#' + projectId + '-value')!.textContent = String(response.data);
+          item.querySelector('#' + projectId + '-value')!.textContent = String(result.data);
         });
       });
     });

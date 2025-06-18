@@ -1,4 +1,23 @@
 services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: astro_db_name
+      POSTGRES_USER: astro_db_user
+      POSTGRES_PASSWORD: astro_db_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/roadmap.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U astro_db_user -d astro_db_name']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - datum-network
+
   dev:
     build:
       context: .
@@ -10,6 +29,10 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     networks:
@@ -20,31 +43,22 @@ services:
     build:
       context: .
       target: production
-      secrets:
-        - astro_studio_app_token
-      args:
-        - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
     ports:
       - '4321:4321'
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
       - PORT=4321
-      - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
-      - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
-      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
-      - PUBLIC_HARDCODED=hello_from_compose
-      - SITE_URL=${SITE_URL}
-      - SITE_GITHUB=${SITE_GITHUB}
-      - ASTRO_STUDIO_APP_TOKEN=${ASTRO_STUDIO_APP_TOKEN}
-    # env_file:
-    # - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - datum-network
     restart: unless-stopped
-
-secrets:
-  astro_studio_app_token:
-    environment: ASTRO_STUDIO_APP_TOKEN
 
 networks:
   datum-network:
     driver: bridge
+
+volumes:
+  postgres_data:

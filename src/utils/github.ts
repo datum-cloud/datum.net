@@ -87,7 +87,7 @@ async function issuesLabeledRoadmap(): Promise<object[]> {
     `
       query {
         repository(owner: "datum-cloud", name: "enhancements") {
-          issues(last: 50, filterBy: {states: OPEN, labels: ["Milo"]}) {
+          issues(last: 50, filterBy: {states: OPEN, labels: ["Roadmap Vote"]}) {
             nodes {
               id
               title

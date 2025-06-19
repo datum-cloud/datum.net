@@ -86,10 +86,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN || '' }}
-          ASTRO_DB_REMOTE_URL: ${{ vars.ASTRO_DB_REMOTE_URL || '' }}
-          ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN || '' }}
-          ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN || '' }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           ASTRO_TELEMETRY_DISABLED: 1
 
   e2e:
@@ -116,10 +113,6 @@ jobs:
       - name: Run E2E Tests
         run: npm run test:e2e
         env:
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN || '' }}
-          ASTRO_DB_REMOTE_URL: ${{ vars.ASTRO_DB_REMOTE_URL || '' }}
-          ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN || '' }}
-          ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN || '' }}
           ASTRO_TELEMETRY_DISABLED: 1
 
       - name: Upload Test Results

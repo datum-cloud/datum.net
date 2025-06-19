@@ -1,26 +1,31 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro:schema';
-import { db, eq, Votes } from 'astro:db';
+import { getVote, setVote } from '@utils/roadmap';
+
+// Interface for vote data
+interface Vote {
+  vote: number;
+}
+
+// Input type for the voting action
+interface VotingInput {
+  id: string;
+}
 
 export const voting = defineAction({
   input: z.object({
     id: z.string(),
   }),
-  handler: async (input) => {
+  handler: async (input: VotingInput): Promise<number> => {
     let newValue = 1;
-    const existingVote = await db.select().from(Votes).where(eq(Votes.id, input.id));
+    const existingVote: Vote | null = await getVote(input.id);
 
-    if (existingVote && typeof existingVote[0] != 'undefined') {
-      newValue = existingVote[0].vote + 1;
+    if (existingVote) {
       // Increment the vote count if the vote already exists
-      await db.update(Votes).set({ vote: newValue }).where(eq(Votes.id, input.id));
-    } else {
-      // Create a new vote entry if it doesn't exist
-      await db.insert(Votes).values({
-        id: input.id,
-        vote: newValue,
-      });
+      newValue = existingVote.vote + 1;
     }
+
+    await setVote(input.id, newValue);
 
     return newValue;
   },

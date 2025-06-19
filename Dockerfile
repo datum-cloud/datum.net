@@ -1,6 +1,11 @@
 FROM node:22.16.0-alpine3.22 AS base
 WORKDIR /app
 
+# Create directory for Astro DB data
+# RUN mkdir -p /app/.astro/database
+# RUN chown -R node:node /app/.astro/database
+ENV ASTRO_TELEMETRY_DISABLED=true
+
 FROM base AS development
 
 ENV NODE_ENV=development
@@ -16,9 +21,6 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 
 FROM base AS build
 
-ARG ASTRO_DB_REMOTE_URL
-ENV ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
-
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
@@ -28,9 +30,7 @@ COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .
 RUN chmod -R 755 src/pages
-RUN --mount=type=secret,id=astro_studio_app_token \
-    ASTRO_STUDIO_APP_TOKEN=$(cat /run/secrets/astro_studio_app_token) \
-    npm run build
+RUN npm run build
 
 FROM node:22.16.0-alpine3.22 AS production
 

@@ -17,6 +17,7 @@
       "@/*": ["./*"],
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
+      "@libs/*": ["./src/libs/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@data/*": ["./src/data/*"],
       "@styles/*": ["./src/styles/*"],

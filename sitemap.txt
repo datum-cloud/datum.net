@@ -1,7 +1,7 @@
 Header Navigation
 
 - Why Datum?
-	- Our Vision 
+	- Our Vision
 		- About (/about)
 		- Team (/about/team)
 	- Our Thoughts
@@ -36,6 +36,7 @@ Header Navigation
 	- Public Slack (/docs/slack)
 
 - Handbook (/handbook)
+- Roadmap
 
 - Get Started (cloud.datum.net)
 

@@ -3,6 +3,6 @@ resources:
   - service.yaml
   - http-route.yaml
   - postgres-secret.yaml
-  - postgres-pv.yaml
+  - postgres-pvc.yaml
   - postgres-service.yaml
   - postgres-deployment.yaml

@@ -1,7 +1,7 @@
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
-  name: postgres-volume
+  name: postgres-data
   labels:
     type: local
     app: postgres

@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-deployment
-  namespace: default
+  name: postgres
+  namespace: datum
 spec:
   replicas: 1
   selector:
@@ -16,28 +16,41 @@ spec:
       containers:
         - name: postgres
           image: postgres:17
-          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
           envFrom:
             - configMapRef:
-              name: postgres-secret
+                name: postgres-config
+            - secretRef:
+                name: postgres-secret
           volumeMounts:
-            - name: postgres_data
+            - name: postgres-data
               mountPath: /var/lib/postgresql/data
+            - name: init-sql
+              mountPath: /docker-entrypoint-initdb.d
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U astro_db_user -d astro_db_name
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U astro_db_user -d astro_db_name
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 15
       volumes:
-        - name: postgres_data
+        - name: postgres-data
           persistentVolumeClaim:
-            claimName: postgres-volume
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-volume
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+            claimName: postgres-data
+        - name: init-sql
+          configMap:
+            name: init-sql-config

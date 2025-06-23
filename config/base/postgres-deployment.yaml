@@ -21,8 +21,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: postgres-config
-            - secretRef:
-                name: postgres-secret
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
@@ -33,7 +31,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - pg_isready -U astro_db_user -d astro_db_name
+                - pg_isready -U $(POSTGRES_USER) -d $(POSTGRES_DB)
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 15
@@ -43,7 +41,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - pg_isready -U astro_db_user -d astro_db_name
+                - pg_isready -U $(POSTGRES_USER) -d $(POSTGRES_DB)
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 15

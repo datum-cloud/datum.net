@@ -4,5 +4,5 @@ metadata:
   name: postgres-config
   namespace: default
 data:
-  POSTGRES_DB: astro_db_name
-  POSTGRES_USER: astro_db_user
+  POSTGRES_DB: $(POSTGRES_DB)
+  POSTGRES_USER: $(POSTGRES_USER)

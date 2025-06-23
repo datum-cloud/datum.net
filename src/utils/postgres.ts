@@ -6,17 +6,17 @@ export async function getDatabase() {
   if (!sql) {
     const postgres = (await import('postgres')).default;
 
-    const connectionString = process.env.DATABASE_URL;
-    if (!connectionString) {
-      throw new Error('DATABASE_URL environment variable is required');
-    }
+    // const connectionString = process.env.DATABASE_URL;
+    // if (!connectionString) {
+    //   throw new Error('DATABASE_URL environment variable is required');
+    // }
 
-    sql = postgres(connectionString, {
+    sql = postgres({
       host: 'postgres',
       port: 5432,
-      database: 'astro_db_name',
-      user: 'astro_db_user',
-      password: 'astro_db_password',
+      database: import.meta.env.POSTGRES_DB || process.env.POSTGRES_DB,
+      user: import.meta.env.POSTGRES_USER || process.env.POSTGRES_USER,
+      password: import.meta.env.POSTGRES_PASSWORD || process.env.POSTGRES_PASSWORD,
       max: 10,
       idle_timeout: 30,
       connect_timeout: 2,

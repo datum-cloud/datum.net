@@ -48,20 +48,16 @@ async function getRoadmap() {
     if (currentIssues && currentIssues.length > 0) {
       if (isOverOneHourAgo(currentIssues[0].updated_at)) {
         issues = await issuesLabeledRoadmap();
-        // console.log('======== Update data to database from GitHub GraphQL API');
         await refreshProjects(JSON.stringify(issues), new Date());
       } else {
-        // console.log('-------- Using existing issues from the database');
         issues = JSON.parse(currentIssues[0].content);
       }
     } else {
-      // console.log('-------- No issues in the database');
       issues = await issuesLabeledRoadmap();
-      // console.log('======== Update data to database from GitHub GraphQL API');
       await refreshProjects(JSON.stringify(issues), new Date());
     }
   } catch (error) {
-    console.error('-------- Error fetching roadmap:', error);
+    console.error('Error fetching roadmap from database:', error);
     issues = await issuesLabeledRoadmap();
   }
 
@@ -69,7 +65,6 @@ async function getRoadmap() {
 }
 
 async function issuesLabeledRoadmap(): Promise<object[]> {
-  // console.log('======== Fetching issues labeled "Roadmap Vote" from GitHub GraphQL API');
   const token = import.meta.env.GH_ACCESS_TOKEN || process.env.GH_ACCESS_TOKEN;
 
   if (!token) {
@@ -82,7 +77,6 @@ async function issuesLabeledRoadmap(): Promise<object[]> {
     },
   });
 
-  // filterBy: {states: OPEN, labels: ["Roadmap Vote"]}
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {

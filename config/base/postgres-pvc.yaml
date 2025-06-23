@@ -6,10 +6,8 @@ metadata:
     type: local
     app: postgres
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 2Gi
   accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: /data/postgresql
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

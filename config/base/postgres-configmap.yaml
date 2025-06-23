@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
-  namespace: datum
+  namespace: default
 data:
   POSTGRES_DB: astro_db_name
   POSTGRES_USER: astro_db_user

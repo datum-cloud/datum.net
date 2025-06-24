@@ -1,7 +1,7 @@
 ---
-title: Why does Datum exist?
+title: Deciding Products to Build
 sidebar:
-  label: Why does Datum exist?
+  label: Deciding Products to Build
   order: 13
 updatedDate: May 21, 2025
 authors: jacob

@@ -1,9 +1,6 @@
 FROM node:22.16.0-alpine3.22 AS base
 WORKDIR /app
 
-# Create directory for Astro DB data
-# RUN mkdir -p /app/.astro/database
-# RUN chown -R node:node /app/.astro/database
 ENV ASTRO_TELEMETRY_DISABLED=true
 
 FROM base AS development

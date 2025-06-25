@@ -1,7 +1,14 @@
 // import { db, Votes, Project } from 'astro:db';
-import { refreshProjects, getProjects, getVotes } from '@/src/utils/roadmap';
+import { updateProjects, getProjects, getVotes } from '@/src/utils/files';
+import type { Projects } from '@/src/utils/files';
+
 import { marked } from 'marked';
 import { graphql } from '@octokit/graphql';
+
+export interface Issues {
+  projects: typeof getProjects;
+  updated_at: Date;
+}
 
 type GitHubGraphQLResponse = {
   data: {
@@ -43,21 +50,24 @@ async function getRoadmap() {
 
   try {
     // console.log('-------- Fetching roadmap from the database');
-    const currentIssues = await getProjects();
+    const projectData: Projects = await getProjects();
 
-    if (currentIssues && currentIssues.length > 0) {
-      if (isOverOneHourAgo(currentIssues[0].updated_at)) {
+    if (projectData && projectData.projects.length > 0) {
+      if (isOverOneHourAgo(projectData.updated_at)) {
+        console.log('++++++ projects from the Github');
         issues = await issuesLabeledRoadmap();
-        await refreshProjects(JSON.stringify(issues), new Date());
+        await updateProjects(JSON.stringify(issues));
       } else {
-        issues = JSON.parse(currentIssues[0].content);
+        console.log('==== projects from the FILES');
+        issues = projectData.projects;
       }
     } else {
+      console.error('++++++ projects from the Github');
       issues = await issuesLabeledRoadmap();
-      await refreshProjects(JSON.stringify(issues), new Date());
+      await updateProjects(JSON.stringify(issues));
     }
   } catch (error) {
-    console.error('Error fetching roadmap from database:', error);
+    console.error('------- fetching roadmap from FILES:', error);
     issues = await issuesLabeledRoadmap();
   }
 

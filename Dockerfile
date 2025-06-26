@@ -1,4 +1,4 @@
-FROM node:22.16.0-alpine3.22 AS base
+FROM node:22.17.0-alpine3.22 AS base
 WORKDIR /app
 
 # Create directory for Astro DB data
@@ -32,7 +32,7 @@ COPY . .
 RUN chmod -R 755 src/pages
 RUN npm run build
 
-FROM node:22.16.0-alpine3.22 AS production
+FROM node:22.17.0-alpine3.22 AS production
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0

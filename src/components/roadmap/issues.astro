@@ -175,11 +175,10 @@ let projects = await getRoadmap();
           if (!result.data) {
             throw new Error('Failed to update vote count');
           }
-
           voted.push(projectId);
           setCookie('voted', voted, 1);
-          this.disabled = true;
-          item.querySelector('#' + projectId + '-value')!.textContent = String(result.data);
+          // this.disabled = true;
+          // item.querySelector('#' + projectId + '-value')!.textContent = String(result.data);
         });
       });
     });

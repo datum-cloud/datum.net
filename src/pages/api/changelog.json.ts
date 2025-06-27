@@ -7,8 +7,8 @@ export const GET: APIRoute = async () => {
   const responseObj = {
     changelog: [
       {
-        date: '2025-06-23',
-        changes: ['Create k8s config for postgres.'],
+        date: '2025-06-25',
+        changes: ['Replace postgres with file-based storage.'],
       },
     ],
   };

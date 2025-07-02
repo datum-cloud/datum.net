@@ -1,9 +1,6 @@
 FROM node:22.16.0-alpine3.22 AS base
 WORKDIR /app
 
-# Create directory for Astro DB data
-# RUN mkdir -p /app/.astro/database
-# RUN chown -R node:node /app/.astro/database
 ENV ASTRO_TELEMETRY_DISABLED=true
 
 FROM base AS development
@@ -16,6 +13,7 @@ COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install
 COPY . .
 RUN chmod -R 755 src/pages
+
 EXPOSE 4321
 CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]
 
@@ -30,6 +28,7 @@ COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .
 RUN chmod -R 755 src/pages
+
 RUN npm run build
 
 FROM node:22.16.0-alpine3.22 AS production
@@ -45,5 +44,6 @@ COPY --from=build /app/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --ignore-scripts
 COPY --from=build /app/src/pages ./src/pages
 RUN chmod -R 755 src/pages
+
 EXPOSE 4321
 CMD ["node", "./dist/server/entry.mjs"]

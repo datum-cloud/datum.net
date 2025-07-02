@@ -35,3 +35,6 @@ tech-spec.md
 result.txt
 build-log.txt
 Dockerfile.bak
+
+# local storage
+.persistent/*

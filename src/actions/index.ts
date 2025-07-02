@@ -1,5 +1,6 @@
-import { voting } from './db.ts';
+import { voting, getUserVoted } from './db.ts';
 
 export const server = {
   voting,
+  getUserVoted,
 };

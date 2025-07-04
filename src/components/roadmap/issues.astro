@@ -1,5 +1,5 @@
 ---
-import { getRoadmap } from '@utils/github';
+import { getRoadmap } from '@utils/roadmap';
 import { marked } from 'marked';
 
 export const prerender = false;
@@ -137,16 +137,22 @@ let projects = await getRoadmap();
   <script>
     import { actions } from 'astro:actions';
 
-    document.cookie = 'voted='; // Clear the cookie for testing purposes
     const voteItems = document.querySelectorAll('.vote-item');
-    let voted = getCookie('voted')?.split(',') ?? [];
+    let voted: string[] = [];
 
-    function setCookie(key: string, value: string[], exdays?: number | null) {
+    const userVoted = await actions.getUserVoted({});
+
+    if (userVoted.data) {
+      voted = userVoted.data;
+    }
+
+    /*
+    function setCookie(key: string, value: string, exdays?: number | null) {
       var exdate = new Date();
       if (exdays != null) {
         exdate.setDate(exdate.getDate() + exdays);
       }
-      var newValue = value.join(',') + (exdays == null ? '' : ';expires=' + exdate.toUTCString());
+      var newValue = value + (exdays == null ? '' : ';expires=' + exdate.toUTCString());
       document.cookie = key + '=' + newValue;
     }
 
@@ -156,6 +162,9 @@ let projects = await getRoadmap();
       );
       return matches ? decodeURIComponent(matches[1]) : undefined;
     }
+    setCookie('userId', 'test_user_id', 1);
+    let userId = getCookie('userId') as string;
+    */
 
     voteItems.forEach((item) => {
       const btnVote = item.querySelector('.btnVote');
@@ -173,11 +182,12 @@ let projects = await getRoadmap();
         const projectId = this.dataset.projectid;
         actions.voting({ id: projectId }).then((result) => {
           if (!result.data) {
-            throw new Error('Failed to update vote count');
+            throw new Error('Failed to update vote count. ');
           }
 
+          console.log(`Vote count [${projectId}] updated:`, result.data);
           voted.push(projectId);
-          setCookie('voted', voted, 1);
+
           this.disabled = true;
           item.querySelector('#' + projectId + '-value')!.textContent = String(result.data);
         });

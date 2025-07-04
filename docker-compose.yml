@@ -1,24 +1,4 @@
 services:
-  postgres:
-    image: postgres:17
-    environment:
-      POSTGRES_DB: astro_db_name
-      POSTGRES_USER: astro_db_user
-      POSTGRES_PASSWORD: astro_db_password
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init/roadmap.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U astro_db_user -d astro_db_name']
-      interval: 30s
-      timeout: 15s
-      retries: 3
-    networks:
-      - datum-network
-    restart: unless-stopped
-
   dev:
     build:
       context: .
@@ -28,12 +8,10 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=development
       - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
-    depends_on:
-      postgres:
-        condition: service_healthy
     env_file:
       - .env
     networks:
@@ -46,13 +24,13 @@ services:
       target: production
     ports:
       - '4321:4321'
+    volumes:
+      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
       - PORT=4321
-    depends_on:
-      postgres:
-        condition: service_healthy
+      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
     networks:
       - datum-network
     restart: unless-stopped
@@ -62,5 +40,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-data:
+  persistent-data:
     driver: local

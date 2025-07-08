@@ -70,6 +70,13 @@ spec:
               path: /
               port: 4321
               scheme: HTTP
+          volumeMounts:
+            - name: persistent-storage
+              mountPath: /app/.persistent
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+    volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: datum-pvc

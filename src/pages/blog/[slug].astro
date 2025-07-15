@@ -2,7 +2,7 @@
 // src/pages/blog/[slug].astro
 import Layout from '@layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
 import { formatLongDate, formatISODate } from '@utils/dateUtils';
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -33,6 +33,21 @@ const categoryData = await Promise.all(
     return await getCollectionEntry('categories', categorySlug);
   })
 );
+
+// Get processed avatar URL
+let processedAvatarUrl = '';
+if (authorData?.data.avatar) {
+  try {
+    const processedImage = await getImage({
+      src: authorData.data.avatar,
+      width: 40,
+      height: 40,
+    });
+    processedAvatarUrl = processedImage.src;
+  } catch (error) {
+    console.warn('Failed to process avatar image:', error);
+  }
+}
 ---
 
 <Layout
@@ -43,7 +58,22 @@ const categoryData = await Promise.all(
   publishDate={entry.data.date}
   author={entry.data.author}
 >
-  <article class="mx-auto max-w-4xl">
+  <article class="mx-auto max-w-4xl" data-pagefind-body>
+    <!-- Hidden meta tags for Pagefind -->
+    <span data-pagefind-meta="page_type" class="hidden" style="display: none;">post</span>
+    <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
+      >{authorData?.data.name || entry.data.author}</span
+    >
+    <span data-pagefind-meta="author_avatar" class="hidden" style="display: none;"
+      >{processedAvatarUrl}</span
+    >
+    <span data-pagefind-meta="date" class="hidden" style="display: none;"
+      >{formatISODate(entry.data.date)}</span
+    >
+    <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
+      >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
+    >
+
     <!-- Hero section -->
     <div class="mb-8 overflow-hidden">
       {

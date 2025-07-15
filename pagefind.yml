@@ -1,2 +1,2 @@
-site: dist/
-glob: 'client/handbook/**/*.{html}'
+site: dist/client/
+glob: '**/*.{html}'

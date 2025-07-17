@@ -1,6 +1,22 @@
 {
   "main": [
     {
+      "text": "Platform",
+      "href": "#",
+      "children": [
+        {
+          "items": [
+            { "text": "Our Platform", "href": "/features" },
+            { "text": "Big Ass Proxy", "href": "/features/proxy" },
+            { "text": "Galactic VPC", "href": "/product/vpc" },
+            { "text": "Backbone as Code", "href": "/features/backbone" },
+            { "text": "Snoozy Workloads", "href": "/features/workloads" },
+            { "text": "It's Always F***ING DNS", "href": "/features/dns" }
+          ]
+        }
+      ]
+    },
+    {
       "text": "Why Datum?",
       "href": "#",
       "isMegaDropdown": true,
@@ -29,42 +45,20 @@
       ]
     },
     {
-      "text": "Features",
+      "text": "Company",
       "href": "#",
       "children": [
         {
           "items": [
-            { "text": "Our Platform", "href": "/features" },
-            { "text": "Big Ass Proxy", "href": "/features/proxy" },
-            { "text": "Galactic VPC", "href": "/product/vpc" },
-            { "text": "Backbone as Code", "href": "/features/backbone" },
-            { "text": "Snoozy Workloads", "href": "/features/workloads" },
-            { "text": "It's Always F***ING DNS", "href": "/features/dns" }
+            { "text": "Our Journey", "href": "/about/journey" },
+            { "text": "Handbook", "href": "/handbook" },
+            { "text": "Roadmap", "href": "/roadmap" }
           ]
         }
       ]
     },
     {
-      "text": "Open Source",
-      "href": "#",
-      "isMegaDropdown": true,
-      "children": [
-        {
-          "title": "Projects",
-          "items": [
-            { "text": "Overview", "href": "/open-source" },
-            { "text": "Internetworker", "href": "/open-source/internetworker" },
-            { "text": "Patch", "href": "/open-source/patch" }
-          ]
-        },
-        {
-          "title": "Community",
-          "items": [{ "text": "Maintainer Program", "href": "/open-source/maintainers" }]
-        }
-      ]
-    },
-    {
-      "text": "Developers",
+      "text": "Docs",
       "href": "#",
       "isMegaDropdown": true,
       "children": [
@@ -77,36 +71,58 @@
           ]
         },
         {
-          "title": "Resources",
+          "title": "API",
           "items": [
             { "text": "API Reference", "href": "/api" },
-            { "text": "Changelog", "href": "/changelog" },
             { "text": "Public Slack", "href": "/docs/slack" }
           ]
         }
       ]
     },
     {
-      "text": "Handbook",
-      "href": "/handbook"
+      "text": "Resources",
+      "href": "#",
+      "isMegaDropdown": true,
+      "children": [
+        {
+          "title": "Open Source",
+          "items": [
+            { "text": "Overview", "href": "/open-source" },
+            { "text": "Internetworker", "href": "/open-source/internetworker" },
+            { "text": "Patch", "href": "/open-source/patch" },
+            { "text": "Maintainer Program", "href": "/open-source/maintainers" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "items": [
+            { "text": "Changelog", "href": "/changelog" },
+            { "text": "Brand", "href": "/brand" },
+            { "text": "AI Manifest", "href": "/ai-manifest" },
+            { "text": "Styleguide", "href": "/style-guide" },
+            { "text": "Glossary", "href": "/glossary" }
+          ]
+        }
+      ]
     },
     {
-      "text": "Roadmap",
-      "href": "/roadmap"
+      "text": "Pricing",
+      "href": "/pricing"
+    }
+  ],
+  "right": [
+    {
+      "text": "Login",
+      "href": "https://cloud.datum.net/login",
+      "isExternal": true
     },
     {
-      "text": "Get Started",
+      "text": "Request Access",
       "href": "https://cloud.datum.net",
       "isExternal": true
     }
   ],
-  "footer": [
-    { "text": "Styleguide", "href": "/style-guide" },
-    { "text": "Glossary", "href": "/glossary" },
-    { "text": "Brand", "href": "/brand" },
-    { "text": "AI Manifest", "href": "/ai-manifest" },
-    { "text": "Legal", "href": "/legal" }
-  ],
+  "footer": [{ "text": "Legal", "href": "/legal" }],
   "social": [
     {
       "href": "https://twitter.com/datumcloud",

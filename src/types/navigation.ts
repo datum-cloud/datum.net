@@ -23,6 +23,7 @@ export interface NavMainItem {
 
 export interface NavData {
   main: NavMainItem[];
+  right?: NavItem[];
   footer: NavMainItem[];
   social: NavItem[];
 }

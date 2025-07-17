@@ -88,5 +88,10 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
       <slot />
     </main>
     <Footer />
+
+    <script>
+      import '/src/scripts/mobile-nav.js';
+      import '/src/scripts/desktop-nav.js';
+    </script>
   </body>
 </html>

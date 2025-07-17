@@ -5,7 +5,8 @@ import { getCollection } from 'astro:content';
 import config from '@data/siteConfig.json';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import Pagination from '@components/Pagination.astro';
-import BlogCard from '@components/BlogCard.astro';
+import BlogListItem from '@components/BlogListItem.astro';
+import CategoryFilter from '@components/CategoryFilter.astro';
 
 // Get blog landing page from blog/index.mdx
 const page = await getCollectionEntry('pages', '/blog');
@@ -45,22 +46,28 @@ const { posts, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
 
 <Layout title={page.data.title || 'Datum'} description={page.data.description}>
   <div class="mx-auto max-w-7xl">
-    <div class="mb-8">
+    <div class="mb-8" data-pagefind-body>
       <h1 class="font-heading mb-6 text-4xl font-bold">Blog</h1>
       <p class="mb-8 text-gray-600">Latest articles, tutorials, and insights from our team.</p>
 
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => <BlogCard post={post} />)}
+      <!-- Category Filter -->
+      <CategoryFilter />
+
+      <!-- Blog List -->
+      <div class="blog-list bg-white">
+        {posts.map((post) => <BlogListItem post={post} />)}
       </div>
 
       <!-- Pagination -->
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        baseUrl="/blog"
-        prevUrl={prevUrl}
-        nextUrl={nextUrl}
-      />
+      <div class="pagination">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl="/blog"
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
+        />
+      </div>
     </div>
   </div>
 </Layout>

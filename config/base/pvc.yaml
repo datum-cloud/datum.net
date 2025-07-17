@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-data
-  labels:
-    type: local
-    app: postgres
+  name: datum-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 1Gi
+  storageClassName: standard
+  volumeName: datum-pv

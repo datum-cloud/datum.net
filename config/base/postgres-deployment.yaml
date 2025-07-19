@@ -33,7 +33,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - pg_isready -U astro_db_user -d astro_db_name
+                - pg_isready -U datum_astro -d datum_astro
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 15
@@ -43,14 +43,11 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - pg_isready -U astro_db_user -d astro_db_name
+                - pg_isready -U datum_astro -d datum_astro
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 15
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: postgres-data
-        - name: init-sql
-          configMap:
-            name: init-sql-config
+            claimName: postgres-pvc

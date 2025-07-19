@@ -1,0 +1,57 @@
+global:
+  postgresql:
+    pgHbaTrustAll: true
+    configurationCM: 'postgresql-config'
+    auth:
+      database: 'datum_net'
+    resources:
+      requests:
+        cpu: '1'
+        memory: '2Gi'
+      limits:
+        cpu: '2'
+        memory: '4Gi'
+
+primary:
+  podLabels:
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: datum-net
+    app.kubernetes.io/name: datum-net
+
+  initdb:
+    scripts:
+      00_create_users.sql: |
+        CREATE USER datum WITH PASSWORD 'datum';
+        GRANT ALL PRIVILEGES ON DATABASE datum_net TO datum;
+      01_create_tables.sql: |
+        CREATE TABLE IF NOT EXISTS issues (
+            id VARCHAR(32) PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            body TEXT NOT NULL,
+            url VARCHAR(255) NOT NULL,
+            updated_at TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS votes (
+            id VARCHAR(32) UNIQUE NOT NULL,
+            vote INTEGER DEFAULT 0,
+            updated_at TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS user_votes (
+            user_id VARCHAR(64) NOT NULL,
+            issue_id VARCHAR(32) NOT NULL,
+            CONSTRAINT user_issue UNIQUE (user_id,issue_id)
+        );
+
+        ALTER TABLE issues OWNER TO datum;
+        ALTER TABLE votes OWNER TO datum;
+        ALTER TABLE user_votes OWNER TO datum;
+
+persistence:
+  enabled: true
+  size: 2Gi
+  accessMode: 'ReadWriteMany'
+
+service:
+  type: ClusterIP

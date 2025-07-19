@@ -8,7 +8,6 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=development
     env_file:
@@ -23,8 +22,6 @@ services:
       target: production
     ports:
       - '4321:4321'
-    volumes:
-      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
@@ -36,7 +33,3 @@ services:
 networks:
   datum-network:
     driver: bridge
-
-volumes:
-  persistent-data:
-    driver: local

@@ -1,10 +1,9 @@
 ---
 import { getRoadmap } from '@utils/roadmap';
 import { marked } from 'marked';
-
 export const prerender = false;
 
-let projects = await getRoadmap();
+let issues = await getRoadmap();
 ---
 
 <>
@@ -14,33 +13,22 @@ let projects = await getRoadmap();
     <div class="mx-auto space-y-12">
       <ul
         class="m-0 mt-10 list-none space-y-10 p-0"
-        x-data={`{ projects: ${JSON.stringify(projects)} }`}
+        x-data={`{ issues: ${JSON.stringify(issues)} }`}
       >
         {
           Array.prototype.map.call(
-            projects,
-            (project: {
-              vote: number;
-              content: {
-                id: string;
-                title: string;
-                body: string;
-                url?: string;
-              };
-            }) => (
+            issues,
+            (issue: { id: string; title: string; body: string; url?: string; vote: number }) => (
               <li class="vote-item mt-6">
                 <div class="relative">
                   <span>
                     <div class="flex space-x-4">
-                      {project.vote > -1 && (
+                      {issue.vote > -1 && (
                         <div class="relative">
                           <div class="relative flex h-16 flex-shrink-0 flex-col items-center justify-center bg-gray-200 text-center">
                             <p class="m-0 leading-none">
-                              <strong
-                                class="text-lg leading-none"
-                                id={`${project.content.id}-value`}
-                              >
-                                {Math.max(0, project.vote)}
+                              <strong class="text-lg leading-none" id={`${issue.id}-value`}>
+                                {Math.max(0, issue.vote)}
                               </strong>
                               <br />
                               <span class="text-sm">votes</span>
@@ -49,8 +37,8 @@ let projects = await getRoadmap();
 
                           <div class="flex space-x-2">
                             <button
-                              class="bg-blackberry-600 border-button group btnVote relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white disabled:cursor-not-allowed disabled:opacity-30"
-                              data-projectid={project.content.id}
+                              class="btnVote bg-blackberry-600 border-button group relative top-2 inline-block w-auto cursor-pointer rounded-[6px] border-[1.5px] text-center text-white disabled:cursor-not-allowed disabled:opacity-30"
+                              data-issueid={issue.id}
                             >
                               <span class="bg-blackberry-800 text-primary hover:text-primary border-button relative mx-[-1.5px] block w-auto translate-y-[-2px] rounded-[6px] border-[1.5px] px-3.5 py-1.5 text-center text-[13px] font-bold select-none hover:translate-y-[-3px] group-disabled:hover:!translate-y-[-2px] active:translate-y-[-1px] active:transition-all active:duration-100">
                                 <span class="flex items-center space-x-1">
@@ -76,17 +64,15 @@ let projects = await getRoadmap();
                       )}
 
                       <div>
-                        <h3 class="m-0 text-2xl leading-tight font-extrabold">
-                          {project.content.title}
-                        </h3>
+                        <h3 class="m-0 text-2xl leading-tight font-extrabold">{issue.title}</h3>
                         <div class="mt-1 text-[15px]">
-                          <div set:html={marked.parse(project.content.body)} class="prose" />
+                          <div set:html={marked.parse(issue.body)} class="prose" />
                         </div>
 
-                        {project.content.url && (
+                        {issue.url && (
                           <a
                             rel="noopener noreferrer"
-                            href={project.content.url}
+                            href={issue.url}
                             class="group mt-8 flex"
                             target="_blank"
                           >
@@ -136,62 +122,80 @@ let projects = await getRoadmap();
 
   <script>
     import { actions } from 'astro:actions';
+    import { getCookie, setCookie } from '@libs/cookie';
 
     const voteItems = document.querySelectorAll('.vote-item');
-    let voted: string[] = [];
-
-    const userVoted = await actions.getUserVoted({});
-
-    if (userVoted.data) {
-      voted = userVoted.data;
-    }
-
-    /*
-    function setCookie(key: string, value: string, exdays?: number | null) {
-      var exdate = new Date();
-      if (exdays != null) {
-        exdate.setDate(exdate.getDate() + exdays);
-      }
-      var newValue = value + (exdays == null ? '' : ';expires=' + exdate.toUTCString());
-      document.cookie = key + '=' + newValue;
-    }
-
-    function getCookie(name: string) {
-      let matches = document.cookie.match(
-        new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
-      );
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-    setCookie('userId', 'test_user_id', 1);
     let userId = getCookie('userId') as string;
-    */
+
+    disableVoteButtonIfVoted(userId);
 
     voteItems.forEach((item) => {
       const btnVote = item.querySelector('.btnVote');
 
-      voted.forEach((votedProjectId) => {
-        if (votedProjectId === (btnVote as HTMLButtonElement)?.dataset.projectid) {
-          (btnVote as HTMLButtonElement).disabled = true;
-        }
-      });
-
       btnVote?.addEventListener('click', async function (this: HTMLButtonElement) {
-        if (!this.dataset.projectid) {
-          throw new Error('Project ID is missing');
+        if (!this.dataset.issueid) {
+          throw new Error('ProjectID is missing');
         }
-        const projectId = this.dataset.projectid;
-        actions.voting({ id: projectId }).then((result) => {
+
+        if (!userId) {
+          actions.loginWithDatum().then((result: { data?: object }) => {
+            if (!result.data) {
+              return;
+            }
+
+            const data = result.data as { authUrl: string; codeVerifier: string; nonce: string };
+            const authUrl = new URL(data.authUrl);
+            const codeVerifier = data.codeVerifier;
+            const nonce = data.nonce;
+
+            if (!authUrl) {
+              window.location.href = '/roadmap';
+            } else {
+              setCookie('codeVerifier', codeVerifier ?? '', 1);
+              setCookie('nonce', nonce ?? '', 1);
+              setCookie('auth_redirect', window.location.href, 1);
+              window.location.href = authUrl.toString();
+            }
+          });
+          return;
+        }
+
+        const issueId = this.dataset.issueid;
+        actions.voting({ userId, issueId }).then((result) => {
           if (!result.data) {
-            throw new Error('Failed to update vote count. ');
+            return;
           }
 
-          console.log(`Vote count [${projectId}] updated:`, result.data);
-          voted.push(projectId);
-
           this.disabled = true;
-          item.querySelector('#' + projectId + '-value')!.textContent = String(result.data);
+          const resultData = result.data as { log: string[]; count: number };
+          item.querySelector('#' + issueId + '-value')!.textContent = String(resultData.count);
+          disableVoteButtonIfVoted(userId, resultData.log);
+          return result.data;
         });
       });
     });
+
+    async function disableVoteButtonIfVoted(userId: string, voted: string[] = []) {
+      if (voted.length === 0) {
+        voted = await actions.getUserVoted({ id: userId }).then((result) => {
+          if (result?.data) {
+            return result.data as string[];
+          }
+          return [];
+        });
+      }
+
+      const allBtnVote = document.getElementsByClassName('btnVote');
+
+      if (allBtnVote) {
+        Array.from(allBtnVote).forEach((btn: Element) => {
+          const buttonElement = btn as HTMLButtonElement;
+          // if dataset issueid is inside voted array, disable the button
+          if (voted.includes(buttonElement.dataset.issueid ?? '')) {
+            buttonElement.disabled = true;
+          }
+        });
+      }
+    }
   </script>
 </>

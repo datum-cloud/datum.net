@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: datum-net
     app.kubernetes.io/version: 1.0.0
   name: datum-net
+  namespace: datum-net
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
@@ -29,8 +30,8 @@ spec:
     spec:
       containers:
         - name: datum-net
-          image: ghcr.io/datum-cloud/datum-net:latest
-          imagePullPolicy: Always
+          image: datum-net:dev-4 #ghcr.io/datum-cloud/datum-net:latest
+          imagePullPolicy: IfNotPresent #Always
           ports:
             - containerPort: 4321
               name: http

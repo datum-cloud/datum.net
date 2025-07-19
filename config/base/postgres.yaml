@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: default
+data:
+  POSTGRES_DB: datum_astro
+  POSTGRES_USER: datum_astro
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: default
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+  namespace: default
+  labels:
+    app: postgres
+data:
+  POSTGRES_PASSWORD: YXN0cm9fZGJfcGFzc3dvcmQ= # TODO: change this to not using base64-encoded value of "astro_db_password"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  hostPath:
+    path: /data/postgresql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
+  volumeName: postgres-pv

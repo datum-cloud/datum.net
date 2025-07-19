@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: datum-net
     app.kubernetes.io/version: 1.0.0
   name: datum-net
+  namespace: datum-net
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
@@ -29,8 +30,8 @@ spec:
     spec:
       containers:
         - name: datum-net
-          image: ghcr.io/datum-cloud/datum-net:latest
-          imagePullPolicy: Always
+          image: datum-net:dev-4 #ghcr.io/datum-cloud/datum-net:latest
+          imagePullPolicy: IfNotPresent #Always
           ports:
             - containerPort: 4321
               name: http
@@ -38,10 +39,63 @@ spec:
           env:
             - name: SITE_URL
               value: https://website.staging.env.datum.net/
-            - name: API_URL
-              value: https://api.datum.net
-            - name: SITE_GITHUB
+            - name: GITHUB_PROJECT_URL
               value: https://github.com/datum-cloud/datum.net
+            - name: APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_ID
+            - name: APP_INSTALLATION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_INSTALLATION_ID
+            - name: APP_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_PRIVATE_KEY
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: POSTGRES_HOST
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: POSTGRES_DB
+            - name: ROADMAP_LABEL
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: ROADMAP_LABEL
+            - name: AUTH_OIDC_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: AUTH_OIDC_REDIRECT_URI
+            - name: AUTH_OIDC_ISSUER
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: AUTH_OIDC_ISSUER
+            - name: AUTH_OIDC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: AUTH_OIDC_CLIENT_ID
           envFrom:
             - secretRef:
                 name: datum-net

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 
 const DB_LOCATION = '.persistent/';
 
@@ -15,4 +16,10 @@ async function loadJson(fileName: string): Promise<object> {
   return JSON.parse(fileContent);
 }
 
-export { saveJson, loadJson };
+function sha256(value: string): string {
+  const hash = crypto.createHash('sha256');
+  hash.update(value.toLowerCase());
+  return hash.digest('hex');
+}
+
+export { saveJson, loadJson, sha256 };

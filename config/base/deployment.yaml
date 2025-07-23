@@ -40,7 +40,7 @@ spec:
               value: https://website.staging.env.datum.net/
             - name: API_URL
               value: https://api.datum.net
-            - name: SITE_GITHUB
+            - name: GITHUB_PROJECT_URL
               value: https://github.com/datum-cloud/datum.net
           envFrom:
             - secretRef:

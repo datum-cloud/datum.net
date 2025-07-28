@@ -1,6 +1,7 @@
 ---
 title: Comparison
-weight: 4
+sidebar:
+  order: 4
 description: How Datum compares to alternatives
 ---
 

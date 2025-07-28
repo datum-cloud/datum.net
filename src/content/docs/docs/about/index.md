@@ -1,4 +1,6 @@
 ---
 title: About Datum
-weight: 1
+sidebar:
+  order: 1
+  hidden: true
 ---

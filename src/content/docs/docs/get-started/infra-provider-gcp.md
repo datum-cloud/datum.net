@@ -1,8 +1,7 @@
 ---
 title: Create a Datum Workload backed by Google Cloud
-weight: 1
 sidebar:
-  label: GCP
+  order: 1
 ---
 
 ## Before you begin

@@ -1,7 +1,7 @@
 ---
 title: Datum Cloud API
-description: Datum Cloud API documentation.
 draft: false
+weight: 6
 ---
 
 Datum Cloud provides a declarative API platform to create the infrastructure

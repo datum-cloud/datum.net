@@ -64,25 +64,20 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Docs',
-          items: [
-            {
-              label: 'Get Started',
-              autogenerate: { directory: 'docs/get-started' },
-            },
-            {
-              label: 'Tasks',
-              autogenerate: { directory: 'docs/tasks' },
-            },
-            {
-              label: 'Tutorials',
-              autogenerate: { directory: 'docs/tutorials' },
-            },
-          ],
+          label: 'Overview',
+          link: '/docs/',
+        },
+        {
+          label: 'About Datum',
+          autogenerate: { directory: 'docs/about' },
+        },
+        {
+          label: 'Getting Started',
+          autogenerate: { directory: 'docs/get-started' },
         },
         {
           label: 'API Reference',
-          autogenerate: { directory: 'api' },
+          autogenerate: { directory: 'docs/api' },
         },
       ],
     }),

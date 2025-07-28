@@ -1,7 +1,5 @@
 ---
 title: Connecting to the API
-description: Connecting to the Datum Cloud API.
-draft: false
 ---
 
 The Datum Cloud platform is comprised of multiple control planes that users can
@@ -33,7 +31,7 @@ Most users will interact with a project control plane to manage resources.
 
 The following base URL can be used to access an organization's control plane:
 
-```
+```url
 https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/organizations/{organization_id}/control-plane
 ```
 
@@ -43,7 +41,7 @@ Projects created in an organization's control plane will have their own control
 plane created to manage resources. Use the following base URL to access a
 project's control plane:
 
-```
+```url
 https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/projects/{project_id}/control-plane
 ```
 
@@ -67,9 +65,9 @@ $ curl -sS 'https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/org
 }
 ```
 
-{{% alert title="Tip" color="info" %}}
+:::tip[Tip]
 The above command expects you've [setup the Datum CLI](../tasks/tools.md)
-{{% /alert %}}
+:::
 
 The URL provided in the response can be used to retrieve the OpenAPI v3 spec for
 the service.

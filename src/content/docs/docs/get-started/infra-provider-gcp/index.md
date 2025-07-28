@@ -1,17 +1,33 @@
 ---
-title: Set up a Datum managed Location backed by GCP
-description: Set up a Datum managed Location backed by GCP.
+title: Create a Datum Workload backed by Google Cloud
 weight: 1
+sidebar:
+  label: GCP
 ---
 
 ## Before you begin
 
-This tutorial assumes you have already
-[registered an account](/docs/get-started),
-[installed and configured the necessary tools](/docs/tasks/tools) to
-interact with Datum, and have [created a Datum project](/docs/tasks/create-project).
+This tutorial assumes you have already:
 
-### Grant Datum Cloud access to your GCP project
+- [Registered a Datum account](../get-started)
+- [Installed and configured the necessary tools](../)
+- [Created a Datum project](../)
+- [Install and access to the Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk)
+- [Enabling an API in your Google Cloud project](https://cloud.google.com/endpoints/docs/openapi/enable-api#enabling_an_api)
+- [Enable Identity and Access Management (IAM) API in your Google Cloud project](https://console.cloud.google.com/apis/library/iam.googleapis.com)
+- [Enable Compute Engine API in your Google Cloud project](https://console.cloud.google.com/apis/library/compute.googleapis.com)
+
+### Discover Available Datum Cloud Projects
+
+Use `kubectl get projects` to list your Datum Cloud Projects. Select a DATUM_PROJECT_NAME to be used in this tutorial.
+
+### Discover Available Google Cloud Projects
+
+Ensure your `gcloud` CLI has authenticated to Google Cloud.
+
+Use `gcloud list projects` to obtain a list of GCP_PROJECT_IDs. Select the GCP_PROJECT_ID to be used with this tutorial.
+
+### Grant Datum Cloud access to your GCP Project
 
 Datum requires the following roles to be granted to a Datum managed service
 account which is specific to each Datum project:
@@ -23,39 +39,44 @@ account which is specific to each Datum project:
 
 The service account email will be in the following format:
 
-`PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com`
+`DATUM_PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com`
 
 Use the gcloud tool to grant IAM Roles to your Datum service account, replacing
-`GCP_PROJECT_ID` and `PROJECT_NAME` with their respective values:
+`GCP_PROJECT_ID` and `DATUM_PROJECT_NAME` with their respective values:
 
 ```shell
 gcloud projects add-iam-policy-binding GCP_PROJECT_ID \
-  --member="serviceAccount:PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
+  --member="serviceAccount:DATUM_PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
   --role="roles/compute.admin"
 
 gcloud projects add-iam-policy-binding GCP_PROJECT_ID \
-  --member="serviceAccount:PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
+  --member="serviceAccount:DATUM_PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
   --role="roles/secretmanager.admin"
 
 gcloud projects add-iam-policy-binding GCP_PROJECT_ID \
-  --member="serviceAccount:PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
+  --member="serviceAccount:DATUM_PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountAdmin"
 
 gcloud projects add-iam-policy-binding GCP_PROJECT_ID \
-  --member="serviceAccount:PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
+  --member="serviceAccount:DATUM_PROJECT_NAME@datum-cloud-project.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountUser"
 ```
 
 For guidance on granting roles via Google's Console, see [Manage access to projects, folders, and organizations][gcp-iam-role-admin].
 
-<span class="alert alert-info">Note: You may encounter the following error if your GCP organization was created on or after May 3, 2024. See GCP's documentation on [restricting identities by domain](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains) for instructions on how to permit service accounts from the `datum-cloud-project` project.
+:::note[Note]
+You may encounter the following error if your GCP organization was created on or
+after May 3, 2024. See GCP's documentation on [restricting identities by domain](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains)
+for instructions on how to permit service accounts from the `datum-cloud-project`
+project.
 
 > The 'Domain Restricted Sharing' organization policy
 > (constraints/iam.allowedPolicyMemberDomains) is enforced. Only principals in
 > allowed domains can be added as principals in the policy. Correct the
 > principal emails and try again. Learn more about domain restricted sharing.
 >
-> Request ID: 8499485408857027732</span>
+> Request ID: 8499485408857027732
+:::
 
 [gcp-iam-role-admin]: https://cloud.google.com/iam/docs/granting-changing-revoking-access
 
@@ -110,7 +131,9 @@ my-gcp-us-south1-a   5s
 Before creating a workload, a Network must be created. You can use the following
 manifest to do this:
 
-<span class="alert alert-info">Note: In the future, a default network may automatically be created in a namespace.</span>
+:::note[Note]
+In the future, a default network may automatically be created in a namespace.
+:::
 
 ```yaml
 apiVersion: networking.datumapis.com/v1alpha
@@ -141,7 +164,11 @@ default   5s
 
 ## Create a Workload
 
-<span class="alert alert-warning">Caution: These actions will result in billable resources being created in the GCP project for the target location. Destroy any resources which are not needed to avoid unnecessary costs.</span>
+:::caution[Caution]
+These actions will result in billable resources being created in the GCP
+project for the target location. Destroy any resources which are not needed
+to avoid unnecessary costs.
+:::
 
 Create a manifest for a sandbox based workload, for example:
 

@@ -1,7 +1,6 @@
 ---
-title: Developer Guide
+title: Components
 description: This guide helps you get started developing Datum components.
-weight: 30
 ---
 
 ## Summary
@@ -84,20 +83,26 @@ Kubernetes. The infra-provider-gcp application integrates with GCP Config
 Connector to create and maintain resources in GCP based on Kubernetes custom
 resources.
 
-<span class="alert alert-info">Tip: The service account creation instructions in the installation guide result in granting significantly more access to the GCP project than necessary. It is recommended to only bind the following roles to the service account:
+:::tip[Tip]
+The service account creation instructions in the installation guide result
+in granting significantly more access to the GCP project than necessary. It
+is recommended to only bind the following roles to the service account:
 
 - `roles/compute.admin`
 - `roles/container.admin`
 - `roles/secretmanager.admin`
 - `roles/iam.serviceAccountAdmin`
-- `roles/iam.serviceAccountUser`</span>
+- `roles/iam.serviceAccountUser`
+:::
 
 Follow the [installation guide](https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes),
 making sure to retain the service account credential saved to `key.json`, as
 this will be required later by `infra-provider-gcp`. The target Kubernetes cluster
 will be the kind cluster created in this guide.
 
-<span class="alert alert-info">Note: The section "Specifying where to create your resources" can be skipped.</span>
+:::note[Note]
+The section "Specifying where to create your resources" can be skipped.
+:::
 
 ## Datum Operator Installation
 
@@ -107,7 +112,9 @@ Clone the following repositories into the same parent folder for ease of use:
 - [Network Services Operator](https://github.com/datum-cloud/network-services-operator/tree/integration/datum-poc)
 - [Infra Provider GCP](https://github.com/datum-cloud/infra-provider-gcp/tree/integration/datum-poc)
 
-<span class="alert alert-info">Note: The `make` commands can take some time to execute for the first time.</span>
+:::note[Note]
+The `make` commands can take some time to execute for the first time.
+:::
 
 ### Workload Operator
 
@@ -231,9 +238,9 @@ my-gcp-us-south1-a   5s
 Before creating a workload, a Network must be created. You can use the following
 manifest to do this:
 
-{{< alert title="Note" color="info">}}
+:::note[Note]
 In the future, a default network may automatically be created in a namespace.
-{{< /alert >}}
+:::
 
 ```yaml
 apiVersion: networking.datumapis.com/v1alpha
@@ -264,7 +271,11 @@ default   5s
 
 ### Create a Workload
 
-<span class="alert alert-warning">Caution: These actions will result in billable resources being created in the GCP project for the target location. Destroy any resources which are not needed to avoid unnecessary costs.</span>
+:::caution[Caution]
+These actions will result in billable resources being created in the GCP
+project for the target location. Destroy any resources which are not needed
+to avoid unnecessary costs.
+:::
 
 Create a manifest for a sandbox based workload, for example:
 

@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: What is Datum?
 description: Datum is a network cloud you can take anywhere, backed by open source.
 weight: 1
 ---
@@ -7,7 +7,6 @@ weight: 1
 Our cloud platform, global network, and open source tooling are designed to help developers and modern service providers run network workloads anywhere while connecting their applications programmatically to the hundreds — or thousands — of partners, providers and customers that make up their unique ecosystem.
 
 ## Current status
-
 Datum is in active development across three areas:
 
 - **Datum Cloud** - A hosted control plane for users to view their federated (bring your own cloud) locations, authorization/access, and tap into end-to-end observability.
@@ -25,12 +24,4 @@ This year we’re standing up our platform and network while working to build tr
 - Supporting marketplace transactions to remove margin-stacking on 3rd party technologies
 - Reimagining the interface and data model for private application and ecosystem interconnections
 
-You can check out our [Roadmap](/docs/roadmap).
-
-## How to get involved
-
-We’re working in the open and would love your support. We're also happy to chat with design partners who have specific pain points!
-
-- [Join our Community Slack](https://slack.datum.net/)
-- [Attend our Community Huddles](https://link.datum.net/comm-huddle) (2nd Wednesday of each month, 12pm EST)
-- [Follow our work and participate on GitHub](https://github.com/datum-cloud)
+You can check out our [Roadmap](/docs/resources/roadmap).

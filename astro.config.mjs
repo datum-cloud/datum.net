@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
@@ -76,12 +75,15 @@ export default defineConfig({
           autogenerate: { directory: 'docs/get-started' },
         },
         {
-          label: 'API Reference',
+          label: 'Resources',
+          autogenerate: { directory: 'docs/resources' },
+        },
+        {
+          label: 'Datum Cloud API',
           autogenerate: { directory: 'docs/api' },
         },
       ],
     }),
-    mdx(),
   ],
 
   vite: {

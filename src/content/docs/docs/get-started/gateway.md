@@ -1,8 +1,7 @@
 ---
 title: Create a Datum Gateway (Reverse Proxy)
-weight: 1
 sidebar:
-  label: Gateway
+  order: 1
 ---
 
 ## Before you begin

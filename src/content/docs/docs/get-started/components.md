@@ -1,6 +1,8 @@
 ---
 title: Components
 description: This guide helps you get started developing Datum components.
+sidebar:
+  order: 98
 ---
 
 ## Summary

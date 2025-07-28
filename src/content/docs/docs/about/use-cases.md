@@ -1,6 +1,7 @@
 ---
 title: Use Cases
-weight: 3
+sidebar:
+  order: 3
 description: Common patterns and scenarios
 ---
 

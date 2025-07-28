@@ -1,7 +1,8 @@
 ---
 title: Datum Cloud API
 draft: false
-weight: 6
+sidebar:
+  order: 6
 ---
 
 Datum Cloud provides a declarative API platform to create the infrastructure

@@ -1,7 +1,8 @@
 ---
 title: What is Datum?
 description: Datum is a network cloud you can take anywhere, backed by open source.
-weight: 1
+sidebar:
+  order: 1
 ---
 
 Our cloud platform, global network, and open source tooling are designed to help developers and modern service providers run network workloads anywhere while connecting their applications programmatically to the hundreds — or thousands — of partners, providers and customers that make up their unique ecosystem.

@@ -1,6 +1,7 @@
 ---
 title: Architecture
-weight: 2
+sidebar:
+  order: 2
 description: Key concepts for working with the Datum Cloud.
 ---
 

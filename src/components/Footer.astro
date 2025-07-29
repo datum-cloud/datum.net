@@ -53,16 +53,20 @@ function isActive(itemHref: string, currentPath: string) {
     <div class="mt-8 md:order-1 md:mt-0">
       <div class="flex justify-center space-x-6 md:order-2">
         {
-          navData.footer.map((item) => (
-            <a
-              href={item.href}
-              class={`text-gray-400 hover:text-gray-300 ${
-                isActive(item.href, currentPath) ? 'text-white' : ''
-              }`}
-            >
-              {item.text}
-            </a>
-          ))
+          navData.footer
+            .map((section) =>
+              section.items.map((item) => (
+                <a
+                  href={item.href}
+                  class={`text-gray-400 hover:text-gray-300 ${
+                    isActive(item.href, currentPath) ? 'text-white' : ''
+                  }`}
+                >
+                  {item.text}
+                </a>
+              ))
+            )
+            .flat()
         }
       </div>
       <p class="mt-8 text-left text-xs leading-5 text-gray-400">

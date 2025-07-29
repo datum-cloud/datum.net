@@ -1,0 +1,65 @@
+---
+import Icon from '@v1/components/Icon.astro';
+import type { NavData } from '../../types/navigation';
+
+interface Props {
+  navigation: NavData['main'];
+}
+
+const { navigation }: Props = Astro.props;
+---
+
+<div id="mobile-menu-overlay" class="mobile-menu-overlay hidden"></div>
+
+<div id="mobile-menu" class="mobile-menu -translate-x-full">
+  <div class="mobile-menu-content">
+    <ul class="mobile-menu-list">
+      {
+        navigation.map((item) => (
+          <li class="mobile-menu-item">
+            <a href={item.href} class="mobile-menu-link">
+              <span>{item.text}</span>
+            </a>
+
+            {item.children && (
+              <div class="mobile-dropdown-content">
+                {item.children.map((section) => (
+                  <div class="mobile-dropdown-section">
+                    {'title' in section && section.title && (
+                      <h3 class="mobile-dropdown-title">{section.title}</h3>
+                    )}
+                    <ul class="mobile-dropdown-items">
+                      {section.items?.map((subItem) => (
+                        <li class="mobile-dropdown-item">
+                          <a href={subItem.href} class="mobile-dropdown-link">
+                            <span>{subItem.text}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mobile-menu-actions">
+      <a href="#" class="btn btn--navy">
+        <div class="btn-icon">
+          <Icon name="github" size="md" />
+        </div>
+        <span class="btn-text">85.4k</span>
+      </a>
+
+      <a href="#" class="btn btn--navy">
+        <div class="btn-icon">
+          <Icon name="user" size="md" />
+        </div>
+        <span class="btn-text">Log In</span>
+      </a>
+    </div>
+  </div>
+</div>

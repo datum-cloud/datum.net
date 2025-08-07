@@ -39,7 +39,7 @@
     "@tailwindcss/vite": "^4.1.10",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.14.9",
-    "astro": "^5.9.2",
+    "astro": "^5.12.8",
     "astro-robots-txt": "^1.0.0",
     "astro-seo": "^0.8.4",
     "mdast-util-to-string": "^4.0.0",

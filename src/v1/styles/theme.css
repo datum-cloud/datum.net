@@ -1,0 +1,127 @@
+@theme {
+  /* Custom Breakpoints */
+  --datum-max-width: 1926px;
+
+  /* Dark Blue Colors */
+  --color-navy: #0c1d31;
+  --color-cream: #f6f6f5;
+  --color-light-gray: #e8e7e4;
+  --color-lime-green: #e6f59f;
+  --color-dark-navy-blue: #111e34;
+  --color-light-pink: #ecd0d0;
+  --color-mauve: #91757b;
+  --color-navy-muted: #14233d;
+  --color-orange: #ff6b35;
+
+  /* Legacy Colors */
+  --color-purple: #4a3a5f;
+  --color-orange-legacy: #ff6b35;
+  --color-navy-blue: #2c3e50;
+
+  /* Color Palette - Winter Sky */
+  --color-winter-sky-50: #f7fafa;
+  --color-winter-sky-100: #eff3f3;
+  --color-winter-sky-200: #e1ebea;
+  --color-winter-sky-800: #414d4c;
+  --color-winter-sky-900: #2a302f;
+
+  /* Color Palette - Sunglow */
+  --color-sunglow-50: #faf7f7;
+  --color-sunglow-100: #f4edec;
+  --color-sunglow-200: #f3e7e4;
+  --color-sunglow-300: #f8e0db;
+  --color-sunglow-400: #f8d4cd;
+  --color-sunglow-500: #fbc8bf;
+  --color-sunglow-600: #fabbc1;
+  --color-sunglow-700: #f4a89b;
+  --color-sunglow-800: #f39282;
+  --color-sunglow-900: #f27a67;
+
+  /* Color Palette - Blackberry */
+  --color-blackberry-050: #f5f5f7;
+  --color-blackberry-200: #dfdce5;
+  --color-blackberry-300: #d5d1dc;
+  --color-blackberry-400: #bbb5c6;
+  --color-blackberry-500: #9c94b0;
+  --color-blackberry-600: #73688d;
+  --color-blackberry-700: #63597b;
+  --color-blackberry-800: #443a5b;
+  --color-blackberry-900: #312847;
+
+  /* Color Palette - Butter */
+  --color-butter-800: #fff6d7;
+  --color-butter-900: #f2e6bc;
+
+  /* Color Palette - Peat */
+  --color-peat-50: #f9fafb;
+  --color-peat-100: #f4f4f4;
+  --color-peat-200: #eae9ea;
+  --color-peat-300: #cbc7cb;
+  --color-peat-400: #a6a1a6;
+  --color-peat-500: #908a90;
+  --color-peat-600: #7a737a;
+  --color-peat-700: #635c63;
+  --color-peat-800: #4d474d;
+  --color-peat-900: #383238;
+
+  /* Color Palette - Utility Green */
+  --color-utility-green-50: #f3faf7;
+  --color-utility-green-100: #def7ec;
+  --color-utility-green-200: #bcf0da;
+  --color-utility-green-300: #84e1bc;
+  --color-utility-green-400: #31c48d;
+  --color-utility-green-500: #0e9f6e;
+  --color-utility-green-600: #057a55;
+  --color-utility-green-700: #046c4e;
+  --color-utility-green-800: #03543f;
+  --color-utility-green-900: #014737;
+
+  /* Color Palette - Utility Red */
+  --color-utility-red-50: #fdf2f2;
+  --color-utility-red-100: #fde8e8;
+  --color-utility-red-200: #fbd5d5;
+  --color-utility-red-300: #f8b4b4;
+  --color-utility-red-400: #f98080;
+  --color-utility-red-500: #f05252;
+  --color-utility-red-600: #e02424;
+  --color-utility-red-700: #c81e1e;
+  --color-utility-red-800: #9b1c1c;
+  --color-utility-red-900: #771d1d;
+
+  /* Spacing */
+  --spacing-94: 94px;
+  --spacing-50: 50px;
+  --spacing-13: 13px;
+  --spacing-120: 120px;
+  --spacing-70: 280px;
+
+  /* Font Sizes */
+  --font-size-h1: 42px;
+  --text-4.5xl: 42px;
+  --text-xsm: 13px;
+  --text-smb: 15px;
+  --text-2.5xl: 28px;
+  --text-4.5xl: 46px;
+  --text-5.5xl: 54px;
+
+  /* Font Families */
+  --font-primary:
+    'Alliance No.1', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-canela: 'Canela Text', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-alliance:
+    'Alliance No.1', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-frontliner:
+    'Frontliner', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer utilities {
+  .w-120 {
+    width: var(--spacing-120);
+  }
+  .min-w-70 {
+    min-width: var(--spacing-70);
+  }
+}

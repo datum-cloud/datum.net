@@ -1,0 +1,17 @@
+@layer utilities {
+  .datum-container {
+    @apply container m-auto max-w-(--datum-max-width);
+  }
+
+  .font-canela {
+    font-family: var(--font-canela);
+  }
+
+  .font-alliance {
+    font-family: var(--font-alliance);
+  }
+
+  .font-frontliner {
+    font-family: var(--font-frontliner);
+  }
+}

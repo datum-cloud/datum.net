@@ -87,12 +87,16 @@ export default defineConfig({
   ],
 
   vite: {
+    // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
     preview: {
       allowedHosts: ['website.staging.env.datum.net'],
     },
     server: {
       allowedHosts: ['website.staging.env.datum.net'],
+    },
+    css: {
+      devSourcemap: true,
     },
   },
 

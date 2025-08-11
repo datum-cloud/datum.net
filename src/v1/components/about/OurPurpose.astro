@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import ImageOurPurpose from '@v1/assets/images/our-pupose-illustration.png';
+---
+
+<section class="bg-navy section--block dark pb-45 md:pb-28 lg:pb-42">
+  <div class="section--block-inner">
+    <div class="section--block-illustration">
+      <Image
+        src={ImageOurPurpose}
+        alt="Our Purpose Illustration"
+        class="h-full w-auto max-w-none"
+      />
+    </div>
+
+    <div class="section--block-content md:justify-end-safe">
+      <div class="section--block-content-inner max-w-130 md:mr-10 lg:mr-20">
+        <h2 class="h2-section">Our Purpose</h2>
+        <span class="section--block-content-text">
+          <p>
+            Datum is the neutral, open network cloud designed to power the next 1,000 hyperscalers
+            and unleash the power of the Private Internet.
+          </p>
+          <p>
+            Our passion is connecting fragmented ecosystems across clouds, providers, and
+            enterprises—giving builders the programmatic control, performance, and observability
+            they need to operate in an AI-native world.
+          </p>
+          <p>
+            With an open source foundation and a business model built on the success of partners, we
+            connect providers with their unique ecosystem advantage, so they can play to win.
+          </p>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

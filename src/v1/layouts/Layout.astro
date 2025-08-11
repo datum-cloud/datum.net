@@ -13,6 +13,7 @@ const {
   publishDate,
   author,
   canonical,
+  dataTheme = '',
   bodyClass = 'template',
 } = Astro.props as LayoutProps;
 
@@ -22,7 +23,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={dataTheme}>
   <head>
     <SEO
       title={title}

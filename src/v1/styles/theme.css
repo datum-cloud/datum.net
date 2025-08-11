@@ -2,7 +2,10 @@
   /* Custom Breakpoints */
   --datum-max-width: 1926px;
 
-  /* Dark Blue Colors */
+  --color-logo-object: #e8e7e4;
+  --color-logo-text: #ffffff;
+
+  /* Main Colors */
   --color-navy: #0c1d31;
   --color-cream: #f6f6f5;
   --color-light-gray: #e8e7e4;
@@ -12,6 +15,7 @@
   --color-mauve: #91757b;
   --color-navy-muted: #14233d;
   --color-orange: #ff6b35;
+  --color-tuscany: #c49d9d;
 
   /* Legacy Colors */
   --color-purple: #4a3a5f;
@@ -88,18 +92,12 @@
   --color-utility-red-800: #9b1c1c;
   --color-utility-red-900: #771d1d;
 
-  /* Spacing */
-  --spacing-94: 94px;
-  --spacing-50: 50px;
-  --spacing-13: 13px;
-  --spacing-120: 120px;
-  --spacing-70: 280px;
-
   /* Font Sizes */
   --font-size-h1: 42px;
   --text-4.5xl: 42px;
   --text-xsm: 13px;
   --text-smb: 15px;
+  --text-1.5xl: 22px;
   --text-2.5xl: 28px;
   --text-4.5xl: 46px;
   --text-5.5xl: 54px;

@@ -3,8 +3,8 @@ title: "It's the network, stupid"
 date: 2025-02-19
 slug: "the-network-stupid"
 description: "The last venture I started with my brother Zac was a cloud infrastructure company called Packet."
-thumbnail: ../../assets/images/blog/post-2-thumb.png
-featuredImage: ../../assets/images/blog/post-2.png
+thumbnail: assets/images/blog-1-thumb.png
+featuredImage: assets/images/blog-1.png
 author: jacob
 categories: ["network-architecture", "cloud-infrastructure", "business-strategy"]
 ---
@@ -57,10 +57,10 @@ This benefit holds true for most users with common use cases — like fronting t
 
 In response to demand, both Cloudflare (with Workers, R2, and containers) and Akamai (with Linode) have invited more workloads to sit alongside their networks. This is the right idea for many customers, but for market leaders, we see challenges that are at odds with their needs: 
 
-1.  You can't take the Cloudflare, Akamai, Fastly experience and plop it in another cloud, let alone your own datacenter, warehouse, or wind farm.  
-    
-2.  You can't run a Cisco 8kv router (or Palo Alto firewall) let alone tap into the complex Cisco ELA you worked so hard to negotiate.  
-    
+1.  You can't take the Cloudflare, Akamai, Fastly experience and plop it in another cloud, let alone your own datacenter, warehouse, or wind farm.
+
+2.  You can't run a Cisco 8kv router (or Palo Alto firewall) let alone tap into the complex Cisco ELA you worked so hard to negotiate.
+
 3.  While Cloudflare has a solid cloud onramp product, there isn't a button or API call to help you connect directly with Snowflake in Sao Paulo, Deutsche Telekom in Frankfurt, or Nasdaq in Secaucus. 
 
 To leverage these ingredients you'll still need to grab racks at a dozen Equinix, Digital Realty, or DataBank datacenters, roll your own gear, and build a network the old fashioned way.
@@ -73,8 +73,8 @@ Despite our opinions about control, even power users don't want to build and run
 
 To make it happen, we are building an experience for connectivity infrastructure that prioritizes the following ingredients: 
 
-*   **Open Source Stack** - Building in the open with an appropriately [permissive AGPL license](/blog/open-source-strategy) helps us gain trust more quickly for a foundational layer of the stack, invites collaboration and enables liberal use of the stack outside of a 3rd party operator. Importantly, it also provides long-term protection for customers. If we fold or have divergent interests, you can always fork it.  
-    
+*   **Open Source Stack** - Building in the open with an appropriately [permissive AGPL license](/blog/open-source-strategy) helps us gain trust more quickly for a foundational layer of the stack, invites collaboration and enables liberal use of the stack outside of a 3rd party operator. Importantly, it also provides long-term protection for customers. If we fold or have divergent interests, you can always fork it.
+
 *   **Software is the User** - It's true that many tasks related to networks are physical and take time, but so does shipping a MacBook from Shenzhen to Des Moines. We think it's a good moment to imagine and create new ways to access that value, and it starts with making everything programmatic.**‍**
 *   **Federation** **from the Start** - We think you should be able to run network cloud workloads wherever you need to, including on our scaled, shared infrastructure but also on other clouds and in your private environments. That's why we're baking in federation as a core concept, so you can get a lot of the creature comforts of a cloud service even when you need to run the workloads somewhere else. **‍**
 *   **Partner Focused** - If we're going to invite customers to pursue their unique advantage, we need an ecosystem of providers to succeed. That's why we can't margin stack and fight with partners and their channels. We want to help them succeed with an aligned commercial and operational model from the start.

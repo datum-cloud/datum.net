@@ -18,13 +18,12 @@ const logoAssets = [
 ];
 ---
 
-<section class="bg-cream relative overflow-hidden px-5 py-15 md:py-30 lg:py-47">
+<section class="bg-cream section--block section--block--pad">
   <div class="absolute bottom-0 left-0 z-0">
     <Image src={sceneTree} alt="Scene tree illustration" class="size-auto w-full max-w-3xl" />
   </div>
-  <div class="border-navy bg-cream relative z-10 m-auto border md:max-w-5/6 lg:max-w-4/5">
+  <div class="border-navy bg-cream relative z-10 m-auto border md:max-w-391">
     <!-- Scene Tree Image -->
-
     <div
       class="relative z-10 mx-auto grid grid-cols-1 justify-between gap-9 px-6.5 py-14 text-center md:grid-cols-2 md:gap-16 md:px-18 md:pt-24 md:pb-35 md:text-left lg:gap-22 lg:px-24 lg:pt-30 lg:pb-49"
     >
@@ -46,7 +45,7 @@ const logoAssets = [
     </div>
     <!-- Logos Row -->
     <div
-      class="grid grid-cols-3 overflow-x-auto lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-0 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0"
+      class="grid grid-cols-3 overflow-x-auto lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0"
     >
       {
         logoAssets.map((logo, i) => (

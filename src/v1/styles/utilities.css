@@ -1,6 +1,11 @@
 @layer utilities {
   .datum-container {
-    @apply container m-auto max-w-(--datum-max-width);
+    @apply container m-auto;
+    max-width: var(--datum-max-width);
+  }
+
+  .inner-max-w {
+    max-width: var(--datum-section-width);
   }
 
   .font-canela {

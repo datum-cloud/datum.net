@@ -1,0 +1,111 @@
+@layer components {
+  .feature-table {
+    @apply bg-navy relative z-30 mx-auto grid max-w-391 grid-cols-1 gap-0 border border-white md:grid-cols-[minmax(300px,auto)_1fr] lg:grid-cols-[minmax(500px,auto)_1fr];
+  }
+
+  .feature-table__content {
+    @apply prose max-w-none text-lg text-white;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      @apply text-lime-green font-alliance text-1.5xl mt-0 font-normal;
+    }
+
+    h2 {
+      @apply font-canela text-5xl text-white;
+    }
+  }
+
+  .feature-table__header {
+    @apply flex flex-col items-start justify-start border-r md:col-span-1 md:row-span-4;
+
+    .feature-table__content {
+      @apply px-8 py-12 md:px-13 md:py-11 lg:px-18 lg:py-21;
+    }
+  }
+
+  .feature-table__section {
+    @apply flex flex-col gap-7 border-b border-white last:border-b-0 md:col-span-1 md:row-span-1;
+
+    .feature-table__content {
+      @apply px-8 py-12 md:px-13 md:py-11;
+    }
+  }
+
+  .role-tags {
+    ul {
+      @apply m-0 flex list-none flex-wrap items-center gap-4 p-0 lg:gap-4;
+
+      li {
+        @apply bg-indigo md:text-smb m-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-normal tracking-tight whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
+
+        &:before {
+          @apply bg-lime-green inline-block h-2 w-2 flex-shrink-0 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
+        }
+      }
+    }
+  }
+
+  /* Features Grid Component */
+  .features-grid {
+    @apply m-auto grid max-w-391 grid-cols-1 content-start gap-25 lg:grid-cols-3;
+  }
+
+  .feature-card {
+    @apply flex items-start;
+  }
+
+  .feature-card__content {
+    @apply flex flex-col gap-10;
+  }
+
+  .feature-card__section {
+    @apply border-navy border-b last:border-b-0;
+  }
+
+  .feature-card__content-wrapper {
+    @apply prose prose-lg text-navy last:[&>ul]:mb-0;
+
+    h2 {
+      @apply font-canela mt-0 text-4xl leading-tight font-normal tracking-tight;
+    }
+
+    h3 {
+      @apply font-alliance text-mauve mt-0 mb-6 text-xl font-normal;
+    }
+  }
+
+  .feature-card__content--header {
+    .feature-card__content-wrapper {
+      @apply prose-xl;
+      h2 {
+        @apply mt-0;
+      }
+    }
+  }
+
+  /* Feature Cards Grid - New Design */
+  .feature-cards-grid {
+    @apply grid max-w-none grid-cols-1 gap-12 md:grid-cols-2 lg:max-w-180 xl:max-w-230 xl:grid-cols-3 2xl:max-w-264;
+  }
+
+  .feature-card-item {
+    @apply flex flex-col gap-6;
+  }
+
+  .feature-card__section-content {
+    @apply flex flex-col gap-6;
+  }
+
+  .feature-card-item__content {
+    @apply prose text-blg text-navy/70;
+    h3 {
+      @apply text-navy mt-0 mb-6 text-2xl leading-tight font-normal tracking-tight;
+    }
+    p {
+      @apply last:mb-0;
+    }
+  }
+}

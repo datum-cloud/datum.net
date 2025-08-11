@@ -1,16 +1,32 @@
 ---
+import { getEntries } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { render } from 'astro:content';
+import HeroSection from '@components/home/HeroSection.astro';
+import FirstSection from '@components/home/FirstSection.astro';
+import SecondSection from '@components/home/SecondSection.astro';
+import ThirdSection from '@components/home/ThirdSection.astro';
+import Footer from '@components/Footer.astro';
 
 const page = await getCollectionEntry('pages', '/');
-const { Content } = await render(page);
+const fm = page.data;
+const contents = fm.contents;
+const contentData = await getEntries(contents);
+const meta = fm.meta || {};
+const title = meta.title ? 'Datum - ' + meta.title : fm.title ? 'Datum - ' + fm.title : 'Datum';
+const description = meta.description
+  ? meta.description
+  : fm.description
+    ? 'Datum - ' + fm.description
+    : 'Datum';
 ---
 
-<Layout title={page.data.title || 'Datum'} description={page.data.description}>
-  <section id="content" class="rounded-lg bg-white py-12 shadow-sm">
-    <div class="prose lg:prose-xl mx-auto max-w-3xl">
-      <Content />
-    </div>
+<Layout title={title} description={description} bodyClass="home-page">
+  <section class="datum-container">
+    <HeroSection />
+    <FirstSection content={contentData[0]} />
+    <SecondSection content={contentData[1]} />
+    <ThirdSection content={contentData[2]} />
+    <Footer />
   </section>
 </Layout>

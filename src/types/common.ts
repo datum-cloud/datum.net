@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 export interface LayoutProps {
   title: string;
   description?: string;
@@ -8,6 +10,7 @@ export interface LayoutProps {
   noindex?: boolean;
   canonical?: string;
   fluid?: boolean;
+  dataTheme: string;
   bodyClass?: string;
 }
 
@@ -22,4 +25,41 @@ export interface PaginationProps {
   baseUrl: string;
   prevUrl?: string;
   nextUrl?: string;
+}
+
+export interface HeroProps {
+  iconName?: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  class?: string;
+  imagePath?: ImageMetadata;
+}
+
+export interface ArticleProps {
+  articleId?: string;
+  showSidebar?: boolean;
+  class?: string;
+}
+
+export interface SidebarProps {
+  currentArticleId?: string;
+  class?: string;
+}
+
+export interface ContentProps {
+  content: {
+    id: string;
+    data: {
+      title: string;
+      items?: string[];
+      images?: Array<{
+        img: ImageMetadata;
+        alt?: string;
+      }>;
+    };
+    body: string;
+    filePath: string;
+    collection?: string;
+  };
 }

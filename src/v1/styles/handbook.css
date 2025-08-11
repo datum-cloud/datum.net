@@ -1,0 +1,106 @@
+/* Handbook Article Styles */
+@layer components {
+  .handbook-container {
+    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-23 lg:gap-43;
+  }
+
+  .handbook-container--no-sidebar {
+    @apply justify-center;
+  }
+
+  /* Main Content */
+
+  .handbook-content {
+    @apply max-w-none flex-1;
+  }
+
+  .article-header {
+    @apply mb-12;
+  }
+
+  .article-title {
+    @apply font-alliance text-navy lg:text-4.5xl text-3xl leading-tight font-medium tracking-tight md:text-4xl;
+  }
+
+  .article-body {
+    @apply prose lg:prose-xl md:prose-xl lg:text-1.5xl max-w-none space-y-6 text-lg md:text-xl;
+  }
+
+  .article-paragraph {
+    @apply font-alliance text-navy text-xl leading-relaxed font-normal md:text-lg md:leading-relaxed lg:text-lg lg:leading-relaxed;
+  }
+
+  /* Sidebar Component Styles */
+
+  aside button span {
+    @apply font-alliance text-navy leading-snug;
+  }
+
+  .handbook-sidebar {
+    @apply font-alliance relative flex h-full w-full flex-col gap-y-4 overflow-y-auto text-base md:w-56 md:text-lg;
+  }
+
+  .handbook-sidebar nav {
+    @apply flex items-start justify-start gap-3;
+  }
+
+  .handbook-sidebar ul {
+    @apply flex shrink grow basis-0 flex-col gap-y-4;
+  }
+
+  .handbook-sidebar li {
+    @apply py-2 md:block md:px-2;
+  }
+
+  .handbook-sidebar .menu-container {
+    @apply rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
+  }
+
+  .handbook-sidebar .menu-category {
+    @apply mb-4 max-w-sm;
+  }
+
+  .handbook-sidebar .category-header {
+    @apply flex flex-row;
+  }
+
+  .handbook-sidebar .category-button {
+    @apply text-navy flex w-full items-center;
+  }
+
+  .handbook-sidebar .chevron-icon {
+    @apply mt-[-.0625rem] mr-2 inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
+  }
+
+  .handbook-sidebar .category-title-container {
+    @apply flex shrink grow basis-0 cursor-pointer items-center justify-start gap-1;
+  }
+
+  .handbook-sidebar .category-title {
+    @apply capitalize;
+  }
+
+  .handbook-sidebar .category-title--active {
+    @apply text-navy font-extrabold capitalize;
+  }
+
+  .handbook-sidebar .menu-list {
+    @apply relative mt-5 flex flex-col gap-0 pl-7 leading-loose before:-translate-y-1/2;
+  }
+
+  .handbook-sidebar .menu-list::before {
+    @apply bg-navy/40 absolute top-1/2 left-[9px] h-full w-px;
+  }
+
+  .handbook-sidebar .menu-item {
+    /* Base menu item styles */
+  }
+
+  .handbook-sidebar .menu-link {
+    @apply text-navy/40 hover:text-navy transition-colors duration-300 ease-out;
+  }
+
+  .handbook-sidebar .menu-link--active {
+    @apply text-navy/60 hover:text-navy font-bold transition-colors duration-300 ease-out;
+  }
+}

@@ -1,11 +1,9 @@
 ---
 import { SEO } from 'astro-seo';
-import Header from '@components/Header.astro';
-import Footer from '@components/Footer.astro';
-import '@styles/global.css';
+import '@v1/styles/global.css';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
-import type { LayoutProps } from '../types/common';
+import type { LayoutProps } from '@/src/types/common';
 
 const {
   title,
@@ -15,7 +13,8 @@ const {
   publishDate,
   author,
   canonical,
-  fluid = false,
+  dataTheme = '',
+  bodyClass = 'template',
 } = Astro.props as LayoutProps;
 
 const pageUrl = Astro.url.href;
@@ -24,7 +23,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={dataTheme}>
   <head>
     <SEO
       title={title}
@@ -82,16 +81,11 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
       rel="stylesheet"
     />
   </head>
-  <body class="flex min-h-screen flex-col bg-gray-50 text-gray-800">
-    <Header />
-    <main class={`flex-grow px-4 py-8 ${fluid ? 'w-full' : 'container mx-auto'}`}>
-      <slot />
-    </main>
-    <Footer />
+  <body class={bodyClass}>
+    <slot />
 
     <script>
-      import '/src/scripts/mobile-nav.js';
-      import '/src/scripts/desktop-nav.js';
+      import '/src/v1/scripts/lenis-parallax.js';
     </script>
   </body>
 </html>

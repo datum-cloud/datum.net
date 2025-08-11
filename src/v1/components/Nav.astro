@@ -1,7 +1,6 @@
 ---
 import Logo from '@v1/assets/svgs/datum-logo.svg';
 import Arrow from '@v1/assets/icons/arrow.svg';
-import Burger from '@v1/assets/icons/burger.svg';
 import navigation from '@data/navigation.json';
 import Icon from '@v1/components/Icon.astro';
 import MobileMenu from '@v1/components/MobileMenu.astro';
@@ -15,7 +14,7 @@ const mainNav = navData.main;
 <nav class="nav--main">
   {/* Logo */}
   <a href="/" class="nav-logo">
-    <Logo class="text-lime-green" />
+    <Logo />
   </a>
 
   {/* Desktop Menu */}
@@ -79,16 +78,6 @@ const mainNav = navData.main;
       <span class="btn-text">Log In</span>
     </a>
   </div>
-
-  {/* Mobile Menu Button */}
-  <button
-    id="mobile-menu-button"
-    class="mobile-menu-button"
-    aria-label="Toggle mobile menu"
-    aria-expanded="false"
-  >
-    <Burger />
-  </button>
 
   {/* Mobile Menu Component */}
   <MobileMenu navigation={mainNav} />

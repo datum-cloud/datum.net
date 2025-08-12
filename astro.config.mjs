@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
@@ -64,38 +63,40 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Docs',
-          items: [
-            {
-              label: 'Get Started',
-              autogenerate: { directory: 'docs/get-started' },
-            },
-            {
-              label: 'Tasks',
-              autogenerate: { directory: 'docs/tasks' },
-            },
-            {
-              label: 'Tutorials',
-              autogenerate: { directory: 'docs/tutorials' },
-            },
-          ],
+          label: 'Overview',
+          link: '/docs/',
         },
         {
-          label: 'API Reference',
-          autogenerate: { directory: 'api' },
+          label: 'About Datum',
+          autogenerate: { directory: 'docs/about' },
+        },
+        {
+          label: 'Getting Started',
+          autogenerate: { directory: 'docs/get-started' },
+        },
+        {
+          label: 'Resources',
+          autogenerate: { directory: 'docs/resources' },
+        },
+        {
+          label: 'Datum Cloud API',
+          autogenerate: { directory: 'docs/api' },
         },
       ],
     }),
-    mdx(),
   ],
 
   vite: {
+    // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
     preview: {
       allowedHosts: ['website.staging.env.datum.net'],
     },
     server: {
       allowedHosts: ['website.staging.env.datum.net'],
+    },
+    css: {
+      devSourcemap: true,
     },
   },
 

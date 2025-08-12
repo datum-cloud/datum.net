@@ -5,6 +5,7 @@
 export interface NavItem {
   text: string;
   href: string;
+  icon?: string;
   isExternal?: boolean;
 }
 
@@ -21,9 +22,14 @@ export interface NavMainItem {
   children?: NavSection[];
 }
 
+export interface NavFooterSection {
+  title: string;
+  items: NavItem[];
+}
+
 export interface NavData {
   main: NavMainItem[];
   right?: NavItem[];
-  footer: NavMainItem[];
+  footer: NavFooterSection[];
   social: NavItem[];
 }

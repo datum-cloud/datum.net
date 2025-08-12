@@ -1,58 +1,13 @@
 {
   "main": [
     {
-      "text": "Platform",
+      "text": "Product",
       "href": "#",
       "children": [
         {
           "items": [
-            { "text": "Our Platform", "href": "/features" },
-            { "text": "Big Ass Proxy", "href": "/features/proxy" },
-            { "text": "Galactic VPC", "href": "/product/vpc" },
-            { "text": "Backbone as Code", "href": "/features/backbone" },
-            { "text": "Snoozy Workloads", "href": "/features/workloads" },
-            { "text": "It's Always F***ING DNS", "href": "/features/dns" }
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Why Datum?",
-      "href": "#",
-      "isMegaDropdown": true,
-      "children": [
-        {
-          "title": "Our Vision",
-          "items": [
-            { "text": "About", "href": "/about" },
-            { "text": "Team", "href": "/about/team" }
-          ]
-        },
-        {
-          "title": "Our Thoughts",
-          "items": [
-            { "text": "Blog", "href": "/blog" },
-            { "text": "Newsletter", "href": "/newsletter" }
-          ]
-        },
-        {
-          "title": "Our Community",
-          "items": [
-            { "text": "Events", "href": "/connect/events" },
-            { "text": "Swag", "href": "/connect/swag" }
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Company",
-      "href": "#",
-      "children": [
-        {
-          "items": [
-            { "text": "Our Journey", "href": "/about/journey" },
-            { "text": "Handbook", "href": "/handbook" },
-            { "text": "Roadmap", "href": "/roadmap" }
+            { "icon": "goal", "text": "Features", "href": "/features" },
+            { "icon": "users", "text": "Use Cases", "href": "/use-cases" }
           ]
         }
       ]
@@ -63,18 +18,9 @@
       "isMegaDropdown": true,
       "children": [
         {
-          "title": "Documentation",
           "items": [
-            { "text": "Getting Started", "href": "/docs" },
-            { "text": "Guides", "href": "/docs/guides" },
-            { "text": "FAQ", "href": "/docs/faq" }
-          ]
-        },
-        {
-          "title": "API",
-          "items": [
-            { "text": "API Reference", "href": "/api" },
-            { "text": "Public Slack", "href": "/docs/slack" }
+            { "icon": "power", "text": "Getting Started", "href": "/docs" },
+            { "icon": "webhook", "text": "API Reference", "href": "/docs/api/" }
           ]
         }
       ]
@@ -85,6 +31,16 @@
       "isMegaDropdown": true,
       "children": [
         {
+          "title": "Resources",
+          "items": [
+            { "icon": "list-restart", "text": "Changelog", "href": "/changelog" },
+            { "icon": "calendar-range", "text": "Roadmap", "href": "/roadmap" },
+            { "icon": "shirt", "text": "Swag", "href": "/swag" },
+            { "icon": "slack", "text": "Public Slack", "href": "/public-slack" },
+            { "icon": "code", "text": "OSS Projects", "href": "/oss-projects" }
+          ]
+        },
+        {
           "title": "Open Source",
           "items": [
             { "text": "Overview", "href": "/open-source" },
@@ -92,22 +48,26 @@
             { "text": "Patch", "href": "/open-source/patch" },
             { "text": "Maintainer Program", "href": "/open-source/maintainers" }
           ]
-        },
-        {
-          "title": "Resources",
-          "items": [
-            { "text": "Changelog", "href": "/changelog" },
-            { "text": "Brand", "href": "/brand" },
-            { "text": "AI Manifest", "href": "/ai-manifest" },
-            { "text": "Styleguide", "href": "/style-guide" },
-            { "text": "Glossary", "href": "/glossary" }
-          ]
         }
       ]
     },
     {
       "text": "Pricing",
       "href": "/pricing"
+    },
+    {
+      "text": "Company",
+      "href": "#",
+      "children": [
+        {
+          "items": [
+            { "icon": "default", "text": "About", "href": "/about" },
+            { "icon": "book-text", "text": "Handbook", "href": "/handbook" },
+            { "icon": "book-image", "text": "Blog", "href": "/blog" },
+            { "icon": "message-square-plus", "text": "Contact", "href": "/contact" }
+          ]
+        }
+      ]
     }
   ],
   "right": [
@@ -122,7 +82,56 @@
       "isExternal": true
     }
   ],
-  "footer": [{ "text": "Legal", "href": "/legal" }],
+  "footer": [
+    {
+      "title": "Navigate",
+      "items": [
+        { "text": "Home", "href": "/" },
+        { "text": "Pricing", "href": "/pricing" }
+      ]
+    },
+    {
+      "title": "Product",
+      "items": [
+        { "text": "Features", "href": "/features" },
+        { "text": "Use Cases", "href": "/use-cases" }
+      ]
+    },
+    {
+      "title": "Docs",
+      "items": [
+        { "text": "Getting Started", "href": "/docs" },
+        { "text": "API Reference", "href": "/docs/api" }
+      ]
+    },
+    {
+      "title": "Resources",
+      "items": [
+        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Roadmap", "href": "/roadmap" },
+        { "text": "Swag", "href": "/swag" },
+        { "text": "Public Slack", "href": "/slack" },
+        { "text": "OSS Projects", "href": "/open-source" }
+      ]
+    },
+    {
+      "title": "Company",
+      "items": [
+        { "text": "About", "href": "/about" },
+        { "text": "Handbook", "href": "/handbook" },
+        { "text": "Blog", "href": "/blog" },
+        { "text": "Contact", "href": "/contact" }
+      ]
+    },
+    {
+      "title": "Access",
+      "items": [
+        { "text": "GitHub", "href": "https://github.com/datum", "isExternal": true },
+        { "text": "Log In", "href": "/login" },
+        { "text": "Request Access", "href": "/request-access" }
+      ]
+    }
+  ],
   "social": [
     {
       "href": "https://twitter.com/datumcloud",

@@ -8,6 +8,8 @@ export interface LayoutProps {
   noindex?: boolean;
   canonical?: string;
   fluid?: boolean;
+  dataTheme: string;
+  bodyClass?: string;
 }
 
 export interface NotFoundProps {

@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+
+import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
+import ImageRight from '@v1/assets/images/good-look-section/right-stone.png';
+import ImageSphere from '@v1/assets/images/good-look-section/sphere.png';
+---
+
+<section class="bg-light-gray relative flex overflow-hidden align-middle">
+  <div class="absolute bottom-0 left-0 z-0 max-w-234 opacity-80">
+    <Image src={ImageLeft} alt="Scene left illustration" class="size-auto opacity-80" />
+  </div>
+  <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
+    <Image src={ImageRight} alt="Scene right illustration" class="size-auto opacity-80" />
+  </div>
+  <div class="absolute top-0 right-0 z-0 hidden max-w-73 md:block">
+    <Image src={ImageSphere} alt="Scene sphere illustration" class="size-auto" />
+  </div>
+  <!-- Main content container -->
+  <div
+    class="relative z-10 m-auto grid max-w-full grid-cols-1 justify-between gap-9 px-12 py-19 pb-40 md:max-w-3/4 md:grid-cols-2 md:gap-25 md:px-0 md:py-40 lg:max-w-2/3 lg:gap-35 lg:py-75"
+  >
+    <!-- Left content: What does good look like? -->
+    <div class="text-center md:text-left">
+      <h2 class="h2-leading">What does good look like?</h2>
+      <span class="text-desc">
+        <p>
+          In the future we're building, any company, app or agent can connect privately and
+          deterministically with whatever it needs. Low barriers to entry, all the creature comforts
+          of cloud, and a business model focused on nurturing ecosystems.
+        </p>
+      </span>
+    </div>
+
+    <!-- Right content: Numbered list -->
+    <div>
+      <ol class="ordered-list">
+        <li>Open Source</li>
+        <li>Neutral by design</li>
+        <li>Goes everywhere</li>
+        <li>Programmatic</li>
+        <li>Enables new providers</li>
+      </ol>
+    </div>
+  </div>
+</section>

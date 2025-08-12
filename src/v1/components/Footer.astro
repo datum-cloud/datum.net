@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import Logo from '@v1/assets/svgs/datum-logo.svg';
+import navigation from '@data/navigation.json';
+import type { NavData, NavItem } from '../../types/navigation';
+import ImageFooter from '@v1/assets/images/footer-illustration.png';
+
+import Icon from '@v1/components/Icon.astro';
+
+// Type-safe navigation data
+const navData = navigation as NavData;
+---
+
+<!-- src/v1/components/Footer.astro -->
+<footer class="bg-dark-navy-blue relative text-white">
+  <!-- Hero Content -->
+  <div class="bg-cream text-navy relative z-10 mx-auto px-6 pt-21 md:pt-35 lg:pt-53">
+    <div class="text-center">
+      <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
+      <div class="flex items-center justify-center gap-7">
+        <a href="#" class="btn btn--cream btn--large">
+          Join our private Beta
+          <Icon name="arrow-right" size="md" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Landscape -->
+  <div class="footer-illustration-container">
+    <div class="relative">
+      <Image src={ImageFooter} alt="Footer illustration" class="footer-illustration-image" />
+    </div>
+  </div>
+
+  <!-- Main Footer Content -->
+  <div class="relative z-10 mx-auto px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34">
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-6 lg:grid-cols-12">
+      <!-- Logo Section -->
+      <div class="col-span-6 lg:col-span-2">
+        <a href="/" aria-label="Home" class="mb-8 flex items-center">
+          <Logo class="text-white" />
+        </a>
+      </div>
+
+      <!-- Navigation Sections -->
+      <div class="footer-nav-container">
+        <div class="footer-nav-grid">
+          {
+            navData.footer.map((section) => (
+              <div>
+                <h4 class="footer-nav-section">{section.title}</h4>
+                <ul class="footer-nav-list">
+                  {section.items.map((item: NavItem) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="footer-nav-link"
+                        target={item.isExternal ? '_blank' : undefined}
+                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- GitHub Button Section -->
+      <div
+        class="col-span-6 mt-5 flex flex-col items-center gap-6 md:col-span-2 md:mt-0 md:items-end lg:col-span-2"
+      >
+        <a href="#" class="btn btn--primary">
+          <div class="btn-icon">
+            <Icon name="github" size="md" />
+          </div>
+          <span class="btn-text">85.4k</span>
+        </a>
+
+        <p class="text-peat-200 text-xsm text-center opacity-40 md:text-right">
+          <a href="" class="footer-nav-link">Terms of Service</a> | <a
+            href=""
+            class="footer-nav-link">Privacy Policy.</a
+          ><br />&copy; {new Date().getFullYear()} Datum Technology Inc.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Section -->
+  <div class="bg-peat-100 text-blackberry-800 px-6 py-16">
+    <div class="mx-auto flex max-w-227 flex-col items-center gap-0 md:flex-row md:gap-20">
+      <h4 class="h4-leading">Sign up for updates</h4>
+      <div class="w-full max-w-[317px] grow md:w-auto md:max-w-none">
+        <div class="border-blackberry-800 flex items-center border-b pb-2">
+          <input
+            type="email"
+            placeholder="Your email"
+            class="text-blackberry-800 placeholder-blackberry-800/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none"
+          />
+          <button class="ml-4">
+            <Icon name="circle-arrow-right" size="xl" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

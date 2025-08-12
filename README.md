@@ -85,7 +85,6 @@ npm run dev
    ```
 
    This will:
-
    - Build the development image using Node.js 22 Alpine
    - Mount your local codebase for hot-reloading
    - Make the app available at http://localhost:4321
@@ -106,7 +105,6 @@ npm run dev
    ```
 
    This will:
-
    - Build an optimized production image
    - Run the application in production mode
    - Enable automatic restarts unless stopped
@@ -130,12 +128,10 @@ npm run dev
 The setup uses a multi-stage Dockerfile:
 
 1. Base stage (`node:22-alpine`)
-
    - Minimal Alpine Linux with Node.js 22
    - Common workspace setup
 
 2. Development stage
-
    - Full development dependencies
    - Source code mounting
    - Hot-reload enabled

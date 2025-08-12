@@ -1,0 +1,46 @@
+@import './fonts.css';
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@import './theme.css';
+
+@layer base {
+  html {
+    @apply antialiased;
+    @apply font-primary;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-canela;
+  }
+
+  html {
+    @apply bg-white;
+  }
+
+  /* Prevent body scroll when mobile menu is active */
+  body {
+    &.mobile-menu-open {
+      @apply fixed w-full touch-none overflow-hidden;
+    }
+  }
+}
+
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+@import './home.css';

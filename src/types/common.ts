@@ -24,3 +24,21 @@ export interface PaginationProps {
   prevUrl?: string;
   nextUrl?: string;
 }
+
+export interface HeroProps {
+  iconName?: string;
+  title?: string;
+  subtitle?: string;
+  class?: string;
+}
+
+export interface ArticleProps {
+  articleId?: string;
+  showSidebar?: boolean;
+  class?: string;
+}
+
+export interface SidebarProps {
+  currentArticleId?: string;
+  class?: string;
+}

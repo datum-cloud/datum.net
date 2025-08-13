@@ -1,23 +1,32 @@
 ---
+// src/v1/components/Hero.astro
 // import { Image } from 'astro:assets';
 
 import Nav from '@v1/components/Nav.astro';
 import Icon from '@v1/components/Icon.astro';
+import type { HeroProps } from '@/src/types/common';
+
+const {
+  iconName = 'default',
+  title = 'About Datum.',
+  subtitle = 'About',
+  class: className,
+} = Astro.props as HeroProps;
 ---
 
-<section class:list={['hero--main', Astro.props.class]}>
+<section class:list={['hero--main', className]}>
   <Nav />
   <div class="hero--main-content">
     {/* Hero Main Content */}
     <div class="hero--main-content-inner">
       <div class="hero--main-content-icon">
         <div class="hero--main-content-icon-inner">
-          <Icon name="default" size="md" />
+          <Icon name={iconName} size="md" />
         </div>
-        <span>About</span>
+        <span>{subtitle}</span>
       </div>
 
-      <h1 class="hero--main-content-title">About Datum.</h1>
+      <h1 class="hero--main-content-title">{title}</h1>
     </div>
   </div>
 </section>

@@ -1,11 +1,11 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply flex w-full items-center justify-between p-6 md:px-12 md:py-9 lg:px-45 lg:py-13;
+    @apply m-auto flex w-full max-w-391 items-center justify-between py-6 md:py-9 lg:py-13;
   }
 
   .nav--main .nav-menu {
-    @apply hidden items-center gap-10 text-white md:flex;
+    @apply hidden items-center gap-10 justify-self-center-safe text-white md:flex;
   }
 
   .nav--main .nav-menu-item {
@@ -21,7 +21,7 @@
   }
 
   .nav--main .nav-actions {
-    @apply hidden items-center gap-6 md:flex;
+    @apply hidden items-center gap-6 justify-self-end-safe md:flex;
   }
 
   /* Dropdown Styles */
@@ -38,7 +38,7 @@
   }
 
   .nav-dropdown-menu {
-    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-50 w-max min-w-70 rounded-lg p-6 opacity-0 shadow-lg transition-all duration-200 ease-in-out;
+    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-70 rounded-lg p-6 opacity-0 shadow-lg transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu {
@@ -95,8 +95,11 @@
   }
 
   /* Mobile Navigation Styles */
+  .mobile-menu-container {
+    @apply block md:hidden;
+  }
   .mobile-menu-button {
-    @apply flex h-7.5 w-7.5 items-center justify-center text-white transition-colors duration-200 hover:text-white/80 md:hidden;
+    @apply relative z-90 flex h-7.5 w-7.5 items-center justify-center text-white transition-colors duration-200 hover:text-white/80 md:hidden;
   }
 
   .mobile-menu-icon {
@@ -104,11 +107,11 @@
   }
 
   .mobile-menu-overlay {
-    @apply fixed inset-0 z-40 bg-black/50 md:hidden;
+    @apply fixed inset-0 z-80 bg-black/50 backdrop-blur-xs md:hidden;
   }
 
   .mobile-menu {
-    @apply bg-lime-green fixed top-0 left-0 z-50 h-full w-[calc(100%-80px)] transition-transform duration-300 ease-in-out md:hidden;
+    @apply bg-lime-green fixed top-0 left-0 z-90 h-full w-[calc(100%-80px)] transition-transform duration-300 ease-in-out md:hidden;
   }
 
   .mobile-menu-header {
@@ -202,7 +205,7 @@
   }
 
   .footer-nav-link {
-    @apply transition-colors hover:text-white;
+    @apply text-white/80 transition-colors hover:text-white;
   }
 
   /* Footer Image Styles */

@@ -4,16 +4,20 @@ import { Image } from 'astro:assets';
 import ImageConsole from '@v1/assets/images/console.png';
 ---
 
-<section class="bg-lime-green relative flex overflow-hidden pt-19 align-middle md:pt-[10%]">
+<section
+  class="bg-lime-green section--block section--block--big-pad flex pt-19 pb-0 align-middle md:pt-[10%]"
+>
   <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
-    <div class="z-50 mx-auto max-w-2xl px-12 text-center">
+    <div class="z-50 mx-auto max-w-2xl text-center">
       <h2 class="h2-leading">The open network cloud for AI.</h2>
-      <p class="text-desc mx-auto mt-8 max-w-3xl md:mt-12">
-        Datum is a modern way to leverage the connectivity 'superpowers' the big guys have, all
-        without leaving Kubernetes, Cursor, or Claude. Control where and how your traffic moves
-        while interacting securely with data, services, customers, and partners. No network team
-        required.
-      </p>
+      <div class="text-desc mx-auto mt-8 max-w-3xl md:mt-12">
+        <p>
+          Datum is a modern way to leverage the connectivity 'superpowers' the big guys have, all
+          without leaving Kubernetes, Cursor, or Claude. Control where and how your traffic moves
+          while interacting securely with data, services, customers, and partners. No network team
+          required.
+        </p>
+      </div>
     </div>
 
     <div class="z-0 flex w-full max-w-[1416px] items-end pl-6 opacity-80 md:px-18">

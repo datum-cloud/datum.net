@@ -1,6 +1,6 @@
 ---
 // src/v1/components/Hero.astro
-// import { Image } from 'astro:assets';
+import { Image } from 'astro:assets';
 
 import Nav from '@v1/components/Nav.astro';
 import Icon from '@v1/components/Icon.astro';
@@ -11,10 +11,11 @@ const {
   title = 'About Datum.',
   subtitle = 'About',
   class: className,
+  imagePath,
 } = Astro.props as HeroProps;
 ---
 
-<section class:list={['hero--main', className]}>
+<section class:list={['hero--main section--block', className]}>
   <Nav />
   <div class="hero--main-content">
     {/* Hero Main Content */}
@@ -28,5 +29,12 @@ const {
 
       <h1 class="hero--main-content-title">{title}</h1>
     </div>
+    {
+      imagePath && (
+        <div class="hero--main-content-image">
+          <Image src={imagePath} alt={title} />
+        </div>
+      )
+    }
   </div>
 </section>

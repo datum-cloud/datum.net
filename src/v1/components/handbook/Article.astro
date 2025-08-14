@@ -26,7 +26,9 @@ const mainArticleEntry =
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 ---
 
-<section class:list={['handbook-article bg-light-gray', className]}>
+<section
+  class:list={['handbook-article bg-light-gray section--block section--block--pad', className]}
+>
   <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
     {showSidebar && <Sidebar currentArticleId={articleId} />}
 

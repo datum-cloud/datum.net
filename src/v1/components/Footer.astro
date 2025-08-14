@@ -12,12 +12,12 @@ const navData = navigation as NavData;
 ---
 
 <!-- src/v1/components/Footer.astro -->
-<footer class="bg-dark-navy-blue relative text-white">
+<footer class="footer">
   <!-- Hero Content -->
-  <div class="bg-cream text-navy relative z-10 mx-auto px-6 pt-21 md:pt-35 lg:pt-53">
-    <div class="text-center">
+  <div class="footer-hero">
+    <div class="footer-hero-content">
       <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
-      <div class="flex items-center justify-center gap-7">
+      <div class="footer-hero-actions">
         <a href="#" class="btn btn--cream btn--large">
           Join our private Beta
           <Icon name="arrow-right" size="md" />
@@ -34,11 +34,11 @@ const navData = navigation as NavData;
   </div>
 
   <!-- Main Footer Content -->
-  <div class="relative z-10 mx-auto px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34">
-    <div class="grid grid-cols-1 gap-12 md:grid-cols-6 lg:grid-cols-12">
+  <div class="footer-main">
+    <div class="footer-grid">
       <!-- Logo Section -->
-      <div class="col-span-6 lg:col-span-2">
-        <a href="/" aria-label="Home" class="mb-8 flex items-center">
+      <div class="footer-logo-section">
+        <a href="/" aria-label="Home" class="footer-logo-link">
           <Logo class="text-white" />
         </a>
       </div>
@@ -71,9 +71,7 @@ const navData = navigation as NavData;
       </div>
 
       <!-- GitHub Button Section -->
-      <div
-        class="col-span-6 mt-5 flex flex-col items-center gap-6 md:col-span-2 md:mt-0 md:items-end lg:col-span-2"
-      >
+      <div class="footer-actions-section">
         <a href="#" class="btn btn--primary">
           <div class="btn-icon">
             <Icon name="github" size="md" />
@@ -81,7 +79,7 @@ const navData = navigation as NavData;
           <span class="btn-text">85.4k</span>
         </a>
 
-        <p class="text-peat-200 text-xsm text-center opacity-40 md:text-right">
+        <p class="footer-copyright">
           <a href="" class="footer-nav-link">Terms of Service</a> | <a
             href=""
             class="footer-nav-link">Privacy Policy.</a
@@ -92,17 +90,13 @@ const navData = navigation as NavData;
   </div>
 
   <!-- Signup Section -->
-  <div class="bg-peat-100 text-blackberry-800 px-6 py-16">
-    <div class="mx-auto flex max-w-227 flex-col items-center gap-0 md:flex-row md:gap-20">
+  <div class="footer-signup">
+    <div class="footer-signup-container">
       <h4 class="h4-leading">Sign up for updates</h4>
-      <div class="w-full max-w-[317px] grow md:w-auto md:max-w-none">
-        <div class="border-blackberry-800 flex items-center border-b pb-2">
-          <input
-            type="email"
-            placeholder="Your email"
-            class="text-blackberry-800 placeholder-blackberry-800/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none"
-          />
-          <button class="ml-4">
+      <div class="footer-signup-form-container">
+        <div class="footer-signup-form">
+          <input type="email" placeholder="Your email" class="footer-signup-input" />
+          <button class="footer-signup-button">
             <Icon name="circle-arrow-right" size="xl" />
           </button>
         </div>

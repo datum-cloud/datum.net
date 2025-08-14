@@ -1,0 +1,24 @@
+---
+import Layout from '@v1/layouts/Layout.astro';
+import Hero from '@v1/components/Hero.astro';
+import Footer from '@v1/components/Footer.astro';
+import OpenNetwork from '@v1/components/home/OpenNetwork.astro';
+import ImageHero from '@v1/assets/images/hero-small-illustration.png';
+const title = 'Handbook';
+const description = 'The Datum Handbook';
+---
+
+<Layout title={title} description={description} bodyClass="about-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName="goal"
+      imagePath={ImageHero}
+      title="Elegant, scalable networking for an AI-native world."
+      subtitle="Features"
+    />
+
+    <OpenNetwork />
+    <Footer />
+  </section>
+</Layout>

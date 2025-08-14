@@ -1,6 +1,7 @@
 @theme {
   /* Custom Breakpoints */
   --datum-max-width: 1926px;
+  --datum-inner-max-width: 1565px;
 
   --color-logo-object: #e8e7e4;
   --color-logo-text: #ffffff;

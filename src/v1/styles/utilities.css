@@ -5,7 +5,7 @@
   }
 
   .inner-max-w {
-    max-width: var(--datum-inner-max-width);
+    max-width: var(--datum-section-width);
   }
 
   .font-canela {

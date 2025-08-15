@@ -32,7 +32,7 @@
   }
 
   .hero--main-content-image {
-    @apply absolute right-0 bottom-0 z-0 lg:right-[15%];
+    @apply 3xl:right-30 absolute right-0 bottom-0 z-0 2xl:right-10;
 
     img {
       @apply ml-auto size-auto max-w-1/2 lg:max-w-2/3;

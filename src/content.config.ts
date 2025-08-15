@@ -13,7 +13,42 @@ const pagesCollection = defineCollection({
       featuredImage: image().optional(),
       isHomePage: z.boolean().optional().default(false),
       slug: z.string().optional(),
-      order: z.number().optional().default(999),
+      order: z.number().optional().default(0),
+      contents: z
+        .array(
+          z.object({
+            title: z.string(),
+            description: z.string().optional(),
+            images: z
+              .array(
+                z.object({
+                  img: image(),
+                  alt: z.string().optional(),
+                })
+              )
+              .optional(),
+            items: z.array(z.string()).optional(),
+          })
+        )
+        .optional(),
+      meta: z
+        .object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          image: z.string().optional(),
+          robots: z.array(z.string()).optional(),
+          keywords: z.array(z.string()).optional(),
+          og: z
+            .object({
+              title: z.string().optional(),
+              description: z.string().optional(),
+              image: z.string().optional(),
+              url: z.string().optional(),
+              type: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
     }),
 });
 

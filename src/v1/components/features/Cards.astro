@@ -1,0 +1,64 @@
+---
+// src/v1/components/features/Cards.astro
+
+const features = [
+  {
+    title: 'Enterprise ready',
+    description:
+      'Production-grade infrastructure with SLA guarantees, compliance certifications, and 24/7 support.',
+  },
+  {
+    title: 'Kubernetes friendly',
+    description:
+      'Native integration with K8s clusters, CNI plugins, and GitOps workflows for seamless deployment.',
+  },
+  {
+    title: 'Bring your IP space',
+    description:
+      'Import existing IP ranges and maintain network continuity during cloud migrations.',
+  },
+  {
+    title: 'AWS, GCP, & BYOC',
+    description:
+      'Deploy across major cloud provider workloads or bring your own compute resources.',
+  },
+  {
+    title: 'AGPLv3 License',
+    description:
+      'Open-source transparency with community contributions and vendor-neutral development.',
+  },
+  {
+    title: 'Machine accounts',
+    description:
+      'Automated service-to-service authentication with API keys, certificates, and token rotation.',
+  },
+  {
+    title: 'Built with Zero Trust',
+    description:
+      'Never trust, always verify with identity-based access controls and encrypted connections.',
+  },
+  {
+    title: 'Role Based Access Control',
+    description:
+      'Fine-grained permissions management with user roles, groups, and policy enforcement.',
+  },
+  {
+    title: 'SSO Support',
+    description:
+      'Seamless integration with enterprise identity providers like Okta, Azure AD, and SAML.',
+  },
+];
+---
+
+<div class="feature-cards-grid 3xl:ml-10 ml-0 xl:ml-3 2xl:ml-8">
+  {
+    features.map((feature) => (
+      <div class="feature-card-item">
+        <div class="feature-card-item__content">
+          <h3>{feature.title}</h3>
+          <p>{feature.description}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>

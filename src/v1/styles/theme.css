@@ -1,7 +1,11 @@
 @theme {
   /* Custom Breakpoints */
+  --breakpoint-2-5xl: 110rem;
+  --breakpoint-3xl: 120rem;
+
+  /* Custom width */
   --datum-max-width: 1926px;
-  --datum-inner-max-width: 1565px;
+  --datum-section-width: 1565px;
 
   --color-logo-object: #e8e7e4;
   --color-logo-text: #ffffff;
@@ -17,6 +21,8 @@
   --color-navy-muted: #14233d;
   --color-orange: #ff6b35;
   --color-tuscany: #c49d9d;
+  --color-indigo: #2d3948;
+  --color-pearl-gray: #efefed;
 
   /* Legacy Colors */
   --color-purple: #4a3a5f;
@@ -98,6 +104,7 @@
   --text-4.5xl: 42px;
   --text-xsm: 13px;
   --text-smb: 15px;
+  --text-blg: 17px;
   --text-1.5xl: 22px;
   --text-2.5xl: 28px;
   --text-4.5xl: 46px;

@@ -45,3 +45,15 @@ export interface SidebarProps {
   currentArticleId?: string;
   class?: string;
 }
+
+export interface ContentProps {
+  content: {
+    title: string;
+    description?: string;
+    images?: Array<{
+      img: ImageMetadata;
+      alt?: string;
+    }>;
+    items?: string[];
+  };
+}

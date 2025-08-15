@@ -1,0 +1,219 @@
+@layer components {
+  /* Section Block */
+
+  .section--block {
+    @apply relative overflow-hidden py-15 md:py-28 md:pb-28 lg:py-42 lg:pb-42;
+
+    &.dark {
+      @apply text-white;
+    }
+  }
+
+  .section--block-illustration {
+    @apply absolute bottom-0 left-0 z-0 flex h-full w-auto items-end;
+  }
+
+  .section--block-inner {
+    @apply px-6 md:px-24 lg:px-45;
+  }
+
+  .section--block-content {
+    @apply relative z-10 flex justify-start;
+
+    .section--block-content-inner {
+      @apply flex flex-col gap-6 md:gap-10;
+    }
+  }
+
+  .section--block-content-text {
+    @apply font-alliance prose-xl lg:text-1.5xl max-w-none text-lg leading-tight md:text-xl;
+  }
+
+  .h2-section {
+    @apply font-canela text-3xl leading-tight font-normal tracking-tight md:text-4xl lg:text-5xl;
+  }
+
+  .nav-logo {
+    @apply flex items-center gap-2;
+
+    --color-logo-object: var(--color-lime-green);
+    --color-logo-text: var(--color-white);
+
+    svg {
+      @apply w-17 md:w-21.5;
+    }
+  }
+
+  /* Generic Button Components */
+  .btn {
+    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 whitespace-nowrap text-white transition hover:cursor-pointer;
+  }
+
+  .btn--primary {
+    @apply border-white/20 hover:bg-white/10;
+  }
+
+  .btn--secondary {
+    @apply border-gray-300/20 hover:bg-gray-300/10;
+  }
+
+  /* Button Color Variations */
+  .btn--lime {
+    @apply bg-lime-green text-navy hover:bg-lime-green/80 border-lime-green;
+  }
+
+  .btn--cream {
+    @apply bg-cream text-navy hover:bg-lime-green/80 border-lime-green border-navy hover:bg-navy/10;
+  }
+
+  .btn--alpha {
+    @apply text-navy border-navy hover:bg-tuscany/10 bg-none;
+  }
+
+  .btn--white {
+    @apply text-navy border-white bg-white hover:bg-white/90;
+  }
+
+  .btn--navy {
+    @apply bg-navy hover:bg-navy/90 border-navy text-white;
+  }
+
+  .btn--outline {
+    @apply border-white/20 bg-transparent text-white hover:bg-white/10;
+  }
+
+  .btn--xl {
+    @apply text-base leading-relaxed font-semibold tracking-tight md:text-lg;
+  }
+
+  .btn--large {
+    @apply text-base leading-relaxed font-semibold tracking-tight;
+  }
+
+  .btn--medium {
+    @apply text-sm leading-relaxed font-medium;
+  }
+
+  .btn--small {
+    @apply text-xs leading-relaxed font-medium;
+  }
+
+  .btn-icon {
+    @apply flex h-5 w-5 items-center justify-center;
+  }
+
+  .btn-text {
+    @apply text-base leading-relaxed font-semibold tracking-tight;
+  }
+
+  /* List Styles */
+  .ordered-list {
+    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-tight tracking-tight md:gap-8 md:text-4xl;
+    counter-reset: ordered-counter;
+  }
+
+  .ordered-list--sans {
+    @apply font-alliance lg:text-2.5xl text-base leading-tight tracking-tight md:text-xl;
+  }
+
+  .ordered-list li {
+    @apply text-navy flex items-center gap-6 md:gap-10;
+    counter-increment: ordered-counter;
+  }
+
+  .ordered-list li::before {
+    @apply font-frontliner text-mauve text-xsm lg:text-1.5xl w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
+    content: '0' counter(ordered-counter);
+  }
+
+  .ordered-list span {
+    @apply font-frontliner text-mauve text-xl leading-relaxed font-light tracking-widest;
+  }
+
+  /* Font Styles */
+  .h1-leading {
+    @apply font-canela text-navy text-4.5xl mb-14 leading-tight tracking-tighter md:text-6xl lg:text-7xl;
+  }
+
+  .h2-leading {
+    @apply font-canela text-navy mb-8 text-4xl leading-tight tracking-tighter md:mb-10 md:text-6xl lg:text-7xl;
+  }
+
+  .h3-leading {
+    @apply font-canela text-navy text-2.5xl lg:text-5.5xl mb-14 leading-tight tracking-tighter md:text-4xl;
+  }
+
+  .h4-leading {
+    @apply font-canela text-navy text-2.5xl lg:text-4.5xl mb-8 leading-tight tracking-tight md:text-4xl;
+  }
+
+  .text-desc {
+    @apply font-alliance text-navy text-smb leading-snug md:text-xl;
+  }
+
+  /* Generic Logo/Brand Grid Components */
+  .logo-grid {
+    @apply border-navy grid overflow-x-auto border border-t-0;
+  }
+
+  .logo-grid--3-6 {
+    @apply grid-cols-3 lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-0 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
+  }
+
+  .logo-grid--2-3 {
+    @apply grid-cols-2 md:grid-cols-3 lg:grid-cols-6;
+  }
+
+  .logo-grid--4 {
+    @apply grid-cols-2 md:grid-cols-4;
+  }
+
+  .logo-item {
+    @apply border-navy flex items-center justify-center border-t border-r last:border-r-0;
+  }
+
+  .logo-item--landscape {
+    @apply aspect-26/19;
+  }
+
+  .logo-item--square {
+    @apply aspect-square;
+  }
+
+  .logo-item--tall {
+    @apply h-48;
+  }
+
+  .logo-item--padding-sm {
+    @apply p-4;
+  }
+
+  .logo-item--padding-md {
+    @apply p-6 md:p-8;
+  }
+
+  .logo-item--padding-lg {
+    @apply p-8 md:p-10;
+  }
+
+  /* Logo Image Variants */
+  .logo-img {
+    @apply object-contain;
+  }
+
+  .logo-img--standard {
+    @apply mx-10 w-3/5;
+  }
+
+  .logo-img--contained {
+    @apply max-h-16 max-w-full;
+  }
+
+  .logo-img--full {
+    @apply h-full w-full;
+  }
+
+  .logo-img--medium {
+    @apply w-2/3;
+  }
+}

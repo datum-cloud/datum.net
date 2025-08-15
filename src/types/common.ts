@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 export interface LayoutProps {
   title: string;
   description?: string;
@@ -30,6 +32,7 @@ export interface HeroProps {
   title?: string;
   subtitle?: string;
   class?: string;
+  imagePath?: ImageMetadata;
 }
 
 export interface ArticleProps {

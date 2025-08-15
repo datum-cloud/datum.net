@@ -88,7 +88,7 @@
 
   /* Feature Cards Grid - New Design */
   .feature-cards-grid {
-    @apply grid max-w-264 grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3;
+    @apply grid max-w-none grid-cols-1 gap-12 md:grid-cols-2 lg:max-w-180 xl:max-w-230 xl:grid-cols-3 2xl:max-w-264;
   }
 
   .feature-card-item {

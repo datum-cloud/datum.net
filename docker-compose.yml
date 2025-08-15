@@ -8,10 +8,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=development
-      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
     env_file:
       - .env
     networks:
@@ -24,13 +22,10 @@ services:
       target: production
     ports:
       - '4321:4321'
-    volumes:
-      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
       - PORT=4321
-      - GH_ACCESS_TOKEN=${GH_ACCESS_TOKEN}
     networks:
       - datum-network
     restart: unless-stopped
@@ -38,7 +33,3 @@ services:
 networks:
   datum-network:
     driver: bridge
-
-volumes:
-  persistent-data:
-    driver: local

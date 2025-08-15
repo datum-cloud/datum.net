@@ -49,8 +49,10 @@
     "mermaid": "^11.6.0",
     "nanostores": "^1.0.1",
     "octokit": "^5.0.3",
+    "openid-client": "^6.6.2",
     "postgres": "^3.4.7",
     "reading-time": "^1.5.0",
+    "rehype-mermaid": "^3.0.0",
     "tailwindcss": "^4.1.10",
     "uninstall": "^0.0.0",
     "zod": "^3.25.62"

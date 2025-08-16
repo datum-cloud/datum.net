@@ -3,20 +3,20 @@ title: "Great networks are dying. Why?"
 date: 2025-02-23
 slug: "learning-from-dying-networks"
 description: "This is a second published blog post about an interesting topic."
-thumbnail: ../../assets/images/blog/post-1-thumb.png
-featuredImage: ../../assets/images/blog/post-1.png
+thumbnail: assets/images/blog-1-thumb.png
+featuredImage: assets/images/blog-1.png
 author: zac
 draft: true
 categories: ["network-architecture", "business-strategy"]
 ---
 The back half of 2024 was rough for smaller companies with impressive global networks. 
 
-*   In June, [StackPath closed its doors](https://www.datacenterdynamics.com/en/news/stackpath-to-close-down-liquidate-assets/) after raising some $400M and deploying an edge compute platform to at least 45 PoPs. The company had already dismantled its Highwinds / MaxCDN / NetDNA roll up CDN in 2023, selling the larger accounts to Akamai.  
-    
-*   In September, just a year after Limelight and Edgecast became Edgio (EGIOQ), the company announced it had entered bankruptcy. Eight weeks later, [Akamai nabbed](https://www.streamingmediablog.com/2024/11/akamai-acquires-edgio-contracts.html) the delivery customers for $125M. As for its 300 global PoPs, the status is unclear.  
-    
-*   In November, Equinix announced that it would [shutter Equinix Metal](https://www.datacenterdynamics.com/en/news/equinix-to-kill-off-metal-by-june-2026/) and its freshly deployed 40+ location bare metal footprint and IP network.  
-    
+*   In June, [StackPath closed its doors](https://www.datacenterdynamics.com/en/news/stackpath-to-close-down-liquidate-assets/) after raising some $400M and deploying an edge compute platform to at least 45 PoPs. The company had already dismantled its Highwinds / MaxCDN / NetDNA roll up CDN in 2023, selling the larger accounts to Akamai.
+
+*   In September, just a year after Limelight and Edgecast became Edgio (EGIOQ), the company announced it had entered bankruptcy. Eight weeks later, [Akamai nabbed](https://www.streamingmediablog.com/2024/11/akamai-acquires-edgio-contracts.html) the delivery customers for $125M. As for its 300 global PoPs, the status is unclear.
+
+*   In November, Equinix announced that it would [shutter Equinix Metal](https://www.datacenterdynamics.com/en/news/equinix-to-kill-off-metal-by-june-2026/) and its freshly deployed 40+ location bare metal footprint and IP network.
+
 *   If you turn back the clock a few more years the graveyard includes names like Lumen CDN (CenturyLink), Instart Logic (also taken over by Akamai), Subspace, Edge Gravity, and Internap. [Dan Rayburn's list](http://www.streamingmediablog.com/2023/01/cdn-list.html) is pretty exhaustive.
 
 While there are still a number of niche players who have built their own networks (shout out to pure play delivery folks like KeyCDN, CDN77, and CacheFly; network-focused hosting companies like NetActuate, EdgeUno, and Latitude; and 2nd tier clouds Digital Ocean, Servers.com, Vultr, and OVH), the question must be asked: what gives?
@@ -35,13 +35,13 @@ Unlike traditional SaaS or other industries, if you're delivering bits for money
 
 Outside of the hyperscale networks, the most recognized global edge networks are Cloudflare, Akamai, and Fastly. Each has moved heavily into security over the last few years and built up a platform story. Here is some copy I took from their respective websites:
 
-1.  **Cloudflare is the Connectivity Cloud** - Cloudflare is built on an intelligent, secure, high-speed global network. We help businesses regain control of their technology and security environments by reducing complexity and improving visibility across their on-premises, public cloud, SaaS and public Internet domains.  
-    
-2.  **Akamai is the Connected Cloud** - Akamai Connected Cloud brings core cloud computing and edge computing together, along with industry-leading security and content delivery — all on the most distributed platform on the planet.  
-    
+1.  **Cloudflare is the Connectivity Cloud** - Cloudflare is built on an intelligent, secure, high-speed global network. We help businesses regain control of their technology and security environments by reducing complexity and improving visibility across their on-premises, public cloud, SaaS and public Internet domains.
+
+2.  **Akamai is the Connected Cloud** - Akamai Connected Cloud brings core cloud computing and edge computing together, along with industry-leading security and content delivery — all on the most distributed platform on the planet.
+
 3.  **Fastly is a Platform with a Difference** \- Fastly's best-in-class edge cloud platform helps you modernize and automate more to meet your biggest challenges head-on. Take your first step toward better margins, higher developer productivity, faster innovation cycles, and new levels of reliability.
 
-These are each amazing global platforms with hundreds of TB's of connected capacity. But the story in the market suggests that all is not equal — Fastly is trading at 1.9x revenue, Akamai at 3.63x, and Cloudflare at 22.5x. One of these is not like the other! While Akamai is a more mature business, it's clear that growth is what drives stock value:  
+These are each amazing global platforms with hundreds of TB's of connected capacity. But the story in the market suggests that all is not equal — Fastly is trading at 1.9x revenue, Akamai at 3.63x, and Cloudflare at 22.5x. One of these is not like the other! While Akamai is a more mature business, it's clear that growth is what drives stock value:
 
 *   Akamai (AKAM) reported $1 billion in revenue for the quarter ended September 2024, representing a year-over-year increase of 4.1% (less than inflation). They had a $14B market cap.
 *   Cloudflare (NET) reported $430.1 million in revenue for the quarter ended September 2024, representing a year-over-year increase of 28%. They had a $34B market cap.
@@ -98,10 +98,10 @@ In the meantime, Cloudflare is busy deploying GPUs to support its serverless Wor
 
 It's always been madness to build and run a global network...until it isn't (looking at you Netflix, Apple, Roblox, VISA, Walmart, Meta, etc). In order to succeed, we're taking some lessons from the recent failures and successes.  
 
-*   **Rule #1: Don't Overbuild** \- If you're going to build a network, you can't overburden the business with costs until there is a durable product-market fit. Be scrappy, borrow what you can, and build what you need.  
-    
-*   **Rule #2: Embrace Federation** - There is a lot of value in owning big iron, but why restrict value to just your own pipes? We're taking a page from the "deploy everywhere" folks and helping to make the experience of using other infrastructure providers better.  
-    
+*   **Rule #1: Don't Overbuild** \- If you're going to build a network, you can't overburden the business with costs until there is a durable product-market fit. Be scrappy, borrow what you can, and build what you need.
+
+*   **Rule #2: Embrace Federation** - There is a lot of value in owning big iron, but why restrict value to just your own pipes? We're taking a page from the "deploy everywhere" folks and helping to make the experience of using other infrastructure providers better.
+
 *   **Rule #3: The Customer is Software** \- A fast, global, programmatic experience with a full suite of creature comforts is non-negotiable. To compete on the "fastest" pipes or computers alone truly is madness.**‍**
 *   **Rule #4: Neutrality is a Superpower** - Companies are complex and interact with more ecosystems and customers every day. To create a durable network effect, it's important to invite a lot of friends to the party.
 *   ‍**Rule #5: Don't Margin Stack Thy Partner** - Commercial models are difficult, but having a rebill or marketplace solution helps everyone understand the unique value you provide, and where you're simply facilitating an experience. **‍**

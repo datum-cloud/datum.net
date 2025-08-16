@@ -1,0 +1,49 @@
+@layer components {
+  .hero--main {
+    @apply relative flex flex-col text-white;
+
+    &.light {
+      @apply bg-cream text-navy;
+
+      .nav--main {
+        .nav-menu {
+          @apply text-navy;
+        }
+      }
+
+      .btn--primary {
+        @apply text-navy;
+        @apply border-navy/20 hover:border-navy/70;
+      }
+
+      .nav-logo {
+        --color-logo-object: var(--color-tuscany);
+        --color-logo-text: var(--color-navy);
+      }
+
+      .mobile-menu-button {
+        @apply text-navy;
+      }
+    }
+  }
+
+  .hero--main-content {
+    @apply z-0 aspect-auto w-full md:h-auto;
+  }
+
+  .hero--main-content-inner {
+    @apply flex flex-1 flex-col items-center justify-center gap-6 py-22.5 text-center md:gap-9 lg:gap-11;
+  }
+
+  .hero--main-content-title {
+    @apply font-canela mb-0 text-4xl leading-tight tracking-tighter md:text-5xl lg:text-6xl;
+  }
+
+  .hero--main-content-icon {
+    @apply text-navy hover:text-navy/80 flex items-center gap-5 transition-colors duration-200;
+  }
+
+  .hero--main-content-icon-inner {
+    @apply bg-light-pink flex h-8.5 w-8.5 items-center justify-center rounded;
+  }
+}

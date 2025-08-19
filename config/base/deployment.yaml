@@ -38,10 +38,25 @@ spec:
           env:
             - name: SITE_URL
               value: https://website.staging.env.datum.net/
+            - name: GITHUB_PROJECT_URL
+              value: https://github.com/datum-cloud/datum.net
             - name: API_URL
               value: https://api.datum.net
-            - name: SITE_GITHUB
-              value: https://github.com/datum-cloud/datum.net
+            - name: APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_ID
+            - name: APP_INSTALLATION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_INSTALLATION_ID
+            - name: APP_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datum-net
+                  key: APP_PRIVATE_KEY
           envFrom:
             - secretRef:
                 name: datum-net

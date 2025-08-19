@@ -62,6 +62,9 @@ jobs:
           target: production
           build-args: |
             ASTRO_TELEMETRY_DISABLED=1
+            APP_ID=${{ secrets.APP_ID }}
+            APP_INSTALLATION_ID=${{ secrets.APP_INSTALLATION_ID }}
+            APP_PRIVATE_KEY=${{ secrets.APP_PRIVATE_KEY }}
 
   publish-kustomize-bundles:
     permissions:

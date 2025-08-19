@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import type { ContentProps } from '@/src/types/common';
+
+const { content } = Astro.props as ContentProps;
+const companies = content.data.companies || [];
+const investors = content.data.investors || [];
+const link = content.data.link;
+---
+
+<section class="bg-lime-green section--block section--block--pad">
+  <div class="section--block-inner">
+    <!-- Team Header -->
+    <div class="mb-16 md:mb-20">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+        <h2 class="h2-section">{content.data.title}</h2>
+        <div class="section--block-content-text max-w-2xl text-lg lg:max-w-xl">
+          <p>
+            {content.body}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Companies Section -->
+    {
+      companies.length > 0 && (
+        <div class="mb-16 md:mb-20">
+          <h3 class="text-navy/80 font-alliance mb-8 text-sm font-semibold tracking-wider uppercase md:text-base">
+            Companies we've helped to build
+          </h3>
+          <div class="logo-grid logo-grid--3-6">
+            {companies.map((company) => (
+              <div class="logo-item logo-item--landscape">
+                <Image
+                  src={company.img}
+                  alt={company.alt ?? ''}
+                  class="logo-img logo-img--standard"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Investors Section -->
+    {
+      investors.length > 0 && (
+        <div>
+          <h3 class="text-navy/80 font-alliance mb-8 text-sm font-semibold tracking-wider uppercase md:text-base">
+            Investors who have trusted us to execute
+          </h3>
+          <div class="logo-grid logo-grid--3-6">
+            {investors.map((investor) => (
+              <div class="logo-item logo-item--landscape">
+                <Image
+                  src={investor.img}
+                  alt={investor.alt ?? ''}
+                  class="logo-img logo-img--standard"
+                />
+              </div>
+            ))}
+
+            {link && (
+              <div class="logo-item logo-item--landscape">
+                <a href={link.url} class="text-navy/80 hover:text-navy text-base transition-colors">
+                  {link.label}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

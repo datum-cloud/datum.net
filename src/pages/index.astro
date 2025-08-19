@@ -1,17 +1,19 @@
 ---
-import { getEntries } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import { getCollectionEntry } from '@utils/collectionUtils';
 import HeroSection from '@components/home/HeroSection.astro';
 import FirstSection from '@components/home/FirstSection.astro';
 import SecondSection from '@components/home/SecondSection.astro';
 import ThirdSection from '@components/home/ThirdSection.astro';
 import Footer from '@components/Footer.astro';
 
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { getEntries } from 'astro:content';
+
 const page = await getCollectionEntry('pages', '/');
 const fm = page.data;
 const contents = fm.contents;
 const contentData = await getEntries(contents);
+// SEO
 const meta = fm.meta || {};
 const title = meta.title ? 'Datum - ' + meta.title : fm.title ? 'Datum - ' + fm.title : 'Datum';
 const description = meta.description

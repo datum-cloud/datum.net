@@ -135,7 +135,7 @@
   }
 
   .btn--primary {
-    @apply border-white/20 hover:bg-white/10;
+    @apply bg-navy/90 border-white/20 hover:bg-white/10;
   }
 
   .btn--secondary {

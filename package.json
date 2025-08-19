@@ -30,7 +30,7 @@
     "@alpinejs/collapse": "^3.14.9",
     "@astrojs/alpinejs": "^0.4.8",
     "@astrojs/mdx": "^4.3.0",
-    "@astrojs/node": "^9.2.2",
+    "@astrojs/node": "^9.4.1",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/starlight": "^0.34.3",
     "@astrojs/ts-plugin": "^1.10.4",

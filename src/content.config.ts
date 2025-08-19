@@ -1,10 +1,10 @@
-import { z, defineCollection } from 'astro:content';
+import { z, reference, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
 // Define pages collections
-const pagesCollection = defineCollection({
+const pages = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/pages' }),
   schema: ({ image }) =>
     z.object({
@@ -13,12 +13,41 @@ const pagesCollection = defineCollection({
       featuredImage: image().optional(),
       isHomePage: z.boolean().optional().default(false),
       slug: z.string().optional(),
-      order: z.number().optional().default(999),
+      order: z.number().optional().default(0),
+      contents: z.array(reference('pages')).optional(),
+      items: z.array(z.string()).optional(),
+      images: z
+        .array(
+          z.object({
+            img: image().optional(),
+            alt: z.string().optional(),
+          })
+        )
+        .optional(),
+      meta: z
+        .object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          image: z.string().optional(),
+
+          robots: z.array(z.string()).optional(),
+          keywords: z.array(z.string()).optional(),
+          og: z
+            .object({
+              title: z.string().optional(),
+              description: z.string().optional(),
+              image: z.string().optional(),
+              url: z.string().optional(),
+              type: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
     }),
 });
 
 // Define blog collections
-const blogCollection = defineCollection({
+const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: ({ image }) =>
     z.object({
@@ -35,7 +64,7 @@ const blogCollection = defineCollection({
 });
 
 // Define authos collections
-const authorsCollection = defineCollection({
+const authors = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/authors' }),
   schema: ({ image }) =>
     z.object({
@@ -58,7 +87,7 @@ const authorsCollection = defineCollection({
 });
 
 // Define categories collections
-const categoriesCollection = defineCollection({
+const categories = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/categories' }),
   schema: ({ image }) =>
     z.object({
@@ -70,7 +99,7 @@ const categoriesCollection = defineCollection({
 });
 
 // Define handbook collections
-const handbooksCollection = defineCollection({
+const handbooks = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/handbook' }),
   schema: ({ image }) =>
     z.object({
@@ -104,23 +133,8 @@ const handbooksCollection = defineCollection({
     }),
 });
 
-// Define docs collections
-// const docsCollection = defineCollection({
-//   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/docs/docs' }),
-//   schema: ({ image }) =>
-//     z.object({
-//       title: z.string(),
-//       description: z.string().optional(),
-//       date: z.date().optional(),
-//       slug: z.string().optional(),
-//       thumbnail: image().optional(),
-//       draft: z.boolean().optional().default(false),
-//       weight: z.number().optional().default(999),
-//     }),
-// });
-
 // Define changelog collections
-const changelogCollection = defineCollection({
+const changelog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/changelog' }),
   schema: () =>
     z.object({
@@ -131,14 +145,12 @@ const changelogCollection = defineCollection({
     }),
 });
 
-// Export all collections
 export const collections = {
-  pages: pagesCollection,
-  blog: blogCollection,
-  authors: authorsCollection,
-  categories: categoriesCollection,
-  handbooks: handbooksCollection,
-  // olddocs: docsCollection,
+  pages,
+  blog,
+  authors,
+  categories,
+  handbooks,
+  changelog,
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
-  changelog: changelogCollection,
 };

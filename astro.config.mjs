@@ -101,5 +101,5 @@ export default defineConfig({
   },
 
   experimental: {},
-  prefetch: true,
+  prefetch: false,
 });

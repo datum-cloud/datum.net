@@ -10,6 +10,7 @@ const {
   iconName = 'default',
   title = 'About Datum.',
   subtitle = 'About',
+  description = '',
   class: className,
   imagePath,
 } = Astro.props as HeroProps;
@@ -28,6 +29,7 @@ const {
       </div>
 
       <h1 class="hero--main-content-title">{title}</h1>
+      {description && <p class="hero--main-content-description">{description}</p>}
     </div>
     {
       imagePath && (

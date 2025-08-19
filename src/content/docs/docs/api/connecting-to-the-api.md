@@ -31,7 +31,7 @@ Most users will interact with a project control plane to manage resources.
 
 The following base URL can be used to access an organization's control plane:
 
-```url
+```html
 https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/organizations/{organization_id}/control-plane
 ```
 
@@ -41,7 +41,7 @@ Projects created in an organization's control plane will have their own control
 plane created to manage resources. Use the following base URL to access a
 project's control plane:
 
-```url
+```html
 https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/projects/{project_id}/control-plane
 ```
 

@@ -40,7 +40,7 @@
   }
 
   .hero--main-content-inner {
-    @apply relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 py-22.5 text-center md:gap-9 lg:gap-11;
+    @apply relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 pt-10 pb-22 text-center md:gap-9 lg:gap-11;
   }
 
   .hero--main-content-title {
@@ -53,5 +53,9 @@
 
   .hero--main-content-icon-inner {
     @apply bg-light-pink flex h-8.5 w-8.5 items-center justify-center rounded;
+  }
+
+  .hero--main-content-description {
+    @apply font-alliance text-navy m-auto mt-0 mb-0 max-w-3xl text-lg font-normal md:text-xl lg:text-2xl;
   }
 }

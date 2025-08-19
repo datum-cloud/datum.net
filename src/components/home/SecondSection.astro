@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+
+import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
+import ImageRight from '@v1/assets/images/good-look-section/right-stone.png';
+import ImageSphere from '@v1/assets/images/good-look-section/sphere.png';
+import type { ContentProps } from '@/src/types/common';
+
+const { content } = Astro.props as ContentProps;
+---
+
+<section class="bg-light-gray section--block section--block--big-pad flex align-middle">
+  <div class="absolute bottom-0 left-0 z-0 max-w-234 opacity-80">
+    <Image src={ImageLeft} alt="Scene left illustration" class="size-auto opacity-80" />
+  </div>
+  <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
+    <Image src={ImageRight} alt="Scene right illustration" class="size-auto opacity-80" />
+  </div>
+  <div class="absolute top-0 right-0 z-0 hidden max-w-73 md:block">
+    <Image src={ImageSphere} alt="Scene sphere illustration" class="size-auto" />
+  </div>
+  <!-- Main content container -->
+  <div
+    class="relative z-10 m-auto mb-40 grid max-w-full grid-cols-1 justify-between gap-9 md:max-w-299 md:grid-cols-2 md:gap-25 lg:gap-35"
+  >
+    <!-- Left content: What does good look like? -->
+    <div class="text-center md:text-left">
+      <h2 class="h2-leading">{content.data.title}</h2>
+      <span class="text-desc">
+        <p>{content.body}</p>
+      </span>
+    </div>
+
+    <!-- Right content: Numbered list -->
+    <div>
+      {
+        content.data.items ? (
+          <ol class="ordered-list">
+            {content.data.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ol>
+        ) : (
+          ''
+        )
+      }
+    </div>
+  </div>
+</section>

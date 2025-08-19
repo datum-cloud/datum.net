@@ -31,6 +31,7 @@ export interface HeroProps {
   iconName?: string;
   title?: string;
   subtitle?: string;
+  description?: string;
   class?: string;
   imagePath?: ImageMetadata;
 }
@@ -44,4 +45,21 @@ export interface ArticleProps {
 export interface SidebarProps {
   currentArticleId?: string;
   class?: string;
+}
+
+export interface ContentProps {
+  content: {
+    id: string;
+    data: {
+      title: string;
+      items?: string[];
+      images?: Array<{
+        img: ImageMetadata;
+        alt?: string;
+      }>;
+    };
+    body: string;
+    filePath: string;
+    collection?: string;
+  };
 }

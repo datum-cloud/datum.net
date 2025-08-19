@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+
+import Illustration from '@v1/assets/images/hero-home-illustration.png';
+import Nav from '@components/Nav.astro';
+import Icon from '@components/Icon.astro';
+---
+
+<section class="relative flex flex-col">
+  <div class="bg-navy z-0 aspect-auto h-dvh w-full md:aspect-16/11 md:h-auto">
+    <div class="absolute z-0 flex h-full w-full items-end">
+      <Image
+        src={Illustration}
+        alt="Hero Illustration"
+        class="h-auto w-full object-contain sm:object-cover"
+      />
+    </div>
+    <div class="section--block z-10">
+      <Nav />
+      {/* Hero Main Content */}
+      <div class="flex flex-1 flex-col items-center justify-center py-35 text-center">
+        <h1 class="h1-leading mb-16 text-white">
+          The internet,<br />
+          reimagined for AI.
+        </h1>
+        <div class="flex flex-col justify-center gap-6 sm:flex-row">
+          <a href="#" class="btn btn--lime btn--large">
+            Join our private Beta
+            <Icon name="arrow-right" size="md" />
+          </a>
+          <a href="#" class="btn btn--primary btn--large">About the Platform</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

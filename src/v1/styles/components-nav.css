@@ -1,7 +1,7 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply m-auto flex w-full max-w-391 items-center justify-between py-6 md:py-9 lg:py-13;
+    @apply m-auto flex w-full max-w-391 items-center justify-between py-6 md:py-9 lg:py-12.5;
   }
 
   .nav--main .nav-menu {

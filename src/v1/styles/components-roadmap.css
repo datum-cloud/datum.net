@@ -32,7 +32,7 @@
   }
 
   .roadmap-card--title {
-    @apply font-alliance text-2xl leading-tight font-medium tracking-tight text-white md:text-3xl;
+    @apply font-alliance mb-7 text-2xl leading-tight font-medium tracking-tight text-white md:text-3xl;
   }
 
   .roadmap-card--description {

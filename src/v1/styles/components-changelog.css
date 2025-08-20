@@ -1,0 +1,81 @@
+@layer components {
+  .changelog-container {
+    @apply mx-auto max-w-6xl;
+  }
+
+  .changelog-item {
+    @apply relative flex gap-12 last:mb-0 md:gap-24 lg:gap-36 last:[&>.changelog-item--content]:pb-0;
+  }
+
+  .changelog-item--timeline {
+    @apply relative flex flex-shrink-0 flex-col items-center;
+  }
+
+  .changelog-item--timeline-dot {
+    @apply z-10 h-[19px] w-[19px] overflow-hidden rounded-full;
+  }
+
+  .changelog-item--timeline-line {
+    @apply w-px flex-1 bg-white/10;
+  }
+
+  .changelog-item:last-child .changelog-item--timeline-line {
+    @apply hidden;
+  }
+
+  .changelog-item--content {
+    @apply min-w-0 flex-1 pb-16 md:pb-28 lg:pb-38;
+  }
+
+  .changelog-item--date {
+    @apply font-alliance text-lime-green mb-6 text-sm font-medium tracking-wider uppercase;
+  }
+
+  .changelog-item--main {
+    @apply space-y-6;
+  }
+
+  .changelog-item--title {
+    @apply font-alliance mb-7 text-2xl leading-tight font-medium tracking-tight text-white md:text-3xl;
+  }
+
+  .changelog-item--description {
+    @apply font-alliance text-lg leading-relaxed font-normal text-white opacity-80 md:text-xl;
+  }
+
+  .changelog-item--tags {
+    @apply flex flex-col gap-6;
+  }
+
+  .changelog-item--tag-group {
+    @apply flex items-center gap-6;
+  }
+
+  .changelog-item--tag {
+    @apply font-alliance rounded-lg border px-4 py-2 text-sm font-semibold;
+    height: 37px;
+  }
+
+  .changelog-item--tag-description {
+    @apply font-alliance text-lg leading-relaxed font-normal text-white opacity-80;
+  }
+
+  .changelog-item--tag--fixed {
+    @apply border-light-pink text-light-pink;
+  }
+
+  .changelog-item--tag--new {
+    @apply border-lime-green text-lime-green;
+  }
+
+  .changelog-item--tag--changed {
+    @apply border-light-gray text-light-gray;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .changelog-item {
+      @apply gap-4;
+    }
+  }
+}

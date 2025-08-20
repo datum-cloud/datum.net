@@ -135,7 +135,7 @@
   }
 
   .btn--primary {
-    @apply bg-navy/90 border-white/20 hover:bg-white/10;
+    @apply border-white/20 hover:bg-white/10;
   }
 
   .btn--secondary {
@@ -148,7 +148,7 @@
   }
 
   .btn--cream {
-    @apply bg-cream text-navy hover:bg-lime-green/80 border-lime-green border-navy hover:bg-navy/10;
+    @apply bg-cream text-navy border-navy hover:bg-navy/10;
   }
 
   .btn--alpha {
@@ -160,7 +160,11 @@
   }
 
   .btn--navy {
-    @apply bg-navy hover:bg-navy/90 border-navy text-white;
+    @apply bg-navy/90 hover:bg-navy/80 border-navy text-white;
+  }
+
+  .btn--navy-alpha {
+    @apply bg-navy/90 border-white/20 text-white hover:bg-white/10;
   }
 
   .btn--outline {

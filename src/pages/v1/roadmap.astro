@@ -5,9 +5,12 @@ import Footer from '@v1/components/Footer.astro';
 import Card from '@v1/components/roadmap/Card.astro';
 import OpenNetwork from '@v1/components/home/OpenNetwork.astro';
 import type { RoadmapItem } from '@/src/types/roadmap';
+import { Image } from 'astro:assets';
+import ImageSphere from '@v1/assets/images/sphere-half.png';
 
 const subtitle = 'Roadmap';
 const title = 'The Roadmap';
+const icon = 'calendar-range';
 const description =
   "Here's what we're thinking about building next. Vote for your favorites, or request a new feature on GitHub.";
 
@@ -55,13 +58,25 @@ const sampleData: RoadmapItem[] = [
   <section class="datum-container">
     <Hero
       class="light"
-      iconName="calendar-range"
+      iconName={icon}
       title={title}
       description={description}
       subtitle={subtitle}
     />
 
     <div class="section--block section--block--pad bg-navy dark">
+      <div class="absolute top-0 right-0 z-40 inline-block">
+        <Image
+          src={ImageSphere}
+          alt="Two Person"
+          class="relative h-auto w-[198px]"
+          data-scroll-effect="parallax"
+          data-scroll-speed="0.1"
+          data-scroll-direction="up-right"
+          data-viewport-offset="-200"
+          data-max-movement="50"
+        />
+      </div>
       <div class="roadmap-container">
         {sampleData.map((item) => <Card {...item} />)}
       </div>

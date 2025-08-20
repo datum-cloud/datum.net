@@ -1,7 +1,7 @@
 /* Handbook Article Styles */
 @layer components {
   .handbook-container {
-    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-23 lg:gap-43;
+    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20 lg:gap-30 xl:gap-35 2xl:gap-43;
   }
 
   .handbook-container--no-sidebar {

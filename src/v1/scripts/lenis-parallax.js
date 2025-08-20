@@ -4,6 +4,9 @@ class LenisSmoothScroll {
   constructor() {
     this.lenis = null;
     this.scrollElements = [];
+    this.lastScrollY = 0;
+    this.throttleDelay = 16; // ~60fps
+    this.lastUpdate = 0;
     this.init();
   }
 
@@ -34,6 +37,9 @@ class LenisSmoothScroll {
 
     // Initialize scroll effects
     this.initScrollEffects();
+
+    // Handle window resize to recalculate element positions
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   initScrollEffects() {
@@ -50,7 +56,19 @@ class LenisSmoothScroll {
       element.dataset.scrollDirection = direction;
 
       if (effect === 'parallax') {
-        element.style.transform = 'translateY(0px)';
+        // Set initial transform based on direction
+        if (direction === 'left' || direction === 'right') {
+          element.style.transform = 'translateX(0px)';
+        } else if (
+          direction === 'up-right' ||
+          direction === 'up-left' ||
+          direction === 'down-right' ||
+          direction === 'down-left'
+        ) {
+          element.style.transform = 'translate(0px, 0px)';
+        } else {
+          element.style.transform = 'translateY(0px)';
+        }
 
         // Store element's position data for viewport detection
         const rect = element.getBoundingClientRect();
@@ -61,6 +79,13 @@ class LenisSmoothScroll {
         // Track if element has started animating
         element.dataset.hasStarted = 'false';
         element.dataset.startScrollY = '0';
+
+        // Check if element is already in viewport on page load
+        if (this.isElementInViewport(element)) {
+          element.dataset.hasStarted = 'true';
+          element.dataset.startScrollY = window.scrollY.toString();
+          console.log('Parallax animation started on load for:', element);
+        }
       }
     });
   }
@@ -68,13 +93,35 @@ class LenisSmoothScroll {
   isElementInViewport(element) {
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
     const viewportOffset = parseFloat(element.dataset.viewportOffset) || 0;
 
-    return rect.top <= windowHeight + viewportOffset && rect.bottom >= -viewportOffset;
+    // Check if element is visible in viewport with offset
+    const isInViewport =
+      rect.top <= windowHeight + viewportOffset &&
+      rect.bottom >= -viewportOffset &&
+      rect.left <= windowWidth &&
+      rect.right >= 0;
+
+    // Additional check for element visibility (not hidden by CSS)
+    const isVisible =
+      element.offsetParent !== null &&
+      element.style.display !== 'none' &&
+      element.style.visibility !== 'hidden' &&
+      element.style.opacity !== '0';
+
+    return isInViewport && isVisible;
   }
 
   onScroll(e) {
     const scrollY = e.scroll;
+    const now = Date.now();
+
+    // Throttle updates to prevent jiggling
+    if (now - this.lastUpdate < this.throttleDelay) {
+      return;
+    }
+    this.lastUpdate = now;
 
     // Update each element with scroll effects
     this.scrollElements.forEach((element) => {
@@ -88,6 +135,7 @@ class LenisSmoothScroll {
         if (isInViewport && !hasStarted) {
           element.dataset.hasStarted = 'true';
           element.dataset.startScrollY = scrollY.toString();
+          console.log('Parallax animation started for:', element);
         }
 
         // Only apply effect if element is in viewport and has started
@@ -113,37 +161,129 @@ class LenisSmoothScroll {
           xPos = -(relativeScroll * speed); // Move left (negative X)
         } else if (direction === 'right') {
           xPos = relativeScroll * speed; // Move right (positive X)
+        } else if (direction === 'up-right') {
+          yPos = -(relativeScroll * speed); // Move up (negative Y)
+          xPos = relativeScroll * speed; // Move right (positive X)
+        } else if (direction === 'up-left') {
+          yPos = -(relativeScroll * speed); // Move up (negative Y)
+          xPos = -(relativeScroll * speed); // Move left (negative X)
+        } else if (direction === 'down-right') {
+          yPos = relativeScroll * speed; // Move down (positive Y)
+          xPos = relativeScroll * speed; // Move right (positive X)
+        } else if (direction === 'down-left') {
+          yPos = relativeScroll * speed; // Move down (positive Y)
+          xPos = -(relativeScroll * speed); // Move left (negative X)
         }
 
-        // Apply maximum movement limits
-        if (maxMovement !== Infinity) {
-          if (direction === 'left' || direction === 'right') {
-            xPos = Math.max(-maxMovement, Math.min(maxMovement, xPos));
-          } else {
-            yPos = Math.max(-maxMovement, Math.min(maxMovement, yPos));
-          }
+        // Debug logging for up direction
+        if (direction === 'up' && maxMovement !== Infinity) {
+          console.log('Up direction debug:', {
+            relativeScroll,
+            yPos: yPos.toFixed(2),
+            maxMovement,
+            speed,
+          });
         }
 
-        // Apply direction-aware boundaries to prevent moving beyond initial position
+        // Apply direction-aware boundaries and maximum movement limits
         if (direction === 'left' || direction === 'right') {
           if (direction === 'left') {
             // For left direction: can move left (negative) but not beyond initial position when scrolling right
             xPos = Math.min(0, xPos);
+            // Apply max movement limit
+            if (maxMovement !== Infinity) {
+              xPos = Math.max(-maxMovement, xPos);
+            }
           } else {
             // For right direction: can move right (positive) but not beyond initial position when scrolling left
             xPos = Math.max(0, xPos);
+            // Apply max movement limit
+            if (maxMovement !== Infinity) {
+              xPos = Math.min(maxMovement, xPos);
+            }
           }
-          element.style.transform = `translateX(${xPos}px)`;
+          element.style.transform = `translateX(${Math.round(xPos)}px)`;
+        } else if (
+          direction === 'up-right' ||
+          direction === 'up-left' ||
+          direction === 'down-right' ||
+          direction === 'down-left'
+        ) {
+          // Handle diagonal directions
+          if (direction === 'up-right') {
+            // For up-right: can move up and right, but not beyond initial position
+            yPos = Math.min(0, yPos);
+            xPos = Math.max(0, xPos);
+            // Apply max movement limit to both axes
+            if (maxMovement !== Infinity) {
+              yPos = Math.max(-maxMovement, yPos);
+              xPos = Math.min(maxMovement, xPos);
+            }
+          } else if (direction === 'up-left') {
+            // For up-left: can move up and left, but not beyond initial position
+            yPos = Math.min(0, yPos);
+            xPos = Math.min(0, xPos);
+            // Apply max movement limit to both axes
+            if (maxMovement !== Infinity) {
+              yPos = Math.max(-maxMovement, yPos);
+              xPos = Math.max(-maxMovement, xPos);
+            }
+          } else if (direction === 'down-right') {
+            // For down-right: can move down and right, but not beyond initial position
+            yPos = Math.max(0, yPos);
+            xPos = Math.max(0, xPos);
+            // Apply max movement limit to both axes
+            if (maxMovement !== Infinity) {
+              yPos = Math.min(maxMovement, yPos);
+              xPos = Math.min(maxMovement, xPos);
+            }
+          } else if (direction === 'down-left') {
+            // For down-left: can move down and left, but not beyond initial position
+            yPos = Math.max(0, yPos);
+            xPos = Math.min(0, xPos);
+            // Apply max movement limit to both axes
+            if (maxMovement !== Infinity) {
+              yPos = Math.min(maxMovement, yPos);
+              xPos = Math.max(-maxMovement, xPos);
+            }
+          }
+          element.style.transform = `translate(${Math.round(xPos)}px, ${Math.round(yPos)}px)`;
         } else {
           if (direction === 'down') {
             // For down direction: can move down (positive) but not beyond initial position when scrolling up
             yPos = Math.max(0, yPos);
+            // Apply max movement limit
+            if (maxMovement !== Infinity) {
+              yPos = Math.min(maxMovement, yPos);
+            }
           } else {
             // For up direction: can move up (negative) but not beyond initial position when scrolling down
             yPos = Math.min(0, yPos);
+            // Apply max movement limit
+            if (maxMovement !== Infinity) {
+              yPos = Math.max(-maxMovement, yPos);
+            }
+
+            // Debug logging for final position
+            if (direction === 'up' && maxMovement !== Infinity) {
+              console.log('Final yPos:', yPos.toFixed(2));
+            }
           }
-          element.style.transform = `translateY(${yPos}px)`;
+          element.style.transform = `translateY(${Math.round(yPos)}px)`;
         }
+      }
+    });
+  }
+
+  handleResize() {
+    // Recalculate element positions after resize
+    this.scrollElements.forEach((element) => {
+      const effect = element.dataset.scrollEffect;
+
+      if (effect === 'parallax') {
+        const rect = element.getBoundingClientRect();
+        element.dataset.elementTop = rect.top + window.scrollY;
+        element.dataset.elementHeight = rect.height;
       }
     });
   }
@@ -153,6 +293,9 @@ class LenisSmoothScroll {
     if (this.lenis) {
       this.lenis.destroy();
     }
+
+    // Remove resize listener
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
 }
 

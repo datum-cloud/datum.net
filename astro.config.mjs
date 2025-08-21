@@ -48,7 +48,7 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: env.SITE_GITHUB || 'http://github.com/datum-cloud/datum.net',
+          href: env.GITHUB_PROJECT_URL || 'http://github.com/datum-cloud/datum.net',
         },
       ],
       components: {

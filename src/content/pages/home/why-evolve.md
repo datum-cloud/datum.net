@@ -1,17 +1,17 @@
 ---
-title: "Why evolve the internet?"
+title: Why evolve the internet?
 images:
-  - img: ../assets/home/databricks.webp
+  - img: images/databricks.webp
     alt: Databricks
-  - img: ../assets/home/anthropic.webp
+  - img: images/anthropic.webp
     alt: Anthropic
-  - img: ../assets/home/aws.webp
+  - img: images/aws.webp
     alt: Amazon Web Services
-  - img: ../assets/home/stabilityai.webp
+  - img: images/stabilityai.webp
     alt: Stability AI
-  - img: ../assets/home/mistralai.webp
+  - img: images/mistralai.webp
     alt: Mistral AI
-  - img: ../assets/home/openai.webp
+  - img: images/openai.webp
     alt: OpenAI
 ---
 

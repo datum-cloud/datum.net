@@ -57,6 +57,18 @@ export interface ContentProps {
         img: ImageMetadata;
         alt?: string;
       }>;
+      link?: {
+        url: string;
+        label: string;
+      };
+      companies?: Array<{
+        img: ImageMetadata;
+        alt?: string;
+      }>;
+      investors?: Array<{
+        img: ImageMetadata;
+        alt?: string;
+      }>;
     };
     body: string;
     filePath: string;

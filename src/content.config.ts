@@ -3,6 +3,26 @@ import { glob } from 'astro/loaders';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
+const metaSchema = z
+  .object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    image: z.string().optional(),
+
+    robots: z.array(z.string()).optional(),
+    keywords: z.array(z.string()).optional(),
+    og: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        image: z.string().optional(),
+        url: z.string().optional(),
+        type: z.string().optional(),
+      })
+      .optional(),
+  })
+  .optional();
+
 // Define pages collections
 const pages = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/pages' }),
@@ -11,7 +31,6 @@ const pages = defineCollection({
       title: z.string(),
       description: z.string().optional(),
       featuredImage: image().optional(),
-      isHomePage: z.boolean().optional().default(false),
       slug: z.string().optional(),
       order: z.number().optional().default(0),
       contents: z.array(reference('pages')).optional(),
@@ -24,25 +43,41 @@ const pages = defineCollection({
           })
         )
         .optional(),
-      meta: z
-        .object({
-          title: z.string().optional(),
-          description: z.string().optional(),
-          image: z.string().optional(),
+      meta: metaSchema,
+    }),
+});
 
-          robots: z.array(z.string()).optional(),
-          keywords: z.array(z.string()).optional(),
-          og: z
-            .object({
-              title: z.string().optional(),
-              description: z.string().optional(),
-              image: z.string().optional(),
-              url: z.string().optional(),
-              type: z.string().optional(),
-            })
-            .optional(),
+const about = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/about' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      contents: z.array(reference('about')).optional(),
+      companies: z
+        .array(
+          z.object({
+            img: image().optional(),
+            alt: z.string().optional(),
+          })
+        )
+        .optional(),
+      investors: z
+        .array(
+          z.object({
+            img: image().optional(),
+            alt: z.string().optional(),
+          })
+        )
+        .optional(),
+      items: z.array(z.string()).optional(),
+      link: z
+        .object({
+          url: z.string().url(),
+          label: z.string(),
         })
         .optional(),
+      meta: metaSchema,
     }),
 });
 
@@ -147,6 +182,7 @@ const changelog = defineCollection({
 
 export const collections = {
   pages,
+  about,
   blog,
   authors,
   categories,

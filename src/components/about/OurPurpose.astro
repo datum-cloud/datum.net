@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import { marked } from 'marked';
+import ImageOurPurpose from '@v1/assets/images/our-pupose-illustration.png';
+import type { ContentProps } from '@/src/types/common';
+
+const { content } = Astro.props as ContentProps;
+const contentBody = marked.parse(content.body);
+---
+
+<section class="bg-navy section--block section--block--pad dark pb-45 md:pb-28 lg:pb-42">
+  <div class="section--block-inner">
+    <div class="section--block-illustration">
+      <Image
+        src={ImageOurPurpose}
+        alt="Our Purpose Illustration"
+        class="h-full w-auto max-w-none"
+      />
+    </div>
+
+    <div class="section--block-content md:justify-end-safe">
+      <div class="section--block-content-inner max-w-130 md:mr-10 lg:mr-20">
+        <h2 class="h2-section">{content.data.title}</h2>
+        <span class="section--block-content-text" set:html={contentBody} />
+      </div>
+    </div>
+  </div>
+</section>

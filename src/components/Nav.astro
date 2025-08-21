@@ -6,6 +6,9 @@ import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import type { NavData } from '@/src/types/navigation';
 
+// import { stargazerCount } from '@utils/github';
+const starCount = '18.5k'; //await stargazerCount();
+
 // Type-safe navigation data
 const navData = navigation as NavData;
 const mainNav = navData.main;
@@ -63,11 +66,11 @@ const mainNav = navData.main;
   {/* Desktop Actions */}
   <div class="nav-actions">
     {/* 85.4k Button */}
-    <a href="#" class="btn btn--primary">
+    <a href="https://github.com/datum-cloud/datum/" class="btn btn--primary">
       <div class="btn-icon">
         <Icon name="github" size="md" />
       </div>
-      <span class="btn-text">85.4k</span>
+      <span class="btn-text">{starCount}</span>
     </a>
 
     {/* Log In Button */}

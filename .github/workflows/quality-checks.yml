@@ -87,6 +87,9 @@ jobs:
         run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
 
   e2e:
     needs: build
@@ -113,6 +116,9 @@ jobs:
         run: npm run test:e2e
         env:
           ASTRO_TELEMETRY_DISABLED: 1
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Upload Test Results
         if: always()

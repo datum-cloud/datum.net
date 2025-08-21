@@ -51,8 +51,8 @@
       "children": [
         {
           "items": [
-            { "icon": "default", "text": "About", "href": "/v1/about" },
-            { "icon": "book-text", "text": "Handbook", "href": "/v1/handbook" },
+            { "icon": "default", "text": "About", "href": "/about" },
+            { "icon": "book-text", "text": "Handbook", "href": "/about/handbook" },
             { "icon": "book-image", "text": "Blog", "href": "/blog" },
             { "icon": "message-square-plus", "text": "Contact", "href": "/contact" }
           ]

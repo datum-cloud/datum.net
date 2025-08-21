@@ -1,9 +1,9 @@
 ---
 import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
 import ImageConsole from '@v1/assets/images/console.png';
-import type { ContentProps } from '@/src/types/common';
 
-const { content } = Astro.props as ContentProps;
+const content = await getEntry('pages', 'global-section');
 ---
 
 <section
@@ -11,9 +11,9 @@ const { content } = Astro.props as ContentProps;
 >
   <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
     <div class="z-50 mx-auto max-w-2xl text-center">
-      <h2 class="h2-leading">{content.data.title}</h2>
+      <h2 class="h2-leading">{content?.data.title}</h2>
       <div class="text-desc mx-auto mt-8 max-w-3xl md:mt-12">
-        <p>{content.body}</p>
+        <p>{content?.body}</p>
       </div>
     </div>
 

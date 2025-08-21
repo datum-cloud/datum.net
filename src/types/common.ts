@@ -75,3 +75,18 @@ export interface ContentProps {
     collection?: string;
   };
 }
+
+export interface HandbookProps {
+  handbooks: Array<{
+    id: string;
+    data: {
+      title: string;
+      draft: boolean;
+      sidebar: {
+        order?: number;
+        label?: string;
+        badge?: { text: string; variant?: 'info' | 'caution' | 'danger' };
+      };
+    };
+  }>;
+}

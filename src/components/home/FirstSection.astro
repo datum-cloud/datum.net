@@ -4,11 +4,37 @@ import sceneTree from '@v1/assets/images/scene-tree.png';
 import type { ContentProps } from '@/src/types/common';
 
 const { content } = Astro.props as ContentProps;
+
+// Create 6 columns, each with 3 specific logos
+const logoColumns = [];
+if (content.data.images) {
+  for (let i = 0; i < 6; i++) {
+    const columnLogos = [];
+    for (let j = 0; j < 3; j++) {
+      const logoIndex = i * 3 + j;
+      if (logoIndex < content.data.images.length) {
+        columnLogos.push({
+          src: content.data.images[logoIndex].img,
+          alt: content.data.images[logoIndex].alt || `Partner logo ${logoIndex + 1}`,
+          index: logoIndex,
+        });
+      }
+    }
+    logoColumns.push({
+      logos: columnLogos,
+      delay: i * 1, // Stagger each column
+    });
+  }
+}
 ---
 
 <section class="bg-cream section--block section--block--pad">
-  <div class="absolute bottom-0 left-0 z-0">
-    <Image src={sceneTree} alt="Scene tree illustration" class="size-auto w-full max-w-3xl" />
+  <div class="absolute bottom-0 left-0 z-0 flex w-[663px]">
+    <Image
+      src={sceneTree}
+      alt="Scene tree illustration"
+      class="size-auto w-full max-w-3xl self-end"
+    />
   </div>
   <div class="border-navy bg-cream relative z-10 m-auto border md:max-w-391">
     <!-- Scene Tree Image -->
@@ -30,13 +56,23 @@ const { content } = Astro.props as ContentProps;
     {
       content.data.images ? (
         <div class="grid grid-cols-3 overflow-x-auto lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0">
-          {content.data.images.map((logo) => (
+          {logoColumns.map((column, columnIndex) => (
             <div class="border-navy flex aspect-29/21 items-center justify-center border-t border-r last:border-r-0">
-              <Image
-                src={logo.img}
-                alt={`${logo.alt} logo`}
-                class="mx-10 max-h-15 w-4/5 max-w-18 object-contain md:max-w-28 lg:max-w-40"
-              />
+              <div
+                class="logo-cycling-container relative flex h-full w-full items-center justify-center"
+                data-column-index={columnIndex}
+                style={`animation-delay: ${column.delay}s`}
+              >
+                {column.logos.map((logo, logoIndex) => (
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    class={`logo-cycle absolute mx-10 max-h-15 w-4/5 max-w-18 object-contain md:max-w-28 lg:max-w-40 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    data-logo-index={logo.index}
+                    data-column-logo-index={logoIndex}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -46,3 +82,75 @@ const { content } = Astro.props as ContentProps;
     }
   </div>
 </section>
+
+<style>
+  .logo-cycling-container {
+    animation: cycleLogo 5s infinite;
+  }
+
+  @keyframes cycleLogo {
+    0%,
+    50% {
+      transform: rotateX(0deg);
+    }
+    60%,
+    65% {
+      transform: rotateX(90deg);
+    }
+    75%,
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+</style>
+
+<script>
+  // Logo cycling functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.logo-cycling-container');
+
+    containers.forEach((container) => {
+      const columnIndex = parseInt(container.getAttribute('data-column-index') || '0');
+      const logos = container.querySelectorAll('.logo-cycle');
+      const totalLogos = logos.length;
+      let currentIndex = 0;
+
+      // Set initial logo
+      logos.forEach((logo, index) => {
+        if (index === currentIndex) {
+          logo.classList.remove('opacity-0');
+          logo.classList.add('opacity-100');
+        } else {
+          logo.classList.remove('opacity-100');
+          logo.classList.add('opacity-0');
+        }
+      });
+
+      // Cycle through logos at the peak of flip animation
+      const cycleLogos = () => {
+        setTimeout(() => {
+          // Hide current logo
+          logos[currentIndex].classList.remove('opacity-100');
+          logos[currentIndex].classList.add('opacity-0');
+
+          // Move to next logo (use actual number of logos in this column)
+          currentIndex = (currentIndex + 1) % totalLogos;
+
+          // Show next logo
+          logos[currentIndex].classList.remove('opacity-0');
+          logos[currentIndex].classList.add('opacity-100');
+        }, 3000); // 3000ms = 60% of 5000ms cycle, when flip first reaches 90°
+      };
+
+      // Start cycling with staggered timing for each column
+      const baseDelay = 5000; // 5 seconds to match CSS animation
+      const columnDelay = columnIndex * 1000;
+
+      // Start the first cycle immediately (with column delay), then repeat every 5s
+      setTimeout(() => {
+        cycleLogos();
+        setInterval(cycleLogos, baseDelay);
+      }, columnDelay);
+    });
+  });
+</script>

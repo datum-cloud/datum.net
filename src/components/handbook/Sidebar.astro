@@ -1,17 +1,17 @@
 ---
-export const prerender = false;
+import type { SidebarProps, HandbookProps } from '@/src/types/common';
+import { getEntry } from 'astro:content';
 
-import { getCollection } from 'astro:content';
+const { currentArticleId = 'company/why-we-exist', class: className } = Astro.props as SidebarProps;
+const { handbooks } = Astro.props as HandbookProps;
 
-const collections = await getCollection('handbooks');
-
-var badgeColor = {
+const badgeColor = {
   info: 'border-green-400 bg-green-100',
   caution: 'border-yellow-400 bg-yellow-100',
   danger: 'border-red-400 bg-red-100',
 };
 
-var menuCollection: {
+const menuCollection: {
   [key: string]: {
     id: string;
     index: number;
@@ -23,12 +23,12 @@ var menuCollection: {
   }[];
 } = {};
 
-export const getCategory = (url: string) => {
+const getCategory = (url: string) => {
   let urlSplit = url.split('/');
   return urlSplit[0];
 };
 
-collections.forEach((collection) => {
+handbooks.forEach((collection) => {
   if (!collection.data.draft) {
     let label = collection.data.sidebar.label || collection.data.title;
     let order = collection.data.sidebar.order || 0;
@@ -40,7 +40,7 @@ collections.forEach((collection) => {
       order,
       label,
       category,
-      url: '/handbook/' + collection.id,
+      url: '/about/handbook/' + collection.id,
       badge: collection.data.sidebar.badge,
     };
 
@@ -55,97 +55,58 @@ collections.forEach((collection) => {
   }
 });
 
-const { current } = Astro.props;
+// ordering categories
+const handbookIndex = await getEntry('handbooks', 'index');
+const orderedCategories = handbookIndex?.data.contents;
+const categories = orderedCategories ?? Object.keys(menuCollection);
 
-let urlSplit = current.split('/');
-let selectedCategory = urlSplit[0];
+const selectedCategory = currentArticleId ? currentArticleId.split('/')[0] : 'company';
 ---
 
-<aside
-  class="text-blackberry-600 relative flex h-full min-h-[3.75rem] w-full flex-col gap-y-4 overflow-y-auto pt-6 text-sm md:sticky md:top-16 md:w-56 md:pt-2"
->
-  <div
-    class="text-blackberry-900 border-blackberry-200 focus-within:border-blackberry-900 focus-within:text-blackberry-900 relative hidden w-full overflow-hidden rounded border border-solid md:block"
-  >
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 15 15"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      class="absolute top-[calc(50%+.0625rem)] left-[.625rem] -translate-y-1/2 transform"
-    >
-      <path
-        d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464C13.0488 12.3417 13.0488 12.6583 12.8536 12.8536C12.6583 13.0488 12.3417 13.0488 12.1464 12.8536L9.30884 10.0159Z"
-        fill="currentColor"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-      >
-      </path>
-    </svg>
-
-    <form class="form">
-      <input
-        id="search"
-        name="search"
-        placeholder="Search"
-        type="search"
-        min="2"
-        class="placeholder:text-blackberry-900 text-md w-full bg-transparent px-3 py-2 pl-8 focus:ring-transparent focus:outline-none focus-visible:ring-transparent"
-      />
-    </form>
-  </div>
-
-  <nav class="flex items-start justify-start gap-3">
-    <ul class="flex shrink grow basis-0 flex-col gap-y-4">
-      <li class="py-2 md:block md:px-2">
+<aside class:list={['handbook-sidebar', className]}>
+  <nav>
+    <ul>
+      <li>
         <div data-orientation="vertical">
-          <div
-            data-state="open"
-            data-orientation="vertical"
-            class="rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)]"
-            id="menu"
-          >
+          <div data-state="open" data-orientation="vertical" class="menu-container" id="menu">
             {
-              Object.keys(menuCollection).map((category) => {
+              categories.map((category) => {
                 if (category.toLowerCase() !== 'undefined') {
                   return (
                     <div
                       x-data={`{ isExpanded: ${selectedCategory == category} }`}
-                      class="menu_category mb-4 max-w-sm"
+                      class="menu-category"
                       id={category}
                     >
-                      <h3 class="flex flex-row">
+                      <h3 class="category-header">
                         <button
                           type="button"
-                          class="text-blackberry-600 flex w-full items-center text-left"
+                          class="category-button"
                           x-on:click="isExpanded = ! isExpanded"
                         >
                           <svg
-                            width="15"
-                            height="15"
-                            viewBox="0 0 15 15"
-                            fill="none"
                             xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="chevron-icon"
                             aria-hidden="true"
-                            x-bind:class="isExpanded ? 'md:group-data-[state=open]:rotate-90' : 'md:group-data-[state=close]:rotate-90'"
-                            class="mt-[-.0625rem] mr-2 inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)]"
+                            x-bind:class="isExpanded ? 'rotate-90' : ''"
                           >
-                            <path
-                              d="M6.1584 3.13508C6.35985 2.94621 6.67627 2.95642 6.86514 3.15788L10.6151 7.15788C10.7954 7.3502 10.7954 7.64949 10.6151 7.84182L6.86514 11.8418C6.67627 12.0433 6.35985 12.0535 6.1584 11.8646C5.95694 11.6757 5.94673 11.3593 6.1356 11.1579L9.565 7.49985L6.1356 3.84182C5.94673 3.64036 5.95694 3.32394 6.1584 3.13508Z"
-                              fill="currentColor"
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                            />
+                            <path d="m9 18 6-6-6-6" />
                           </svg>
 
-                          <div class="flex shrink grow basis-0 cursor-pointer items-center justify-start gap-1">
+                          <div class="category-title-container">
                             <span
                               class={
                                 category == selectedCategory
-                                  ? 'text-blackberry-900 text-md font-extrabold capitalize'
-                                  : 'text-md capitalize'
+                                  ? 'category-title--active'
+                                  : 'category-title'
                               }
                             >
                               {String(category).charAt(0).toUpperCase() + String(category).slice(1)}
@@ -154,27 +115,23 @@ let selectedCategory = urlSplit[0];
                         </button>
                       </h3>
 
-                      <ul
-                        x-show="isExpanded"
-                        x-collapse
-                        class="before:bg-blackberry-200 text-md relative mt-5 hidden flex-col gap-4 pl-7 leading-loose before:absolute before:top-1/2 before:left-[.4375rem] before:h-full before:w-px before:-translate-y-1/2 md:flex"
-                      >
+                      <ul x-show="isExpanded" x-collapse class="menu-list">
                         {menuCollection[category].map((menu) => {
                           return (
-                            <li class="menu_item">
+                            <li class="menu-item">
                               <a
                                 href={menu.url.endsWith('/') ? menu.url : menu.url + '/'}
                                 class={
-                                  menu.id == current
-                                    ? 'text-blackberry-900 hover:text-blackberry-800 font-extrabold'
-                                    : 'hover:text-blackberry-900 hover:font-extrabold'
+                                  menu.id == currentArticleId
+                                    ? 'menu-link menu-link--active'
+                                    : 'menu-link'
                                 }
                               >
                                 {menu.label}{' '}
                               </a>
                               {menu.badge ? (
                                 <span
-                                  class={`${badgeColor[menu.badge.variant || 'info']} ml-2 rounded-md border p-1 text-[9px]`}
+                                  class={`${badgeColor[menu.badge.variant || 'info']} menu-badge`}
                                 >
                                   {menu.badge.text}
                                 </span>
@@ -193,82 +150,4 @@ let selectedCategory = urlSplit[0];
       </li>
     </ul>
   </nav>
-
-  <script defer is:inline>
-    let pagefind;
-    const search = document.getElementById('search');
-
-    async function initPagefind() {
-      if (!pagefind) {
-        pagefind = await import('/pagefind/pagefind.js');
-        await pagefind.options({
-          ranking: {
-            // Decreasing the pageLength parameter is a good way to suppress
-            // very short pages that are undesirably ranking higher than longer pages. (max: 1, min: 0)
-            pageLength: 0.5,
-          },
-        });
-        pagefind.init();
-      }
-    }
-
-    search?.addEventListener('focus', initPagefind);
-
-    search?.addEventListener('keyup', function (e) {
-      const mainElement = document.getElementById('menu');
-      const searchString = e.target?.value.toString().trim();
-
-      if (searchString.length > 1) {
-        searchCollection(searchString).then((result) => {
-          const elements = mainElement?.getElementsByClassName('menu_category');
-          Array.from(elements ?? []).forEach((element) => {
-            if (!result.categories.includes(element.id)) {
-              element.classList.add('hidden');
-            } else {
-              element.classList.remove('hidden');
-
-              Array.from(element.getElementsByClassName('menu_item')).forEach((item) => {
-                if (!result.items.includes(item.getElementsByTagName('a')[0].href)) {
-                  item.getElementsByTagName('a')[0].parentElement?.classList.add('hidden');
-                } else {
-                  item.getElementsByTagName('a')[0].parentElement?.classList.remove('hidden');
-                }
-              });
-            }
-          });
-        });
-      } else {
-        // show all menu if search is empty
-        const elements = mainElement?.getElementsByClassName('menu_category');
-        Array.from(elements ?? []).forEach((element) => {
-          element.classList.remove('hidden');
-          Array.from(element.getElementsByClassName('menu_item')).forEach((item) => {
-            item?.getElementsByTagName('a')[0].parentElement?.classList.remove('hidden');
-          });
-        });
-      }
-    });
-
-    async function searchCollection(searchString) {
-      const results = await (await pagefind.search(searchString)).results;
-
-      // let categorySegment = 0;
-      let filterCategory = [];
-      let filterItems = [];
-
-      for (const result of results) {
-        const data = await result.data();
-        const splitURL = data.raw_url.split('/');
-
-        if (filterCategory.indexOf(splitURL[2]) === -1 && splitURL[2] !== '') {
-          filterCategory.push(splitURL[2]);
-        }
-        filterItems.push(
-          window.location.origin + '/' + splitURL[1] + '/' + splitURL.slice(2).join('/')
-        );
-      }
-
-      return { categories: filterCategory, items: filterItems };
-    }
-  </script>
 </aside>

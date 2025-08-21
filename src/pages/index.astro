@@ -4,7 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import HeroSection from '@components/home/HeroSection.astro';
 import FirstSection from '@components/home/FirstSection.astro';
 import SecondSection from '@components/home/SecondSection.astro';
-import ThirdSection from '@components/home/ThirdSection.astro';
+import GlobalSection from '@components/GlobalSection.astro';
 import Footer from '@components/Footer.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -29,7 +29,7 @@ const description = meta.description
     <HeroSection />
     <FirstSection content={contentData[0]} />
     <SecondSection content={contentData[1]} />
-    <ThirdSection content={contentData[2]} />
+    <GlobalSection />
     <Footer />
   </section>
 </Layout>

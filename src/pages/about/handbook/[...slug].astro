@@ -1,0 +1,56 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import Article from '@components/handbook/Article.astro';
+import { getCollection, render } from 'astro:content';
+
+// const currentPostIndex = handbooks.findIndex((post) => post.id == Astro.params.slug);
+export async function getStaticPaths() {
+  const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+
+  handbooks.sort(function (a, b) {
+    let aSlugSplit = a.id.split('/');
+    let bSlugSplit = b.id.split('/');
+
+    // sort by order with category
+    return ('' + aSlugSplit[0] + a.data.sidebar.order).localeCompare(
+      '' + bSlugSplit[0] + b.data.sidebar.order
+    );
+  });
+
+  return handbooks.map((entry) => {
+    return {
+      params: {
+        slug: entry.id,
+      },
+      props: { entry: render(entry), handbooks },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const entry = await Astro.props.entry;
+const { title, description, meta } = entry.remarkPluginFrontmatter;
+
+const pageTitle = meta?.title
+  ? 'Datum Handbook - ' + meta?.title
+  : title
+    ? 'Datum Handbook - ' + title
+    : 'Datum Handbook';
+const pageDescription = meta?.description
+  ? meta?.description
+  : description
+    ? 'Datum Handbook - ' + description
+    : 'Datum Handbook';
+---
+
+<Layout title={pageTitle} description={pageDescription} bodyClass="about-page">
+  <section class="datum-container">
+    <Hero class="light" iconName="book-text" title="The Datum Handbook" subtitle="Handbook" />
+    <Article articleId={slug} />
+    <GlobalSection />
+    <Footer />
+  </section>
+</Layout>

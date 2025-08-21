@@ -165,6 +165,8 @@ const handbooks = defineCollection({
         })
         .optional(),
       featuredImage: image().optional(),
+      meta: metaSchema,
+      contents: z.array(z.string()).optional(),
     }),
 });
 

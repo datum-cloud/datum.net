@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  ArrowLeft,
   BookImage,
   BookOpen,
   BookText,
@@ -72,6 +73,7 @@ const iconMap = {
   terminal: Terminal,
   command: Command,
   'arrow-right': ArrowRight,
+  'arrow-left': ArrowLeft,
   'git-branch': GitBranch,
   'git-commit': GitCommit,
   'git-pull-request': GitPullRequest,

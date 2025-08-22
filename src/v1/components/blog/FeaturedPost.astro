@@ -1,9 +1,12 @@
 ---
 // src/v1/components/blog/FeaturedPost.astro
 import { Image } from 'astro:assets';
-import { formatISODate } from '@utils/dateUtils';
+import { formatISODate, estimateReadingTime } from '@utils/dateUtils';
 
 const { post, author } = Astro.props;
+
+// Calculate reading time
+const readingTime = estimateReadingTime(post.body || '');
 ---
 
 <div class="blog-featured">
@@ -27,7 +30,7 @@ const { post, author } = Astro.props;
             month: 'long',
             year: 'numeric',
           })
-        } | 10 minute read
+        } | {readingTime.text}
       </time>
     </div>
 

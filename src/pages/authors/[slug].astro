@@ -1,9 +1,14 @@
 ---
+// src/pages/authors/[slug].astro
 import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import GlobalSection from '@components/GlobalSection.astro';
 import { getCollection } from 'astro:content';
 import config from '@data/siteConfig.json';
-import Pagination from '@components/Pagination.astro';
-import BlogCard from '@components/BlogCard.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import BlogItem from '@components/blog/BlogItem.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
@@ -32,80 +37,122 @@ const currentPage = 1;
 const totalItems = sortedPosts.length;
 const totalPages = Math.ceil(totalItems / pageSize);
 const currentPageData = sortedPosts.slice(0, pageSize);
+
+// Get author data for current page posts with author info
+const postsWithAuthors = await Promise.all(
+  currentPageData.map(async (post) => {
+    let authorData = null;
+    if (post.data.author) {
+      authorData = await getCollectionEntry('authors', post.data.author);
+    }
+    return { post, authorData };
+  })
+);
+
+// Setup for Hero component
+const subtitle = 'Author';
+const title = author.data.name;
+const icon = 'user';
 ---
 
-<Layout title={`${author.data.name} - Author`} description={author.data.bio}>
-  <div class="mx-auto max-w-7xl">
-    <div class="mb-8">
-      <div class="mb-8 flex items-center gap-4">
+<Layout
+  title={`${author.data.name} - Author`}
+  description={author.data.bio}
+  bodyClass="author-page"
+>
+  <section class="datum-container">
+    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
+
+    <div class="section--block section--block--pad bg-navy dark">
+      <div class="relative m-auto md:max-w-391">
+        <!-- Author Info Header -->
+        <div class="mb-16">
+          <div class="mb-8 flex items-start gap-10">
+            {
+              author.data.avatar && (
+                <Image
+                  src={author.data.avatar}
+                  alt={author.data.name}
+                  class="h-24 w-24 rounded-full object-cover ring-4 ring-white/80"
+                  width={96}
+                  height={96}
+                />
+              )
+            }
+            <div class="max-w-2xl">
+              <h2 class="font-alliance mb-2 text-2xl font-medium text-white">{author.data.name}</h2>
+              {
+                author.data.title && (
+                  <p class="font-alliance text-lime-green mb-3 text-lg">{author.data.title}</p>
+                )
+              }
+              <p class="font-alliance text-white/80">{author.data.bio}</p>
+              {
+                author.data.social && (
+                  <div class="mt-4 flex gap-4">
+                    {author.data.social.twitter && (
+                      <a
+                        href={author.data.social.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                      >
+                        Twitter
+                      </a>
+                    )}
+                    {author.data.social.github && (
+                      <a
+                        href={author.data.social.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                      >
+                        GitHub
+                      </a>
+                    )}
+                    {author.data.social.linkedin && (
+                      <a
+                        href={author.data.social.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                      >
+                        LinkedIn
+                      </a>
+                    )}
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Articles List -->
+        <div class="blog-list">
+          {
+            postsWithAuthors.map(({ post, authorData }) => (
+              <BlogItem post={post} authorData={authorData} />
+            ))
+          }
+        </div>
+
+        <!-- Pagination -->
         {
-          author.data.avatar && (
-            <Image
-              src={author.data.avatar}
-              alt={author.data.name}
-              class="h-24 w-24 rounded-full object-cover"
-              width={96}
-              height={96}
+          totalPages > 1 && (
+            <BlogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={`/authors/${slug}`}
+              prevUrl={undefined}
+              nextUrl={currentPage < totalPages ? `/authors/${slug}/2` : undefined}
             />
           )
         }
-        <div>
-          <h1 class="font-heading text-4xl font-bold">{author.data.name}</h1>
-          <p class="text-gray-600">{author.data.bio}</p>
-          {
-            author.data.social && (
-              <div class="mt-4 flex gap-4">
-                {author.data.social.twitter && (
-                  <a
-                    href={author.data.social.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-blue-500 hover:text-blue-600"
-                  >
-                    Twitter
-                  </a>
-                )}
-                {author.data.social.github && (
-                  <a
-                    href={author.data.social.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-gray-700 hover:text-gray-800"
-                  >
-                    GitHub
-                  </a>
-                )}
-                {author.data.social.linkedin && (
-                  <a
-                    href={author.data.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-blue-700 hover:text-blue-800"
-                  >
-                    LinkedIn
-                  </a>
-                )}
-              </div>
-            )
-          }
-        </div>
       </div>
-
-      <h2 class="font-heading mb-6 text-2xl font-bold">Latest Articles</h2>
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {currentPageData.map((post) => <BlogCard post={post} />)}
-      </div>
-
-      {
-        totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            baseUrl={`/authors/${slug}`}
-            nextUrl={totalPages > 1 ? `/authors/${slug}/2` : undefined}
-          />
-        )
-      }
     </div>
-  </div>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
 </Layout>

@@ -34,6 +34,7 @@ export interface HeroProps {
   description?: string;
   class?: string;
   imagePath?: ImageMetadata;
+  hideContent?: boolean;
 }
 
 export interface ArticleProps {

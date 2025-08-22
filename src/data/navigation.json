@@ -109,7 +109,7 @@
       "items": [
         { "text": "About", "href": "/about" },
         { "text": "Handbook", "href": "/about/handbook" },
-        { "text": "Blog", "href": "/v1/blog" },
+        { "text": "Blog", "href": "/blog" },
         { "text": "Contact", "href": "/contact" }
       ]
     },

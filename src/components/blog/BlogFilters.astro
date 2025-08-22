@@ -52,7 +52,7 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
 
     async function initPagefind() {
       if (!pagefind) {
-        pagefind = await import('/pagefind/pagefind.js');
+        pagefind = await import('/pagefind-blog/pagefind.js');
         await pagefind.options({
           ranking: {
             pageLength: 0.5,

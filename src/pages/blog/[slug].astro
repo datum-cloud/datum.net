@@ -4,10 +4,11 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
+import ArticleNavigation from '@components/ArticleNavigation.astro';
 import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
-import { formatLongDate, formatISODate } from '@utils/dateUtils';
+import { formatLongDate, formatISODate, estimateReadingTime } from '@utils/dateUtils';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 export async function getStaticPaths() {
@@ -30,12 +31,32 @@ const { Content } = await render(entry);
 const formattedDate = formatLongDate(entry.data.date);
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
 
+// Calculate reading time from content
+const readingTime = estimateReadingTime(entry.body || '');
+
 // Get category data for each category
 const categoryData = await Promise.all(
   (entry.data.categories || []).map(async (categorySlug) => {
     return await getCollectionEntry('categories', categorySlug);
   })
 );
+
+// Get all blog entries for navigation
+const allBlogEntries = await getCollection('blog');
+
+// Get navigation articles (sorted by date, newest first)
+const sortedBlogs = allBlogEntries
+  .filter((b) => !b.data.draft)
+  .sort((a, b) => {
+    const dateA = new Date(a.data.date || 0);
+    const dateB = new Date(b.data.date || 0);
+    return dateB.getTime() - dateA.getTime(); // Newest first
+  });
+
+const currentIndex = sortedBlogs.findIndex((b) => b.id === entry.id);
+const previousArticle = currentIndex > 0 ? sortedBlogs[currentIndex - 1] : undefined;
+const nextArticle =
+  currentIndex < sortedBlogs.length - 1 ? sortedBlogs[currentIndex + 1] : undefined;
 
 // Get processed avatar URL
 let processedAvatarUrl = '';
@@ -67,10 +88,10 @@ const icon = 'book-image';
   bodyClass="blog-page"
 >
   <section class="datum-container">
-    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
+    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} hideContent={true} />
 
-    <div class="section--block section--block--pad bg-navy dark">
-      <article class="relative m-auto md:max-w-391" data-pagefind-body>
+    <section class="blog-detail bg-light-gray section--block section--block--pad">
+      <article class="blog-article" data-pagefind-body>
         <!-- Hidden meta tags for Pagefind -->
         <span data-pagefind-meta="page_type" class="hidden" style="display: none;">post</span>
         <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
@@ -86,101 +107,102 @@ const icon = 'book-image';
           >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
         >
 
-        <!-- Hero section -->
-        <div class="mb-8 overflow-hidden">
-          {
-            entry.data.featuredImage && (
-              <div class="relative aspect-video w-full">
-                <Image
-                  src={entry.data.featuredImage}
-                  alt={entry.data.title}
-                  class="h-full w-full object-cover"
-                  widths={[800, 1200, 1600]}
-                  sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
-                />
-              </div>
-            )
-          }
-
-          <div class="py-8">
-            <!-- Post metadata -->
-            <div class="mb-4 flex flex-wrap items-center text-sm text-gray-500">
-              <time datetime={formatISODate(entry.data.date)}>
-                {formattedDate}
-              </time>
-            </div>
-
-            <h1 class="font-heading mb-6 text-4xl font-bold">
-              {entry.data.title}
-            </h1>
-
-            {
-              entry.data.description && (
-                <p class="mb-6 text-xl leading-relaxed font-light text-gray-600">
-                  {entry.data.description}
-                </p>
-              )
-            }
-
-            {
-              entry.data.author && (
-                <div class="mb-8 flex items-center">
-                  <a
-                    href={`/authors/${entry.data.author}`}
-                    class="flex items-center transition-opacity hover:opacity-80"
-                  >
-                    {authorData?.data.avatar ? (
-                      <Image
-                        src={authorData.data.avatar}
-                        alt={authorData.data.name || entry.data.author}
-                        class="mr-3 h-10 w-10 rounded-full object-cover"
-                        width={40}
-                        height={40}
-                      />
-                    ) : (
-                      <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
-                        <span class="text-lg font-bold text-gray-600">
-                          {(authorData?.data.name || entry.data.author).charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                    <div>
-                      <p class="font-medium">{authorData?.data.name || entry.data.author}</p>
-                      {authorData?.data.bio && (
-                        <p class="line-clamp-1 text-sm text-gray-500">{authorData.data.title}</p>
-                      )}
-                    </div>
-                  </a>
-                </div>
-              )
-            }
-
-            <!-- Categories -->
-            {
-              categoryData.length > 0 && (
-                <div class="mb-8">
-                  <div class="flex flex-wrap gap-2">
+        <!-- Article Header -->
+        <header class="blog-article-header">
+          <div class="blog-article-meta">
+            <div class="blog-article-meta-content">
+              <span class="blog-article-date">
+                {formattedDate} | {readingTime.text}
+              </span>
+              {
+                categoryData.length > 0 && (
+                  <div class="blog-article-categories">
                     {categoryData.map((category) => (
-                      <a
-                        href={`/blog/${category.id}`}
-                        class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
-                      >
-                        {category.data.name}
-                      </a>
+                      <span class="blog-article-category">{category.data.name}</span>
                     ))}
                   </div>
-                </div>
-              )
-            }
-
-            <!-- Post content -->
-            <div class="prose lg:prose-xl max-w-none">
-              <Content />
+                )
+              }
             </div>
           </div>
+
+          <h1 class="blog-article-title">
+            {entry.data.title}
+          </h1>
+
+          {
+            entry.data.description && (
+              <p class="blog-article-description">{entry.data.description}</p>
+            )
+          }
+        </header>
+
+        <!-- Featured Image -->
+        {
+          entry.data.featuredImage && (
+            <div class="blog-article-image">
+              <Image
+                src={entry.data.featuredImage}
+                alt={entry.data.title}
+                widths={[800, 1200, 1600]}
+                sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
+              />
+            </div>
+          )
+        }
+
+        <!-- Article Content -->
+        <div class="blog-article-content">
+          <Content />
         </div>
+
+        <!-- Author Information -->
+        {
+          entry.data.author && authorData && (
+            <div class="blog-article-author">
+              <div class="blog-article-author-avatar">
+                {authorData.data.avatar ? (
+                  <Image
+                    src={authorData.data.avatar}
+                    alt={authorData.data.name || entry.data.author}
+                    class="blog-article-author-image"
+                    width={52}
+                    height={52}
+                  />
+                ) : (
+                  <div class="blog-article-author-image">
+                    <span class="text-lg font-bold text-gray-600">
+                      {(authorData.data.name || entry.data.author).charAt(0)}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <span class="blog-article-author-name">
+                {authorData.data.name || entry.data.author}
+              </span>
+            </div>
+          )
+        }
+
+        <!-- Article Navigation -->
+        <ArticleNavigation
+          previousArticle={previousArticle
+            ? {
+                id: previousArticle.id,
+                title: previousArticle.data.title,
+                url: `/blog/${previousArticle.id}`,
+              }
+            : undefined}
+          nextArticle={nextArticle
+            ? {
+                id: nextArticle.id,
+                title: nextArticle.data.title,
+                url: `/blog/${nextArticle.id}`,
+              }
+            : undefined}
+        />
       </article>
-    </div>
+    </section>
 
     <GlobalSection />
 

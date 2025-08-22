@@ -1,0 +1,46 @@
+---
+// src/components/ArticleNavigation.astro
+import Icon from '@components/Icon.astro';
+
+interface ArticleNavigationProps {
+  previousArticle?: {
+    id: string;
+    title: string;
+    url: string;
+  };
+  nextArticle?: {
+    id: string;
+    title: string;
+    url: string;
+  };
+  class?: string;
+}
+
+const { previousArticle, nextArticle, class: className } = Astro.props as ArticleNavigationProps;
+---
+
+{
+  (previousArticle || nextArticle) && (
+    <nav class:list={['article-navigation', className]}>
+      {previousArticle && (
+        <a href={previousArticle.url} class="article-navigation-item article-navigation-prev">
+          <div class="article-navigation-label">
+            <Icon name="arrow-left" size="md" /> <span>Previous article</span>
+          </div>
+
+          <span class="article-navigation-title">{previousArticle.title}</span>
+        </a>
+      )}
+
+      {nextArticle && (
+        <a href={nextArticle.url} class="article-navigation-item article-navigation-next">
+          <div class="article-navigation-label">
+            <span>Next article</span> <Icon name="arrow-right" size="md" />
+          </div>
+
+          <span class="article-navigation-title">{nextArticle.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}

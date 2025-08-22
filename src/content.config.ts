@@ -178,7 +178,17 @@ const changelog = defineCollection({
       title: z.string(),
       date: z.date().optional(),
       description: z.string().optional(),
-      version: z.string(),
+      version: z.string().optional(),
+      tags: z
+        .array(
+          z.object({
+            label: z.string(),
+            type: z.enum(['fixed', 'new', 'changed']),
+            value: z.string(),
+          })
+        )
+        .optional()
+        .default([]),
     }),
 });
 

@@ -33,9 +33,9 @@ test.describe('Homepage', () => {
     await page.goto('/');
 
     // Check for essential meta tags
-    const metaDescription = page.locator('meta[name="description"]');
+    const metaDescription = page.locator('head > meta[name="description"]');
     await expect(metaDescription).toHaveAttribute('content');
-    await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content');
+    await expect(page.locator('head > meta[name="viewport"]')).toHaveAttribute('content');
   });
 
   // test('should be responsive', async ({ page }) => {

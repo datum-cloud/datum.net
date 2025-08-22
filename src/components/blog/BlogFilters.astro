@@ -187,8 +187,6 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
 
               return `
               <article class="search-result blog-item" data-index="${index}" data-url="${result.url}">
-                <div class="blog-item--separator"></div>
-                <div class="blog-item--content">
                   <h2 class="blog-item--title">
                     <a href="${result.url}">${result.meta?.title || result.title}</a>
                   </h2>
@@ -209,7 +207,6 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
                       <time datetime="${meta.date || ''}">${formattedDate}</time>
                     </div>
                   </div>
-                </div>
               </article>
             `;
             })

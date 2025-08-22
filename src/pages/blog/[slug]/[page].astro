@@ -1,53 +1,61 @@
 ---
-// src/pages/blog/[page].astro
+// src/pages/blog/[slug]/[page].astro
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import { getCollection } from 'astro:content';
 import config from '@data/siteConfig.json';
-import { getCollectionEntry } from '@utils/collectionUtils';
 import BlogItem from '@components/blog/BlogItem.astro';
 import BlogFilters from '@components/blog/BlogFilters.astro';
 import BlogPagination from '@components/blog/BlogPagination.astro';
-
-// Get blog landing page from blog/index.mdx
-const page = await getCollectionEntry('pages', '/blog');
+import { getCollectionEntry } from '@utils/collectionUtils';
 
 export async function getStaticPaths() {
-  // Constants
-  const BASE_URL = '/blog';
+  const categories = await getCollection('categories');
   const allPosts = await getCollection('blog', ({ data }) => {
     return !data.draft && new Date(data.date) <= new Date();
   });
 
-  const sortedPosts = allPosts.sort((a, b) => {
-    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-  });
-
   const pageSize = config.pageSize;
-  const totalPages = Math.ceil(sortedPosts.length / pageSize);
 
-  return Array.from({ length: totalPages - 1 }, (_, i) => {
-    const pageNum = i + 2; // Start from page 2
-    const start = (pageNum - 1) * pageSize;
-    const end = start + pageSize;
+  return categories.flatMap((category) => {
+    // Get all posts for this category
+    const categoryPosts = allPosts.filter((post) => post.data.categories?.includes(category.id));
 
-    return {
-      params: { page: pageNum.toString() },
-      props: {
-        posts: sortedPosts.slice(start, end),
-        currentPage: pageNum,
-        totalPages: totalPages,
-        baseUrl: BASE_URL,
-        prevUrl: pageNum > 2 ? `${BASE_URL}/${pageNum - 1}` : BASE_URL,
-        nextUrl: pageNum < totalPages ? `${BASE_URL}/${pageNum + 1}` : undefined,
-      },
-    };
+    const sortedPosts = categoryPosts.sort((a, b) => {
+      return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+    });
+
+    const totalPages = Math.ceil(sortedPosts.length / pageSize);
+
+    // Only generate pages if there are more than 1 page
+    if (totalPages <= 1) return [];
+
+    return Array.from({ length: totalPages - 1 }, (_, i) => {
+      const pageNum = i + 2; // Start from page 2
+      const start = (pageNum - 1) * pageSize;
+      const end = start + pageSize;
+
+      return {
+        params: {
+          slug: category.id,
+          page: pageNum.toString(),
+        },
+        props: {
+          category,
+          posts: sortedPosts.slice(start, end),
+          currentPage: pageNum,
+          totalPages: totalPages,
+          prevUrl: pageNum > 2 ? `/blog/${category.id}/${pageNum - 1}` : `/blog/${category.id}`,
+          nextUrl: pageNum < totalPages ? `/blog/${category.id}/${pageNum + 1}` : undefined,
+        },
+      };
+    });
   });
 }
 
-const { posts, currentPage, totalPages, prevUrl, nextUrl, baseUrl } = Astro.props;
+const { category, posts, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
 
 // Get author data for current page posts
 const postsWithAuthors = await Promise.all(
@@ -60,14 +68,17 @@ const postsWithAuthors = await Promise.all(
   })
 );
 
+// Pagination setup
+const baseUrl = `/blog/${category.id}`;
+
 const subtitle = 'Blog';
-const title = 'The Datum Blog';
+const title = category.data.name;
 const icon = 'book-image';
 ---
 
 <Layout
-  title={page.data.title || 'Datum'}
-  description={page.data.description}
+  title={`${category.data.name} - Category`}
+  description={category.data.description}
   bodyClass="blog-page"
 >
   <section class="datum-container">
@@ -75,8 +86,11 @@ const icon = 'book-image';
 
     <div class="section--block section--block--pad bg-navy dark">
       <div class="relative m-auto md:max-w-391">
+        <!-- Hidden meta tag to identify this as a category page -->
+        <span data-pagefind-meta="page_type" style="display: none;">category</span>
+
         <!-- Category Filters and Search -->
-        <BlogFilters />
+        <BlogFilters currentCategory={category.id} />
 
         <!-- Blog List -->
         <div class="blog-list">

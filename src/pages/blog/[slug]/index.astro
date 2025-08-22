@@ -1,10 +1,14 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import GlobalSection from '@components/GlobalSection.astro';
 import { getCollection } from 'astro:content';
+import BlogItem from '@components/blog/BlogItem.astro';
+import BlogFilters from '@components/blog/BlogFilters.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
 import config from '@data/siteConfig.json';
-import Pagination from '@components/Pagination.astro';
-import BlogListItem from '@components/BlogListItem.astro';
-import CategoryFilter from '@components/CategoryFilter.astro';
 
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
@@ -32,39 +36,70 @@ const currentPage = 1;
 const totalItems = sortedPosts.length;
 const totalPages = Math.ceil(totalItems / pageSize);
 const currentPageData = sortedPosts.slice(0, pageSize);
+
+// Get author data for current page posts
+const postsWithAuthors = await Promise.all(
+  currentPageData.map(async (post) => {
+    let authorData = null;
+    if (post.data.author) {
+      authorData = await getCollectionEntry('authors', post.data.author);
+    }
+    return { post, authorData };
+  })
+);
+
+// Pagination setup
+const baseUrl = `/blog/${slug}`;
+const prevUrl = undefined; // First page
+const nextUrl = totalPages > 1 ? `${baseUrl}/${currentPage + 1}` : undefined;
+
+const subtitle = 'Blog';
+const title = category.data.name;
+const icon = 'book-image';
 ---
 
-<Layout title={`${category.data.name} - Category`} description={category.data.description}>
-  <div class="mx-auto max-w-7xl">
-    <div class="mb-8" data-pagefind-body>
-      <!-- Hidden meta tag to identify this as a category page -->
-      <span data-pagefind-meta="page_type" style="display: none;">category</span>
+<Layout
+  title={`${category.data.name} - Category`}
+  description={category.data.description}
+  bodyClass="blog-page"
+>
+  <section class="datum-container">
+    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 
-      <div class="mb-8">
-        <h1 class="font-heading text-4xl font-bold">{category.data.name}</h1>
-        {category.data.description && <p class="mt-2 text-gray-600">{category.data.description}</p>}
-      </div>
+    <div class="section--block section--block--pad bg-navy dark">
+      <div class="relative m-auto md:max-w-391">
+        <!-- Hidden meta tag to identify this as a category page -->
+        <span data-pagefind-meta="page_type" style="display: none;">category</span>
 
-      <!-- Category Filter -->
-      <CategoryFilter currentCategory={slug} />
+        <!-- Category Filters and Search -->
+        <BlogFilters currentCategory={slug} />
 
-      <!-- Blog List -->
-      <div class="blog-list bg-white">
-        {currentPageData.map((post) => <BlogListItem post={post} />)}
-      </div>
+        <!-- Blog List -->
+        <div class="blog-list">
+          {
+            postsWithAuthors.map(({ post, authorData }) => (
+              <BlogItem post={post} authorData={authorData} />
+            ))
+          }
+        </div>
 
-      {
-        totalPages > 1 && (
-          <div class="pagination">
-            <Pagination
+        <!-- Pagination -->
+        {
+          totalPages > 1 && (
+            <BlogPagination
               currentPage={currentPage}
               totalPages={totalPages}
-              baseUrl={`/blog/${slug}`}
-              nextUrl={totalPages > 1 ? `/blog/${slug}/${currentPage + 1}` : undefined}
+              baseUrl={baseUrl}
+              prevUrl={prevUrl}
+              nextUrl={nextUrl}
             />
-          </div>
-        )
-      }
+          )
+        }
+      </div>
     </div>
-  </div>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
 </Layout>

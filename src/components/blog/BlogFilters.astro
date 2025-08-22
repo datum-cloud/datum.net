@@ -1,0 +1,274 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '@v1/components/Icon.astro';
+const { currentCategory } = Astro.props;
+
+// Get all categories
+const categories = await getCollection('categories');
+
+// Sort categories by name
+const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+
+<div class="blog-filters">
+  <!-- Category Filters -->
+  <div class="blog-filters--categories">
+    <a href="/blog" class={`blog-filter ${!currentCategory ? 'blog-filter--active' : ''}`}> All </a>
+    {
+      sortedCategories.slice(0, 5).map((category) => (
+        <a
+          href={`/blog/${category.id}`}
+          class={`blog-filter ${currentCategory === category.id ? 'blog-filter--active' : ''}`}
+        >
+          {category.data.name}
+        </a>
+      ))
+    }
+  </div>
+
+  <!-- Search Input -->
+  <div class="blog-filters--search">
+    <div class="blog-search">
+      <input type="text" placeholder="Search blog" class="blog-search--input" id="blog-search" />
+      <div class="blog-search--icon">
+        <Icon name="search" size="md" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script defer is:inline>
+  let pagefind;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('blog-search');
+    const blogList = document.querySelector('.blog-list');
+    const pagination = document.querySelector('.blog-pagination');
+
+    if (!searchInput || !blogList) return;
+
+    // Store original blog posts HTML for reset
+    const originalHTML = blogList.innerHTML;
+
+    async function initPagefind() {
+      if (!pagefind) {
+        pagefind = await import('/pagefind/pagefind.js');
+        await pagefind.options({
+          ranking: {
+            pageLength: 0.5,
+          },
+        });
+        pagefind.init();
+      }
+    }
+
+    function togglePagination(show) {
+      if (pagination) {
+        pagination.style.display = show ? 'flex' : 'none';
+      }
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'Recent';
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        });
+      } catch {
+        return 'Recent';
+      }
+    }
+
+    let activeIndex = -1;
+
+    function initKeyboardNavigation() {
+      const results = document.querySelectorAll('.search-result');
+      activeIndex = -1;
+
+      // Add click handlers to results
+      results.forEach((result, index) => {
+        result.addEventListener('click', () => {
+          const url = result.getAttribute('data-url');
+          if (url) window.location.href = url;
+        });
+
+        result.addEventListener('mouseenter', () => {
+          setActiveIndex(index);
+        });
+      });
+    }
+
+    function setActiveIndex(index) {
+      const results = document.querySelectorAll('.search-result');
+
+      // Remove active class from all results
+      results.forEach((result) => {
+        result.querySelector('div').classList.remove('bg-white/10');
+        result.querySelector('div').classList.add('hover:bg-white/5');
+      });
+
+      // Add active class to current result
+      if (index >= 0 && index < results.length) {
+        activeIndex = index;
+        const activeResult = results[activeIndex];
+        activeResult.querySelector('div').classList.add('bg-white/10');
+        activeResult.querySelector('div').classList.remove('hover:bg-white/5');
+        activeResult.scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function navigateToActive() {
+      const results = document.querySelectorAll('.search-result');
+      if (activeIndex >= 0 && activeIndex < results.length) {
+        const url = results[activeIndex].getAttribute('data-url');
+        if (url) window.location.href = url;
+      }
+    }
+
+    async function performSearch(query) {
+      if (!query.trim()) {
+        // Show all posts when search is empty
+        blogList.innerHTML = originalHTML;
+        togglePagination(true);
+        return;
+      }
+
+      // Hide pagination during search
+      togglePagination(false);
+
+      // Initialize pagefind if not already done
+      await initPagefind();
+
+      try {
+        const searchResults = await pagefind.search(query);
+        const results = await Promise.all(
+          searchResults.results.map(async (result) => await result.data())
+        );
+
+        // Filter for blog posts only using meta tags
+        const blogResults = results.filter((result) => {
+          const url = result.url;
+          const meta = result.meta || {};
+
+          // Must include '/blog/'
+          if (!url.includes('/blog/')) return false;
+
+          // Exclude main blog page
+          if (url.endsWith('/blog/') || url.endsWith('/blog')) return false;
+
+          // Exclude category pages (identified by page_type meta tag)
+          if (meta.page_type === 'category') return false;
+
+          // Include individual blog posts (either no page_type or page_type === 'post')
+          return true;
+        });
+
+        if (blogResults.length === 0) {
+          blogList.innerHTML = `
+            <div class="blog-search--no-results">
+              <h3>No posts found</h3>
+              <p>Try adjusting your search terms.</p>
+            </div>
+          `;
+        } else {
+          // Generate HTML for filtered posts using Pagefind results
+          const postsHTML = blogResults
+            .map((result, index) => {
+              // Extract metadata from Pagefind result
+              const meta = result.meta || {};
+              const authorName = meta.author_name || 'Unknown';
+              const authorAvatar = meta.author_avatar || '';
+              const categoryName = meta.category_name || 'Blog';
+              const formattedDate = formatDate(meta.date);
+              const authorInitial = authorName.charAt(0).toUpperCase();
+
+              return `
+              <article class="search-result blog-item" data-index="${index}" data-url="${result.url}">
+                <div class="blog-item--separator"></div>
+                <div class="blog-item--content">
+                  <h2 class="blog-item--title">
+                    <a href="${result.url}">${result.meta?.title || result.title}</a>
+                  </h2>
+                  <div class="blog-item--meta">
+                    <div class="blog-item--category">
+                      <span class="blog-item--tag">${categoryName}</span>
+                    </div>
+                    <div class="blog-item--author">
+                      <div class="blog-item--avatar">
+                        ${
+                          authorAvatar
+                            ? `<img src="${authorAvatar}" alt="${authorName}" class="blog-item--avatar-img" />`
+                            : `<div class="blog-item--avatar-placeholder">${authorInitial}</div>`
+                        }
+                      </div>
+                    </div>
+                    <div class="blog-item--date">
+                      <time datetime="${meta.date || ''}">${formattedDate}</time>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            `;
+            })
+            .join('');
+
+          blogList.innerHTML = postsHTML;
+
+          // Initialize keyboard navigation
+          initKeyboardNavigation();
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+        blogList.innerHTML = `
+          <div class="text-center py-12">
+            <p class="text-sm text-white/70">Search temporarily unavailable. Please try again.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Initialize pagefind on first focus
+    searchInput.addEventListener('focus', initPagefind);
+
+    // Handle search input with debouncing
+    let searchTimeout;
+    searchInput.addEventListener('input', function (e) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        performSearch(e.target.value);
+      }, 300);
+    });
+
+    // Handle keyboard navigation and ESC key
+    searchInput.addEventListener('keydown', function (e) {
+      const results = document.querySelectorAll('.search-result');
+
+      if (e.key === 'Escape') {
+        e.target.value = '';
+        performSearch('');
+        e.target.blur();
+        activeIndex = -1;
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (results.length > 0) {
+          const nextIndex = activeIndex < results.length - 1 ? activeIndex + 1 : 0;
+          setActiveIndex(nextIndex);
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (results.length > 0) {
+          const prevIndex = activeIndex > 0 ? activeIndex - 1 : results.length - 1;
+          setActiveIndex(prevIndex);
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (activeIndex >= 0) {
+          navigateToActive();
+        }
+      }
+    });
+  });
+</script>

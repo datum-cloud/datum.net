@@ -1,0 +1,68 @@
+---
+// src/v1/components/blog/FeaturedPost.astro
+import { Image } from 'astro:assets';
+import { formatISODate } from '@utils/dateUtils';
+
+const { post, author } = Astro.props;
+---
+
+<div class="blog-featured">
+  <!-- Image on the left -->
+  <div class="blog-featured--image">
+    {
+      post.data.featuredImage && (
+        <Image src={post.data.featuredImage} alt={post.data.title} width={717} height={454} />
+      )
+    }
+  </div>
+
+  <!-- Content on the right -->
+  <div class="blog-featured--text">
+    <!-- Date -->
+    <div class="blog-featured--date">
+      <time datetime={formatISODate(post.data.date)}>
+        {
+          new Date(post.data.date).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
+        } | 10 minute read
+      </time>
+    </div>
+
+    <!-- Title -->
+    <h1 class="blog-featured--title">
+      <a href={`/blog/${post.id}`}>{post.data.title}</a>
+    </h1>
+
+    <!-- Excerpt -->
+    <p class="blog-featured--excerpt">
+      {post.data.description || ''}
+    </p>
+
+    <!-- Author -->
+    {
+      author && (
+        <div class="blog-featured--author">
+          <div class="blog-featured--avatar">
+            {author.data.avatar ? (
+              <Image
+                src={author.data.avatar}
+                alt={author.data.name}
+                class="blog-featured--avatar-img"
+                width={52}
+                height={52}
+              />
+            ) : (
+              <div class="blog-featured--avatar-placeholder">
+                {author.data.name.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+          <span class="blog-featured--author-name">{author.data.name}</span>
+        </div>
+      )
+    }
+  </div>
+</div>

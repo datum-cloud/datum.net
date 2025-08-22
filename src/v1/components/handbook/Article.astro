@@ -2,7 +2,7 @@
 // src/v1/components/handbook/Article.astro
 import { getCollection, render } from 'astro:content';
 import Sidebar from '@v1/components/handbook/Sidebar.astro';
-import PageNav from '@v1/components/handbook/PageNav.astro';
+import ArticleNavigation from '@v1/components/ArticleNavigation.astro';
 import type { ArticleProps } from '@/src/types/common';
 
 const {
@@ -24,6 +24,32 @@ const mainArticleEntry =
 
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
+
+// Get navigation articles for handbook
+const sortedHandbooks = handbooks
+  .filter((h) => !h.data.draft)
+  .sort((a, b) => {
+    const categoryA = a.id.split('/')[0];
+    const categoryB = b.id.split('/')[0];
+
+    // First sort by category
+    if (categoryA !== categoryB) {
+      const categoryOrder = ['company', 'people', 'engineering', 'go-to-market'];
+      const indexA = categoryOrder.indexOf(categoryA);
+      const indexB = categoryOrder.indexOf(categoryB);
+      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+    }
+
+    // Then sort by order within category
+    const orderA = a.data.sidebar?.order || 0;
+    const orderB = b.data.sidebar?.order || 0;
+    return orderA - orderB;
+  });
+
+const currentIndex = sortedHandbooks.findIndex((h) => h.id === articleId);
+const previousArticle = currentIndex > 0 ? sortedHandbooks[currentIndex - 1] : undefined;
+const nextArticle =
+  currentIndex < sortedHandbooks.length - 1 ? sortedHandbooks[currentIndex + 1] : undefined;
 ---
 
 <section
@@ -63,7 +89,22 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
       </div>
 
       {/* Navigation */}
-      <PageNav currentArticleId={articleId} />
+      <ArticleNavigation
+        previousArticle={previousArticle
+          ? {
+              id: previousArticle.id,
+              title: previousArticle.data.title,
+              url: `/v1/about/handbook/${previousArticle.id}`,
+            }
+          : undefined}
+        nextArticle={nextArticle
+          ? {
+              id: nextArticle.id,
+              title: nextArticle.data.title,
+              url: `/v1/about/handbook/${nextArticle.id}`,
+            }
+          : undefined}
+      />
     </article>
   </div>
 </section>

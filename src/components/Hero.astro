@@ -1,9 +1,9 @@
 ---
-// src/v1/components/Hero.astro
+// src/components/Hero.astro
 import { Image } from 'astro:assets';
 
-import Nav from '@components/Nav.astro';
-import Icon from '@components/Icon.astro';
+import Nav from '@v1/components/Nav.astro';
+import Icon from '@v1/components/Icon.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const {
@@ -13,38 +13,41 @@ const {
   description = '',
   class: className,
   imagePath,
+  hideContent = false,
 } = Astro.props as HeroProps;
 ---
 
 <section class:list={['hero--main', className]}>
   <Nav />
-  <div class="hero--main-content">
-    {/* Hero Main Content */}
-    <div class="hero--main-content-inner">
-      <div class="hero--main-content-icon">
-        <div class="hero--main-content-icon-inner">
-          <Icon name={iconName} size="md" />
-        </div>
-        <span>{subtitle}</span>
-      </div>
+  {
+    !hideContent && (
+      <div class="hero--main-content">
+        {/* Hero Main Content */}
+        <div class="hero--main-content-inner">
+          <div class="hero--main-content-icon">
+            <div class="hero--main-content-icon-inner">
+              <Icon name={iconName} size="md" />
+            </div>
+            <span>{subtitle}</span>
+          </div>
 
-      <h1 class="hero--main-content-title">{title}</h1>
-      {description && <p class="hero--main-content-description">{description}</p>}
-    </div>
-    {
-      imagePath && (
-        <div class="hero--main-content-image">
-          <Image
-            src={imagePath}
-            alt={title}
-            data-scroll-effect="parallax"
-            data-scroll-speed="0.1"
-            data-scroll-direction="down"
-            data-viewport-offset="0"
-            data-max-movement="50"
-          />
+          <h1 class="hero--main-content-title">{title}</h1>
+          {description && <p class="hero--main-content-description">{description}</p>}
         </div>
-      )
-    }
-  </div>
+        {imagePath && (
+          <div class="hero--main-content-image">
+            <Image
+              src={imagePath}
+              alt={title}
+              data-scroll-effect="parallax"
+              data-scroll-speed="0.1"
+              data-scroll-direction="down"
+              data-viewport-offset="0"
+              data-max-movement="50"
+            />
+          </div>
+        )}
+      </div>
+    )
+  }
 </section>

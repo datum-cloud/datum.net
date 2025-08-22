@@ -109,3 +109,36 @@ export const formatRelativeTime = (date: Date | string): string => {
   const years = Math.floor(diffInSeconds / 31536000);
   return `${years} ${years === 1 ? 'year' : 'years'} ago`;
 };
+
+/**
+ * Estimates reading time for content based on word count
+ * @param content - The content to analyze (markdown/text string)
+ * @param wordsPerMinute - Average reading speed (defaults to 200 words per minute)
+ * @returns Object with estimated reading time in minutes and formatted string
+ */
+export const estimateReadingTime = (
+  content: string,
+  wordsPerMinute: number = 200
+): { minutes: number; text: string } => {
+  // Remove markdown syntax, HTML tags, and extra whitespace
+  const cleanContent = content
+    .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+    .replace(/`[^`]*`/g, '') // Remove inline code
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // Remove markdown links, keep text
+    .replace(/[#*_~`]/g, '') // Remove markdown formatting
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+
+  // Count words (split by whitespace and filter empty strings)
+  const words = cleanContent.split(/\s+/).filter((word) => word.length > 0);
+  const wordCount = words.length;
+
+  // Calculate reading time
+  const minutes = Math.max(1, Math.round(wordCount / wordsPerMinute));
+
+  return {
+    minutes,
+    text: `${minutes} minute${minutes === 1 ? '' : 's'} read`,
+  };
+};

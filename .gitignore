@@ -27,6 +27,9 @@ pnpm-debug.log*
 # pagefind for search
 public/pagefind/*
 
+# pagefind for blog search
+public/pagefind-blog/*
+
 # Playwright
 playwright-report/
 test-results/

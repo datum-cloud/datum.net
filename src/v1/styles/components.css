@@ -305,4 +305,36 @@
   .logo-img--medium {
     @apply w-2/3;
   }
+
+  .article-navigation {
+    @apply m-auto mt-16 flex max-w-4xl flex-col gap-4 md:flex-row;
+  }
+
+  .article-navigation-item {
+    @apply border-green-dark hover:bg-green-dark/5 rounded-lg border p-8;
+  }
+
+  .article-navigation-prev {
+    @apply w-full justify-start;
+
+    .article-navigation-label {
+      @apply justify-start;
+    }
+  }
+
+  .article-navigation-next {
+    @apply w-full justify-end text-right;
+
+    .article-navigation-label {
+      @apply justify-end;
+    }
+  }
+
+  .article-navigation-label {
+    @apply font-alliance text-green-dark mb-4 flex items-center gap-2 text-sm font-medium tracking-wide uppercase;
+  }
+
+  .article-navigation-title {
+    @apply font-alliance text-green-dark hover:text-mauve text-lg font-medium transition-colors;
+  }
 }

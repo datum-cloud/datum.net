@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Card from '@components/changelog/Card.astro';
+import OpenNetwork from '@components/GlobalSection.astro';
+import ImageTwoPerson from '@v1/assets/images/two-person.png';
+
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const changelogEntries = await getCollection('changelog', ({ id }) => id !== 'index');
+const page = await getCollectionEntry('changelog', 'index');
+
+const sortedEntries = changelogEntries.sort((a, b) => {
+  // const versionA = parseFloat(a.data.version ?? '0');
+  // const versionB = parseFloat(b.data.version ?? '0');
+  // return versionB - versionA;
+
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return dateB - dateA;
+});
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : 'Datum Changelog';
+const description = meta.description ? meta.description : fm.description ? fm.description : '';
+
+const subtitle = 'Changelog';
+const icon = 'list-restart';
+---
+
+<Layout title={title} description={description} bodyClass="about-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={icon}
+      title={title}
+      description={description}
+      subtitle={subtitle}
+    />
+
+    <div class="section--block section--block--pad bg-navy dark">
+      <div class="changelog-container">
+        {
+          sortedEntries.map((item) => (
+            <Card
+              id={item.id}
+              date={item.data.date ?? new Date()}
+              title={item.data.title}
+              description={item.data.description ?? ''}
+              tags={item.data.tags}
+            />
+          ))
+        }
+      </div>
+
+      <div class="absolute right-50 bottom-0 z-40 inline-block">
+        <Image
+          src={ImageTwoPerson}
+          alt="Two Person"
+          class="relative h-auto w-[179px]"
+          data-scroll-effect="parallax"
+          data-scroll-speed="0.1"
+          data-scroll-direction="down"
+          data-viewport-offset="-300"
+          data-max-movement="50"
+        />
+      </div>
+    </div>
+
+    <OpenNetwork />
+
+    <Footer />
+  </section>
+</Layout>

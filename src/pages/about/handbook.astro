@@ -5,13 +5,26 @@ import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import Article from '@components/handbook/Article.astro';
 
-const title = 'Handbook';
-const description = 'The Datum Handbook';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('handbooks', 'index');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : fm.title ? 'Datum - ' + fm.title : 'Datum Handbook';
+const description = meta.description
+  ? meta.description
+  : fm.description
+    ? fm.description
+    : 'The Datum Handbook';
+
+const subtitle = 'Changelog';
 ---
 
 <Layout title={title} description={description} bodyClass="about-page">
   <section class="datum-container">
-    <Hero class="light" iconName="book-text" title="The Datum Handbook" subtitle="Handbook" />
+    <Hero class="light" iconName="book-text" title={fm.title} subtitle={subtitle} />
     <Article articleId="company/why-we-exist" />
     <GlobalSection />
     <Footer />

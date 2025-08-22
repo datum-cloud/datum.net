@@ -1,5 +1,3 @@
-// src/types/changelog.ts
-
 export interface ChangelogItem {
   id: string;
   date: Date;

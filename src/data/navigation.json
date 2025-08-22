@@ -32,7 +32,7 @@
       "children": [
         {
           "items": [
-            { "icon": "list-restart", "text": "Changelog", "href": "/v1/changelog" },
+            { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/v1/roadmap" },
             { "icon": "shirt", "text": "Swag", "href": "/swag" },
             { "icon": "slack", "text": "Public Slack", "href": "/public-slack" },
@@ -97,7 +97,7 @@
     {
       "title": "Resources",
       "items": [
-        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Changelog", "href": "/resources/changelog" },
         { "text": "Roadmap", "href": "/roadmap" },
         { "text": "Swag", "href": "/swag" },
         { "text": "Public Slack", "href": "/slack" },
@@ -108,7 +108,7 @@
       "title": "Company",
       "items": [
         { "text": "About", "href": "/about" },
-        { "text": "Handbook", "href": "/handbook" },
+        { "text": "Handbook", "href": "/about/handbook" },
         { "text": "Blog", "href": "/v1/blog" },
         { "text": "Contact", "href": "/contact" }
       ]

@@ -131,7 +131,7 @@
 
   /* Generic Button Components */
   .btn {
-    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 whitespace-nowrap text-white transition hover:cursor-pointer;
+    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
   }
 
   .btn--primary {

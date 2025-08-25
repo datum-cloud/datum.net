@@ -3,31 +3,38 @@ import { Image } from 'astro:assets';
 import Logo from '@v1/assets/svgs/datum-logo.svg';
 import navigation from '@data/navigation.json';
 import type { NavData, NavItem } from '@/src/types/navigation';
+import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
 
 import Icon from '@components/Icon.astro';
+
+// Get props with default values
+const { showCTA = true } = Astro.props as FooterProps;
 
 // Type-safe navigation data
 const navData = navigation as NavData;
 ---
 
-<!-- src/v1/components/Footer.astro -->
 <footer class="footer">
-  <!-- Hero Content -->
-  <div class="footer-hero">
-    <div class="footer-hero-content">
-      <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
-      <div class="footer-hero-actions">
-        <a href="#" class="btn btn--cream btn--large">
-          Join our private Beta
-          <Icon name="arrow-right" size="md" />
-        </a>
+  {/* Hero Content - Conditionally rendered */}
+  {
+    showCTA && (
+      <div class="footer-hero">
+        <div class="footer-hero-content">
+          <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
+          <div class="footer-hero-actions">
+            <a href="#" class="btn btn--cream btn--large">
+              Join our private Beta
+              <Icon name="arrow-right" size="md" />
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    )
+  }
 
   <!-- Background Landscape -->
-  <div class="footer-illustration-container">
+  <div class:list={['footer-illustration-container', !showCTA && 'pt-30']}>
     <div class="relative">
       <Image src={ImageFooter} alt="Footer illustration" class="footer-illustration-image" />
     </div>

@@ -1,0 +1,34 @@
+---
+// src/components/Button.astro
+// Reusable Button component that always uses <a> tag with support for links, icons, and various styles
+//
+// Usage Examples:
+// <Button text="Click me" class="btn--primary" href="#" />
+// <Button text="External Link" href="https://example.com" target="_blank" />
+// <Button text="With Icon" icon={{ name: "arrow-right", size: "md" }} href="#" />
+// <Button text="Large Button" class="btn--lime btn--large" icon={{ name: "github", size: "lg" }} href="#" />
+
+import Icon from '@components/Icon.astro';
+import type { ButtonProps } from '@/src/types/common';
+
+const {
+  class: className = '',
+  text,
+  title,
+  icon,
+  href = '#',
+  target = '_self',
+} = Astro.props as ButtonProps;
+
+// Always use anchor tag, use '#' as default href for button-like behavior
+const attributes = {
+  href,
+  target,
+  ...(title && { title }),
+};
+---
+
+<a class:list={['btn', className]} {...attributes}>
+  {text}
+  {icon && <Icon name={icon.name} size={icon.size || 'md'} />}
+</a>

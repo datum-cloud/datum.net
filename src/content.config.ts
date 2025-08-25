@@ -29,6 +29,7 @@ const pages = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      subtitle: z.string().optional(),
       description: z.string().optional(),
       featuredImage: image().optional(),
       slug: z.string().optional(),
@@ -139,6 +140,7 @@ const handbooks = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      subtitle: z.string().optional(),
       description: z.string().optional(),
       slug: z.string().optional(),
       draft: z.boolean().optional(),
@@ -192,6 +194,30 @@ const changelog = defineCollection({
     }),
 });
 
+// Define features collections
+const features = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/features' }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      order: z.number().optional(),
+      keyFeatures: z.array(z.string()).optional(),
+      benefits: z.string().optional(),
+      perfectFor: z.array(z.string()).optional(),
+      draft: z.boolean().optional().default(false),
+      meta: metaSchema,
+      sections: z
+        .object({
+          first: z.array(reference('features')).optional(),
+          second: z.array(reference('features')).optional(),
+          third: z.array(reference('features')).optional(),
+        })
+        .optional(),
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -200,5 +226,6 @@ export const collections = {
   categories,
   handbooks,
   changelog,
+  features,
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

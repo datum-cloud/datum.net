@@ -1,0 +1,18 @@
+---
+import type { FeaturesProps } from '@/src/types/common';
+
+const { features } = Astro.props as FeaturesProps;
+---
+
+<div class="feature-cards-grid 3xl:ml-10 ml-0 xl:ml-3 2xl:ml-8">
+  {
+    features.map((feature) => (
+      <div class="feature-card-item">
+        <div class="feature-card-item__content">
+          <h3>{feature.data.title}</h3>
+          <p>{feature.body}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>

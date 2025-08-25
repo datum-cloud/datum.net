@@ -18,13 +18,11 @@ const description = meta.description
   : fm.description
     ? fm.description
     : 'The Datum Handbook';
-
-const subtitle = 'Changelog';
 ---
 
-<Layout title={title} description={description} bodyClass="about-page">
+<Layout title={title} description={description} bodyClass="handbook-page">
   <section class="datum-container">
-    <Hero class="light" iconName="book-text" title={fm.title} subtitle={subtitle} />
+    <Hero class="light" iconName="book-text" title={fm.title} subtitle={fm.subtitle} />
     <Article articleId="company/why-we-exist" />
     <GlobalSection />
     <Footer />

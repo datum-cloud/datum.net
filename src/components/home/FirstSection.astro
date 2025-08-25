@@ -61,7 +61,6 @@ if (content.data.images) {
               <div
                 class="logo-cycling-container relative flex h-full w-full items-center justify-center"
                 data-column-index={columnIndex}
-                style={`animation-delay: ${column.delay}s`}
               >
                 {column.logos.map((logo, logoIndex) => (
                   <Image
@@ -84,23 +83,8 @@ if (content.data.images) {
 </section>
 
 <style>
-  .logo-cycling-container {
-    animation: cycleLogo 5s infinite;
-  }
-
-  @keyframes cycleLogo {
-    0%,
-    50% {
-      transform: rotateX(0deg);
-    }
-    60%,
-    65% {
-      transform: rotateX(90deg);
-    }
-    75%,
-    100% {
-      transform: rotateX(0deg);
-    }
+  .logo-cycle {
+    transition: opacity 1s ease-in-out;
   }
 </style>
 
@@ -126,25 +110,25 @@ if (content.data.images) {
         }
       });
 
-      // Cycle through logos at the peak of flip animation
+      // Cycle through logos with fade transition
       const cycleLogos = () => {
+        // Hide current logo with fade out
+        logos[currentIndex].classList.remove('opacity-100');
+        logos[currentIndex].classList.add('opacity-0');
+
+        // Move to next logo
+        currentIndex = (currentIndex + 1) % totalLogos;
+
+        // Show next logo with fade in after a longer delay
         setTimeout(() => {
-          // Hide current logo
-          logos[currentIndex].classList.remove('opacity-100');
-          logos[currentIndex].classList.add('opacity-0');
-
-          // Move to next logo (use actual number of logos in this column)
-          currentIndex = (currentIndex + 1) % totalLogos;
-
-          // Show next logo
           logos[currentIndex].classList.remove('opacity-0');
           logos[currentIndex].classList.add('opacity-100');
-        }, 3000); // 3000ms = 60% of 5000ms cycle, when flip first reaches 90°
+        }, 800); // Longer delay for smoother transition with slower fade
       };
 
       // Start cycling with staggered timing for each column
-      const baseDelay = 5000; // 5 seconds to match CSS animation
-      const columnDelay = columnIndex * 1000;
+      const baseDelay = 8000; // 5 seconds cycle for longer pause between logo changes
+      const columnDelay = columnIndex * 1000; // Increased stagger delay
 
       // Start the first cycle immediately (with column delay), then repeat every 5s
       setTimeout(() => {

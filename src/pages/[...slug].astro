@@ -1,0 +1,79 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  // Get all pages in the pages collection
+  const pages = await getCollection('pages');
+
+  // Define existing static routes to avoid conflicts
+  const existingRoutes = [
+    'blog',
+    'docs',
+    'global-section',
+    'home',
+    'roadmap',
+    'features',
+    'about',
+    'authors',
+    'resources',
+    'v1',
+    'api',
+    '404',
+  ];
+
+  // Only include root-level pages that don't have specific routes
+  const availablePages = pages.filter((entry) => {
+    const slug = entry.id;
+
+    // Exclude pages that are in subdirectories
+    if (slug.includes('/')) {
+      return false;
+    }
+
+    // Exclude pages that conflict with existing static routes
+    if (existingRoutes.includes(slug)) {
+      return false;
+    }
+
+    // Only include markdown/mdx files that represent actual content pages
+    return true;
+  });
+
+  // Create paths for each available page
+  const paths = availablePages.map((page) => {
+    return {
+      params: { slug: page.id },
+      props: { page },
+    };
+  });
+
+  return paths;
+}
+
+const { page } = Astro.props;
+
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await render(page);
+---
+
+<Layout title={page.data.title} description={page.data.description} bodyClass={`page--${page.id}`}>
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={page.data.iconName}
+      title={page.data.title}
+      subtitle={page.data.subtitle}
+    />
+
+    <div class="section--block bg-cream">
+      <Content />
+    </div>
+    <Footer showCTA={false} />
+  </section>
+</Layout>

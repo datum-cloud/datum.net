@@ -1,0 +1,19 @@
+---
+// src/components/Container.astro
+// Reusable container component with customizable class and content
+
+import type { ContainerProps } from '@/src/types/common';
+
+const { class: className = '', tag = 'div' } = Astro.props as ContainerProps;
+
+// Default container classes
+const defaultClasses = 'm-auto max-w-3xl';
+const containerClasses = className ? `${defaultClasses} ${className}` : defaultClasses;
+
+// Determine the HTML tag to use
+const Tag = tag as 'div' | 'section' | 'article' | 'main' | 'aside';
+---
+
+<Tag class={containerClasses}>
+  <slot />
+</Tag>

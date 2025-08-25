@@ -105,3 +105,24 @@ export interface FeaturesProps {
     body: string;
   }>;
 }
+
+export interface ButtonProps {
+  class?: string;
+  text: string;
+  title?: string;
+  icon?: {
+    name: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+  };
+  href?: string;
+  target?: '_blank' | '_self' | '_parent' | '_top';
+}
+
+export interface FooterProps {
+  showCTA?: boolean;
+}
+
+export interface ContainerProps {
+  class?: string;
+  tag?: 'div' | 'section' | 'article' | 'main' | 'aside';
+}

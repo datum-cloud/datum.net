@@ -175,10 +175,7 @@ This allows you to import v1 components like:
 ```astro
 import Layout from '@v1/layouts/Layout.astro';
 ```
-<<<<<<< HEAD
 
 TODO:
 
 - content: move image to assets folder
-=======
->>>>>>> 1407917 (api github issue use postgre for vote)

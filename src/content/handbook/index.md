@@ -1,5 +1,6 @@
 ---
 title: The Datum Handbook
+subtitle: Handbook
 description: The Datum Handbook
 sidebar:
   label: handbooks

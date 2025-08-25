@@ -91,3 +91,17 @@ export interface HandbookProps {
     };
   }>;
 }
+
+export interface FeaturesProps {
+  features: Array<{
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      keyFeatures: string[];
+      benefits: string;
+      perfectFor: string[];
+    };
+    body: string;
+  }>;
+}

@@ -1,0 +1,53 @@
+---
+import type { FeaturesProps } from '@/src/types/common';
+
+const { features } = Astro.props as FeaturesProps;
+---
+
+<div class="features-grid">
+  <!-- Apps Feature Card -->
+  {
+    features.map((item) => (
+      <div class="feature-card">
+        <div class="feature-card__content">
+          <div class="feature-card__section feature-card__content--header">
+            <div class="feature-card__content-wrapper">
+              <h2>{item.data.title}</h2>
+              <p>{item.data.description}</p>
+            </div>
+          </div>
+
+          <div class="feature-card__section">
+            <div class="feature-card__content-wrapper">
+              <h3>Key features</h3>
+              <ul>
+                {item.data.keyFeatures.map((feature) => (
+                  <li>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="feature-card__section">
+            <div class="feature-card__content-wrapper">
+              <h3>Benefits</h3>
+              {item.data.benefits}
+            </div>
+          </div>
+
+          <div class="feature-card__section">
+            <div class="feature-card__content-wrapper">
+              <h3>Perfect for</h3>
+
+              <ul>
+                {item.data.perfectFor.map((audience) => (
+                  <li>{audience}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>

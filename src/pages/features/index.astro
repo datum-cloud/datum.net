@@ -1,49 +1,175 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getEntry, render } from 'astro:content';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Table from '@components/features/Table.astro';
+import Grids from '@components/features/Grids.astro';
+import Cards from '@components/features/Cards.astro';
 
-const featuresContent = await getEntry('pages', 'features');
-if (!featuresContent) {
-  return Astro.redirect('/404');
-}
-const { Content } = await render(featuresContent);
+import ImageHero from '@v1/assets/images/hero-small-illustration.png';
+import ImageConsole from '@v1/assets/images/console-2.png';
+import ImageMilo from '@v1/assets/images/milo-on-rock.png';
+import ImageSphere from '@v1/assets/images/sphere.png';
+import ImageTwoMen from '@v1/assets/images/two-men.png';
+import ImageLight from '@v1/assets/images/light-trail.png';
+
+import { Image } from 'astro:assets';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { getEntries } from 'astro:content';
+
+const page = await getCollectionEntry('features', 'index');
+const fm = page.data;
+
+// SEO
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : fm.title;
+const description = meta.description ? meta.description : fm.description ? fm.description : '';
+
+const firstContents: Array<{
+  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  body: string;
+}> = await getEntries(page.data.sections.first);
+
+const secondContents: Array<{
+  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  body: string;
+}> = await getEntries(page.data.sections.second);
+
+const thirdContents: Array<{
+  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  body: string;
+}> = await getEntries(page.data.sections.third);
 ---
 
-<Layout title={featuresContent.data.title}>
-  <main class="container mx-auto px-4 py-8">
-    <h1 class="mb-6 text-4xl font-bold">Our Platform</h1>
-    <div class="prose max-w-none">
-      <p>Explore our powerful platform features that make modern infrastructure possible.</p>
+<Layout title={title} description={description} bodyClass="features-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName="goal"
+      imagePath={ImageHero}
+      title={fm.title}
+      subtitle={fm.subtitle}
+      description={fm.description}
+    />
 
-      <nav class="mt-8">
-        <h2 class="mb-4 text-2xl font-semibold">Core Features</h2>
-        <ul class="space-y-2">
-          <li>
-            <a href="/features/proxy" class="text-blue-600 hover:text-blue-800">Big Ass Proxy</a>
-          </li>
-          <li>
-            <a href="/product/vpc" class="text-blue-600 hover:text-blue-800">Galactic VPC</a>
-          </li>
-          <li>
-            <a href="/features/backbone" class="text-blue-600 hover:text-blue-800"
-              >Backbone as Code</a
-            >
-          </li>
-          <li>
-            <a href="/features/workloads" class="text-blue-600 hover:text-blue-800"
-              >Snoozy Workloads</a
-            >
-          </li>
-          <li>
-            <a href="/features/dns" class="text-blue-600 hover:text-blue-800"
-              >It's Always F***ING DNS</a
-            >
-          </li>
-        </ul>
-      </nav>
+    {
+      firstContents[0] && (
+        <div class="section--block section--block--pad bg-navy dark pb-22">
+          <div class="absolute top-1/2 -right-30 z-20 inline-block max-w-149 -translate-y-1/2">
+            <Image
+              src={ImageLight}
+              alt="Light Trail"
+              class="relative h-auto w-[408px] -rotate-45"
+            />
+          </div>
+
+          <Table>
+            <h2 slot="header">{firstContents[0].data.title}</h2>
+            <div slot="description">{firstContents[0].body}</div>
+
+            <div slot="features">
+              <h3>Key features</h3>
+              <ul>
+                {firstContents[0].data.keyFeatures.map((feature) => (
+                  <li>{feature}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div slot="benefits">
+              <h3>Benefits</h3>
+              <p>{firstContents[0].data.benefits}</p>
+            </div>
+
+            <div slot="audience">
+              <h3>Perfect for</h3>
+              <ul>
+                {firstContents[0].data.perfectFor.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </Table>
+
+          <div class="3xl:left-55 2-5xl:left-50 absolute bottom-0 left-15 z-40 inline-block md:left-25">
+            <Image
+              src={ImageTwoMen}
+              alt="Two Men"
+              class="relative h-auto w-[60px] md:w-[110px]"
+              data-scroll-effect="parallax"
+              data-scroll-speed="0.1"
+              data-scroll-direction="down"
+              data-viewport-offset="-200"
+              data-max-movement="50"
+            />
+          </div>
+        </div>
+      )
+    }
+
+    {
+      firstContents[1] && (
+        <div class="section--block section--block--pad bg-navy dark pt-0">
+          <Table>
+            <h2 slot="header">Networks</h2>
+
+            <div slot="description">{firstContents[1].body}</div>
+
+            <div slot="features">
+              <h3>Key features</h3>
+              <ul>
+                {firstContents[1].data.keyFeatures.map((feature) => (
+                  <li>{feature}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div slot="benefits">
+              <h3>Benefits</h3>
+              <p>{firstContents[1].data.benefits}</p>
+            </div>
+
+            <div slot="audience">
+              <h3>Perfect for</h3>
+              <ul>
+                {firstContents[1].data.perfectFor.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </Table>
+
+          <div class="absolute bottom-1/2 -left-30 z-20 block w-auto max-w-2/3 translate-y-1/2">
+            <Image src={ImageLight} alt="Light Trail" class="relative h-auto w-[408px]" />
+          </div>
+        </div>
+      )
+    }
+
+    <div class="section--block section--block--pad bg-pearl-gray">
+      <div class="absolute top-0 left-0 z-10 block w-auto max-w-2/3">
+        <Image
+          src={ImageSphere}
+          alt="Sphere"
+          class="relative w-auto max-w-2/3 -translate-x-3/5 -translate-y-3/5"
+        />
+      </div>
+
+      <Grids features={secondContents} />
+
+      <div class="absolute right-0 bottom-0 z-10 block w-auto max-w-2/3">
+        <Image src={ImageMilo} alt="Milo on the rock" class="relative translate-y-1/2" />
+      </div>
     </div>
-    <article class="prose max-w-none">
-      <Content />
-    </article>
-  </main>
+
+    <div class="section--block section--block--pad bg-lime-green pb-55 md:pb-28 lg:pb-42">
+      <div
+        class="absolute top-auto -right-10 -bottom-10 z-10 block w-auto max-w-114 lg:top-1/2 lg:-right-20 lg:bottom-auto lg:-translate-y-1/2 2xl:right-0"
+      >
+        <Image src={ImageConsole} alt="Console" class="relative" />
+      </div>
+      <Cards features={thirdContents} />
+    </div>
+    <Footer />
+  </section>
 </Layout>

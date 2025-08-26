@@ -126,3 +126,11 @@ export interface ContainerProps {
   class?: string;
   tag?: 'div' | 'section' | 'article' | 'main' | 'aside';
 }
+
+export interface CardProps {
+  title: string;
+  description: string;
+  imageSrc: ImageMetadata;
+  imageAlt?: string;
+  url?: string;
+}

@@ -36,7 +36,7 @@
             { "icon": "calendar-range", "text": "Roadmap", "href": "/v1/roadmap" },
             { "icon": "shirt", "text": "Swag", "href": "/swag" },
             { "icon": "slack", "text": "Public Slack", "href": "/public-slack" },
-            { "icon": "code", "text": "OSS Projects", "href": "/oss-projects" }
+            { "icon": "code", "text": "OSS Projects", "href": "/resources/oss-project" }
           ]
         }
       ]
@@ -101,7 +101,7 @@
         { "text": "Roadmap", "href": "/roadmap" },
         { "text": "Swag", "href": "/swag" },
         { "text": "Public Slack", "href": "/slack" },
-        { "text": "OSS Projects", "href": "/open-source" }
+        { "text": "OSS Projects", "href": "/resources/oss-project" }
       ]
     },
     {

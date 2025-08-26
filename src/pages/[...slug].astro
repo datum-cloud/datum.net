@@ -55,10 +55,6 @@ export async function getStaticPaths() {
 
 const { page } = Astro.props;
 
-if (!page) {
-  return Astro.redirect('/404');
-}
-
 const { Content } = await render(page);
 ---
 

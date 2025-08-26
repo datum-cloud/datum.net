@@ -12,6 +12,10 @@
       @apply py-15 md:py-28 lg:py-42;
     }
 
+    &.section--block--small-pad {
+      @apply py-15 md:py-20 lg:py-29;
+    }
+
     &.section--block--big-pad {
       @apply py-19 md:py-35 lg:py-75;
     }

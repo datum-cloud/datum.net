@@ -55,6 +55,12 @@ export default defineConfig({
         PageFrame: '@components/starlight/PageFrame.astro',
         Header: '@components/starlight/Header.astro',
       },
+      head: [
+        {
+          tag: 'script',
+          attrs: { src: '/src/scripts/markerio.js', defer: true },
+        },
+      ],
       expressiveCode: {
         themes: ['github-dark', 'github-light'],
         styleOverrides: {

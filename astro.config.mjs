@@ -9,7 +9,14 @@ import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
+import markerSDK from '@marker.io/browser';
+
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+
+// Marker.io
+const widget = await markerSDK.loadWidget({
+  project: '6740d085b5f507690e9a2c19',
+});
 
 // Also check process.env for environment variables
 const siteUrl = process.env.SITE_URL || env.SITE_URL;

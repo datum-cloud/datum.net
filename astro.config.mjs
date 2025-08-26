@@ -58,7 +58,7 @@ export default defineConfig({
       head: [
         {
           tag: 'script',
-          attrs: { src: '/src/scripts/markerio.js', defer: true },
+          attrs: { src: '/scripts/markerio.js', defer: true },
         },
       ],
       expressiveCode: {

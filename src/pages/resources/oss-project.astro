@@ -1,0 +1,64 @@
+---
+import Layout from '@v1/layouts/Layout.astro';
+import Hero from '@v1/components/Hero.astro';
+import Footer from '@v1/components/Footer.astro';
+import Card from '@components/Card.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+// Import images
+import datumLogo from '@/src/content/pages/resources/images/datum.png';
+import hickoryDnsLogo from '@/src/content/pages/resources/images/hickorydns.png';
+import miloLogo from '@/src/content/pages/resources/images/ren.png';
+import crossplaneLogo from '@/src/content/pages/resources/images/crossplane.png';
+
+const page = await getCollectionEntry('pages', 'oss-project');
+---
+
+<Layout title={page.data.title} description={page.data.description} bodyClass="about-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={page.data.iconName}
+      title={page.data.title}
+      subtitle={page.data.subtitle}
+      description={page.data.description}
+    />
+
+    <div class="section--block section--block--small-pad bg-pearl-gray">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <Card
+          title="Datum"
+          imageSrc={datumLogo}
+          imageAlt="Datum"
+          description="A system for managing and connecting network and data focused workloads, anywhere."
+          url="https://github.com/datum-cloud/datum"
+        />
+
+        <Card
+          title="Milo"
+          description='A "business operating system" for product-led, B2B companies.'
+          imageSrc={miloLogo}
+          imageAlt="Milo"
+          url="https://github.com/datum-cloud/milo"
+        />
+
+        <Card
+          title="HickoryDNS"
+          description="A Rust based DNS client, server, and resolver, built to be safe and secure from the ground up."
+          imageSrc={hickoryDnsLogo}
+          imageAlt="HickoryDNS"
+          url="https://github.com/hickory-dns/hickory-dns"
+        />
+
+        <Card
+          title="Crossplane"
+          description="A framework for building control planes that Datum uses to normalize cloud provider integrations."
+          imageSrc={crossplaneLogo}
+          imageAlt="Crossplane"
+          url="https://github.com/crossplane/crossplane"
+        />
+      </div>
+    </div>
+    <Footer />
+  </section>
+</Layout>

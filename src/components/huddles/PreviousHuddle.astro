@@ -1,0 +1,121 @@
+---
+// src/components/huddles/PreviousHuddle.astro
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Icon from '@components/Icon.astro';
+
+export interface Props {
+  huddle: CollectionEntry<'huddles'>;
+  index: number;
+}
+
+const { huddle, index } = Astro.props;
+const { Content } = await render(huddle);
+---
+
+<div class="previous-huddle" data-huddle-id={huddle.id}>
+  <button
+    class="previous-huddle--toggle"
+    @click={`expandedHuddle = expandedHuddle === ${index} ? null : ${index}`}
+    :aria-expanded={`expandedHuddle === ${index}`}
+    :aria-controls="`huddle-content-${huddle.id}`"
+  >
+    <span class="previous-huddle--date">
+      {
+        new Date(huddle.data.date).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      }
+    </span>
+    <div class="previous-huddle--icon">
+      <!-- Plus Icon -->
+      <svg
+        x-show={`expandedHuddle !== ${index}`}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+
+      <!-- Minus Icon -->
+      <svg
+        x-show={`expandedHuddle === ${index}`}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+      </svg>
+    </div>
+  </button>
+
+  <div
+    class="previous-huddle--content"
+    :id="`huddle-content-${huddle.id}`"
+    :aria-hidden={`expandedHuddle !== ${index}`}
+    x-show={`expandedHuddle === ${index}`}
+    x-collapse
+  >
+    <div class="previous-huddle--content-wrapper">
+      <div class="previous-huddle--content-inner md:col-span-2">
+        <Content />
+      </div>
+
+      <!-- Meta Section -->
+      <div class="previous-huddle--meta">
+        {
+          huddle.data.time && (
+            <div class="huddle--meta">
+              <div class="huddle--meta-icon">
+                <Icon name="clock" size="lg" />
+              </div>
+              <span>{huddle.data.time}</span>
+            </div>
+          )
+        }
+
+        {
+          huddle.data.zoomLink && (
+            <div class="huddle--meta">
+              <div class="huddle--meta-icon">
+                <Icon name="video" size="lg" />
+              </div>
+              <a href={huddle.data.zoomLink} target="_blank" rel="noopener noreferrer">
+                Zoom Meeting Link
+              </a>
+            </div>
+          )
+        }
+
+        {
+          huddle.data.slidesUrl && (
+            <div class="huddle--meta">
+              <div class="huddle--meta-icon">
+                <Icon name="presentation" size="lg" />
+              </div>
+              <a href={huddle.data.slidesUrl} target="_blank" rel="noopener noreferrer">
+                Presentation slides
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>

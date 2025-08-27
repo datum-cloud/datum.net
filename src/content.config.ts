@@ -45,6 +45,14 @@ const pages = defineCollection({
           })
         )
         .optional(),
+      pageInfo: z
+        .array(
+          z.object({
+            icon: z.string(),
+            text: z.string(),
+          })
+        )
+        .optional(),
       meta: metaSchema,
     }),
 });
@@ -219,6 +227,22 @@ const features = defineCollection({
     }),
 });
 
+// Define huddles collections
+const huddles = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/huddles' }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      date: z.date(),
+      time: z.string().optional(),
+      zoomLink: z.string().url().optional(),
+      slidesUrl: z.string().url().optional(),
+      status: z.enum(['draft', 'publish']).optional().default('draft'),
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -228,5 +252,6 @@ export const collections = {
   handbooks,
   changelog,
   features,
+  huddles,
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

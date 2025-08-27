@@ -1,0 +1,110 @@
+---
+import Layout from '@v1/layouts/Layout.astro';
+import Hero from '@v1/components/Hero.astro';
+import Footer from '@v1/components/Footer.astro';
+import Icon from '@components/Icon.astro';
+import UpcomingHuddle from '@components/huddles/UpcomingHuddle.astro';
+import PreviousHuddle from '@components/huddles/PreviousHuddle.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { getCollection } from 'astro:content';
+import type { IconName } from '@utils/iconMap';
+
+const page = await getCollectionEntry('pages', 'community-huddle');
+
+// Get the upcoming huddle (closest future date with publish status)
+const huddles = await getCollection('huddles');
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+// Filter huddles that are published and have date >= today
+const upcomingHuddles = huddles
+  .filter((huddle) => {
+    const huddleDate = new Date(huddle.data.date);
+    huddleDate.setHours(0, 0, 0, 0);
+    return huddle.data.status === 'publish' && huddleDate >= today;
+  })
+  .sort((a, b) => {
+    // Sort by date (closest first)
+    return new Date(a.data.date).getTime() - new Date(b.data.date).getTime();
+  });
+
+const upcomingHuddle = upcomingHuddles.length > 0 ? upcomingHuddles[0] : null;
+
+// Get previous huddles (past dates with publish status)
+const previousHuddles = huddles
+  .filter((huddle) => {
+    const huddleDate = new Date(huddle.data.date);
+    huddleDate.setHours(0, 0, 0, 0);
+    return huddle.data.status === 'publish' && huddleDate < today;
+  })
+  .sort((a, b) => {
+    // Sort by date (most recent first)
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+---
+
+<Layout title={page.data.title} description={page.data.description} bodyClass="huddle-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={page.data.iconName}
+      title={page.data.title}
+      subtitle={page.data.subtitle}
+    />
+    <section class="section--block bg-cream py-0 pb-12 md:pb-18 lg:pb-23">
+      <div class="bg-cream m-auto max-w-391">
+        <div class="huddle-info-grid">
+          {
+            page.data.pageInfo?.map((info: { icon: IconName; text: string }) => (
+              <div class="huddle-info-card">
+                <div class="huddle-info-icon">
+                  <Icon name={info.icon} size="xl" class="text-green-dark" />
+                </div>
+                <p class="huddle-info-text" set:html={info.text.replace(/\n/g, '<br />')} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    {
+      upcomingHuddle && (
+        <div class="section--block section--block--small-pad bg-navy">
+          <div class="m-auto max-w-391">
+            <UpcomingHuddle huddle={upcomingHuddle} />
+          </div>
+        </div>
+      )
+    }
+
+    <!-- start Previous Huddles -->
+    {
+      previousHuddles.length > 0 && (
+        <div class="section--block section--block--small-pad bg-pearl-gray">
+          <div class="m-auto max-w-391">
+            <div class="text-navy m-auto flex max-w-6xl flex-col">
+              <h2 class="font-canela mb-8 text-center text-2xl font-normal md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
+                Previous Huddles
+              </h2>
+
+              <div
+                class="previous-huddles"
+                x-data="{ expandedHuddle: 0 }"
+                x-init="expandedHuddle = 0"
+              >
+                {await Promise.all(
+                  previousHuddles.map(async (huddle, index) => {
+                    return <PreviousHuddle huddle={huddle} index={index} />;
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+    <!-- end Previous Huddles -->
+
+    <Footer />
+  </section>
+</Layout>

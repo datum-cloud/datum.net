@@ -1,0 +1,105 @@
+@layer components {
+  .upcomming-huddle {
+    @apply m-auto flex max-w-6xl flex-col text-white;
+  }
+  .upcomming-huddle--header {
+    @apply mb-10 border-b-1 border-white pb-5 md:mb-14 md:pb-8 lg:mb-18 lg:pb-11;
+  }
+  .upcomming-huddle--content {
+    @apply prose prose-xl md:text-22 text-white/80;
+    @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-white;
+    @apply prose-headings:first:mt-0;
+  }
+  .upcomming-huddle--subtitle {
+    @apply font-alliance text-lime-green mb-2 block text-sm font-medium tracking-wider uppercase;
+  }
+  .upcomming-huddle--title {
+    @apply font-alliance lg:text-38 text-2xl font-semibold md:text-3xl;
+  }
+  .huddle--meta {
+    @apply flex items-start;
+
+    a {
+      @apply hover:text-lime-green underline underline-offset-2 transition-colors;
+    }
+  }
+  .huddle--meta-icon {
+    @apply text-lime-green mt-0.5 mr-3;
+  }
+  .previous-huddle {
+    .huddle--meta {
+      @apply text-lg;
+
+      a {
+        @apply hover:text-navy;
+      }
+    }
+    .huddle--meta-icon {
+      @apply text-tuscany mt-0.5 mr-3;
+    }
+  }
+  /* Previous Huddles Component */
+
+  .previous-huddles {
+    @apply flex flex-col gap-8;
+  }
+
+  .previous-huddle {
+    @apply border border-black text-black;
+  }
+
+  .previous-huddle--toggle {
+    @apply relative flex w-full items-center justify-between bg-transparent px-8 py-8.5 text-left transition-colors after:absolute after:-bottom-[1px] after:left-8 after:block after:h-px after:w-[calc(100%-4rem)] after:border-b after:border-black after:content-[''] hover:cursor-pointer;
+  }
+
+  .previous-huddle--date {
+    @apply font-alliance text-2xl leading-tight font-medium tracking-tight;
+  }
+
+  .previous-huddle--icon {
+    @apply transition-opacity duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
+  }
+
+  .previous-huddle--content {
+    @apply overflow-hidden;
+  }
+
+  .previous-huddle--content-inner {
+    @apply prose prose-xl md:text-22 px-3 text-black/80;
+    @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-black;
+    @apply prose-headings:first:mt-0;
+  }
+
+  .previous-huddle--content-wrapper {
+    @apply grid gap-8 px-8 py-8.5 md:grid-cols-3;
+  }
+
+  .previous-huddle--meta {
+    @apply flex flex-col space-y-6 px-3;
+  }
+
+  /* Info Cards Grid Section */
+  .huddle-info-grid {
+    @apply grid gap-6 md:gap-8 lg:gap-23;
+    @apply grid-cols-1 md:grid-cols-3;
+    @apply mx-auto max-w-6xl;
+  }
+
+  .huddle-info-card {
+    @apply flex flex-col items-center;
+    @apply gap-4;
+    @apply text-center;
+  }
+
+  .huddle-info-icon {
+    @apply flex items-center justify-center;
+    @apply h-8 w-8;
+    @apply text-green-dark;
+  }
+
+  .huddle-info-text {
+    @apply font-alliance text-lg leading-relaxed;
+    @apply text-black;
+    @apply text-center;
+  }
+}

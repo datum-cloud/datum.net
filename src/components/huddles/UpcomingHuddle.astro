@@ -1,0 +1,69 @@
+---
+// src/components/huddles/UpcomingHuddle.astro
+import Icon from '@components/Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+
+export interface Props {
+  huddle: CollectionEntry<'huddles'>;
+}
+
+const { huddle } = Astro.props;
+const { Content } = await render(huddle);
+---
+
+<article class="upcomming-huddle">
+  <!-- Header Section -->
+  <header class="upcomming-huddle--header">
+    <span class="upcomming-huddle--subtitle">Upcoming Meeting</span>
+    <h2 class="upcomming-huddle--title">{huddle.data.title}</h2>
+  </header>
+
+  <!-- Main Content Area -->
+  <section class="grid gap-8 md:grid-cols-3">
+    <!-- Agenda Section -->
+    <div class="upcomming-huddle--content md:col-span-2">
+      <Content />
+    </div>
+
+    <!-- Details Section -->
+    <div class="flex flex-col space-y-6">
+      {
+        huddle.data.time && (
+          <div class="huddle--meta">
+            <div class="huddle--meta-icon">
+              <Icon name="clock" />
+            </div>
+            <span>{huddle.data.time}</span>
+          </div>
+        )
+      }
+
+      {
+        huddle.data.zoomLink && (
+          <div class="huddle--meta">
+            <div class="huddle--meta-icon">
+              <Icon name="video" />
+            </div>
+            <a href={huddle.data.zoomLink} target="_blank" rel="noopener noreferrer">
+              Zoom Meeting Link
+            </a>
+          </div>
+        )
+      }
+
+      {
+        huddle.data.slidesUrl && (
+          <div class="huddle--meta">
+            <div class="huddle--meta-icon">
+              <Icon name="presentation" />
+            </div>
+            <a href={huddle.data.slidesUrl} target="_blank" rel="noopener noreferrer">
+              Presentation slides
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</article>

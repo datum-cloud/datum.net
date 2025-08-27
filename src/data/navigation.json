@@ -118,6 +118,7 @@
       "items": [
         { "text": "GitHub", "href": "https://github.com/datum", "isExternal": true },
         { "text": "Log In", "href": "/login" },
+        { "text": "Community Huddle", "href": "/community-huddle" },
         { "text": "Request Access", "href": "/request-access" }
       ]
     }

@@ -186,12 +186,17 @@
     @apply m-auto mb-16 max-w-4xl text-left;
   }
 
+  .blog-back-button {
+    @apply hover:text-green-dark mb-12 inline-flex items-center gap-1.5 text-black transition-colors;
+    @apply font-alliance text-sm leading-relaxed tracking-tight;
+  }
+
   .blog-article-meta {
     @apply mb-6;
   }
 
   .blog-article-meta-content {
-    @apply flex flex-wrap items-center gap-4;
+    @apply flex items-center gap-4;
   }
 
   .blog-article-date {

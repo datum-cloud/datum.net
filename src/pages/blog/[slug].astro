@@ -3,6 +3,7 @@
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import Icon from '@v1/components/Icon.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import { getCollection, render } from 'astro:content';
@@ -90,7 +91,7 @@ const icon = 'book-image';
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} hideContent={true} />
 
-    <section class="blog-detail bg-light-gray section--block section--block--pad">
+    <section class="blog-detail bg-pearl-gray section--block section--block--pad pt-19">
       <article class="blog-article" data-pagefind-body>
         <!-- Hidden meta tags for Pagefind -->
         <span data-pagefind-meta="page_type" class="hidden" style="display: none;">post</span>
@@ -109,10 +110,14 @@ const icon = 'book-image';
 
         <!-- Article Header -->
         <header class="blog-article-header">
+          <a href="/blog" class="blog-back-button">
+            <Icon name="arrow-left" size="md" />
+            <span>Back to Blog</span>
+          </a>
           <div class="blog-article-meta">
             <div class="blog-article-meta-content">
-              <span class="blog-article-date">
-                {formattedDate} | {readingTime.text}
+              <span class="blog-article-date pr-3">
+                {readingTime.text}
               </span>
               {
                 categoryData.length > 0 && (
@@ -123,6 +128,10 @@ const icon = 'book-image';
                   </div>
                 )
               }
+
+              <span class="blog-article-date ml-auto block text-right">
+                {formattedDate}
+              </span>
             </div>
           </div>
 

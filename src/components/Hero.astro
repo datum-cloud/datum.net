@@ -6,9 +6,9 @@ import Icon from '@v1/components/Icon.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const {
-  iconName = 'default',
-  title = 'About Datum.',
-  subtitle = 'About',
+  iconName = '',
+  title = '',
+  subtitle = '',
   description = '',
   class: className,
   imagePath,
@@ -23,12 +23,16 @@ const {
       <div class="hero--main-content">
         {/* Hero Main Content */}
         <div class="hero--main-content-inner">
-          <div class="hero--main-content-icon">
-            <div class="hero--main-content-icon-inner">
-              <Icon name={iconName} size="md" />
+          {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
+            <div class="hero--main-content-icon">
+              {iconName && iconName !== '' && (
+                <div class="hero--main-content-icon-inner">
+                  <Icon name={iconName} size="md" />
+                </div>
+              )}
+              {subtitle && subtitle !== '' && <span>{subtitle}</span>}
             </div>
-            <span>{subtitle}</span>
-          </div>
+          ) : null}
 
           <h1 class="hero--main-content-title">{title}</h1>
           {description && <p class="hero--main-content-description">{description}</p>}

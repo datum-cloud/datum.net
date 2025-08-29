@@ -1,4 +1,4 @@
-FROM node:22.18.0-alpine3.22 AS base
+FROM node:22.19.0-alpine3.22 AS base
 WORKDIR /app
 
 ENV ASTRO_TELEMETRY_DISABLED=true
@@ -31,7 +31,7 @@ RUN chmod -R 755 src/pages
 
 RUN npm run build
 
-FROM node:22.18.0-alpine3.22 AS production
+FROM node:22.19.0-alpine3.22 AS production
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0

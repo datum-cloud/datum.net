@@ -238,6 +238,7 @@ const huddles = defineCollection({
       date: z.date(),
       time: z.string().optional(),
       zoomLink: z.string().url().optional(),
+      zoomPass: z.string().optional(),
       slidesUrl: z.string().url().optional(),
       status: z.enum(['draft', 'publish']).optional().default('draft'),
     }),

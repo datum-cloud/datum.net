@@ -99,7 +99,23 @@ const { Content } = await render(huddle);
               <a href={huddle.data.zoomLink} target="_blank" rel="noopener noreferrer">
                 Zoom Meeting Link
               </a>
-              – {huddle.data.zoomPass}
+            </div>
+          )
+        }
+
+        {
+          huddle.data.zoomPass && (
+            <div class="huddle--meta">
+              <div class="huddle--meta-icon">
+                <Icon name="key-round" size="lg" />
+              </div>
+              <button
+                type="button"
+                data-passcode={huddle.data.zoomPass}
+                x-data="{ copied: false }"
+                @click={`navigator.clipboard.writeText('${huddle.data.zoomPass}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                x-text="copied ? 'Copied!' : 'Copy passcode'"
+              />
             </div>
           )
         }

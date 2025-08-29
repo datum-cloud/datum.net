@@ -19,8 +19,9 @@
   .huddle--meta {
     @apply flex items-start;
 
-    a {
-      @apply hover:text-lime-green underline underline-offset-2 transition-colors;
+    a,
+    button {
+      @apply hover:text-lime-green underline underline-offset-2 transition-colors hover:cursor-pointer;
     }
   }
   .huddle--meta-icon {
@@ -30,7 +31,8 @@
     .huddle--meta {
       @apply text-lg;
 
-      a {
+      a,
+      button {
         @apply hover:text-navy;
       }
     }

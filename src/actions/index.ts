@@ -1,6 +1,8 @@
-import { voting, getUserVoted } from './db.ts';
+import { vote, unvote, getUserVoted, loginWithDatum } from './roadmap';
 
 export const server = {
-  voting,
+  vote,
+  unvote,
   getUserVoted,
+  loginWithDatum,
 };

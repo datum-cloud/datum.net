@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+  namespace: datum-net
+data:
+  postgresql.conf: |-
+    port = '5432'
+    listen_addresses = '*'
+    max_connections = 100
+
+    shared_buffers = 2GB
+    work_mem = 16MB
+    maintenance_work_mem = 512MB
+    effective_cache_size = 6GB
+
+    wal_buffers = 16MB
+    checkpoint_completion_target = 0.9
+    checkpoint_timeout = 15min
+    max_wal_size = 2GB
+    min_wal_size = 512MB
+
+    max_worker_processes = 4
+    max_parallel_workers_per_gather = 2
+    max_parallel_workers = 4
+
+    autovacuum = on
+    autovacuum_naptime = 20s
+    autovacuum_max_workers = 3
+    autovacuum_vacuum_cost_delay = 10ms
+    autovacuum_vacuum_scale_factor = 0.05
+    autovacuum_analyze_scale_factor = 0.02
+
+    log_min_duration_statement = 500
+    log_connections = on
+    log_disconnections = on
+    log_checkpoints = on
+    log_lock_waits = on
+    log_line_prefix = '%m [%p] %u@%d '
+
+    # TIMEZONE
+    timezone = 'America/New_York'
+    log_timezone = 'America/New_York'

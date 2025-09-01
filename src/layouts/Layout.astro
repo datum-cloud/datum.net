@@ -106,7 +106,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
       })(window, document, window.Beacon || function () {});
     </script>
     {
-      import.meta.env.MODE === 'development' && (
+      import.meta.env.MODE === 'production' && (
         <script type="text/javascript" defer is:inline>
           window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
         </script>

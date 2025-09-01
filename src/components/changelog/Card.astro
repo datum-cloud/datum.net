@@ -1,6 +1,6 @@
 ---
 import type { ChangelogCardProps } from '@/src/types/changelog';
-
+import { marked } from 'marked';
 export type Props = ChangelogCardProps;
 
 const { date, title, description, tags } = Astro.props;
@@ -36,7 +36,7 @@ const { date, title, description, tags } = Astro.props;
 
     <div class="changelog-item--main">
       <h3 class="changelog-item--title">{title}</h3>
-      <p class="changelog-item--description">{description}</p>
+      <div class="changelog-item--description" set:html={marked.parse(description)} />
 
       <div class="changelog-item--tags">
         {

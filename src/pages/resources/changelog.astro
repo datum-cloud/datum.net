@@ -52,7 +52,7 @@ const icon = 'list-restart';
               id={item.id}
               date={item.data.date ?? new Date()}
               title={item.data.title}
-              description={item.data.description ?? ''}
+              description={item.body ?? ''}
               tags={item.data.tags}
             />
           ))

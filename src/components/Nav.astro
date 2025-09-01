@@ -6,14 +6,7 @@ import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerButton from '@components/GithubStargazerButton.astro';
 
-<<<<<<< HEAD
 import type { NavData } from '@/src/types/navigation';
-=======
-import { stargazerCount } from '@utils/github';
-const starCount = await stargazerCount();
-const formatter = new Intl.NumberFormat('en-US', { notation: 'compact' });
-const formattedStarCount = formatter.format(starCount);
->>>>>>> 82c3a73 (feat: roadmap vote page)
 
 // Type-safe navigation data
 const navData = navigation as NavData;
@@ -71,25 +64,7 @@ const mainNav = navData.main;
 
   {/* Desktop Actions */}
   <div class="nav-actions">
-<<<<<<< HEAD
     <GithubStargazerButton server:defer />
-=======
-    {/* 85.4k Button */}
-    <a href="https://github.com/datum-cloud/datum/" class="btn btn--primary">
-      <div class="btn-icon">
-        <Icon name="github" size="md" />
-      </div>
-      <span class="btn-text">{formattedStarCount}</span>
-    </a>
-
-    {/* Log In Button */}
-    <a href="#" class="btn btn--primary">
-      <div class="btn-icon">
-        <Icon name="user" size="md" />
-      </div>
-      <span class="btn-text">Log In</span>
-    </a>
->>>>>>> 82c3a73 (feat: roadmap vote page)
   </div>
 
   {/* Mobile Menu Component */}

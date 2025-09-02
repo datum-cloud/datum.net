@@ -9,16 +9,17 @@ import { getCollectionEntry } from '@utils/collectionUtils';
 // Get blog landing page from blog/index.mdx
 const page = await getCollectionEntry('pages', '/blog');
 
-const subtitle = 'Blog';
-const title = 'The Datum Blog';
 const icon = 'book-image';
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : fm.title;
+const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 ---
 
-<Layout
-  title={page.data.title || 'Datum'}
-  description={page.data.description}
-  bodyClass="blog-page"
->
+<Layout title={title || 'Datum'} description={description} bodyClass="blog-page">
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 

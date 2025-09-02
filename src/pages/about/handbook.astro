@@ -13,11 +13,7 @@ const page = await getCollectionEntry('handbooks', 'index');
 const fm = page.data;
 const meta = fm.meta || {};
 const title = meta.title ? meta.title : fm.title ? 'Datum - ' + fm.title : 'Datum Handbook';
-const description = meta.description
-  ? meta.description
-  : fm.description
-    ? fm.description
-    : 'The Datum Handbook';
+const description = meta.description ? meta.description : fm.description;
 ---
 
 <Layout title={title} description={description} bodyClass="handbook-page">

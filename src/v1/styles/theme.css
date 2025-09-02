@@ -109,10 +109,20 @@
   --text-blg: 17px;
   --text-1.5xl: 22px;
   --text-2.5xl: 28px;
+  --text-19: 19px;
   --text-22: 22px;
   --text-38: 38px;
+  --text-46: 46px;
+  --text-72: 72px;
   --text-4.5xl: 46px;
   --text-5.5xl: 54px;
+
+  /* letter-spacing */
+  --tracking-1: -1.5px;
+
+  /* line-height */
+  --leading-1: 110%;
+  --leading-2: 140%;
 
   /* Font Families */
   --font-primary:

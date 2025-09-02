@@ -34,16 +34,11 @@
           "items": [
             { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/v1/roadmap" },
-            { "icon": "shirt", "text": "Swag", "href": "/swag" },
             { "icon": "slack", "text": "Public Slack", "href": "/public-slack" },
             { "icon": "code", "text": "OSS Projects", "href": "/resources/oss-project" }
           ]
         }
       ]
-    },
-    {
-      "text": "Pricing",
-      "href": "/pricing"
     },
     {
       "text": "Company",
@@ -58,6 +53,10 @@
           ]
         }
       ]
+    },
+    {
+      "text": "Hudle",
+      "href": "/community-huddle"
     }
   ],
   "right": [

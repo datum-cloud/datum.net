@@ -1,7 +1,7 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply m-auto flex w-full max-w-391 items-center justify-between py-6 md:py-9 lg:py-12.5;
+    @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:pt-9 lg:pt-12.5;
   }
 
   .nav--main .nav-menu {
@@ -13,7 +13,7 @@
   }
 
   .nav--main .nav-menu-link {
-    @apply flex items-center gap-2 text-lg leading-relaxed font-normal hover:underline;
+    @apply text-19 flex items-center gap-2 leading-[110%] font-normal tracking-normal hover:opacity-80;
   }
 
   .nav--main .nav-menu-icon {
@@ -38,7 +38,7 @@
   }
 
   .nav-dropdown-menu {
-    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-70 rounded-lg p-6 opacity-0 shadow-lg transition-all duration-200 ease-in-out;
+    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-70 rounded-lg p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu {
@@ -62,7 +62,7 @@
   }
 
   .nav-dropdown-link span {
-    @apply text-lg leading-tight font-medium;
+    @apply text-lg leading-normal font-medium;
   }
 
   .nav-dropdown-section {
@@ -197,15 +197,19 @@
   }
 
   .footer-nav-section {
-    @apply font-alliance mb-6 text-lg font-semibold text-white;
+    @apply font-alliance mb-4.5 text-lg leading-2 font-semibold text-white;
   }
 
   .footer-nav-list {
-    @apply text-peat-200 space-y-4 text-lg opacity-80;
+    @apply text-peat-200 text-lg opacity-80;
+
+    li {
+      @apply mb-1.5;
+    }
   }
 
   .footer-nav-link {
-    @apply text-white/80 transition-colors hover:text-white;
+    @apply leading-2 text-white/80 transition-colors hover:text-white;
   }
 
   /* Footer Image Styles */

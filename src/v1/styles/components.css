@@ -17,7 +17,7 @@
     }
 
     &.section--block--big-pad {
-      @apply py-19 md:py-35 lg:py-75;
+      @apply pt-15 pb-13 md:pt-28 md:pb-25 lg:pt-60 lg:pb-53;
     }
   }
 
@@ -114,7 +114,7 @@
   }
 
   .footer-signup-container {
-    @apply mx-auto flex max-w-227 flex-col items-center gap-0 md:flex-row md:gap-20;
+    @apply mx-auto flex max-w-227 flex-col items-center gap-0 py-2 md:flex-row md:gap-20;
   }
 
   .footer-signup-form-container {
@@ -136,6 +136,10 @@
   /* Generic Button Components */
   .btn {
     @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
+
+    .btn-icon {
+      @apply text-light-pink;
+    }
   }
 
   .btn--primary {
@@ -180,7 +184,7 @@
   }
 
   .btn--large {
-    @apply text-base leading-relaxed font-semibold tracking-tight;
+    @apply text-base leading-normal font-semibold tracking-normal;
   }
 
   .btn--medium {
@@ -216,7 +220,7 @@
 
   .ordered-list li::before {
     @apply font-frontliner text-mauve text-xsm lg:text-1.5xl w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
-    content: '0' counter(ordered-counter);
+    content: '0' counter(ordered-counter) '.';
   }
 
   .ordered-list span {
@@ -225,23 +229,23 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy text-4.5xl mb-14 leading-tight tracking-tighter md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy text-72 tracking-1 mb-17.5 leading-1 text-balance md:text-6xl lg:text-7xl;
   }
 
   .h2-leading {
-    @apply font-canela text-navy mb-8 text-4xl leading-tight tracking-tighter md:mb-10 md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 mb-8 text-4xl leading-1 text-balance md:mb-10 md:text-6xl lg:text-7xl;
   }
 
   .h3-leading {
-    @apply font-canela text-navy text-2.5xl lg:text-5.5xl mb-14 leading-tight tracking-tighter md:text-4xl;
+    @apply font-canela text-navy text-2.5xl lg:text-5.5xl tracking-1 mb-14 leading-1 text-balance md:text-4xl;
   }
 
   .h4-leading {
-    @apply font-canela text-navy text-2.5xl lg:text-4.5xl mb-8 leading-tight tracking-tight md:text-4xl;
+    @apply font-canela text-navy text-2.5xl lg:text-46 tracking-1 mb-8 leading-1 text-balance md:text-4xl;
   }
 
   .text-desc {
-    @apply font-alliance text-navy text-smb leading-snug md:text-xl;
+    @apply font-alliance text-navy md:text-22 text-xl leading-[140%];
   }
 
   /* Generic Logo/Brand Grid Components */

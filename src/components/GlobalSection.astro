@@ -1,8 +1,6 @@
 ---
-import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
-import ImageConsole from '@v1/assets/images/console.png';
-
+import UIConsole from '@v1/assets/svgs/ui.svg';
 const content = await getEntry('pages', 'global-section');
 ---
 
@@ -18,11 +16,11 @@ const content = await getEntry('pages', 'global-section');
     </div>
 
     <div class="z-0 flex w-full max-w-[1416px] items-end pl-6 opacity-80 md:px-18">
-      <Image
-        src={ImageConsole}
-        alt="Scene left illustration"
-        class="relative mr-auto min-h-[248px] max-w-[700px] md:min-h-0 md:max-w-full md:-translate-0 md:translate-x-0 md:translate-y-14"
-      />
+      <div
+        class="relative mr-auto min-h-[240px] max-w-[700px] md:min-h-0 md:max-w-full md:-translate-0 md:translate-x-0 md:translate-y-14"
+      >
+        <UIConsole class="relative h-full w-full" />
+      </div>
     </div>
   </div>
 </section>

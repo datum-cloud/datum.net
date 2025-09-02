@@ -73,13 +73,6 @@
   ],
   "footer": [
     {
-      "title": "Navigate",
-      "items": [
-        { "text": "Home", "href": "/" },
-        { "text": "Pricing", "href": "/pricing" }
-      ]
-    },
-    {
       "title": "Product",
       "items": [
         { "text": "Features", "href": "/features" },
@@ -98,7 +91,6 @@
       "items": [
         { "text": "Changelog", "href": "/resources/changelog" },
         { "text": "Roadmap", "href": "/roadmap" },
-        { "text": "Swag", "href": "/swag" },
         { "text": "Public Slack", "href": "/slack" },
         { "text": "OSS Projects", "href": "/resources/oss-project" }
       ]

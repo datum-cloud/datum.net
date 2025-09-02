@@ -53,16 +53,17 @@ const baseUrl = `/blog/${slug}`;
 const prevUrl = undefined; // First page
 const nextUrl = totalPages > 1 ? `${baseUrl}/${currentPage + 1}` : undefined;
 
-const subtitle = 'Blog';
-const title = category.data.name;
 const icon = 'book-image';
+
+// SEO
+const fm = category.data;
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : fm.name;
+const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 ---
 
-<Layout
-  title={`${category.data.name} - Category`}
-  description={category.data.description}
-  bodyClass="blog-page"
->
+<Layout title={title} description={description} bodyClass="blog-page">
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 

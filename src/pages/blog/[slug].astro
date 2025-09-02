@@ -74,14 +74,18 @@ if (authorData?.data.avatar) {
   }
 }
 
-const subtitle = 'Blog';
-const title = entry.data.title;
+// SEO
+const fm = entry.data;
+const meta = fm.meta || {};
+const title = meta.title ? meta.title : fm.title;
+const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 const icon = 'book-image';
 ---
 
 <Layout
-  title={entry.data.title + ' | Datum Inc. Blog'}
-  description={entry.data.description}
+  title={title}
+  description={description}
   image={metaImage}
   article={true}
   publishDate={entry.data.date}

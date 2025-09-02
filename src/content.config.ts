@@ -97,6 +97,7 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      subtitle: z.string().optional(),
       description: z.string().optional(),
       date: z.date(),
       author: z.string().optional(),
@@ -105,6 +106,7 @@ const blog = defineCollection({
       thumbnail: image().optional(),
       featuredImage: image().optional(),
       draft: z.boolean().optional().default(false),
+      meta: metaSchema,
     }),
 });
 
@@ -137,9 +139,11 @@ const categories = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      subtitle: z.string().optional(),
       description: z.string().optional(),
       slug: z.string().optional(),
       featuredImage: image().optional(),
+      meta: metaSchema,
     }),
 });
 

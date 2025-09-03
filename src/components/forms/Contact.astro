@@ -1,0 +1,52 @@
+---
+import type { FormProps } from '../../types/form';
+
+const { title = 'Request access', submitLabel = 'Submit' }: FormProps = Astro.props;
+---
+
+<!-- src/components/forms/Pricing.astro -->
+<form class="form">
+  <div class="form--header">
+    <h2 class="form--title">{title}</h2>
+  </div>
+
+  <div class="form--content">
+    <div class="form--fields">
+      <div class="form--field">
+        <label for="email" class="form--label">Email</label>
+        <input type="email" id="email" name="email" class="form--input" required />
+      </div>
+
+      <div class="form--field">
+        <label for="name" class="form--label">Name</label>
+        <input type="text" id="name" name="name" class="form--input" required />
+      </div>
+
+      <div class="form--field">
+        <label for="company" class="form--label">Company</label>
+        <input type="email" id="company" name="company" class="form--input" required />
+      </div>
+    </div>
+
+    <div class="form--message">
+      <div class="form--field">
+        <label for="message" class="form--label">Message</label>
+        <textarea id="message" name="message" class="form--textarea" rows="4" required></textarea>
+      </div>
+    </div>
+
+    <div class="form--actions">
+      <div class="form--checkbox-container">
+        <div class="form--checkbox-wrapper">
+          <input type="checkbox" id="email-updates" name="email-updates" class="form--checkbox" />
+          <label for="email-updates" class="form--checkbox-label">
+            Receive occasional email updates
+          </label>
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn btn--lime btn--2xl btn--center">{submitLabel}</button>
+      </div>
+    </div>
+  </div>
+</form>

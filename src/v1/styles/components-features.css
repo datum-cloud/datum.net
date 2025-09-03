@@ -10,7 +10,7 @@
     h2,
     h3,
     h4 {
-      @apply text-lime-green font-alliance text-1.5xl mt-0 font-normal;
+      @apply text-lime-green font-alliance text-22 mt-0 font-normal;
     }
 
     h2 {

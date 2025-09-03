@@ -3,20 +3,9 @@
     @apply container m-auto;
     max-width: var(--datum-max-width);
   }
+}
 
-  .inner-max-w {
-    max-width: var(--datum-section-width);
-  }
-
-  .font-canela {
-    font-family: var(--font-canela);
-  }
-
-  .font-alliance {
-    font-family: var(--font-alliance);
-  }
-
-  .font-frontliner {
-    font-family: var(--font-frontliner);
-  }
+@utility prose-dark {
+  @apply text-white/80;
+  @apply prose-headings:text-white prose-h2:text-40 prose-headings:font-normal prose-headings:leading-[1.22] prose-h3:text-lime-green prose-h3:font-alliance prose-h3:text-xl prose-h3:font-medium prose-h4:font-alliance;
 }

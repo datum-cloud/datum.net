@@ -5,21 +5,19 @@ const content = await getEntry('pages', 'global-section');
 ---
 
 <section
-  class="bg-lime-green section--block section--block--big-pad flex pt-19 pb-0 align-middle md:pt-[10%]"
+  class="bg-lime-green section--block section--block--big-pad flex pt-20 pb-0 align-middle md:pt-34 lg:pt-54"
 >
   <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
-    <div class="z-50 mx-auto max-w-2xl text-center">
+    <div class="z-50 mx-auto mb-8 max-w-2xl text-center md:mb-18 lg:mb-22">
       <h2 class="h2-leading">{content?.data.title}</h2>
       <div class="text-desc mx-auto mt-8 max-w-3xl md:mt-12">
         <p>{content?.body}</p>
       </div>
     </div>
 
-    <div class="z-0 flex w-full max-w-[1416px] items-end pl-6 opacity-80 md:px-18">
-      <div
-        class="relative mr-auto min-h-[240px] max-w-[700px] md:min-h-0 md:max-w-full md:-translate-0 md:translate-x-0 md:translate-y-14"
-      >
-        <UIConsole class="relative h-full w-full" />
+    <div class="z-0 flex w-full max-w-[1416px] items-end pl-6 md:px-18">
+      <div class="relative mr-auto">
+        <UIConsole class="relative h-auto w-full" />
       </div>
     </div>
   </div>

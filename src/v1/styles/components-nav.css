@@ -38,7 +38,7 @@
   }
 
   .nav-dropdown-menu {
-    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-70 rounded-lg p-6 opacity-0 transition-all duration-200 ease-in-out;
+    @apply bg-light-gray pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-lg p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu {
@@ -197,7 +197,7 @@
   }
 
   .footer-nav-section {
-    @apply font-alliance mb-4.5 text-lg leading-2 font-semibold text-white;
+    @apply font-alliance mb-4.5 text-lg leading-[1.4] font-semibold text-white;
   }
 
   .footer-nav-list {
@@ -209,7 +209,7 @@
   }
 
   .footer-nav-link {
-    @apply leading-2 text-white/80 transition-colors hover:text-white;
+    @apply leading-[1.4] text-white/80 transition-colors hover:text-white;
   }
 
   /* Footer Image Styles */

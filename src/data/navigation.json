@@ -49,7 +49,7 @@
             { "icon": "default", "text": "About", "href": "/about" },
             { "icon": "book-text", "text": "Handbook", "href": "/about/handbook" },
             { "icon": "book-image", "text": "Blog", "href": "/blog" },
-            { "icon": "message-square-plus", "text": "Contact", "href": "/contact" }
+            { "icon": "message-square-plus", "text": "Contact", "href": "/about/contact" }
           ]
         }
       ]
@@ -101,7 +101,7 @@
         { "text": "About", "href": "/about" },
         { "text": "Handbook", "href": "/about/handbook" },
         { "text": "Blog", "href": "/blog" },
-        { "text": "Contact", "href": "/contact" }
+        { "text": "Contact", "href": "/about/contact" }
       ]
     },
     {

@@ -38,7 +38,7 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose-xl lg:text-1.5xl max-w-none text-lg leading-tight md:text-xl;
+    @apply font-alliance prose-xl lg:text-22 max-w-none text-lg leading-tight md:text-xl;
   }
 
   .h2-section {
@@ -135,7 +135,7 @@
 
   /* Generic Button Components */
   .btn {
-    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
+    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
 
     .btn-icon {
       @apply text-light-pink;
@@ -180,11 +180,19 @@
   }
 
   .btn--xl {
-    @apply text-base leading-relaxed font-semibold tracking-tight md:text-lg;
+    @apply text-base leading-relaxed font-semibold md:text-lg;
+  }
+
+  .btn--2xl {
+    @apply md:text-19 text-lg leading-[1.9] font-semibold;
   }
 
   .btn--large {
-    @apply text-base leading-normal font-semibold tracking-normal;
+    @apply text-base leading-normal font-semibold;
+  }
+
+  .btn--center {
+    @apply w-full justify-center;
   }
 
   .btn--medium {
@@ -210,7 +218,7 @@
   }
 
   .ordered-list--sans {
-    @apply font-alliance lg:text-2.5xl text-base leading-tight tracking-tight md:text-xl;
+    @apply font-alliance lg:text-28 text-base leading-tight tracking-tight md:text-xl;
   }
 
   .ordered-list li {
@@ -219,7 +227,7 @@
   }
 
   .ordered-list li::before {
-    @apply font-frontliner text-mauve text-xsm lg:text-1.5xl w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
+    @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
     content: '0' counter(ordered-counter) '.';
   }
 
@@ -229,19 +237,19 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy text-72 tracking-1 mb-17.5 leading-1 text-balance md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy text-72 tracking-1 mb-17.5 leading-[1.1] text-balance md:text-6xl lg:text-7xl;
   }
 
   .h2-leading {
-    @apply font-canela text-navy tracking-1 mb-8 text-4xl leading-1 text-balance md:mb-10 md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 mb-8 text-4xl leading-[1.1] text-balance md:mb-10 md:text-6xl lg:text-7xl;
   }
 
   .h3-leading {
-    @apply font-canela text-navy text-2.5xl lg:text-5.5xl tracking-1 mb-14 leading-1 text-balance md:text-4xl;
+    @apply font-canela text-navy text-28 lg:text-54 tracking-1 mb-14 leading-[1.1] text-balance md:text-4xl;
   }
 
   .h4-leading {
-    @apply font-canela text-navy text-2.5xl lg:text-46 tracking-1 mb-8 leading-1 text-balance md:text-4xl;
+    @apply font-canela text-navy text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
   }
 
   .text-desc {

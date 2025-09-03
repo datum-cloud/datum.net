@@ -255,7 +255,7 @@
     mark,
     time,
     address {
-      @apply lg:text-1.5xl text-lg md:text-xl;
+      @apply lg:text-22 text-lg md:text-xl;
     }
 
     a {

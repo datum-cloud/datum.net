@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { marked } from 'marked';
 
 import Nav from '@v1/components/Nav.astro';
 import Icon from '@v1/components/Icon.astro';
@@ -35,7 +36,9 @@ const {
           ) : null}
 
           <h1 class="hero--main-content-title">{title}</h1>
-          {description && <p class="hero--main-content-description">{description}</p>}
+          {description && (
+            <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
+          )}
         </div>
         {imagePath && (
           <div class="hero--main-content-image">

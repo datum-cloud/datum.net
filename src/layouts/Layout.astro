@@ -15,31 +15,37 @@ const {
   canonical,
   dataTheme = '',
   bodyClass = 'template',
+  meta,
 } = Astro.props as LayoutProps;
 
 const pageUrl = Astro.url.href;
-const defaultImage = new URL('/images/default-og.jpg', Astro.site).href;
+const defaultImage = new URL('/images/og-default.png', Astro.site).href;
 const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
+
+// Overwrite with meta
+const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
+const descriptionValue =
+  meta && meta.description ? meta.description : description ? description : '';
 ---
 
 <!doctype html>
 <html lang="en" data-theme={dataTheme}>
   <head>
     <SEO
-      title={title}
-      description={description}
+      title={titleValue}
+      description={descriptionValue}
       canonical={canonical || pageUrl}
       noindex={true}
       nofollow={true}
       openGraph={{
         basic: {
-          title: title,
+          title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image: imageUrl,
-          url: canonical || pageUrl,
+          image: meta && meta.og && meta.og.image ? meta.og.image : imageUrl,
+          url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
-          description: description,
+          description: meta && meta.og && meta.og.description ? meta.og.description : description,
           siteName: 'Datum Inc. Site',
           locale: 'en_US',
         },
@@ -56,8 +62,8 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
         card: 'summary_large_image',
         site: config.socials.twitter.handle || '@datumcloud',
         creator: config.socials.twitter.handle || '@datumcloud',
-        title: title,
-        description: description,
+        title: titleValue,
+        description: descriptionValue,
         image: imageUrl,
       }}
       extend={{

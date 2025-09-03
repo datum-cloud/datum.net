@@ -39,19 +39,11 @@ const { slug } = Astro.params;
 const entry = await Astro.props.entry;
 const { title, description, meta } = entry.remarkPluginFrontmatter;
 
-const pageTitle = meta?.title
-  ? 'Datum Handbook - ' + meta?.title
-  : title
-    ? 'Datum Handbook - ' + title
-    : 'Datum Handbook';
-const pageDescription = meta?.description
-  ? meta?.description
-  : description
-    ? 'Datum Handbook - ' + description
-    : 'Datum Handbook';
+const pageTitle = title ? 'Datum Handbook - ' + title : 'The Datum Handbook';
+const pageDescription = description ? description : 'The Datum Handbook';
 ---
 
-<Layout title={pageTitle} description={pageDescription} bodyClass="handbook-page">
+<Layout title={pageTitle} description={pageDescription} bodyClass="handbook-page" meta={meta}>
   <section class="datum-container">
     <Hero class="light" iconName="book-text" title={fm.title} subtitle={fm.subtitle} />
     <Article articleId={slug} />

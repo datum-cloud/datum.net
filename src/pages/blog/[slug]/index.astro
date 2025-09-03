@@ -58,12 +58,12 @@ const icon = 'book-image';
 // SEO
 const fm = category.data;
 const meta = fm.meta || {};
-const title = meta.title ? meta.title : fm.name;
-const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const title = fm.name;
+const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 ---
 
-<Layout title={title} description={description} bodyClass="blog-page">
+<Layout title={title} description={description} bodyClass="blog-page" meta={meta}>
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 

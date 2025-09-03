@@ -13,6 +13,8 @@ import ImageSphere from '@v1/assets/images/sphere.png';
 import ImageTwoMen from '@v1/assets/images/two-men.png';
 import ImageLight from '@v1/assets/images/light-trail.png';
 
+import type { FeaturesDataProps } from '@/src/types/features';
+
 import { Image } from 'astro:assets';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
@@ -20,28 +22,28 @@ import { getEntries } from 'astro:content';
 const page = await getCollectionEntry('features', 'index');
 const fm = page.data;
 
-// SEO
-const meta = fm.meta || {};
-const title = meta.title ? meta.title : fm.title;
-const description = meta.description ? meta.description : fm.description ? fm.description : '';
-
 const firstContents: Array<{
-  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  data: FeaturesDataProps;
   body: string;
 }> = await getEntries(page.data.sections.first);
 
 const secondContents: Array<{
-  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  data: FeaturesDataProps;
   body: string;
 }> = await getEntries(page.data.sections.second);
 
 const thirdContents: Array<{
-  data: { title: string; keyFeatures: string[]; benefits: string; perfectFor: string[] };
+  data: FeaturesDataProps;
   body: string;
 }> = await getEntries(page.data.sections.third);
+
+// SEO
+const meta = fm.meta || {};
+const title = fm.title;
+const description = fm.description ? fm.description : '';
 ---
 
-<Layout title={title} description={description} bodyClass="features-page">
+<Layout title={title} description={description} bodyClass="features-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"

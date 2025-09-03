@@ -77,8 +77,8 @@ if (authorData?.data.avatar) {
 // SEO
 const fm = entry.data;
 const meta = fm.meta || {};
-const title = meta.title ? meta.title : fm.title;
-const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const title = fm.title;
+const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 const icon = 'book-image';
 ---
@@ -88,9 +88,10 @@ const icon = 'book-image';
   description={description}
   image={metaImage}
   article={true}
-  publishDate={entry.data.date}
-  author={entry.data.author}
+  publishDate={fm.date}
+  author={fm.author}
   bodyClass="blog-page"
+  meta={meta}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} hideContent={true} />
@@ -100,13 +101,13 @@ const icon = 'book-image';
         <!-- Hidden meta tags for Pagefind -->
         <span data-pagefind-meta="page_type" class="hidden" style="display: none;">post</span>
         <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
-          >{authorData?.data.name || entry.data.author}</span
+          >{authorData?.data.name || fm.author}</span
         >
         <span data-pagefind-meta="author_avatar" class="hidden" style="display: none;"
           >{processedAvatarUrl}</span
         >
         <span data-pagefind-meta="date" class="hidden" style="display: none;"
-          >{formatISODate(entry.data.date)}</span
+          >{formatISODate(fm.date)}</span
         >
         <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
           >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
@@ -140,23 +141,19 @@ const icon = 'book-image';
           </div>
 
           <h1 class="blog-article-title">
-            {entry.data.title}
+            {fm.title}
           </h1>
 
-          {
-            entry.data.description && (
-              <p class="blog-article-description">{entry.data.description}</p>
-            )
-          }
+          {fm.description && <p class="blog-article-description">{fm.description}</p>}
         </header>
 
         <!-- Featured Image -->
         {
-          entry.data.featuredImage && (
+          fm.featuredImage && (
             <div class="blog-article-image">
               <Image
-                src={entry.data.featuredImage}
-                alt={entry.data.title}
+                src={fm.featuredImage}
+                alt={fm.title}
                 widths={[800, 1200, 1600]}
                 sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
               />
@@ -171,13 +168,13 @@ const icon = 'book-image';
 
         <!-- Author Information -->
         {
-          entry.data.author && authorData && (
+          fm.author && authorData && (
             <div class="blog-article-author">
               <div class="blog-article-author-avatar">
                 {authorData.data.avatar ? (
                   <Image
                     src={authorData.data.avatar}
-                    alt={authorData.data.name || entry.data.author}
+                    alt={authorData.data.name || fm.author}
                     class="blog-article-author-image"
                     width={52}
                     height={52}
@@ -185,14 +182,12 @@ const icon = 'book-image';
                 ) : (
                   <div class="blog-article-author-image">
                     <span class="text-lg font-bold text-gray-600">
-                      {(authorData.data.name || entry.data.author).charAt(0)}
+                      {(authorData.data.name || fm.author).charAt(0)}
                     </span>
                   </div>
                 )}
               </div>
-              <span class="blog-article-author-name">
-                {authorData.data.name || entry.data.author}
-              </span>
+              <span class="blog-article-author-name">{authorData.data.name || fm.author}</span>
             </div>
           )
         }

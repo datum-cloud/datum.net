@@ -13,13 +13,14 @@ const page = await getCollectionEntry('about', 'index');
 const fm = page.data;
 const contents = fm.contents;
 const contentData = await getEntries(contents);
+
 // SEO
 const meta = fm.meta || {};
-const title = meta.title ? meta.title : 'About Datum';
-const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const title = 'About Datum';
+const description = fm.description ? fm.description : '';
 ---
 
-<Layout title={title} description={description} bodyClass="about-page">
+<Layout title={title} description={description} bodyClass="about-page" meta={meta}>
   <section class="datum-container">
     <Hero class="light" title={fm.title} subtitle="About" />
     <FirstSection content={contentData[0]} />

@@ -8,8 +8,6 @@ const metaSchema = z
     title: z.string().optional(),
     description: z.string().optional(),
     image: z.string().optional(),
-
-    robots: z.array(z.string()).optional(),
     keywords: z.array(z.string()).optional(),
     og: z
       .object({
@@ -17,7 +15,9 @@ const metaSchema = z
         description: z.string().optional(),
         image: z.string().optional(),
         url: z.string().optional(),
-        type: z.string().optional(),
+        article: z.boolean().default(false).optional(),
+        published: z.date().optional(),
+        author: z.string().optional(),
       })
       .optional(),
   })

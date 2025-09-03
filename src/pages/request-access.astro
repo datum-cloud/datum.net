@@ -12,16 +12,17 @@ import SceneTree from '@v1/assets/images/scene-tree.png';
 const page = await getCollectionEntry('pages', 'request-access');
 
 const { Content } = await render(page);
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum - Request Access';
+const description = fm.description;
 ---
 
-<Layout title={page.data.title} description={page.data.description} bodyClass={`page--${page.id}`}>
+<Layout title={title} description={description} bodyClass={`page--${page.id}`} meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={page.data.iconName}
-      title={page.data.title}
-      subtitle={page.data.subtitle}
-    />
+    <Hero class="light" iconName={fm.iconName} title={title} subtitle={fm.subtitle} />
 
     <div class="section--block section--block--pad bg-navy dark">
       <div class="absolute right-0 bottom-0 z-0 flex">

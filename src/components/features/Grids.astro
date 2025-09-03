@@ -1,5 +1,5 @@
 ---
-import type { FeaturesProps } from '@/src/types/common';
+import type { FeaturesProps } from '@/src/types/features';
 
 const { features } = Astro.props as FeaturesProps;
 ---
@@ -13,7 +13,7 @@ const { features } = Astro.props as FeaturesProps;
           <div class="feature-card__section feature-card__content--header">
             <div class="feature-card__content-wrapper">
               <h2>{item.data.title}</h2>
-              <p>{item.data.description}</p>
+              <p>{item.body}</p>
             </div>
           </div>
 

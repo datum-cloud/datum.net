@@ -16,4 +16,4 @@ perfectFor:
   - MSPs
 ---
 
-Safely interact with the internet with a global front door that provides intelligent routing, security, and performance optimization.
+Control traffic with Galactic VPCs that span clouds and datacenters, providing unified network management across hybrid and multi-cloud environments.

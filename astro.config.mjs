@@ -39,7 +39,7 @@ export default defineConfig({
       title: 'Datum',
       disable404Route: true,
       logo: {
-        src: '/public/favicon.png',
+        src: '/public/favicon.svg',
       },
       customCss: ['./src/styles/global.css'], // https://github.com/withastro/starlight/blob/main/packages/starlight/style/props.css
       description:

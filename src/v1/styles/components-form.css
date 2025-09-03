@@ -1,0 +1,65 @@
+@layer components {
+  .form {
+    @apply bg-navy relative z-50 flex w-full max-w-[850px] flex-col gap-6 rounded-[4px] border border-white p-8 px-6 md:gap-8 md:p-12 md:px-8 lg:gap-10 lg:p-17.5 lg:px-15;
+  }
+
+  .form--header {
+    @apply flex flex-col gap-6 self-stretch md:gap-8 lg:gap-[30px];
+  }
+
+  .form--title {
+    @apply font-canela text-center text-2xl leading-[1.2] tracking-[-0.5px] text-white md:text-left md:text-3xl;
+  }
+
+  .form--content {
+    @apply grid w-full grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:gap-10;
+  }
+
+  .form--fields {
+    @apply flex flex-col items-stretch gap-4 md:gap-5;
+  }
+
+  .form--field {
+    @apply flex h-full flex-col items-stretch gap-2 md:gap-[10px];
+  }
+
+  .form--label {
+    @apply font-alliance text-left text-sm leading-[1.45] font-semibold text-white md:text-[15px];
+  }
+
+  .form--input {
+    @apply focus:ring-lime-green flex h-12 flex-row items-center gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
+  }
+
+  .form--textarea {
+    @apply focus:ring-lime-green flex h-full resize-none flex-row items-start gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 py-3 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px] md:py-4;
+  }
+
+  .form--checkbox-container {
+    @apply flex h-auto flex-col justify-center self-stretch md:h-[37px];
+  }
+
+  .form--checkbox-wrapper {
+    @apply flex h-auto flex-row items-center gap-3 md:h-[23px];
+  }
+
+  .form--checkbox {
+    @apply text-lime-green focus:ring-lime-green h-4 w-4 rounded border border-white bg-transparent focus:ring-2 focus:ring-offset-0 md:h-5 md:w-5 md:rounded-[4px];
+  }
+
+  .form--checkbox-label {
+    @apply font-alliance text-left text-sm leading-[1.45] font-normal text-white md:text-[16px];
+  }
+
+  .form--message {
+    @apply flex flex-col gap-4 md:gap-5;
+  }
+
+  .form--actions {
+    @apply flex flex-col items-stretch justify-stretch gap-6 self-stretch md:gap-8 lg:gap-10;
+  }
+
+  .form--submit {
+    @apply font-alliance bg-lime-green focus:ring-lime-green text-navy md:text-19 flex h-12 flex-row items-center justify-center gap-3 rounded-lg px-6 text-base leading-[1.4] font-semibold transition-colors duration-200 hover:bg-[#D4E88F] focus:ring-2 focus:ring-offset-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
+  }
+}

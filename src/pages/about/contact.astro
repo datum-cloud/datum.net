@@ -1,0 +1,45 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import ContactForm from '@components/forms/Contact.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { Image } from 'astro:assets';
+import ImageLightTrail from '@v1/assets/images/light-trail-2.png';
+
+const page = await getCollectionEntry('about', 'contact');
+---
+
+<Layout title={page.data.title} description={page.data.description} bodyClass={`page--${page.id}`}>
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={page.data.iconName}
+      title={page.data.title}
+      subtitle={page.data.subtitle}
+    />
+
+    <div class="section--block section--block--pad bg-navy dark">
+      <div class="absolute top-0 left-0 z-40 inline-block w-full">
+        <Image
+          src={ImageLightTrail}
+          alt="Sphere"
+          class="relative h-auto w-full"
+          data-scroll-effect="parallax"
+          data-scroll-speed="0.1"
+          data-scroll-direction="left"
+          data-viewport-offset="200"
+          data-max-movement="50"
+        />
+      </div>
+      <div class="relative m-auto max-w-391">
+        <div class="align-center flex justify-center">
+          <ContactForm title="Send a message to us" submitLabel="Submit" />
+        </div>
+      </div>
+    </div>
+    <GlobalSection />
+    <Footer />
+  </section>
+</Layout>

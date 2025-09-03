@@ -19,11 +19,11 @@
   }
 
   .article-title {
-    @apply font-alliance text-navy lg:text-4.5xl text-3xl leading-tight font-medium tracking-tight md:text-4xl;
+    @apply font-alliance text-navy lg:text-46 text-3xl leading-tight font-medium tracking-tight md:text-4xl;
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-1.5xl max-w-none space-y-6 text-lg md:text-xl;
+    @apply prose lg:prose-xl md:prose-xl lg:text-22 max-w-none space-y-6 text-lg md:text-xl;
   }
 
   .article-paragraph {

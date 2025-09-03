@@ -103,26 +103,20 @@
 
   /* Font Sizes */
   --font-size-h1: 42px;
-  --text-4.5xl: 42px;
   --text-xsm: 13px;
   --text-smb: 15px;
   --text-blg: 17px;
-  --text-1.5xl: 22px;
-  --text-2.5xl: 28px;
   --text-19: 19px;
   --text-22: 22px;
+  --text-28: 28px;
   --text-38: 38px;
+  --text-40: 40px;
   --text-46: 46px;
+  --text-54: 54px;
   --text-72: 72px;
-  --text-4.5xl: 46px;
-  --text-5.5xl: 54px;
 
   /* letter-spacing */
   --tracking-1: -1.5px;
-
-  /* line-height */
-  --leading-1: 110%;
-  --leading-2: 140%;
 
   /* Font Families */
   --font-primary:
@@ -135,13 +129,4 @@
   --font-frontliner:
     'Frontliner', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-}
-
-@layer utilities {
-  .w-120 {
-    width: var(--spacing-120);
-  }
-  .min-w-70 {
-    min-width: var(--spacing-70);
-  }
 }

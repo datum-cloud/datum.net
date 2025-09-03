@@ -63,6 +63,11 @@ const about = defineCollection({
     z.object({
       title: z.string(),
       description: z.string().optional(),
+      subtitle: z.string().optional(),
+      iconName: z.string().optional(),
+      featuredImage: image().optional(),
+      slug: z.string().optional(),
+      order: z.number().optional().default(0),
       contents: z.array(reference('about')).optional(),
       companies: z
         .array(

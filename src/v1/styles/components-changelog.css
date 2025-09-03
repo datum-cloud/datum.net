@@ -40,7 +40,7 @@
   }
 
   .changelog-item--description {
-    @apply font-alliance text-lg leading-relaxed font-normal text-white opacity-80 md:text-xl;
+    @apply font-alliance prose lg:text-22 prose-headings:font-alliance prose-headings:text-white prose-headings:text-2xl mb-8 max-w-none text-lg font-normal text-white opacity-80 md:text-xl;
   }
 
   .changelog-item--tags {
@@ -53,11 +53,10 @@
 
   .changelog-item--tag {
     @apply font-alliance rounded-lg border px-4 py-2 text-sm font-semibold;
-    height: 37px;
   }
 
   .changelog-item--tag-description {
-    @apply font-alliance text-lg leading-relaxed font-normal text-white opacity-80;
+    @apply font-alliance text-base leading-relaxed font-normal text-white opacity-80 md:text-lg;
   }
 
   .changelog-item--tag--fixed {

@@ -32,6 +32,7 @@ import {
   Linkedin,
   ListRestart,
   Lock,
+  LockOpen,
   MessageSquarePlus,
   Minus,
   Network,
@@ -50,6 +51,7 @@ import {
   User,
   Users,
   Video,
+  WalletMinimal,
   Webhook,
   Zap,
 } from 'lucide-astro';
@@ -89,6 +91,7 @@ const iconMap = {
   linkedin: Linkedin,
   'list-restart': ListRestart,
   lock: Lock,
+  'lock-open': LockOpen,
   'message-square-plus': MessageSquarePlus,
   minus: Minus,
   network: Network,
@@ -107,6 +110,7 @@ const iconMap = {
   user: User,
   users: Users,
   video: Video,
+  'wallet-minimal': WalletMinimal,
   webhook: Webhook,
   zap: Zap,
 } as const;

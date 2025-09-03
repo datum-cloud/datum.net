@@ -53,6 +53,6 @@
 
 @import './components-huddle.css';
 
-@import './home.css';
+@import './components-handbook.css';
 
-@import './handbook.css';
+@import './components-form.css';

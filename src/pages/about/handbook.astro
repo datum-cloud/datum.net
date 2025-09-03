@@ -12,11 +12,11 @@ const page = await getCollectionEntry('handbooks', 'index');
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const title = meta.title ? meta.title : fm.title ? 'Datum - ' + fm.title : 'Datum Handbook';
-const description = meta.description ? meta.description : fm.description;
+const title = fm.title ? fm.title : 'The Datum Handbook';
+const description = fm.description;
 ---
 
-<Layout title={title} description={description} bodyClass="handbook-page">
+<Layout title={title} description={description} bodyClass="handbook-page" meta={meta}>
   <section class="datum-container">
     <Hero class="light" iconName="book-text" title={fm.title} subtitle={fm.subtitle} />
     <Article articleId="company/why-we-exist" />

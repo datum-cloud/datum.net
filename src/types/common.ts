@@ -12,6 +12,18 @@ export interface LayoutProps {
   fluid?: boolean;
   dataTheme: string;
   bodyClass?: string;
+  meta?: {
+    title?: string;
+    description?: string;
+    image?: string;
+    keywords?: string[];
+    og?: {
+      title?: string;
+      description?: string;
+      image?: string;
+      url?: string;
+    };
+  };
 }
 
 export interface NotFoundProps {
@@ -89,20 +101,6 @@ export interface HandbookProps {
         badge?: { text: string; variant?: 'info' | 'caution' | 'danger' };
       };
     };
-  }>;
-}
-
-export interface FeaturesProps {
-  features: Array<{
-    id: string;
-    data: {
-      title: string;
-      description: string;
-      keyFeatures: string[];
-      benefits: string;
-      perfectFor: string[];
-    };
-    body: string;
   }>;
 }
 

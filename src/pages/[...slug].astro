@@ -54,18 +54,14 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props;
-
 const { Content } = await render(page);
+const fm = page.data;
+const meta = fm.meta || {};
 ---
 
-<Layout title={page.data.title} description={page.data.description} bodyClass={`page--${page.id}`}>
+<Layout title={fm.title} description={fm.description} bodyClass={`page--${page.id}`} meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={page.data.iconName}
-      title={page.data.title}
-      subtitle={page.data.subtitle}
-    />
+    <Hero class="light" iconName={fm.iconName} title={fm.title} subtitle={fm.subtitle} />
 
     <div class="section--block bg-cream">
       <Content />

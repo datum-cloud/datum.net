@@ -1,9 +1,35 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Image404 from '@v1/assets/images/404.png';
+import Icon from '@v1/components/Icon.astro';
+import { Image } from 'astro:assets';
+
+const title = "Sorry, we can't find that page";
+const description = 'The page you are looking for does not exist.';
 ---
 
-<Layout title={'Page not found.'}>
-  <main class="container mx-auto px-4 py-8">
-    <article class="prose max-w-none">Page not found.</article>
-  </main>
+<Layout title={title} description={description} bodyClass="page-404">
+  <section class="datum-container">
+    <Hero class="light hero--small-pad" title={title} />
+
+    <div class="section--block bg-cream">
+      <main class="mx-auto max-w-391 px-6">
+        <Image src={Image404} alt="404" class="mx-auto mb-12 h-auto w-full max-w-[423px]" />
+        <article class="prose prose-xl mx-auto text-center">
+          <p class="mb-12">Please check the URL and try again.</p>
+          <a href="/" class="btn btn--cream btn--large mr-1">
+            Return to homepage
+            <Icon name="arrow-right" size="md" />
+          </a>
+          <a href="/docs" class="btn btn--cream btn--large ml-1">
+            Browse our Docs
+            <Icon name="arrow-right" size="md" />
+          </a>
+        </article>
+      </main>
+    </div>
+    <Footer showCTA={false} />
+  </section>
 </Layout>

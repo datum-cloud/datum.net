@@ -31,6 +31,12 @@
     }
   }
 
+  .hero--small-pad {
+    .hero--main-content-inner {
+      @apply pb-22;
+    }
+  }
+
   .hero--main-content {
     @apply relative z-0 aspect-auto w-full md:h-auto;
   }

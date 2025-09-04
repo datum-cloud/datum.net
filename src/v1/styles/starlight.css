@@ -124,12 +124,79 @@ a:any-link {
 }
 
 select:where(.astro-4yphtoen) {
-  font-size: 12px;
+  margin-left: 3px;
+  font-size: 14px;
+}
+
+.label-icon:where(.astro-4yphtoen) {
+  font-size: 20px;
+  stroke-width: 1;
 }
 
 :root {
   --sl-font: var(--font-primary);
   --sl-color-bg-nav: white;
+}
+
+[data-theme='dark'] {
+  --sl-color-bg-nav: var(--color-navy);
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 17px;
+  height: 42px;
+  background: #ffffff;
+  border: 1.38px solid rgba(12, 29, 49, 0.1);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: -0.25%;
+  color: #0c1d31;
+}
+
+.login-button:hover {
+  background: #f6f6f5;
+  border-color: rgba(12, 29, 49, 0.2);
+}
+
+/* Dark theme styles */
+[data-theme='dark'] .login-button {
+  background: var(--color-navy);
+  border: 1.38px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .login-button:hover {
+  background: var(--color-navy-muted);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .login-button__icon svg circle,
+[data-theme='dark'] .login-button__icon svg path {
+  stroke: #ffffff;
+}
+
+.login-button__icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  color: var(--color-tuscany);
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button__text {
+  white-space: nowrap;
 }
 
 [data-theme='dark'] {

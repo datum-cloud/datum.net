@@ -16,6 +16,8 @@
   --color-pearl-gray: #efefed;
   --color-green-dark: #4d6356;
 
+  --sl-label-icon-size: 18px;
+
   /* Font Families */
   --font-primary:
     'Alliance No.1', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

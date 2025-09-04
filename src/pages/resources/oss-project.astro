@@ -1,7 +1,7 @@
 ---
-import Layout from '@v1/layouts/Layout.astro';
-import Hero from '@v1/components/Hero.astro';
-import Footer from '@v1/components/Footer.astro';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
 import Card from '@components/Card.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -12,9 +12,15 @@ import miloLogo from '@/src/content/pages/resources/images/ren.png';
 import crossplaneLogo from '@/src/content/pages/resources/images/crossplane.png';
 
 const page = await getCollectionEntry('pages', 'oss-project');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Open Source Projects';
+const description = fm.description;
 ---
 
-<Layout title={page.data.title} description={page.data.description} bodyClass="about-page">
+<Layout title={title} description={description} bodyClass="oos-project-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"

@@ -16,13 +16,19 @@ const contentData = await getEntries(contents);
 
 // SEO
 const meta = fm.meta || {};
-const title = 'About Datum';
+const title = fm.title ? fm.title : 'About Datum';
 const description = fm.description ? fm.description : '';
 ---
 
 <Layout title={title} description={description} bodyClass="about-page" meta={meta}>
   <section class="datum-container">
-    <Hero class="light" title={fm.title} subtitle="About" />
+    <Hero
+      class="light"
+      title={fm.title}
+      subtitle={fm.subtitle}
+      iconName={fm.iconName}
+      description={fm.description}
+    />
     <FirstSection content={contentData[0]} />
     <SecondSection content={contentData[1]} />
     <ThirdSection content={contentData[2]} />

@@ -15,7 +15,7 @@ head:
   - tag: meta
     attrs:
       property: og:title
-      content: Datum Cloud API | Datum Documentation
+      content: API Reference
   - tag: meta
     attrs:
       property: og:description

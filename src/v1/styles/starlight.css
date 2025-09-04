@@ -1,0 +1,137 @@
+@import './fonts.css';
+
+@import './theme-starlight.css';
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-primary);
+  }
+}
+
+@layer starlight.reset {
+  body {
+    font-family: var(--font-primary);
+  }
+
+  /* Override all Starlight text elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  a,
+  span,
+  div,
+  button,
+  input,
+  textarea,
+  select,
+  label {
+    font-family: var(--font-primary);
+  }
+
+  /* Override Starlight component fonts */
+  .sl-stack,
+  .sl-content,
+  .sl-sidebar,
+  .sl-nav,
+  .sl-breadcrumb,
+  .sl-toc,
+  .sl-search,
+  .sl-theme-toggle,
+  .sl-language-select,
+  .sl-social-links {
+    font-family: var(--font-primary);
+  }
+
+  /* Override code blocks and inline code */
+  code,
+  pre,
+  .sl-code-block,
+  .sl-inline-code {
+    font-family: var(--font-primary);
+  }
+
+  /* Additional Starlight-specific selectors */
+  [data-astro-cid],
+  .astro-code,
+  .astro-code-inline,
+  .sl-content-panel,
+  .sl-content-wrapper,
+  .sl-page,
+  .sl-page-header,
+  .sl-page-content,
+  .sl-page-footer {
+    font-family: var(--font-primary);
+  }
+
+  /* Hide theme toggle to disable dark/light mode */
+  .sl-theme-toggle,
+  [data-astro-cid*='ThemeToggle'] {
+    display: none !important;
+  }
+}
+
+@layer starlight.core {
+}
+
+@layer starlight.components {
+}
+
+.sl-markdown-content .expressive-code .frame {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.sl-container:where(.astro-7nkwcw3z) {
+  max-width: none;
+}
+
+a:any-link {
+  text-decoration-line: none;
+}
+
+.pagination-links a {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.page .header {
+  /* background-color: white; */
+}
+
+.right-sidebar-panel {
+  nav {
+    > ul {
+      > li {
+        > a {
+          padding-left: 0;
+        }
+        li {
+          a {
+            padding-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+select:where(.astro-4yphtoen) {
+  font-size: 12px;
+}
+
+:root {
+  --sl-font: var(--font-primary);
+  --sl-color-bg-nav: white;
+}
+
+[data-theme='dark'] {
+  --sl-color-bg-nav: var(--color-navy);
+}

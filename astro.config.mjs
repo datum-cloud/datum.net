@@ -39,9 +39,11 @@ export default defineConfig({
       title: 'Datum',
       disable404Route: true,
       logo: {
-        src: '/public/favicon.svg',
+        light: '/public/datum-light.svg',
+        dark: '/public/datum-dark.svg',
+        replacesTitle: true,
       },
-      customCss: ['./src/styles/global.css'], // https://github.com/withastro/starlight/blob/main/packages/starlight/style/props.css
+      customCss: ['./src/v1/styles/starlight.css'], // https://github.com/withastro/starlight/blob/main/packages/starlight/style/props.css
       description:
         env.STARLIGHT_DESCRIPTION || 'Documentation for Datum - Your Data Management Solution',
       social: [
@@ -62,11 +64,12 @@ export default defineConfig({
         },
       ],
       expressiveCode: {
-        themes: ['github-dark', 'github-light'],
+        themes: ['github-light', 'github-dark'],
         styleOverrides: {
           borderRadius: '0.5rem',
         },
       },
+
       sidebar: [
         {
           label: 'Overview',

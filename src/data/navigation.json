@@ -107,8 +107,8 @@
     {
       "title": "Access",
       "items": [
-        { "text": "GitHub", "href": "https://github.com/datum", "isExternal": true },
-        { "text": "Log In", "href": "/login" },
+        { "text": "GitHub", "href": "https://github.com/datum-cloud", "isExternal": true },
+        { "text": "Log In", "href": "https://cloud.datum.net/" },
         { "text": "Community Huddle", "href": "/community-huddle" },
         { "text": "Request Access", "href": "/request-access" }
       ]

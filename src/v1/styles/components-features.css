@@ -4,7 +4,7 @@
   }
 
   .feature-table__content {
-    @apply prose max-w-none text-lg text-white;
+    @apply prose prose-ul:mb-0 prose-li:leading-[1.4] max-w-none text-lg leading-[1.5] text-white;
 
     h1,
     h2,
@@ -14,7 +14,7 @@
     }
 
     h2 {
-      @apply font-canela text-5xl text-white;
+      @apply font-canela tracking-1 text-5xl text-white;
     }
   }
 
@@ -39,7 +39,7 @@
       @apply m-0 flex list-none flex-wrap items-center gap-4 p-0 lg:gap-4;
 
       li {
-        @apply bg-indigo md:text-smb m-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-normal tracking-tight whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
+        @apply bg-indigo md:text-smb m-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-normal whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
 
         &:before {
           @apply bg-lime-green inline-block h-2 w-2 flex-shrink-0 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
@@ -66,22 +66,29 @@
   }
 
   .feature-card__content-wrapper {
-    @apply prose prose-lg text-navy last:[&>ul]:mb-0;
+    @apply prose prose-base text-navy prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
 
     h2 {
-      @apply font-canela mt-0 text-4xl leading-tight font-normal tracking-tight;
+      @apply font-canela mt-0 mb-10 text-4xl leading-[1.1] font-normal;
     }
 
     h3 {
-      @apply font-alliance text-mauve mt-0 mb-6 text-xl font-normal;
+      @apply font-alliance text-mauve mt-0 mb-6 text-xl leading-[1.4] font-normal;
+    }
+
+    p {
+      @apply mb-0;
     }
   }
 
   .feature-card__content--header {
     .feature-card__content-wrapper {
-      @apply prose-xl;
+      @apply prose-xl prose-h2:mb-10 leading-[1.4];
       h2 {
         @apply mt-0;
+      }
+      p {
+        @apply mb-0;
       }
     }
   }
@@ -100,9 +107,9 @@
   }
 
   .feature-card-item__content {
-    @apply prose text-blg text-navy/70;
+    @apply prose text-22 text-navy/70 leading-[1.4];
     h3 {
-      @apply text-navy mt-0 mb-6 text-2xl leading-tight font-normal tracking-tight;
+      @apply text-navy mt-0 mb-6 text-2xl leading-[1] font-normal;
     }
     p {
       @apply last:mb-0;

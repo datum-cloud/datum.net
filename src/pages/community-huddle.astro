@@ -1,7 +1,7 @@
 ---
-import Layout from '@v1/layouts/Layout.astro';
-import Hero from '@v1/components/Hero.astro';
-import Footer from '@v1/components/Footer.astro';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import UpcomingHuddle from '@components/huddles/UpcomingHuddle.astro';
 import PreviousHuddle from '@components/huddles/PreviousHuddle.astro';
@@ -41,21 +41,23 @@ const previousHuddles = huddles
     // Sort by date (most recent first)
     return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
   });
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+const description = fm.description ? fm.description : '';
+const subtitle = fm.subtitle;
 ---
 
-<Layout title={page.data.title} description={page.data.description} bodyClass="huddle-page">
+<Layout title={title} description={description} bodyClass="huddle-page" meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={page.data.iconName}
-      title={page.data.title}
-      subtitle={page.data.subtitle}
-    />
+    <Hero class="light" iconName={fm.iconName} title={title} subtitle={subtitle} />
     <section class="section--block bg-cream py-0 pb-12 md:pb-18 lg:pb-23">
       <div class="bg-cream m-auto max-w-391">
         <div class="huddle-info-grid">
           {
-            page.data.pageInfo?.map((info: { icon: IconName; text: string }) => (
+            fm.pageInfo?.map((info: { icon: IconName; text: string }) => (
               <div class="huddle-info-card">
                 <div class="huddle-info-icon">
                   <Icon name={info.icon} size="xl" class="text-green-dark" />

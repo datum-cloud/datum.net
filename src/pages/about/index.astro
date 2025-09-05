@@ -16,7 +16,7 @@ const contentData = await getEntries(contents);
 
 // SEO
 const meta = fm.meta || {};
-const title = 'About Datum';
+const title = fm.title ? fm.title : 'About Datum';
 const description = fm.description ? fm.description : '';
 ---
 

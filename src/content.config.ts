@@ -77,14 +77,14 @@ const about = defineCollection({
           })
         )
         .optional(),
-      investors: z
-        .array(
-          z.object({
-            img: image().optional(),
-            alt: z.string().optional(),
-          })
-        )
-        .optional(),
+      // investors: z
+      //   .array(
+      //     z.object({
+      //       img: image().optional(),
+      //       alt: z.string().optional(),
+      //     })
+      //   )
+      //   .optional(),
       items: z.array(z.string()).optional(),
       link: z
         .object({
@@ -209,6 +209,7 @@ const changelog = defineCollection({
         )
         .optional()
         .default([]),
+      meta: metaSchema,
     }),
 });
 
@@ -250,6 +251,7 @@ const huddles = defineCollection({
       zoomPass: z.string().optional(),
       slidesUrl: z.string().url().optional(),
       status: z.enum(['draft', 'publish']).optional().default('draft'),
+      meta: metaSchema,
     }),
 });
 

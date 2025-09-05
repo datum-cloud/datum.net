@@ -6,6 +6,10 @@
 
     &.dark {
       @apply text-white;
+
+      .section--block-content-text {
+        @apply text-white/80;
+      }
     }
 
     &.section--block--pad {
@@ -38,7 +42,7 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose-xl lg:text-22 max-w-none text-lg leading-tight md:text-xl;
+    @apply font-alliance prose-xl md:text-22 text-navy/80 max-w-none text-lg leading-[1.45];
   }
 
   .h2-section {
@@ -213,12 +217,12 @@
 
   /* List Styles */
   .ordered-list {
-    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-tight tracking-tight md:gap-8 md:text-4xl;
+    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-[1.1] tracking-[0.5px] md:gap-8 md:text-4xl;
     counter-reset: ordered-counter;
   }
 
   .ordered-list--sans {
-    @apply font-alliance lg:text-28 text-base leading-tight tracking-tight md:text-xl;
+    @apply font-alliance lg:text-28 text-base md:text-xl;
   }
 
   .ordered-list li {

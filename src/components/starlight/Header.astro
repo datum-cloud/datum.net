@@ -4,8 +4,9 @@ import config from 'virtual:starlight/user-config';
 import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
 import Search from 'virtual:starlight/components/Search';
 import SiteTitle from 'virtual:starlight/components/SiteTitle';
-import SocialIcons from 'virtual:starlight/components/SocialIcons';
+// import SocialIcons from 'virtual:starlight/components/SocialIcons';
 import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import LoginButton from '@components/starlight/LoginButton.astro';
 
 /**
  * Render the `Search` component if Pagefind is enabled or the default search component has been overridden.
@@ -22,9 +23,10 @@ const shouldRenderSearch =
     {shouldRenderSearch && <Search />}
   </div>
   <div class="sl-hidden md:sl-flex right-group print:hidden">
-    <div class="sl-flex social-icons">
-      <SocialIcons />
-    </div>
+    <LoginButton />
+    <!-- <div class="sl-flex social-icons"> -->
+    <!-- <SocialIcons /> -->
+    <!-- </div> -->
     <ThemeSelect />
     <LanguageSelect />
   </div>

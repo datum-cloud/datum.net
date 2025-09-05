@@ -27,14 +27,14 @@ const sortedEntries = changelogEntries.sort((a, b) => {
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const title = meta.title ? meta.title : 'Datum Changelog';
-const description = meta.description ? meta.description : fm.description ? fm.description : '';
+const title = fm.title ? fm.title : 'Datum Changelog';
+const description = fm.description ? fm.description : '';
 
 const subtitle = fm.subtitle ? fm.subtitle : 'Changelog';
 const icon = 'list-restart';
 ---
 
-<Layout title={title} description={description} bodyClass="resource-page">
+<Layout title={title} description={description} bodyClass="resource-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"

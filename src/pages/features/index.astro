@@ -39,8 +39,8 @@ const thirdContents: Array<{
 
 // SEO
 const meta = fm.meta || {};
-const title = fm.title;
-const description = fm.description ? fm.description : '';
+const title = fm.title ? fm.title : 'Datum Features';
+const description = fm.description;
 ---
 
 <Layout title={title} description={description} bodyClass="features-page" meta={meta}>
@@ -49,9 +49,9 @@ const description = fm.description ? fm.description : '';
       class="light"
       iconName="goal"
       imagePath={ImageHero}
-      title={fm.title}
+      title={title}
+      description={description}
       subtitle={fm.subtitle}
-      description={fm.description}
     />
 
     {

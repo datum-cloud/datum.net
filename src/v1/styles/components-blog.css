@@ -187,20 +187,24 @@
   }
 
   .blog-back-button {
-    @apply hover:text-green-dark mb-12 inline-flex items-center gap-1.5 text-black transition-colors;
-    @apply font-alliance text-sm leading-relaxed tracking-tight;
+    @apply hover:text-green-dark/80 text-green-dark inline-flex items-center gap-1.5 text-sm leading-[1.2] font-semibold tracking-[0.42px] uppercase transition-colors;
   }
 
   .blog-article-meta {
-    @apply mb-6;
+    @apply border-green-dark/20 mb-8.25 border-b pb-8.25;
   }
 
   .blog-article-meta-content {
     @apply flex items-center gap-4;
   }
 
-  .blog-article-date {
-    @apply font-alliance text-sm font-medium tracking-wide text-stone-400 uppercase;
+  .blog-article-date,
+  .blog-article-share {
+    @apply font-alliance text-19 text-green-dark leading-[1.2];
+  }
+
+  .blog-article-share {
+    @apply hover:text-green-dark/80 hover:border-green-dark/80 border-green-dark border-b transition-colors hover:cursor-pointer;
   }
 
   .blog-article-categories {
@@ -212,11 +216,11 @@
   }
 
   .blog-article-title {
-    @apply font-canela text-navy mb-12 text-5xl leading-tight font-normal tracking-tight md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 lg:text-60 mb-8 text-3xl leading-[1.1] font-normal md:mb-10 md:text-5xl lg:mb-12;
   }
 
   .blog-article-description {
-    @apply font-alliance text-navy text-left text-xl leading-relaxed md:text-2xl;
+    @apply font-alliance text-navy text-left text-xl leading-[1.45] md:text-2xl;
   }
 
   .blog-article-image {
@@ -228,7 +232,7 @@
   }
 
   .blog-article-content {
-    @apply prose prose-xl prose-stone font-alliance text-navy mx-auto mb-16 max-w-4xl;
+    @apply prose prose-xl prose-stone font-alliance text-navy mx-auto mb-16 max-w-4xl leading-[1.45];
 
     h1,
     h2,

@@ -36,11 +36,11 @@
   }
 
   .changelog-item--title {
-    @apply font-alliance mb-7 text-2xl leading-tight font-medium tracking-tight text-white md:text-3xl;
+    @apply font-alliance mb-8 text-2xl leading-[1.22] font-medium tracking-[0.5px] text-white md:text-3xl lg:text-[38px];
   }
 
   .changelog-item--description {
-    @apply font-alliance prose lg:text-22 prose-headings:font-alliance prose-headings:text-white prose-headings:text-2xl mb-8 max-w-none text-lg font-normal text-white opacity-80 md:text-xl;
+    @apply font-alliance prose lg:text-22 prose-headings:font-alliance prose-headings:text-white prose-headings:text-2xl mb-10 max-w-none text-lg leading-[32px] font-normal text-white opacity-80 md:text-xl;
   }
 
   .changelog-item--tags {

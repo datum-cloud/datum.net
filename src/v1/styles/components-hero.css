@@ -37,6 +37,12 @@
     }
   }
 
+  .hero--nav-pad {
+    .nav--main {
+      @apply pb-6 md:pb-9 lg:pb-12.5;
+    }
+  }
+
   .hero--main-content {
     @apply relative z-0 aspect-auto w-full md:h-auto;
   }
@@ -66,6 +72,6 @@
   }
 
   .hero--main-content-description {
-    @apply font-alliance text-navy m-auto mt-0 mb-0 max-w-3xl text-lg font-normal md:text-xl lg:text-2xl;
+    @apply font-alliance text-navy md:text-22 m-auto mt-0 mb-0 max-w-3xl text-lg leading-[32px] font-normal;
   }
 }

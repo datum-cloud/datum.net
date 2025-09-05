@@ -77,14 +77,14 @@ const about = defineCollection({
           })
         )
         .optional(),
-      investors: z
-        .array(
-          z.object({
-            img: image().optional(),
-            alt: z.string().optional(),
-          })
-        )
-        .optional(),
+      // investors: z
+      //   .array(
+      //     z.object({
+      //       img: image().optional(),
+      //       alt: z.string().optional(),
+      //     })
+      //   )
+      //   .optional(),
       items: z.array(z.string()).optional(),
       link: z
         .object({

@@ -23,7 +23,7 @@
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-22 max-w-none space-y-6 text-lg md:text-xl;
+    @apply prose lg:prose-xl md:prose-xl lg:text-22 max-w-none space-y-6 text-lg leading-[1.45] md:text-xl;
   }
 
   .article-paragraph {
@@ -37,7 +37,7 @@
   }
 
   .handbook-sidebar {
-    @apply font-alliance relative flex h-full w-full flex-col gap-y-4 overflow-y-auto text-base md:w-56 md:text-lg;
+    @apply font-alliance relative flex h-full w-full flex-col gap-y-4 overflow-y-auto text-base md:w-76 md:text-lg;
   }
 
   .handbook-sidebar nav {
@@ -97,10 +97,42 @@
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-navy/40 hover:text-navy transition-colors duration-300 ease-out;
+    @apply text-navy/40 hover:text-navy leading-[1.2] transition-colors duration-300 ease-out;
   }
 
   .handbook-sidebar .menu-link--active {
     @apply text-navy/60 hover:text-navy font-bold transition-colors duration-300 ease-out;
+  }
+
+  /* Page Navigation Styles */
+
+  .handbook-page-nav {
+    @apply mt-16 flex flex-col gap-4 md:flex-row;
+  }
+
+  .handbook-page-nav-link,
+  .handbook-page-nav-link--next {
+    @apply hover:text-green-dark/80 text-green-dark border-green-dark hover:bg-green-dark/10 hover:border-green-dark/80 w-full justify-start gap-2 border px-8 py-10 transition-colors duration-200;
+  }
+
+  .handbook-page-nav-link--next {
+    @apply justify-end text-right;
+  }
+
+  .handbook-page-nav-label,
+  .handbook-page-nav-label--next {
+    @apply text-green-dark mb-5 flex gap-2 text-sm leading-[1.2] tracking-[0.42px] uppercase;
+  }
+
+  .handbook-page-nav-label--next {
+    @apply justify-end;
+  }
+
+  .handbook-page-nav-icon {
+    @apply size-4;
+  }
+
+  .handbook-page-nav-title {
+    @apply text-19 block leading-[1.2] font-medium;
   }
 }

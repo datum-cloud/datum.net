@@ -2,8 +2,8 @@
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
 
-import Nav from '@v1/components/Nav.astro';
-import Icon from '@v1/components/Icon.astro';
+import Nav from '@components/Nav.astro';
+import Icon from '@components/Icon.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const {
@@ -15,6 +15,7 @@ const {
   imagePath,
   hideContent = false,
 } = Astro.props as HeroProps;
+console.log(iconName);
 ---
 
 <section class:list={['hero--main', className]}>

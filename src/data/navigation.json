@@ -5,10 +5,7 @@
       "href": "#",
       "children": [
         {
-          "items": [
-            { "icon": "goal", "text": "Features", "href": "/features" },
-            { "icon": "users", "text": "Use Cases", "href": "/use-cases" }
-          ]
+          "items": [{ "icon": "goal", "text": "Features", "href": "/features" }]
         }
       ]
     },
@@ -48,8 +45,7 @@
           "items": [
             { "icon": "default", "text": "About", "href": "/about" },
             { "icon": "book-text", "text": "Handbook", "href": "/about/handbook" },
-            { "icon": "book-image", "text": "Blog", "href": "/blog" },
-            { "icon": "message-square-plus", "text": "Contact", "href": "/about/contact" }
+            { "icon": "book-image", "text": "Blog", "href": "/blog" }
           ]
         }
       ]
@@ -74,10 +70,7 @@
   "footer": [
     {
       "title": "Product",
-      "items": [
-        { "text": "Features", "href": "/features" },
-        { "text": "Use Cases", "href": "/use-cases" }
-      ]
+      "items": [{ "text": "Features", "href": "/features" }]
     },
     {
       "title": "Docs",
@@ -100,8 +93,7 @@
       "items": [
         { "text": "About", "href": "/about" },
         { "text": "Handbook", "href": "/about/handbook" },
-        { "text": "Blog", "href": "/blog" },
-        { "text": "Contact", "href": "/about/contact" }
+        { "text": "Blog", "href": "/blog" }
       ]
     },
     {
@@ -109,8 +101,7 @@
       "items": [
         { "text": "GitHub", "href": "https://github.com/datum-cloud", "isExternal": true },
         { "text": "Log In", "href": "https://cloud.datum.net/" },
-        { "text": "Community Huddle", "href": "/community-huddle" },
-        { "text": "Request Access", "href": "/request-access" }
+        { "text": "Community Huddle", "href": "/community-huddle" }
       ]
     }
   ],

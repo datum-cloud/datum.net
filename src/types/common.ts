@@ -112,6 +112,8 @@ export interface ButtonProps {
     name: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
   };
+  iconPosition?: 'left' | 'right';
+  iconClass?: string;
   href?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
 }

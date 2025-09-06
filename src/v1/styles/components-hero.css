@@ -9,15 +9,16 @@
         .nav-menu {
           @apply text-navy;
         }
+        .btn {
+          svg {
+            @apply text-tuscany;
+          }
+        }
       }
 
       .btn--primary {
         @apply text-navy;
         @apply border-navy/20 hover:border-navy/70;
-      }
-
-      .btn-icon {
-        @apply text-tuscany;
       }
 
       .nav-logo {

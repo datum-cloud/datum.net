@@ -12,6 +12,8 @@ const starCount = await stargazerCount();
 const formatter = new Intl.NumberFormat('en-US', { notation: 'compact' });
 const formattedStarCount = formatter.format(starCount);
 
+import Button from '@components/Button.astro';
+
 // Type-safe navigation data
 const navData = navigation as NavData;
 const mainNav = navData.main;

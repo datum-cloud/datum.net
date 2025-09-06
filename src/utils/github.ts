@@ -6,25 +6,9 @@ type GitHubGraphQLResponse = {
   };
 };
 
-async function graphqlWithAppAuth() {
-  const appId = import.meta.env.APP_ID || process.env.APP_ID;
-  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
-  const installationId = parseInt(
-    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID,
-    10
-  );
-
-  if (!appId || isNaN(installationId)) {
-    throw new Error('APP_ID and APP_INSTALLATION_ID must be set');
-  }
-
-  if (!privateKey) {
-    throw new Error('missing app private key');
-  }
-
+async function graphqlWithAppAuth(appId: number, installationId: number, privateKey: string) {
   // Permissions: Read access to actions, actions variables, code, codespaces, codespaces metadata, deployments, discussions, issues, merge queues, metadata, pages, pull requests, secret scanning alerts, and secrets
   const { createAppAuth } = await import('@octokit/auth-app');
-
   const auth = createAppAuth({
     appId,
     privateKey,
@@ -39,7 +23,17 @@ async function graphqlWithAppAuth() {
 }
 
 async function stargazerCount(): Promise<number> {
-  const graphqlWithAuth = await graphqlWithAppAuth();
+  const appId = import.meta.env.APP_ID || process.env.APP_ID;
+  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
+  const installationId = parseInt(
+    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID,
+    10
+  );
+  if (!appId || !installationId || !privateKey) {
+    return 0;
+  }
+
+  const graphqlWithAuth = await graphqlWithAppAuth(appId, installationId, privateKey);
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {

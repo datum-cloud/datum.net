@@ -7,7 +7,7 @@ import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
 
-const starCount = '18.5k'; //await stargazerCount();
+// const starCount = '18.5k'; //await stargazerCount();
 import Icon from '@components/Icon.astro';
 
 // Get props with default values
@@ -15,6 +15,7 @@ const { showCTA = true } = Astro.props as FooterProps;
 
 // Type-safe navigation data
 const navData = navigation as NavData;
+const starCount = Astro.locals.starCount || 0;
 ---
 
 <footer class="footer">

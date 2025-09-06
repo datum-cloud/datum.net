@@ -1,12 +1,12 @@
 ---
-import Nav from './Nav.astro';
+import Nav from '@components/Nav.astro';
 ---
 
 <header class="bg-blackberry-800 shadow-sm">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-center">
       <div class="w-full max-w-7xl">
-        <Nav location="header" />
+        <Nav location="header" server:defer />
       </div>
     </div>
   </div>

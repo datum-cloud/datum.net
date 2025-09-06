@@ -5,15 +5,12 @@ import navigation from '@data/navigation.json';
 import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import type { NavData } from '@/src/types/navigation';
-
-// import { stargazerCount } from '@utils/github';
-const starCount = '18.5k'; //await stargazerCount();
-
 import Button from '@components/Button.astro';
 
 // Type-safe navigation data
 const navData = navigation as NavData;
 const mainNav = navData.main;
+const starCount = Astro.locals.starCount || 0;
 ---
 
 <nav class="nav--main">

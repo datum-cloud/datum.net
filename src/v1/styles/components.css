@@ -94,7 +94,7 @@
   }
 
   .footer-logo-section {
-    @apply col-span-6 lg:col-span-2;
+    @apply col-span-6 lg:col-span-3;
   }
 
   .footer-logo-link {
@@ -139,7 +139,7 @@
 
   /* Generic Button Components */
   .btn {
-    @apply inline-flex items-center gap-3 rounded-md border px-6 py-3 tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
+    @apply inline-flex items-center gap-3 rounded-md border px-7 py-3.5 text-base leading-[1.4] font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
 
     .btn-icon {
       @apply text-light-pink;
@@ -184,15 +184,15 @@
   }
 
   .btn--xl {
-    @apply text-base leading-relaxed font-semibold md:text-lg;
+    @apply text-base leading-relaxed md:text-lg;
   }
 
   .btn--2xl {
-    @apply md:text-19 text-lg leading-[1.9] font-semibold;
+    @apply md:text-19 text-lg leading-[1.9];
   }
 
   .btn--large {
-    @apply text-base leading-normal font-semibold;
+    @apply text-19 py-4 text-base leading-normal;
   }
 
   .btn--center {

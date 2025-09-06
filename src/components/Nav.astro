@@ -6,8 +6,10 @@ import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import type { NavData } from '@/src/types/navigation';
 
-// import { stargazerCount } from '@utils/github';
-const starCount = '18.5k'; //await stargazerCount();
+import { stargazerCount } from '@utils/github';
+const starCount = await stargazerCount();
+const formatter = new Intl.NumberFormat('en-US', { notation: 'compact' });
+const formattedStarCount = formatter.format(starCount);
 
 import Button from '@components/Button.astro';
 
@@ -69,7 +71,7 @@ const mainNav = navData.main;
   <div class="nav-actions">
     <Button
       class="btn btn--primary"
-      text={starCount}
+      text={formattedStarCount}
       icon={{ name: 'github', size: 'md' }}
       iconPosition="left"
       iconClass="stroke-1.5"

@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   name: postgresql-config
   namespace: datum-net
+  metadata:
+    labels:
+      app.kubernetes.io/instance: datum-net
+      app.kubernetes.io/name: datum-net
 data:
   postgresql.conf: |-
     port = '5432'

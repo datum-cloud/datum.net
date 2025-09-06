@@ -52,13 +52,18 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
 
     async function initPagefind() {
       if (!pagefind) {
-        pagefind = await import('/pagefind-blog/pagefind.js');
-        await pagefind.options({
-          ranking: {
-            pageLength: 0.5,
-          },
-        });
-        pagefind.init();
+        try {
+          pagefind = await import('/pagefind-blog/pagefind.js');
+          await pagefind.options({
+            ranking: {
+              pageLength: 0.5,
+            },
+          });
+          pagefind.init();
+        } catch (error) {
+          console.error('Failed to initialize Pagefind:', error);
+          throw error;
+        }
       }
     }
 
@@ -140,7 +145,17 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
       togglePagination(false);
 
       // Initialize pagefind if not already done
-      await initPagefind();
+      try {
+        await initPagefind();
+      } catch (error) {
+        console.error('Pagefind initialization failed:', error);
+        blogList.innerHTML = `
+          <div class="text-center py-12">
+            <p class="text-sm text-white/70">Search is currently unavailable. Please try again later.</p>
+          </div>
+        `;
+        return;
+      }
 
       try {
         const searchResults = await pagefind.search(query);
@@ -153,7 +168,7 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
           const url = result.url;
           const meta = result.meta || {};
 
-          // Must include '/blog/'
+          // Must include '/blog/' in the URL
           if (!url.includes('/blog/')) return false;
 
           // Exclude main blog page
@@ -161,6 +176,9 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
 
           // Exclude category pages (identified by page_type meta tag)
           if (meta.page_type === 'category') return false;
+
+          // Exclude draft posts
+          if (meta.draft === 'true' || meta.draft === true) return false;
 
           // Include individual blog posts (either no page_type or page_type === 'post')
           return true;

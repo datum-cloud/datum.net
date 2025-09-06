@@ -5,7 +5,7 @@
   "scripts": {
     "build:pagefind": "npx pagefind",
     "build:pagefind:blog": "npx pagefind --site dist/client --glob '**/blog/**/*.{html}' --output-path dist/pagefind-blog",
-    "copy:pagefind": "npx shx cp -r dist/pagefind public/",
+    "copy:pagefind": "npx shx cp -r dist/client/pagefind public/",
     "copy:pagefind:blog": "npx shx cp -r dist/pagefind-blog public/",
     "dev:astro": "astro dev --host --typecheck",
     "build:astro": "astro check --skip-playwright && astro build",

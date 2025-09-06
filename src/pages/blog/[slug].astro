@@ -16,15 +16,17 @@ export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
   const authors = await getCollection('authors');
 
-  return blogEntries.map((entry) => {
-    // Find the author data if it exists
-    const authorData = authors.find((author) => author.id === entry.data.author);
+  return blogEntries
+    .filter((entry) => !entry.data.draft) // Exclude draft posts
+    .map((entry) => {
+      // Find the author data if it exists
+      const authorData = authors.find((author) => author.id === entry.data.author);
 
-    return {
-      params: { slug: entry.id },
-      props: { entry, authorData },
-    };
-  });
+      return {
+        params: { slug: entry.id },
+        props: { entry, authorData },
+      };
+    });
 }
 
 const { entry, authorData } = Astro.props;
@@ -121,6 +123,9 @@ const icon = 'book-image';
         <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
           >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
         >
+        <span data-pagefind-meta="draft" class="hidden" style="display: none;"
+          >{entry.data.draft ? 'true' : 'false'}</span
+        >
 
         <!-- Article Header -->
         <header class="blog-article-header">
@@ -192,22 +197,26 @@ const icon = 'book-image';
             <div class="blog-article-author">
               <div class="blog-article-author-avatar">
                 {authorData.data.avatar ? (
-                  <Image
-                    src={authorData.data.avatar}
-                    alt={authorData.data.name || fm.author}
-                    class="blog-article-author-image"
-                    width={52}
-                    height={52}
-                  />
+                  <a href={`/authors/${authorData.id}/`}>
+                    <Image
+                      src={authorData.data.avatar}
+                      alt={authorData.data.name || fm.author}
+                      class="blog-article-author-image"
+                      width={52}
+                      height={52}
+                    />
+                  </a>
                 ) : (
-                  <div class="blog-article-author-image">
+                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
                     <span class="text-lg font-bold text-gray-600">
                       {(authorData.data.name || fm.author).charAt(0)}
                     </span>
-                  </div>
+                  </a>
                 )}
               </div>
-              <span class="blog-article-author-name">{authorData.data.name || fm.author}</span>
+              <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
+                {authorData.data.name || fm.author}
+              </a>
             </div>
           )
         }

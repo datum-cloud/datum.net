@@ -38,20 +38,17 @@ const nextArticle =
 
 {
   (previousArticle || nextArticle) && (
-    <nav class:list={['mt-16 flex flex-col gap-4 md:flex-row', className]}>
+    <nav class:list={['handbook-page-nav', className]}>
       {previousArticle && (
-        <a
-          href={`/about/handbook/${previousArticle.id}`}
-          class="hover:bg-navy/10 w-full justify-start gap-2 rounded-sm border p-6"
-        >
-          <span class="mb-2 flex gap-2 text-xs">
+        <a href={`/about/handbook/${previousArticle.id}`} class="handbook-page-nav-link">
+          <span class="handbook-page-nav-label">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-4"
+              class="handbook-page-nav-icon"
             >
               <path
                 stroke-linecap="round"
@@ -61,15 +58,12 @@ const nextArticle =
             </svg>
             <span>Previous</span>
           </span>
-          <span class="block">{previousArticle.data.title}</span>
+          <span class="handbook-page-nav-title">{previousArticle.data.title}</span>
         </a>
       )}
       {nextArticle && (
-        <a
-          href={`/about/handbook/${nextArticle.id}`}
-          class="hover:bg-navy/10 w-full justify-end gap-2 rounded-sm border p-6 text-right"
-        >
-          <span class="mb-2 flex justify-end gap-2 text-xs">
+        <a href={`/about/handbook/${nextArticle.id}`} class="handbook-page-nav-link--next">
+          <span class="handbook-page-nav-label--next">
             <span>Next</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +71,7 @@ const nextArticle =
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-4"
+              class="handbook-page-nav-icon"
             >
               <path
                 stroke-linecap="round"
@@ -86,7 +80,7 @@ const nextArticle =
               />
             </svg>
           </span>
-          <span class="block">{nextArticle.data.title}</span>
+          <span class="handbook-page-nav-title">{nextArticle.data.title}</span>
         </a>
       )}
     </nav>

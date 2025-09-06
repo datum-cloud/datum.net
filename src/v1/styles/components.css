@@ -217,7 +217,7 @@
 
   /* List Styles */
   .ordered-list {
-    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-[1.1] tracking-[0.5px] md:gap-8 md:text-4xl;
+    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-[1.1] -tracking-[0.5px] md:gap-8 md:text-4xl;
     counter-reset: ordered-counter;
   }
 

@@ -5,7 +5,9 @@ import navigation from '@data/navigation.json';
 import type { NavData, NavItem } from '@/src/types/navigation';
 import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
+import Button from '@components/Button.astro';
 
+const starCount = '18.5k'; //await stargazerCount();
 import Icon from '@components/Icon.astro';
 
 // Get props with default values
@@ -79,12 +81,14 @@ const navData = navigation as NavData;
 
       <!-- GitHub Button Section -->
       <div class="footer-actions-section">
-        <a href="#" class="btn btn--primary">
-          <div class="btn-icon">
-            <Icon name="github" size="md" />
-          </div>
-          <span class="btn-text">85.4k</span>
-        </a>
+        <Button
+          class="btn btn--primary"
+          text={starCount}
+          icon={{ name: 'github', size: 'md' }}
+          iconPosition="left"
+          iconClass="text-light-pink stroke-1.5"
+          href="https://github.com/datum-cloud/datum/"
+        />
 
         <p class="footer-copyright">
           <a href="/terms-of-service" class="footer-nav-link">Terms of Service</a><br />
@@ -92,21 +96,6 @@ const navData = navigation as NavData;
           &copy; {new Date().getFullYear()}
           <span class="whitespace-nowrap">Datum Technology, Inc.</span>
         </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Signup Section -->
-  <div class="footer-signup">
-    <div class="footer-signup-container">
-      <h4 class="h4-leading mb-0">Sign up for updates</h4>
-      <div class="footer-signup-form-container">
-        <div class="footer-signup-form">
-          <input type="email" placeholder="Your email" class="footer-signup-input mb-0" />
-          <button class="footer-signup-button">
-            <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
-          </button>
-        </div>
       </div>
     </div>
   </div>

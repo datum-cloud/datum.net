@@ -135,11 +135,13 @@ select:where(.astro-4yphtoen) {
 
 :root {
   --sl-font: var(--font-primary);
-  --sl-color-bg-nav: white;
 }
 
 [data-theme='dark'] {
-  --sl-color-bg-nav: var(--color-navy);
+}
+
+[data-theme='light'] {
+  --sl-color-bg-nav: var(--sl-color-bg);
 }
 
 .login-button {
@@ -149,7 +151,7 @@ select:where(.astro-4yphtoen) {
   gap: 7px;
   padding: 0 17px;
   height: 42px;
-  background: #ffffff;
+  background: var(--sl-color-bg-nav);
   border: 1.38px solid rgba(12, 29, 49, 0.1);
   border-radius: 6px;
   text-decoration: none;
@@ -169,15 +171,12 @@ select:where(.astro-4yphtoen) {
 
 /* Dark theme styles */
 [data-theme='dark'] .login-button {
-  background: var(--color-navy);
   border: 1.38px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
 }
 
 [data-theme='dark'] .login-button:hover {
-  background: var(--color-navy-muted);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
+  background: var(--sl-color-gray-5);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -197,8 +196,4 @@ select:where(.astro-4yphtoen) {
 
 .login-button__text {
   white-space: nowrap;
-}
-
-[data-theme='dark'] {
-  --sl-color-bg-nav: var(--color-navy);
 }

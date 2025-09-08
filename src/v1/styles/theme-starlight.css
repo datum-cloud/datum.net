@@ -18,6 +18,9 @@
 
   --sl-label-icon-size: 18px;
 
+  /* Color Datum */
+  --sl-color-text-accent: #bf9595;
+
   /* Font Families */
   --font-primary:
     'Alliance No.1', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

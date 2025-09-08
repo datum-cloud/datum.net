@@ -1,17 +1,5 @@
 ---
-import Button from '@components/Button.astro';
 const starCount = Astro.locals.starCount || 0;
 ---
 
-{
-  Number(starCount) > 0 && (
-    <Button
-      class="btn btn--primary"
-      text={starCount}
-      icon={{ name: 'github', size: 'md' }}
-      iconPosition="left"
-      iconClass="stroke-1.5"
-      href="https://github.com/datum-cloud/datum/"
-    />
-  )
-}
+{Number(starCount) > 0 && <span>{starCount}</span>}

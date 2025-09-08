@@ -60,7 +60,7 @@
   }
 
   .nav-dropdown-link {
-    @apply text-navy hover:text-navy/80 flex items-center gap-5 transition-colors duration-200;
+    @apply text-navy hover:text-navy/80 hover:[&>span]:border-b-navy flex items-center gap-5 transition-colors duration-200 [&>span]:border-b [&>span]:border-b-transparent hover:[&>span]:transition-all hover:[&>span]:duration-200;
   }
 
   .nav-dropdown-icon {

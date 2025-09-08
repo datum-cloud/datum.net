@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import FeaturedPost from './FeaturedPost.astro';
 import BlogItem from './BlogItem.astro';
-import BlogFilters from './BlogFilters.astro';
+// import BlogFilters from './BlogFilters.astro';
 import BlogPagination from './BlogPagination.astro';
 import config from '@data/siteConfig.json';
 
@@ -54,7 +54,7 @@ const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : und
   {featuredPost && <FeaturedPost post={featuredPost} author={featuredAuthor} />}
 
   <!-- Category Filters and Search -->
-  <BlogFilters />
+  <!-- <BlogFilters /> -->
 
   <!-- Blog List -->
   <div class="blog-list">

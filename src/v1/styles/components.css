@@ -241,7 +241,7 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy text-72 tracking-1 mb-17.5 leading-[1.1] text-balance md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 mb-17.5 text-5xl leading-[1.1] text-balance md:text-6xl lg:text-7xl;
   }
 
   .h2-leading {

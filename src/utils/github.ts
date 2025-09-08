@@ -1,5 +1,4 @@
 import { graphql } from '@octokit/graphql';
-import { getSecret } from 'astro:env/server';
 
 type GitHubGraphQLResponse = {
   repository: {
@@ -24,21 +23,22 @@ async function graphqlWithAppAuth(appId: number, installationId: number, private
 }
 
 async function stargazerCount(): Promise<number> {
-  const appId = import.meta.env.APP_ID || process.env.APP_ID || getSecret('APP_ID');
-  const privateKey =
-    import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY || getSecret('APP_PRIVATE_KEY');
+  const appId = import.meta.env.APP_ID || process.env.APP_ID;
+  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
   const installationId = parseInt(
-    import.meta.env.APP_INSTALLATION_ID ||
-      process.env.APP_INSTALLATION_ID ||
-      getSecret('APP_INSTALLATION_ID') ||
-      '0',
+    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
     10
   );
+
   if (!appId || !installationId || !privateKey) {
     return 0;
   }
 
-  const graphqlWithAuth = await graphqlWithAppAuth(appId, installationId, privateKey);
+  const graphqlWithAuth = await graphqlWithAppAuth(
+    Number(appId),
+    Number(installationId),
+    privateKey
+  );
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {

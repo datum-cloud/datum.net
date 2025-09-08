@@ -39,7 +39,7 @@ const attributes = {
       <Icon name={icon.name} size={icon.size || 'md'} class={iconClass} />
     )
   }
-  {text}
+  {text || <slot />}
   {
     icon && iconPosition === 'right' && (
       <Icon name={icon.name} size={icon.size || 'md'} class={iconClass} />

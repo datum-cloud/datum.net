@@ -37,7 +37,7 @@ const dbIsConnected = isConnectedToDB();
             <div class="roadmap-card--info-section">
               <div class="roadmap-card--text-content">
                 <h3 class="roadmap-card--title">{issue.title}</h3>
-                <p
+                <div
                   class="roadmap-card--description"
                   set:html={marked.parse(truncate(issue.body, 200))}
                 />

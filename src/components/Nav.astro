@@ -5,6 +5,7 @@ import navigation from '@data/navigation.json';
 import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerButton from '@components/GithubStargazerButton.astro';
+import Button from '@components/Button.astro';
 
 import type { NavData } from '@/src/types/navigation';
 
@@ -64,7 +65,15 @@ const mainNav = navData.main;
 
   {/* Desktop Actions */}
   <div class="nav-actions">
-    <GithubStargazerButton server:defer />
+    <Button
+      class="btn btn--primary min-w-[115px]"
+      icon={{ name: 'github', size: 'md' }}
+      iconPosition="left"
+      iconClass="stroke-1.5"
+      href="https://github.com/datum-cloud/datum/"
+    >
+      <GithubStargazerButton server:defer />
+    </Button>
   </div>
 
   {/* Mobile Menu Component */}

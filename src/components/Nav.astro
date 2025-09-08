@@ -4,13 +4,13 @@ import Arrow from '@v1/assets/icons/arrow.svg';
 import navigation from '@data/navigation.json';
 import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
+import GithubStargazerButton from '@components/GithubStargazerButton.astro';
+
 import type { NavData } from '@/src/types/navigation';
-import Button from '@components/Button.astro';
 
 // Type-safe navigation data
 const navData = navigation as NavData;
 const mainNav = navData.main;
-const starCount = Astro.locals.starCount || 0;
 ---
 
 <nav class="nav--main">
@@ -64,14 +64,7 @@ const starCount = Astro.locals.starCount || 0;
 
   {/* Desktop Actions */}
   <div class="nav-actions">
-    <Button
-      class="btn btn--primary"
-      text={starCount}
-      icon={{ name: 'github', size: 'md' }}
-      iconPosition="left"
-      iconClass="stroke-1.5"
-      href="https://github.com/datum-cloud/datum/"
-    />
+    <GithubStargazerButton server:defer />
   </div>
 
   {/* Mobile Menu Component */}

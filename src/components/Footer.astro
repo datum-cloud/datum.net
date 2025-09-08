@@ -5,7 +5,7 @@ import navigation from '@data/navigation.json';
 import type { NavData, NavItem } from '@/src/types/navigation';
 import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
-import Button from '@components/Button.astro';
+import GithubStargazerButton from '@components/GithubStargazerButton.astro';
 
 // const starCount = '18.5k'; //await stargazerCount();
 import Icon from '@components/Icon.astro';
@@ -15,7 +15,6 @@ const { showCTA = true } = Astro.props as FooterProps;
 
 // Type-safe navigation data
 const navData = navigation as NavData;
-const starCount = Astro.locals.starCount || 0;
 ---
 
 <footer class="footer">
@@ -82,14 +81,7 @@ const starCount = Astro.locals.starCount || 0;
 
       <!-- GitHub Button Section -->
       <div class="footer-actions-section">
-        <Button
-          class="btn btn--primary"
-          text={starCount}
-          icon={{ name: 'github', size: 'md' }}
-          iconPosition="left"
-          iconClass="text-light-pink stroke-1.5"
-          href="https://github.com/datum-cloud/datum/"
-        />
+        <GithubStargazerButton server:defer />
 
         <p class="footer-copyright">
           <a href="/terms-of-service" class="footer-nav-link">Terms of Service</a><br />

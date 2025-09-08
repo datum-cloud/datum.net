@@ -5,7 +5,9 @@
     "node_modules",
     "dist",
     "public/pagefind",
+    "public/pagefind-blog",
     "**/pagefind/**",
+    "**/pagefind-blog/**",
     "tests/**/*",
     "playwright.config.ts"
   ],

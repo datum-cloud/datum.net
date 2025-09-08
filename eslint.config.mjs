@@ -45,7 +45,9 @@ export default defineConfig([
     '**/public/',
     'src/content/',
     'public/pagefind',
+    'public/pagefind-blog',
     '**/pagefind/**',
+    '**/pagefind-blog/**',
   ]),
   {
     extends: compat.extends(

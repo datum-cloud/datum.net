@@ -1,0 +1,518 @@
+---
+// src/components/GrafanaResourceGenerator.astro
+// Grafana Resource Generator component
+// Generates Kubernetes resources for Grafana Cloud integration
+---
+
+<div class="grafana-resource-generator">
+  <h4 class="grafana-resource-generator__title">Datum Resource Generator</h4>
+
+  <div class="grafana-resource-generator__field">
+    <label for="prometheusConfig" class="grafana-resource-generator__label"
+      >Prometheus Configuration YAML:</label
+    >
+    <textarea
+      id="prometheusConfig"
+      rows="8"
+      placeholder="Paste your Prometheus remote_write configuration here..."
+      class="grafana-resource-generator__textarea"></textarea>
+  </div>
+
+  <div id="configWarning" class="grafana-resource-generator__warning" style="display: none;">
+    <span id="warningMessage"></span>
+  </div>
+
+  <div class="grafana-resource-generator__sections">
+    <div class="grafana-resource-generator__section">
+      <h4 class="grafana-resource-generator__section-title">Secret</h4>
+      <div class="grafana-resource-generator__field">
+        <label for="secretName" class="grafana-resource-generator__label">Name:</label>
+        <input
+          type="text"
+          id="secretName"
+          placeholder="grafana-cloud-credentials"
+          class="grafana-resource-generator__input"
+        />
+      </div>
+      <p class="grafana-resource-generator__help">
+        Provide your Prometheus configuration above to generate the Secret manifest
+      </p>
+    </div>
+
+    <div class="grafana-resource-generator__section">
+      <h4 class="grafana-resource-generator__section-title">ExportPolicy</h4>
+      <div class="grafana-resource-generator__field">
+        <label for="exportPolicyName" class="grafana-resource-generator__label">Name:</label>
+        <input
+          type="text"
+          id="exportPolicyName"
+          placeholder="grafana-cloud-export"
+          class="grafana-resource-generator__input"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div id="secretSection" class="grafana-resource-generator__output" style="display: none;">
+    <h4 class="grafana-resource-generator__output-title">Secret Manifest</h4>
+    <div class="grafana-resource-generator__tabs">
+      <button
+        class="grafana-resource-generator__tab grafana-resource-generator__tab--active"
+        onclick="showTab('secretStdin')">Apply from stdin</button
+      >
+      <button class="grafana-resource-generator__tab" onclick="showTab('secretFile')"
+        >Apply from file</button
+      >
+    </div>
+    <div id="secretStdin" class="grafana-resource-generator__tab-content">
+      <pre
+        class="grafana-resource-generator__code"><code id="secretStdinOutput" class="language-yaml" /></pre>
+    </div>
+    <div id="secretFile" class="grafana-resource-generator__tab-content" style="display: none;">
+      <pre
+        class="grafana-resource-generator__code"><code id="secretFileOutput" class="language-yaml" /></pre>
+    </div>
+  </div>
+
+  <div id="exportPolicySection" class="grafana-resource-generator__output" style="display: none;">
+    <h4 class="grafana-resource-generator__output-title">ExportPolicy Manifest</h4>
+    <div class="grafana-resource-generator__tabs">
+      <button
+        class="grafana-resource-generator__tab grafana-resource-generator__tab--active"
+        onclick="showTab('exportPolicyStdin')">Apply from stdin</button
+      >
+      <button class="grafana-resource-generator__tab" onclick="showTab('exportPolicyFile')"
+        >Apply from file</button
+      >
+    </div>
+    <div id="exportPolicyStdin" class="grafana-resource-generator__tab-content">
+      <pre
+        class="grafana-resource-generator__code"><code id="exportPolicyStdinOutput" class="language-yaml" /></pre>
+    </div>
+    <div
+      id="exportPolicyFile"
+      class="grafana-resource-generator__tab-content"
+      style="display: none;"
+    >
+      <pre
+        class="grafana-resource-generator__code"><code id="exportPolicyFileOutput" class="language-yaml" /></pre>
+    </div>
+  </div>
+
+  <div id="secretPlaceholder" class="grafana-resource-generator__placeholder">
+    <p>Provide your Prometheus configuration above to generate the Secret manifest</p>
+  </div>
+
+  <div id="exportPolicyPlaceholder" class="grafana-resource-generator__placeholder">
+    <p>Provide your Prometheus configuration above to generate the ExportPolicy manifest</p>
+  </div>
+</div>
+
+<script>
+  function generateResources() {
+    const configInput = document.getElementById('prometheusConfig') as HTMLTextAreaElement;
+    const secretNameInput = document.getElementById('secretName') as HTMLInputElement;
+    const exportPolicyNameInput = document.getElementById('exportPolicyName') as HTMLInputElement;
+    const warningDiv = document.getElementById('configWarning') as HTMLElement;
+    const warningMessage = document.getElementById('warningMessage') as HTMLElement;
+
+    if (
+      !configInput ||
+      !secretNameInput ||
+      !exportPolicyNameInput ||
+      !warningDiv ||
+      !warningMessage
+    ) {
+      return;
+    }
+
+    const configText = configInput.value;
+    const secretName = secretNameInput.value;
+    const exportPolicyName = exportPolicyNameInput.value;
+
+    // Hide warning initially
+    warningDiv.style.display = 'none';
+
+    if (!configText.trim()) {
+      const secretSection = document.getElementById('secretSection');
+      const exportPolicySection = document.getElementById('exportPolicySection');
+      const secretPlaceholder = document.getElementById('secretPlaceholder');
+      const exportPolicyPlaceholder = document.getElementById('exportPolicyPlaceholder');
+
+      if (secretSection) secretSection.style.display = 'none';
+      if (exportPolicySection) exportPolicySection.style.display = 'none';
+      if (secretPlaceholder) secretPlaceholder.style.display = 'block';
+      if (exportPolicyPlaceholder) exportPolicyPlaceholder.style.display = 'block';
+      return;
+    }
+
+    if (!secretName.trim() || !exportPolicyName.trim()) {
+      warningMessage.textContent =
+        'Please provide names for both Secret and ExportPolicy resources.';
+      warningDiv.style.display = 'block';
+      return;
+    }
+
+    try {
+      // Parse the YAML configuration
+      const lines = configText.split('\n');
+      let url = '';
+      let username = '';
+      let password = '';
+      let inBasicAuth = false;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        if (line.startsWith('- url:') || line.startsWith('url:')) {
+          url = line.split('url:')[1].trim();
+        } else if (line.startsWith('basic_auth:')) {
+          inBasicAuth = true;
+        } else if (inBasicAuth && line.startsWith('username:')) {
+          username = line.split('username:')[1].trim();
+        } else if (inBasicAuth && line.startsWith('password:')) {
+          password = line.split('password:')[1].trim();
+        } else if (line.startsWith('scrape_configs:') || line.startsWith('global:')) {
+          inBasicAuth = false;
+        }
+      }
+
+      if (!url || !username || !password) {
+        warningMessage.textContent =
+          'Could not find url, username, and password in the configuration. Please check your YAML format.';
+        warningDiv.style.display = 'block';
+        return;
+      }
+
+      // Generate Secret manifests
+      const secretStdinManifest = `apiVersion: v1
+kind: Secret
+metadata:
+  name: ${secretName}
+type: Opaque
+data:
+  username: ${btoa(username)}
+  password: ${btoa(password)}`;
+
+      const secretFileManifest = `apiVersion: v1
+kind: Secret
+metadata:
+  name: ${secretName}
+type: Opaque
+data:
+  username: ${btoa(username)}
+  password: ${btoa(password)}`;
+
+      // Generate ExportPolicy manifests
+      const exportPolicyStdinManifest = `apiVersion: telemetry.miloapis.com/v1alpha1
+kind: ExportPolicy
+metadata:
+  name: ${exportPolicyName}
+spec:
+  sources:
+    - name: "telemetry-metrics"
+      metrics:
+        metricsql: |
+          {service_name="telemetry.miloapis.com"}
+  sinks:
+    - name: grafana-cloud-metrics
+      sources:
+        - telemetry-metrics
+      target:
+        prometheusRemoteWrite:
+          endpoint: "${url}"
+          authentication:
+            basicAuth:
+              secretRef:
+                name: "${secretName}"`;
+
+      const exportPolicyFileManifest = `apiVersion: telemetry.miloapis.com/v1alpha1
+kind: ExportPolicy
+metadata:
+  name: ${exportPolicyName}
+spec:
+  sources:
+    - name: "telemetry-metrics"
+      metrics:
+        metricsql: |
+          {service_name="telemetry.miloapis.com"}
+  sinks:
+    - name: grafana-cloud-metrics
+      sources:
+        - telemetry-metrics
+      target:
+        prometheusRemoteWrite:
+          endpoint: "${url}"
+          authentication:
+            basicAuth:
+              secretRef:
+                name: "${secretName}"`;
+
+      // Update the output
+      const secretStdinOutput = document.getElementById('secretStdinOutput');
+      const secretFileOutput = document.getElementById('secretFileOutput');
+      const exportPolicyStdinOutput = document.getElementById('exportPolicyStdinOutput');
+      const exportPolicyFileOutput = document.getElementById('exportPolicyFileOutput');
+
+      if (secretStdinOutput) secretStdinOutput.textContent = secretStdinManifest;
+      if (secretFileOutput) secretFileOutput.textContent = secretFileManifest;
+      if (exportPolicyStdinOutput) exportPolicyStdinOutput.textContent = exportPolicyStdinManifest;
+      if (exportPolicyFileOutput) exportPolicyFileOutput.textContent = exportPolicyFileManifest;
+
+      // Show the sections
+      const secretSection = document.getElementById('secretSection');
+      const exportPolicySection = document.getElementById('exportPolicySection');
+      const secretPlaceholder = document.getElementById('secretPlaceholder');
+      const exportPolicyPlaceholder = document.getElementById('exportPolicyPlaceholder');
+
+      if (secretSection) secretSection.style.display = 'block';
+      if (exportPolicySection) exportPolicySection.style.display = 'block';
+      if (secretPlaceholder) secretPlaceholder.style.display = 'none';
+      if (exportPolicyPlaceholder) exportPolicyPlaceholder.style.display = 'none';
+
+      // Update verify commands
+      updateVerifyCommands();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      warningMessage.textContent = 'Error parsing configuration: ' + errorMessage;
+      warningDiv.style.display = 'block';
+    }
+  }
+
+  function updateVerifyCommands() {
+    const secretNameInput = document.getElementById('secretName') as HTMLInputElement;
+    const exportPolicyNameInput = document.getElementById('exportPolicyName') as HTMLInputElement;
+
+    if (!secretNameInput || !exportPolicyNameInput) {
+      return;
+    }
+
+    const secretName = secretNameInput.value;
+    const exportPolicyName = exportPolicyNameInput.value;
+    const secretVerifyCommand = document.getElementById('secretVerifyCommand');
+    const exportPolicyVerifyCommand = document.getElementById('exportPolicyVerifyCommand');
+
+    if (secretVerifyCommand) {
+      secretVerifyCommand.textContent = `kubectl get secret ${secretName}`;
+    }
+
+    if (exportPolicyVerifyCommand) {
+      exportPolicyVerifyCommand.textContent = `kubectl get exportpolicy ${exportPolicyName}`;
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function showTab(tabName: string) {
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.grafana-resource-generator__tab-content');
+    tabContents.forEach((content) => {
+      const element = content as HTMLElement;
+      element.style.display = 'none';
+    });
+
+    // Remove active class from all tabs
+    const tabs = document.querySelectorAll('.grafana-resource-generator__tab');
+    tabs.forEach((tab) => tab.classList.remove('grafana-resource-generator__tab--active'));
+
+    // Show selected tab content
+    const targetTab = document.getElementById(tabName);
+    if (targetTab) {
+      targetTab.style.display = 'block';
+    }
+
+    // Add active class to clicked tab
+    const event = window.event as Event;
+    if (event && event.target) {
+      const target = event.target as HTMLElement;
+      target.classList.add('grafana-resource-generator__tab--active');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const configInput = document.getElementById('prometheusConfig') as HTMLTextAreaElement;
+    const secretNameInput = document.getElementById('secretName') as HTMLInputElement;
+    const exportPolicyNameInput = document.getElementById('exportPolicyName') as HTMLInputElement;
+
+    if (configInput) {
+      configInput.addEventListener('input', generateResources);
+    }
+
+    if (secretNameInput) {
+      secretNameInput.addEventListener('input', function () {
+        generateResources();
+        updateVerifyCommands();
+      });
+    }
+
+    if (exportPolicyNameInput) {
+      exportPolicyNameInput.addEventListener('input', function () {
+        generateResources();
+        updateVerifyCommands();
+      });
+    }
+
+    // Initialize verify commands on page load
+    updateVerifyCommands();
+  });
+</script>
+
+<style>
+  .grafana-resource-generator {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .grafana-resource-generator__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+
+  .grafana-resource-generator__field {
+    margin-bottom: 1rem;
+  }
+
+  .grafana-resource-generator__label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .grafana-resource-generator__textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-family: monospace;
+  }
+
+  .grafana-resource-generator__textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .grafana-resource-generator__input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+
+  .grafana-resource-generator__input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .grafana-resource-generator__warning {
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .grafana-resource-generator__sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .grafana-resource-generator__sections {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .grafana-resource-generator__section {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+  }
+
+  .grafana-resource-generator__section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #111827;
+  }
+
+  .grafana-resource-generator__help {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .grafana-resource-generator__output {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+  }
+
+  .grafana-resource-generator__output-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #111827;
+  }
+
+  .grafana-resource-generator__tabs {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+  }
+
+  .grafana-resource-generator__tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .grafana-resource-generator__tab:hover {
+    color: #374151;
+    border-bottom-color: #d1d5db;
+  }
+
+  .grafana-resource-generator__tab--active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+  }
+
+  .grafana-resource-generator__tab-content {
+    display: block;
+  }
+
+  .grafana-resource-generator__code {
+    background: #111827;
+    color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+  }
+
+  .grafana-resource-generator__placeholder {
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+  }
+</style>

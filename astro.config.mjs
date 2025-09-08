@@ -76,20 +76,40 @@ export default defineConfig({
           link: '/docs/',
         },
         {
-          label: 'About Datum',
-          autogenerate: { directory: 'docs/about' },
+          label: 'Roadmap',
+          link: 'docs/roadmap',
         },
         {
           label: 'Getting Started',
           autogenerate: { directory: 'docs/get-started' },
         },
         {
-          label: 'Resources',
-          autogenerate: { directory: 'docs/resources' },
+          label: 'Tasks',
+          autogenerate: { directory: 'docs/tasks' },
+        },
+        {
+          label: 'Tutorials',
+          autogenerate: { directory: 'docs/tutorials' },
         },
         {
           label: 'Datum Cloud API',
           autogenerate: { directory: 'docs/api' },
+        },
+        {
+          label: 'Contribution Guidelines',
+          link: 'docs/contribution-guidelines/',
+        },
+        {
+          label: 'Datum Cloud Glossary',
+          link: 'docs/glossary/',
+        },
+        {
+          label: 'Guides and Demos',
+          link: 'docs/guides/',
+        },
+        {
+          label: 'Developer Guide',
+          link: 'docs/developer-guide/',
         },
       ],
     }),

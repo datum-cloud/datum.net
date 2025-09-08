@@ -90,9 +90,7 @@
     "*.{js,jsx,ts,tsx,astro}": [
       "npm run typecheck",
       "npm run lint",
-      "npm run lint:fix",
-      "npm run format:check",
-      "npm run format"
+      "npm run format:check"
     ],
     "*.{md,mdx}": [
       "npm run lint:md",

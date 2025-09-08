@@ -1,5 +1,7 @@
 ---
 title: Connecting to the API
+sidebar:
+  order: 1
 ---
 
 The Datum Cloud platform is comprised of multiple control planes that users can
@@ -31,8 +33,8 @@ Most users will interact with a project control plane to manage resources.
 
 The following base URL can be used to access an organization's control plane:
 
-```html
-https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/organizations/{organization_id}/control-plane
+```url
+https://api.datum.net/apis/resourcemanager.miloapis.com/v1alpha1/organizations/{organization_id}/control-plane
 ```
 
 ### Project Control Plane
@@ -41,8 +43,8 @@ Projects created in an organization's control plane will have their own control
 plane created to manage resources. Use the following base URL to access a
 project's control plane:
 
-```html
-https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/projects/{project_id}/control-plane
+```url
+https://api.datum.net/apis/resourcemanager.miloapis.com/v1alpha1/projects/{project_id}/control-plane
 ```
 
 ## API Discovery
@@ -53,13 +55,13 @@ example that demonstrates some services available in an organization's control
 plane.
 
 ```shell
-$ curl -sS 'https://api.datum.net/apis/resourcemanager.datumapis.com/v1alpha/organizations/{organization_id}/control-plane/openapi/v3' \
+$ curl -sS 'https://api.datum.net/apis/resourcemanager.miloapis.com/v1alpha1/organizations/{organization_id}/control-plane/openapi/v3' \
    -H "Authorization: Bearer $(datumctl auth get-token)"
 
 {
   "paths": {
-    "apis/resourcemanager.datumapis.com/v1alpha": {
-      "serverRelativeURL": "/openapi/v3/apis/resourcemanager.datumapis.com/v1alpha?hash=D0A1DF465E973D5C8FC30D065B864272955A66C14609154E7EAECC0426C71E99F3982ECBA4D5C6C92EC3DF497E159F2129D0F8A20CDC8E5746583D1BFEA80A52"
+    "apis/resourcemanager.miloapis.com/v1alpha1": {
+      "serverRelativeURL": "/openapi/v3/apis/resourcemanager.miloapis.com/v1alpha1?hash=D0A1DF465E973D5C8FC30D065B864272955A66C14609154E7EAECC0426C71E99F3982ECBA4D5C6C92EC3DF497E159F2129D0F8A20CDC8E5746583D1BFEA80A52"
     },
   ]
 }

@@ -1,0 +1,1427 @@
+---
+title: API Reference
+sidebar:
+  order: 3
+---
+
+## Packages
+- [iam.miloapis.com/v1alpha1](#iammiloapiscomv1alpha1)
+- [networking.datumapis.com/v1alpha](#networkingdatumapiscomv1alpha)
+- [resourcemanager.miloapis.com/v1alpha1](#resourcemanagermiloapiscomv1alpha1)
+- [telemetry.miloapis.com/v1alpha1](#telemetrymiloapiscomv1alpha1)
+
+
+## iam.miloapis.com/v1alpha1
+
+Package v1alpha1 contains API Schema definitions for the iam v1alpha1 API group
+
+### Resource Types
+- [Group](#group)
+- [GroupMembership](#groupmembership)
+- [MachineAccount](#machineaccount)
+- [MachineAccountKey](#machineaccountkey)
+- [PolicyBinding](#policybinding)
+- [UserDeactivation](#userdeactivation)
+
+
+
+#### Group
+
+
+
+Group is the Schema for the groups API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `Group` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `status` <br />_[GroupStatus](#groupstatus)_ |  |  |  |
+
+
+#### GroupMembership
+
+
+
+GroupMembership is the Schema for the groupmemberships API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `GroupMembership` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[GroupMembershipSpec](#groupmembershipspec)_ |  |  |  |
+| `status` <br />_[GroupMembershipStatus](#groupmembershipstatus)_ |  |  |  |
+
+
+#### GroupMembershipSpec
+
+
+
+GroupMembershipSpec defines the desired state of GroupMembership
+
+
+
+_Appears in:_
+- [GroupMembership](#groupmembership)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User that is a member of the Group.<br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
+| `groupRef` <br />_[GroupReference](#groupreference)_ | GroupRef is a reference to the Group.<br />Group is a namespaced resource. |  | Required: \{\} <br /> |
+
+
+#### GroupMembershipStatus
+
+
+
+GroupMembershipStatus defines the observed state of GroupMembership
+
+
+
+_Appears in:_
+- [GroupMembership](#groupmembership)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state. |  |  |
+
+
+#### GroupReference
+
+
+
+GroupReference contains information that points to the Group being referenced.
+Group is a namespaced resource.
+
+
+
+_Appears in:_
+- [GroupMembershipSpec](#groupmembershipspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the name of the Group being referenced. |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced Group. |  | Required: \{\} <br /> |
+
+
+#### GroupStatus
+
+
+
+GroupStatus defines the observed state of Group
+
+
+
+_Appears in:_
+- [Group](#group)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state. |  |  |
+
+
+#### MachineAccount
+
+
+
+MachineAccount is the Schema for the machine accounts API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `MachineAccount` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[MachineAccountSpec](#machineaccountspec)_ |  |  |  |
+| `status` <br />_[MachineAccountStatus](#machineaccountstatus)_ |  |  |  |
+
+
+#### MachineAccountKey
+
+
+
+MachineAccountKey is the Schema for the machineaccountkeys API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `MachineAccountKey` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[MachineAccountKeySpec](#machineaccountkeyspec)_ |  |  |  |
+| `status` <br />_[MachineAccountKeyStatus](#machineaccountkeystatus)_ |  |  |  |
+
+
+#### MachineAccountKeySpec
+
+
+
+MachineAccountKeySpec defines the desired state of MachineAccountKey
+
+
+
+_Appears in:_
+- [MachineAccountKey](#machineaccountkey)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `machineAccountName` <br />_string_ | MachineAccountName is the name of the MachineAccount that owns this key. |  | Required: \{\} <br /> |
+| `expirationDate` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#time-v1-meta)_ | ExpirationDate is the date and time when the MachineAccountKey will expire.<br />If not specified, the MachineAccountKey will never expire. |  | Optional: \{\} <br /> |
+| `publicKey` <br />_string_ | PublicKey is the public key of the MachineAccountKey.<br />If not specified, the MachineAccountKey will be created with an auto-generated public key. |  | Optional: \{\} <br /> |
+
+
+#### MachineAccountKeyStatus
+
+
+
+MachineAccountKeyStatus defines the observed state of MachineAccountKey
+
+
+
+_Appears in:_
+- [MachineAccountKey](#machineaccountkey)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `authProviderKeyId` <br />_string_ | AuthProviderKeyID is the unique identifier for the key in the auth provider.<br />This field is populated by the controller after the key is created in the auth provider.<br />For example, when using Zitadel, a typical value might be: "326102453042806786" |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the MachineAccountKey. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+
+
+#### MachineAccountSpec
+
+
+
+MachineAccountSpec defines the desired state of MachineAccount
+
+
+
+_Appears in:_
+- [MachineAccount](#machineaccount)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `state` <br />_string_ | The state of the machine account. This state can be safely changed as needed.<br />States:<br />  - Active: The machine account can be used to authenticate.<br />  - Inactive: The machine account is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br />Optional: \{\} <br /> |
+
+
+#### MachineAccountStatus
+
+
+
+MachineAccountStatus defines the observed state of MachineAccount
+
+
+
+_Appears in:_
+- [MachineAccount](#machineaccount)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `email` <br />_string_ | The computed email of the machine account following the pattern:<br />\{metadata.name\}@\{metadata.namespace\}.\{project.metadata.name\}.\{global-suffix\} |  |  |
+| `state` <br />_string_ | State represents the current activation state of the machine account from the auth provider.<br />This field tracks the state from the previous generation and is updated when state changes<br />are successfully propagated to the auth provider. It helps optimize performance by only<br />updating the auth provider when a state change is detected. |  | Enum: [Active Inactive] <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the MachineAccount. |  |  |
+
+
+#### ParentResourceRef
+
+
+
+ParentResourceRef defines the reference to a parent resource
+
+
+
+_Appears in:_
+- [ProtectedResourceSpec](#protectedresourcespec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br />If APIGroup is not specified, the specified Kind must be in the core API group.<br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
+| `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Required: \{\} <br /> |
+
+
+#### PolicyBinding
+
+
+
+PolicyBinding is the Schema for the policybindings API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `PolicyBinding` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[PolicyBindingSpec](#policybindingspec)_ |  |  |  |
+| `status` <br />_[PolicyBindingStatus](#policybindingstatus)_ |  |  |  |
+
+
+#### PolicyBindingSpec
+
+
+
+PolicyBindingSpec defines the desired state of PolicyBinding
+
+
+
+_Appears in:_
+- [PolicyBinding](#policybinding)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `roleRef` <br />_[RoleReference](#rolereference)_ | RoleRef is a reference to the Role that is being bound.<br />This can be a reference to a Role custom resource. |  | Required: \{\} <br /> |
+| `subjects` <br />_[Subject](#subject) array_ | Subjects holds references to the objects the role applies to. |  | MinItems: 1 <br />Required: \{\} <br /> |
+| `resourceSelector` <br />_[ResourceSelector](#resourceselector)_ | ResourceSelector defines which resources the subjects in the policy binding<br />should have the role applied to. Options within this struct are mutually<br />exclusive. |  | Required: \{\} <br /> |
+
+
+#### PolicyBindingStatus
+
+
+
+PolicyBindingStatus defines the observed state of PolicyBinding
+
+
+
+_Appears in:_
+- [PolicyBinding](#policybinding)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed for this PolicyBinding by the controller. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the PolicyBinding. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+
+
+
+
+#### ProtectedResourceSpec
+
+
+
+ProtectedResourceSpec defines the desired state of ProtectedResource
+
+
+
+_Appears in:_
+- [ProtectedResource](#protectedresource)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `serviceRef` <br />_[ServiceReference](#servicereference)_ | ServiceRef references the service definition this protected resource belongs to. |  | Required: \{\} <br /> |
+| `kind` <br />_string_ | The kind of the resource.<br />This will be in the format `Workload`. |  | Required: \{\} <br /> |
+| `singular` <br />_string_ | The singular form for the resource type, e.g. 'workload'. Must follow<br />camelCase format. |  | Required: \{\} <br /> |
+| `plural` <br />_string_ | The plural form for the resource type, e.g. 'workloads'. Must follow<br />camelCase format. |  | Required: \{\} <br /> |
+| `parentResources` <br />_[ParentResourceRef](#parentresourceref) array_ | A list of resources that are registered with the platform that may be a<br />parent to the resource. Permissions may be bound to a parent resource so<br />they can be inherited down the resource hierarchy. |  | Optional: \{\} <br /> |
+| `permissions` <br />_string array_ | A list of permissions that are associated with the resource. |  | Required: \{\} <br /> |
+
+
+#### ProtectedResourceStatus
+
+
+
+ProtectedResourceStatus defines the observed state of ProtectedResource
+
+
+
+_Appears in:_
+- [ProtectedResource](#protectedresource)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the ProtectedResource. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed for this ProtectedResource. It corresponds to the<br />ProtectedResource's generation, which is updated on mutation by the API Server. |  | Optional: \{\} <br /> |
+
+
+#### ResourceKind
+
+
+
+ResourceKind contains enough information to identify a resource type.
+
+
+
+_Appears in:_
+- [ResourceSelector](#resourceselector)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiGroup` <br />_string_ | APIGroup is the group for the resource type being referenced. If APIGroup<br />is not specified, the specified Kind must be in the core API group. |  | Optional: \{\} <br /> |
+| `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Required: \{\} <br /> |
+
+
+#### ResourceReference
+
+
+
+ResourceReference contains enough information to let you identify a specific
+API resource instance.
+
+
+
+_Appears in:_
+- [ResourceSelector](#resourceselector)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br />If APIGroup is not specified, the specified Kind must be in the core API group.<br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
+| `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name is the name of resource being referenced. |  | Required: \{\} <br /> |
+| `uid` <br />_string_ | UID is the unique identifier of the resource being referenced. |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
+
+
+#### ResourceSelector
+
+
+
+ResourceSelector defines which resources the policy binding applies to.
+Either resourceRef or resourceKind must be specified, but not both.
+
+
+
+_Appears in:_
+- [PolicyBindingSpec](#policybindingspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `resourceRef` <br />_[ResourceReference](#resourcereference)_ | ResourceRef provides a reference to a specific resource instance.<br />Mutually exclusive with resourceKind. |  | Optional: \{\} <br /> |
+| `resourceKind` <br />_[ResourceKind](#resourcekind)_ | ResourceKind specifies that the policy binding should apply to all resources of a specific kind.<br />Mutually exclusive with resourceRef. |  | Optional: \{\} <br /> |
+
+
+
+
+#### RoleReference
+
+
+
+RoleReference contains information that points to the Role being used
+
+
+
+_Appears in:_
+- [PolicyBindingSpec](#policybindingspec)
+- [UserInvitationSpec](#userinvitationspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the name of resource being referenced |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced Role. If empty, it is assumed to be in the PolicyBinding's namespace. |  | Optional: \{\} <br /> |
+
+
+#### RoleSpec
+
+
+
+RoleSpec defines the desired state of Role
+
+
+
+_Appears in:_
+- [Role](#role)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `includedPermissions` <br />_string array_ | The names of the permissions this role grants when bound in an IAM policy.<br />All permissions must be in the format: `\{service\}.\{resource\}.\{action\}`<br />(e.g. compute.workloads.create). |  | Optional: \{\} <br /> |
+| `launchStage` <br />_string_ | Defines the launch stage of the IAM Role. Must be one of: Early Access,<br />Alpha, Beta, Stable, Deprecated. |  | Required: \{\} <br /> |
+| `inheritedRoles` <br />_[ScopedRoleReference](#scopedrolereference) array_ | The list of roles from which this role inherits permissions.<br />Each entry must be a valid role resource name. |  | Optional: \{\} <br /> |
+
+
+#### RoleStatus
+
+
+
+RoleStatus defines the observed state of Role
+
+
+
+_Appears in:_
+- [Role](#role)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `parent` <br />_string_ | The resource name of the parent the role was created under. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the Role. |  | Optional: \{\} <br /> |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed by the controller. |  |  |
+
+
+#### ScopedRoleReference
+
+
+
+ScopedRoleReference defines a reference to another Role, scoped by namespace.
+This is used for purposes like role inheritance where a simple name and namespace
+is sufficient to identify the target role.
+
+
+
+_Appears in:_
+- [RoleSpec](#rolespec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name of the referenced Role. |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced Role.<br />If not specified, it defaults to the namespace of the resource containing this reference. |  | Optional: \{\} <br /> |
+
+
+#### ServiceReference
+
+
+
+ServiceReference holds a reference to a service definition.
+
+
+
+_Appears in:_
+- [ProtectedResourceSpec](#protectedresourcespec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the resource name of the service definition. |  | Required: \{\} <br /> |
+
+
+#### Subject
+
+
+
+Subject contains a reference to the object or user identities a role binding applies to.
+This can be a User or Group.
+
+
+
+_Appears in:_
+- [PolicyBindingSpec](#policybindingspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `kind` <br />_string_ | Kind of object being referenced. Values defined in Kind constants. |  | Enum: [User Group] <br />Required: \{\} <br /> |
+| `name` <br />_string_ | Name of the object being referenced. A special group name of<br />"system:authenticated-users" can be used to refer to all authenticated<br />users. |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced object. If DNE, then for an SA it refers to the PolicyBinding resource's namespace.<br />For a User or Group, it is ignored. |  | Optional: \{\} <br /> |
+| `uid` <br />_string_ | UID of the referenced object. Optional for system groups (groups with names starting with "system:"). |  | Optional: \{\} <br /> |
+
+
+
+
+#### UserDeactivation
+
+
+
+UserDeactivation is the Schema for the userdeactivations API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `iam.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `UserDeactivation` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[UserDeactivationSpec](#userdeactivationspec)_ |  |  |  |
+| `status` <br />_[UserDeactivationStatus](#userdeactivationstatus)_ |  |  |  |
+
+
+#### UserDeactivationSpec
+
+
+
+UserDeactivationSpec defines the desired state of UserDeactivation
+
+
+
+_Appears in:_
+- [UserDeactivation](#userdeactivation)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User being deactivated.<br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
+| `reason` <br />_string_ | Reason is the internal reason for deactivation. |  | Required: \{\} <br /> |
+| `description` <br />_string_ | Description provides detailed internal description for the deactivation. |  | Optional: \{\} <br /> |
+| `deactivatedBy` <br />_string_ | DeactivatedBy indicates who initiated the deactivation. |  | Required: \{\} <br /> |
+
+
+#### UserDeactivationStatus
+
+
+
+UserDeactivationStatus defines the observed state of UserDeactivation
+
+
+
+_Appears in:_
+- [UserDeactivation](#userdeactivation)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+
+
+
+
+#### UserInvitationSpec
+
+
+
+UserInvitationSpec defines the desired state of UserInvitation
+
+
+
+_Appears in:_
+- [UserInvitation](#userinvitation)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `email` <br />_string_ | The email of the user being invited. |  | Required: \{\} <br /> |
+| `givenName` <br />_string_ | The first name of the user being invited. |  | Optional: \{\} <br /> |
+| `familyName` <br />_string_ | The last name of the user being invited. |  | Optional: \{\} <br /> |
+| `roles` <br />_[RoleReference](#rolereference) array_ | The roles that will be assigned to the user when they accept the invitation. |  | Optional: \{\} <br /> |
+
+
+#### UserInvitationStatus
+
+
+
+UserInvitationStatus defines the observed state of UserInvitation
+
+
+
+_Appears in:_
+- [UserInvitation](#userinvitation)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the UserInvitation. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+
+
+
+
+#### UserPreferenceSpec
+
+
+
+UserPreferenceSpec defines the desired state of UserPreference
+
+
+
+_Appears in:_
+- [UserPreference](#userpreference)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `userRef` <br />_[UserReference](#userreference)_ | Reference to the user these preferences belong to. |  | Required: \{\} <br /> |
+| `theme` <br />_string_ | The user's theme preference. | system | Enum: [light dark system] <br />Optional: \{\} <br /> |
+
+
+#### UserPreferenceStatus
+
+
+
+UserPreferenceStatus defines the observed state of UserPreference
+
+
+
+_Appears in:_
+- [UserPreference](#userpreference)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the UserPreference. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+
+
+#### UserReference
+
+
+
+UserReference contains information that points to the User being referenced.
+User is a cluster-scoped resource, so Namespace is not needed.
+
+
+
+_Appears in:_
+- [GroupMembershipSpec](#groupmembershipspec)
+- [UserDeactivationSpec](#userdeactivationspec)
+- [UserPreferenceSpec](#userpreferencespec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the name of the User being referenced. |  | Required: \{\} <br /> |
+
+
+#### UserSpec
+
+
+
+UserSpec defines the desired state of User
+
+
+
+_Appears in:_
+- [User](#user)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `email` <br />_string_ | The email of the user. |  | Required: \{\} <br /> |
+| `givenName` <br />_string_ | The first name of the user. |  | Optional: \{\} <br /> |
+| `familyName` <br />_string_ | The last name of the user. |  | Optional: \{\} <br /> |
+
+
+#### UserState
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [UserStatus](#userstatus)
+
+| Field | Description |
+| `Active` |  |
+| `Inactive` |  |
+
+
+#### UserStatus
+
+
+
+UserStatus defines the observed state of User
+
+
+
+_Appears in:_
+- [User](#user)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the User. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `state` <br />_[UserState](#userstate)_ | State represents the current activation state of the user account from the<br />auth provider. This field is managed exclusively by the UserDeactivation CRD<br />and cannot be changed directly by the user. When a UserDeactivation resource<br />is created for the user, the user is deactivated in the auth provider; when<br />the UserDeactivation is deleted, the user is reactivated.<br />States:<br />  - Active: The user can be used to authenticate.<br />  - Inactive: The user is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br /> |
+
+
+
+## networking.datumapis.com/v1alpha
+
+Package v1alpha contains API Schema definitions for the networking v1alpha API group.
+
+### Resource Types
+- [Domain](#domain)
+- [HTTPProxy](#httpproxy)
+
+
+
+
+
+#### DNSVerificationRecord
+
+
+
+DNSVerificationRecord represents a DNS record required for verification
+
+
+
+_Appears in:_
+- [DomainVerificationStatus](#domainverificationstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ |  |  |  |
+| `type` <br />_string_ |  |  |  |
+| `content` <br />_string_ |  |  |  |
+
+
+#### Domain
+
+
+
+Domain represents a domain name in the Datum system
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha` | | |
+| `kind` <br />_string_ | `Domain` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[DomainSpec](#domainspec)_ |  |  | Required: \{\} <br /> |
+| `status` <br />_[DomainStatus](#domainstatus)_ |  | \{ conditions:[map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Verified] map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:VerifiedDNS] map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:VerifiedHTTP]] \} |  |
+
+
+#### DomainSpec
+
+
+
+DomainSpec defines the desired state of Domain
+
+
+
+_Appears in:_
+- [Domain](#domain)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `domainName` <br />_string_ | DomainName is the fully qualified domain name (FQDN) to be managed |  | MaxLength: 253 <br />MinLength: 1 <br />Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br />Required: \{\} <br /> |
+
+
+#### DomainStatus
+
+
+
+DomainStatus defines the observed state of Domain
+
+
+
+_Appears in:_
+- [Domain](#domain)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `verification` <br />_[DomainVerificationStatus](#domainverificationstatus)_ |  |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ |  |  |  |
+
+
+#### DomainVerificationStatus
+
+
+
+DomainVerificationStatus represents the verification status of a domain
+
+
+
+_Appears in:_
+- [DomainStatus](#domainstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `dnsRecord` <br />_[DNSVerificationRecord](#dnsverificationrecord)_ |  |  |  |
+| `httpToken` <br />_[HTTPVerificationToken](#httpverificationtoken)_ |  |  |  |
+| `nextVerificationAttempt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#time-v1-meta)_ |  |  |  |
+
+
+#### HTTPProxy
+
+
+
+An HTTPProxy builds on top of Gateway API resources to provide a more convenient
+method to manage simple reverse proxy use cases.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha` | | |
+| `kind` <br />_string_ | `HTTPProxy` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[HTTPProxySpec](#httpproxyspec)_ | Spec defines the desired state of an HTTPProxy. |  | Required: \{\} <br /> |
+| `status` <br />_[HTTPProxyStatus](#httpproxystatus)_ | Status defines the current state of an HTTPProxy. | \{ conditions:[map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Accepted] map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Programmed]] \} |  |
+
+
+#### HTTPProxyRule
+
+
+
+HTTPProxyRule defines semantics for matching an HTTP request based on
+conditions (matches), processing it (filters), and forwarding the request to
+backends.
+
+
+
+_Appears in:_
+- [HTTPProxySpec](#httpproxyspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_[SectionName](https://gateway-api.sigs.k8s.io/reference/spec/#sectionname)_ | Name is the name of the route rule. This name MUST be unique within a Route<br />if it is set. |  |  |
+| `matches` <br />_[HTTPRouteMatch](https://gateway-api.sigs.k8s.io/reference/spec/#httproutematch) array_ | Matches define conditions used for matching the rule against incoming<br />HTTP requests. Each match is independent, i.e. this rule will be matched<br />if **any** one of the matches is satisfied.<br />See documentation for the `matches` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule | [map[path:map[type:PathPrefix value:/]]] | MaxItems: 64 <br />MinItems: 1 <br /> |
+| `filters` <br />_[HTTPRouteFilter](https://gateway-api.sigs.k8s.io/reference/spec/#httproutefilter) array_ | Filters define the filters that are applied to requests that match<br />this rule.<br />See documentation for the `filters` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule |  | MaxItems: 16 <br /> |
+| `backends` <br />_[HTTPProxyRuleBackend](#httpproxyrulebackend) array_ | Backends defines the backend(s) where matching requests should be<br />sent.<br />Note: While this field is a list, only a single element is permitted at<br />this time due to underlying Gateway limitations. Once addressed, MaxItems<br />will be increased to allow for multiple backends on any given route. |  | MaxItems: 1 <br />MinItems: 0 <br /> |
+
+
+#### HTTPProxyRuleBackend
+
+
+
+
+
+
+
+_Appears in:_
+- [HTTPProxyRule](#httpproxyrule)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `endpoint` <br />_string_ | Endpoint for the backend. Must be a valid URL.<br />Supports http and https protocols, IPs or DNS addresses in the host, custom<br />ports, and paths. |  | Required: \{\} <br /> |
+| `filters` <br />_[HTTPRouteFilter](https://gateway-api.sigs.k8s.io/reference/spec/#httproutefilter) array_ | Filters defined at this level should be executed if and only if the<br />request is being forwarded to the backend defined here. |  | MaxItems: 16 <br /> |
+
+
+#### HTTPProxySpec
+
+
+
+HTTPProxySpec defines the desired state of HTTPProxy.
+
+
+
+_Appears in:_
+- [HTTPProxy](#httpproxy)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `hostnames` <br />_Hostname array_ | Hostnames defines a set of hostnames that should match against the HTTP<br />Host header to select a HTTPProxy used to process the request.<br />Valid values for Hostnames are determined by RFC 1123 definition of a<br />hostname with 1 notable exception:<br />1. IPs are not allowed.<br />Hostnames must be verified before being programmed. This is accomplished<br />via the use of `Domain` resources. A hostname is considered verified if any<br />verified `Domain` resource exists in the same namespace where the<br />`spec.domainName` of the resource either exactly matches the hostname, or<br />is a suffix match of the hostname. That means that a Domain with a<br />`spec.domainName` of `example.com` will match a hostname of<br />`test.example.com`, `foo.test.example.com`, and exactly `example.com`, but<br />not a hostname of `test-example.com`. If a `Domain` resource does not exist<br />that matches a hostname, one will automatically be created when the system<br />attempts to program the HTTPProxy.<br />In addition to verifying ownership, hostnames must be unique across the<br />platform. If a hostname is already programmed on another resource, a<br />conflict will be encountered and communicated in the `HostnamesVerified`<br />condition.<br />Hostnames which have been programmed will be listed in the<br />`status.hostnames` field. Any hostname which has not been programmed will<br />be listed in the `message` field of the `HostnamesVerified` condition with<br />an indication as to why it was not programmed.<br />The system may automatically generate and associate hostnames with the<br />HTTPProxy. In such cases, these will be listed in the `status.hostnames`<br />field and do not require additional configuration by the user.<br />Wildcard hostnames are not supported at this time. |  | MaxItems: 16 <br />Optional: \{\} <br /> |
+| `rules` <br />_[HTTPProxyRule](#httpproxyrule) array_ | Rules are a list of HTTP matchers, filters and actions. |  | MaxItems: 16 <br />MinItems: 1 <br />Required: \{\} <br /> |
+
+
+#### HTTPProxyStatus
+
+
+
+HTTPProxyStatus defines the observed state of HTTPProxy.
+
+
+
+_Appears in:_
+- [HTTPProxy](#httpproxy)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `addresses` <br />_GatewayStatusAddress array_ | Addresses lists the network addresses that have been bound to the<br />HTTPProxy.<br />This field will not contain custom hostnames defined in the HTTPProxy. See<br />the `hostnames` field |  | MaxItems: 16 <br /> |
+| `hostnames` <br />_Hostname array_ | Hostnames lists the hostnames that have been bound to the HTTPProxy.<br />If this list does not match that defined in the HTTPProxy, see the<br />`HostnamesVerified` condition message for details. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions describe the current conditions of the HTTPProxy. |  |  |
+
+
+#### HTTPVerificationToken
+
+
+
+
+
+
+
+_Appears in:_
+- [DomainVerificationStatus](#domainverificationstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `url` <br />_string_ |  |  |  |
+| `body` <br />_string_ |  |  |  |
+
+
+
+
+
+
+
+## resourcemanager.miloapis.com/v1alpha1
+
+
+
+### Resource Types
+- [Organization](#organization)
+- [OrganizationMembership](#organizationmembership)
+- [Project](#project)
+
+
+
+#### MemberReference
+
+
+
+MemberReference contains information that points to the User being referenced.
+
+
+
+_Appears in:_
+- [OrganizationMembershipSpec](#organizationmembershipspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the name of resource being referenced |  | Required: \{\} <br /> |
+
+
+#### Organization
+
+
+
+Use lowercase for path, which influences plural name. Ensure kind is Organization.
+Organization is the Schema for the Organizations API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `resourcemanager.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `Organization` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[OrganizationSpec](#organizationspec)_ |  |  | Required: \{\} <br /> |
+| `status` <br />_[OrganizationStatus](#organizationstatus)_ |  |  |  |
+
+
+#### OrganizationMembership
+
+
+
+OrganizationMembership is the Schema for the organizationmemberships API
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `resourcemanager.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `OrganizationMembership` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[OrganizationMembershipSpec](#organizationmembershipspec)_ |  |  |  |
+| `status` <br />_[OrganizationMembershipStatus](#organizationmembershipstatus)_ |  |  |  |
+
+
+#### OrganizationMembershipOrganizationStatus
+
+
+
+OrganizationMembershipOrganizationStatus defines the observed state of an organization in a membership.
+
+
+
+_Appears in:_
+- [OrganizationMembershipStatus](#organizationmembershipstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | Type is the type of the organization in the membership. |  | Optional: \{\} <br /> |
+| `displayName` <br />_string_ | DisplayName is the display name of the organization in the membership. |  | Optional: \{\} <br /> |
+
+
+#### OrganizationMembershipSpec
+
+
+
+OrganizationMembershipSpec defines the desired state of OrganizationMembership
+
+
+
+_Appears in:_
+- [OrganizationMembership](#organizationmembership)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `organizationRef` <br />_[OrganizationReference](#organizationreference)_ | OrganizationRef is a reference to the Organization that the user is a member of. |  | Required: \{\} <br /> |
+| `userRef` <br />_[MemberReference](#memberreference)_ | UserRef is a reference to the User that is a member of the Organization. |  | Required: \{\} <br /> |
+
+
+#### OrganizationMembershipStatus
+
+
+
+OrganizationMembershipStatus defines the observed state of OrganizationMembership
+
+
+
+_Appears in:_
+- [OrganizationMembership](#organizationmembership)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed for this OrganizationMembership by the controller. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the OrganizationMembership. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `user` <br />_[OrganizationMembershipUserStatus](#organizationmembershipuserstatus)_ | User contains information about the user in the membership. |  | Optional: \{\} <br /> |
+| `organization` <br />_[OrganizationMembershipOrganizationStatus](#organizationmembershiporganizationstatus)_ | Organization contains information about the organization in the membership. |  | Optional: \{\} <br /> |
+
+
+#### OrganizationMembershipUserStatus
+
+
+
+OrganizationMembershipUserStatus defines the observed state of a user in a membership.
+
+
+
+_Appears in:_
+- [OrganizationMembershipStatus](#organizationmembershipstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `email` <br />_string_ | Email is the email of the user in the membership. |  | Optional: \{\} <br /> |
+| `givenName` <br />_string_ | GivenName is the given name of the user in the membership. |  | Optional: \{\} <br /> |
+| `familyName` <br />_string_ | FamilyName is the family name of the user in the membership. |  | Optional: \{\} <br /> |
+
+
+#### OrganizationReference
+
+
+
+OrganizationReference contains information that points to the Organization being referenced.
+
+
+
+_Appears in:_
+- [OrganizationMembershipSpec](#organizationmembershipspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name is the name of resource being referenced |  | Required: \{\} <br /> |
+
+
+#### OrganizationSpec
+
+
+
+OrganizationSpec defines the desired state of Organization
+
+
+
+_Appears in:_
+- [Organization](#organization)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | The type of organization. |  | Enum: [Personal Standard] <br />Required: \{\} <br /> |
+
+
+#### OrganizationStatus
+
+
+
+OrganizationStatus defines the observed state of Organization
+
+
+
+_Appears in:_
+- [Organization](#organization)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed for this Organization by the controller. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Conditions represents the observations of an organization's current state.<br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
+
+
+#### OwnerReference
+
+
+
+OwnerReference is a reference to the owner of the project.
+
+
+
+_Appears in:_
+- [ProjectSpec](#projectspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `kind` <br />_string_ | Kind is the kind of the resource. |  | Enum: [Organization] <br />Required: \{\} <br /> |
+| `name` <br />_string_ | Name is the name of the resource. |  | Required: \{\} <br /> |
+
+
+#### Project
+
+
+
+Project is the Schema for the projects API.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `resourcemanager.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `Project` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ProjectSpec](#projectspec)_ |  |  | Required: \{\} <br /> |
+| `status` <br />_[ProjectStatus](#projectstatus)_ |  |  |  |
+
+
+#### ProjectSpec
+
+
+
+ProjectSpec defines the desired state of Project.
+
+
+
+_Appears in:_
+- [Project](#project)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `ownerRef` <br />_[OwnerReference](#ownerreference)_ | OwnerRef is a reference to the owner of the project. Must be a valid<br />resource. |  | Required: \{\} <br /> |
+
+
+#### ProjectStatus
+
+
+
+ProjectStatus defines the observed state of Project.
+
+
+
+_Appears in:_
+- [Project](#project)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Represents the observations of a project's current state.<br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
+
+
+
+## telemetry.miloapis.com/v1alpha1
+
+Package v1alpha1 contains API Schema definitions for the telemetry v1alpha1 API group.
+
+### Resource Types
+- [ExportPolicy](#exportpolicy)
+
+
+
+#### Authentication
+
+
+
+Configures how the sink will authenticate with the configured endpoint. These
+options are mutually exclusive.
+
+
+
+_Appears in:_
+- [PrometheusRemoteWriteSink](#prometheusremotewritesink)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `basicAuth` <br />_[BasicAuthAuthentication](#basicauthauthentication)_ | Configures the sink to use basic auth to authenticate with the configured<br />endpoint. |  |  |
+
+
+#### BasicAuthAuthentication
+
+_Underlying type:_ `struct{SecretRef LocalSecretReference "json:\"secretRef\""}`
+
+Configures how the sink should use Basic Auth for authenticating with a
+telemetry endpoint.
+
+
+
+_Appears in:_
+- [Authentication](#authentication)
+
+
+
+#### Batch
+
+
+
+Configures the batching behavior the sink will use to batch requests before
+publishing them to the endpoint.
+
+
+
+_Appears in:_
+- [PrometheusRemoteWriteSink](#prometheusremotewritesink)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `timeout` <br />_[Duration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#duration-v1-meta)_ | Batch timeout before sending telemetry. Must be a duration (e.g. 5s). |  | Required: \{\} <br /> |
+| `maxSize` <br />_integer_ | Maximum number of telemetry entries per batch. |  | Maximum: 5000 <br />Minimum: 1 <br />Required: \{\} <br /> |
+
+
+#### ExportPolicy
+
+
+
+ExportPolicy is the Schema for the export policy API.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `telemetry.miloapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ExportPolicy` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ExportPolicySpec](#exportpolicyspec)_ | Describes the expected state of the ExportPolicy's configuration. The<br />control plane will constantly evaluate the current state of exporters that<br />are deployed and ensure it matches the expected configuration. This field<br />is required when configuring an export policy. |  |  |
+| `status` <br />_[ExportPolicyStatus](#exportpolicystatus)_ | Provides information on the current state of the export policy that was<br />observed by the control plane. This will be continuously updated as the<br />control plane monitors exporters. |  |  |
+
+
+#### ExportPolicySpec
+
+
+
+ExportPolicySpec defines the desired state of ExportPolicy.
+
+
+
+_Appears in:_
+- [ExportPolicy](#exportpolicy)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `sources` <br />_[TelemetrySource](#telemetrysource) array_ | Defines how the export policy should source telemetry data to publish to<br />the configured sinks. An export policy can define multiple telemetry<br />sources. The export policy will **not** de-duplicate telemetry data that<br />matches multiple sources. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
+| `sinks` <br />_[TelemetrySink](#telemetrysink) array_ | Configures how telemetry data should be sent to a third-party telemetry<br />platforms. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
+
+
+#### ExportPolicyStatus
+
+
+
+ExportPolicyStatus defines the observed state of ExportPolicy.
+
+
+
+_Appears in:_
+- [ExportPolicy](#exportpolicy)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Provides summary status information on the export policy as a whole. Review<br />the sink status information for detailed information on each sink.<br />Known condition types are: "Ready" |  |  |
+| `sinks` <br />_[SinkStatus](#sinkstatus) array_ | Provides status information on each sink that's configured. |  |  |
+
+
+
+
+#### MetricSource
+
+
+
+A metric source configures the metric data that should be exported to the
+configured sinks. The options below are expected to be mutually exclusive.
+
+
+
+_Appears in:_
+- [TelemetrySource](#telemetrysource)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `metricsql` <br />_string_ | The MetricSQL option allows to user to provide a metricsql query that can<br />be used to select and filter metric data that should be published by the<br />export policy.<br />Here's an example of a metricsql query that will publish gateway metrics:<br />``` \{service_name=“networking.miloapis.com”, resource_kind="Gateway"\} ```<br />See: https://docs.victoriametrics.com/metricsql/ |  |  |
+
+
+#### PrometheusRemoteWriteSink
+
+
+
+Configures how the sink should send data to a OTLP HTTP endpoint.
+
+
+
+_Appears in:_
+- [SinkTarget](#sinktarget)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `authentication` <br />_[Authentication](#authentication)_ | Configures how the sink should authenticate with the HTTP endpoint. |  |  |
+| `endpoint` <br />_string_ | Configure an HTTP endpoint to use for publishing telemetry data. |  | Required: \{\} <br /> |
+| `batch` <br />_[Batch](#batch)_ | Configures how telemetry data should be batched before sending to the sink.<br />By default, the sink will batch telemetry data every 5 seconds or when<br />the batch size reaches 500 entries, whichever comes first. | \{ maxSize:500 timeout:5s \} |  |
+| `retry` <br />_[Retry](#retry)_ | Configures the export policies' retry behavior when it fails to send<br />requests to the sink's endpoint. There's no guarantees that the export<br />policy will retry until success if the endpoint is not available or<br />configured incorrectly. | \{ backoffDuration:5s maxAttempts:3 \} |  |
+
+
+#### Retry
+
+
+
+Configures the retry behavior of the sink when it fails to send telemetry
+data to the configured endpoint.
+
+
+
+_Appears in:_
+- [PrometheusRemoteWriteSink](#prometheusremotewritesink)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `maxAttempts` <br />_integer_ | Maximum number of attempts before telemetry data should be dropped. |  | Maximum: 10 <br />Minimum: 1 <br />Required: \{\} <br /> |
+| `backoffDuration` <br />_[Duration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#duration-v1-meta)_ | Backoff duration that should be used to backoff when retrying requests. |  | Required: \{\} <br /> |
+
+
+#### SinkStatus
+
+
+
+SinkStatus provides status information on the current status of a sink. This
+can be used to determine whether a sink is configured correctly and is
+exporting telemetry data.
+
+
+
+_Appears in:_
+- [ExportPolicyStatus](#exportpolicystatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | The name of the corresponding sink configuration in the spec of the export<br />policy. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/#condition-v1-meta) array_ | Provides status information on the current status of the sink. This can be<br />used to determine whether a sink is configured correctly and is exporting<br />telemetry data.<br />Known condition types are: "Ready" |  |  |
+
+
+#### SinkTarget
+
+
+
+Configures the target of the telemetry sink. The target defines the protocol
+that's used to send telemetry data to the sink. Only one target protocol can
+be configured per sink.
+
+
+
+_Appears in:_
+- [TelemetrySink](#telemetrysink)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `prometheusRemoteWrite` <br />_[PrometheusRemoteWriteSink](#prometheusremotewritesink)_ | Configures the export policy to publish telemetry using the Prometheus<br />Remote Write protocol. |  |  |
+
+
+#### TelemetrySink
+
+
+
+Configures how telemetry data should be sent to a third-party platform. As of
+now there are no guarantees around delivery of telemetry data, especially if
+the sink's endpoint is unavailable.
+
+
+
+_Appears in:_
+- [ExportPolicySpec](#exportpolicyspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | A name provided to the telemetry sink that's unique within the export<br />policy. |  | MaxLength: 63 <br />MinLength: 1 <br />Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?$` <br />Required: \{\} <br /> |
+| `sources` <br />_string array_ | A list of sources that should be sent to the telemetry sink. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
+| `target` <br />_[SinkTarget](#sinktarget)_ | Configures the target of the telemetry sink. |  | Required: \{\} <br /> |
+
+
+#### TelemetrySource
+
+
+
+Defines how the export policy should source telemetry data from resources on
+the platform.
+
+
+
+_Appears in:_
+- [ExportPolicySpec](#exportpolicyspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | A unique name given to the telemetry source within an export policy. Must<br />be a valid DNS label. |  | MaxLength: 63 <br />MinLength: 1 <br />Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?$` <br />Required: \{\} <br /> |
+| `metrics` <br />_[MetricSource](#metricsource)_ | Configures how the telemetry source should retrieve metric data from the<br />Datum Cloud platform. |  |  |
+
+

@@ -1,241 +1,43 @@
-import fs from 'fs';
-import path from 'path';
 import { marked } from 'marked';
 import { graphql } from '@octokit/graphql';
-import { saveJson, loadJson } from './file';
-
-const DB_LOCATION = '/app/.persistent/';
-const ISSUE_FILE_NAME = 'issue.json';
-const VOTE_FILE_NAME = 'vote.json';
-const USER_VOTE_FILE_NAME = 'user_vote.json';
-
-export interface Issues {
-  issues: typeof getProjects;
-  updated_at: Date;
-}
-
-export interface Projects {
-  issues: object[];
-  updated_at: Date;
-}
-
-export interface Votes {
-  [key: string]: number;
-}
-
-export interface UserVote {
-  [key: string]: string[];
-}
+import {
+  dbConnect,
+  addUserVote,
+  removeUserVote,
+  refreshIssues,
+  getUserVoted as userVoted,
+  getIssues,
+  incrementVote,
+  getVotes,
+} from '@libs/postgres';
+import type { IssuesProps } from '@libs/postgres';
 
 type GitHubGraphQLResponse = {
-  data: {
-    repository: {
-      issues: {
-        nodes: [
-          {
-            id: string;
-            title: string;
-            body: string;
-            url: string;
-            labels: {
-              nodes: Array<{
-                name: string;
-              }>;
-            };
-          },
-        ];
-      };
+  repository: {
+    issues: {
+      nodes: [
+        {
+          id: string;
+          title: string;
+          body: string;
+          url: string;
+          labels: {
+            nodes: Array<{
+              name: string;
+            }>;
+          };
+        },
+      ];
     };
   };
 };
 
-async function getRoadmap() {
-  let issues: object[] = [];
-
+function isConnectedToDB(): boolean {
   try {
-    const projectData: Projects = await getProjects();
-
-    if (projectData && projectData.issues.length > 0) {
-      if (isOverOneHourAgo(projectData.updated_at)) {
-        issues = await issuesLabeledRoadmap();
-        await updateProjects(JSON.stringify(issues));
-      } else {
-        issues = projectData.issues;
-      }
-    } else {
-      issues = await issuesLabeledRoadmap();
-      await updateProjects(JSON.stringify(issues));
-    }
-  } catch (error) {
-    console.error(
-      'Fetching issues from the remote & db failed: ',
-      error instanceof Error ? error.message : String(error)
-    );
-  }
-
-  return assignVoteValueToIssue(issues);
-}
-
-async function getVoted(id: string): Promise<string[] | null> {
-  try {
-    const userVotes: UserVote = (await loadJson(USER_VOTE_FILE_NAME)) as UserVote;
-    const userVote = userVotes[id] || null;
-
-    if (!userVote) {
-      return null; // User has not voted
-    } else {
-      return userVote;
-    }
-  } catch (error) {
-    // User has not voted
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      (error as { code: string }).code === 'ENOENT'
-    ) {
-      return null;
-    } else {
-      return null;
-    }
-  }
-}
-
-async function getVotes(): Promise<Votes> {
-  try {
-    const fileContent = (await loadJson(VOTE_FILE_NAME)) as { votes: Votes };
-    const votes: Votes = fileContent.votes;
-
-    return votes;
-  } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      (error as { code: string }).code === 'ENOENT'
-    ) {
-      createDefaultVoteFile();
-    }
-  }
-
-  return {};
-}
-
-/** Adds a vote for a specific vote ID by a user.
- * If the user has not voted yet, it increments the vote count and returns the new vote count.
- * If the user has already voted, it returns null.
- * @param voteId - The ID of the vote
- * @param userId - The ID of the user
- * @returns {Promise<number | null>} - Returns the new vote count if the user has not voted yet, or null if the user has already voted
- */
-async function addVote(voteId: string, userId: string): Promise<number | null> {
-  const votesData: Votes = await getVotes();
-  let newValue = 1;
-
-  try {
-    if (await setUserVoteLog(userId, voteId)) {
-      // If the user has already voted, we increment the vote count
-      if (!votesData || Object.keys(votesData).length < 1) {
-        // If the user has not voted yet, we add a new vote entry
-        saveJson(VOTE_FILE_NAME, {
-          votes: { [voteId]: newValue },
-          updated_at: new Date().toISOString(),
-        });
-      } else {
-        if (voteId in votesData) {
-          newValue = votesData[voteId] + 1;
-          votesData[voteId] = newValue;
-          saveJson(VOTE_FILE_NAME, { votes: votesData, updated_at: new Date().toISOString() });
-        } else {
-          votesData[voteId] = newValue;
-          saveJson(VOTE_FILE_NAME, { votes: votesData, updated_at: new Date().toISOString() });
-        }
-      }
-      return newValue;
-    }
-
-    return null;
-  } catch (error) {
-    console.error('Error setting vote:', error);
-    return null;
-  }
-}
-
-async function getProjects(): Promise<Projects> {
-  const defaultProjects = JSON.stringify(
-    { issues: [], updated_at: new Date().toISOString() },
-    null,
-    2
-  );
-
-  try {
-    // const fileContent = fs.readFileSync(filePath, 'utf8');
-    // const projects: Projects = JSON.parse(fileContent);
-    const projects: Projects = (await loadJson(ISSUE_FILE_NAME)) as Projects;
-
-    if (projects) {
-      return projects;
-    }
-  } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      (error as { code: string }).code === 'ENOENT'
-    ) {
-      createDefaultIssueFile();
-    }
-  }
-
-  return JSON.parse(defaultProjects);
-}
-
-async function updateProjects(issues: string): Promise<boolean> {
-  const filePath = path.join(DB_LOCATION, ISSUE_FILE_NAME);
-  const updated_at = new Date();
-
-  try {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    const data = JSON.parse(fileContent);
-    data.issues = JSON.parse(issues);
-    data.updated_at = updated_at.toISOString();
-
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    return true;
-  } catch (error) {
-    console.error('Error updating projects:', error);
+    const sql = dbConnect();
+    return !!sql;
+  } catch {
     return false;
-  }
-}
-
-async function setUserVoteLog(userId: string, voteId: string): Promise<boolean> {
-  try {
-    const userVotes: UserVote = (await loadJson(USER_VOTE_FILE_NAME)) as UserVote;
-
-    if (!userVotes[userId]) {
-      saveJson(USER_VOTE_FILE_NAME, { [userId]: [voteId] });
-      return true;
-    }
-
-    if (!userVotes[userId].includes(voteId)) {
-      userVotes[userId].push(voteId);
-      saveJson(USER_VOTE_FILE_NAME, userVotes);
-      return true;
-    }
-
-    return false; // User has already voted, no need to update
-  } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      (error as { code: string }).code === 'ENOENT'
-    ) {
-      saveJson(USER_VOTE_FILE_NAME, { [userId]: [voteId] });
-      return true;
-    } else {
-      return false;
-    }
   }
 }
 
@@ -245,50 +47,116 @@ function isOverOneHourAgo(date: Date): boolean {
   return date < oneHourAgo;
 }
 
-async function issuesLabeledRoadmap(): Promise<object[]> {
-  const token = import.meta.env.GH_ACCESS_TOKEN || process.env.GH_ACCESS_TOKEN;
+async function getRoadmap(userId: string | null) {
+  let issues: IssuesProps[] = await getIssues();
 
-  if (!token) {
-    throw new Error('GH_ACCESS_TOKEN must be set');
+  try {
+    if (issues && issues.length > 0) {
+      if (isOverOneHourAgo(issues[0].updated_at)) {
+        // take the first issue's updated_at date to check if it's over one hour ago
+        issues = await getIssuesFromGithub();
+        await refreshIssues(issues);
+      }
+    } else {
+      issues = await getIssuesFromGithub();
+      await refreshIssues(issues);
+    }
+  } catch (error) {
+    console.error(
+      'Fetching issues from the remote & db failed: ',
+      error instanceof Error ? error.message : String(error)
+    );
   }
 
-  const graphqlWithAuth = graphql.defaults({
-    headers: {
-      authorization: `Bearer ${token}`,
+  return assignAdditionalDataToIssue(issues, userId);
+}
+
+async function graphqlWithAppAuth(appId: number, installationId: number, privateKey: string) {
+  const { createAppAuth } = await import('@octokit/auth-app');
+  const auth = createAppAuth({
+    appId,
+    privateKey,
+    installationId,
+  });
+
+  return graphql.defaults({
+    request: {
+      hook: auth.hook,
     },
   });
+}
+
+async function getIssuesFromGithub(): Promise<IssuesProps[]> {
+  const appId = import.meta.env.APP_ID || process.env.APP_ID;
+  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
+  const installationId = parseInt(
+    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
+    10
+  );
+
+  if (!appId || !installationId || !privateKey) {
+    return [];
+  }
+
+  const filters = import.meta.env.ROADMAP_LABEL || process.env.ROADMAP_LABEL;
+  const labelFilter = filters
+    .split(',')
+    .map((label: string) => `"${label.trim()}"`)
+    .join(',');
+
+  const graphqlWithAuth = await graphqlWithAppAuth(
+    Number(appId),
+    Number(installationId),
+    privateKey
+  );
 
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {
         repository(owner: "datum-cloud", name: "enhancements") {
-          issues(last: 50, filterBy: {states: OPEN, labels: ["milo"]}) {
+          issues(last: 50, filterBy: {states: OPEN, labels: [${labelFilter}]}) {
             nodes {
               id
               title
               body
               url
+              labels(first: 10) {
+                nodes {
+                  name
+                }
+              }
             }
           }
         }
       }
     `
   );
+  // console.log('----- Fetched issues from GitHub:', jsonData.repository.issues.nodes);
+  const issues: IssuesProps[] = Object(jsonData.repository.issues.nodes).map(
+    (issue: IssuesProps) => ({
+      ...issue,
+    })
+  );
 
-  return Object(jsonData).repository.issues.nodes;
+  return issues;
 }
 
-async function assignVoteValueToIssue(source: object): Promise<object[]> {
+async function assignAdditionalDataToIssue(
+  source: object,
+  userId: string | null
+): Promise<object[]> {
   const newIssues: object[] = [];
   let votesMap = new Map();
 
-  // add vote to projects
+  const userVotedIssues = userId ? await getUserVoted(userId) : [];
+  // console.log(`+++++ userVotedIssues: ${JSON.stringify(userVotedIssues)}`);
+
   try {
     const votes = await getVotes();
-    votesMap = new Map(Object.entries(votes));
+    votesMap = new Map(votes.map((vote) => [vote.id, vote.vote]));
   } catch (error) {
     console.error(
-      'Fetching votes from the remote and db failed: ',
+      'Fetching votes from the db failed: ',
       error instanceof Error ? error.message : String(error)
     );
   }
@@ -301,24 +169,26 @@ async function assignVoteValueToIssue(source: object): Promise<object[]> {
     const issueId = issue.id;
     const issueVote = votesMap.get(issueId) || null;
     const modifyProject = {
-      content: {
-        id: issue.id,
-        title: issue.title,
-        body: issue.body ? marked.parse(issue.body) : '',
-        url: issue.url,
-        labels: issue.labels,
-      },
+      id: issue.id,
+      title: issue.title,
+      body: issue.body ? marked.parse(issue.body) : '',
+      url: issue.url,
+      labels: issue.labels,
     };
+
+    const userHasVoted = (userVotedIssues as string[]).some((vote) => vote === issueId);
 
     if (issueVote) {
       newIssues.push({
         ...modifyProject,
         vote: issueVote,
+        hasVoted: userHasVoted,
       });
     } else {
       newIssues.push({
         ...modifyProject,
-        vote: 0, // Default vote count if not found in votes
+        vote: 0,
+        hasVoted: userHasVoted,
       });
     }
   }
@@ -326,17 +196,51 @@ async function assignVoteValueToIssue(source: object): Promise<object[]> {
   return newIssues;
 }
 
-/** Creates a default file with an empty default values. **/
-function createDefaultIssueFile(): boolean {
-  const defaultValue = { issues: [], updated_at: new Date().toISOString() };
-  saveJson(ISSUE_FILE_NAME, defaultValue);
-  return true;
+async function getUserVoted(userId: string): Promise<object> {
+  try {
+    const userVote = await userVoted(userId);
+    if (!userVote) {
+      return []; // User has not voted
+    } else {
+      return userVote;
+    }
+  } catch {
+    return [];
+  }
 }
 
-function createDefaultVoteFile(): object {
-  const defaultValue = { votes: [], updated_at: new Date().toISOString() };
-  saveJson(VOTE_FILE_NAME, defaultValue);
-  return defaultValue;
+async function addVote(issueId: string, userId: string): Promise<number | null> {
+  let newValue = null;
+
+  try {
+    addUserVote(userId, issueId).then((userVotes) => {
+      if (userVotes) {
+        newValue = incrementVote(issueId, userId);
+      }
+    });
+
+    return newValue;
+  } catch (error) {
+    console.error('Error setting vote:', error);
+    return null;
+  }
 }
 
-export { getRoadmap, getProjects, updateProjects, addVote, getVotes, getVoted };
+async function removeVote(issueId: string, userId: string): Promise<number | null> {
+  let newValue = null;
+
+  try {
+    removeUserVote(userId, issueId).then((userVotes) => {
+      if (userVotes) {
+        newValue = incrementVote(issueId, userId);
+      }
+    });
+
+    return newValue;
+  } catch (error) {
+    console.error('Error setting vote:', error);
+    return null;
+  }
+}
+
+export { getRoadmap, addVote, getUserVoted, removeVote, isConnectedToDB };

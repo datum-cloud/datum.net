@@ -98,7 +98,7 @@ async function getIssuesFromGithub(): Promise<IssuesProps[]> {
     return [];
   }
 
-  const filters = import.meta.env.ROADMAP_LABEL || process.env.ROADMAP_LABEL;
+  const filters = import.meta.env.ROADMAP_LABEL || process.env.ROADMAP_LABEL || 'Cloud Portal';
   const labelFilter = filters
     .split(',')
     .map((label: string) => `"${label.trim()}"`)

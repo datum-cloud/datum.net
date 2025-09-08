@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import { Image } from 'astro:assets';
+import { getCollectionEntry } from '@utils/collectionUtils';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -11,21 +12,23 @@ import GlobalSection from '@components/GlobalSection.astro';
 import ImageSphere from '@v1/assets/images/sphere-half.png';
 import Skeleton from '@components/roadmap/skeleton.astro';
 
-const subtitle = 'Roadmap';
-const title = 'The Roadmap';
-const icon = 'calendar-range';
-const description =
-  "Here's what we're thinking about building next. Vote for your favorites, or request a new feature on GitHub.";
+const page = await getCollectionEntry('pages', 'roadmap');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Open Source Projects';
+const description = fm.description;
 ---
 
-<Layout title={title} description={description} bodyClass="about-page">
+<Layout title={title} description={description} bodyClass="roadmap-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"
-      iconName={icon}
+      iconName={fm.iconName}
       title={title}
-      description={description}
-      subtitle={subtitle}
+      description={page.body}
+      subtitle={fm.subtitle}
     />
 
     <div class="section--block section--block--pad bg-navy dark">

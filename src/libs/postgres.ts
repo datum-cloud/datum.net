@@ -58,8 +58,9 @@ async function getVotes(): Promise<VotesProps[]> {
     const sql = await dbConnect();
     const votes = await sql`SELECT * FROM votes`;
     return votes as unknown as VotesProps[];
-  } catch (error) {
-    console.error('Error fetching votes:', error);
+  } catch {
+    // error
+    console.error('Error load votes from db');
     return [];
   }
 }
@@ -69,8 +70,8 @@ async function getIssues(): Promise<IssuesProps[]> {
     const sql = await dbConnect();
     const issues = await sql`SELECT * FROM issues`;
     return issues as unknown as IssuesProps[];
-  } catch (error) {
-    console.error('Error fetching issues:', error);
+  } catch {
+    console.error('Error load issues from db');
     return [];
   }
 }
@@ -84,8 +85,8 @@ async function getVote(id: string): Promise<number | null> {
     }
 
     return result[0].vote as number;
-  } catch (error) {
-    console.error(`Error fetching vote with id ${id}: `, error);
+  } catch {
+    console.error(`Error load vote with id ${id} from db`);
     return null;
   }
 }
@@ -103,8 +104,8 @@ async function getUserVoted(userId: string): Promise<string[] | null> {
     }
 
     return result.map((row) => row.issue_id);
-  } catch (error) {
-    console.error('Error fetching user votes:', error);
+  } catch {
+    console.error('Error load user votes from db');
     return null;
   }
 }

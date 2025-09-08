@@ -1,6 +1,7 @@
 import { marked } from 'marked';
 import { graphql } from '@octokit/graphql';
 import {
+  dbConnect,
   addUserVote,
   removeUserVote,
   refreshIssues,
@@ -30,6 +31,15 @@ type GitHubGraphQLResponse = {
     };
   };
 };
+
+function isConnectedToDB(): boolean {
+  try {
+    const sql = dbConnect();
+    return !!sql;
+  } catch {
+    return false;
+  }
+}
 
 function isOverOneHourAgo(date: Date): boolean {
   const oneHourAgo = new Date();
@@ -61,24 +71,8 @@ async function getRoadmap(userId: string | null) {
   return assignAdditionalDataToIssue(issues, userId);
 }
 
-async function graphqlWithAppAuth() {
-  const appId = import.meta.env.APP_ID || process.env.APP_ID;
-  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
-  const installationId = parseInt(
-    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID,
-    10
-  );
-
-  if (!appId || isNaN(installationId)) {
-    throw new Error('APP_ID and APP_INSTALLATION_ID must be set');
-  }
-
-  if (!privateKey) {
-    throw new Error('missing app private key');
-  }
-
+async function graphqlWithAppAuth(appId: number, installationId: number, privateKey: string) {
   const { createAppAuth } = await import('@octokit/auth-app');
-
   const auth = createAppAuth({
     appId,
     privateKey,
@@ -93,12 +87,29 @@ async function graphqlWithAppAuth() {
 }
 
 async function getIssuesFromGithub(): Promise<IssuesProps[]> {
+  const appId = import.meta.env.APP_ID || process.env.APP_ID;
+  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
+  const installationId = parseInt(
+    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
+    10
+  );
+
+  if (!appId || !installationId || !privateKey) {
+    return [];
+  }
+
   const filters = import.meta.env.ROADMAP_LABEL || process.env.ROADMAP_LABEL;
   const labelFilter = filters
     .split(',')
     .map((label: string) => `"${label.trim()}"`)
     .join(',');
-  const graphqlWithAuth = await graphqlWithAppAuth();
+
+  const graphqlWithAuth = await graphqlWithAppAuth(
+    Number(appId),
+    Number(installationId),
+    privateKey
+  );
+
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {
@@ -232,4 +243,4 @@ async function removeVote(issueId: string, userId: string): Promise<number | nul
   }
 }
 
-export { getRoadmap, addVote, getUserVoted, removeVote };
+export { getRoadmap, addVote, getUserVoted, removeVote, isConnectedToDB };

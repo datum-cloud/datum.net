@@ -1,10 +1,12 @@
 ---
 export const prerender = false;
-import { getRoadmap } from '@utils/roadmap';
+import { getRoadmap, isConnectedToDB } from '@utils/roadmap';
 import { marked } from 'marked';
+import { truncate } from '@libs/string';
 
 const userId = Astro.cookies.get('userId')?.value || '';
 const issues = await getRoadmap(userId);
+const dbIsConnected = isConnectedToDB();
 ---
 
 <div class="roadmap-container">
@@ -22,29 +24,35 @@ const issues = await getRoadmap(userId);
         <div class="roadmap-card">
           <div class="roadmap-card--content">
             <div class="roadmap-card--vote-section">
-              <div class="roadmap-card--vote-counter">
-                <span id={`${issue.id}-value`} class="roadmap-card--vote-number">
-                  {issue.vote}
-                </span>
-                <span class="roadmap-card--vote-label">votes</span>
-              </div>
+              {!dbIsConnected && (
+                <div class="roadmap-card--vote-counter">
+                  <span id={`${issue.id}-value`} class="roadmap-card--vote-number">
+                    {issue.vote}
+                  </span>
+                  <span class="roadmap-card--vote-label">votes</span>
+                </div>
+              )}
             </div>
 
             <div class="roadmap-card--info-section">
               <div class="roadmap-card--text-content">
                 <h3 class="roadmap-card--title">{issue.title}</h3>
-                <p class="roadmap-card--description" set:html={marked.parse(issue.body)} />
+                <p
+                  class="roadmap-card--description"
+                  set:html={marked.parse(truncate(issue.body, 200))}
+                />
               </div>
 
               <div class="roadmap-card--actions">
-                <button
-                  class="roadmap-card--vote-button"
-                  data-issueid={issue.id}
-                  data-has-voted={issue.hasVoted}
-                >
-                  {issue.hasVoted ? 'Remove your vote' : 'Add your vote'}
-                </button>
-
+                {!dbIsConnected && (
+                  <button
+                    class="roadmap-card--vote-button"
+                    data-issueid={issue.id}
+                    data-has-voted={issue.hasVoted}
+                  >
+                    {issue.hasVoted ? 'Remove your vote' : 'Add your vote'}
+                  </button>
+                )}
                 {issue.url && (
                   <a
                     href={issue.url}

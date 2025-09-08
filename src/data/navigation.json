@@ -44,7 +44,7 @@
         {
           "items": [
             { "icon": "default", "text": "About", "href": "/about" },
-            { "icon": "book-text", "text": "Handbook", "href": "/about/handbook" },
+            { "icon": "book-text", "text": "Handbook", "href": "/handbook" },
             { "icon": "book-image", "text": "Blog", "href": "/blog" }
           ]
         }
@@ -92,7 +92,7 @@
       "title": "Company",
       "items": [
         { "text": "About", "href": "/about" },
-        { "text": "Handbook", "href": "/about/handbook" },
+        { "text": "Handbook", "href": "/handbook" },
         { "text": "Blog", "href": "/blog" }
       ]
     },

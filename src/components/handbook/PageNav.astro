@@ -40,7 +40,7 @@ const nextArticle =
   (previousArticle || nextArticle) && (
     <nav class:list={['handbook-page-nav', className]}>
       {previousArticle && (
-        <a href={`/about/handbook/${previousArticle.id}`} class="handbook-page-nav-link">
+        <a href={`/handbook/${previousArticle.id}`} class="handbook-page-nav-link">
           <span class="handbook-page-nav-label">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const nextArticle =
         </a>
       )}
       {nextArticle && (
-        <a href={`/about/handbook/${nextArticle.id}`} class="handbook-page-nav-link--next">
+        <a href={`/handbook/${nextArticle.id}`} class="handbook-page-nav-link--next">
           <span class="handbook-page-nav-label--next">
             <span>Next</span>
             <svg

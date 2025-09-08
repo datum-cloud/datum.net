@@ -36,7 +36,7 @@
   }
 
   .roadmap-card--description {
-    @apply font-alliance text-lg leading-relaxed font-normal text-white opacity-80 md:text-xl;
+    @apply font-alliance prose-code:text-white prose-a:no-underline prose-a:border-b prose-a:hover:text-white prose-a:text-white/80 prose prose-lg prose-headings:font-alliance prose-headings:text-white text-lg leading-relaxed font-normal text-white opacity-80 md:text-xl [&>*]:text-white/80;
   }
 
   .roadmap-card--actions {

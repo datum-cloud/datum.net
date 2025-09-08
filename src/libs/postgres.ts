@@ -225,8 +225,8 @@ async function refreshIssues(issues: object): Promise<boolean> {
     }
 
     return true;
-  } catch (error) {
-    console.error('Error caching issues:', error);
+  } catch {
+    console.error('Error caching issues to db');
     return false;
   }
 }

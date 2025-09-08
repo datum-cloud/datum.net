@@ -1,5 +1,7 @@
 ---
 title: Authenticating
+sidebar:
+  order: 2
 ---
 
 The Datum Cloud platform supports users authenticating with the API with
@@ -30,4 +32,15 @@ access token that can be used to authenticate with the Datum Cloud API.
 Invalid authentication tokens or unauthorized requests will result in the same
 **403 Forbidden** error.
 
+```
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "forbidden: User \"system:anonymous\" cannot get path \"/openapi/v3\"",
+  "reason": "Forbidden",
+  "details": {},
+  "code": 403
+}
 ```

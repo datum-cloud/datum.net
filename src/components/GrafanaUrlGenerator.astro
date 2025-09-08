@@ -1,0 +1,140 @@
+---
+// src/components/GrafanaUrlGenerator.astro
+// Grafana Cloud Connection URL Generator component
+//  Generates connection URLs for Grafana Cloud instances
+---
+
+<div class="grafana-generator">
+  <h4 class="grafana-generator__title">Grafana Cloud Connection URL Generator</h4>
+  <form id="urlGenerator" class="grafana-generator__form">
+    <div class="grafana-generator__field">
+      <label for="instanceUrl" class="grafana-generator__label">Grafana Cloud Instance URL:</label>
+      <input
+        type="url"
+        id="instanceUrl"
+        placeholder="https://play.grafana.net"
+        class="grafana-generator__input"
+      />
+    </div>
+  </form>
+  <div id="connectionUrl" class="grafana-generator__result">
+    <p class="grafana-generator__result-label"><strong>Connection URL (for Step 3):</strong></p>
+    <p class="grafana-generator__result-url">
+      <a id="generatedUrl" href="#" target="_blank" class="grafana-generator__link"></a>
+    </p>
+  </div>
+</div>
+
+<script>
+  function generateConnectionUrl() {
+    const instanceUrlInput = document.getElementById('instanceUrl') as HTMLInputElement;
+    const connectionUrlDiv = document.getElementById('connectionUrl') as HTMLElement;
+    const generatedUrlLink = document.getElementById('generatedUrl') as HTMLAnchorElement;
+
+    let instanceUrl = instanceUrlInput.value;
+
+    if (!instanceUrl.trim()) {
+      connectionUrlDiv.style.display = 'none';
+      return;
+    }
+
+    // Add https:// if no scheme is provided
+    if (!instanceUrl.match(/^https?:\/\//)) {
+      instanceUrl = 'https://' + instanceUrl;
+    }
+
+    try {
+      const url = new URL(instanceUrl);
+      const connectionUrl = `${url.origin}/connections/add-new-connection/hmInstancePromId?remoteWrite=direct`;
+
+      generatedUrlLink.href = connectionUrl;
+      generatedUrlLink.textContent = connectionUrl;
+      connectionUrlDiv.style.display = 'block';
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      connectionUrlDiv.style.display = 'none';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const instanceUrlInput = document.getElementById('instanceUrl') as HTMLInputElement;
+    if (instanceUrlInput) {
+      instanceUrlInput.addEventListener('input', generateConnectionUrl);
+    }
+  });
+</script>
+
+<style>
+  .grafana-generator {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .grafana-generator__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+
+  .grafana-generator__form {
+    margin-bottom: 0;
+  }
+
+  .grafana-generator__field {
+    margin-bottom: 0.5rem;
+  }
+
+  .grafana-generator__label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .grafana-generator__input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+
+  .grafana-generator__input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .grafana-generator__result {
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .grafana-generator__result-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  .grafana-generator__result-url {
+    margin-bottom: 0;
+  }
+
+  .grafana-generator__link {
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #2563eb;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+
+  .grafana-generator__link:hover {
+    color: #1d4ed8;
+  }
+</style>

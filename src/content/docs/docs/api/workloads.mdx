@@ -1,6 +1,8 @@
 ---
 title: Workloads
 description: Datum lets you deploy and manage workloads. Today, these workloads can be either virtual machines or containers. They're defined like any other Kubernetes custom resource, usually in YAML.
+sidebar:
+  hidden: true
 ---
 
 ### Workloads Overview
@@ -92,7 +94,7 @@ Let's walk through the sample spec and review each of the key components.
 
 * The placement of the workload, which defines where the workload should run. In this case, it will run in the first location in your project associated with `DFW` (Dallas Fort Worth).
 
-```yaml  
+```yaml
 placements:
   - name: us
     cityCodes: ['DFW']

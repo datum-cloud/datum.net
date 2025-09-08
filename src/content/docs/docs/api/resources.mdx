@@ -1,5 +1,7 @@
 ---
 title: Glossary of Resources
+sidebar:
+  hidden: true
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -13,12 +15,12 @@ resources and how to use them.
 [Detailed Export Policies API Reference](https://github.com/datum-cloud/telemetry-services-operator/blob/main/docs/api/exportpolicies.md)
 
 <Tabs>
-<TabItem value="grafana" label="Grafana Cloud Example">
+  <TabItem label="Grafana Cloud Example">
 
 ```yaml
 apiVersion: v1
 items:
-- apiVersion: telemetry.datumapis.com/v1alpha1
+- apiVersion: telemetry.miloapis.com/v1alpha1
   kind: ExportPolicy
   metadata:
     name: exportpolicy
@@ -44,7 +46,7 @@ items:
     sources:
     - metrics:
         metricsql: |
-          {service_name="telemetry.datumapis.com"}
+          {service_name="telemetry.miloapis.com"}
       name: telemetry-metrics
     - metrics:
         metricsql: |
@@ -54,11 +56,11 @@ kind: List
 metadata: {}
 ```
 
-</TabItem>
-<TabItem value="detailed" label="Detailed Example With Comments">
+  </TabItem>
+  <TabItem label="Detailed Example With Comments">
 
 ```yaml
-apiVersion: telemetry.datumapis.com/v1alpha1
+apiVersion: telemetry.miloapis.com/v1alpha1
 kind: ExportPolicy
 metadata:
   name: exportpolicy-sample
@@ -79,7 +81,7 @@ spec:
         # familiar with using metricsql queries to select metric data from
         # Victoria Metrics.
         metricsql: |
-          {service_name="telemetry.datumapis.com"}
+          {service_name="telemetry.miloapis.com"}
   sinks:
     - name: grafana-cloud-metrics
       sources:
@@ -99,7 +101,7 @@ spec:
             backoffDuration: 2s     # Delay between retry attempts
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ## Instances
@@ -117,7 +119,7 @@ that region and run the container on it. The GCP virtual machine is the instance
 [Detailed Locations API Reference](https://github.com/datum-cloud/network-services-operator/blob/main/docs/api/locations.md)
 
 <Tabs>
-<TabItem value="gcp" label="GCP">
+  <TabItem label="GCP">
 
 ```yaml
 apiVersion: networking.datumapis.com/v1alpha
@@ -135,7 +137,7 @@ spec:
       zone: us-west1-a
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ## Networks
@@ -143,7 +145,7 @@ spec:
 [Detailed Networks API Reference](https://github.com/datum-cloud/network-services-operator/blob/main/docs/api/networks.md)
 
 <Tabs>
-<TabItem value="simple" label="Simple Network">
+  <TabItem label="Simple Network">
 
 ```yaml
 apiVersion: networking.datumapis.com/v1alpha
@@ -155,8 +157,8 @@ spec:
     mode: Auto
 ```
 
-</TabItem>
-<TabItem value="custom" label="Custom IP Ranges">
+  </TabItem>
+  <TabItem label="Custom IP Ranges">
 
 ```yaml
 apiVersion: networking.datumapis.com/v1alpha
@@ -173,7 +175,7 @@ spec:
 
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ## Network Bindings
@@ -190,20 +192,18 @@ spec:
 
 ## Projects
 
-[Detailed Projects API Reference](https://github.com/datum-cloud/datum/blob/milo-apiserver/docs/api/resourcemanager.datumapis.com_projects.yaml.md)
-
+[Detailed Projects API Reference](https://github.com/datum-cloud/milo/blob/main/docs/api/resourcemanager.md)
 <Tabs>
-<TabItem value="sample" label="Sample Project">
+  <TabItem label="Sample Project">
 
-```yaml
-apiVersion: resourcemanager.datumapis.com/v1alpha
+```apiVersion: resourcemanager.miloapis.com/v1alpha1
 kind: Project
 metadata:
   generateName: sample-project-
 spec:
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ## Subnet Claims
@@ -217,9 +217,8 @@ spec:
 ## Workload
 
 [Detailed Workload API Reference](https://github.com/datum-cloud/workload-operator/blob/main/docs/api/workloads.md)
-
 <Tabs>
-<TabItem value="container" label="Container Sample">
+  <TabItem label="Container Sample">
 
 ```yaml
 apiVersion: compute.datumapis.com/v1alpha
@@ -272,8 +271,8 @@ spec:
       minReplicas: 1
 ```
 
-</TabItem>
-<TabItem value="multiple" label="Container with Multiple Placements">
+  </TabItem>
+  <TabItem label="Container with Multiple Placements">
 
 ```yaml
 apiVersion: compute.datumapis.com/v1alpha
@@ -318,8 +317,8 @@ spec:
       minReplicas: 1
 ```
 
-</TabItem>
-<TabItem value="vm" label="VM Sample">
+  </TabItem>
+  <TabItem label="VM Sample">
 
 ```yaml
 apiVersion: compute.datumapis.com/v1alpha
@@ -380,7 +379,7 @@ spec:
       minReplicas: 1
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ## Workload Deployments

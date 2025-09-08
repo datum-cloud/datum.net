@@ -1,0 +1,334 @@
+---
+title: Managing Domains
+sidebar:
+  order: 2
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Before you begin
+
+This tutorial assumes you have already:
+
+- [Registered a Datum account](../get-started/)
+- [Installed and configured the necessary tools](../tasks/tools.md)
+- [Created a Datum project](../tasks/create-project/)
+- [Configured a kubeconfig context for your project](
+    "create-project#add-a-kubeconfig-context-for-your-project" >}} )
+
+## Understanding Domains
+
+A `Domain` resource manages domain name information and ownership in Datum. Once
+verified, the domain can be used with platform resources like HTTPProxy and
+Gateway to configure custom hostnames.
+
+Key concepts:
+
+- **Domain Name**: Any domain name, not necessarily the root domain (e.g.,
+  `team-a.example.com` is valid)
+- **Ownership Verification**: Proves you control the domain via DNS TXT record
+  or HTTP token
+- **Platform Integration**: Enables use of verified domains with platform
+  resources
+- **Multiple Domains**: Any number of Domain resources can be created across
+  namespaces for the same domain name
+
+### Current Use Cases
+
+- **Team Isolation**: Create `team-a.example.com` Domain in team-a namespace to
+  enable `*.team-a.example.com` hostnames
+- **Environment Separation**: Verify `dev.example.com` and `prod.example.com` in
+  different namespaces
+- **Subdomain Management**: Verify specific subdomains rather than managing
+  entire root domains
+
+## Creating a Domain
+
+Create a Domain resource to manage your domain name and verify ownership:
+
+<Tabs>
+  <TabItem label="Apply from stdin">
+
+  ```yaml
+  cat <<EOF | kubectl apply -f -
+  apiVersion: networking.datumapis.com/v1alpha
+  kind: Domain
+  metadata:
+    name: example-com
+  spec:
+    domainName: example.com
+  EOF
+  ```
+
+  </TabItem>
+
+  <TabItem label="Apply from file">
+
+  Save and apply the following resource to your project:
+
+  ```yaml
+  apiVersion: networking.datumapis.com/v1alpha
+  kind: Domain
+  metadata:
+    name: example-com
+  spec:
+    domainName: example.com
+  ```
+
+  </TabItem>
+</Tabs>
+
+### Checking Domain Status
+
+After creating the Domain, check its status:
+
+```shell
+kubectl get domain example-com -o wide
+```
+
+You should see output similar to:
+
+```shell
+NAME          DOMAIN NAME    AGE   VERIFIED   VERIFICATION MESSAGE
+example-com   example.com    5s    False      Update your DNS provider with record defined in `status.verification.dnsRecord`, or HTTP server with token defined in `status.verification.httpToken`.
+```
+
+The Domain will initially show `VERIFIED: False` because ownership verification
+is required for platform integration features.
+
+## Verifying Domain Ownership
+
+Domain ownership verification proves you control the domain name, enabling
+platform integration features like custom hostnames. Datum supports two
+verification methods: DNS and HTTP. You only need to complete one method
+successfully.
+
+### Getting Verification Details
+
+First, get the verification requirements for your Domain:
+
+```shell
+kubectl get domain example-com -o yaml
+```
+
+Look for the `status.verification` section:
+
+```yaml
+status:
+  verification:
+    dnsRecord:
+      name: _datum-custom-hostname.example.com
+      type: TXT
+      content: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+    httpToken:
+      url: http://example.com/.well-known/datum-custom-hostname-challenge/12345678-90ab-cdef-1234-567890abcdef
+      body: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+    nextVerificationAttempt: "2025-01-15T10:30:00Z"
+```
+
+### Method 1: DNS Verification
+
+Add a TXT record to your DNS provider using the values from
+`status.verification.dnsRecord`:
+
+1. **Record Name**: Use the exact `name` value (e.g.,
+   `_datum-custom-hostname.example.com`)
+2. **Record Type**: `TXT`
+3. **Record Value**: Use the exact `content` value
+
+DNS propagation may take several minutes. The system will automatically attempt
+verification periodically.
+
+### Method 2: HTTP Verification
+
+Serve the verification token at the URL specified in
+`status.verification.httpToken`:
+
+1. **URL Path**: Use the exact `url` path (e.g.,
+   `/.well-known/datum-custom-hostname-challenge/12345678-90ab-cdef-1234-567890abcdef`)
+2. **Response Body**: Return the exact `body` content as plain text
+3. **Response Code**: Must return HTTP 200
+
+### Checking Verification Status
+
+Monitor verification progress:
+
+```shell
+kubectl get domain example-com -o wide -w
+```
+
+When verification succeeds, the output will show:
+
+```shell
+NAME          DOMAIN NAME    AGE   VERIFIED   VERIFICATION MESSAGE
+example-com   example.com    5m    True       Domain verification successful
+```
+
+### Verification Details
+
+For detailed verification status, check the conditions:
+
+```shell
+kubectl describe domain example-com
+```
+
+Look for the `Verified` condition in the status section:
+
+```yaml
+Status:
+  Conditions:
+    Type:               Verified
+    Status:             True
+    Reason:             Verified
+    Message:            Domain verification successful
+    Last Transition Time: 2025-01-15T10:35:00Z
+```
+
+## Multiple Domains for the Same Domain Name
+
+Any number of Domain resources can be created across different namespaces and
+projects for the same `domainName` value. Each Domain resource requires
+individual verification.
+
+### Use Case: Team-Based Domain Management
+
+Different teams can verify the same domain name in their respective namespaces:
+
+```yaml
+# In team-a namespace
+apiVersion: networking.datumapis.com/v1alpha
+kind: Domain
+metadata:
+  name: example-com
+  namespace: team-a
+spec:
+  domainName: example.com
+---
+# In team-b namespace
+apiVersion: networking.datumapis.com/v1alpha
+kind: Domain
+metadata:
+  name: example-com
+  namespace: team-b
+spec:
+  domainName: example.com
+```
+
+Both Domain resources must be verified independently using the same DNS or HTTP
+verification process.
+
+### Use Case: Subdomain-Specific Verification
+
+Teams can verify specific subdomains rather than managing entire root domains:
+
+```yaml
+# Team A verifies their subdomain
+apiVersion: networking.datumapis.com/v1alpha
+kind: Domain
+metadata:
+  name: team-a-subdomain
+spec:
+  domainName: team-a.example.com
+---
+# Team B verifies their subdomain
+apiVersion: networking.datumapis.com/v1alpha
+kind: Domain
+metadata:
+  name: team-b-subdomain
+spec:
+  domainName: team-b.example.com
+```
+
+After verification:
+
+- Team A can use `team-a.example.com` and `*.team-a.example.com` hostnames
+- Team B can use `team-b.example.com` and `*.team-b.example.com` hostnames
+
+## Next Steps
+
+- [Create a Datum HTTP Proxy](./httpproxy/)
+
+## Future Capabilities
+
+Domain resources will expand beyond verification to provide comprehensive domain
+management:
+
+**Planned Features:**
+
+- **WHOIS Information**: Automatic collection of domain registration data
+- **EPP Status Tracking**: Monitor domain status codes and administrative states
+- **Lifecycle Management**: Track registration, modification, and expiration
+  dates
+- **Telemetry Export**: Domain metrics and status information for monitoring
+  systems
+- **Registrar Intelligence**: Comprehensive registrar information and
+  relationships
+
+**Additional Use Cases:**
+
+- **Domain Portfolio Management**: Centralized tracking of domain assets and
+  their lifecycle
+- **Security Monitoring**: Track domain changes, expiration dates, and potential
+  security issues
+- **Compliance Reporting**: Domain inventory and status reporting for
+  organizational compliance
+
+## Troubleshooting
+
+Common domain verification issues and their solutions:
+
+### 1. Domain not showing VERIFIED: True
+
+Check the Domain status for specific error information:
+
+```shell
+kubectl describe domain <domain-name>
+```
+
+Look for conditions in the status section that indicate the verification state.
+
+### 2. DNS Verification Issues
+
+**TXT record not found**:
+
+- Verify the DNS record was created with the exact `name` and `content` values
+  from `status.verification.dnsRecord`
+- Check DNS propagation: `dig TXT _datum-custom-hostname.example.com`
+- Wait for DNS propagation (can take several minutes to hours)
+
+**TXT record content mismatch**:
+
+- Ensure the record value exactly matches the `content` field
+- Remove any quotes or extra characters that your DNS provider may add
+- Check for multiple TXT records with the same name
+
+### 3. HTTP Verification Issues
+
+**HTTP token endpoint not found (404)**:
+
+- Verify the token is served at the exact URL path from
+  `status.verification.httpToken.url`
+- Ensure your web server is configured to serve the verification path
+- Test manually: `curl
+  http://example.com/.well-known/datum-custom-hostname-challenge/<token-id>`
+
+**HTTP token content mismatch**:
+
+- Ensure the response body exactly matches the `body` field from
+  `status.verification.httpToken`
+- Return plain text (not HTML or JSON)
+- Remove any trailing whitespace or newlines
+
+**Connection issues**:
+
+- Verify your web server is accessible from the internet
+- Check firewall rules and security groups
+- Ensure HTTP (port 80) is accessible (HTTPS is not used for verification)
+
+### 4. Verification Timing
+
+**Verification attempts are throttled**:
+
+- The system automatically retries with exponential backoff
+- Check `status.verification.nextVerificationAttempt` for the next attempt time
+- Wait for the scheduled verification attempt rather than recreating the Domain

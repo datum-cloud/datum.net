@@ -42,11 +42,11 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose-xl md:text-22 text-navy/80 max-w-none text-lg leading-[1.45];
+    @apply font-alliance prose-xl md:text-19 text-navy/80 text-22 max-w-none leading-[1.45];
   }
 
   .h2-section {
-    @apply font-canela text-3xl leading-tight font-normal tracking-tight md:text-4xl lg:text-5xl;
+    @apply font-canela text-2xl leading-tight font-normal tracking-tight md:text-3xl lg:text-4xl;
   }
 
   .nav-logo {
@@ -217,12 +217,12 @@
 
   /* List Styles */
   .ordered-list {
-    @apply font-canela flex list-none flex-col gap-5 text-[22px] leading-[1.1] -tracking-[0.5px] md:gap-8 md:text-4xl;
+    @apply font-canela flex list-none flex-col gap-5 text-[20px] leading-[1.1] -tracking-[0.5px] md:gap-8 md:text-3xl;
     counter-reset: ordered-counter;
   }
 
   .ordered-list--sans {
-    @apply font-alliance lg:text-28 text-base md:text-xl;
+    @apply font-alliance lg:text-22 text-base md:text-lg;
   }
 
   .ordered-list li {
@@ -241,15 +241,15 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy tracking-1 mb-17.5 text-5xl leading-[1.1] text-balance md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
   }
 
   .h2-leading {
-    @apply font-canela text-navy tracking-1 mb-8 text-4xl leading-[1.1] text-balance md:mb-10 md:text-6xl lg:text-7xl;
+    @apply font-canela text-navy tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
   }
 
   .h3-leading {
-    @apply font-canela text-navy text-28 lg:text-54 tracking-1 mb-14 leading-[1.1] text-balance md:text-4xl;
+    @apply font-canela text-navy text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
   }
 
   .h4-leading {
@@ -257,7 +257,7 @@
   }
 
   .text-desc {
-    @apply font-alliance text-navy md:text-22 text-xl leading-[140%];
+    @apply font-alliance text-navy md:text-19 text-xl leading-[140%];
   }
 
   /* Generic Logo/Brand Grid Components */

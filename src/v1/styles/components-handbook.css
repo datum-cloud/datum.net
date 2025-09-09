@@ -23,7 +23,7 @@
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-22 max-w-none space-y-6 text-lg leading-[1.45] md:text-xl;
+    @apply prose lg:prose-xl md:prose-xl lg:text-19 max-w-none space-y-6 text-lg leading-[1.45] md:text-xl;
   }
 
   .article-paragraph {

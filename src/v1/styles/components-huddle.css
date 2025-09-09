@@ -6,7 +6,7 @@
     @apply mb-10 border-b-1 border-white pb-5 md:mb-14 md:pb-8 lg:mb-18 lg:pb-11;
   }
   .upcomming-huddle--content {
-    @apply prose prose-xl md:text-22 text-white/80;
+    @apply prose prose-xl md:text-19 text-white/80;
     @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-white;
     @apply prose-headings:first:mt-0;
   }
@@ -67,7 +67,7 @@
   }
 
   .previous-huddle--content-inner {
-    @apply prose prose-xl md:text-22 px-3 text-black/80;
+    @apply prose prose-xl md:text-19 px-3 text-black/80;
     @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-black;
     @apply prose-headings:first:mt-0;
   }

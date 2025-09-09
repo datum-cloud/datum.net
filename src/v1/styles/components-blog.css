@@ -17,11 +17,11 @@
   }
 
   .blog-featured--date {
-    @apply text-lime-green font-alliance mb-4 text-sm font-medium uppercase;
+    @apply text-lime-green font-alliance mb-4 text-sm font-medium tracking-[1px] uppercase;
   }
 
   .blog-featured--title {
-    @apply font-alliance mb-6 text-4xl leading-tight font-medium tracking-tight text-white;
+    @apply font-alliance mb-5.5 text-4xl leading-[1.2] font-medium -tracking-[0.25px] text-white;
   }
 
   .blog-featured--title a {
@@ -29,7 +29,7 @@
   }
 
   .blog-featured--excerpt {
-    @apply font-alliance mb-8 text-xl leading-8 text-white/80;
+    @apply font-alliance mb-8 text-xl leading-[1.6] text-white/80;
   }
 
   .blog-featured--author {
@@ -187,11 +187,11 @@
   }
 
   .blog-back-button {
-    @apply hover:text-green-dark/80 text-green-dark inline-flex items-center gap-1.5 text-sm leading-[1.2] font-semibold tracking-[0.42px] uppercase transition-colors;
+    @apply hover:text-green-dark/80 text-green-dark inline-flex items-center gap-1.5 text-sm leading-[1.2] font-semibold tracking-[1px] uppercase transition-colors;
   }
 
   .blog-article-meta {
-    @apply border-green-dark/20 mb-8.25 border-b pb-8.25;
+    @apply border-green-dark/20 mb-8 border-b pb-8.25 md:mb-10 lg:mb-12;
   }
 
   .blog-article-meta-content {
@@ -232,20 +232,13 @@
   }
 
   .blog-article-content {
-    @apply prose prose-xl prose-stone font-alliance text-navy mx-auto mb-16 max-w-4xl leading-[1.45];
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      @apply font-alliance text-navy font-medium;
-    }
-
-    h2 {
-      @apply text-2xl md:text-3xl lg:text-4xl;
-    }
+    @apply prose prose-xl prose-p:mb-3 prose-p:mt-0 prose-stone font-alliance text-navy mx-auto mb-16 max-w-4xl [&_*]:leading-[1.45];
+    @apply prose-h2:text-[32px];
+    @apply prose-h3:text-[28px];
+    @apply prose-h4:text-[24px];
+    @apply prose-h5:text-[20px];
+    @apply prose-h6:text-[16px];
+    @apply prose-headings:leading-[1.25] prose-headings:-tracking-[0.25px] prose-headings:prose-headings:mt-6 prose-headings:font-alliance prose-headings:text-navy prose-headings:font-medium;
 
     p,
     ul,

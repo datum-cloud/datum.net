@@ -14,9 +14,9 @@ const { title, description, imageSrc, imageAlt, url } = Astro.props as CardProps
   </div>
 
   <div class="flex items-end-safe justify-between gap-10">
-    <div class="font-alliance text-navy max-w-sm text-xl leading-relaxed">
+    <div class="font-alliance text-navy max-w-sm text-xl leading-[28px]">
       <h3 class="font-canela mb-6 text-4xl leading-tight font-normal tracking-tight">{title}</h3>
-      <div>{description}</div>
+      <p>{description}</p>
     </div>
     {
       url && (

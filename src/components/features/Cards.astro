@@ -8,7 +8,7 @@ const { features } = Astro.props as FeaturesProps;
   {
     features.map((feature) => (
       <div class="feature-card-item">
-        <div class="feature-card-item__content">
+        <div class="feature-card-item--content">
           <h3>{feature.data.title}</h3>
           <p>{feature.body}</p>
         </div>

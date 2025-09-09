@@ -61,7 +61,6 @@ const orderedCategories = handbookIndex?.data.contents;
 const categories = orderedCategories ?? Object.keys(menuCollection);
 
 const selectedCategory = currentArticleId ? currentArticleId.split('/')[0] : 'company';
-const isMainHandbookPage = !currentArticleId || currentArticleId === 'company/why-we-exist';
 ---
 
 <aside class:list={['handbook-sidebar', className]}>
@@ -75,7 +74,7 @@ const isMainHandbookPage = !currentArticleId || currentArticleId === 'company/wh
                 if (category.toLowerCase() !== 'undefined') {
                   return (
                     <div
-                      x-data={`{ isExpanded: ${!isMainHandbookPage && selectedCategory === category} }`}
+                      x-data={`{ isExpanded: ${selectedCategory === category} }`}
                       class="menu-category"
                       id={category}
                     >

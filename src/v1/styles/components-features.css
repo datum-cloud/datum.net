@@ -3,8 +3,8 @@
     @apply bg-navy relative z-30 mx-auto grid max-w-391 grid-cols-1 gap-0 border border-white md:grid-cols-[minmax(300px,auto)_1fr] lg:grid-cols-[minmax(500px,auto)_1fr];
   }
 
-  .feature-table__content {
-    @apply prose prose-ul:mb-0 prose-li:leading-[1.4] max-w-none text-lg leading-[1.5] text-white;
+  .feature-table--content {
+    @apply prose prose-ul:mb-0 prose-li:leading-[1.4] lg:text-22 max-w-none text-lg leading-[1.4] text-white md:text-xl;
 
     h1,
     h2,
@@ -18,18 +18,18 @@
     }
   }
 
-  .feature-table__header {
+  .feature-table--header {
     @apply flex flex-col items-start justify-start border-r md:col-span-1 md:row-span-4;
 
-    .feature-table__content {
+    .feature-table--content {
       @apply px-8 py-12 md:px-13 md:py-11 lg:px-18 lg:py-21;
     }
   }
 
-  .feature-table__section {
+  .feature-table--section {
     @apply flex flex-col gap-7 border-b border-white last:border-b-0 md:col-span-1 md:row-span-1;
 
-    .feature-table__content {
+    .feature-table--content {
       @apply px-8 py-12 md:px-13 md:py-11;
     }
   }
@@ -57,19 +57,19 @@
     @apply flex items-start;
   }
 
-  .feature-card__content {
+  .feature-card--content {
     @apply flex flex-col gap-10;
   }
 
-  .feature-card__section {
+  .feature-card--section {
     @apply border-navy border-b last:border-b-0;
   }
 
-  .feature-card__content-wrapper {
+  .feature-card--content-wrapper {
     @apply prose prose-base text-navy prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
 
     h2 {
-      @apply font-canela mt-0 mb-10 text-3xl leading-[1.1] font-normal;
+      @apply font-canela mt-0 mb-10 text-3xl leading-[1.1] font-normal -tracking-[1px];
     }
 
     h3 {
@@ -81,9 +81,10 @@
     }
   }
 
-  .feature-card__content--header {
-    .feature-card__content-wrapper {
-      @apply prose-lg prose-h2:mb-5 leading-[1.4];
+  .feature-card--content--header {
+    .feature-card--content-wrapper {
+      @apply prose-lg prose-h2:mb-10 leading-[1.4];
+
       h2 {
         @apply mt-0;
       }
@@ -102,12 +103,12 @@
     @apply flex flex-col gap-6;
   }
 
-  .feature-card__section-content {
+  .feature-card--section-content {
     @apply flex flex-col gap-6;
   }
 
-  .feature-card-item__content {
-    @apply prose text-19 text-navy/70 leading-[1.4];
+  .feature-card-item--content {
+    @apply prose text-17 text-navy/70 leading-[1.4];
     h3 {
       @apply text-navy mt-0 mb-6 text-2xl leading-[1] font-normal;
     }

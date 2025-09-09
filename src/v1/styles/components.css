@@ -46,7 +46,7 @@
   }
 
   .h2-section {
-    @apply font-canela text-2xl leading-tight font-normal tracking-tight md:text-3xl lg:text-4xl;
+    @apply font-canela text-2xl leading-[56px] font-normal -tracking-[1.5px] md:text-3xl lg:text-4xl;
   }
 
   .nav-logo {

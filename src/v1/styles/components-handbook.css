@@ -1,7 +1,7 @@
 /* Handbook Article Styles */
 @layer components {
   .handbook-container {
-    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20 lg:gap-30 xl:gap-35 2xl:gap-43;
+    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20 lg:gap-30 xl:gap-35 2xl:gap-40;
   }
 
   .handbook-container--no-sidebar {
@@ -19,11 +19,11 @@
   }
 
   .article-title {
-    @apply font-alliance text-navy lg:text-46 text-3xl leading-tight font-medium tracking-tight md:text-4xl;
+    @apply font-alliance text-navy lg:text-38 text-2xl leading-[1.2] font-medium -tracking-[0.5] md:text-3xl;
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-19 max-w-none space-y-6 text-lg leading-[1.45] md:text-xl;
+    @apply prose lg:prose-xl md:prose-xl lg:text-19 max-w-none space-y-6 text-lg md:text-xl [&_*]:leading-[1.45];
   }
 
   .article-paragraph {

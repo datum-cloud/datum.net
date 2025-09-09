@@ -7,11 +7,9 @@ keyFeatures:
 benefits:
   Gain complete visibility into network performance with 360-degree observability. Reduce mean time to resolution (MTTR) by 50% with intelligent alerting. Optimize costs with detailed usage analytics and rightsizing recommendations.
 perfectFor:
-  - Site Reliability Engineers
-  - Network Operations
+  - Platform Engineers
+  - Gen AI Developers
   - DevOps Teams
-  - Security Operations
-  - Compliance Teams
 ---
 
 Safely interact with the internet with a global front door that provides intelligent routing, security, and performance optimization.

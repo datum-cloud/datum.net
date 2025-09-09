@@ -2,16 +2,11 @@
   "main": [
     {
       "text": "Product",
-      "href": "#",
-      "children": [
-        {
-          "items": [{ "icon": "goal", "text": "Features", "href": "/features" }]
-        }
-      ]
+      "href": "/features"
     },
     {
       "text": "Docs",
-      "href": "#",
+      "href": "/docs",
       "isMegaDropdown": true,
       "children": [
         {
@@ -39,7 +34,7 @@
     },
     {
       "text": "Company",
-      "href": "#",
+      "href": "/about",
       "children": [
         {
           "items": [

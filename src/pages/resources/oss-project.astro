@@ -10,6 +10,9 @@ import datumLogo from '@/src/content/pages/resources/images/datum.png';
 import hickoryDnsLogo from '@/src/content/pages/resources/images/hickorydns.png';
 import miloLogo from '@/src/content/pages/resources/images/ren.png';
 import crossplaneLogo from '@/src/content/pages/resources/images/crossplane.png';
+import envoyLogo from '@/src/content/pages/resources/images/envoy.png';
+import srv6Logo from '@/src/content/pages/resources/images/srv6.png';
+import irohLogo from '@/src/content/pages/resources/images/iroh.png';
 
 const page = await getCollectionEntry('pages', 'oss-project');
 
@@ -62,6 +65,38 @@ const description = fm.description;
           imageSrc={crossplaneLogo}
           imageAlt="Crossplane"
           url="https://github.com/crossplane/crossplane"
+        />
+
+        <Card
+          title="Envoy"
+          description=" Envoy is an open source edge and service proxy, designed for cloud-native applications."
+          imageSrc={envoyLogo}
+          imageAlt="Envoy"
+          url="https://github.com/envoyproxy/envoy"
+        />
+
+        <Card
+          title="Envoy AI Gateway"
+          description="Envoy AI Gateway is an open source project for using Envoy Gateway to handle request traffic from application clients to Generative AI services."
+          imageSrc={envoyLogo}
+          imageAlt="Envoy AI Gateway"
+          url="https://github.com/envoyproxy/ai-gateway"
+        />
+
+        <Card
+          title="SRv6"
+          description="The application steers its packets through an ordered list of instructions and realizes end-to-end policy without creating any per-flow state in the network."
+          imageSrc={srv6Logo}
+          imageAlt="SRv6"
+          url="https://www.segment-routing.net/"
+        />
+
+        <Card
+          title="Iroh"
+          description="A library for building on direct connections between devices, putting more control in the hands of your users."
+          imageSrc={irohLogo}
+          imageAlt="Iroh"
+          url="https://github.com/n0-computer/iroh"
         />
       </div>
     </div>

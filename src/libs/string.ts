@@ -4,6 +4,18 @@ function truncate(str = '', maxChar = 100, suffix = '...'): string {
     : `${str.slice(0, str.slice(0, maxChar - suffix.length).lastIndexOf(' '))}${suffix}`;
 }
 
+async function stripTags(html: string | Promise<string> = Promise.resolve('')): Promise<string> {
+  const resolvedHtml = await html;
+  return resolvedHtml.replace(/<[^>]*>/g, '').trim();
+}
+
+async function removeHeaderTags(
+  html: string | Promise<string> = Promise.resolve('')
+): Promise<string> {
+  const resolvedHtml = await html;
+  return resolvedHtml.replace(/<h[1-6]>.*?<\/h[1-6]>/gi, '').trim();
+}
+
 function excerpt(html = '', maxChar = 150, suffix = '...'): string {
   // Remove HTML tags and decode HTML entities
   const textContent = html
@@ -20,4 +32,4 @@ function excerpt(html = '', maxChar = 150, suffix = '...'): string {
   return truncate(textContent, maxChar, suffix);
 }
 
-export { truncate, excerpt };
+export { truncate, excerpt, removeHeaderTags, stripTags };

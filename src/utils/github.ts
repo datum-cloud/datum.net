@@ -22,7 +22,7 @@ async function graphqlWithAppAuth(appId: number, installationId: number, private
   });
 }
 
-async function stargazerCount(): Promise<number> {
+async function stargazerCount(owner: string, name: string): Promise<number> {
   const appId = import.meta.env.APP_ID || process.env.APP_ID;
   const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
   const installationId = parseInt(
@@ -30,7 +30,7 @@ async function stargazerCount(): Promise<number> {
     10
   );
 
-  if (!appId || !installationId || !privateKey) {
+  if (!appId || !installationId || !privateKey || !owner || !name) {
     return 0;
   }
 
@@ -42,7 +42,7 @@ async function stargazerCount(): Promise<number> {
   const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
     `
       query {
-        repository(owner: "datum-cloud", name: "datum") {
+        repository(owner: "${owner}", name: "${name}") {
           stargazerCount
         }
       }

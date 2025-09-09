@@ -1,41 +1,41 @@
 ---
 title: Why evolve the internet?
 images:
-  - img: images/AWS.png
+  - img: images/svgs/AWS.svg
     alt: AWS
-  - img: images/Coreweave.png
+  - img: images/svgs/Coreweave.svg
     alt: Coreweave
-  - img: images/Domo.png
+  - img: images/svgs/Domo.svg
     alt: Domo
-  - img: images/Google-Cloud.png
+  - img: images/svgs/Google-Cloud.svg
     alt: Google-Cloud
-  - img: images/Perplexity.png
+  - img: images/svgs/Perplexity.svg
     alt: Perplexity
-  - img: images/Snowflakes.png
+  - img: images/svgs/Snowflakes.svg
     alt: Snowflakes
-  - img: images/Antrhopic.png
+  - img: images/svgs/Antrhopic.svg
     alt: Antrhopic
-  - img: images/Cockroach.png
+  - img: images/svgs/Cockroach.svg
     alt: Cockroach
-  - img: images/Grafana.png
+  - img: images/svgs/Grafana.svg
     alt: Grafana
-  - img: images/Harvey.png
+  - img: images/svgs/Harvey.svg
     alt: Harvey
-  - img: images/Loveable.png
+  - img: images/svgs/Loveable.svg
     alt: Loveable
-  - img: images/OpenAI.png
+  - img: images/svgs/OpenAI.svg
     alt: OpenAI
-  - img: images/Robovision.png
+  - img: images/svgs/Robovision.svg
     alt: Robovision
-  - img: images/Together.png
+  - img: images/svgs/Together.svg
     alt: Together
-  - img: images/Vercel.png
+  - img: images/svgs/Vercel.svg
     alt: Vercel
-  - img: images/Crosby.png
+  - img: images/svgs/Crosby.svg
     alt: Crosby
-  - img: images/Wasmer.png
+  - img: images/svgs/Wasmer.svg
     alt: Wasmer
-  - img: images/Databricks.png
+  - img: images/svgs/Databricks.svg
     alt: Databricks
 ---
 

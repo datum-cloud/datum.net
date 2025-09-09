@@ -76,10 +76,6 @@ export default defineConfig({
           link: '/docs/',
         },
         {
-          label: 'Roadmap',
-          link: 'docs/roadmap',
-        },
-        {
           label: 'Getting Started',
           autogenerate: { directory: 'docs/get-started' },
         },
@@ -131,4 +127,10 @@ export default defineConfig({
 
   experimental: {},
   prefetch: true,
+
+  redirects: {
+    '/docs/roadmap': '/resources/roadmap',
+    '/product': '/features',
+    '/team': '/about',
+  },
 });

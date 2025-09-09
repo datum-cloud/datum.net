@@ -27,25 +27,6 @@ const { features } = Astro.props as FeaturesProps;
               </ul>
             </div>
           </div>
-
-          <div class="feature-card__section">
-            <div class="feature-card__content-wrapper">
-              <h3>Benefits</h3>
-              <p>{item.data.benefits}</p>
-            </div>
-          </div>
-
-          <div class="feature-card__section">
-            <div class="feature-card__content-wrapper">
-              <h3>Perfect for</h3>
-
-              <ul>
-                {item.data.perfectFor.map((audience) => (
-                  <li>{audience}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     ))

@@ -1,12 +1,9 @@
 ---
 title: Internet Edge
 keyFeatures:
-  - Global anycast network with 200+ edge locations worldwide
-  - Advanced DDoS protection and Web Application Firewall (WAF)
-  - Intelligent traffic routing based on real-time performance metrics
-  - SSL/TLS termination with automatic certificate management
-  - Rate limiting and bot protection with ML-powered detection
-  - Edge computing capabilities for reduced latency
+  - API Gateway - A powerful, general purpose proxy powered by Envoy.
+  - App Ingress - Secure, monitor, analyze, and set quotas on your APIs.
+  - AI Edge - Interact securely with GenAI services, powered by Envoy AI Gateway.
 benefits:
   Gain complete visibility into network performance with 360-degree observability. Reduce mean time to resolution (MTTR) by 50% with intelligent alerting. Optimize costs with detailed usage analytics and rightsizing recommendations.
 perfectFor:

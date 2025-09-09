@@ -1,5 +1,3 @@
-// src/v1/types/roadmap.ts
-
 export interface RoadmapItem {
   id: string;
   title: string;

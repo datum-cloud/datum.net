@@ -4,6 +4,7 @@ import '@v1/styles/global.css';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
+import GithubStargazerCountScript from '@components/GithubStargazerCountScript.astro';
 
 const {
   title,
@@ -130,5 +131,7 @@ const descriptionValue =
     <script>
       import '/src/v1/scripts/lenis-parallax.js';
     </script>
+
+    <GithubStargazerCountScript />
   </body>
 </html>

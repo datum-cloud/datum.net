@@ -9,12 +9,14 @@
     @apply prose prose-xl md:text-19 text-white/80;
     @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-white;
     @apply prose-headings:first:mt-0;
+    @apply prose-li:mt-0 prose-li:mb-[10px];
+    @apply [&_*]:leading-[1.45];
   }
   .upcomming-huddle--subtitle {
-    @apply font-alliance text-lime-green mb-2 block text-sm font-medium tracking-wider uppercase;
+    @apply font-alliance text-lime-green mb-4 block text-sm font-medium tracking-[1px] uppercase;
   }
   .upcomming-huddle--title {
-    @apply font-alliance lg:text-38 text-2xl font-semibold md:text-3xl;
+    @apply font-alliance lg:text-38 text-2xl font-semibold -tracking-[0.25px] md:text-3xl;
   }
   .huddle--meta {
     @apply flex items-start;
@@ -70,6 +72,8 @@
     @apply prose prose-xl md:text-19 px-3 text-black/80;
     @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-black;
     @apply prose-headings:first:mt-0;
+    @apply prose-li:mt-0 prose-li:mb-[10px];
+    @apply [&_*]:leading-[1.45];
   }
 
   .previous-huddle--content-wrapper {
@@ -100,7 +104,7 @@
   }
 
   .huddle-info-text {
-    @apply font-alliance text-lg leading-relaxed;
+    @apply font-alliance text-lg leading-[1.45];
     @apply text-black;
     @apply text-center;
   }

@@ -18,6 +18,7 @@ import type { FeaturesDataProps } from '@/src/types/features';
 import { Image } from 'astro:assets';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
+import { marked } from 'marked';
 
 const page = await getCollectionEntry('features', 'index');
 const fm = page.data;
@@ -67,7 +68,7 @@ const description = fm.description;
 
           <Table>
             <h2 slot="header">{firstContents[0].data.title}</h2>
-            <div slot="description">{firstContents[0].body}</div>
+            <div slot="description" set:html={marked.parse(firstContents[0].body)} />
 
             <div slot="features">
               <h3>Key features</h3>
@@ -115,7 +116,7 @@ const description = fm.description;
           <Table>
             <h2 slot="header">Networks</h2>
 
-            <div slot="description">{firstContents[1].body}</div>
+            <div slot="description" set:html={marked.parse(firstContents[1].body)} />
 
             <div slot="features">
               <h3>Key features</h3>

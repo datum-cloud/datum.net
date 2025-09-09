@@ -9,6 +9,7 @@
   html {
     @apply antialiased;
     @apply font-primary;
+    @apply bg-light-gray;
   }
 
   html,
@@ -21,10 +22,6 @@
   h3,
   h4 {
     @apply font-canela;
-  }
-
-  html {
-    @apply bg-white;
   }
 
   /* Prevent body scroll when mobile menu is active */

@@ -9,16 +9,16 @@ const { features } = Astro.props as FeaturesProps;
   {
     features.map((item) => (
       <div class="feature-card">
-        <div class="feature-card__content">
-          <div class="feature-card__section feature-card__content--header">
-            <div class="feature-card__content-wrapper">
+        <div class="feature-card--content">
+          <div class="feature-card--section feature-card--content--header">
+            <div class="feature-card--content-wrapper">
               <h2>{item.data.title}</h2>
               <p>{item.body}</p>
             </div>
           </div>
 
-          <div class="feature-card__section">
-            <div class="feature-card__content-wrapper">
+          <div class="feature-card--section">
+            <div class="feature-card--content-wrapper">
               <h3>Key features</h3>
               <ul>
                 {item.data.keyFeatures.map((feature) => (

@@ -52,7 +52,12 @@ const subtitle = fm.subtitle;
 
 <Layout title={title} description={description} bodyClass="huddle-page" meta={meta}>
   <section class="datum-container">
-    <Hero class="light" iconName={fm.iconName} title={title} subtitle={subtitle} />
+    <Hero
+      class="light [&_.hero--main-content-inner]:pb-15"
+      iconName={fm.iconName}
+      title={title}
+      subtitle={subtitle}
+    />
     <section class="section--block bg-cream py-0 pb-12 md:pb-18 lg:pb-23">
       <div class="bg-cream m-auto max-w-391">
         <div class="huddle-info-grid">
@@ -85,7 +90,7 @@ const subtitle = fm.subtitle;
         <div class="section--block section--block--small-pad bg-pearl-gray">
           <div class="m-auto max-w-391">
             <div class="text-navy m-auto flex max-w-6xl flex-col">
-              <h2 class="font-canela mb-8 text-center text-2xl font-normal md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
+              <h2 class="font-canela mb-8 text-center text-2xl font-normal -tracking-[1.5px] md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
                 Previous Huddles
               </h2>
 

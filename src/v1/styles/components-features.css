@@ -14,7 +14,7 @@
     }
 
     h2 {
-      @apply font-canela tracking-1 text-5xl text-white;
+      @apply font-canela tracking-1 text-4xl text-white;
     }
   }
 
@@ -69,11 +69,11 @@
     @apply prose prose-base text-navy prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
 
     h2 {
-      @apply font-canela mt-0 mb-10 text-4xl leading-[1.1] font-normal;
+      @apply font-canela mt-0 mb-10 text-3xl leading-[1.1] font-normal;
     }
 
     h3 {
-      @apply font-alliance text-mauve mt-0 mb-6 text-xl leading-[1.4] font-normal;
+      @apply font-alliance text-mauve mt-0 mb-6 text-lg leading-[1.4] font-normal;
     }
 
     p {
@@ -83,7 +83,7 @@
 
   .feature-card__content--header {
     .feature-card__content-wrapper {
-      @apply prose-xl prose-h2:mb-10 leading-[1.4];
+      @apply prose-lg prose-h2:mb-5 leading-[1.4];
       h2 {
         @apply mt-0;
       }
@@ -107,7 +107,7 @@
   }
 
   .feature-card-item__content {
-    @apply prose text-22 text-navy/70 leading-[1.4];
+    @apply prose text-19 text-navy/70 leading-[1.4];
     h3 {
       @apply text-navy mt-0 mb-6 text-2xl leading-[1] font-normal;
     }

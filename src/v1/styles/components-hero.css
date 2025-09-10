@@ -61,7 +61,7 @@
   }
 
   .hero--main-content-title {
-    @apply font-canela mb-0 max-w-xl text-3xl leading-tight -tracking-[2px] md:text-4xl lg:max-w-3xl lg:text-5xl;
+    @apply font-canela mb-0 max-w-xl text-3xl leading-tight -tracking-[2px] text-balance md:text-4xl lg:max-w-3xl lg:text-5xl;
   }
 
   .hero--main-content-icon {

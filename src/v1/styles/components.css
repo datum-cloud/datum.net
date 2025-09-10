@@ -46,7 +46,7 @@
   }
 
   .h2-section {
-    @apply font-canela text-2xl leading-[56px] font-normal -tracking-[1.5px] md:text-3xl lg:text-4xl;
+    @apply font-canela text-2xl leading-[1.1] font-normal -tracking-[1.5px] md:text-3xl lg:text-4xl;
   }
 
   .nav-logo {
@@ -257,7 +257,7 @@
   }
 
   .text-desc {
-    @apply font-alliance text-navy md:text-19 text-xl leading-[140%];
+    @apply font-alliance text-navy md:text-19 text-xl leading-[1.4];
   }
 
   /* Generic Logo/Brand Grid Components */

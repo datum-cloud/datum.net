@@ -30,6 +30,11 @@
       @apply fixed w-full touch-none overflow-hidden;
     }
   }
+
+  /* Hide elements with x-cloak until Alpine.js initializes */
+  [x-cloak] {
+    @apply hidden;
+  }
 }
 
 @import './utilities.css';

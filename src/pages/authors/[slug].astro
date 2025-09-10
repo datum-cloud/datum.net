@@ -13,7 +13,16 @@ import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const authors = await getCollection('authors');
-  return authors.map((author) => ({
+  const blogPosts = await getCollection('blog', ({ data }) => {
+    return !data.draft && new Date(data.date) <= new Date();
+  });
+
+  // Only generate pages for authors who have published blog posts
+  const authorsWithPosts = authors.filter((author) => {
+    return blogPosts.some((post) => post.data.author === author.id);
+  });
+
+  return authorsWithPosts.map((author) => ({
     params: { slug: author.id },
     props: { author },
   }));

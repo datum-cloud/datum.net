@@ -32,6 +32,26 @@ spec:
       mode: Terminate
       options:
         gateway.networking.datumapis.com/certificate-issuer: auto
+  # This listener is used to serve the HTTPS traffic for the docs.datum.net
+  # domain and redirects to www.datum.net.
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: http-docs-datum-net-redirect
+    port: 80
+    protocol: HTTP
+    hostname: docs.datum.net
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: https-docs-datum-net-redirect
+    port: 443
+    protocol: HTTPS
+    hostname: docs.datum.net
+    tls:
+      mode: Terminate
+      options:
+        gateway.networking.datumapis.com/certificate-issuer: auto
   # This listener is used to serve the HTTPS traffic for the www.datum.net
   # domain. All other listeners redirect to this domain.
   - allowedRoutes:

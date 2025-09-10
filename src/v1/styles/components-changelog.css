@@ -40,7 +40,8 @@
   }
 
   .changelog-item--description {
-    @apply font-alliance prose lg:text-19 prose-headings:font-alliance prose-headings:text-white prose-headings:text-2xl mb-10 max-w-none text-lg leading-[32px] font-normal text-white opacity-80 md:text-xl;
+    @apply font-alliance prose lg:text-19 prose-headings:font-alliance prose-headings:text-white prose-headings:text-2xl mb-10 max-w-none text-lg leading-[1.69] font-normal md:text-xl [&_*]:text-white/80;
+    @apply prose-a:hover:text-white;
   }
 
   .changelog-item--tags {

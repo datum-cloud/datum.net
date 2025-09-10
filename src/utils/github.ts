@@ -22,34 +22,55 @@ async function graphqlWithAppAuth(appId: number, installationId: number, private
   });
 }
 
-async function stargazerCount(owner: string, name: string): Promise<number> {
-  const appId = import.meta.env.APP_ID || process.env.APP_ID;
-  const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
-  const installationId = parseInt(
-    import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
-    10
-  );
+async function stargazerCount(
+  owner: string,
+  name: string,
+  asClient: boolean = false
+): Promise<number> {
+  if (asClient == false) {
+    const API_URL = `https://api.github.com/repos/${owner}/${name}`;
+    const response = await fetch(API_URL);
+    const data = await response.json();
 
-  if (!appId || !installationId || !privateKey || !owner || !name) {
-    return 0;
+    if (response.ok) {
+      return data.stargazers_count || 0;
+    } else {
+      return 0;
+    }
+  } else {
+    const appId = import.meta.env.APP_ID || process.env.APP_ID;
+    const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
+    const installationId = parseInt(
+      import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
+      10
+    );
+
+    if (!appId || !installationId || !privateKey || !owner || !name) {
+      return 0;
+    }
+
+    try {
+      const graphqlWithAuth = await graphqlWithAppAuth(
+        Number(appId),
+        Number(installationId),
+        privateKey
+      );
+
+      const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
+        `
+          query {
+            repository(owner: "${owner}", name: "${name}") {
+              stargazerCount
+            }
+          }
+        `
+      );
+
+      return Object(jsonData).repository.stargazerCount;
+    } catch {
+      return 0; // Return 0 in case of error
+    }
   }
-
-  const graphqlWithAuth = await graphqlWithAppAuth(
-    Number(appId),
-    Number(installationId),
-    privateKey
-  );
-  const jsonData: GitHubGraphQLResponse = await graphqlWithAuth(
-    `
-      query {
-        repository(owner: "${owner}", name: "${name}") {
-          stargazerCount
-        }
-      }
-    `
-  );
-
-  return Object(jsonData).repository.stargazerCount;
 }
 
 export { stargazerCount };

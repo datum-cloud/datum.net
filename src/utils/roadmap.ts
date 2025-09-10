@@ -131,7 +131,7 @@ async function getIssuesFromGithub(): Promise<IssuesProps[]> {
       }
     `
   );
-  // console.log('----- Fetched issues from GitHub:', jsonData.repository.issues.nodes);
+
   const issues: IssuesProps[] = Object(jsonData.repository.issues.nodes).map(
     (issue: IssuesProps) => ({
       ...issue,
@@ -149,7 +149,6 @@ async function assignAdditionalDataToIssue(
   let votesMap = new Map();
 
   const userVotedIssues = userId ? await getUserVoted(userId) : [];
-  // console.log(`+++++ userVotedIssues: ${JSON.stringify(userVotedIssues)}`);
 
   try {
     const votes = await getVotes();

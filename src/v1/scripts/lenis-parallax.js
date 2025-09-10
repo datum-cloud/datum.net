@@ -84,7 +84,6 @@ class LenisSmoothScroll {
         if (this.isElementInViewport(element)) {
           element.dataset.hasStarted = 'true';
           element.dataset.startScrollY = window.scrollY.toString();
-          console.log('Parallax animation started on load for:', element);
         }
       }
     });
@@ -135,7 +134,6 @@ class LenisSmoothScroll {
         if (isInViewport && !hasStarted) {
           element.dataset.hasStarted = 'true';
           element.dataset.startScrollY = scrollY.toString();
-          console.log('Parallax animation started for:', element);
         }
 
         // Only apply effect if element is in viewport and has started

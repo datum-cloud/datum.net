@@ -1,6 +1,6 @@
 ---
 title: Product Improvements and Updates
-description: Stay up to date with new feature releases & fixes. Want to know what we're building next? Check out our roadmap
+description: Stay up to date with new feature releases & fixes. Want to know what we're building next? [Check out our roadmap](/resources/roadmap)
 meta:
   title: Datum Changelog
   description: Get your status updates here. Everything from new product updates to improvements and launches.

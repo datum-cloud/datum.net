@@ -1,4 +1,7 @@
+namespace: datum-net
 resources:
+  - namespace.yaml
   - gateway.yaml
   - httproute.yaml
   - endpoint.yaml
+  - httproute-redirect.yaml

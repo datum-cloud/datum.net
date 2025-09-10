@@ -7,6 +7,7 @@ spec:
   - group: gateway.networking.k8s.io
     kind: Gateway
     name: datum-net-gateway
+    sectionName: https-www-datum-net
   rules:
   - backendRefs:
     - group: discovery.k8s.io
@@ -17,7 +18,7 @@ spec:
     filters:
       - type: URLRewrite
         urlRewrite:
-          hostname: "website.staging.env.datum.net"
+          hostname: "website.prod.env.datum.net"
     matches:
     - path:
         type: PathPrefix

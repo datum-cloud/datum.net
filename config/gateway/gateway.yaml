@@ -8,15 +8,59 @@ spec:
   - allowedRoutes:
       namespaces:
         from: Same
-    name: http
+    name: http-datum-net-redirect
     port: 80
     protocol: HTTP
+    hostname: datum.net
   - allowedRoutes:
       namespaces:
         from: Same
-    name: https
+    name: http-www-datum-net-redirect
+    port: 80
+    protocol: HTTP
+    hostname: www.datum.net
+  # This listener is used to serve the HTTPS traffic for the datum.net
+  # domain.
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: https-datum-net-redirect
     port: 443
     protocol: HTTPS
+    hostname: datum.net
+    tls:
+      mode: Terminate
+      options:
+        gateway.networking.datumapis.com/certificate-issuer: auto
+  # This listener is used to serve the HTTPS traffic for the docs.datum.net
+  # domain and redirects to www.datum.net.
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: http-docs-datum-net-redirect
+    port: 80
+    protocol: HTTP
+    hostname: docs.datum.net
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: https-docs-datum-net-redirect
+    port: 443
+    protocol: HTTPS
+    hostname: docs.datum.net
+    tls:
+      mode: Terminate
+      options:
+        gateway.networking.datumapis.com/certificate-issuer: auto
+  # This listener is used to serve the HTTPS traffic for the www.datum.net
+  # domain. All other listeners redirect to this domain.
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    name: https-www-datum-net
+    port: 443
+    protocol: HTTPS
+    hostname: www.datum.net
     tls:
       mode: Terminate
       options:

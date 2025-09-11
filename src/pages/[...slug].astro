@@ -60,7 +60,11 @@ const meta = fm.meta || {};
 ---
 
 <Layout title={fm.title} description={fm.description} bodyClass={`page--${page.id}`} meta={meta}>
-  <section class="datum-container">
+  <section
+    class="datum-container fade-in--small"
+    data-reveal="fade-in--small--visible"
+    data-reveal-delay="100"
+  >
     <Hero
       class="light [&_.hero--main-content-inner]:pb-15"
       iconName={fm.iconName}

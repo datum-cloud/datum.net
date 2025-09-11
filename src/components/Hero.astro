@@ -21,7 +21,11 @@ const {
   <Nav />
   {
     !hideContent && (
-      <div class="hero--main-content">
+      <div
+        class="hero--main-content fade-in--small"
+        data-reveal="fade-in--small--visible"
+        data-reveal-delay="100"
+      >
         {/* Hero Main Content */}
         <div class="hero--main-content-inner">
           {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (

@@ -5,7 +5,9 @@
 
   .feature-table--content {
     @apply prose prose-ul:mb-0 prose-li:leading-[1.4] lg:text-22 max-w-none text-lg leading-[1.4] text-white md:text-xl;
-
+    h2 {
+      @apply mb-0;
+    }
     h1,
     h2,
     h3,

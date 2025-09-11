@@ -3,6 +3,80 @@
     @apply container m-auto;
     max-width: var(--datum-max-width);
   }
+
+  /* General fade-in reveal animations */
+  .fade-in {
+    @apply translate-y-8 opacity-0 transition-all duration-1000 ease-out;
+  }
+
+  .fade-in--visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .fade-in--large {
+    @apply translate-y-12 opacity-0 transition-all duration-1200 ease-out;
+  }
+
+  .fade-in--large--visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .fade-in--small {
+    @apply translate-y-6 opacity-0 transition-all duration-800 ease-out;
+  }
+
+  .fade-in--small--visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .fade-in--delay-100 {
+    @apply delay-100;
+  }
+
+  .fade-in--delay-200 {
+    @apply delay-200;
+  }
+
+  .fade-in--delay-400 {
+    @apply delay-400;
+  }
+
+  .fade-in--delay-600 {
+    @apply delay-600;
+  }
+
+  .fade-in--delay-800 {
+    @apply delay-800;
+  }
+
+  .fade-in--delay-1000 {
+    @apply delay-1000;
+  }
+
+  /* Pure fade-in animation (no translate) */
+  .fade-in-pure {
+    @apply opacity-0 transition-opacity duration-1000 ease-out;
+  }
+
+  .fade-in-pure--visible {
+    @apply opacity-100;
+  }
+
+  .fade-in-pure--large {
+    @apply opacity-0 transition-opacity duration-1200 ease-out;
+  }
+
+  .fade-in-pure--large--visible {
+    @apply opacity-100;
+  }
+
+  .fade-in-pure--small {
+    @apply opacity-0 transition-opacity duration-800 ease-out;
+  }
+
+  .fade-in-pure--small--visible {
+    @apply opacity-100;
+  }
 }
 
 @utility prose-dark {

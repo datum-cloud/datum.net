@@ -12,7 +12,9 @@ import Button from '@components/Button.astro';
       <Image
         src={Illustration}
         alt="Hero Illustration"
-        class="h-auto w-full object-contain sm:object-cover"
+        class="fade-in--large h-auto w-full object-contain sm:object-cover"
+        data-reveal="fade-in--large--visible"
+        data-reveal-delay="400"
       />
     </div>
     <div class="section--block z-10">
@@ -21,11 +23,19 @@ import Button from '@components/Button.astro';
       <div
         class="flex flex-1 flex-col items-center justify-center py-15 text-center md:py-25 lg:py-35"
       >
-        <h1 class="h1-leading text-white">
+        <h1
+          class="fade-in--small h1-leading text-white"
+          data-reveal="fade-in--small--visible"
+          data-reveal-delay="600"
+        >
           The internet,<br />
           reimagined for AI.
         </h1>
-        <div class="flex flex-col justify-center gap-6 sm:flex-row">
+        <div
+          class="fade-in--small flex flex-col justify-center gap-6 sm:flex-row"
+          data-reveal="fade-in--small--visible"
+          data-reveal-delay="800"
+        >
           <Button
             class="btn btn--lime btn--primary"
             text="View on GitHub"

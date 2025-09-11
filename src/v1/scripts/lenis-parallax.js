@@ -46,6 +46,12 @@ class LenisSmoothScroll {
     // Get all elements with scroll effects
     this.scrollElements = document.querySelectorAll('[data-scroll-effect]');
 
+    // Get all elements with reveal animations
+    this.revealElements = document.querySelectorAll('[data-reveal]');
+
+    // Initialize reveal animations
+    this.initRevealAnimations();
+
     // Set initial positions and viewport data
     this.scrollElements.forEach((element) => {
       const effect = element.dataset.scrollEffect;
@@ -89,16 +95,53 @@ class LenisSmoothScroll {
     });
   }
 
-  isElementInViewport(element) {
+  initRevealAnimations() {
+    // Initialize all reveal elements
+    this.revealElements.forEach((element) => {
+      const revealClass = element.dataset.reveal;
+      const delay = parseInt(element.dataset.revealDelay) || 0;
+      const threshold = parseFloat(element.dataset.revealThreshold) || 0.1;
+
+      // Store reveal configuration
+      element.dataset.revealClass = revealClass;
+      element.dataset.revealDelay = delay;
+      element.dataset.revealThreshold = threshold;
+      element.dataset.hasRevealed = 'false';
+
+      // Check if element is already in viewport on page load
+      if (this.isElementInViewport(element, threshold)) {
+        this.triggerReveal(element);
+      }
+    });
+  }
+
+  triggerReveal(element) {
+    const revealClass = element.dataset.revealClass;
+    const delay = parseInt(element.dataset.revealDelay);
+
+    if (element.dataset.hasRevealed === 'true') {
+      return; // Already revealed
+    }
+
+    element.dataset.hasRevealed = 'true';
+
+    setTimeout(() => {
+      element.classList.add(revealClass);
+    }, delay);
+  }
+
+  isElementInViewport(element, threshold = 0.1) {
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const windowWidth = window.innerWidth;
-    const viewportOffset = parseFloat(element.dataset.viewportOffset) || 0;
 
-    // Check if element is visible in viewport with offset
+    // Calculate threshold-based visibility
+    const thresholdOffset = windowHeight * threshold;
+
+    // Check if element is visible in viewport with threshold
     const isInViewport =
-      rect.top <= windowHeight + viewportOffset &&
-      rect.bottom >= -viewportOffset &&
+      rect.top <= windowHeight - thresholdOffset &&
+      rect.bottom >= thresholdOffset &&
       rect.left <= windowWidth &&
       rect.right >= 0;
 
@@ -121,6 +164,16 @@ class LenisSmoothScroll {
       return;
     }
     this.lastUpdate = now;
+
+    // Check reveal elements
+    this.revealElements.forEach((element) => {
+      if (element.dataset.hasRevealed === 'false') {
+        const threshold = parseFloat(element.dataset.revealThreshold) || 0.1;
+        if (this.isElementInViewport(element, threshold)) {
+          this.triggerReveal(element);
+        }
+      }
+    });
 
     // Update each element with scroll effects
     this.scrollElements.forEach((element) => {

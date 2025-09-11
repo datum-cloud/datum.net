@@ -1,12 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 
-const { currentArticleId, class: className } = Astro.props as {
+const {
+  currentArticleId,
+  categories,
+  class: className,
+} = Astro.props as {
   currentArticleId: string;
   class?: string;
+  categories: string[];
 };
 
-const handbooks = await getCollection('handbooks');
+const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 
 // Sort handbooks by category and order for navigation
 const sortedHandbooks = handbooks
@@ -17,9 +22,8 @@ const sortedHandbooks = handbooks
 
     // First sort by category
     if (categoryA !== categoryB) {
-      const categoryOrder = ['company', 'people', 'engineering', 'go-to-market'];
-      const indexA = categoryOrder.indexOf(categoryA);
-      const indexB = categoryOrder.indexOf(categoryB);
+      const indexA = categories.indexOf(categoryA);
+      const indexB = categories.indexOf(categoryB);
       return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
     }
 
@@ -61,7 +65,7 @@ const nextArticle =
           <span class="handbook-page-nav-title">{previousArticle.data.title}</span>
         </a>
       )}
-      {nextArticle && nextArticle.id !== 'index' && (
+      {nextArticle && (
         <a href={`/handbook/${nextArticle.id}/`} class="handbook-page-nav-link--next">
           <span class="handbook-page-nav-label--next">
             <span>Next</span>

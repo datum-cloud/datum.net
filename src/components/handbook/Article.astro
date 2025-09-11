@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import type { ArticleProps } from '@/src/types/common';
+import { getEntry } from 'astro:content';
 
 const {
   articleId: propArticleId,
@@ -13,6 +14,10 @@ const {
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
 const articleId = propArticleId || urlParam || 'company/why-we-exist';
+
+// ordering categories
+const handbookIndex = await getEntry('handbooks', 'index');
+const orderedCategories = handbookIndex?.data.contents;
 
 const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 
@@ -32,7 +37,15 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
   ]}
 >
   <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
-    {showSidebar && <Sidebar currentArticleId={articleId} handbooks={handbooks} />}
+    {
+      showSidebar && (
+        <Sidebar
+          currentArticleId={articleId}
+          handbooks={handbooks}
+          categories={orderedCategories}
+        />
+      )
+    }
 
     {/* Main Content Area */}
     <article class="handbook-content">
@@ -65,7 +78,7 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
       </div>
 
       {/* Navigation */}
-      <PageNav currentArticleId={articleId} />
+      <PageNav currentArticleId={articleId} categories={orderedCategories} />
     </article>
   </div>
 </section>

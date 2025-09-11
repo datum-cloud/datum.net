@@ -58,6 +58,7 @@ export interface ArticleProps {
 export interface SidebarProps {
   currentArticleId?: string;
   class?: string;
+  categories: string[];
 }
 
 export interface ContentProps {

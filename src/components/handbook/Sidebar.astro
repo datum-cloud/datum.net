@@ -1,8 +1,11 @@
 ---
 import type { SidebarProps, HandbookProps } from '@/src/types/common';
-import { getEntry } from 'astro:content';
 
-const { currentArticleId = 'company/why-we-exist', class: className } = Astro.props as SidebarProps;
+const {
+  currentArticleId = 'company/why-we-exist',
+  categories,
+  class: className,
+} = Astro.props as SidebarProps;
 const { handbooks } = Astro.props as HandbookProps;
 
 const badgeColor = {
@@ -55,10 +58,7 @@ handbooks.forEach((collection) => {
   }
 });
 
-// ordering categories
-const handbookIndex = await getEntry('handbooks', 'index');
-const orderedCategories = handbookIndex?.data.contents;
-const categories = orderedCategories ?? Object.keys(menuCollection);
+const orderedCategories = categories ?? Object.keys(menuCollection);
 
 const selectedCategory = currentArticleId ? currentArticleId.split('/')[0] : 'company';
 ---
@@ -70,7 +70,7 @@ const selectedCategory = currentArticleId ? currentArticleId.split('/')[0] : 'co
         <div data-orientation="vertical">
           <div data-state="open" data-orientation="vertical" class="menu-container" id="menu">
             {
-              categories.map((category) => {
+              orderedCategories.map((category) => {
                 if (category.toLowerCase() !== 'undefined') {
                   return (
                     <div

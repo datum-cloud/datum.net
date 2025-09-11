@@ -1,0 +1,45 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const legal = await getCollection('legal');
+
+  return legal.map((entry) => {
+    return {
+      params: {
+        slug: entry.id,
+      },
+      props: { entry, legal },
+    };
+  });
+}
+
+const page = await Astro.props.entry;
+
+console.log(page);
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const { Content } = await render(page);
+const title = fm.title ? fm.title : 'Datum - Privacy Policy';
+const description = fm.description;
+---
+
+<Layout title={title} description={description} bodyClass={`page--${page.id}`} meta={meta}>
+  <section class="datum-container">
+    <Hero
+      class="light [&_.hero--main-content-inner]:pb-15"
+      iconName={fm.iconName}
+      title={title}
+      subtitle={fm.subtitle}
+    />
+
+    <div class="section--block bg-cream">
+      <Content />
+    </div>
+    <Footer showCTA={false} />
+  </section>
+</Layout>

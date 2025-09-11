@@ -61,7 +61,7 @@ const nextArticle =
           <span class="handbook-page-nav-title">{previousArticle.data.title}</span>
         </a>
       )}
-      {nextArticle && (
+      {nextArticle && nextArticle.id !== 'index' && (
         <a href={`/handbook/${nextArticle.id}/`} class="handbook-page-nav-link--next">
           <span class="handbook-page-nav-label--next">
             <span>Next</span>

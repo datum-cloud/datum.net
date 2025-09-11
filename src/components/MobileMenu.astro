@@ -1,6 +1,7 @@
 ---
-import Icon from '@components/Icon.astro';
 import type { NavData } from '@/src/types/navigation';
+import GithubStargazerValue from '@components/GithubStargazerValue.astro';
+import Button from '@components/Button.astro';
 
 interface Props {
   navigation: NavData['main'];
@@ -135,19 +136,16 @@ const { navigation }: Props = Astro.props;
       </ul>
 
       <div class="mobile-menu-actions">
-        <a href="#" class="btn btn--navy" @click="closeMenu()">
-          <div class="btn-icon">
-            <Icon name="github" size="md" />
-          </div>
-          <span class="btn-text gh-mobile-button">0</span>
-        </a>
-
-        <a href="https://cloud.datum.net/" class="btn btn--navy" @click="closeMenu()">
-          <div class="btn-icon">
-            <Icon name="user" size="md" />
-          </div>
-          <span class="btn-text">Log In</span>
-        </a>
+        <Button
+          class="btn btn--primary btn--navy gh-button min-w-[115px]"
+          icon={{ name: 'github', size: 'md' }}
+          iconPosition="left"
+          iconClass="stroke-1.5"
+          target="_blank"
+          href="https://github.com/datum-cloud/datum/"
+        >
+          <GithubStargazerValue server:defer />
+        </Button>
       </div>
     </div>
   </div>

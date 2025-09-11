@@ -6,16 +6,11 @@
     },
     {
       "text": "Docs",
-      "href": "/docs/",
-      "isMegaDropdown": true,
-      "children": [
-        {
-          "items": [
-            { "icon": "power", "text": "Getting Started", "href": "/docs/" },
-            { "icon": "webhook", "text": "API Reference", "href": "/docs/api/" }
-          ]
-        }
-      ]
+      "href": "/docs/"
+    },
+    {
+      "text": "Huddle",
+      "href": "/community-huddle/"
     },
     {
       "text": "Resources",
@@ -44,10 +39,6 @@
           ]
         }
       ]
-    },
-    {
-      "text": "Huddle",
-      "href": "/community-huddle/"
     }
   ],
   "right": [

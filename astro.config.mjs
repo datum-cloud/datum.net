@@ -62,6 +62,10 @@ export default defineConfig({
           tag: 'script',
           attrs: { src: '/scripts/markerio.js', defer: true },
         },
+        {
+          tag: 'script',
+          attrs: { src: 'https://cdn.usefathom.com/script.js', defer: true },
+        },
       ],
       expressiveCode: {
         themes: ['github-light', 'github-dark'],

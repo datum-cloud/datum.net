@@ -30,8 +30,8 @@ const pages = defineCollection({
     z.object({
       title: z.string(),
       subtitle: z.string().optional(),
-      iconName: z.string().optional(),
       description: z.string().optional(),
+      iconName: z.string().optional(),
       featuredImage: image().optional(),
       slug: z.string().optional(),
       order: z.number().optional().default(0),
@@ -57,16 +57,17 @@ const pages = defineCollection({
     }),
 });
 
+// Define about collections
 const about = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/about' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      description: z.string().optional(),
+      slug: z.string().optional(),
       subtitle: z.string().optional(),
+      description: z.string().optional(),
       iconName: z.string().optional(),
       featuredImage: image().optional(),
-      slug: z.string().optional(),
       order: z.number().optional().default(0),
       contents: z.array(reference('about')).optional(),
       companies: z
@@ -77,14 +78,6 @@ const about = defineCollection({
           })
         )
         .optional(),
-      // investors: z
-      //   .array(
-      //     z.object({
-      //       img: image().optional(),
-      //       alt: z.string().optional(),
-      //     })
-      //   )
-      //   .optional(),
       items: z.array(z.string()).optional(),
       link: z
         .object({
@@ -96,18 +89,32 @@ const about = defineCollection({
     }),
 });
 
+// Define legal collections
+const legal = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/legal' }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      slug: z.string().optional(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      iconName: z.string().optional(),
+      meta: metaSchema,
+    }),
+});
+
 // Define blog collections
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      slug: z.string().optional(),
       subtitle: z.string().optional(),
       description: z.string().optional(),
       date: z.date(),
       author: z.string().optional(),
       categories: z.array(z.string()).optional().default([]),
-      slug: z.string().optional(),
       thumbnail: image().optional(),
       featuredImage: image().optional(),
       draft: z.boolean().optional().default(false),
@@ -115,14 +122,14 @@ const blog = defineCollection({
     }),
 });
 
-// Define authos collections
+// Define authors collections
 const authors = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/authors' }),
   schema: ({ image }) =>
     z.object({
+      title: z.string().optional(),
       name: z.string(),
       bio: z.string(),
-      title: z.string().optional(),
       avatar: image().optional(),
       isTeam: z.boolean().optional().default(false),
       team: z.enum(['founders', 'team']).optional(),
@@ -258,6 +265,7 @@ const huddles = defineCollection({
 export const collections = {
   pages,
   about,
+  legal,
   blog,
   authors,
   categories,

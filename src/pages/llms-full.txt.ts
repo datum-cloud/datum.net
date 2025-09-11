@@ -65,7 +65,7 @@ export const GET: APIRoute = async () => {
 
     for (const page of sortedPages) {
       // Add page metadata
-      llmsContent += `- [${page.data.title || page.id}](${siteUrl}/pages/${page.id})\n`;
+      llmsContent += `- [${page.data.title || page.id}](${siteUrl}/${page.id})\n`;
     }
 
     // Get all blog posts sorted by date (newest first)
@@ -103,7 +103,7 @@ export const GET: APIRoute = async () => {
     if (tutorials.length > 0) {
       llmsContent += `### Tutorials\n\n`;
       for (const doc of tutorials) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/docs/${doc.id})\n`;
+        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
       }
     }
 
@@ -111,7 +111,7 @@ export const GET: APIRoute = async () => {
     if (tasks.length > 0) {
       llmsContent += `\n### Tasks\n\n`;
       for (const doc of tasks) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/docs/${doc.id})\n`;
+        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
       }
     }
 
@@ -119,7 +119,7 @@ export const GET: APIRoute = async () => {
     if (api.length > 0) {
       llmsContent += `\n### API\n\n`;
       for (const doc of api) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/docs/${doc.id})\n`;
+        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
       }
     }
 
@@ -127,7 +127,7 @@ export const GET: APIRoute = async () => {
     if (other.length > 0) {
       llmsContent += `\n### Other Documentation\n\n`;
       for (const doc of other) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/docs/${doc.id})\n`;
+        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
       }
     }
 
@@ -143,7 +143,7 @@ export const GET: APIRoute = async () => {
 
     for (const page of sortedPages) {
       llmsContent += `#### ${page.data.title || page.id}\n\n`;
-      llmsContent += `URL: ${siteUrl}/pages/${page.id}\n\n`;
+      llmsContent += `URL: ${siteUrl}/${page.id}\n\n`;
 
       // Add description if available
       if (page.data.description) {
@@ -203,7 +203,7 @@ export const GET: APIRoute = async () => {
       llmsContent += `#### Tutorials\n\n`;
       for (const doc of tutorials) {
         llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/docs/${doc.id}\n\n`;
+        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
 
         // Add description if available
         if (doc.data.description) {
@@ -232,7 +232,7 @@ export const GET: APIRoute = async () => {
       llmsContent += `#### Tasks\n\n`;
       for (const doc of tasks) {
         llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/docs/${doc.id}\n\n`;
+        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
 
         // Add description if available
         if (doc.data.description) {
@@ -261,7 +261,7 @@ export const GET: APIRoute = async () => {
       llmsContent += `#### API Documentation\n\n`;
       for (const doc of api) {
         llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/docs/${doc.id}\n\n`;
+        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
 
         // Add description if available
         if (doc.data.description) {
@@ -290,7 +290,7 @@ export const GET: APIRoute = async () => {
       llmsContent += `#### Other Documentation\n\n`;
       for (const doc of other) {
         llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/docs/${doc.id}\n\n`;
+        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
 
         // Add description if available
         if (doc.data.description) {

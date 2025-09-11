@@ -116,6 +116,10 @@ export default defineConfig({
           label: 'Developer Guide',
           link: 'docs/developer-guide/',
         },
+        {
+          label: 'Galactic VPC',
+          autogenerate: { directory: 'docs/galactic-vpc' },
+        },
       ],
     }),
   ],

@@ -1,0 +1,135 @@
+---
+title: Naming & Numbering
+description: Describes concepts around naming and numbering of various Galactic resources.
+sidebar:
+  order: 3
+---
+
+## Summary
+
+Galactic is built, as much as possible, around pattern-based naming and numbering to avoid 
+adding additional state that would need to be persisted and kept in sync.
+
+
+### SRv6 Addressing
+
+For an introduction to IPv6 segment routing, you may find 
+[this presentation](https://www.segment-routing.net/tutorials/2017-12-05-srv6-introduction/) useful.
+
+```
+0                32         40        48        56     64                 112            128
++----------------+----------+---------+---------+------+------------------+--------------+
+| Parent Prefix  | Function |   PoP   |  Node   | Ver  |  VPC Identifier  | VPC Function |
+|  (2001:db8)    |   (ff)   | (00-ff) | (00-ff) | (00) | (abcd:ef01:2345) | (0000-ffff)  |
++----------------+----------+---------+---------+------+------------------+--------------+
+       0-31         32-39      40-47     48-55   56-63        64-111          112-127
+```
+
+In this addressing scheme, you are free to choose everything up to the /56 boundary.  
+We provide the section prior to the /56 boundary simply as inspiration for how we chose to 
+allocate those bits.
+
+Our chosen addressing scheme aims to be as simple as possible while allowing deployment both
+on the public Internet and within any data center’s internal IPv6 network. The minimum 
+prefix length is /48 to allow for global propagation in the public IPv6 BGP table.  
+At the /48 boundary, we aggregate our internal nodes into a PoP-wide prefix for the public Internet.
+
+#### Parent Prefix
+This aligns with the minimum /32 prefix, which is currently allocated by RIRs for global IPv6 prefixes.
+
+#### Function
+A static `ff` value that signals this address is part of our SRv6-based underlay.
+
+#### PoP
+Encodes a unique identifier for our Point of Presence (PoP) and is the prefix we announce 
+globally.
+
+#### Node
+Our internal identifier for a given node within this PoP.
+
+#### Version
+The first part of the Galactic internal bits, which must adhere to the relevant fields.  
+We start with a static `00` value to signal the first version of this addressing scheme.  
+Future versions may assign this differently, changing the meaning of the following bits.
+
+#### VPC Identifier
+A 48-bit globally unique identifier for a given VPC.
+
+#### VPC Function
+A 16-bit identifier that allows further function assignments for a given endpoint.  
+Currently, this is used to differentiate multiple terminations of a given VPC on a single worker.  
+It could also be used to further process a given packet with various SRv6-enabled functions.
+
+### Network Interface Naming
+
+Our `galactic-cni` must create interfaces on the Kubernetes hosts. To follow our pattern-
+first principle, we encode both the VPC and the VPC attachment into the interface names.
+
+For the encoding, we have chosen a [base62 format](https://github.com/kenshaw/baseconv/blob/master/baseconv.go#L126) 
+to suit the Linux kernel’s requirements for valid characters.
+
+```
+G 1hVwxnaA7 h31 V
+^ ^^^^^^^^^ ^^^ ^
+1 2         3   4
+```
+
+1. `G` for Galactic — a static identifier to quickly identify interfaces that are part of Galactic.
+2. VPC encoded in base62 with a length of 9 characters.
+3. VPC attachment encoded in base62 with a length of 3 characters.
+4. Interface function: `V` = VRF, `H` = Host, `G` = Guest.
+
+So, the above example would be interpreted as follows:
+1. `G` for Galactic.
+2. `1hVwxnaA7` for the VPC identifier `FFFFFFFFFFFF`.
+3. `h31` for the VPC attachment `FFFF`.
+4. `V` for the `VRF` interface.
+
+This means we have encoded the maximum values for both the VPC and the attachment in this example.
+
+
+### MTU
+
+As with any packet-switched transport that adds encapsulation, SRv6 adds overheads that must be 
+taken into consideration when determining the maximum MTU a client can use.
+
+SRv6 uses an IPv6 packet to encapsulate the given payload. This means the regular 40 bytes 
+of a standard [IPv6 header](https://www.rfc-editor.org/rfc/rfc8200#section-3) must be accounted for.
+
+In addition, the [Segment Routing Header](https://www.rfc-editor.org/rfc/rfc8754#name-segment-routing-header) 
+must be taken into account.
+
+At the moment, we are not using any special features in either the IPv6 header or SRv6 processing.
+Therefore, the overhead calculation has only one dynamic factor: the maximum number of segments you are 
+going to use within your underlay forwarding. Let's assume we allow a maximum of 5 hops in our 
+underlay routing decisions.
+
+This would calculate our overhead as follows:
+```
+OVERHEAD = IPV6 + SRH + (MAX_HOPS * 16)
+
+Where:
+  IPV6      = 40
+  SRH       = 8
+  MAX_HOPS  = 5
+
+So:
+  OVERHEAD = 40 + 8 + (5 * 16)
+           = 128
+```
+
+To derive the maximum client MTU:
+```
+CLIENT_MTU = HOST_MTU - OVERHEAD
+
+Where:
+  HOST_MTU = 1500
+  OVERHEAD = 128
+
+So:
+  CLIENT_MTU = 1500 - 128
+             = 1372
+```
+
+Ideally, your underlay transport should be able to carry larger (jumbo) frames so you can 
+present your clients with at least the standard MTU of 1500.

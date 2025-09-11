@@ -12,7 +12,8 @@ import node from '@astrojs/node';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
-const siteUrl = process.env.SITE_URL || env.SITE_URL;
+// const siteUrl = process.env.SITE_URL || env.SITE_URL;
+const siteUrl = 'https://www.datum.net';
 const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({

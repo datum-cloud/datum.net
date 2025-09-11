@@ -46,7 +46,7 @@ export const GET: APIRoute = async () => {
   try {
     // Get project info
     const projectName = 'Datum Cloud Network Solutions';
-    const siteUrl = import.meta.env.SITE_URL || `http://localhost:${port}`;
+    const siteUrl = import.meta.env.SITE || `http://localhost:${port}`;
 
     // Base structure for llms.txt
     let llmsContent = `# ${projectName} Documentation\n\n`;
@@ -65,7 +65,7 @@ export const GET: APIRoute = async () => {
         page.data.description || extractDescription(page.body, 'No description available');
 
       // Add page metadata with description
-      llmsContent += `- [${page.data.title}](${siteUrl}/pages/${page.id}) - ${description}\n`;
+      llmsContent += `- [${page.data.title}](${siteUrl}/${page.id}) - ${description}\n`;
     }
 
     // Get all blog posts sorted by date (newest first)
@@ -107,7 +107,7 @@ export const GET: APIRoute = async () => {
       for (const doc of tutorials) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        llmsContent += `- [${doc.data.title}](${siteUrl}/docs/${doc.id}) - ${description}\n`;
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
       }
     }
 
@@ -117,7 +117,7 @@ export const GET: APIRoute = async () => {
       for (const doc of tasks) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        llmsContent += `- [${doc.data.title}](${siteUrl}/docs/${doc.id}) - ${description}\n`;
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
       }
     }
 
@@ -127,7 +127,7 @@ export const GET: APIRoute = async () => {
       for (const doc of api) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        llmsContent += `- [${doc.data.title}](${siteUrl}/docs/${doc.id}) - ${description}\n`;
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
       }
     }
 
@@ -137,7 +137,7 @@ export const GET: APIRoute = async () => {
       for (const doc of other) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        llmsContent += `- [${doc.data.title}](${siteUrl}/docs/${doc.id}) - ${description}\n`;
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
       }
     }
 

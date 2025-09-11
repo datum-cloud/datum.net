@@ -7,7 +7,7 @@ import BlogIndex from '@components/blog/Blog.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 // Get blog landing page from blog/index.mdx
-const page = await getCollectionEntry('pages', '/blog');
+const page = await getCollectionEntry('pages', 'blog');
 
 const icon = 'book-image';
 

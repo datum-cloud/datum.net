@@ -12,7 +12,7 @@ import BlogFilters from '@components/blog/BlogFilters.astro';
 import BlogPagination from '@components/blog/BlogPagination.astro';
 
 // Get blog landing page from blog/index.mdx
-const page = await getCollectionEntry('pages', '/blog');
+const page = await getCollectionEntry('pages', 'blog');
 
 export async function getStaticPaths() {
   // Constants

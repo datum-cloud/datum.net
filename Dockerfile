@@ -22,8 +22,8 @@ FROM base AS build
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-ARG SITE_URL
-ENV SITE_URL=${SITE_URL}
+# ARG SITE_URL
+# ENV SITE_URL=${SITE_URL}
 
 RUN touch .env
 COPY package*.json ./
@@ -38,8 +38,8 @@ FROM node:22.19.0-alpine3.22 AS production
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-ARG SITE_URL
-ENV SITE_URL=${SITE_URL}
+# ARG SITE_URL
+# ENV SITE_URL=${SITE_URL}
 
 WORKDIR /app
 

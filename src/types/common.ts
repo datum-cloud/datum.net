@@ -133,4 +133,5 @@ export interface CardProps {
   imageSrc: ImageMetadata;
   imageAlt?: string;
   url?: string;
+  icon?: string;
 }

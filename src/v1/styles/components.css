@@ -42,7 +42,7 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose-xl md:text-19 text-navy/80 text-22 max-w-none leading-[1.45];
+    @apply font-alliance prose prose-xl md:text-19 text-navy/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
   }
 
   .h2-section {

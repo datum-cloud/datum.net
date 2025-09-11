@@ -64,7 +64,11 @@ export default defineConfig({
         },
         {
           tag: 'script',
-          attrs: { src: 'https://cdn.usefathom.com/script.js', defer: true },
+          attrs: {
+            src: 'https://cdn.usefathom.com/script.js',
+            defer: true,
+            'data-site': 'PXKRQKIZ',
+          },
         },
       ],
       expressiveCode: {

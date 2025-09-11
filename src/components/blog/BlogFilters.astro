@@ -13,11 +13,13 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
 <div class="blog-filters">
   <!-- Category Filters -->
   <div class="blog-filters--categories">
-    <a href="/blog" class={`blog-filter ${!currentCategory ? 'blog-filter--active' : ''}`}> All </a>
+    <a href="/blog/" class={`blog-filter ${!currentCategory ? 'blog-filter--active' : ''}`}>
+      All
+    </a>
     {
       sortedCategories.slice(0, 5).map((category) => (
         <a
-          href={`/blog/${category.id}`}
+          href={`/blog/${category.id}/`}
           class={`blog-filter ${currentCategory === category.id ? 'blog-filter--active' : ''}`}
         >
           {category.data.name}

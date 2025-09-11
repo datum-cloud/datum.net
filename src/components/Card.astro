@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Icon from '@components/Icon.astro';
 import type { CardProps } from '@/src/types/common';
 
-const { title, description, imageSrc, imageAlt, url } = Astro.props as CardProps;
+const { title, description, imageSrc, imageAlt, url, icon = 'github' } = Astro.props as CardProps;
 ---
 
 <div
@@ -26,7 +26,7 @@ const { title, description, imageSrc, imageAlt, url } = Astro.props as CardProps
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Icon name="github" size="md" />
+          <Icon name={icon} size="md" />
         </a>
       )
     }

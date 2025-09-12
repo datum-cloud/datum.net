@@ -77,7 +77,7 @@
   }
 
   .hero--main-content-description {
-    @apply font-alliance text-navy md:text-22 m-auto mt-0 mb-0 max-w-3xl text-lg leading-[32px] font-normal;
+    @apply font-alliance text-navy md:text-22 m-auto mt-0 mb-0 max-w-3xl text-lg leading-[32px] font-normal text-balance;
 
     a {
       @apply hover:text-navy/70 hover:border-navy/70 border-navy border-b transition-colors hover:cursor-pointer;

@@ -21,6 +21,10 @@
         @apply border-navy/20 hover:border-navy/70;
       }
 
+      .mobile-menu-actions .btn--primary {
+        @apply text-white;
+      }
+
       .nav-logo {
         --color-logo-object: var(--color-tuscany);
         --color-logo-text: var(--color-navy);

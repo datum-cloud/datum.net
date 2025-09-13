@@ -142,8 +142,13 @@ export default defineConfig({
   prefetch: true,
 
   redirects: {
-    '/docs/roadmap': '/resources/roadmap',
-    '/product': '/features',
-    '/team': '/about',
+    '/docs/roadmap': '/resources/roadmap/',
+    '/product': '/features/',
+    '/team': '/about/',
+    '/docs/tutorials/gateway': '/docs/tutorials/httpproxy/',
+    '/docs/tasks/developer-guide': '/docs/developer-guide/',
+    '/product/overview/overview': '/features/',
+    '/netzero/overview/overview': '/',
+    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/'
   },
 });

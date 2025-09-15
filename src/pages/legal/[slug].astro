@@ -17,7 +17,7 @@ export async function getStaticPaths() {
   });
 }
 
-const page = await Astro.props.entry;
+const page = Astro.props.entry;
 
 // SEO
 const fm = page.data;

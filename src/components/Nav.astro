@@ -17,11 +17,21 @@ const mainNav = navData.main;
 <nav class="nav--main">
   {/* Logo */}
   <a href="/" class="nav-logo">
-    <Logo />
+    <Logo
+      class="fade-in--pure"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+      data-reveal-immediate="true"
+    />
   </a>
 
   {/* Desktop Menu */}
-  <ul class="nav-menu">
+  <ul
+    class="nav-menu fade-in--pure"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+  >
     {
       mainNav.map((item) => (
         <li class={`nav-menu-item ${item.children ? 'nav-dropdown' : ''}`}>
@@ -66,7 +76,10 @@ const mainNav = navData.main;
   {/* Desktop Actions */}
   <div class="nav-actions">
     <Button
-      class="btn btn--primary gh-button min-w-[115px]"
+      class="btn btn--primary gh-button fade-in--pure min-w-[115px]"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+      data-reveal-immediate="true"
       icon={{ name: 'github', size: 'md' }}
       iconPosition="left"
       iconClass="stroke-1.5"

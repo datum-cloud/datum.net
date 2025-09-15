@@ -8,9 +8,6 @@ import ImageFooter from '@v1/assets/images/footer-illustration.png';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
 
-// const starCount = '18.5k'; //await stargazerCount();
-import Icon from '@components/Icon.astro';
-
 // Get props with default values
 const { showCTA = true } = Astro.props as FooterProps;
 
@@ -23,13 +20,22 @@ const navData = navigation as NavData;
   {
     showCTA && (
       <div class="footer-hero">
-        <div class="footer-hero-content">
+        <div
+          class="footer-hero-content fade-in--pure"
+          data-reveal="fade-in--pure--visible"
+          data-reveal-delay="100"
+        >
           <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
           <div class="footer-hero-actions">
-            <a href="https://github.com/datum-cloud/datum/" class="btn btn--cream btn--large">
-              View on GitHub
-              <Icon name="arrow-right" size="md" />
-            </a>
+            <Button
+              class="btn btn--cream btn--large"
+              text="View on GitHub"
+              icon={{ name: 'arrow-right', size: 'md' }}
+              iconPosition="right"
+              iconClass="stroke-1.5"
+              target="_blank"
+              href="https://github.com/datum-cloud/datum/"
+            />
           </div>
         </div>
       </div>
@@ -45,7 +51,11 @@ const navData = navigation as NavData;
 
   <!-- Main Footer Content -->
   <div class="footer-main">
-    <div class="footer-grid">
+    <div
+      class="footer-grid fade-in--pure"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+    >
       <!-- Logo Section -->
       <div class="footer-logo-section">
         <a href="/" aria-label="Home" class="footer-logo-link">

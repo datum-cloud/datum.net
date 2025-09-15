@@ -8,7 +8,12 @@ const { post, author } = Astro.props;
 const readingTime = estimateReadingTime(post.body || '');
 ---
 
-<div class="blog-featured">
+<div
+  class="blog-featured fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-immediate="true"
+  data-reveal-delay="100"
+>
   <!-- Image on the left -->
   <div class="blog-featured--image">
     {

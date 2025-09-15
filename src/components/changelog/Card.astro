@@ -6,7 +6,11 @@ export type Props = ChangelogCardProps;
 const { date, title, description, tags } = Astro.props;
 ---
 
-<div class="changelog-item">
+<div
+  class="changelog-item fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+>
   <div class="changelog-item--timeline">
     <div class="changelog-item--timeline-dot">
       <svg

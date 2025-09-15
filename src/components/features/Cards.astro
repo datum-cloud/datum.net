@@ -4,7 +4,11 @@ import type { FeaturesProps } from '@/src/types/features';
 const { features } = Astro.props as FeaturesProps;
 ---
 
-<div class="feature-cards-grid 3xl:ml-10 ml-0 xl:ml-3 2xl:ml-8">
+<div
+  class="feature-cards-grid 3xl:ml-10 fade-in--pure ml-0 xl:ml-3 2xl:ml-8"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+>
   {
     features.map((feature) => (
       <div class="feature-card-item">

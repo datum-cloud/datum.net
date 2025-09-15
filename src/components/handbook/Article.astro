@@ -48,7 +48,12 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
     }
 
     {/* Main Content Area */}
-    <article class="handbook-content">
+    <article
+      class="handbook-content fade-in--pure"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-immediate="true"
+      data-reveal-delay="100"
+    >
       <header class="article-header">
         <h1 class="article-title">
           {mainArticleEntry?.data.title || 'Why does Datum exist?'}

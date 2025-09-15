@@ -266,7 +266,7 @@
   }
 
   .logo-grid--3-6 {
-    @apply grid-cols-3 lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-0 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
+    @apply grid-cols-3 lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-0 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
   }
 
   .logo-grid--2-3 {

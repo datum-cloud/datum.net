@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
-import Illustration from '@v1/assets/images/hero-home-illustration.png';
+import Illustration from '@v1/assets/images/hero-home-illustration.webp';
 import Nav from '@components/Nav.astro';
 import Button from '@components/Button.astro';
 ---
@@ -11,6 +11,7 @@ import Button from '@components/Button.astro';
     <div class="absolute z-0 flex h-full w-full items-end">
       <Image
         src={Illustration}
+        loading="eager"
         alt="Hero Illustration"
         class="fade-in-pure h-auto w-full object-contain sm:object-cover"
         data-reveal="fade-in-pure--visible"

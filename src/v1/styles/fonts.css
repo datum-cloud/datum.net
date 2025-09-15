@@ -5,6 +5,7 @@
   font-family: 'Alliance No.1';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src:
     url('/fonts/datum/allianceno1-regular-webfont.woff2') format('woff2'),
     url('/fonts/datum/allianceno1-regular-webfont.woff') format('woff');
@@ -14,6 +15,7 @@
   font-family: 'Alliance No.1';
   font-style: normal;
   font-weight: 500;
+  font-display: swap;
   src:
     url('/fonts/datum/allianceno1-medium-webfont.woff2') format('woff2'),
     url('/fonts/datum/allianceno1-medium-webfont.woff') format('woff');
@@ -23,6 +25,7 @@
   font-family: 'Alliance No.1';
   font-style: normal;
   font-weight: 600;
+  font-display: swap;
   src:
     url('/fonts/datum/allianceno1-semibold-webfont.woff2') format('woff2'),
     url('/fonts/datum/allianceno1-semibold-webfont.woff') format('woff');
@@ -33,6 +36,7 @@
   font-family: 'Canela Text';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src:
     url('/fonts/datum/canelatextlcweb-regular-webfont.woff2') format('woff2'),
     url('/fonts/datum/canelatextlcweb-regular-webfont.woff') format('woff');
@@ -43,6 +47,7 @@
   font-family: 'Frontliner';
   font-style: normal;
   font-weight: 300;
+  font-display: swap;
   src:
     url('/fonts/datum/frontliner-light-webfont.woff2') format('woff2'),
     url('/fonts/datum/frontliner-light-webfont.woff') format('woff');

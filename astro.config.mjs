@@ -127,12 +127,6 @@ export default defineConfig({
   vite: {
     // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
-    preview: {
-      allowedHosts: ['website.staging.env.datum.net'],
-    },
-    server: {
-      allowedHosts: ['website.staging.env.datum.net'],
-    },
     css: {
       devSourcemap: true,
     },
@@ -149,6 +143,6 @@ export default defineConfig({
     '/docs/tasks/developer-guide': '/docs/developer-guide/',
     '/product/overview/overview': '/features/',
     '/netzero/overview/overview': '/',
-    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/'
+    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
   },
 });

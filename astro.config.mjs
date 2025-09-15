@@ -19,13 +19,18 @@ const port = parseInt(process.env.PORT || env.PORT || '4321');
 export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   output: 'static',
+  trailingSlash: 'always',
   adapter: node({
     mode: 'standalone',
   }),
   integrations: [
-    sitemap(),
+    sitemap({
+      customPages: [],
+      filter: (page) => !page.includes('/admin') && !page.includes('/api'),
+    }),
     robotsTxt({
       sitemap: true,
+      sitemapBaseFileName: 'sitemap',
       policy: [
         {
           userAgent: '*',
@@ -149,6 +154,6 @@ export default defineConfig({
     '/docs/tasks/developer-guide': '/docs/developer-guide/',
     '/product/overview/overview': '/features/',
     '/netzero/overview/overview': '/',
-    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/'
+    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
   },
 });

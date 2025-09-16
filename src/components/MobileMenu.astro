@@ -102,7 +102,12 @@ const { navigation }: Props = Astro.props;
         {
           navigation.map((item) => (
             <li class="mobile-menu-item">
-              <a href={item.href} class="mobile-menu-link" @click="closeMenu()">
+              <a
+                href={item.href}
+                class="mobile-menu-link"
+                @click="closeMenu()"
+                data-astro-prefetch="load"
+              >
                 <span>{item.text}</span>
               </a>
 

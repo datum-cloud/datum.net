@@ -78,6 +78,7 @@ const navData = navigation as NavData;
                         class="footer-nav-link"
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        data-astro-prefetch="hover"
                       >
                         {item.text}
                       </a>

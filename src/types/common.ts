@@ -137,3 +137,10 @@ export interface CardProps {
   url?: string;
   icon?: string;
 }
+
+export interface UcCardProps {
+  title: string;
+  description: string;
+  href: string;
+  slug: string;
+}

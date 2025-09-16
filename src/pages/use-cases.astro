@@ -1,0 +1,70 @@
+---
+import '@v1/styles/global.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import UcCard from '@components/UcCard.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import ImageLightTrail from '@v1/assets/images/light-trail-3.webp';
+import GlobalSection from '@components/GlobalSection.astro';
+
+const page = await getCollectionEntry('pages', 'use-cases');
+
+// Get all use cases from the collection and sort by order
+const useCases = await getCollection('useCases', ({ data }) => !data.draft);
+useCases.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Use Cases';
+const description = fm.description;
+---
+
+<Layout title={title} description={description} bodyClass="usecase-project-page" meta={meta}>
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={page.data.iconName}
+      title={page.data.title}
+      subtitle={page.data.subtitle}
+      description={page.data.description}
+    />
+
+    <div class="section--block section--block--pad bg-midnight-fjord relative">
+      <div class="max-width">
+        <div class="absolute top-0 left-0 z-40 inline-block w-full">
+          <Image
+            src={ImageLightTrail}
+            alt="Sphere"
+            class="fade-in--pure relative h-auto w-full"
+            data-scroll-effect="parallax"
+            data-scroll-speed="0.1"
+            data-scroll-direction="down"
+            data-viewport-offset="200"
+            data-max-movement="50"
+            data-reveal="fade-in--pure--visible"
+            data-reveal-delay="100"
+            data-reveal-immediate="true"
+          />
+        </div>
+        <div
+          class="fade-in--pure relative z-50 grid w-full max-w-none grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-3 lg:gap-12.5"
+          data-reveal="fade-in--pure--visible"
+          data-reveal-immediate="true"
+          data-reveal-delay="100"
+        >
+          {
+            useCases.map((useCase) => (
+              <UcCard title={useCase.data.title} description={useCase.data.description || ''} />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <GlobalSection />
+    <Footer />
+  </section>
+</Layout>

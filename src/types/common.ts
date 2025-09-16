@@ -170,4 +170,10 @@ export interface AnnouncementProps {
   };
 }
 
+export interface UcCardProps {
+  title: string;
+  description: string;
+  href: string;
+  slug: string;
+}
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

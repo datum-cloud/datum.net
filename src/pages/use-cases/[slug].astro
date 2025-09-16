@@ -1,0 +1,227 @@
+---
+// src/pages/use-cases/[slug].astro
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Icon from '@components/Icon.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import ArticleNavigation from '@components/ArticleNavigation.astro';
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import { getMetaImageUrl } from '@utils/imageUtils';
+import { formatLongDate, formatISODate } from '@utils/dateUtils';
+
+export async function getStaticPaths() {
+  const useCaseEntries = await getCollection('useCases');
+  const authors = await getCollection('authors');
+
+  return useCaseEntries
+    .filter((entry) => !entry.data.draft) // Exclude draft posts
+    .map((entry) => {
+      // Find the author data if it exists
+      const authorData = authors.find((author) => author.id === entry.data.author);
+
+      return {
+        params: { slug: entry.data.slug || entry.id },
+        props: { entry, authorData },
+      };
+    });
+}
+
+const { entry, authorData } = Astro.props;
+const { Content } = await render(entry);
+const formattedDate = entry.data.date ? formatLongDate(entry.data.date) : '';
+const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
+
+// Get all use case entries for navigation
+const allUseCaseEntries = await getCollection('useCases');
+
+// Get navigation articles (sorted by title)
+const sortedUseCases = allUseCaseEntries
+  .filter((uc) => !uc.data.draft)
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+const currentIndex = sortedUseCases.findIndex((uc) => uc.id === entry.id);
+const previousArticle = currentIndex > 0 ? sortedUseCases[currentIndex - 1] : undefined;
+const nextArticle =
+  currentIndex < sortedUseCases.length - 1 ? sortedUseCases[currentIndex + 1] : undefined;
+
+// Get processed avatar URL
+let processedAvatarUrl = '';
+if (authorData?.data.avatar) {
+  try {
+    const processedImage = await getImage({
+      src: authorData.data.avatar,
+      width: 40,
+      height: 40,
+    });
+    processedAvatarUrl = processedImage.src;
+  } catch (error) {
+    console.warn('Failed to process avatar image:', error);
+  }
+}
+
+// SEO
+const fm = entry.data;
+const meta = fm.meta || {};
+const title = fm.title;
+const description = fm.description ? fm.description : '';
+const subtitle = fm.subtitle ? fm.subtitle : 'Use Case';
+const icon = 'users';
+---
+
+<Layout
+  title={title}
+  description={description}
+  image={metaImage}
+  article={true}
+  publishDate={fm.date}
+  author={fm.author}
+  bodyClass="blog-detail-page"
+  meta={meta}
+>
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={icon}
+      title={title}
+      subtitle={subtitle}
+      hideContent={true}
+      class="hero--nav-pad light"
+    />
+
+    <section
+      class="blog-detail bg-pearl-gray section--block section--block--pad pt-19 md:pt-22 lg:pt-29"
+    >
+      <article
+        class="blog-article fade-in--pure"
+        data-pagefind-body
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+        data-reveal-immediate="true"
+      >
+        <!-- Hidden meta tags for Pagefind -->
+        <span data-pagefind-meta="page_type" class="hidden" style="display: none;">use-case</span>
+        <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
+          >{authorData?.data.name || fm.author}</span
+        >
+        <span data-pagefind-meta="author_avatar" class="hidden" style="display: none;"
+          >{processedAvatarUrl}</span
+        >
+        <span data-pagefind-meta="date" class="hidden" style="display: none;"
+          >{fm.date ? formatISODate(fm.date) : ''}</span
+        >
+        <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
+          >Use Case</span
+        >
+        <span data-pagefind-meta="draft" class="hidden" style="display: none;"
+          >{entry.data.draft ? 'true' : 'false'}</span
+        >
+
+        <!-- Article Header -->
+        <header class="blog-article-header">
+          <div class="blog-article-meta">
+            <div class="blog-article-meta-content flex items-center justify-between">
+              <a href="/use-cases" class="blog-back-button">
+                <Icon name="arrow-left" size="sm" />
+                <span>Back to Use Cases</span>
+              </a>
+              <div>
+                {
+                  formattedDate && (
+                    <>
+                      <span class="blog-article-date">{formattedDate}&nbsp;&nbsp;|&nbsp;</span>
+                    </>
+                  )
+                }
+                <button
+                  type="button"
+                  class="blog-article-share"
+                  x-data="{ copied: false }"
+                  @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                  x-text="copied ? 'Copied!' : 'Share URL'"></button>
+              </div>
+            </div>
+          </div>
+
+          <h1 class="blog-article-title">
+            {fm.title}
+          </h1>
+
+          {fm.description && <p class="blog-article-description">{fm.description}</p>}
+        </header>
+
+        <!-- Featured Image -->
+        {
+          fm.featuredImage && (
+            <div class="blog-article-image">
+              <Image
+                src={fm.featuredImage}
+                alt={fm.title}
+                widths={[800, 1200, 1600]}
+                sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
+              />
+            </div>
+          )
+        }
+
+        <!-- Article Content -->
+        <div class="blog-article-content">
+          <Content />
+        </div>
+
+        <!-- Author Information -->
+        {
+          fm.author && authorData && (
+            <div class="blog-article-author">
+              <div class="blog-article-author-avatar">
+                {authorData.data.avatar ? (
+                  <a href={`/authors/${authorData.id}/`}>
+                    <Image
+                      src={authorData.data.avatar}
+                      alt={authorData.data.name || fm.author}
+                      class="blog-article-author-image"
+                      width={52}
+                      height={52}
+                    />
+                  </a>
+                ) : (
+                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
+                    <span class="text-lg font-bold text-gray-600">
+                      {(authorData.data.name || fm.author).charAt(0)}
+                    </span>
+                  </a>
+                )}
+              </div>
+              <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
+                {authorData.data.name || fm.author}
+              </a>
+            </div>
+          )
+        }
+
+        <!-- Article Navigation -->
+        <ArticleNavigation
+          previousArticle={previousArticle
+            ? {
+                id: previousArticle.id,
+                title: previousArticle.data.title,
+                url: `/use-cases/${previousArticle.data.slug || previousArticle.id}`,
+              }
+            : undefined}
+          nextArticle={nextArticle
+            ? {
+                id: nextArticle.id,
+                title: nextArticle.data.title,
+                url: `/use-cases/${nextArticle.data.slug || nextArticle.id}`,
+              }
+            : undefined}
+        />
+      </article>
+    </section>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
+</Layout>

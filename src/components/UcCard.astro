@@ -1,0 +1,16 @@
+---
+// src/components/UcCard.astro
+import type { UcCardProps } from '@/src/types/common';
+
+const { title, description, href, slug } = Astro.props as UcCardProps;
+---
+
+<div class="uc-card" id={`use-case--${slug}`}>
+  <a class="uc-card-link" title={title} href={href}>
+    {title}
+  </a>
+  <h3 class="uc-card-title">{title}</h3>
+  <div class="uc-card-content">
+    <p>{description}</p>
+  </div>
+</div>

@@ -108,24 +108,16 @@ const icon = 'book-image';
     <section
       class="blog-detail bg-pearl-gray section--block section--block--pad pt-19 md:pt-22 lg:pt-29"
     >
-      <article class="blog-article" data-pagefind-body>
+      <article class="blog-article">
         <!-- Hidden meta tags for Pagefind -->
-        <span data-pagefind-meta="page_type" class="hidden" style="display: none;">post</span>
-        <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
-          >{authorData?.data.name || fm.author}</span
-        >
-        <span data-pagefind-meta="author_avatar" class="hidden" style="display: none;"
-          >{processedAvatarUrl}</span
-        >
-        <span data-pagefind-meta="date" class="hidden" style="display: none;"
-          >{formatISODate(fm.date)}</span
-        >
-        <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
+        <span class="hidden" style="display: none;">post</span>
+        <span class="hidden" style="display: none;">{authorData?.data.name || fm.author}</span>
+        <span class="hidden" style="display: none;">{processedAvatarUrl}</span>
+        <span class="hidden" style="display: none;">{formatISODate(fm.date)}</span>
+        <span class="hidden" style="display: none;"
           >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
         >
-        <span data-pagefind-meta="draft" class="hidden" style="display: none;"
-          >{entry.data.draft ? 'true' : 'false'}</span
-        >
+        <span class="hidden" style="display: none;">{entry.data.draft ? 'true' : 'false'}</span>
 
         <!-- Article Header -->
         <header class="blog-article-header">

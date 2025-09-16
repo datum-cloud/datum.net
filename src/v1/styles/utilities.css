@@ -54,27 +54,27 @@
   }
 
   /* Pure fade-in animation (no translate) */
-  .fade-in-pure {
+  .fade-in--pure {
     @apply opacity-0 transition-opacity duration-1000 ease-out;
   }
 
-  .fade-in-pure--visible {
+  .fade-in--pure--visible {
     @apply opacity-100;
   }
 
-  .fade-in-pure--large {
+  .fade-in--pure--large {
     @apply opacity-0 transition-opacity duration-1200 ease-out;
   }
 
-  .fade-in-pure--large--visible {
+  .fade-in--pure--large--visible {
     @apply opacity-100;
   }
 
-  .fade-in-pure--small {
+  .fade-in--pure--small {
     @apply opacity-0 transition-opacity duration-800 ease-out;
   }
 
-  .fade-in-pure--small--visible {
+  .fade-in--pure--small--visible {
     @apply opacity-100;
   }
 }

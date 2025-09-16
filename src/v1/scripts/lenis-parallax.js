@@ -101,6 +101,7 @@ class LenisSmoothScroll {
       const revealClass = element.dataset.reveal;
       const delay = parseInt(element.dataset.revealDelay) || 0;
       const threshold = parseFloat(element.dataset.revealThreshold) || 0.1;
+      const immediate = element.dataset.revealImmediate === 'true';
 
       // Store reveal configuration
       element.dataset.revealClass = revealClass;
@@ -108,9 +109,14 @@ class LenisSmoothScroll {
       element.dataset.revealThreshold = threshold;
       element.dataset.hasRevealed = 'false';
 
-      // Check if element is already in viewport on page load
-      if (this.isElementInViewport(element, threshold)) {
+      // If immediate reveal is enabled, trigger immediately
+      if (immediate) {
         this.triggerReveal(element);
+      } else {
+        // Check if element is already in viewport on page load
+        if (this.isElementInViewport(element, threshold)) {
+          this.triggerReveal(element);
+        }
       }
     });
   }
@@ -227,14 +233,14 @@ class LenisSmoothScroll {
         }
 
         // Debug logging for up direction
-        if (direction === 'up' && maxMovement !== Infinity) {
-          console.log('Up direction debug:', {
-            relativeScroll,
-            yPos: yPos.toFixed(2),
-            maxMovement,
-            speed,
-          });
-        }
+        // if (direction === 'up' && maxMovement !== Infinity) {
+        //   console.log('Up direction debug:', {
+        //     relativeScroll,
+        //     yPos: yPos.toFixed(2),
+        //     maxMovement,
+        //     speed,
+        //   });
+        // }
 
         // Apply direction-aware boundaries and maximum movement limits
         if (direction === 'left' || direction === 'right') {
@@ -317,7 +323,7 @@ class LenisSmoothScroll {
 
             // Debug logging for final position
             if (direction === 'up' && maxMovement !== Infinity) {
-              console.log('Final yPos:', yPos.toFixed(2));
+              // console.log('Final yPos:', yPos.toFixed(2));
             }
           }
           element.style.transform = `translateY(${Math.round(yPos)}px)`;

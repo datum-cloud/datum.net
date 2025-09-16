@@ -23,13 +23,20 @@ const {
   iconClass = '',
   href = '#',
   target = '_self',
+  ...restProps
 } = Astro.props as ButtonProps;
+
+// Extract data attributes from rest props
+const dataAttributes = Object.fromEntries(
+  Object.entries(restProps).filter(([key]) => key.startsWith('data-'))
+);
 
 // Always use anchor tag, use '#' as default href for button-like behavior
 const attributes = {
   href,
   target,
   ...(title && { title }),
+  ...dataAttributes,
 };
 ---
 

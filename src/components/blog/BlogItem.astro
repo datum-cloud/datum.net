@@ -12,7 +12,11 @@ if (post.data.categories?.[0]) {
 }
 ---
 
-<article class="blog-item">
+<article
+  class="blog-item fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+>
   <h2 class="blog-item--title">
     <a href={`/blog/${post.id}/`}>{post.data.title}</a>
   </h2>

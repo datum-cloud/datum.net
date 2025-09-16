@@ -117,6 +117,7 @@ export interface ButtonProps {
   iconClass?: string;
   href?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
+  [key: `data-${string}`]: string | undefined;
 }
 
 export interface FooterProps {

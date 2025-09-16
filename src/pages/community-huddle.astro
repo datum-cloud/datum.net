@@ -81,7 +81,12 @@ const subtitle = fm.subtitle;
     {
       upcomingHuddle && (
         <div class="section--block section--block--small-pad bg-navy">
-          <div class="m-auto max-w-391">
+          <div
+            class="fade-in--pure m-auto max-w-391"
+            data-reveal="fade-in--pure--visible"
+            data-reveal-immediate="true"
+            data-reveal-delay="100"
+          >
             <UpcomingHuddle huddle={upcomingHuddle} />
           </div>
         </div>
@@ -92,7 +97,11 @@ const subtitle = fm.subtitle;
     {
       previousHuddles.length > 0 && (
         <div class="section--block section--block--small-pad bg-pearl-gray">
-          <div class="m-auto max-w-391">
+          <div
+            class="fade-in--pure m-auto max-w-391"
+            data-reveal="fade-in--pure--visible"
+            data-reveal-delay="100"
+          >
             <div class="text-navy m-auto flex max-w-6xl flex-col">
               <h2 class="font-canela mb-8 text-center text-2xl font-normal -tracking-[1.5px] md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
                 Previous Huddles

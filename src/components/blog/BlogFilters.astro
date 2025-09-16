@@ -10,7 +10,11 @@ const categories = await getCollection('categories');
 const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 
-<div class="blog-filters">
+<div
+  class="blog-filters fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+>
   <!-- Category Filters -->
   <div class="blog-filters--categories">
     <a href="/blog/" class={`blog-filter ${!currentCategory ? 'blog-filter--active' : ''}`}>

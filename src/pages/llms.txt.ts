@@ -53,10 +53,9 @@ export const GET: APIRoute = async () => {
     llmsContent += `## About\n\n`;
     llmsContent += `Datum provides enterprise-grade cloud network solutions. This document contains structured information about our documentation and blog posts.\n\n`;
 
-    // Get all pages sorted, excluding home/* pages
+    // Get all pages sorted
     const pages = await getCollection('pages');
-    const filteredPages = pages.filter((page) => !page.id.startsWith('home/'));
-    const sortedPages = filteredPages.sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+    const sortedPages = pages.sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
 
     llmsContent += `## Pages\n\n`;
 
@@ -66,15 +65,7 @@ export const GET: APIRoute = async () => {
         page.data.description || extractDescription(page.body, 'No description available');
 
       // Add page metadata with description
-      let pageUrl: string;
-      if (page.id === 'index') {
-        pageUrl = `${siteUrl}/`;
-      } else if (page.id.endsWith('/index')) {
-        pageUrl = `${siteUrl}/${page.id.replace('/index', '')}/`;
-      } else {
-        pageUrl = `${siteUrl}/${page.id}/`;
-      }
-      llmsContent += `- [${page.data.title}](${pageUrl}) - ${description}\n`;
+      llmsContent += `- [${page.data.title}](${siteUrl}/${page.id}) - ${description}\n`;
     }
 
     // Get all blog posts sorted by date (newest first)
@@ -91,35 +82,62 @@ export const GET: APIRoute = async () => {
         post.data.description || extractDescription(post.body, 'No description available');
 
       // Add post metadata with description
-      let postUrl: string;
-      if (post.id === 'index') {
-        postUrl = `${siteUrl}/blog/`;
-      } else if (post.id.endsWith('/index')) {
-        postUrl = `${siteUrl}/blog/${post.id.replace('/index', '')}/`;
-      } else {
-        postUrl = `${siteUrl}/blog/${post.id}/`;
-      }
-      llmsContent += `- [${post.data.title}](${postUrl}) - ${description}\n`;
+      llmsContent += `- [${post.data.title}](${siteUrl}/blog/${post.id}) - ${description}\n`;
     }
 
-    // Get all Docs entries
+    // Get all documentation entries
     const docs = await getCollection('docs');
 
-    // Add Docs
-    if (docs.length > 0) {
-      llmsContent += `\n## Docs\n\n`;
-      for (const doc of docs) {
+    // Group docs by category
+    const tutorials = docs.filter((doc) => doc.id.startsWith('tutorials/'));
+    const tasks = docs.filter((doc) => doc.id.startsWith('tasks/'));
+    const api = docs.filter((doc) => doc.id.startsWith('api/'));
+    const other = docs.filter(
+      (doc) =>
+        !doc.id.startsWith('tutorials/') &&
+        !doc.id.startsWith('tasks/') &&
+        !doc.id.startsWith('api/')
+    );
+
+    llmsContent += `\n## Documentation\n\n`;
+
+    // Add tutorials
+    if (tutorials.length > 0) {
+      llmsContent += `### Tutorials\n\n`;
+      for (const doc of tutorials) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        let docUrl: string;
-        if (doc.id === 'index') {
-          docUrl = `${siteUrl}/`;
-        } else if (doc.id.endsWith('/index')) {
-          docUrl = `${siteUrl}/${doc.id.replace('/index', '')}/`;
-        } else {
-          docUrl = `${siteUrl}/${doc.id}/`;
-        }
-        llmsContent += `- [${doc.data.title}](${docUrl}) - ${description}\n`;
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
+      }
+    }
+
+    // Add tasks
+    if (tasks.length > 0) {
+      llmsContent += `\n### Tasks\n\n`;
+      for (const doc of tasks) {
+        const description =
+          doc.data.description || extractDescription(doc.body, 'No description available');
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
+      }
+    }
+
+    // Add API docs
+    if (api.length > 0) {
+      llmsContent += `\n### API\n\n`;
+      for (const doc of api) {
+        const description =
+          doc.data.description || extractDescription(doc.body, 'No description available');
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
+      }
+    }
+
+    // Add other docs
+    if (other.length > 0) {
+      llmsContent += `\n### Other Documentation\n\n`;
+      for (const doc of other) {
+        const description =
+          doc.data.description || extractDescription(doc.body, 'No description available');
+        llmsContent += `- [${doc.data.title}](${siteUrl}/${doc.id}) - ${description}\n`;
       }
     }
 
@@ -142,7 +160,7 @@ export const GET: APIRoute = async () => {
     // Add handbook entries by category
     for (const category in handbookCategories) {
       const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      llmsContent += `\n### ${categoryName}\n\n`;
+      llmsContent += `### ${categoryName}\n\n`;
 
       // Sort by sidebar order if available
       const sortedHandbooks = handbookCategories[category].sort((a, b) => {
@@ -155,15 +173,7 @@ export const GET: APIRoute = async () => {
         const description =
           handbook.data.description ||
           extractDescription(handbook.body, 'No description available');
-        let handbookUrl: string;
-        if (handbook.id === 'index') {
-          handbookUrl = `${siteUrl}/handbook/`;
-        } else if (handbook.id.endsWith('/index')) {
-          handbookUrl = `${siteUrl}/handbook/${handbook.id.replace('/index', '')}/`;
-        } else {
-          handbookUrl = `${siteUrl}/handbook/${handbook.id}/`;
-        }
-        llmsContent += `- [${handbook.data.title}](${handbookUrl}) - ${description}\n`;
+        llmsContent += `- [${handbook.data.title}](${siteUrl}/handbook/${handbook.id}) - ${description}\n`;
       }
     }
 

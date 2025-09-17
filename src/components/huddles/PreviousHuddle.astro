@@ -11,6 +11,7 @@ export interface Props {
 
 const { huddle, index } = Astro.props;
 const { Content } = await render(huddle);
+const huddleContentId = `huddle-content-${huddle.id}`;
 ---
 
 <div class="previous-huddle" data-huddle-id={huddle.id}>
@@ -18,7 +19,7 @@ const { Content } = await render(huddle);
     class="previous-huddle--toggle"
     @click={`expandedHuddle = expandedHuddle === ${index} ? null : ${index}`}
     :aria-expanded={`expandedHuddle === ${index}`}
-    :aria-controls="`huddle-content-${huddle.id}`"
+    aria-controls={huddleContentId}
   >
     <span class="previous-huddle--date">
       {
@@ -67,7 +68,7 @@ const { Content } = await render(huddle);
 
   <div
     class="previous-huddle--content"
-    :id="`huddle-content-${huddle.id}`"
+    id={huddleContentId}
     :aria-hidden={`expandedHuddle !== ${index}`}
     x-show={`expandedHuddle === ${index}`}
     x-collapse

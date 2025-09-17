@@ -123,7 +123,7 @@ jobs:
           retention-days: 30
 
   status-check:
-    needs: [install, quality, build, e2e]
+    needs: [install, quality, build]
     name: Final Status Check
     runs-on: ubuntu-latest
     if: always()

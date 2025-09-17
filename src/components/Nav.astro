@@ -35,7 +35,7 @@ const mainNav = navData.main;
     {
       mainNav.map((item) => (
         <li class={`nav-menu-item ${item.children ? 'nav-dropdown' : ''}`}>
-          <a href={item.href} class="nav-menu-link">
+          <a href={item.href} class="nav-menu-link" data-astro-prefetch="hover">
             <span>{item.text}</span>
             {item.children && <Arrow class="nav-dropdown-arrow" />}
           </a>

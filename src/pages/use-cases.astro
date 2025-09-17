@@ -56,12 +56,7 @@ const description = fm.description;
       >
         {
           useCases.map((useCase) => (
-            <UcCard
-              title={useCase.data.title}
-              description={useCase.data.description || ''}
-              href={`/use-cases/${useCase.data.slug || useCase.id}`}
-              slug={useCase.data.slug || useCase.id}
-            />
+            <UcCard title={useCase.data.title} description={useCase.data.description || ''} />
           ))
         }
       </div>

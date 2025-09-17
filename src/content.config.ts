@@ -273,6 +273,7 @@ const useCases = defineCollection({
       description: z.string().optional(),
       date: z.date().optional(),
       author: z.string().optional(),
+      order: z.number().optional().default(0),
       thumbnail: image().optional(),
       featuredImage: image().optional(),
       draft: z.boolean().optional().default(false),

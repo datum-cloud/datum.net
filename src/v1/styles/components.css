@@ -373,6 +373,6 @@
   }
 
   .uc-card-link {
-    @apply absolute top-0 left-0 h-full w-full overflow-hidden -indent-[100%];
+    @apply absolute top-0 left-0 h-full w-full overflow-hidden -indent-[9999px];
   }
 }

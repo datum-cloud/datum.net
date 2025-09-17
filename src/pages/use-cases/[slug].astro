@@ -39,7 +39,7 @@ const allUseCaseEntries = await getCollection('useCases');
 // Get navigation articles (sorted by title)
 const sortedUseCases = allUseCaseEntries
   .filter((uc) => !uc.data.draft)
-  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
 const currentIndex = sortedUseCases.findIndex((uc) => uc.id === entry.id);
 const previousArticle = currentIndex > 0 ? sortedUseCases[currentIndex - 1] : undefined;

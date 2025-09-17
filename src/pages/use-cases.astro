@@ -11,8 +11,9 @@ import GlobalSection from '@components/GlobalSection.astro';
 
 const page = await getCollectionEntry('pages', 'use-cases');
 
-// Get all use cases from the collection
+// Get all use cases from the collection and sort by order
 const useCases = await getCollection('useCases', ({ data }) => !data.draft);
+useCases.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
 // SEO
 const fm = page.data;

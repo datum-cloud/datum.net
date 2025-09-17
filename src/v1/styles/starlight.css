@@ -35,7 +35,6 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-canela);
     font-size: 70% !important;
   }
 
@@ -44,6 +43,9 @@
     margin-top: 0 !important;
   }
 
+  .sl-markdown-content .sl-anchor-link {
+    font-size: 0.75em !important;
+  }
   .sl-markdown-content
     :not(h1, h2, h3, h4, h5, h6, .sl-heading-wrapper)
     + :is(.sl-heading-wrapper) {

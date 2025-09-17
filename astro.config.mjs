@@ -39,6 +39,9 @@ export default defineConfig({
     starlight({
       title: 'Datum',
       disable404Route: true,
+      editLink: {
+        baseUrl: 'https://github.com/datum-cloud/datum.net/edit/main/',
+      },
       logo: {
         light: '/public/datum-light.svg',
         dark: '/public/datum-dark.svg',

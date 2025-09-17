@@ -34,6 +34,14 @@ const cleanContent = (content: string | undefined): string => {
   return frontmatterText + '\n\n' + cleanedContent.trim();
 };
 
+// Extract description from a page or post for the concise version
+const extractDescription = (content: string | undefined, fallback: string = ''): string => {
+  if (!content) return fallback;
+  const cleaned = cleanContent(content);
+  const firstParagraph = cleaned.match(/\n\n(.*?)\n\n/);
+  return firstParagraph ? firstParagraph[1].trim().substring(0, 150) + '...' : fallback;
+};
+
 // Format date safely
 const formatDate = (date: Date | string | undefined): string => {
   if (!date) return 'No date available';
@@ -57,15 +65,24 @@ export const GET: APIRoute = async () => {
     llmsContent += `## About\n\n`;
     llmsContent += `Datum provides enterprise-grade cloud network solutions. This document contains comprehensive information about our documentation and blog posts.\n\n`;
 
-    // Get all pages sorted
+    // Get all pages sorted, excluding home/* pages
     const pages = await getCollection('pages');
-    const sortedPages = pages.sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+    const filteredPages = pages.filter((page) => !page.id.startsWith('home/'));
+    const sortedPages = filteredPages.sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
 
     llmsContent += `## Pages\n\n`;
 
     for (const page of sortedPages) {
       // Add page metadata
-      llmsContent += `- [${page.data.title || page.id}](${siteUrl}/${page.id})\n`;
+      let pageUrl: string;
+      if (page.id === 'index') {
+        pageUrl = `${siteUrl}/`;
+      } else if (page.id.endsWith('/index')) {
+        pageUrl = `${siteUrl}/${page.id.replace('/index', '')}/`;
+      } else {
+        pageUrl = `${siteUrl}/${page.id}/`;
+      }
+      llmsContent += `- [${page.data.title || page.id}](${pageUrl})\n`;
     }
 
     // Get all blog posts sorted by date (newest first)
@@ -80,54 +97,35 @@ export const GET: APIRoute = async () => {
     llmsContent += `\n## Blog\n\n`;
 
     for (const post of sortedPosts) {
-      llmsContent += `- [${post.data.title || post.id}](${siteUrl}/blog/${post.id})\n`;
+      let postUrl: string;
+      if (post.id === 'index') {
+        postUrl = `${siteUrl}/blog/`;
+      } else if (post.id.endsWith('/index')) {
+        postUrl = `${siteUrl}/blog/${post.id.replace('/index', '')}/`;
+      } else {
+        postUrl = `${siteUrl}/blog/${post.id}/`;
+      }
+      llmsContent += `- [${post.data.title || post.id}](${postUrl})\n`;
     }
 
-    // Get all documentation entries
+    // Get all Docs entries
     const docs = await getCollection('docs');
 
-    // Group docs by category
-    const tutorials = docs.filter((doc) => doc.id.startsWith('tutorials/'));
-    const tasks = docs.filter((doc) => doc.id.startsWith('tasks/'));
-    const api = docs.filter((doc) => doc.id.startsWith('api/'));
-    const other = docs.filter(
-      (doc) =>
-        !doc.id.startsWith('tutorials/') &&
-        !doc.id.startsWith('tasks/') &&
-        !doc.id.startsWith('api/')
-    );
-
-    llmsContent += `\n## Documentation\n\n`;
-
-    // Add tutorials
-    if (tutorials.length > 0) {
-      llmsContent += `### Tutorials\n\n`;
-      for (const doc of tutorials) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
-      }
-    }
-
-    // Add tasks
-    if (tasks.length > 0) {
-      llmsContent += `\n### Tasks\n\n`;
-      for (const doc of tasks) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
-      }
-    }
-
-    // Add API docs
-    if (api.length > 0) {
-      llmsContent += `\n### API\n\n`;
-      for (const doc of api) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
-      }
-    }
-
-    // Add other docs
-    if (other.length > 0) {
-      llmsContent += `\n### Other Documentation\n\n`;
-      for (const doc of other) {
-        llmsContent += `- [${doc.data.title || doc.id}](${siteUrl}/${doc.id})\n`;
+    // Add Docs
+    if (docs.length > 0) {
+      llmsContent += `\n## Docs\n\n`;
+      for (const doc of docs) {
+        const description =
+          doc.data.description || extractDescription(doc.body, 'No description available');
+        let docUrl: string;
+        if (doc.id === 'index') {
+          docUrl = `${siteUrl}/`;
+        } else if (doc.id.endsWith('/index')) {
+          docUrl = `${siteUrl}/${doc.id.replace('/index', '')}/`;
+        } else {
+          docUrl = `${siteUrl}/${doc.id}/`;
+        }
+        llmsContent += `- [${doc.data.title}](${docUrl}) - ${description}\n`;
       }
     }
 
@@ -136,14 +134,24 @@ export const GET: APIRoute = async () => {
     llmsContent += `- ${siteUrl}/api/* - API endpoints\n`;
 
     // Add full detailed content section
-    llmsContent += `\n\n## Full Documentation\n\n`;
+    llmsContent += '\n\n---\n\n';
+
+    llmsContent += `# Full Content\n\n`;
 
     // Add page content
-    llmsContent += `### Pages Content\n\n`;
+    llmsContent += `## Pages \n\n`;
 
     for (const page of sortedPages) {
-      llmsContent += `#### ${page.data.title || page.id}\n\n`;
-      llmsContent += `URL: ${siteUrl}/${page.id}\n\n`;
+      llmsContent += `### ${page.data.title || page.id}\n\n`;
+      let pageUrl: string;
+      if (page.id === 'index') {
+        pageUrl = `${siteUrl}/`;
+      } else if (page.id.endsWith('/index')) {
+        pageUrl = `${siteUrl}/${page.id.replace('/index', '')}/`;
+      } else {
+        pageUrl = `${siteUrl}/${page.id}/`;
+      }
+      llmsContent += `URL: ${pageUrl}\n\n`;
 
       // Add description if available
       if (page.data.description) {
@@ -160,11 +168,19 @@ export const GET: APIRoute = async () => {
     }
 
     // Add blog content
-    llmsContent += `### Blog Content\n\n`;
+    llmsContent += `## Blog Content\n\n`;
 
     for (const post of sortedPosts) {
-      llmsContent += `#### ${post.data.title || post.id}\n\n`;
-      llmsContent += `URL: ${siteUrl}/blog/${post.id}\n\n`;
+      llmsContent += `### ${post.data.title || post.id}\n\n`;
+      let postUrl: string;
+      if (post.id === 'index') {
+        postUrl = `${siteUrl}/blog/`;
+      } else if (post.id.endsWith('/index')) {
+        postUrl = `${siteUrl}/blog/${post.id.replace('/index', '')}/`;
+      } else {
+        postUrl = `${siteUrl}/blog/${post.id}/`;
+      }
+      llmsContent += `URL: ${postUrl}\n\n`;
 
       // Add date if available
       if (post.data.date) {
@@ -194,25 +210,24 @@ export const GET: APIRoute = async () => {
       llmsContent += '---\n\n';
     }
 
-    // Add documentation content
-    llmsContent += `### Documentation Content\n\n`;
-
-    // Add tutorials content
-    /*
-    if (tutorials.length > 0) {
-      llmsContent += `#### Tutorials\n\n`;
-      for (const doc of tutorials) {
-        llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
+    // Add docs content
+    if (docs.length > 0) {
+      llmsContent += `## Docs\n\n`;
+      for (const doc of docs) {
+        llmsContent += `### ${doc.data.title || doc.id}\n\n`;
+        let docUrl: string;
+        if (doc.id === 'index') {
+          docUrl = `${siteUrl}/`;
+        } else if (doc.id.endsWith('/index')) {
+          docUrl = `${siteUrl}/${doc.id.replace('/index', '')}/`;
+        } else {
+          docUrl = `${siteUrl}/${doc.id}/`;
+        }
+        llmsContent += `URL: ${docUrl}\n\n`;
 
         // Add description if available
         if (doc.data.description) {
           llmsContent += `Description: ${doc.data.description}\n\n`;
-        }
-
-        // Add date if available
-        if (doc.data.date) {
-          llmsContent += `Date: ${formatDate(doc.data.date)}\n\n`;
         }
 
         // Process the content, keeping frontmatter as text
@@ -224,94 +239,6 @@ export const GET: APIRoute = async () => {
         llmsContent += '---\n\n';
       }
     }
-    */
-
-    // Add tasks content
-    /*
-    if (tasks.length > 0) {
-      llmsContent += `#### Tasks\n\n`;
-      for (const doc of tasks) {
-        llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
-
-        // Add description if available
-        if (doc.data.description) {
-          llmsContent += `Description: ${doc.data.description}\n\n`;
-        }
-
-        // Add date if available
-        if (doc.data.date) {
-          llmsContent += `Date: ${formatDate(doc.data.date)}\n\n`;
-        }
-
-        // Process the content, keeping frontmatter as text
-        try {
-          llmsContent += cleanContent(doc.body) + '\n\n';
-        } catch (error) {
-          llmsContent += `[Content processing error: ${error}]\n\n`;
-        }
-        llmsContent += '---\n\n';
-      }
-    }
-    */
-
-    // Add API docs content
-    /*
-    if (api.length > 0) {
-      llmsContent += `#### API Documentation\n\n`;
-      for (const doc of api) {
-        llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
-
-        // Add description if available
-        if (doc.data.description) {
-          llmsContent += `Description: ${doc.data.description}\n\n`;
-        }
-
-        // Add date if available
-        if (doc.data.date) {
-          llmsContent += `Date: ${formatDate(doc.data.date)}\n\n`;
-        }
-
-        // Process the content, keeping frontmatter as text
-        try {
-          llmsContent += cleanContent(doc.body) + '\n\n';
-        } catch (error) {
-          llmsContent += `[Content processing error: ${error}]\n\n`;
-        }
-        llmsContent += '---\n\n';
-      }
-    }
-    */
-
-    // Add other docs content
-    /*
-    if (other.length > 0) {
-      llmsContent += `#### Other Documentation\n\n`;
-      for (const doc of other) {
-        llmsContent += `##### ${doc.data.title || doc.id}\n\n`;
-        llmsContent += `URL: ${siteUrl}/${doc.id}\n\n`;
-
-        // Add description if available
-        if (doc.data.description) {
-          llmsContent += `Description: ${doc.data.description}\n\n`;
-        }
-
-        // Add date if available
-        if (doc.data.date) {
-          llmsContent += `Date: ${formatDate(doc.data.date)}\n\n`;
-        }
-
-        // Process the content, keeping frontmatter as text
-        try {
-          llmsContent += cleanContent(doc.body) + '\n\n';
-        } catch (error) {
-          llmsContent += `[Content processing error: ${error}]\n\n`;
-        }
-        llmsContent += '---\n\n';
-      }
-    }
-    */
 
     // Get all handbook entries
     const handbooks = await getCollection('handbooks', ({ data }) => !data.draft);
@@ -328,12 +255,12 @@ export const GET: APIRoute = async () => {
     });
 
     // Add handbook content
-    llmsContent += `### Handbook Content\n\n`;
+    llmsContent += `## Handbook Content\n\n`;
 
     // Add handbook entries by category
     for (const category in handbookCategories) {
       const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      llmsContent += `#### ${categoryName}\n\n`;
+      llmsContent += `### ${categoryName}\n\n`;
 
       // Sort by sidebar order if available
       const sortedHandbooks = handbookCategories[category].sort((a, b) => {
@@ -343,8 +270,16 @@ export const GET: APIRoute = async () => {
       });
 
       for (const handbook of sortedHandbooks) {
-        llmsContent += `##### ${handbook.data.title}\n\n`;
-        llmsContent += `URL: ${siteUrl}/handbook/${handbook.id}\n\n`;
+        llmsContent += `#### ${handbook.data.title}\n\n`;
+        let handbookUrl: string;
+        if (handbook.id === 'index') {
+          handbookUrl = `${siteUrl}/handbook/`;
+        } else if (handbook.id.endsWith('/index')) {
+          handbookUrl = `${siteUrl}/handbook/${handbook.id.replace('/index', '')}/`;
+        } else {
+          handbookUrl = `${siteUrl}/handbook/${handbook.id}/`;
+        }
+        llmsContent += `URL: ${handbookUrl}\n\n`;
 
         // Add description if available
         if (handbook.data.description) {

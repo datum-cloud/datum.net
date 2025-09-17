@@ -28,13 +28,17 @@ async function stargazerCount(
   asClient: boolean = false
 ): Promise<number> {
   if (asClient == false) {
-    const API_URL = `https://api.github.com/repos/${owner}/${name}`;
-    const response = await fetch(API_URL);
-    const data = await response.json();
+    try {
+      const API_URL = `https://api.github.com/repos/${owner}/${name}`;
+      const response = await fetch(API_URL);
+      const data = await response.json();
 
-    if (response.ok) {
-      return data.stargazers_count || 0;
-    } else {
+      if (response.ok) {
+        return data.stargazers_count || 0;
+      } else {
+        return 0;
+      }
+    } catch {
       return 0;
     }
   } else {
@@ -68,7 +72,7 @@ async function stargazerCount(
 
       return Object(jsonData).repository.stargazerCount;
     } catch {
-      return 0; // Return 0 in case of error
+      return 0;
     }
   }
 }

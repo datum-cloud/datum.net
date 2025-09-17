@@ -133,7 +133,8 @@ for each node to operate properly. In our production environment, we run an `ini
 retrieves the relevant runtime configuration from our configuration management system and provides it to the `galactic-agent` 
 in a configuration file.
 
-Below is an example Kubernetes manifest you can use.
+[Here](https://github.com/datum-cloud/galactic-agent/blob/main/config/base/daemonset.yaml) is an example Kubernetes 
+manifest you can use.
 
 The `/var/run/galactic` host mount is where the `galactic-agent` and the `galactic-cni` by default 
 connect to exchange register/deregister information. You may change it, but you must adjust it in both components.
@@ -142,76 +143,12 @@ connect to exchange register/deregister information. You may change it, but you 
 routes in the host system. For this to work, the `galactic-agent` must also operate in the `hostNetwork`.
 
 
-```yaml
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: galactic-agent
-  namespace: galactic-agent
-spec:
-  selector:
-    matchLabels:
-      name: galactic-agent
-  template:
-    metadata:
-      labels:
-        name: galactic-agent
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/control-plane
-                operator: DoesNotExist
-      containers:
-        - name: galactic-agent
-          image: ghcr.io/datum-cloud/galactic-agent:latest
-          volumeMounts:
-            - name: galactic-run
-              mountPath: /var/run/galactic
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
-      hostNetwork: true
-      volumes:
-        - name: script
-          configMap:
-            name: config-gen-script
-        - name: galactic-run
-          hostPath:
-            path: /var/run/galactic
-            type: DirectoryOrCreate
-```
-
-
 ### Router
 
 The Galactic Router can be installed anywhere as long as it can access the MQTT broker.
 There is no requirement for it to operate inside the Kubernetes cluster hosting the workloads.
 
-Below is an example `Deployment` manifest you can use. To make this work, you must 
-provide [configuration](https://github.com/datum-cloud/galactic-router/blob/main/galactic_router/__init__.py#L19) 
-for the database and MQTT connection. You can provide this configuration as command arguments or environment variables.
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: galactic-router
-  namespace: galactic-router
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: galactic-router
-  template:
-    metadata:
-      labels:
-        app: galactic-router
-    spec:
-      containers:
-        - name: galactic-router
-          image: ghcr.io/datum-cloud/galactic-router:latest
-```
+[Here](https://github.com/datum-cloud/galactic-router/blob/main/config/base/deployment.yaml) is an example `Deployment` 
+manifest you can use. To make this work, you must provide 
+[configuration](https://github.com/datum-cloud/galactic-router/blob/main/galactic_router/__init__.py#L19) for the 
+database and MQTT connection. You can provide this configuration as command arguments or environment variables.

@@ -22,7 +22,7 @@
             { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
             { "icon": "slack", "text": "Public Slack", "href": "/public-slack/" },
-            { "icon": "code", "text": "OSS Projects", "href": "/resources/open-source/" }
+            { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
           ]
         }
       ]
@@ -71,7 +71,7 @@
         { "text": "Changelog", "href": "/resources/changelog/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
         { "text": "Public Slack", "href": "/public-slack/" },
-        { "text": "OSS Projects", "href": "/resources/open-source/" }
+        { "text": "OOpen Source", "href": "/resources/open-source/" }
       ]
     },
     {

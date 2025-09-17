@@ -262,6 +262,25 @@ const huddles = defineCollection({
     }),
 });
 
+// Define use cases collections
+const useCases = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/use-cases' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      slug: z.string().optional(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      date: z.date().optional(),
+      author: z.string().optional(),
+      order: z.number().optional().default(0),
+      thumbnail: image().optional(),
+      featuredImage: image().optional(),
+      draft: z.boolean().optional().default(false),
+      meta: metaSchema,
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -273,5 +292,6 @@ export const collections = {
   changelog,
   features,
   huddles,
+  useCases,
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 };

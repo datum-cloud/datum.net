@@ -26,6 +26,8 @@ const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
 ---
 
 <!doctype html>

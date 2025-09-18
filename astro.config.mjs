@@ -4,10 +4,13 @@ import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
+import compressor from 'astro-compressor';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
+
+import playformCompress from '@playform/compress';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -125,6 +128,14 @@ export default defineConfig({
         },
       ],
     }),
+    playformCompress({
+      CSS: false,
+      HTML: true,
+      Image: false,
+      JavaScript: false,
+      SVG: true,
+    }),
+    compressor({ gzip: true, brotli: false }),
   ],
 
   vite: {

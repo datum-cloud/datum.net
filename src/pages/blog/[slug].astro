@@ -171,8 +171,10 @@ const icon = 'book-image';
               <Image
                 src={fm.featuredImage}
                 alt={fm.title}
-                widths={[800, 1200, 1600]}
-                sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
+                layout="constrained"
+                class="fade-in--pure"
+                data-reveal="fade-in--pure--visible"
+                data-reveal-delay="100"
               />
             </div>
           )

@@ -45,7 +45,12 @@ const navData = navigation as NavData;
   <!-- Background Landscape -->
   <div class:list={['footer-illustration-container', !showCTA && 'pt-30']}>
     <div class="relative">
-      <Image src={ImageFooter} alt="Footer illustration" class="footer-illustration-image" />
+      <Image
+        src={ImageFooter}
+        layout="constrained"
+        alt="Footer illustration"
+        class="footer-illustration-image"
+      />
     </div>
   </div>
 

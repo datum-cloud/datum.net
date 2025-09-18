@@ -18,7 +18,13 @@ const readingTime = estimateReadingTime(post.body || '');
   <div class="blog-featured--image">
     {
       post.data.featuredImage && (
-        <Image src={post.data.featuredImage} alt={post.data.title} width={717} height={454} />
+        <Image
+          src={post.data.featuredImage}
+          layout="constrained"
+          alt={post.data.title}
+          width={717}
+          height={454}
+        />
       )
     }
   </div>

@@ -11,13 +11,18 @@ const { content } = Astro.props as ContentProps;
 
 <section class="bg-pearl-gray section--block section--block--big-pad flex align-middle">
   <div class="absolute bottom-0 left-0 z-0 max-w-234">
-    <Image src={ImageLeft} alt="Scene left illustration" class="size-auto" />
+    <Image src={ImageLeft} layout="constrained" alt="Scene left illustration" class="size-auto" />
   </div>
   <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
-    <Image src={ImageRight} alt="Scene right illustration" class="size-auto" />
+    <Image src={ImageRight} layout="constrained" alt="Scene right illustration" class="size-auto" />
   </div>
   <div class="absolute top-0 right-0 z-0 hidden max-w-73 md:block">
-    <Image src={ImageSphere} alt="Scene sphere illustration" class="size-auto" />
+    <Image
+      src={ImageSphere}
+      layout="constrained"
+      alt="Scene sphere illustration"
+      class="size-auto"
+    />
   </div>
   <!-- Main content container -->
   <div

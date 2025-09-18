@@ -11,12 +11,13 @@ import Button from '@components/Button.astro';
     <div class="absolute z-0 flex h-full w-full items-end">
       <Image
         src={Illustration}
+        layout="constrained"
         loading="eager"
         fetchpriority="high"
         alt="Hero Illustration"
         class="fade-in-pure h-auto w-full object-contain sm:object-cover"
         data-reveal="fade-in-pure--visible"
-        data-reveal-delay="400"
+        data-reveal-delay="200"
         data-reveal-immediate="true"
       />
     </div>
@@ -30,7 +31,7 @@ import Button from '@components/Button.astro';
           class="fade-in--small h1-leading text-white"
           data-reveal="fade-in--small--visible"
           data-reveal-immediate="true"
-          data-reveal-delay="500"
+          data-reveal-delay="200"
         >
           The internet,<br />
           reimagined for AI.
@@ -39,7 +40,7 @@ import Button from '@components/Button.astro';
           class="fade-in--small flex flex-col justify-center gap-6 sm:flex-row"
           data-reveal="fade-in--small--visible"
           data-reveal-immediate="true"
-          data-reveal-delay="600"
+          data-reveal-delay="300"
         >
           <Button
             class="btn btn--lime btn--primary"

@@ -4,7 +4,6 @@ import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
-import compressor from 'astro-compressor';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
@@ -129,13 +128,12 @@ export default defineConfig({
       ],
     }),
     playformCompress({
-      CSS: false,
+      CSS: true,
       HTML: true,
-      Image: false,
-      JavaScript: false,
+      Image: true,
+      JavaScript: true,
       SVG: true,
     }),
-    compressor({ gzip: true, brotli: false }),
   ],
 
   vite: {

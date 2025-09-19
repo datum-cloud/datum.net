@@ -6,6 +6,7 @@ import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
+import LogoDropdown from '@components/LogoDropdown.astro';
 
 import type { NavData } from '@/src/types/navigation';
 
@@ -16,14 +17,20 @@ const mainNav = navData.main;
 
 <nav class="nav--main">
   {/* Logo */}
-  <a href="/" class="nav-logo" aria-label="Datum Logo">
-    <Logo
-      class="fade-in--pure"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-      data-reveal-immediate="true"
-    />
-  </a>
+
+  <div class="nav-logo-container">
+    <a href="/" class="nav-logo" id="logo-link" aria-label="Datum Logo" title="Datum Logo">
+      <Logo
+        class="fade-in--pure"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+        data-reveal-immediate="true"
+      />
+    </a>
+
+    {/* Logo Download Dropdown */}
+    <LogoDropdown id="logo-dropdown" triggerElementId="logo-link" />
+  </div>
 
   {/* Desktop Menu */}
   <ul

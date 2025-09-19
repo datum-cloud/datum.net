@@ -230,4 +230,69 @@
   .footer-illustration-image {
     @apply relative mr-auto size-auto max-h-43 max-w-none object-cover md:max-h-none md:max-w-full;
   }
+
+  /* Logo Dropdown Styles */
+  .nav-logo-container {
+    @apply relative;
+  }
+
+  .nav-logo {
+    @apply block;
+  }
+
+  .logo-dropdown {
+    @apply pointer-events-none invisible fixed z-[100] opacity-0 transition-all duration-200 ease-in-out;
+    @apply bg-light-gray min-w-70 rounded-lg px-6 py-2;
+    @apply flex flex-col;
+  }
+
+  .logo-dropdown--visible {
+    @apply pointer-events-auto visible opacity-100;
+  }
+
+  .logo-dropdown-item {
+    @apply flex items-center gap-3 py-3;
+    &:first-child {
+      @apply border-b border-[#D2D3D2];
+    }
+  }
+
+  .logo-preview {
+    @apply h-[22px] w-[22px] flex-shrink-0;
+  }
+
+  .logo-preview-bg {
+    @apply relative h-full w-full overflow-hidden rounded-sm;
+  }
+  .logo-preview-bg--dark {
+    @apply bg-white;
+  }
+  .logo-preview-bg--dark {
+    @apply bg-navy;
+  }
+
+  .logo-preview-svg {
+    @apply absolute inset-0;
+    @apply top-[4px] left-[5px] h-[13px] w-[12px];
+  }
+
+  .logo-dropdown-content {
+    @apply flex flex-1 items-center justify-between gap-2;
+  }
+
+  .logo-dropdown-filename {
+    @apply font-alliance text-navy text-[16px] leading-[1.4];
+  }
+
+  .logo-dropdown-actions {
+    @apply flex items-center gap-1.5;
+  }
+
+  .logo-dropdown-action {
+    @apply font-alliance border-navy text-navy hover:bg-navy focus:ring-navy rounded-sm border bg-transparent px-1 py-0.5 text-[13px] transition-colors duration-200 hover:cursor-pointer hover:text-white focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#E8E7E4] focus:outline-none;
+
+    &:disabled {
+      @apply cursor-not-allowed opacity-60;
+    }
+  }
 }

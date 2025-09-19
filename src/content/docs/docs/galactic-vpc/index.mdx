@@ -37,7 +37,7 @@ Additionally, the operator assigns unique identifiers for `VPC` and `VPCAttachme
 identifiers are important, as they are used to encode all the relevant endpoint information for the SRv6 
 targets.
 
-DeepWiki: https://deepwiki.com/datum-cloud/galactic-operator
+[DeepWiki](https://deepwiki.com/datum-cloud/galactic-operator).
 
 
 ### galactic-cni
@@ -46,7 +46,7 @@ DeepWiki: https://deepwiki.com/datum-cloud/galactic-operator
 the necessary low-level Linux kernel resources that tie the container into the relevant SRv6 endpoint. The CNI 
 plugin also assigns a unique local VRF on each host where termination is performed.
 
-DeepWiki: https://deepwiki.com/datum-cloud/galactic-cni
+[DeepWiki](https://deepwiki.com/datum-cloud/galactic-cni).
 
 
 ### galactic-agent
@@ -63,7 +63,7 @@ In addition, the `galactic-agent` listens on a host-local Unix socket for [gRPC 
 from containers created by the `galactic-cni` plugin. These messages register and deregister network 
 segments and terminations with the central control plane.
 
-DeepWiki: https://deepwiki.com/datum-cloud/galactic-agent
+[DeepWiki](https://deepwiki.com/datum-cloud/galactic-agent).
 
 
 ### galactic-router
@@ -81,7 +81,7 @@ to remove the MQTT abstraction entirely and listen for manifest changes inside t
 issue the relevant routing instructions. This side of the system is intentionally kept flexible,
 as we expect to innovate around how routing is performed.
 
-DeepWiki: https://deepwiki.com/datum-cloud/galactic-router
+[DeepWiki](https://deepwiki.com/datum-cloud/galactic-router).
 
 
 ## CRDs

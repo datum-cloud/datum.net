@@ -9,6 +9,8 @@ import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
+import playformCompress from '@playform/compress';
+
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
@@ -124,6 +126,13 @@ export default defineConfig({
           autogenerate: { directory: 'docs/galactic-vpc' },
         },
       ],
+    }),
+    playformCompress({
+      CSS: true,
+      HTML: true,
+      Image: true,
+      JavaScript: true,
+      SVG: true,
     }),
   ],
 

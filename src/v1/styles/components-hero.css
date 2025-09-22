@@ -38,6 +38,41 @@
     }
   }
 
+  [data-theme='light'] {
+    .hero--main {
+      @apply text-navy;
+
+      .nav--main {
+        .nav-menu {
+          @apply text-navy;
+        }
+        .btn {
+          svg {
+            @apply text-tuscany;
+          }
+        }
+      }
+
+      .btn--primary {
+        @apply text-navy;
+        @apply border-navy/20 hover:border-navy/70;
+      }
+
+      .mobile-menu-actions .btn--primary {
+        @apply text-white;
+      }
+
+      .nav-logo {
+        --color-logo-object: var(--color-tuscany);
+        --color-logo-text: var(--color-navy);
+      }
+
+      .mobile-menu-button {
+        @apply text-navy;
+      }
+    }
+  }
+
   .hero--small-pad {
     .hero--main-content-inner {
       @apply pb-22;

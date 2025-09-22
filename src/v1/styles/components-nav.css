@@ -1,17 +1,23 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:pt-9 lg:pt-12.5;
-
+    /* @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:pt-9 lg:pt-12.5; */
+    @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:grid md:grid-cols-6 md:pt-9 lg:pt-12.5;
     .btn {
       svg {
         @apply text-light-pink;
       }
     }
-  }
 
-  .nav--main .nav-menu {
-    @apply hidden items-center gap-10 justify-self-center-safe text-white md:flex;
+    .nav-actions {
+      @apply col-span-1 hidden items-center gap-6 justify-self-end-safe md:inline-block;
+    }
+    .nav-menu-wrapper {
+      @apply col-span-4 hidden justify-center md:inline-block;
+    }
+    .nav-menu {
+      @apply items-center justify-center gap-10 text-white md:flex;
+    }
   }
 
   .nav--main .nav-menu-item {
@@ -24,10 +30,6 @@
 
   .nav--main .nav-menu-icon {
     @apply text-white;
-  }
-
-  .nav--main .nav-actions {
-    @apply hidden items-center gap-6 justify-self-end-safe md:flex;
   }
 
   /* Dropdown Styles */
@@ -102,10 +104,14 @@
 
   /* Mobile Navigation Styles */
   .mobile-menu-container {
-    @apply block md:hidden;
+    @apply flex w-8 md:hidden;
   }
   .mobile-menu-button {
-    @apply relative z-90 flex h-7.5 w-7.5 items-center justify-center text-white transition-colors duration-200 hover:text-white/80 md:hidden;
+    @apply relative z-90 text-white transition-colors duration-200 hover:text-white/80 md:hidden;
+
+    svg {
+      @apply h-7.5 w-7.5;
+    }
   }
 
   .mobile-menu-icon {
@@ -233,7 +239,7 @@
 
   /* Logo Dropdown Styles */
   .nav-logo-container {
-    @apply relative;
+    @apply relative col-span-1;
   }
 
   .nav-logo {

@@ -2,12 +2,11 @@
 import type { NavData } from '@/src/types/navigation';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
+import navigation from '@data/navigation.json';
 
-interface Props {
-  navigation: NavData['main'];
-}
-
-const { navigation }: Props = Astro.props;
+// Type-safe navigation data
+const navData = navigation as NavData;
+const mainNav = navData.main;
 ---
 
 <div
@@ -100,7 +99,7 @@ const { navigation }: Props = Astro.props;
     <div class="mobile-menu-content">
       <ul class="mobile-menu-list">
         {
-          navigation.map((item) => (
+          mainNav.map((item) => (
             <li class="mobile-menu-item">
               <a
                 href={item.href}

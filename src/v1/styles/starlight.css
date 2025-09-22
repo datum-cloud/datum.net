@@ -1,31 +1,97 @@
-@import './fonts.css';
+@layer base, starlight, theme, components, utilities;
 
-@import './theme-starlight.css';
+@import './fonts.css';
+@import 'tailwindcss';
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@import './theme.css';
 
 @layer base {
   html,
   body {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
+
+  /* Restore crucial styles from Tailwind Preflight: https://tailwindcss.com/docs/preflight */
+  /* Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116) */
+  *,
+  ::after,
+  ::before {
+    border: 0 solid;
+  }
+  /* Keep base font-family styles even in non-Starlight pages. */
+  html,
+  :host {
+    font-family: var(--font-sans);
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer utilities {
+  /* Wire up Starlight theme to use Tailwind config. */
+  :root {
+    /* Use Tailwind-configured font families. */
+    --sl-font: var(--font-sans);
+    --sl-font-mono: var(--font-mono);
+    /* Dark mode Starlight theme variables. */
+    --sl-color-white: var(--color-white);
+    --sl-color-gray-1: var(--color-gray-200);
+    --sl-color-gray-2: var(--color-gray-300);
+    --sl-color-gray-3: var(--color-gray-400);
+    --sl-color-gray-4: var(--color-gray-600);
+    --sl-color-gray-5: var(--color-gray-700);
+    --sl-color-gray-6: var(--color-gray-800);
+    --sl-color-black: var(--color-gray-900);
+    --sl-color-accent-low: var(--color-accent-950, var(--color-accent-900, #1e1b4b));
+    --sl-color-accent: var(--color-accent-600, #4f46e5);
+    --sl-color-accent-high: var(--color-accent-200, #c7d2fe);
+    --color-borderpanel: #313066;
+
+    /* Light mode Starlight theme variables. */
+    &[data-theme='light'] {
+      --sl-color-white: var(--color-gray-900);
+      --sl-color-gray-1: var(--color-gray-800);
+      --sl-color-gray-2: var(--color-gray-700);
+      --sl-color-gray-3: var(--color-gray-500);
+      --sl-color-gray-4: var(--color-gray-400);
+      --sl-color-gray-5: var(--color-gray-300);
+      --sl-color-gray-6: var(--color-gray-200);
+      --sl-color-gray-7: var(--color-gray-100);
+      --sl-color-black: var(--color-white);
+      --sl-color-accent-low: var(--color-accent-200, #c7d2fe);
+      --sl-color-accent: var(--color-accent-600, #4f46e5);
+      --sl-color-accent-high: var(--color-accent-900, #312e81);
+      --color-borderpanel: #d0d0ca;
+    }
+  }
+}
+
+@layer starlight.components {
 }
 
 @layer starlight.reset {
   body {
-    font-family: var(--font-primary);
+    @apply font-primary;
+    @apply leading-1.5;
   }
 
   /* Override all Starlight text elements */
   p,
   li,
   a,
-  span,
-  div,
   button,
   input,
   textarea,
   select,
   label {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
   /* Override all Starlight text elements */
@@ -67,7 +133,7 @@
   .sl-theme-toggle,
   .sl-language-select,
   .sl-social-links {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
   /* Override code blocks and inline code */
@@ -75,7 +141,7 @@
   pre,
   .sl-code-block,
   .sl-inline-code {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
   /* Additional Starlight-specific selectors */
@@ -88,7 +154,7 @@
   .sl-page-header,
   .sl-page-content,
   .sl-page-footer {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
   /* Hide theme toggle to disable dark/light mode */
@@ -99,10 +165,99 @@
 }
 
 @layer starlight.core {
+  /* PageFrame.astro */
+
+  .sidebar-content {
+    @apply flex h-full min-h-max flex-col gap-4;
+  }
+
+  .sidebar-pane {
+    @apply relative h-full w-full;
+    visibility: var(--sl-sidebar-visibility, hidden);
+    z-index: var(--sl-z-index-menu);
+    /* inset-block: var(--sl-nav-height) 0; */
+    inset-inline-start: 0;
+    width: 100%;
+    background-color: var(--sl-color-black);
+    overflow-y: auto;
+  }
+
+  .main-frame {
+    @apply flex p-0;
+    @apply m-auto min-h-screen;
+    @apply datum-container;
+  }
+
+  /* End of PageFrame.astro */
+
+  /* Header.astro */
+  header.sl-header {
+    @apply border-b border-[color:var(--color-borderpanel)];
+  }
+
+  /* End of Header.astro */
+
+  /* TwoColumnContent.astro */
+
+  .right-sidebar-container {
+    @apply relative;
+    inset-inline-end: 0;
+    width: var(--sl-sidebar-width);
+    z-index: var(--sl-z-index-toc);
+    border-inline-start: 1px solid var(--sl-color-hairline-shade);
+    overflow-y: auto;
+  }
+
+  .sl-content-panel {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sl-content-wrapper {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .sl-content {
+    flex: 1;
+    min-width: 0;
+    padding: var(--sl-content-pad-y) var(--sl-content-pad-x);
+  }
+
+  .right-sidebar {
+    height: 100%;
+    padding: 0;
+  }
+
+  /* End of TwoColumnContent.astro */
+
+  /* PageSidebar.astro */
+  .right-sidebar-panel {
+    @apply p-0;
+  }
+  .right-sidebar-panel :global(h2) {
+    @apply mb-2 text-xs font-semibold text-white;
+  }
+  .right-sidebar-panel :global(:where(a)) {
+    @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
+  }
+  .right-sidebar-panel :global(:where(a):hover) {
+    color: var(--sl-color-white);
+  }
+
+  /* End of PageSidebar.astro */
 }
 
-@layer starlight.components {
-}
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
 
 .sl-markdown-content .expressive-code .frame {
   -webkit-box-shadow: none;
@@ -124,26 +279,6 @@ a:any-link {
   box-shadow: none;
 }
 
-.right-sidebar-panel {
-  nav {
-    > ul {
-      > li {
-        > a {
-          padding-left: 0;
-        }
-        li {
-          a {
-            padding-left: 8px;
-          }
-        }
-      }
-    }
-  }
-  h2 {
-    font-family: var(--font-primary);
-  }
-}
-
 select:where(.astro-4yphtoen) {
   margin-left: 3px;
   font-size: 14px;
@@ -154,58 +289,26 @@ select:where(.astro-4yphtoen) {
   stroke-width: 1;
 }
 
-:root {
-  --sl-font: var(--font-primary);
-}
-
 [data-theme='light'] {
   --sl-color-bg-nav: var(--sl-color-bg);
 }
 
-.login-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 0 17px;
-  height: 42px;
-  background: var(--sl-color-bg-nav);
-  border: 1.38px solid rgba(12, 29, 49, 0.1);
-  border-radius: 6px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  font-family: var(--font-primary);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: -0.25%;
-  color: #0c1d31;
-}
-
-.login-button:hover {
-  background: #f6f6f5;
-  border-color: rgba(12, 29, 49, 0.2);
-}
-
 /* Light theme styles */
 
-[data-theme='light'] header {
-  background-color: var(--color-pearl-gray);
-}
 [data-theme='light'] body {
   background-color: var(--color-pearl-gray);
 }
 [data-theme='light'] .content-panel:where(.astro-7nkwcw3z) + .content-panel:where(.astro-7nkwcw3z) {
-  border-top: 1px solid var(--color-borderpanellight);
+  border-top: 1px solid var(--color-borderpanel);
 }
 [data-theme='light'] .header:where(.astro-hpvevywt) {
-  border-bottom: 1px solid var(--color-borderpanellight);
+  border-bottom: 1px solid var(--color-borderpanel);
 }
 [data-theme='light'] .right-sidebar:where(.astro-67yu43on) {
-  border-inline-start: 1px solid var(--color-borderpanellight);
+  border-inline-start: 1px solid var(--color-borderpanel);
 }
 [data-theme='light'] .sidebar-pane {
-  border-inline-end: 1px solid var(--color-borderpanellight);
+  border-inline-end: 1px solid var(--color-borderpanel);
   background-color: var(--color-pearl-gray);
 }
 [data-theme='light'] .login-button {
@@ -227,28 +330,28 @@ select:where(.astro-4yphtoen) {
   background-color: var(--color-dark-body);
 }
 [data-theme='dark'] .content-panel:where(.astro-7nkwcw3z) + .content-panel:where(.astro-7nkwcw3z) {
-  border-top: 1px solid var(--color-borderpaneldark);
+  border-top: 1px solid var(--color-borderpanel);
 }
 [data-theme='dark'] .header:where(.astro-hpvevywt) {
-  border-bottom: 1px solid var(--color-borderpaneldark);
+  border-bottom: 1px solid var(--color-borderpanel);
 }
 [data-theme='dark'] .right-sidebar:where(.astro-67yu43on) {
-  border-inline-start: 1px solid var(--color-borderpaneldark);
+  border-inline-start: 1px solid var(--color-borderpanel);
 }
 [data-theme='dark'] .sidebar-pane {
-  border-inline-end: 1px solid var(--color-borderpaneldark);
+  border-inline-end: 1px solid var(--color-borderpanel);
   background-color: var(--color-dark-body);
 }
 
 [data-theme='dark'] .login-button {
-  border: 1px solid var(--color-borderpaneldark);
+  border: 1px solid var(--color-borderpanel);
   background-color: transparent;
   color: #ffffff;
 }
 
 [data-theme='dark'] button:where(.astro-v37mnknz)[data-open-modal] {
   background-color: transparent;
-  border: 1px solid var(--color-borderpaneldark);
+  border: 1px solid var(--color-borderpanel);
 }
 
 [data-theme='dark'] .login-button:hover {

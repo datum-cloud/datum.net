@@ -1,0 +1,24 @@
+---
+// src/components/starlight/TwoColumnContent.astro
+import PageSidebar from './PageSidebar.astro';
+
+const { hasSidebar } = Astro.locals.starlightRoute;
+---
+
+<div class="sl-content-panel">
+  <div class="sl-content-wrapper">
+    <main class="sl-content">
+      <slot />
+    </main>
+
+    {
+      hasSidebar && (
+        <aside class="right-sidebar-container astro-67yu43on print:hidden">
+          <div class="right-sidebar astro-67yu43on">
+            <PageSidebar />
+          </div>
+        </aside>
+      )
+    }
+  </div>
+</div>

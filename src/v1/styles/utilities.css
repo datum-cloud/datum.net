@@ -1,7 +1,6 @@
 @layer utilities {
   .datum-container {
-    @apply container m-auto;
-    max-width: var(--datum-max-width);
+    @apply container m-auto max-w-[var(--datum-max-width)];
   }
 
   /* General fade-in reveal animations */
@@ -78,7 +77,9 @@
     @apply opacity-100;
   }
 }
-
+@utility datum-container {
+  @apply container m-auto max-w-[var(--datum-max-width)];
+}
 @utility prose-dark {
   @apply text-white/80;
   @apply prose-headings:text-white prose-h2:text-40 prose-headings:font-normal prose-headings:leading-[1.22] prose-h3:text-lime-green prose-h3:font-alliance prose-h3:text-xl prose-h3:font-medium prose-h4:font-alliance;

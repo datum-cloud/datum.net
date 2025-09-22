@@ -1,0 +1,97 @@
+---
+// src/components/starlight/TwoColumnContent.astro
+
+import PageSidebar from './PageSidebar.astro';
+import { Breadcrumbs } from 'astro-breadcrumbs';
+
+// Get Starlight route data
+const { hasSidebar } = Astro.locals.starlightRoute;
+const starlightRoute = Astro.locals.starlightRoute;
+
+// Create breadcrumbs manually based on URL path
+let breadcrumbData = [];
+
+// Add home/docs as first item
+breadcrumbData.push(
+  {
+    text: 'Home',
+    href: '/',
+  },
+  {
+    text: 'Docs',
+    href: '/docs/',
+  }
+);
+
+// Get the current URL path
+const fullPath = Astro.url.pathname;
+
+// Extract path segments (skip the /docs/ prefix)
+const pathSegments = fullPath
+  .replace(/^\/?docs\//, '')
+  .replace(/\/$/, '')
+  .split('/')
+  .filter(Boolean);
+
+// Build breadcrumbs for each path segment
+if (pathSegments.length > 0) {
+  let currentPath = '';
+
+  for (const segment of pathSegments) {
+    currentPath += '/' + segment;
+
+    // Format the segment title (capitalize words, replace dashes with spaces)
+    const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+    breadcrumbData.push({
+      text: segmentTitle,
+      href: '/docs' + currentPath + '/',
+    });
+  }
+
+  if (starlightRoute.entry?.data?.title) {
+    // Replace the last item's text with the actual page title
+    breadcrumbData[breadcrumbData.length - 1].text = starlightRoute.entry.data.title;
+  }
+}
+---
+
+<div class="sl-content-panel">
+  <section class="sl-main-content">
+    <Breadcrumbs
+      linkTextFormat="sentence"
+      crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+    >
+      <svg
+        slot="index"
+        aria-label="Home Page"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </Breadcrumbs>
+
+    <main class="sl-content">
+      <slot />
+    </main>
+  </section>
+
+  {
+    hasSidebar && (
+      <aside class="right-sidebar-container astro-67yu43on print:hidden">
+        <div class="right-sidebar astro-67yu43on">
+          <PageSidebar />
+        </div>
+      </aside>
+    )
+  }
+</div>

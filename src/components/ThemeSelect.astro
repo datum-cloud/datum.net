@@ -1,0 +1,133 @@
+---
+import Icon from '@components/Icon.astro';
+---
+
+<starlight-theme-select>
+  <button
+    class="btn btn--primary btn--icon theme-icon-button fade-in--pure"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+    type="button"
+    aria-label="Toggle theme"
+  >
+    <Icon name="moon" size="md" class="theme-icon theme-icon--dark" />
+    <Icon name="sun" size="md" class="theme-icon theme-icon--light" />
+  </button>
+</starlight-theme-select>
+
+{/* Initialize theme immediately to avoid FOUC */}
+<script is:inline>
+  // Initialize theme on page load
+  const storedTheme =
+    typeof localStorage !== 'undefined' ? localStorage.getItem('starlight-theme') : null;
+  const theme = storedTheme || 'light';
+  document.documentElement.dataset.theme = theme;
+  console.log('Initial theme set to:', theme);
+</script>
+
+<script>
+  type Theme = 'dark' | 'light';
+
+  /** Key in `localStorage` to store color theme preference at. */
+  const storageKey = 'starlight-theme';
+
+  /** Get a typesafe theme string from any JS value (unknown values default to 'light'). */
+  const parseTheme = (theme: unknown): Theme => (theme === 'dark' ? 'dark' : 'light');
+
+  /** Load the user's preference from `localStorage`. */
+  const loadTheme = (): Theme => {
+    const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(storageKey) : null;
+    return parseTheme(stored);
+  };
+
+  /** Store the user's preference in `localStorage`. */
+  function storeTheme(theme: Theme): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(storageKey, theme);
+    }
+  }
+
+  /** Update icon UI, document theme, and local storage state. */
+  function onThemeChange(theme: Theme): void {
+    document.documentElement.dataset.theme = theme;
+    storeTheme(theme);
+  }
+
+  class StarlightThemeSelect extends HTMLElement {
+    constructor() {
+      super();
+
+      // Initialize with stored theme or default to light
+      const currentTheme = loadTheme();
+      onThemeChange(currentTheme);
+
+      // Listen for button clicks
+      const button = this.querySelector('.theme-icon-button') as HTMLButtonElement;
+      if (button) {
+        button.addEventListener('click', () => {
+          const currentTheme = loadTheme();
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          console.log('Theme change:', currentTheme, '->', newTheme);
+          onThemeChange(newTheme);
+        });
+      }
+    }
+  }
+  customElements.define('starlight-theme-select', StarlightThemeSelect);
+</script>
+
+<style>
+  @layer starlight.components {
+    .theme-icon-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .theme-icon {
+      width: 100%;
+      height: 100%;
+      display: none;
+      stroke-width: 1.5;
+      transition: transform 0.3s ease;
+    }
+
+    /* Default fallback - show sun icon if no theme is detected (default to light) */
+    .theme-icon--light {
+      display: inline-block;
+      color: var(--Canyon-Clay);
+    }
+
+    /* Show sun icon when in light mode (representing current light theme) */
+    :global([data-theme='light']) .theme-icon--light {
+      display: inline-block;
+      color: var(--Canyon-Clay);
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    /* Show moon icon when in dark mode (representing current dark theme) */
+    :global([data-theme='dark']) .theme-icon--dark {
+      display: inline-block;
+      color: var(--Aurora-Moss);
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    /* Hide icons when not active */
+    :global([data-theme='light']) .theme-icon--dark {
+      display: none;
+    }
+
+    :global([data-theme='dark']) .theme-icon--light {
+      display: none;
+    }
+  }
+</style>

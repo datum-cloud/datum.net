@@ -1,0 +1,11 @@
+@layer components {
+  /* Section Block */
+  [data-theme='dark'] {
+    .btn svg {
+      @apply text-lime-green!;
+    }
+    .footer-docs {
+      @apply border-t-1 border-[color:var(--color-borderpanel)];
+    }
+  }
+}

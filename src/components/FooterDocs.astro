@@ -1,0 +1,93 @@
+---
+// import { Image } from 'astro:assets';
+import navigation from '@data/navigation.json';
+import type { NavData, NavItem } from '@/src/types/navigation';
+import Button from '@components/Button.astro';
+import { Image } from 'astro:assets';
+import ImageTwoMen from '@v1/assets/images/two-person-talking.png';
+
+// Get props with default values
+// Type-safe navigation data
+const navData = navigation as NavData;
+---
+
+<footer id="footer-docs" class="footer footer-docs">
+  <div
+    class="3xl:right-55 2-5xl:right-50 absolute -top-[94px] right-15 z-20 hidden lg:right-25 lg:inline-block"
+  >
+    <Image
+      src={ImageTwoMen}
+      alt="Two Person Talking"
+      class="relative h-auto w-[79px]"
+      data-scroll-effect="parallax"
+      data-scroll-speed="0.1"
+      data-scroll-direction="down"
+      data-viewport-offset="-500"
+      data-max-movement="20"
+    />
+  </div>
+  <!-- Main Footer Content -->
+  <div class="footer-main--docs bg-navy relative z-30">
+    <div
+      class="fade-in--pure mx-auto grid max-w-391 grid-cols-1 gap-9.75 md:grid-cols-4 lg:grid-cols-5"
+      data-reveal="fade-in--pure--visible"
+    >
+      <!-- Navigation Sections -->
+
+      <div class="col-span-1 grid grid-cols-2 gap-9.75 md:col-span-4 md:grid-cols-4">
+        {
+          navData.footerDocs.map((section) => (
+            <div>
+              <h4 class="footer-nav-section">{section.title}</h4>
+              <ul class="footer-nav-list">
+                {section.items.map((item: NavItem) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class="footer-nav-link"
+                      target={item.isExternal ? '_blank' : undefined}
+                      rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                      data-astro-prefetch="hover"
+                    >
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- GitHub Button Section -->
+      <div
+        class="col-span-1 flex flex-col items-center justify-between gap-4 md:col-span-4 md:flex-row md:items-end lg:col-span-1 lg:flex-col"
+      >
+        <div class="space-x-2">
+          <Button
+            class="btn btn--clean text-blush-quartz-900 hover:text-glacier-mist-900"
+            icon={{ name: 'slack', size: 'md' }}
+            iconPosition="left"
+            iconClass="stroke-1.5"
+            target="_blank"
+            href="https://slack.datum.net/datum"
+          />
+
+          <Button
+            class="btn btn--clean text-blush-quartz-900 hover:text-glacier-mist-900"
+            icon={{ name: 'github', size: 'md' }}
+            iconPosition="left"
+            iconClass="stroke-1.5"
+            target="_blank"
+            href="https://github.com/datum-cloud/datum/"
+          />
+        </div>
+
+        <p class="footer-copyright">
+          &copy; {new Date().getFullYear()}
+          <span class="whitespace-nowrap">Datum Technology, Inc.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

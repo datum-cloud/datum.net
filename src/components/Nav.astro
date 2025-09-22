@@ -1,18 +1,23 @@
 ---
 import Logo from '@v1/assets/svgs/datum-logo.svg';
-import Arrow from '@v1/assets/icons/arrow.svg';
-import navigation from '@data/navigation.json';
-import Icon from '@components/Icon.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
+import NavMenu from '@components/NavMenu.astro';
+import ThemeSelect from '@components/ThemeSelect.astro';
 
-import type { NavData } from '@/src/types/navigation';
+type Props = {
+  showGithubButton?: boolean;
+  showLoginButton?: boolean;
+  showThemeSelect?: boolean;
+};
 
-// Type-safe navigation data
-const navData = navigation as NavData;
-const mainNav = navData.main;
+const {
+  showGithubButton = true,
+  showLoginButton = false,
+  showThemeSelect = false,
+}: Props = Astro.props;
 ---
 
 <nav class="nav--main">
@@ -33,74 +38,47 @@ const mainNav = navData.main;
   </div>
 
   {/* Desktop Menu */}
-  <ul
-    class="nav-menu fade-in--pure"
-    data-reveal="fade-in--pure--visible"
-    data-reveal-delay="100"
-    data-reveal-immediate="true"
-  >
-    {
-      mainNav.map((item) => (
-        <li class={`nav-menu-item ${item.children ? 'nav-dropdown' : ''}`}>
-          <a href={item.href} class="nav-menu-link" data-astro-prefetch="hover">
-            <span>{item.text}</span>
-            {item.children && <Arrow class="nav-dropdown-arrow" />}
-          </a>
-          {item.children && (
-            <ul class={`nav-dropdown-menu ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}>
-              {item.children.map((section) => (
-                <li
-                  class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
-                >
-                  {'title' in section && section.title && (
-                    <h3 class="nav-dropdown-title">{section.title}</h3>
-                  )}
-                  <ul
-                    class={`nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`}
-                  >
-                    {section.items?.map((subItem) => (
-                      <li class="nav-dropdown-item">
-                        <a
-                          href={subItem.href}
-                          class="nav-dropdown-link"
-                          data-astro-prefetch="hover"
-                        >
-                          {'icon' in subItem && subItem.icon && (
-                            <div class="nav-dropdown-icon">
-                              <Icon name={subItem.icon} size="md" />
-                            </div>
-                          )}
-                          <span>{subItem.text}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))
-    }
-  </ul>
+  <NavMenu />
 
   {/* Desktop Actions */}
   <div class="nav-actions">
-    <Button
-      class="btn btn--primary gh-button fade-in--pure min-w-[115px]"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-      data-reveal-immediate="true"
-      icon={{ name: 'github', size: 'md' }}
-      iconPosition="left"
-      iconClass="stroke-1.5"
-      target="_blank"
-      href="https://github.com/datum-cloud/datum/"
-    >
-      <GithubStargazerValue server:defer />
-    </Button>
+    {
+      showGithubButton && (
+        <Button
+          class={`btn btn--primary gh-button fade-in--pure min-w-[115px]`}
+          data-reveal="fade-in--pure--visible"
+          data-reveal-delay="100"
+          data-reveal-immediate="true"
+          icon={{ name: 'github', size: 'md' }}
+          iconPosition="left"
+          iconClass="stroke-1.5"
+          target="_blank"
+          href="https://github.com/datum-cloud/datum/"
+        >
+          <GithubStargazerValue server:defer />
+        </Button>
+      )
+    }
+
+    {
+      showLoginButton && (
+        <Button
+          class="btn btn--primary fade-in--pure min-w-[115px]"
+          data-reveal="fade-in--pure--visible"
+          data-reveal-delay="100"
+          data-reveal-immediate="true"
+          text="Log In"
+          icon={{ name: 'user', size: 'md' }}
+          iconPosition="left"
+          iconClass="stroke-1.5"
+          href="https://cloud.datum.net/"
+        />
+      )
+    }
+
+    {showThemeSelect && <ThemeSelect />}
   </div>
 
   {/* Mobile Menu Component */}
-  <MobileMenu navigation={mainNav} />
+  <MobileMenu />
 </nav>

@@ -33,7 +33,6 @@
     "@astrojs/alpinejs": "^0.4.9",
     "@astrojs/mdx": "^4.3.5",
     "@astrojs/node": "^9.4.3",
-    "@astrojs/sitemap": "^3.5.1",
     "@astrojs/starlight": "^0.35.3",
     "@astrojs/ts-plugin": "^1.10.4",
     "@nanostores/persistent": "^1.1.0",

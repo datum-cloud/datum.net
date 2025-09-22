@@ -37,6 +37,7 @@ const pages = defineCollection({
       order: z.number().optional().default(0),
       contents: z.array(reference('pages')).optional(),
       items: z.array(z.string()).optional(),
+      updatedDate: z.string().optional(),
       images: z
         .array(
           z.object({
@@ -118,6 +119,7 @@ const blog = defineCollection({
       thumbnail: image().optional(),
       featuredImage: image().optional(),
       draft: z.boolean().optional().default(false),
+      updatedDate: z.string().optional(),
       meta: metaSchema,
     }),
 });
@@ -273,5 +275,13 @@ export const collections = {
   changelog,
   features,
   huddles,
-  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+  docs: defineCollection({
+    loader: docsLoader(),
+    schema: docsSchema({
+      extend: z.object({
+        // override lastUpdated from original schema
+        updatedDate: z.string().optional(),
+      }),
+    }),
+  }),
 };

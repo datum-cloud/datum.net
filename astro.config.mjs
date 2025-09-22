@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
@@ -25,9 +24,9 @@ export default defineConfig({
     mode: 'standalone',
   }),
   integrations: [
-    sitemap(),
     robotsTxt({
       sitemap: true,
+      sitemapBaseFileName: 'sitemap',
       policy: [
         {
           userAgent: '*',

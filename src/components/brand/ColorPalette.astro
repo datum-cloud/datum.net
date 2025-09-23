@@ -1,0 +1,73 @@
+---
+// src/components/brand/ColorPalette.astro
+interface ColorSwatch {
+  name: string;
+  shade: string;
+  hex: string;
+}
+
+interface ColorGroup {
+  name: string;
+  swatches: ColorSwatch[];
+}
+
+const colorGroups: ColorGroup[] = [
+  {
+    name: 'Midnight Fjord',
+    swatches: [{ name: 'Midnight Fjord', shade: '900', hex: '#0C1D31' }],
+  },
+  {
+    name: 'Aurora Moss',
+    swatches: [{ name: 'Aurora Moss', shade: '900', hex: '#E6F59F' }],
+  },
+  {
+    name: 'Blush Quartz',
+    swatches: [{ name: 'Blush Quartz', shade: '900', hex: '#ECD0D0' }],
+  },
+  {
+    name: 'Canyon Clay',
+    swatches: [{ name: 'Canyon Clay', shade: '900', hex: '#BF9595' }],
+  },
+  {
+    name: 'Pine Forge',
+    swatches: [{ name: 'Pine Forge', shade: '900', hex: '#4D6356' }],
+  },
+  {
+    name: '',
+    swatches: [],
+  },
+  {
+    name: 'Glacier Mist',
+    swatches: [
+      { name: 'Glacier Mist', shade: '900', hex: '#E8E7E4' },
+      { name: 'Glacier Mist', shade: '800', hex: '#EFEFED' },
+      { name: 'Glacier Mist', shade: '700', hex: '#F6F6F5' },
+    ],
+  },
+];
+---
+
+<div class="color-palette">
+  {
+    colorGroups
+      .filter((group) => group.swatches)
+      .map((group) => (
+        <div class="color-group">
+          {group.name && <h3 class="color-group--name">{group.name}</h3>}
+          <div class="color-group--swatches">
+            {group.swatches
+              .filter((swatch) => swatch.hex && swatch.shade)
+              .map((swatch) => (
+                <div class="color-swatch">
+                  <div class="color-swatch--preview" style={`background-color: ${swatch.hex}`} />
+                  <div class="color-swatch--info">
+                    {swatch.shade && <span class="color-swatch--shade">{swatch.shade}</span>}
+                    {swatch.hex && <span class="color-swatch--hex">{swatch.hex}</span>}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      ))
+  }
+</div>

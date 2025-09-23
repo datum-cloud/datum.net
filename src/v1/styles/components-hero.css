@@ -1,7 +1,9 @@
 @layer components {
   .hero--main {
     @apply relative flex flex-col px-6 text-white md:px-16;
-
+    &.dark {
+      @apply bg-navy;
+    }
     &.light {
       @apply bg-cream text-navy;
 

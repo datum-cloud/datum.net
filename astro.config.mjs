@@ -23,6 +23,9 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  image: {
+    layout: 'constrained',
+  },
   integrations: [
     robotsTxt({
       sitemap: true,

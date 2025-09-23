@@ -35,7 +35,8 @@
           "items": [
             { "icon": "default", "text": "About", "href": "/about/" },
             { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
-            { "icon": "book-image", "text": "Blog", "href": "/blog/" }
+            { "icon": "book-image", "text": "Blog", "href": "/blog/" },
+            { "icon": "paintbrush", "text": "Design Assets", "href": "/brand/" }
           ]
         }
       ]
@@ -80,7 +81,7 @@
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
         { "text": "Blog", "href": "/blog/" },
-        { "text": "Design Assets", "href": "https://design.datum.net/", "isExternal": true }
+        { "text": "Design Assets", "href": "/brand/" }
       ]
     },
     {
@@ -90,6 +91,31 @@
         { "text": "Log In", "href": "https://cloud.datum.net/" },
         { "text": "Community Huddle", "href": "/community-huddle/" }
       ]
+    }
+  ],
+  "brand": [
+    {
+      "title": "Brand Overview",
+      "items": [
+        { "text": "Overview", "href": "/brand" },
+        { "text": "Principles", "href": "/brand/principles" },
+        { "text": "Gallery", "href": "/brand/gallery" }
+      ]
+    },
+    {
+      "title": "Brand Assets",
+      "items": [
+        { "text": "Typography", "href": "/brand/typography" },
+        { "text": "Color", "href": "/brand/color" },
+        { "text": "Logos", "href": "/brand/logos" },
+        { "text": "Iconography", "href": "/brand/iconography" },
+        { "text": "Illustration Suite", "href": "/brand/imagery" },
+        { "text": "Social", "href": "/brand/social" }
+      ]
+    },
+    {
+      "title": "Brand Resources",
+      "items": [{ "text": "Resources", "href": "/brand/resources" }]
     }
   ],
   "social": [

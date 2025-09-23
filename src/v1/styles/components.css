@@ -126,11 +126,11 @@
   }
 
   .footer-signup-form {
-    @apply border-blackberry-800 flex items-center border-b pb-2;
+    @apply border-navy flex items-center border-b pb-2;
   }
 
   .footer-signup-input {
-    @apply text-blackberry-800 placeholder-blackberry-800/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
+    @apply text-navy placeholder-navy/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
   }
 
   .footer-signup-button {

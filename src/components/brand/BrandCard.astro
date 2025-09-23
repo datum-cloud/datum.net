@@ -1,0 +1,26 @@
+---
+// src/components/brand/BrandCard.astro
+import type { BrandCardProps } from '@/src/types/brand';
+
+const { description, url, title }: BrandCardProps = Astro.props;
+---
+
+<div class="brand-card">
+  <div class="brand-card--image"><slot name="image" /></div>
+
+  <div class="brand-card--content">
+    {title && <div class="brand-card--title">{title}</div>}
+
+    {description && <p class="brand-card--description">{description}</p>}
+
+    <slot />
+  </div>
+
+  {
+    url && (
+      <a href={url} class="brand-card--link" title={title}>
+        {title}
+      </a>
+    )
+  }
+</div>

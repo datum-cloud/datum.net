@@ -32,4 +32,5 @@ export interface NavData {
   right?: NavItem[];
   footer: NavFooterSection[];
   social: NavItem[];
+  brand?: NavFooterSection[];
 }

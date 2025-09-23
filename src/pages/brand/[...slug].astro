@@ -1,0 +1,61 @@
+---
+// src/pages/brand/[...slug].astro
+import '@v1/styles/page-brand.css';
+import Layout from '@layouts/LayoutSimple.astro';
+import Footer from '@components/Footer.astro';
+import Header from '@components/Header.astro';
+import NavBrand from '@components/NavBrand.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  // Get all brand pages
+  const brandPages = await getCollection('pages', ({ id }) => {
+    return id.startsWith('brand/') && id !== 'brand/index';
+  });
+
+  // Create paths for each brand page
+  const paths = brandPages.map((page) => {
+    // Remove 'brand/' prefix to get the slug
+    const slug = page.id.replace('brand/', '');
+    return {
+      params: { slug },
+      props: { page },
+    };
+  });
+
+  return paths;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+const fm = page.data;
+const meta = fm.meta || {};
+
+// Get current path for active navigation state
+const currentPath = Astro.url.pathname;
+---
+
+<Layout title={fm.title} description={fm.description} bodyClass={`page--${page.id}`} meta={meta}>
+  <section class="datum-container">
+    <Header class="dark hero--nav-pad" />
+    <div class="section--block bg-cream">
+      <div class="m-auto grid max-w-391 grid-cols-1 gap-12 md:grid-cols-12">
+        <sidebar class="brand-sidebar">
+          <NavBrand currentPath={currentPath} />
+        </sidebar>
+        <div class="md:border-light-gray col-span-1 md:col-span-9 md:border-l lg:col-span-10">
+          <article class="brand-article">
+            <header>
+              <h1 class="brand-article--title">{fm.title}</h1>
+            </header>
+
+            <div class="brand-article--content">
+              <Content />
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <Footer showCTA={false} />
+  </section>
+</Layout>

@@ -1,0 +1,198 @@
+@import './fonts.css';
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@import './theme.css';
+
+@layer base {
+  html {
+    @apply antialiased;
+    @apply font-primary;
+    @apply bg-light-gray;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-canela;
+  }
+
+  /* Prevent body scroll when mobile menu is active */
+  body {
+    &.mobile-menu-open {
+      @apply fixed w-full touch-none overflow-hidden;
+    }
+  }
+
+  /* Hide elements with x-cloak until Alpine.js initializes */
+  [x-cloak] {
+    @apply hidden;
+  }
+}
+
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+/* Brand Navigation Styles */
+@layer components {
+  .brand-sidebar {
+    @apply col-span-1 pt-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-22;
+  }
+  .brand-nav {
+    @apply flex flex-row gap-4 space-y-8 md:flex-col md:gap-0;
+
+    .brand-nav-section {
+      @apply space-y-4;
+      @apply font-alliance relative w-full overflow-y-auto text-base lg:text-lg;
+    }
+
+    .brand-nav-items {
+      @apply space-y-2;
+    }
+
+    .brand-nav-item {
+      @apply list-none;
+    }
+
+    .brand-nav-link {
+      @apply inline-block py-2 transition-colors duration-300 ease-out;
+      @apply text-navy/40 hover:text-navy leading-[1.2];
+
+      &.active {
+        @apply text-navy/60 hover:text-navy font-bold;
+      }
+    }
+  }
+
+  .brand-article {
+    header {
+      @apply px-8 pt-8 pb-0 md:px-12 md:pt-12 lg:px-20 lg:pt-22;
+    }
+
+    .brand-article--title {
+      @apply font-canela text-navy text-2xl leading-[1.2] font-normal -tracking-[0.5] md:text-3xl lg:text-5xl;
+    }
+
+    .brand-article--description {
+      @apply text-lg text-balance md:text-xl lg:text-2xl [&_*]:leading-[1.45];
+      @apply px-8 py-8 md:px-12 md:py-12 lg:px-20 lg:py-20;
+    }
+
+    .brand-article--content {
+      @apply prose prose-lg md:prose-xl lg:prose-2xl max-w-none [&_*]:leading-[1.45];
+      @apply prose-p:mt-0 prose-p:text-balance text-balance;
+      @apply px-8 py-8 md:px-12 md:py-12 lg:px-20 lg:py-20;
+      @apply prose-headings:font-semibold prose-headings:mt-0;
+      @apply prose-h2:font-alliance prose-h2:lg:text-28 prose-h2:md:text-2xl prose-h2:text-xl prose-h2:leading-[1.2];
+      @apply prose-h3:font-alliance prose-h3:text-2xl prose-h3:leading-[1.2];
+      @apply prose-h4:font-alliance prose-h4:text-xl prose-h4:leading-[1.2];
+      @apply max-w-6xl;
+    }
+  }
+
+  /* Brand Card Component */
+  .brand-card {
+    @apply relative block content-stretch bg-white transition-shadow duration-200;
+
+    .brand-card--image {
+      @apply relative z-10 m-0 aspect-[16/9] overflow-hidden [&_*]:m-0;
+
+      p {
+        @apply m-0;
+      }
+
+      img {
+        @apply h-full w-full object-cover;
+      }
+    }
+
+    .brand-card--content {
+      @apply bg-white p-7.5 text-lg font-normal;
+    }
+
+    .brand-card--description {
+      @apply leading-relaxed text-gray-600;
+    }
+
+    .brand-card--link {
+      @apply absolute bottom-0 left-0 z-20 block h-full w-full overflow-hidden -indent-[9999px];
+    }
+  }
+
+  .brand-card-text {
+    @apply relative block content-stretch bg-white transition-shadow duration-200;
+
+    .brand-card-text--content {
+      @apply prose-xl max-w-none bg-white p-8 font-normal md:p-11 lg:p-14.5 [&_*]:leading-[1.45];
+      @apply prose-p:mt-0 prose-p:last:mb-0;
+    }
+
+    .brand-card-text--title {
+      @apply text-22 mb-5 leading-[1.2] font-semibold;
+    }
+  }
+
+  .brand-card-image {
+    @apply relative block content-stretch bg-white transition-shadow duration-200;
+
+    .brand-card-image--content {
+      @apply prose-xl max-w-none bg-white p-8 font-normal md:p-12 lg:p-15 [&_*]:leading-[1.45];
+      @apply prose-p:mt-0 prose-p:last:mb-0 [&_*]:m-0;
+    }
+
+    .brand-card-image--title {
+      @apply text-22 mb-5 leading-[1.2] font-semibold;
+    }
+  }
+
+  .brand-content {
+    @apply bg-white p-10 font-normal md:p-15 lg:p-20 [&_*]:leading-[1.45];
+  }
+
+  /* Color Palette Component */
+  .color-palette {
+    @apply grid grid-cols-3 grid-rows-2 items-start justify-between gap-12;
+
+    .color-group {
+      .color-group--name {
+        @apply mb-5 text-base text-gray-900;
+      }
+
+      .color-group--swatches {
+        @apply space-y-3;
+      }
+    }
+
+    .color-swatch {
+      @apply flex items-center space-x-4;
+
+      .color-swatch--preview {
+        @apply h-12 w-12 rounded-sm;
+      }
+
+      .color-swatch--info {
+        @apply flex flex-col space-y-1;
+
+        .color-swatch--shade {
+          @apply text-sm font-medium text-gray-900;
+        }
+
+        .color-swatch--hex {
+          @apply font-mono text-sm text-gray-600;
+        }
+      }
+    }
+  }
+}

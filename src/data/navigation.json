@@ -79,7 +79,8 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
-        { "text": "Blog", "href": "/blog/" }
+        { "text": "Blog", "href": "/blog/" },
+        { "text": "Design Assets", "href": "https://design.datum.net/", "isExternal": true }
       ]
     },
     {

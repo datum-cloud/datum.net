@@ -80,14 +80,11 @@ async function handbookEntries() {
 async function staticEntries() {
   const entries =
     `<url><loc>https://www.datum.net/about/</loc></url>` +
-    `<url><loc>https://www.datum.net/about/contact/</loc></url>` +
     `<url><loc>https://www.datum.net/features/</loc></url>` +
     `<url><loc>https://www.datum.net/community-huddle/</loc></url>` +
     `<url><loc>https://www.datum.net/legal/privacy/</loc></url>` +
     `<url><loc>https://www.datum.net/legal/term/</loc></url>` +
-    `<url><loc>https://www.datum.net/pricing/</loc></url>` +
     `<url><loc>https://www.datum.net/public-slack/</loc></url>` +
-    `<url><loc>https://www.datum.net/request-access/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/changelog/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/open-source/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/roadmap/</loc></url>`;

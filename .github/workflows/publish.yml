@@ -41,12 +41,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/datum-cloud/${{ inputs.image-name }}
+          images: ghcr.io/datum-cloud/datum-net
           tags: |
             type=ref,event=pr
-            type=ref,event=pr,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
-            type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
             type=ref,event=branch
+            type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}

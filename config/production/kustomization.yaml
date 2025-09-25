@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+images:
+  - name: ghcr.io/datum-cloud/datum-net
+    newTag: v0.0.0
+patches:
+  - patch: |
+      - op: add
+        path: /spec/parentRefs/0/name
+        value: external-gateway
+      - op: add
+        path: /spec/parentRefs/0/namespace
+        value: envoy-gateway-system
+    target:
+      kind: HTTPRoute
+      name: datum-net
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: datum-net
+      spec:
+        template:
+          spec:
+            containers:
+              - name: datum-net
+                # TODO: Temporarily remove probes from the application because
+                #       it's causing it to exhaust requests to GitHub.
+                livenessProbe: null
+                readinessProbe: null
+                env:
+                  - name: __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+                    value: "website.prod.env.datum.net,www.datum.net"
+                  - name: AUTH_OIDC_CLIENT_ID
+                    value: "337109368099111764"
+                  - name: AUTH_OIDC_ISSUER
+                    value: "https://auth.datum.net"
+                  - name: AUTH_OIDC_REDIRECT_URI
+                    value: "https://www.datum.net/auth/callback"
+                  - name: GITHUB_PROJECT_URL
+                    value: "https://github.com/datum-cloud/datum-net"
+                  - name: SITE_URL
+                    value: "https://www.datum.net"
+                  - name: ROADMAP_LABEL
+                    value: "Roadmap Vote"
+                  - name: MODE
+                    value: "production"
+    target:
+      kind: Deployment
+      name: datum-net

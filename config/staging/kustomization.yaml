@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+images:
+  - name: ghcr.io/datum-cloud/datum-net
+    newTag: main-20250924-000000
+patches:
+  - patch: |
+      - op: add
+        path: /spec/parentRefs/0/name
+        value: internal-auth-gateway
+      - op: add
+        path: /spec/parentRefs/0/namespace
+        value: envoy-gateway-system
+    target:
+      kind: HTTPRoute
+      name: datum-net
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: datum-net
+      spec:
+        template:
+          spec:
+            containers:
+              - name: datum-net
+                env:
+                  - name: __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+                    value: "website.staging.env.datum.net"
+                  - name: AUTH_OIDC_CLIENT_ID
+                    value: "327980050290907149"
+                  - name: AUTH_OIDC_ISSUER
+                    value: "https://auth.staging.env.datum.net"
+                  - name: AUTH_OIDC_REDIRECT_URI
+                    value: "https://website.staging.env.datum.net/auth/callback"
+                  - name: GITHUB_PROJECT_URL
+                    value: "https://github.com/datum-cloud/datum-net"
+                  - name: SITE_URL
+                    value: "https://website.staging.env.datum.net"
+                  - name: ROADMAP_LABEL
+                    value: "Roadmap Vote"
+                  - name: MODE
+                    value: "staging"
+    target:
+      kind: Deployment
+      name: datum-net

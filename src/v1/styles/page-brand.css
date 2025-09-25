@@ -48,7 +48,7 @@
 /* Brand Navigation Styles */
 @layer components {
   .brand-sidebar {
-    @apply col-span-1 pt-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-22;
+    @apply col-span-1 pt-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-17;
   }
   .brand-nav {
     @apply flex flex-row gap-4 space-y-8 md:flex-col md:gap-0;
@@ -78,7 +78,7 @@
 
   .brand-article {
     header {
-      @apply px-8 pt-8 pb-0 md:px-12 md:pt-12 lg:px-20 lg:pt-22;
+      @apply px-8 pt-8 pb-0 md:px-12 md:pt-12 lg:px-20 lg:pt-17;
     }
 
     .brand-article--title {

@@ -3,14 +3,14 @@ name: Publish Website
 on:
   push:
     paths-ignore:
-      - 'README.md'
-      - 'env.example'
-      - '.vscode/**'
-      - 'public/pagefind/**'
-      - '**/pagefind/**'
+      - "README.md"
+      - "env.example"
+      - ".vscode/**"
+      - "public/pagefind/**"
+      - "**/pagefind/**"
 
   release:
-    types: ['published']
+    types: ["published"]
 
 jobs:
   check-files:
@@ -41,15 +41,42 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/datum-cloud/datum-net
+          images: ghcr.io/datum-cloud/${{ inputs.image-name }}
           tags: |
             type=ref,event=pr
-            type=ref,event=branch
+            type=ref,event=pr,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
             type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
+            type=ref,event=branch
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}
             type=sha
+
+      - name: Extract version tag
+        id: version-tag
+        run: |
+          FULL_TAG="${{ fromJSON(steps.meta.outputs.json).tags[0] }}"
+          VERSION_TAG="${FULL_TAG##*:}"
+
+          # For Kubernetes semver compatibility, transform the version for the build arg
+          # If it's already a semver tag (starts with v and has dots), keep it as-is
+          if [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            # Already semver compliant (e.g., v1.2.3)
+            BUILD_VERSION="$VERSION_TAG"
+          else
+            # Non-semver tag: prepend v0.0.0- to make it semver compliant
+            BUILD_VERSION="v0.0.0-${VERSION_TAG}"
+          fi
+
+          echo "tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
+          echo "build_version=$BUILD_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Debug version values
+        run: |
+          echo "Version tag: ${{ steps.version-tag.outputs.tag }}"
+          echo "Build version: ${{ steps.version-tag.outputs.build_version }}"
+          echo "Full metadata tags: ${{ steps.meta.outputs.tags }}"
+          echo "Metadata JSON: ${{ steps.meta.outputs.json }}"
 
       - name: Build Website
         id: push

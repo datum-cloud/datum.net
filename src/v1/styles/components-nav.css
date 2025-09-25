@@ -207,7 +207,7 @@
   }
 
   .footer-nav-list {
-    @apply text-peat-200 text-lg opacity-80;
+    @apply text-lg text-white opacity-80;
 
     li {
       @apply mb-1.5;

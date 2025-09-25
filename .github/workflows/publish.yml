@@ -44,8 +44,9 @@ jobs:
           images: ghcr.io/datum-cloud/datum-net
           tags: |
             type=ref,event=pr
-            type=ref,event=branch
+            type=ref,event=pr,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
             type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
+            type=ref,event=branch
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}

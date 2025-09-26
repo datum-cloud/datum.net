@@ -30,6 +30,7 @@ const {
   canonical,
 } = Astro.props;
 
+const mode = import.meta.env.MODE || process.env.NODE_ENV;
 const pageUrl = Astro.url.href;
 const imageUrl = new URL(image, Astro.site).href;
 ---
@@ -41,6 +42,8 @@ const imageUrl = new URL(image, Astro.site).href;
       title={title}
       description={description}
       canonical={canonical || pageUrl}
+      noindex={mode === 'staging' ? true : false}
+      nofollow={mode === 'staging' ? true : false}
       openGraph={{
         basic: {
           title: title,

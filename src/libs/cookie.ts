@@ -21,7 +21,7 @@ function setCookie(key: string, value: string, exminutes?: number | null) {
 
   const newValue =
     value +
-    (expired == null ? '' : ';expires=' + expired.toUTCString() + ';Secure;SameSite:Strict;path=/');
+    (expired == null ? '' : ';expires=' + expired.toUTCString() + ';Secure;SameSite:Lax;path=/');
   document.cookie = key + '=' + newValue;
 }
 

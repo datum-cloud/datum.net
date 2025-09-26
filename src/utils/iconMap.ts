@@ -34,6 +34,7 @@ import {
   ListRestart,
   Lock,
   LockOpen,
+  Menu,
   MessageSquarePlus,
   Minus,
   Network,
@@ -55,6 +56,7 @@ import {
   Video,
   WalletMinimal,
   Webhook,
+  X,
   Zap,
 } from 'lucide-astro';
 
@@ -95,6 +97,7 @@ const iconMap = {
   'list-restart': ListRestart,
   lock: Lock,
   'lock-open': LockOpen,
+  menu: Menu,
   'message-square-plus': MessageSquarePlus,
   minus: Minus,
   network: Network,
@@ -116,6 +119,7 @@ const iconMap = {
   video: Video,
   'wallet-minimal': WalletMinimal,
   webhook: Webhook,
+  x: X,
   zap: Zap,
 } as const;
 

@@ -97,20 +97,20 @@
     {
       "title": "Brand Overview",
       "items": [
-        { "text": "Overview", "href": "/brand" },
-        { "text": "Principles", "href": "/brand/principles" },
-        { "text": "Gallery", "href": "/brand/gallery" }
+        { "text": "Overview", "href": "/brand/" },
+        { "text": "Principles", "href": "/brand/principles/" },
+        { "text": "Gallery", "href": "/brand/gallery/" }
       ]
     },
     {
       "title": "Brand Assets",
       "items": [
-        { "text": "Typography", "href": "/brand/typography" },
-        { "text": "Color", "href": "/brand/color" },
-        { "text": "Logos", "href": "/brand/logos" },
-        { "text": "Iconography", "href": "/brand/iconography" },
-        { "text": "Illustration Suite", "href": "/brand/imagery" },
-        { "text": "Social", "href": "/brand/social" }
+        { "text": "Typography", "href": "/brand/typography/" },
+        { "text": "Color", "href": "/brand/color/" },
+        { "text": "Logos", "href": "/brand/logos/" },
+        { "text": "Iconography", "href": "/brand/iconography/" },
+        { "text": "Illustration Suite", "href": "/brand/imagery/" },
+        { "text": "Social", "href": "/brand/social/" }
       ]
     },
     {

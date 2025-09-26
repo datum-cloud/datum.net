@@ -48,18 +48,56 @@
 /* Brand Navigation Styles */
 @layer components {
   .brand-sidebar {
-    @apply col-span-1 pt-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-17;
+    @apply col-span-1 pt-8 pb-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-17;
+  }
+  .brand-wrapper {
+    @apply md:border-light-gray col-span-1 md:col-span-9 md:border-l lg:col-span-10;
+    @apply border-light-gray border-t md:border-t-0;
   }
   .brand-nav {
-    @apply flex flex-row gap-4 space-y-8 md:flex-col md:gap-0;
+    @apply flex flex-col gap-0 space-y-8;
+
+    /* Mobile Toggle Button */
+    .brand-nav-mobile-toggle {
+      @apply mb-0 flex w-full items-center justify-between border border-gray-200 bg-white p-3 text-left;
+      @apply transition-colors duration-200 hover:bg-gray-50;
+
+      .brand-nav-mobile-toggle--text {
+        @apply font-medium text-gray-900;
+      }
+
+      .brand-nav-mobile-toggle--icon {
+        @apply transition-transform duration-200;
+      }
+
+      &[aria-expanded='true'] .brand-nav-mobile-toggle--icon {
+        @apply rotate-180;
+      }
+    }
+
+    /* Navigation Menu */
+    .brand-nav-menu {
+      @apply w-full rounded-md border border-t-0 border-gray-200 bg-white md:mt-0 md:block md:border-0 md:bg-transparent;
+
+      /* Always show on desktop - override Alpine x-show */
+      @media (min-width: 768px) {
+        display: block !important;
+      }
+    }
 
     .brand-nav-section {
-      @apply space-y-4;
+      @apply space-y-4 md:mb-8;
       @apply font-alliance relative w-full overflow-y-auto text-base lg:text-lg;
+      @apply border-b border-gray-200 last:border-b-0 md:border-b-0;
+
+      .brand-nav-section--title {
+        @apply border-b border-gray-100 px-3 py-2 text-sm font-semibold tracking-wide text-gray-600 uppercase;
+        @apply md:border-b-0 md:px-0 md:py-0 md:text-base md:font-medium md:tracking-normal md:text-gray-900 md:normal-case;
+      }
     }
 
     .brand-nav-items {
-      @apply space-y-2;
+      @apply space-y-1 px-3 py-2 md:space-y-2 md:px-0 md:py-0;
     }
 
     .brand-nav-item {
@@ -68,21 +106,21 @@
 
     .brand-nav-link {
       @apply inline-block py-2 transition-colors duration-300 ease-out;
-      @apply text-navy/40 hover:text-navy leading-[1.2];
+      @apply text-navy/50 hover:text-navy leading-[1.2];
 
       &.active {
-        @apply text-navy/60 hover:text-navy font-bold;
+        @apply text-navy/70 hover:text-navy font-bold;
       }
     }
   }
 
   .brand-article {
     header {
-      @apply px-8 pt-8 pb-0 md:px-12 md:pt-12 lg:px-20 lg:pt-17;
+      @apply pt-8 pr-0 pb-0 pl-0 md:px-12 md:pt-12 md:pr-0 lg:px-20 lg:pt-17 lg:pr-0;
     }
 
     .brand-article--title {
-      @apply font-canela text-navy text-2xl leading-[1.2] font-normal -tracking-[0.5] md:text-3xl lg:text-5xl;
+      @apply font-canela text-navy text-3xl leading-[1.2] font-normal -tracking-[0.5] md:text-4xl lg:text-5xl;
     }
 
     .brand-article--description {
@@ -93,7 +131,7 @@
     .brand-article--content {
       @apply prose prose-lg md:prose-xl lg:prose-2xl max-w-none [&_*]:leading-[1.45];
       @apply prose-p:mt-0 prose-p:text-balance text-balance;
-      @apply px-8 py-8 md:px-12 md:py-12 lg:px-20 lg:py-20;
+      @apply py-8 pr-0 pl-0 md:px-12 md:py-12 md:pr-0 lg:px-20 lg:py-20 lg:pr-0;
       @apply prose-headings:font-semibold prose-headings:mt-0;
       @apply prose-h2:font-alliance prose-h2:lg:text-28 prose-h2:md:text-2xl prose-h2:text-xl prose-h2:leading-[1.2];
       @apply prose-h3:font-alliance prose-h3:text-2xl prose-h3:leading-[1.2];
@@ -104,7 +142,7 @@
 
   /* Brand Card Component */
   .brand-card {
-    @apply relative block content-stretch bg-white transition-shadow duration-200;
+    @apply relative block content-stretch bg-white;
 
     .brand-card--image {
       @apply relative z-10 m-0 aspect-[16/9] overflow-hidden [&_*]:m-0;
@@ -132,7 +170,7 @@
   }
 
   .brand-card-text {
-    @apply relative block content-stretch bg-white transition-shadow duration-200;
+    @apply relative block content-stretch;
 
     .brand-card-text--content {
       @apply prose-xl max-w-none bg-white p-8 font-normal md:p-11 lg:p-14.5 [&_*]:leading-[1.45];
@@ -145,11 +183,12 @@
   }
 
   .brand-card-image {
-    @apply relative block content-stretch bg-white transition-shadow duration-200;
+    @apply relative block content-stretch;
 
     .brand-card-image--content {
-      @apply prose-xl max-w-none bg-white p-8 font-normal md:p-12 lg:p-15 [&_*]:leading-[1.45];
+      @apply prose-xl max-w-none p-8 font-normal md:p-12 lg:p-15 [&_*]:leading-[1.45];
       @apply prose-p:mt-0 prose-p:last:mb-0 [&_*]:m-0;
+      @apply bg-white;
     }
 
     .brand-card-image--title {

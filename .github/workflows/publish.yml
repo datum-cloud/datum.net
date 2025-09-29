@@ -18,77 +18,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-  build-and-push:
+
+  publish-container-image:
     permissions:
+      id-token: write
       contents: read
       packages: write
-      id-token: write
-
-    runs-on: ubuntu-latest
-    needs: check-files
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3.5.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/datum-cloud/datum-net
-          tags: |
-            type=ref,event=pr
-            type=ref,event=pr,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
-            type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
-            type=ref,event=branch
-            type=semver,pattern=v{{version}}
-            type=semver,pattern=v{{major}}.{{minor}}
-            type=semver,pattern=v{{major}}
-            type=sha
-
-      - name: Extract version tag
-        id: version-tag
-        run: |
-          FULL_TAG="${{ fromJSON(steps.meta.outputs.json).tags[0] }}"
-          VERSION_TAG="${FULL_TAG##*:}"
-
-          # For Kubernetes semver compatibility, transform the version for the build arg
-          # If it's already a semver tag (starts with v and has dots), keep it as-is
-          if [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-            # Already semver compliant (e.g., v1.2.3)
-            BUILD_VERSION="$VERSION_TAG"
-          else
-            # Non-semver tag: prepend v0.0.0- to make it semver compliant
-            BUILD_VERSION="v0.0.0-${VERSION_TAG}"
-          fi
-
-          echo "tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
-          echo "build_version=$BUILD_VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Debug version values
-        run: |
-          echo "Version tag: ${{ steps.version-tag.outputs.tag }}"
-          echo "Build version: ${{ steps.version-tag.outputs.build_version }}"
-          echo "Full metadata tags: ${{ steps.meta.outputs.tags }}"
-          echo "Metadata JSON: ${{ steps.meta.outputs.json }}"
-
-      - name: Build Website
-        id: push
-        uses: docker/build-push-action@v6.18.0
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          target: production
-          build-args: |
-            ASTRO_TELEMETRY_DISABLED=1
+      attestations: write
+    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.7.1
+    with:
+      image-name: ghcr.io/datum-cloud/datum-net
+      extra-build-args: |
+        ASTRO_TELEMETRY_DISABLED=1
+    secrets: inherit
 
   publish-kustomize-bundles:
     permissions:

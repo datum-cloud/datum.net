@@ -21,7 +21,7 @@ const upcomingHuddles = huddles
   .filter((huddle) => {
     const huddleDate = new Date(huddle.data.date);
     huddleDate.setHours(0, 0, 0, 0);
-    return huddle.data.status === 'publish' && huddleDate >= today;
+    return huddle.data.draft == false && huddleDate >= today;
   })
   .sort((a, b) => {
     // Sort by date (closest first)
@@ -35,7 +35,7 @@ const previousHuddles = huddles
   .filter((huddle) => {
     const huddleDate = new Date(huddle.data.date);
     huddleDate.setHours(0, 0, 0, 0);
-    return huddle.data.status === 'publish' && huddleDate < today;
+    return huddle.data.draft == false && huddleDate < today;
   })
   .sort((a, b) => {
     // Sort by date (most recent first)

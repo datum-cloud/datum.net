@@ -14,6 +14,7 @@ async function blogsEntries() {
 
     const entries = pages.map((page) => {
       if (!page.id || page.id === '/') return '';
+      if (page.data.draft == true) return '';
 
       const url = `${siteUrl}/blog/${page.id}/`;
       const lastMod = page.data.updatedDate || null;
@@ -37,6 +38,7 @@ async function docsEntries() {
 
     const entries = pages.map((page) => {
       if (!page.id || page.id === '/') return '';
+      if (page.data.draft == true) return '';
 
       const url = `${siteUrl}/${page.id}/`;
       const lastMod = page.data.updatedDate || null;
@@ -60,6 +62,7 @@ async function handbookEntries() {
 
     const entries = pages.map((page) => {
       if (!page.id || page.id === '/') return '';
+      if (page.data.draft == true) return '';
 
       const url = `${siteUrl}/handbook/${page.id}/`;
       const lastMod = page.data.updatedDate || null;

@@ -1,0 +1,79 @@
+---
+// import { Image } from 'astro:assets';
+import Logo from '@v1/assets/svgs/datum-logo.svg';
+import navigation from '@data/navigation.json';
+import type { NavData, NavItem } from '@/src/types/navigation';
+import GithubStargazerValue from '@components/GithubStargazerValue.astro';
+import Button from '@components/Button.astro';
+
+// Get props with default values
+// Type-safe navigation data
+const navData = navigation as NavData;
+---
+
+<footer class="footer">
+  <!-- Main Footer Content -->
+  <div class="footer-main">
+    <div
+      class="footer-grid fade-in--pure"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+    >
+      <!-- Logo Section -->
+      <div class="footer-logo-section">
+        <a href="/" aria-label="Home" class="footer-logo-link">
+          <Logo class="text-white" />
+        </a>
+      </div>
+
+      <!-- Navigation Sections -->
+      <div class="footer-nav-container">
+        <div class="footer-nav-grid">
+          {
+            navData.footer.map((section) => (
+              <div>
+                <h4 class="footer-nav-section">{section.title}</h4>
+                <ul class="footer-nav-list">
+                  {section.items.map((item: NavItem) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="footer-nav-link"
+                        target={item.isExternal ? '_blank' : undefined}
+                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        data-astro-prefetch="hover"
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- GitHub Button Section -->
+      <div class="footer-actions-section">
+        <Button
+          class="btn btn--primary gh-button min-w-[115px]"
+          icon={{ name: 'github', size: 'md' }}
+          iconPosition="left"
+          iconClass="stroke-1.5"
+          target="_blank"
+          href="https://github.com/datum-cloud/datum/"
+        >
+          <GithubStargazerValue server:defer />
+        </Button>
+
+        <p class="footer-copyright">
+          <a href="/legal/terms/" class="footer-nav-link">Terms of Service</a><br />
+          <a href="/legal/privacy/" class="footer-nav-link">Privacy Policy</a><br />
+          &copy; {new Date().getFullYear()}
+          <span class="whitespace-nowrap">Datum Technology, Inc.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

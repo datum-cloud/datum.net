@@ -4,6 +4,8 @@ import config from 'virtual:starlight/user-config';
 import MobileMenuToggle from 'virtual:starlight/components/MobileMenuToggle';
 import Search from 'virtual:starlight/components/Search';
 
+import FooterDocs from '@components/FooterDocs.astro';
+
 const { hasSidebar } = Astro.locals.starlightRoute;
 
 /**
@@ -17,24 +19,30 @@ const shouldRenderSearch =
   <header class="sl-header">
     <slot name="header" />
   </header>
-
-  <div class="main-frame">
-    {
-      hasSidebar && (
-        <nav class="sidebar print:hidden" aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}>
-          <MobileMenuToggle />
-          <div id="starlight__sidebar" class="sidebar-pane">
-            <div class="sidebar-content sl-flex">
-              <div class="sl-flex print:hidden">{shouldRenderSearch && <Search />}</div>
-              <slot name="sidebar" />
+  <div class="datum-container flex items-center justify-center">
+    <div class="main-frame">
+      {
+        hasSidebar && (
+          <nav
+            class="sidebar print:hidden"
+            aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}
+          >
+            <MobileMenuToggle />
+            <div id="starlight__sidebar" class="sidebar-pane">
+              <div class="sidebar-content sl-flex">
+                <div class="sl-flex print:hidden">{shouldRenderSearch && <Search />}</div>
+                <slot name="sidebar" />
+              </div>
             </div>
-          </div>
-        </nav>
-      )
-    }
+          </nav>
+        )
+      }
 
-    <slot />
+      <slot />
+    </div>
   </div>
+
+  <FooterDocs />
 </div>
 
 <style>
@@ -57,8 +65,6 @@ const shouldRenderSearch =
       .sidebar-pane {
         --sl-sidebar-visibility: visible;
         width: var(--sl-sidebar-width);
-        background-color: var(--sl-color-bg-sidebar);
-        border-inline-end: 1px solid var(--sl-color-hairline-shade);
       }
     }
   }

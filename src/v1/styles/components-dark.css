@@ -1,0 +1,8 @@
+@layer components {
+  /* Section Block */
+  [data-theme='dark'] {
+    .btn svg {
+      @apply text-lime-green!;
+    }
+  }
+}

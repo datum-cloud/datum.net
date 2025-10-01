@@ -10,13 +10,17 @@
     }
 
     .nav-actions {
-      @apply col-span-1 hidden items-center gap-6 justify-self-end-safe md:inline-block;
+      @apply col-span-1 hidden items-center space-x-3 justify-self-end-safe md:inline-block;
     }
     .nav-menu-wrapper {
       @apply col-span-4 hidden justify-center md:inline-block;
     }
     .nav-menu {
       @apply items-center justify-center gap-10 text-white md:flex;
+    }
+
+    .link--active {
+      @apply [&>span]:border-b;
     }
   }
 

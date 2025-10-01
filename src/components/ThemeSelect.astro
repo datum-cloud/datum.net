@@ -3,7 +3,11 @@ import Icon from '@components/Icon.astro';
 ---
 
 <starlight-theme-select>
-  <button class="theme-icon-button" type="button" aria-label="Toggle theme">
+  <button
+    class="btn btn--primary btn--icon theme-icon-button"
+    type="button"
+    aria-label="Toggle theme"
+  >
     <Icon name="moon" size="md" class="theme-icon theme-icon--dark" />
     <Icon name="sun" size="md" class="theme-icon theme-icon--light" />
   </button>
@@ -77,34 +81,26 @@ import Icon from '@components/Icon.astro';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      background: transparent;
-      border: none;
       cursor: pointer;
     }
 
     .theme-icon {
-      position: absolute;
-      transition: all 0.2s ease;
       width: 100%;
       height: 100%;
-      opacity: 0;
-      stroke-width: 1;
-      transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
+      display: none;
+      stroke-width: 1.5;
+      transition: transform 0.3s ease;
     }
 
     /* Default fallback - show sun icon if no theme is detected (default to light) */
     .theme-icon--light {
-      opacity: 1;
+      display: inline-block;
       color: var(--Canyon-Clay);
     }
 
     /* Show sun icon when in light mode (representing current light theme) */
     :global([data-theme='light']) .theme-icon--light {
-      opacity: 1;
+      display: inline-block;
       color: var(--Canyon-Clay);
 
       &:hover {
@@ -114,7 +110,7 @@ import Icon from '@components/Icon.astro';
 
     /* Show moon icon when in dark mode (representing current dark theme) */
     :global([data-theme='dark']) .theme-icon--dark {
-      opacity: 1;
+      display: inline-block;
       color: var(--Aurora-Moss);
 
       &:hover {
@@ -124,11 +120,11 @@ import Icon from '@components/Icon.astro';
 
     /* Hide icons when not active */
     :global([data-theme='light']) .theme-icon--dark {
-      opacity: 0;
+      display: none;
     }
 
     :global([data-theme='dark']) .theme-icon--light {
-      opacity: 0;
+      display: none;
     }
   }
 </style>

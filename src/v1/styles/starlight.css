@@ -37,10 +37,13 @@
 @layer utilities {
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
+    --sl-line-height-headings: 141%;
     --sl-color-text: var(--color-glacier-mist-700);
     --sl-color-text-accent: var(--color-lime-green);
     --sl-line-height: 1.5;
-    /* --sl-text-h1: 30px; */
+    --sl-text-h1: 30px;
+    --sl-text-h2: 20px;
+    --sl-text-h3: 18px;
 
     --sl-color-bg: var(--color-navy);
     --sl-color-bg-sidebar: var(--color-navy);
@@ -196,7 +199,7 @@
 
   .main-frame {
     @apply flex p-0;
-    @apply m-auto min-h-screen;
+    @apply m-auto;
     @apply max-w-391;
     @apply mx-6 md:mx-16;
   }
@@ -222,18 +225,27 @@
 
   /* ContentPanel.astro */
   .sl-content {
+    @apply px-10 py-5 pb-20;
+
+    .content-panel {
+      @apply p-0;
+    }
     .content-panel + .content-panel {
       @apply border-t-0;
     }
 
-    @apply [&_.content-panel:first-child_h1]:text-3xl;
+    @apply [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:text-3xl;
+
+    .sl-container {
+      @apply max-w-none;
+    }
   }
   /* End of ContentPanel.astro */
 
   /* TwoColumnContent.astro */
 
   .right-sidebar-container {
-    @apply relative;
+    @apply relative min-w-[213px];
 
     width: var(--sl-sidebar-width);
     z-index: var(--sl-z-index-toc);
@@ -251,12 +263,6 @@
 
   .sl-content-wrapper {
     @apply flex min-w-0 flex-1;
-  }
-
-  .sl-content {
-    flex: 1;
-    min-width: 0;
-    padding: var(--sl-content-pad-y) var(--sl-content-pad-x);
   }
 
   /* End of TwoColumnContent.astro */
@@ -286,11 +292,59 @@
       color: var(--sl-color-white);
     }
   }
+
   /* End of PageSidebar.astro */
 
   /* ThemeSelect.astro */
+  .sl-main-content {
+    /* @apply max-w-3xl; */
+  }
+  nav.c-breadcrumbs {
+    /* Breadcrumbs styles */
 
+    @apply flex items-center px-10 pt-10 text-xs font-medium;
+
+    ol {
+      @apply flex h-6 items-center;
+      @apply m-0 list-none p-0;
+    }
+    li {
+      @apply flex items-center;
+    }
+    li:first-child {
+      @apply mr-2;
+      &::after {
+        @apply hidden;
+      }
+    }
+    li:not(:last-child)::after {
+      content: '/';
+      @apply mx-2 text-[color:var(--sl-color-text)];
+    }
+    a {
+      @apply text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
+    }
+    .active,
+    li:last-child a {
+      @apply pointer-events-none cursor-default font-semibold text-[color:var(--sl-color-text-accent)];
+    }
+    svg {
+      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+    }
+  }
   /* End of ThemeSelect.astro */
+
+  .pagination-links {
+    > a {
+      @apply rounded-none border-[color:var(--sl-color-text)] px-7 py-6 transition-all duration-200 hover:border-[color:var(--sl-color-text)]/50;
+      span {
+        @apply text-[11px] leading-[1.45] font-semibold uppercase;
+        .link-title {
+          @apply mt-2 block text-base leading-[1.5] font-bold capitalize;
+        }
+      }
+    }
+  }
 }
 
 @import './utilities.css';
@@ -302,13 +356,7 @@
 @import './components-nav.css';
 
 .sl-markdown-content .expressive-code .frame {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-.sl-container:where(.astro-7nkwcw3z) {
-  max-width: none;
+  @apply shadow-none;
 }
 
 a:any-link {

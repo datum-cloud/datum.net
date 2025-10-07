@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import sceneTree from '@v1/assets/images/scene-tree.png';
+import asideNote from '@v1/assets/images/aside-note.png';
 import type { ContentProps } from '@/src/types/common';
 
 const { content } = Astro.props as ContentProps;
@@ -38,9 +39,15 @@ if (content.data.images) {
     />
   </div>
   <div class="border-navy bg-cream relative z-10 m-auto border md:max-w-391">
+    <Image
+      src={asideNote}
+      layout="constrained"
+      alt="Scene tree illustration"
+      class="absolute -bottom-13 left-5 z-15 size-auto w-full max-w-67.25 md:-bottom-7 md:left-5 lg:-bottom-15 lg:-left-5 xl:-bottom-13 xl:-left-10"
+    />
     <!-- Scene Tree Image -->
     <div
-      class="fade-in--pure relative z-10 mx-auto grid grid-cols-1 justify-between gap-9 px-6.5 py-14 text-center md:grid-cols-2 md:gap-16 md:px-18 md:pt-24 md:pb-35 md:text-left lg:gap-22 lg:px-24 lg:pt-30 lg:pb-49"
+      class="fade-in--pure relative z-10 mx-auto grid grid-cols-1 justify-between gap-9 px-6.5 py-14 pb-35 text-center md:grid-cols-2 md:gap-16 md:px-18 md:pt-24 md:pb-35 md:text-left lg:gap-22 lg:px-24 lg:pt-30 lg:pb-49"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
@@ -54,29 +61,40 @@ if (content.data.images) {
           <p>{content.body}</p>
         </span>
       </div>
+      <div class="absolute bottom-5 block w-full px-25 md:px-18 lg:px-24">
+        <span
+          class="after:bg-navy flex flex-col items-center justify-center gap-7.5 align-middle text-[11px] font-semibold tracking-[0.5px] uppercase after:block after:h-[1px] after:w-full after:content-[''] md:flex-row"
+        >
+          <p class="mb-0 text-balance md:whitespace-nowrap">
+            We're on a mission to serve and connect companies like these
+          </p>
+        </span>
+      </div>
     </div>
     <!-- Logos Row -->
     {
       content.data.images ? (
-        <div class="grid grid-cols-3 overflow-x-auto lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-1 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0">
-          {logoColumns.map((column, columnIndex) => (
-            <div class="border-navy flex aspect-29/21 items-center justify-center border-t border-r last:border-r-0">
-              <div
-                class="logo-cycling-container relative flex h-full w-full items-center justify-center"
-                data-column-index={columnIndex}
-              >
-                {column.logos.map((logo, logoIndex) => (
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    class={`logo-cycle absolute mx-10 max-h-15 w-4/5 max-w-18 object-contain md:max-w-28 lg:max-w-40 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
-                    data-logo-index={logo.index}
-                    data-column-logo-index={logoIndex}
-                  />
-                ))}
+        <div class="px-6.5 md:px-18 lg:px-24">
+          <div class="grid grid-cols-3 overflow-x-auto lg:grid-cols-6">
+            {logoColumns.map((column, columnIndex) => (
+              <div class="flex aspect-29/21 items-center justify-center">
+                <div
+                  class="logo-cycling-container relative flex h-full w-full items-center justify-center"
+                  data-column-index={columnIndex}
+                >
+                  {column.logos.map((logo, logoIndex) => (
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      class={`logo-cycle absolute mx-10 max-h-15 w-4/5 max-w-18 object-contain md:max-w-28 lg:max-w-40 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
+                      data-logo-index={logo.index}
+                      data-column-logo-index={logoIndex}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ) : (
         ''

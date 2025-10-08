@@ -1,5 +1,5 @@
 ---
-// src/pages/blog/[slug].astro
+// src/pages/use-cases/[slug].astro
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -10,20 +10,19 @@ import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
 import { formatLongDate, formatISODate } from '@utils/dateUtils';
-import { getCollectionEntry } from '@utils/collectionUtils';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const useCaseEntries = await getCollection('useCases');
   const authors = await getCollection('authors');
 
-  return blogEntries
+  return useCaseEntries
     .filter((entry) => !entry.data.draft) // Exclude draft posts
     .map((entry) => {
       // Find the author data if it exists
       const authorData = authors.find((author) => author.id === entry.data.author);
 
       return {
-        params: { slug: entry.id },
+        params: { slug: entry.data.slug || entry.id },
         props: { entry, authorData },
       };
     });
@@ -31,35 +30,21 @@ export async function getStaticPaths() {
 
 const { entry, authorData } = Astro.props;
 const { Content } = await render(entry);
-const formattedDate = formatLongDate(entry.data.date);
+const formattedDate = entry.data.date ? formatLongDate(entry.data.date) : '';
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
 
-// Calculate reading time from content
-// const readingTime = estimateReadingTime(entry.body || '');.
+// Get all use case entries for navigation
+const allUseCaseEntries = await getCollection('useCases');
 
-// Get category data for each category
-const categoryData = await Promise.all(
-  (entry.data.categories || []).map(async (categorySlug) => {
-    return await getCollectionEntry('categories', categorySlug);
-  })
-);
+// Get navigation articles (sorted by title)
+const sortedUseCases = allUseCaseEntries
+  .filter((uc) => !uc.data.draft)
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
-// Get all blog entries for navigation
-const allBlogEntries = await getCollection('blog');
-
-// Get navigation articles (sorted by date, newest first)
-const sortedBlogs = allBlogEntries
-  .filter((b) => !b.data.draft)
-  .sort((a, b) => {
-    const dateA = new Date(a.data.date || 0);
-    const dateB = new Date(b.data.date || 0);
-    return dateB.getTime() - dateA.getTime(); // Newest first
-  });
-
-const currentIndex = sortedBlogs.findIndex((b) => b.id === entry.id);
-const previousArticle = currentIndex > 0 ? sortedBlogs[currentIndex - 1] : undefined;
+const currentIndex = sortedUseCases.findIndex((uc) => uc.id === entry.id);
+const previousArticle = currentIndex > 0 ? sortedUseCases[currentIndex - 1] : undefined;
 const nextArticle =
-  currentIndex < sortedBlogs.length - 1 ? sortedBlogs[currentIndex + 1] : undefined;
+  currentIndex < sortedUseCases.length - 1 ? sortedUseCases[currentIndex + 1] : undefined;
 
 // Get processed avatar URL
 let processedAvatarUrl = '';
@@ -81,8 +66,8 @@ const fm = entry.data;
 const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
-const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
-const icon = 'book-image';
+const subtitle = fm.subtitle ? fm.subtitle : 'Use Case';
+const icon = 'users';
 ---
 
 <Layout
@@ -92,7 +77,7 @@ const icon = 'book-image';
   article={true}
   publishDate={fm.date}
   author={fm.author}
-  bodyClass="blog-page"
+  bodyClass="blog-detail-page"
   meta={meta}
 >
   <section class="datum-container">
@@ -116,43 +101,39 @@ const icon = 'book-image';
         data-reveal-immediate="true"
       >
         <!-- Hidden meta tags for Pagefind -->
-        <span class="hidden" style="display: none;">post</span>
-        <span class="hidden" style="display: none;">{authorData?.data.name || fm.author}</span>
-        <span class="hidden" style="display: none;">{processedAvatarUrl}</span>
-        <span class="hidden" style="display: none;">{formatISODate(fm.date)}</span>
-        <span class="hidden" style="display: none;"
-          >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
+        <span data-pagefind-meta="page_type" class="hidden" style="display: none;">use-case</span>
+        <span data-pagefind-meta="author_name" class="hidden" style="display: none;"
+          >{authorData?.data.name || fm.author}</span
         >
-        <span class="hidden" style="display: none;">{entry.data.draft ? 'true' : 'false'}</span>
+        <span data-pagefind-meta="author_avatar" class="hidden" style="display: none;"
+          >{processedAvatarUrl}</span
+        >
+        <span data-pagefind-meta="date" class="hidden" style="display: none;"
+          >{fm.date ? formatISODate(fm.date) : ''}</span
+        >
+        <span data-pagefind-meta="category_name" class="hidden" style="display: none;"
+          >Use Case</span
+        >
+        <span data-pagefind-meta="draft" class="hidden" style="display: none;"
+          >{entry.data.draft ? 'true' : 'false'}</span
+        >
 
         <!-- Article Header -->
         <header class="blog-article-header">
           <div class="blog-article-meta">
             <div class="blog-article-meta-content flex items-center justify-between">
-              <a href="/blog" class="blog-back-button">
+              <a href="/use-cases" class="blog-back-button">
                 <Icon name="arrow-left" size="sm" />
-                <span>Back to Blog</span>
+                <span>Back to Use Cases</span>
               </a>
-              <!--
-              <span class="blog-article-date pr-3">
-                {readingTime.text}
-              </span>
-              -->
-              <!--
-              {
-                categoryData.length > 0 && (
-                  <div class="blog-article-categories">
-                    {categoryData.map((category) => (
-                      <span class="blog-article-category">{category.data.name}</span>
-                    ))}
-                  </div>
-                )
-              }
-              -->
               <div>
-                <span class="blog-article-date">
-                  {formattedDate}&nbsp;&nbsp;|&nbsp;
-                </span>
+                {
+                  formattedDate && (
+                    <>
+                      <span class="blog-article-date">{formattedDate}&nbsp;&nbsp;|&nbsp;</span>
+                    </>
+                  )
+                }
                 <button
                   type="button"
                   class="blog-article-share"
@@ -177,10 +158,8 @@ const icon = 'book-image';
               <Image
                 src={fm.featuredImage}
                 alt={fm.title}
-                layout="constrained"
-                class="fade-in--pure"
-                data-reveal="fade-in--pure--visible"
-                data-reveal-delay="100"
+                widths={[800, 1200, 1600]}
+                sizes="(max-width: 800px) 800px, (max-width: 1200px) 1200px, 1600px"
               />
             </div>
           )
@@ -227,14 +206,14 @@ const icon = 'book-image';
             ? {
                 id: previousArticle.id,
                 title: previousArticle.data.title,
-                url: `/blog/${previousArticle.id}`,
+                url: `/use-cases/${previousArticle.data.slug || previousArticle.id}`,
               }
             : undefined}
           nextArticle={nextArticle
             ? {
                 id: nextArticle.id,
                 title: nextArticle.data.title,
-                url: `/blog/${nextArticle.id}`,
+                url: `/use-cases/${nextArticle.data.slug || nextArticle.id}`,
               }
             : undefined}
         />

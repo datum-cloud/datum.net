@@ -118,6 +118,41 @@
       "items": [{ "text": "Resources", "href": "/brand/resources" }]
     }
   ],
+  "footerDocs": [
+    {
+      "title": "Docs",
+      "items": [
+        { "text": "Getting Started", "href": "/docs/" },
+        { "text": "API Reference", "href": "/docs/api/" }
+      ]
+    },
+    {
+      "title": "Resources",
+      "items": [
+        { "text": "Changelog", "href": "/resources/changelog/" },
+        { "text": "Roadmap", "href": "/resources/roadmap/" },
+        { "text": "Public Slack", "href": "/public-slack/" },
+        { "text": "Open Source", "href": "/resources/open-source/" }
+      ]
+    },
+    {
+      "title": "Company",
+      "items": [
+        { "text": "About", "href": "/about/" },
+        { "text": "Handbook", "href": "/handbook/" },
+        { "text": "Blog", "href": "/blog/" },
+        { "text": "Design Assets", "href": "/brand/" }
+      ]
+    },
+    {
+      "title": "Trust Center",
+      "items": [
+        { "text": "Terms of Service", "href": "/legal/terms/" },
+        { "text": "Privacy Policy", "href": "/legal/privacy/" },
+        { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
+      ]
+    }
+  ],
   "social": [
     {
       "href": "https://twitter.com/datumcloud",

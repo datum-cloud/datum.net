@@ -44,12 +44,13 @@ export default defineConfig({
     starlight({
       title: 'Datum',
       disable404Route: true,
+      credits: false,
       editLink: {
         baseUrl: 'https://github.com/datum-cloud/datum.net/edit/main/',
       },
       logo: {
-        light: '/public/datum-light.svg',
-        dark: '/public/datum-dark.svg',
+        light: '/public/download/logo-datum-light.svg',
+        dark: '/public/download/logo-datum-dark.svg',
         replacesTitle: true,
       },
       customCss: ['./src/v1/styles/starlight.css'], // https://github.com/withastro/starlight/blob/main/packages/starlight/style/props.css
@@ -64,7 +65,14 @@ export default defineConfig({
       ],
       components: {
         PageFrame: '@components/starlight/PageFrame.astro',
+        PageSidebar: '@components/starlight/PageSidebar.astro',
+        TwoColumnContent: '@components/starlight/TwoColumnContent.astro',
+        SiteTitle: '@components/starlight/SiteTitle.astro',
         Header: '@components/starlight/Header.astro',
+        Footer: '@components/starlight/Footer.astro',
+        MobileMenuToggle: '@components/starlight/MobileMenuToggle.astro',
+        Sidebar: '@components/starlight/Sidebar.astro',
+        Search: '@components/starlight/Search.astro',
       },
       head: [
         {

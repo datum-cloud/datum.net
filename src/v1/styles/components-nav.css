@@ -1,17 +1,31 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:pt-9 lg:pt-12.5;
-
+    /* @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:pt-9 lg:pt-12.5; */
+    @apply m-auto flex w-full max-w-391 items-center justify-between pt-6 md:grid md:grid-cols-6 md:pt-9 lg:pt-12.5;
     .btn {
       svg {
         @apply text-light-pink;
       }
     }
-  }
 
-  .nav--main .nav-menu {
-    @apply hidden items-center gap-10 justify-self-center-safe text-white md:flex;
+    .nav-actions {
+      @apply col-span-1 mr-5 ml-auto inline-block items-center space-x-3 justify-self-end md:mr-0;
+
+      starlight-theme-select {
+        @apply mr-0;
+      }
+    }
+    .nav-menu-wrapper {
+      @apply col-span-4 hidden justify-center md:inline-block;
+    }
+    .nav-menu {
+      @apply items-center justify-center text-white md:flex md:gap-7 lg:gap-8 xl:gap-10;
+    }
+
+    .link--active {
+      @apply [&>span]:border-b;
+    }
   }
 
   .nav--main .nav-menu-item {
@@ -24,10 +38,6 @@
 
   .nav--main .nav-menu-icon {
     @apply text-white;
-  }
-
-  .nav--main .nav-actions {
-    @apply hidden items-center gap-6 justify-self-end-safe md:flex;
   }
 
   /* Dropdown Styles */
@@ -102,10 +112,14 @@
 
   /* Mobile Navigation Styles */
   .mobile-menu-container {
-    @apply block md:hidden;
+    @apply flex w-8 justify-self-end md:hidden;
   }
   .mobile-menu-button {
-    @apply relative z-90 flex h-7.5 w-7.5 items-center justify-center text-white transition-colors duration-200 hover:text-white/80 md:hidden;
+    @apply relative z-90 ml-auto text-white transition-colors duration-200 hover:cursor-pointer hover:text-white/80 md:hidden;
+
+    svg {
+      @apply h-7.5 w-7.5;
+    }
   }
 
   .mobile-menu-icon {
@@ -233,11 +247,18 @@
 
   /* Logo Dropdown Styles */
   .nav-logo-container {
-    @apply relative;
+    @apply relative col-span-1;
   }
 
   .nav-logo {
-    @apply block;
+    @apply block flex items-center gap-2;
+
+    --color-logo-object: var(--color-lime-green);
+    --color-logo-text: var(--color-white);
+
+    svg {
+      @apply w-14 md:w-18 lg:w-21.5;
+    }
   }
 
   .logo-dropdown {

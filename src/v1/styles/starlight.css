@@ -1,59 +1,182 @@
-@import './fonts.css';
+@layer base, starlight, theme, components, utilities;
 
-@import './theme-starlight.css';
+@import './fonts.css';
+@import 'tailwindcss';
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@import './theme.css';
 
 @layer base {
   html,
   body {
-    font-family: var(--font-primary);
+    @apply font-primary;
+  }
+
+  /* Restore crucial styles from Tailwind Preflight: https://tailwindcss.com/docs/preflight */
+  /* Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116) */
+  *,
+  ::after,
+  ::before {
+    border: 0 solid;
+  }
+  /* Keep base font-family styles even in non-Starlight pages. */
+  html,
+  :host {
+    font-family: var(--font-sans);
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  body {
+    &.mobile-menu-open {
+      @apply fixed w-full touch-none overflow-hidden;
+    }
+  }
+
+  [data-disable-lenis] {
+    @apply fixed w-full touch-none overflow-hidden;
+  }
+
+  [x-cloak] {
+    @apply hidden;
+  }
+}
+
+@layer utilities {
+  /* Wire up Starlight theme to use Tailwind config. */
+  :root {
+    --color-note: #fffbc5;
+    --color-caution: #fde2e2;
+    --color-tip: #e2e9e3;
+
+    --sl-line-height-headings: 141%;
+    --sl-color-text: var(--color-glacier-mist-700);
+    --sl-color-text-accent: var(--color-lime-green);
+    --sl-line-height: 1.5;
+    --sl-text-h1: 30px;
+    --sl-text-h2: 20px;
+    --sl-text-h3: 18px;
+
+    --sl-menu-button-size: 30px;
+
+    --sl-color-bg: var(--color-navy);
+    --sl-color-bg-sidebar: var(--color-navy);
+    /* Use Tailwind-configured font families. */
+    --sl-font: var(--font-sans);
+    --sl-font-mono: var(--font-mono);
+    /* Dark mode Starlight theme variables. */
+    --sl-color-white: var(--color-white);
+    --sl-color-gray-1: var(--color-gray-200);
+    --sl-color-gray-2: var(--color-gray-300);
+    --sl-color-gray-3: var(--color-gray-400);
+    --sl-color-gray-4: var(--color-gray-600);
+    --sl-color-gray-5: var(--color-gray-700);
+    --sl-color-gray-6: var(--color-gray-800);
+    --sl-color-black: var(--color-gray-900);
+    --sl-color-accent-low: var(--color-accent-950, var(--color-accent-900, #1e1b4b));
+    --sl-color-accent: var(--color-accent-600, #4f46e5);
+    --sl-color-accent-high: var(--color-accent-200, #c7d2fe);
+    --color-borderpanel: color-mix(in srgb, var(--color-glacier-mist-900) 10%, transparent);
+
+    &[data-theme='dark'] {
+      --ec-code-background: color-mix(in srgb, var(--color-cream) 7%, transparent);
+      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 3%, transparent);
+    }
+    /* Light mode Starlight theme variables. */
+    &[data-theme='light'] {
+      --sl-color-text: var(--color-navy);
+      --sl-color-text-accent: var(--color-canyon-clay);
+      --sl-color-bg: var(--color-glacier-mist-700);
+      --sl-color-bg-sidebar: var(--color-glacier-mist-700);
+      --sl-color-white: var(--color-gray-900);
+      --sl-color-gray-1: var(--color-gray-800);
+      --sl-color-gray-2: var(--color-gray-700);
+      --sl-color-gray-3: var(--color-gray-500);
+      --sl-color-gray-4: var(--color-gray-400);
+      --sl-color-gray-5: var(--color-gray-300);
+      --sl-color-gray-6: var(--color-gray-200);
+      --sl-color-gray-7: var(--color-gray-100);
+      --sl-color-black: var(--color-white);
+      --sl-color-accent-low: var(--color-accent-200, #c7d2fe);
+      --sl-color-accent: var(--color-accent-600, #4f46e5);
+      --sl-color-accent-high: var(--color-accent-900, #312e81);
+      --color-borderpanel: var(--color-glacier-mist-900);
+
+      --ec-code-background: var(--color-white);
+      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 40%, transparent);
+    }
+  }
+}
+
+@layer starlight.components {
+  .expressive-code .frame pre {
+    background: var(--ec-code-background) !important;
+  }
+
+  .expressive-code .frame.is-terminal .header {
+    background: var(--ec-code-header-background) !important;
+  }
+
+  &[data-theme='dark'] {
+    .sl-markdown-content {
+      .starlight-aside {
+        @apply text-navy;
+      }
+    }
+  }
+
+  .sl-markdown-content {
+    .starlight-aside {
+      @apply px-8 py-6;
+    }
+
+    .starlight-aside--note {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      @apply bg-[var(--color-note)];
+    }
+
+    .starlight-aside--caution {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      @apply bg-[var(--color-caution)];
+    }
+
+    .starlight-aside--tip {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      @apply bg-[var(--color-tip)];
+    }
+
+    .starlight-aside__title {
+      @apply text-navy text-lg font-semibold;
+    }
   }
 }
 
 @layer starlight.reset {
   body {
-    font-family: var(--font-primary);
+    @apply font-primary;
+    @apply leading-1.5;
   }
 
   /* Override all Starlight text elements */
   p,
   li,
   a,
-  span,
-  div,
   button,
   input,
   textarea,
   select,
   label {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
-  /* Override all Starlight text elements */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: 70% !important;
-  }
-
-  h1:where(.astro-j6tvhyss) {
-    font-size: 1.9em !important;
-    margin-top: 0 !important;
-  }
-
-  .sl-markdown-content .sl-anchor-link {
-    font-size: 0.75em !important;
-  }
-  .sl-markdown-content
-    :not(h1, h2, h3, h4, h5, h6, .sl-heading-wrapper)
-    + :is(.sl-heading-wrapper) {
-    margin-top: 0.7em !important;
-  }
-
-  .link-title:where(.astro-u2l5gyhi) {
-    font-size: 1em !important;
+  a:any-link {
+    @apply no-underline;
   }
 
   /* Override Starlight component fonts */
@@ -67,209 +190,261 @@
   .sl-theme-toggle,
   .sl-language-select,
   .sl-social-links {
-    font-family: var(--font-primary);
-  }
-
-  /* Override code blocks and inline code */
-  code,
-  pre,
-  .sl-code-block,
-  .sl-inline-code {
-    font-family: var(--font-primary);
+    @apply font-primary;
   }
 
   /* Additional Starlight-specific selectors */
   [data-astro-cid],
-  .astro-code,
-  .astro-code-inline,
   .sl-content-panel,
   .sl-content-wrapper,
   .sl-page,
   .sl-page-header,
   .sl-page-content,
   .sl-page-footer {
-    font-family: var(--font-primary);
-  }
-
-  /* Hide theme toggle to disable dark/light mode */
-  .sl-theme-toggle,
-  [data-astro-cid*='ThemeToggle'] {
-    display: none !important;
+    @apply font-primary;
   }
 }
 
 @layer starlight.core {
-}
+  /* Lock body scroll when dialogs or mobile sidebar are open */
+  [data-search-modal-open] {
+    overflow: hidden;
+  }
+  [data-mobile-menu-expanded] {
+    overflow: hidden;
+  }
+  @media (min-width: 50rem) {
+    [data-mobile-menu-expanded] {
+      overflow: auto;
+    }
+  }
 
-@layer starlight.components {
-}
+  .sl-mobile-menu-toggle {
+    @apply flex md:hidden;
 
-.sl-markdown-content .expressive-code .frame {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
+    @apply absolute top-[40px] right-0 z-[var(--sl-z-index-navbar)] cursor-pointer border-0 p-0 text-[var(--color-text)];
+    @apply [&_svg]:bg-[var(--sl-color-bg)];
+    /* inset-inline-end and !important values must be handled in inline style or with additional utility if needed */
+    /* style="inset-inline-end: var(--sl-nav-pad-x);" */
+  }
 
-.sl-container:where(.astro-7nkwcw3z) {
-  max-width: none;
-}
+  /* PageFrame.astro */
+  .sidebar {
+    @apply block w-full flex-none md:w-[215px] lg:w-[259px];
+    @apply hidden md:block;
+  }
 
-a:any-link {
-  text-decoration-line: none;
-}
+  .sidebar-pane {
+    @apply relative h-full w-full;
+    @apply pt-22 pr-6 pb-30 pl-6 md:pt-7 md:pb-0 md:pl-0;
+    @apply border-r border-[color:var(--color-borderpanel)];
+    @apply hidden w-full overflow-hidden md:block;
+    visibility: var(--sl-sidebar-visibility, hidden);
+    z-index: var(--sl-z-index-menu);
+  }
 
-.pagination-links a {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
+  .sidebar-content {
+    @apply flex h-full min-h-max flex-col gap-6 overflow-y-auto pb-10;
 
-.right-sidebar-panel {
-  nav {
-    > ul {
-      > li {
-        > a {
-          padding-left: 0;
+    ul.top-level {
+      @apply [&>li:first-child]:mb-4;
+
+      > li + li {
+        @apply mt-0 mb-4;
+      }
+      li {
+        summary {
+          @apply p-0 hover:text-(--sl-color-text-accent);
+          .large {
+            @apply text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+          }
         }
+
+        ul {
+          @apply mt-[6px];
+        }
+
+        > a.large {
+          @apply p-0 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase hover:text-(--sl-color-text-accent);
+        }
+        > a.large[aria-current='page'] {
+          @apply bg-transparent font-bold text-(--sl-color-text-accent);
+        }
+
         li {
+          @apply ml-0 border-l-0 pl-0;
+          @apply mb-[6px];
+
           a {
-            padding-left: 8px;
+            @apply p-0 text-[13px] leading-[16px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+          }
+
+          a[aria-current='page'] {
+            @apply bg-transparent font-semibold text-(--sl-color-text-accent);
           }
         }
       }
     }
   }
-  h2 {
-    font-family: var(--font-primary);
+
+  .main-frame {
+    @apply relative mx-auto flex w-full max-w-391;
+    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[(215px)_1fr] xl:grid-cols-[(259px)_1fr]; */
+    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[215px__1fr] lg:grid-cols-[259px__1fr]; */
+  }
+
+  /* End of PageFrame.astro */
+
+  /* Header.astro */
+  header.sl-header {
+    @apply border-b border-[color:var(--color-borderpanel)];
+  }
+
+  /* End of Header.astro */
+
+  /* ContentPanel.astro */
+  .sl-content {
+    @apply px-0 py-5 pb-20 md:pr-0 md:pl-10 lg:px-10;
+
+    .content-panel {
+      @apply p-0;
+    }
+    .content-panel + .content-panel {
+      @apply border-t-0;
+    }
+
+    @apply [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:text-3xl;
+
+    .sl-container {
+      @apply max-w-none;
+    }
+  }
+  /* End of ContentPanel.astro */
+
+  /* TwoColumnContent.astro */
+
+  .sl-content-panel {
+    /* @apply w-full; */
+    /* @apply grid md:grid-cols-1 lg:grid-cols-[1fr_max(198px)] xl:grid-cols-[1fr_max(213px)]; */
+    @apply relative block w-full grow md:w-[calc(100%-215px)] md:pr-0 lg:w-[calc(100%-198px)] lg:pr-[198px] xl:w-[calc(100%-213px)] xl:pr-[213px];
+  }
+
+  .sl-main-content {
+    /* @apply w-full max-w-[1130px]; */
+    @apply max-w-full;
+  }
+
+  .sl-content-wrapper {
+    @apply flex min-w-0;
+  }
+
+  /* End of TwoColumnContent.astro */
+  /* PageSidebar.astro */
+
+  .right-sidebar-container {
+    @apply w-full overflow-y-auto lg:max-w-[198px] xl:max-w-[213px];
+    @apply hidden lg:flex;
+    @apply absolute top-0 right-0 h-full;
+    z-index: var(--sl-z-index-toc);
+
+    .right-sidebar {
+      @apply h-full pt-7 pl-6;
+      @apply border-l border-[color:var(--color-borderpanel)];
+    }
+  }
+  .right-sidebar {
+    .right-sidebar-panel {
+      @apply p-0;
+
+      h2 {
+        @apply mb-3 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+      }
+
+      ul {
+        li {
+          @apply mb-[6px];
+          a {
+            @apply p-0 text-[13px] leading-[16px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+          }
+        }
+      }
+    }
+    .right-sidebar-panel :global(:where(a)) {
+      @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
+    }
+    .right-sidebar-panel :global(:where(a):hover) {
+      color: var(--sl-color-white);
+    }
+  }
+
+  /* End of PageSidebar.astro */
+
+  /* ThemeSelect.astro */
+
+  nav.c-breadcrumbs {
+    /* Breadcrumbs styles */
+
+    @apply flex items-center px-0 pt-10 text-xs font-medium md:px-10;
+
+    ol {
+      @apply flex h-6 items-center;
+      @apply m-0 list-none p-0;
+    }
+    li {
+      @apply flex items-center;
+    }
+    li:first-child {
+      @apply mr-2;
+      &::after {
+        @apply hidden;
+      }
+    }
+    li:not(:last-child)::after {
+      content: '/';
+      @apply mx-2 text-[color:var(--sl-color-text)];
+    }
+    a {
+      @apply text-[color:var(--sl-color-text)]/80 no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)]/80;
+    }
+    svg {
+      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+    }
+  }
+  /* End of ThemeSelect.astro */
+
+  .pagination-links {
+    > a {
+      @apply rounded-none border-[color:var(--sl-color-text)] px-7 py-6 transition-all duration-200 hover:border-[color:var(--sl-color-text)]/50;
+      span {
+        @apply text-[11px] leading-[1.45] font-semibold uppercase;
+        .link-title {
+          @apply mt-2 block text-base leading-[1.5] font-bold capitalize;
+        }
+      }
+    }
   }
 }
 
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+.sl-markdown-content .expressive-code .frame {
+  @apply shadow-none;
+}
+
+.pagination-links a {
+  @apply shadow-none;
+}
+
 select:where(.astro-4yphtoen) {
-  margin-left: 3px;
-  font-size: 14px;
+  @apply ml-1 text-sm;
 }
 
 .label-icon:where(.astro-4yphtoen) {
-  font-size: 20px;
-  stroke-width: 1;
-}
-
-:root {
-  --sl-font: var(--font-primary);
-}
-
-[data-theme='light'] {
-  --sl-color-bg-nav: var(--sl-color-bg);
-}
-
-.login-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 0 17px;
-  height: 42px;
-  background: var(--sl-color-bg-nav);
-  border: 1.38px solid rgba(12, 29, 49, 0.1);
-  border-radius: 6px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  font-family: var(--font-primary);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: -0.25%;
-  color: #0c1d31;
-}
-
-.login-button:hover {
-  background: #f6f6f5;
-  border-color: rgba(12, 29, 49, 0.2);
-}
-
-/* Light theme styles */
-
-[data-theme='light'] header {
-  background-color: var(--color-pearl-gray);
-}
-[data-theme='light'] body {
-  background-color: var(--color-pearl-gray);
-}
-[data-theme='light'] .content-panel:where(.astro-7nkwcw3z) + .content-panel:where(.astro-7nkwcw3z) {
-  border-top: 1px solid var(--color-borderpanellight);
-}
-[data-theme='light'] .header:where(.astro-hpvevywt) {
-  border-bottom: 1px solid var(--color-borderpanellight);
-}
-[data-theme='light'] .right-sidebar:where(.astro-67yu43on) {
-  border-inline-start: 1px solid var(--color-borderpanellight);
-}
-[data-theme='light'] .sidebar-pane {
-  border-inline-end: 1px solid var(--color-borderpanellight);
-  background-color: var(--color-pearl-gray);
-}
-[data-theme='light'] .login-button {
-  background-color: transparent;
-}
-[data-theme='light'] button:where(.astro-v37mnknz)[data-open-modal] {
-  background-color: transparent;
-}
-
-/* Dark theme styles */
-
-[data-theme='dark'] {
-  --sl-color-text-accent: #e6f59f;
-}
-[data-theme='dark'] header {
-  background-color: var(--color-dark-body);
-}
-[data-theme='dark'] body {
-  background-color: var(--color-dark-body);
-}
-[data-theme='dark'] .content-panel:where(.astro-7nkwcw3z) + .content-panel:where(.astro-7nkwcw3z) {
-  border-top: 1px solid var(--color-borderpaneldark);
-}
-[data-theme='dark'] .header:where(.astro-hpvevywt) {
-  border-bottom: 1px solid var(--color-borderpaneldark);
-}
-[data-theme='dark'] .right-sidebar:where(.astro-67yu43on) {
-  border-inline-start: 1px solid var(--color-borderpaneldark);
-}
-[data-theme='dark'] .sidebar-pane {
-  border-inline-end: 1px solid var(--color-borderpaneldark);
-  background-color: var(--color-dark-body);
-}
-
-[data-theme='dark'] .login-button {
-  border: 1px solid var(--color-borderpaneldark);
-  background-color: transparent;
-  color: #ffffff;
-}
-
-[data-theme='dark'] button:where(.astro-v37mnknz)[data-open-modal] {
-  background-color: transparent;
-  border: 1px solid var(--color-borderpaneldark);
-}
-
-[data-theme='dark'] .login-button:hover {
-  background: var(--sl-color-gray-5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme='dark'] .login-button__icon svg circle,
-[data-theme='dark'] .login-button__icon svg path {
-  stroke: #ffffff;
-}
-
-.login-button__icon {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  color: var(--color-tuscany);
-  align-items: center;
-  justify-content: center;
-}
-
-.login-button__text {
-  white-space: nowrap;
+  @apply stroke-1 text-[20px];
 }

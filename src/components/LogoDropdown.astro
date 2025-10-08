@@ -184,24 +184,17 @@ const { id = 'logo-dropdown', class: className = '', triggerElementId = 'logo-li
             textArea.focus();
             textArea.select();
 
-            // Execute the copy command
-            copySuccess = document.execCommand('copy');
-
-            if (!copySuccess) {
-              console.log('execCommand copy failed, trying clipboard API as fallback');
-              // Only try clipboard API if execCommand failed and we're in a secure context
-              if (navigator.clipboard && window.isSecureContext) {
-                try {
-                  await navigator.clipboard.writeText(svgText);
-                  copySuccess = true;
-                } catch (clipboardError) {
-                  console.error('Clipboard API failed:', clipboardError);
-                  // We'll handle this in the outer catch block
-                  throw clipboardError;
-                }
-              } else {
-                throw new Error('Copy command failed and Clipboard API not available');
+            // Use only the modern Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+              try {
+                await navigator.clipboard.writeText(svgText);
+                copySuccess = true;
+              } catch (clipboardError) {
+                console.error('Clipboard API failed:', clipboardError);
+                throw new Error('Clipboard API failed');
               }
+            } else {
+              throw new Error('Clipboard API not available in this context');
             }
           } catch (error) {
             console.error('Copy failed:', error);

@@ -1,0 +1,127 @@
+---
+import Arrow from '@v1/assets/icons/arrow.svg';
+import Icon from '@components/Icon.astro';
+import navigation from '@data/navigation.json';
+import type { NavData, NavMainItem } from '@/src/types/navigation';
+
+// Type-safe navigation data
+const navData = navigation as NavData;
+const mainNav = navData.main;
+
+// Define component props
+type Props = {
+  items?: NavMainItem[];
+  class?: string;
+  dataReveal?: string;
+  dataRevealDelay?: string;
+  dataRevealImmediate?: string;
+};
+
+const {
+  items = mainNav,
+  class: className = '',
+  dataReveal = 'fade-in--pure--visible',
+  dataRevealDelay = '100',
+  dataRevealImmediate = 'true',
+}: Props = Astro.props;
+
+// Get current URL path
+const currentPath = Astro.url.pathname;
+
+// Helper function to check if a path is active
+function isActivePath(href: string, currentPath: string): boolean {
+  // Exact match
+  if (href === currentPath) return true;
+
+  // Handle root path
+  if (href === '/' && currentPath === '/') return true;
+  if (href === '/' && currentPath !== '/') return false;
+
+  // Check if current path starts with the href (for nested pages)
+  if (currentPath.startsWith(href) && href !== '/') return true;
+
+  return false;
+}
+
+// Helper function to check if any child items are active
+function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: string): boolean {
+  return (
+    sections?.some((section) =>
+      section.items?.some((item) => isActivePath(item.href, currentPath))
+    ) ?? false
+  );
+}
+---
+
+<div class="nav-menu-wrapper">
+  <ul
+    class={`nav-menu fade-in--pure ${className}`}
+    data-reveal={dataReveal}
+    data-reveal-delay={dataRevealDelay}
+    data-reveal-immediate={dataRevealImmediate}
+  >
+    {
+      items.map((item) => {
+        const isActive = isActivePath(item.href, currentPath);
+        const hasActiveChildItem = item.children
+          ? hasActiveChild(item.children, currentPath)
+          : false;
+        const isParentActive = isActive || hasActiveChildItem;
+
+        return (
+          <li
+            class={`nav-menu-item ${item.children ? 'nav-dropdown' : ''} ${isParentActive ? 'item--active' : ''}`}
+          >
+            <a
+              href={item.href}
+              class={`nav-menu-link ${isActive ? 'link--active' : ''}`}
+              data-astro-prefetch="hover"
+            >
+              <span>{item.text}</span>
+              {item.children && <Arrow class="nav-dropdown-arrow" />}
+            </a>
+            {item.children && (
+              <ul
+                class={`nav-dropdown-menu ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
+              >
+                {item.children.map((section) => (
+                  <li
+                    class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
+                  >
+                    {'title' in section && section.title && (
+                      <h3 class="nav-dropdown-title">{section.title}</h3>
+                    )}
+                    <ul
+                      class={`nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`}
+                    >
+                      {section.items?.map((subItem) => {
+                        const isSubItemActive = isActivePath(subItem.href, currentPath);
+
+                        return (
+                          <li class={`nav-dropdown-item ${isSubItemActive ? 'item--active' : ''}`}>
+                            <a
+                              href={subItem.href}
+                              class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
+                              data-astro-prefetch="hover"
+                            >
+                              {'icon' in subItem && subItem.icon && (
+                                <div class="nav-dropdown-icon">
+                                  <Icon name={subItem.icon} size="md" />
+                                </div>
+                              )}
+                              <span>{subItem.text}</span>
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>

@@ -27,10 +27,16 @@ export interface NavFooterSection {
   items: NavItem[];
 }
 
+export interface NavFooterDocsSection {
+  title: string;
+  items: NavItem[];
+}
+
 export interface NavData {
   main: NavMainItem[];
   right?: NavItem[];
   footer: NavFooterSection[];
+  footerDocs: NavFooterDocsSection[];
   social: NavItem[];
   brand?: NavFooterSection[];
 }

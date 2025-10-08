@@ -49,22 +49,13 @@
     @apply font-canela text-2xl leading-[1.1] font-normal -tracking-[1.5px] md:text-3xl lg:text-4xl;
   }
 
-  .nav-logo {
-    @apply flex items-center gap-2;
-
-    --color-logo-object: var(--color-lime-green);
-    --color-logo-text: var(--color-white);
-
-    svg {
-      @apply w-17 md:w-21.5;
-    }
-  }
-
   /* Footer Components */
   .footer {
     @apply bg-dark-navy-blue relative text-white;
   }
-
+  .footer-docs {
+    @apply bg-navy;
+  }
   .footer-hero {
     @apply bg-cream text-navy relative z-10 mx-auto px-6 pt-21 md:px-16 md:pt-35 lg:pt-53;
   }
@@ -86,7 +77,12 @@
   }
 
   .footer-main {
-    @apply relative z-10 mx-auto px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34;
+    /* @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34; */
+    @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-16 md:py-25 lg:py-34;
+  }
+
+  .footer-main--docs {
+    @apply datum-container relative z-10 mx-auto px-6 py-9 md:px-16 md:py-14 lg:py-18 xl:py-20;
   }
 
   .footer-grid {
@@ -140,12 +136,10 @@
   /* Generic Button Components */
   .btn {
     @apply inline-flex items-center gap-3 rounded-md border px-7 py-3.5 text-base leading-[1.4] font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
-
-    .btn-icon {
-      @apply text-light-pink;
-    }
   }
-
+  .btn--clean {
+    @apply border-0 p-0;
+  }
   .btn--primary {
     @apply border-white/20 hover:bg-white/10;
   }
@@ -207,8 +201,8 @@
     @apply text-xs leading-relaxed font-medium;
   }
 
-  .btn-icon {
-    @apply flex h-5 w-5 items-center justify-center;
+  .btn--icon {
+    @apply px-3.5 py-3.5;
   }
 
   .btn-text {
@@ -358,3 +352,5 @@
     @apply font-alliance text-green-dark hover:text-mauve text-lg font-medium transition-colors;
   }
 }
+
+@import './components-dark.css';

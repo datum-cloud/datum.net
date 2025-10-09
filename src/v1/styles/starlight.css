@@ -14,8 +14,6 @@
     @apply font-primary;
   }
 
-  /* Restore crucial styles from Tailwind Preflight: https://tailwindcss.com/docs/preflight */
-  /* Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116) */
   *,
   ::after,
   ::before {
@@ -45,6 +43,24 @@
 
   [x-cloak] {
     @apply hidden;
+  }
+  .sl-markdown-content {
+    ul:not([role='tablist']),
+    ol:not([role='tablist']) {
+      @apply mb-4! space-y-2.5! pl-6! leading-[1.5];
+    }
+
+    ul:not([role='tablist']) {
+      @apply list-disc;
+    }
+
+    ol:not([role='tablist']) {
+      @apply list-decimal;
+    }
+
+    li:not(.tab) {
+      @apply [&>p:only-child]:mb-0!;
+    }
   }
 }
 
@@ -253,6 +269,7 @@
         @apply mt-0 mb-4;
       }
       li {
+        @apply leading-[18px];
         summary {
           @apply p-0 hover:text-(--sl-color-text-accent);
           .large {
@@ -273,10 +290,14 @@
 
         li {
           @apply ml-0 border-l-0 pl-0;
-          @apply mb-[6px];
+          @apply mb-[5px];
 
           a {
-            @apply p-0 text-[13px] leading-[16px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+            @apply p-0 pr-5 text-[13px] leading-[16px] text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
+
+            span {
+              @apply leading-[18px];
+            }
           }
 
           a[aria-current='page'] {
@@ -362,10 +383,13 @@
 
       ul {
         li {
-          @apply mb-[6px];
+          @apply mb-[5px];
           a {
-            @apply p-0 text-[13px] leading-[16px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+            @apply p-0 text-[13px] leading-[18px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
           }
+        }
+        ul {
+          @apply mt-[5px];
         }
       }
     }

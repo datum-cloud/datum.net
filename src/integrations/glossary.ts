@@ -136,7 +136,7 @@ function applyGlossaryToContent(
       const newContent = content.replace(regex, (match: string) => {
         const term = match.toLowerCase();
         const { title, description } = glossaryTerms[term] || {};
-        return `<span class="glossary-term underline decoration-dotted cursor-help" data-glossary-title="${title}" data-glossary-description="${description}">${match}</span>`;
+        return `<span class="glossary-term" data-glossary-title="${title}" data-glossary-description="${description}">${match}</span>`;
       });
 
       // Only replace if content changed

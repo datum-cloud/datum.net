@@ -87,7 +87,7 @@ async function staticEntries() {
     `<url><loc>https://www.datum.net/community-huddle/</loc></url>` +
     `<url><loc>https://www.datum.net/legal/privacy/</loc></url>` +
     `<url><loc>https://www.datum.net/legal/term/</loc></url>` +
-    `<url><loc>https://www.datum.net/public-slack/</loc></url>` +
+    `<url><loc>https://www.datum.net/chat/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/changelog/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/open-source/</loc></url>` +
     `<url><loc>https://www.datum.net/resources/roadmap/</loc></url>`;

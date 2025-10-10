@@ -21,7 +21,7 @@
           "items": [
             { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
-            { "icon": "slack", "text": "Public Slack", "href": "/public-slack/" },
+            { "icon": "messages-square", "text": "Community Chat", "href": "/chat/" },
             { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
           ]
         }
@@ -71,7 +71,7 @@
       "items": [
         { "text": "Changelog", "href": "/resources/changelog/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
-        { "text": "Public Slack", "href": "/public-slack/" },
+        { "text": "Community Chat", "href": "/chat/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },
@@ -131,7 +131,7 @@
       "items": [
         { "text": "Changelog", "href": "/resources/changelog/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
-        { "text": "Public Slack", "href": "/public-slack/" },
+        { "text": "Community Chat", "href": "/chat/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },

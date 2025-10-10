@@ -15,6 +15,6 @@ authors: jacob
 
 **Community engagement:**
 - **GitHub presence** - Active in relevant open source communities
-- **Discord/Slack communities** - Participating in developer conversations
+- **Discord communities** - Participating in developer conversations
 - **Industry forums** - Contributing to standards and best practices discussions
 - **Local meetups** - Supporting developer communities in key markets

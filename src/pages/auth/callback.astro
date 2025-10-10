@@ -36,6 +36,15 @@ try {
           expires: expired,
         });
       }
+
+      if (userInfo.profile) {
+        Astro.cookies.set('profile', sha256(userInfo.profile), {
+          path: '/',
+          sameSite: 'strict',
+          secure: true,
+          expires: expired,
+        });
+      }
     }
     return Astro.redirect(Astro.cookies.get('auth_redirect')?.value ?? '/');
   }

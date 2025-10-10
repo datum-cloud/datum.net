@@ -10,6 +10,8 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
+import glossary from './src/integrations/glossary.js';
+
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
@@ -141,6 +143,10 @@ export default defineConfig({
           autogenerate: { directory: 'docs/galactic-vpc' },
         },
       ],
+    }),
+    glossary({
+      source: 'docs/docs/glossary.mdx',
+      contentDir: 'docs',
     }),
     playformCompress({
       CSS: true,

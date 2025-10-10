@@ -351,6 +351,24 @@
   .article-navigation-title {
     @apply font-alliance text-green-dark hover:text-mauve text-lg font-medium transition-colors;
   }
+
+  /* Glossary Tooltip */
+  .glossary-term {
+    @apply cursor-help border-b border-dashed no-underline;
+  }
+  .glossary-tooltip {
+    @apply bg-glacier-mist-800 fixed z-[9999] max-w-80 rounded-sm p-4 shadow-sm;
+    @apply opacity-0 transition-opacity duration-200;
+    display: none;
+  }
+
+  .glossary-tooltip-title {
+    @apply mb-2 text-sm font-semibold text-gray-900;
+  }
+
+  .glossary-tooltip-description {
+    @apply text-sm leading-relaxed text-gray-700;
+  }
 }
 
 @import './components-dark.css';

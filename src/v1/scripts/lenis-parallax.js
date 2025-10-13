@@ -11,8 +11,6 @@ class LenisSmoothScroll {
     // Check if smooth scrolling is disabled
     this.isSmoothScrollEnabled = this.getSmoothScrollPreference();
 
-    console.info(this.isSmoothScrollEnabled);
-
     this.init();
   }
 

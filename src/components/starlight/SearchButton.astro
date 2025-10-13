@@ -1,0 +1,125 @@
+---
+import Icon from '@components/Icon.astro';
+---
+
+<site-search-button class={Astro.props.class}>
+  <button
+    data-open-modal
+    disabled
+    aria-label={Astro.locals.t('search.label')}
+    aria-keyshortcuts="Control+K"
+  >
+    <Icon name="search" />
+    <span class="md:sl-block" aria-hidden="true">{Astro.locals.t('search.label')}</span>
+    <kbd class="md:sl-flex" style="display: none;">
+      <kbd>{Astro.locals.t('search.ctrlKey')}</kbd><kbd>K</kbd>
+    </kbd>
+  </button>
+</site-search-button>
+
+<script is:inline>
+  (() => {
+    // Initialize all search buttons on the page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get all site-search-button elements
+      const searchButtons = document.querySelectorAll('site-search-button');
+
+      searchButtons.forEach((buttonContainer) => {
+        const openBtn = buttonContainer.querySelector('button[data-open-modal]');
+        const shortcut = openBtn?.querySelector('kbd');
+        if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+
+        const platformKey = shortcut.querySelector('kbd');
+        if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent)) {
+          platformKey.textContent = '⌘';
+          openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+        }
+        shortcut.style.display = '';
+      });
+    });
+  })();
+</script>
+
+<script>
+  // Add event names to window object
+  declare global {
+    interface Window {
+      SEARCH_MODAL_OPEN_EVENT: string;
+      SEARCH_MODAL_CLOSE_EVENT: string;
+    }
+  }
+
+  class SiteSearchButton extends HTMLElement {
+    constructor() {
+      super();
+      const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!;
+
+      // Wait for the SEARCH_MODAL_OPEN_EVENT to be defined
+      window.addEventListener('DOMContentLoaded', () => {
+        if (!window.SEARCH_MODAL_OPEN_EVENT) {
+          console.warn('Search modal event not found. Make sure SearchModal is loaded.');
+          return;
+        }
+
+        // Enable the button once the event is available
+        openBtn.disabled = false;
+
+        // Add click event listener to dispatch the custom event
+        openBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          document.dispatchEvent(new CustomEvent(window.SEARCH_MODAL_OPEN_EVENT));
+        });
+      });
+    }
+  }
+
+  customElements.define('site-search-button', SiteSearchButton);
+</script>
+
+<style>
+  @layer starlight.core {
+    site-search-button {
+      display: contents;
+    }
+
+    button[data-open-modal] {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 0;
+      color: var(--sl-color-gray-1);
+      cursor: pointer;
+      height: 2.5rem;
+      font-size: var(--sl-text-xl);
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 0.5rem;
+      padding-inline-start: 0.75rem;
+      padding-inline-end: 0.5rem;
+      background-color: var(--sl-color-black);
+      color: var(--sl-color-gray-2);
+      font-size: var(--sl-text-sm);
+      width: 100%;
+    }
+
+    button[data-open-modal]:hover {
+      border-color: var(--sl-color-gray-2);
+      color: var(--sl-color-white);
+    }
+
+    button[data-open-modal] > :last-child {
+      margin-inline-start: auto;
+    }
+
+    button > kbd {
+      border-radius: 0.25rem;
+      font-size: var(--sl-text-2xs);
+      gap: 0.25em;
+      padding-inline: 0.375rem;
+      background-color: var(--sl-color-gray-6);
+    }
+
+    kbd {
+      font-family: var(--__sl-font);
+    }
+  }
+</style>

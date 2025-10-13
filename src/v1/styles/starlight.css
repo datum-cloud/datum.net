@@ -226,6 +226,7 @@
   [data-search-modal-open] {
     overflow: hidden;
   }
+
   [data-mobile-menu-expanded] {
     overflow: hidden;
   }
@@ -236,27 +237,38 @@
   }
 
   .sl-mobile-menu-toggle {
-    @apply flex md:hidden;
-
-    @apply absolute top-[40px] right-0 z-[var(--sl-z-index-navbar)] cursor-pointer border-0 p-0 text-[var(--color-text)];
+    @apply hidden;
     @apply [&_svg]:bg-[var(--sl-color-bg)];
-    /* inset-inline-end and !important values must be handled in inline style or with additional utility if needed */
-    /* style="inset-inline-end: var(--sl-nav-pad-x);" */
+    @apply fixed top-0 left-0;
+    /* @apply absolute top-[40px] right-0 z-[var(--sl-z-index-navbar)] cursor-pointer border-0 p-0 text-[var(--color-text)]; */
+  }
+
+  [data-mobile-menu-expanded] {
+    .sidebar {
+      @apply block h-full w-full;
+      @apply absolute top-28 left-0;
+      @apply z-[var(--sl-z-index-menu)];
+    }
+    .sidebar-pane {
+      @apply px-0;
+    }
   }
 
   /* PageFrame.astro */
   .sidebar {
     @apply block w-full flex-none md:w-[215px] lg:w-[259px];
-    @apply hidden md:block;
+    @apply hidden bg-[var(--sl-color-bg)] md:block;
   }
 
   .sidebar-pane {
+    @apply border-r-0 md:border-r md:border-[color:var(--color-borderpanel)];
+    @apply pt-6 pr-6 pb-30 pl-6 md:pt-7 md:pb-0 md:pl-0;
     @apply relative h-full w-full;
-    @apply pt-22 pr-6 pb-30 pl-6 md:pt-7 md:pb-0 md:pl-0;
-    @apply border-r border-[color:var(--color-borderpanel)];
-    @apply hidden w-full overflow-hidden md:block;
-    visibility: var(--sl-sidebar-visibility, hidden);
-    z-index: var(--sl-z-index-menu);
+  }
+
+  .searchbar-main-content {
+    @apply -ml-6 block border-b border-[color:var(--color-borderpanel)] px-6 py-2.5 md:hidden print:hidden;
+    @apply w-[calc(100%+theme(spacing.12))];
   }
 
   .sidebar-content {
@@ -408,7 +420,7 @@
   nav.c-breadcrumbs {
     /* Breadcrumbs styles */
 
-    @apply flex items-center px-0 pt-10 text-xs font-medium md:px-10;
+    @apply flex items-center px-0 pt-6 text-xs font-medium md:px-10 md:pt-9;
 
     ol {
       @apply flex h-6 items-center;
@@ -422,6 +434,15 @@
       &::after {
         @apply hidden;
       }
+    }
+    li.docs-sm {
+      @apply after:hidden;
+    }
+    li:nth-child(2) {
+      @apply inline-block md:hidden;
+    }
+    li:nth-child(3) {
+      @apply hidden md:inline-block;
     }
     li:not(:last-child)::after {
       content: '/';

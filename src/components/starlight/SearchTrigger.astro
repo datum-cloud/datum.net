@@ -1,0 +1,66 @@
+---
+import Icon from '@components/Icon.astro';
+---
+
+<site-search-trigger class={Astro.props.class}>
+  <button class="search-trigger-button" aria-label={Astro.locals.t('search.label')}>
+    <Icon name="search" />
+    <span>{Astro.props.label || Astro.locals.t('search.label')}</span>
+  </button>
+</site-search-trigger>
+
+<script>
+  // Add event names to window object
+  declare global {
+    interface Window {
+      SEARCH_MODAL_OPEN_EVENT: string;
+    }
+  }
+
+  class SiteSearchTrigger extends HTMLElement {
+    constructor() {
+      super();
+      const triggerBtn = this.querySelector<HTMLButtonElement>('.search-trigger-button')!;
+
+      // Wait for the SEARCH_MODAL_OPEN_EVENT to be defined
+      window.addEventListener('DOMContentLoaded', () => {
+        if (!window.SEARCH_MODAL_OPEN_EVENT) {
+          console.warn('Search modal event not found. Make sure SearchModal is loaded.');
+          return;
+        }
+
+        // Add click event listener to dispatch the custom event
+        triggerBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          document.dispatchEvent(new CustomEvent(window.SEARCH_MODAL_OPEN_EVENT));
+        });
+      });
+    }
+  }
+
+  customElements.define('site-search-trigger', SiteSearchTrigger);
+</script>
+
+<style>
+  .search-trigger-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--sl-color-text);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .search-trigger-button:hover {
+    background-color: var(--sl-color-gray-6);
+  }
+
+  .search-trigger-button:focus {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
+  }
+</style>

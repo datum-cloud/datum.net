@@ -23,7 +23,6 @@ import Icon from '@components/Icon.astro';
     typeof localStorage !== 'undefined' ? localStorage.getItem('starlight-theme') : null;
   const theme = storedTheme || 'light';
   document.documentElement.dataset.theme = theme;
-  console.log('Initial theme set to:', theme);
 </script>
 
 <script>
@@ -68,7 +67,6 @@ import Icon from '@components/Icon.astro';
         button.addEventListener('click', () => {
           const currentTheme = loadTheme();
           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-          console.log('Theme change:', currentTheme, '->', newTheme);
           onThemeChange(newTheme);
         });
       }

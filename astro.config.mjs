@@ -10,7 +10,7 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
-import glossary from './src/integrations/glossary.js';
+import glossary from './src/libs/glossary.js';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 

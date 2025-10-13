@@ -1,8 +1,10 @@
 ---
 // src/components/starlight/TwoColumnContent.astro
 
+import config from 'virtual:starlight/user-config';
 import PageSidebar from './PageSidebar.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
+import SearchButton from './SearchButton.astro';
 
 // Get Starlight route data
 const { hasSidebar } = Astro.locals.starlightRoute;
@@ -20,6 +22,12 @@ breadcrumbData.push(
   {
     text: 'Docs',
     href: '/docs/',
+    class: 'docs-menu-toggle',
+  },
+  {
+    text: 'Docs',
+    href: '/docs/',
+    class: 'docs-md',
   }
 );
 
@@ -33,6 +41,8 @@ const pathSegments = fullPath
   .split('/')
   .filter(Boolean);
 
+console.log(pathSegments);
+
 // Build breadcrumbs for each path segment
 if (pathSegments.length > 0) {
   let currentPath = '';
@@ -41,7 +51,9 @@ if (pathSegments.length > 0) {
     currentPath += '/' + segment;
 
     // Format the segment title (capitalize words, replace dashes with spaces)
-    const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    const segmentTitle = segment
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c: string) => c.toUpperCase());
 
     breadcrumbData.push({
       text: segmentTitle,
@@ -54,10 +66,16 @@ if (pathSegments.length > 0) {
     breadcrumbData[breadcrumbData.length - 1].text = starlightRoute.entry.data.title;
   }
 }
+
+const shouldRenderSearch =
+  config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
 ---
 
 <div class="sl-content-panel">
   <section class="sl-main-content">
+    <div class="searchbar-main-content print:hidden">
+      {shouldRenderSearch && <SearchButton class="search-button" />}
+    </div>
     <Breadcrumbs
       linkTextFormat="sentence"
       crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
@@ -95,3 +113,82 @@ if (pathSegments.length > 0) {
     )
   }
 </div>
+
+<script>
+  function addDocsSmToSecondBreadcrumb() {
+    // Wait until DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const breadcrumbs = document.querySelectorAll('li.c-breadcrumbs__crumb');
+      if (breadcrumbs.length <= 3) {
+        breadcrumbs[1].classList.add('docs-sm');
+      }
+    });
+  }
+  addDocsSmToSecondBreadcrumb();
+  document.addEventListener('DOMContentLoaded', () => {
+    const docsMenuToggle = document.querySelector('.docs-menu-toggle');
+    const pathSegments = window.location.pathname
+      .replace(/^\/?docs\//, '')
+      .replace(/\/$/, '')
+      .split('/')
+      .filter(Boolean);
+
+    // Function to toggle sidebar
+    const toggleSidebar = () => {
+      if (window.innerWidth < 768) {
+        const expanded = document.body.hasAttribute('data-mobile-menu-expanded');
+
+        if (!expanded) {
+          document.body.setAttribute('data-mobile-menu-expanded', '');
+          document.body.setAttribute('data-disable-lenis', '');
+          document.body.classList.add('mobile-menu-open');
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.removeAttribute('data-mobile-menu-expanded');
+          document.body.removeAttribute('data-disable-lenis');
+          document.body.classList.remove('mobile-menu-open');
+          document.body.style.overflow = '';
+        }
+      }
+    };
+
+    // Auto-trigger toggle if we're at the root docs page
+    if (pathSegments.length === 0 && window.location.pathname.includes('/docs')) {
+      setTimeout(() => toggleSidebar(), 100); // Small delay to ensure DOM is fully loaded
+    }
+
+    if (docsMenuToggle) {
+      docsMenuToggle.addEventListener('click', (e) => {
+        // Only enable the toggle functionality on mobile screens
+        if (window.innerWidth < 768) {
+          // 768px is typically md breakpoint
+          e.preventDefault();
+
+          // Use the shared toggle function
+          toggleSidebar();
+        }
+      });
+
+      // Add resize listener to disable toggle functionality on larger screens
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+          // 768px is typically md breakpoint
+          // Ensure mobile menu is closed when resizing to larger screens
+          document.body.removeAttribute('data-mobile-menu-expanded');
+          document.body.removeAttribute('data-disable-lenis');
+          document.body.classList.remove('mobile-menu-open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .search-button {
+    width: 100%;
+  }
+
+  /* The SearchButton component already has its own styling,
+     so we don't need to add much custom styling here */
+</style>

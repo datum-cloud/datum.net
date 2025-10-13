@@ -87,17 +87,3 @@ import Icon from '@components/Icon.astro';
     }
   }
 </style>
-
-<style is:global>
-  @layer starlight.core {
-    [data-mobile-menu-expanded] {
-      overflow: hidden;
-    }
-
-    @media (min-width: 50rem) {
-      [data-mobile-menu-expanded] {
-        overflow: auto;
-      }
-    }
-  }
-</style>

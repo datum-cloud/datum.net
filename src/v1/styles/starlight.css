@@ -227,15 +227,6 @@
     overflow: hidden;
   }
 
-  [data-mobile-menu-expanded] {
-    overflow: hidden;
-  }
-  @media (min-width: 50rem) {
-    [data-mobile-menu-expanded] {
-      overflow: auto;
-    }
-  }
-
   .sl-mobile-menu-toggle {
     @apply hidden;
     @apply [&_svg]:bg-[var(--sl-color-bg)];
@@ -245,12 +236,13 @@
 
   [data-mobile-menu-expanded] {
     .sidebar {
-      @apply block h-full w-full;
-      @apply absolute top-28 left-0;
+      @apply block h-dvh w-full pb-50;
+      @apply absolute top-33 left-0;
       @apply z-[var(--sl-z-index-menu)];
+      @apply overflow-y-auto;
     }
     .sidebar-pane {
-      @apply px-0;
+      @apply px-0 pt-3;
     }
   }
 
@@ -262,8 +254,8 @@
 
   .sidebar-pane {
     @apply border-r-0 md:border-r md:border-[color:var(--color-borderpanel)];
-    @apply pt-6 pr-6 pb-30 pl-6 md:pt-7 md:pb-0 md:pl-0;
-    @apply relative h-full w-full;
+    @apply pt-6 pr-6 pb-10 pl-6 md:pt-7 md:pb-0 md:pl-0;
+    @apply relative w-full;
   }
 
   .searchbar-main-content {

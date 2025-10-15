@@ -1,0 +1,49 @@
+---
+export const prerender = false;
+import { OIDCClient } from '@libs/oidc';
+
+const oidcClient = new OIDCClient();
+const oidcClientReturn = oidcClient.getAuthorizationUrl('login');
+const expired = new Date(Date.now() + 3600 * 1000);
+
+// Capture the redirect URL from the query parameters and store it in a cookie
+const auth_redirect = Astro.url.searchParams.get('url');
+
+if (auth_redirect) {
+  Astro.cookies.set('auth_redirect', auth_redirect, {
+    path: '/',
+    sameSite: 'strict',
+    secure: true,
+    expires: expired,
+  });
+}
+
+const authUrl = await oidcClientReturn.then(
+  (result: { authUrl?: string; codeVerifier?: string; nonce?: string }) => {
+    console.log('OIDCClient returned:', result);
+    if (!result.authUrl) {
+      return '/';
+    }
+
+    const authUrl = new URL(result.authUrl);
+    const codeVerifier = result.codeVerifier;
+
+    if (authUrl && codeVerifier) {
+      Astro.cookies.set('codeVerifier', codeVerifier, {
+        path: '/',
+        sameSite: 'strict',
+        secure: true,
+        expires: expired,
+      });
+
+      return authUrl.toString();
+    }
+  }
+);
+
+if (authUrl) {
+  return Astro.redirect(authUrl);
+} else {
+  console.error('Redirect result is undefined.');
+}
+---

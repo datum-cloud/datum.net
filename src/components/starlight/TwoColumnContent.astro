@@ -41,8 +41,6 @@ const pathSegments = fullPath
   .split('/')
   .filter(Boolean);
 
-console.log(pathSegments);
-
 // Build breadcrumbs for each path segment
 if (pathSegments.length > 0) {
   let currentPath = '';

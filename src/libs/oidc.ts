@@ -56,7 +56,9 @@ export interface tokenResult {
 }
 
 export class OIDCClient {
-  async getAuthorizationUrl(): Promise<object> {
+  async getAuthorizationUrl(
+    prompt: 'none' | 'select_account' | 'login' | 'create'
+  ): Promise<object> {
     const codeVerifier = client.randomPKCECodeVerifier();
     const code_challenge = await client.calculatePKCECodeChallenge(codeVerifier);
     const config: client.Configuration = await client.discovery(
@@ -69,6 +71,7 @@ export class OIDCClient {
       scope: 'openid email profile',
       code_challenge,
       code_challenge_method: 'S256',
+      prompt,
     };
 
     let nonce: string | undefined = undefined;

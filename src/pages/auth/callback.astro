@@ -4,22 +4,24 @@ export const prerender = false;
 import { OIDCClient } from '@libs/oidc';
 import type { callbackResult } from '@libs/oidc';
 import type { UserInfoResponse, IDToken } from 'openid-client';
-
 import { sha256 } from '@/src/libs/file';
 
-try {
-  const oidcClient = new OIDCClient();
-  const currentUrl = Astro.url.toString();
-  const nonce = Astro.cookies.get('nonce')?.value;
-  const codeVerifier = Astro.cookies.get('codeVerifier')?.value;
+const oidcClient = new OIDCClient();
+const currentUrl = Astro.url.toString();
+const nonce = Astro.cookies.get('nonce')?.value;
+const codeVerifier = Astro.cookies.get('codeVerifier')?.value;
+const redirectUrl = Astro.cookies.has('auth_redirect')
+  ? Astro.cookies.get('auth_redirect')?.value
+  : '/';
 
+try {
   if (!codeVerifier || codeVerifier === '') {
-    return Astro.redirect(Astro.cookies.get('auth_redirect')?.value ?? '/');
+    return Astro.redirect(redirectUrl);
   }
 
   // user already logged in, skip handleCallback
   if (Astro.cookies.get('userId')?.value) {
-    return Astro.redirect(Astro.cookies.get('auth_redirect')?.value ?? '/');
+    return Astro.redirect(redirectUrl);
   } else {
     let result: callbackResult = await oidcClient.handleCallback(currentUrl, codeVerifier, nonce);
 
@@ -46,10 +48,13 @@ try {
         });
       }
     }
-    return Astro.redirect(Astro.cookies.get('auth_redirect')?.value ?? '/');
+
+    return Astro.redirect(redirectUrl);
   }
 } catch (error) {
   console.error('HandleCallback error: ', error);
-  return Astro.redirect('/');
+  return Astro.redirect(redirectUrl);
 }
 ---
+
+Redirecting to: {{ redirectUrl }}

@@ -27,7 +27,7 @@ jobs:
     needs: check-files
     uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@add-build-outputs
     with:
-      image-name: datum-net]
+      image-name: datum-net
       target: production
       extra-build-args: |
         ASTRO_TELEMETRY_DISABLED=1

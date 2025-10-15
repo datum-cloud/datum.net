@@ -7,6 +7,7 @@ import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
 
 // Get props with default values
 const { showCTA = true } = Astro.props as FooterProps;
@@ -104,8 +105,13 @@ const navData = navigation as NavData;
         >
           <GithubStargazerValue server:defer />
         </Button>
-
         <p class="footer-copyright">
+          <a href="https://link.datum.net/discord/" class="footer-nav-link flex items-center gap-2">
+            <Icon name="messages-square" size="md" class="text-white/40" />
+            <span class="text-nowrap">Join Datum Community Discord</span>
+          </a>
+
+          <br />
           <a href="/legal/terms/" class="footer-nav-link">Terms of Service</a><br />
           <a href="/legal/privacy/" class="footer-nav-link">Privacy Policy</a><br />
           &copy; {new Date().getFullYear()}

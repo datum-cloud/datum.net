@@ -3,14 +3,14 @@ name: Publish Website
 on:
   push:
     paths-ignore:
-      - 'README.md'
-      - 'env.example'
-      - '.vscode/**'
-      - 'public/pagefind/**'
-      - '**/pagefind/**'
+      - "README.md"
+      - "env.example"
+      - ".vscode/**"
+      - "public/pagefind/**"
+      - "**/pagefind/**"
 
   release:
-    types: ['published']
+    types: ["published"]
 
 jobs:
   check-files:
@@ -68,8 +68,11 @@ jobs:
       id-token: write
       contents: read
       packages: write
-    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.7.1
+    needs: build-and-push
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@add-build-outputs
     with:
       bundle-name: ghcr.io/datum-cloud/datum-net-kustomize
       bundle-path: config/base
+      image-overlays: config/base
+      image-name: ghcr.io/datum-cloud/datum-net
     secrets: inherit

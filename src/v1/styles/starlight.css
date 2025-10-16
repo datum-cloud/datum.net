@@ -67,6 +67,8 @@
 @layer utilities {
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
+    --__sl-font: var(--font-primary);
+
     --color-note: #fffbc5;
     --color-caution: #fde2e2;
     --color-tip: #e2e9e3;
@@ -87,14 +89,21 @@
     --sl-font: var(--font-sans);
     --sl-font-mono: var(--font-mono);
     /* Dark mode Starlight theme variables. */
+    --sl-color-dialog: #1e2939;
+    --sl-color-dialog-border: #384555;
+
+    --sl-color-search: var(--color-lime-green);
+    --sl-color-text-search: color-mix(in srgb, var(--color-glacier-mist-700) 60%, transparent);
+    --sl-color-kbd: color-mix(in srgb, var(--color-pearl-gray) 10%, transparent);
+
     --sl-color-white: var(--color-white);
     --sl-color-gray-1: var(--color-gray-200);
     --sl-color-gray-2: var(--color-gray-300);
     --sl-color-gray-3: var(--color-gray-400);
     --sl-color-gray-4: var(--color-gray-600);
-    --sl-color-gray-5: var(--color-gray-700);
+    --sl-color-gray-5: color-mix(in srgb, var(--color-glacier-mist-900) 20%, transparent);
     --sl-color-gray-6: var(--color-gray-800);
-    --sl-color-black: var(--color-gray-900);
+    --sl-color-black: var(--color-navy);
     --sl-color-accent-low: var(--color-accent-950, var(--color-accent-900, #1e1b4b));
     --sl-color-accent: var(--color-accent-600, #4f46e5);
     --sl-color-accent-high: var(--color-accent-200, #c7d2fe);
@@ -106,16 +115,24 @@
     }
     /* Light mode Starlight theme variables. */
     &[data-theme='light'] {
+      --sl-color-dialog: var(--color-glacier-mist-800);
+      --sl-color-dialog-border: var(--color-glacier-mist-900);
+
+      --sl-color-search: var(--color-canyon-clay);
+      --sl-color-text-search: color-mix(in srgb, var(--color-navy) 60%, transparent);
+      --sl-color-kbd: var(--color-glacier-mist-800);
+
       --sl-color-text: var(--color-navy);
       --sl-color-text-accent: var(--color-canyon-clay);
       --sl-color-bg: var(--color-glacier-mist-700);
       --sl-color-bg-sidebar: var(--color-glacier-mist-700);
+
       --sl-color-white: var(--color-gray-900);
       --sl-color-gray-1: var(--color-gray-800);
       --sl-color-gray-2: var(--color-gray-700);
       --sl-color-gray-3: var(--color-gray-500);
       --sl-color-gray-4: var(--color-gray-400);
-      --sl-color-gray-5: var(--color-gray-300);
+      --sl-color-gray-5: var(--color-glacier-mist-900);
       --sl-color-gray-6: var(--color-gray-200);
       --sl-color-gray-7: var(--color-gray-100);
       --sl-color-black: var(--color-white);
@@ -245,6 +262,38 @@
       @apply px-0 pt-3;
     }
   }
+  /* search button */
+
+  site-search-button {
+    display: contents;
+  }
+
+  button[data-open-modal] {
+    @apply flex w-full cursor-pointer items-center gap-2 border-0;
+    @apply rounded-lg border border-[color:var(--sl-color-gray-5)];
+    @apply py-2 pr-2 pl-3;
+    @apply bg-[var(--sl-color-black)] text-sm text-[var(--sl-color-text-search)];
+    svg {
+      @apply text-[var(--sl-color-search)];
+    }
+  }
+
+  button[data-open-modal]:hover {
+    border-color: var(--sl-color-gray-2);
+    color: var(--sl-color-white);
+  }
+
+  button[data-open-modal] > :last-child {
+    margin-inline-start: auto;
+  }
+
+  button > kbd {
+    @apply gap-1 rounded bg-[var(--sl-color-kbd)] p-[0.375rem] text-[12px] leading-[1];
+  }
+
+  kbd {
+    font-family: var(--__sl-font);
+  }
 
   /* PageFrame.astro */
   .sidebar {
@@ -255,7 +304,7 @@
   .sidebar-pane {
     @apply border-r-0 md:border-r md:border-[color:var(--color-borderpanel)];
     @apply pt-6 pr-6 pb-10 pl-6 md:pt-7 md:pb-0 md:pl-0;
-    @apply relative w-full;
+    @apply relative w-full md:h-full;
   }
 
   .searchbar-main-content {
@@ -397,10 +446,10 @@
         }
       }
     }
-    .right-sidebar-panel :global(:where(a)) {
+    .right-sidebar-panel a {
       @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
     }
-    .right-sidebar-panel :global(:where(a):hover) {
+    .right-sidebar-panel a:hover {
       color: var(--sl-color-white);
     }
   }
@@ -412,14 +461,14 @@
   nav.c-breadcrumbs {
     /* Breadcrumbs styles */
 
-    @apply flex items-center px-0 pt-6 text-xs font-medium md:px-10 md:pt-9;
+    @apply mt-6 flex items-center overflow-x-hidden px-0 text-xs font-medium md:mt-9 md:px-10;
 
     ol {
-      @apply flex h-6 items-center;
+      @apply flex h-6 w-full items-center;
       @apply m-0 list-none p-0;
     }
     li {
-      @apply flex items-center;
+      @apply flex items-center text-nowrap;
     }
     li:first-child {
       @apply mr-2;
@@ -441,7 +490,7 @@
       @apply mx-2 text-[color:var(--sl-color-text)];
     }
     a {
-      @apply text-[color:var(--sl-color-text)]/80 no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)]/80;
+      @apply text-nowrap text-[color:var(--sl-color-text)]/80 no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)]/80;
     }
     svg {
       @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];

@@ -1,5 +1,6 @@
 ---
 import { getIcon } from '@utils/iconMap';
+import DiscordIcon from '@v1/assets/icons/discord.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -15,7 +16,9 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
 ---
 
 {
-  IconComponent ? (
+  name === 'discord' ? (
+    <DiscordIcon class={`${sizeClass} ${className}`} />
+  ) : IconComponent ? (
     <IconComponent class={`${sizeClass} ${className}`} />
   ) : (
     <svg

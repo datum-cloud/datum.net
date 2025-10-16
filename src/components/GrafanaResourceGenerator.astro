@@ -18,7 +18,7 @@
       class="grafana-resource-generator__textarea"></textarea>
   </div>
 
-  <div id="configWarning" class="grafana-resource-generator__warning" style="display: none;">
+  <div id="configWarning" class="grafana-resource-generator__warning" style="display: none">
     <span id="warningMessage"></span>
   </div>
 
@@ -57,10 +57,10 @@
     <h4 class="grafana-resource-generator__output-title">Secret Manifest</h4>
     <div class="grafana-resource-generator__tabs">
       <button
-        class="grafana-resource-generator__tab grafana-resource-generator__tab--active"
-        onclick="showTab('secretStdin')">Apply from stdin</button
+        class="grafana-resource-generator__tab grafana-resource-generator__tab--active tabs"
+        data-tab-name="secretStdin">Apply from stdin</button
       >
-      <button class="grafana-resource-generator__tab" onclick="showTab('secretFile')"
+      <button class="grafana-resource-generator__tab tabs" data-tab-name="secretFile"
         >Apply from file</button
       >
     </div>
@@ -78,10 +78,10 @@
     <h4 class="grafana-resource-generator__output-title">ExportPolicy Manifest</h4>
     <div class="grafana-resource-generator__tabs">
       <button
-        class="grafana-resource-generator__tab grafana-resource-generator__tab--active"
-        onclick="showTab('exportPolicyStdin')">Apply from stdin</button
+        class="grafana-resource-generator__tab grafana-resource-generator__tab--active tabs"
+        data-tab-name="exportPolicyStdin">Apply from stdin</button
       >
-      <button class="grafana-resource-generator__tab" onclick="showTab('exportPolicyFile')"
+      <button class="grafana-resource-generator__tab tabs" data-tab-name="exportPolicyFile"
         >Apply from file</button
       >
     </div>
@@ -115,6 +115,55 @@
     const exportPolicyNameInput = document.getElementById('exportPolicyName') as HTMLInputElement;
     const warningDiv = document.getElementById('configWarning') as HTMLElement;
     const warningMessage = document.getElementById('warningMessage') as HTMLElement;
+
+    // secretSection exportPolicySection
+    const secretSectionTabs = document.querySelectorAll<HTMLElement>('#secretSection .tabs');
+    const exportPolicySectionTabs = document.querySelectorAll<HTMLElement>(
+      '#exportPolicySection .tabs'
+    );
+
+    const secretSectionTabContents = document.querySelectorAll<HTMLElement>(
+      '#secretSection .grafana-resource-generator__tab-content'
+    );
+    const exportPolicySectionTabContents = document.querySelectorAll<HTMLElement>(
+      '#exportPolicySection .grafana-resource-generator__tab-content'
+    );
+
+    secretSectionTabs.forEach((element) => {
+      element.addEventListener('click', () => {
+        // reset all tabs and contents
+        secretSectionTabs.forEach((el) =>
+          el.classList.remove('grafana-resource-generator__tab--active')
+        );
+        secretSectionTabContents.forEach((content) => content.style.setProperty('display', 'none'));
+
+        const targetContent = document.querySelector<HTMLElement>(
+          '#' + element.dataset.tabName + '.grafana-resource-generator__tab-content'
+        );
+
+        element.classList.add('grafana-resource-generator__tab--active');
+        targetContent?.style.setProperty('display', 'block');
+      });
+    });
+
+    exportPolicySectionTabs.forEach((element) => {
+      element.addEventListener('click', () => {
+        // reset all tabs and contents
+        exportPolicySectionTabs.forEach((el) =>
+          el.classList.remove('grafana-resource-generator__tab--active')
+        );
+        exportPolicySectionTabContents.forEach((content) =>
+          content.style.setProperty('display', 'none')
+        );
+
+        const targetContent = document.querySelector<HTMLElement>(
+          '#' + element.dataset.tabName + '.grafana-resource-generator__tab-content'
+        );
+
+        element.classList.add('grafana-resource-generator__tab--active');
+        targetContent?.style.setProperty('display', 'block');
+      });
+    });
 
     if (
       !configInput ||
@@ -301,33 +350,6 @@ spec:
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function showTab(tabName: string) {
-    // Hide all tab contents
-    const tabContents = document.querySelectorAll('.grafana-resource-generator__tab-content');
-    tabContents.forEach((content) => {
-      const element = content as HTMLElement;
-      element.style.display = 'none';
-    });
-
-    // Remove active class from all tabs
-    const tabs = document.querySelectorAll('.grafana-resource-generator__tab');
-    tabs.forEach((tab) => tab.classList.remove('grafana-resource-generator__tab--active'));
-
-    // Show selected tab content
-    const targetTab = document.getElementById(tabName);
-    if (targetTab) {
-      targetTab.style.display = 'block';
-    }
-
-    // Add active class to clicked tab
-    const event = window.event as Event;
-    if (event && event.target) {
-      const target = event.target as HTMLElement;
-      target.classList.add('grafana-resource-generator__tab--active');
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     const configInput = document.getElementById('prometheusConfig') as HTMLTextAreaElement;
     const secretNameInput = document.getElementById('secretName') as HTMLInputElement;
@@ -470,7 +492,7 @@ spec:
   }
 
   .grafana-resource-generator__tabs {
-    display: flex;
+    /* display: flex; */
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 1rem;
   }

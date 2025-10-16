@@ -18,6 +18,10 @@
     "linkedin": {
       "url": "https://www.linkedin.com/company/datum-cloud/",
       "icon": "linkedin"
+    },
+    "discord": {
+      "url": "https://link.datum.net/discord",
+      "icon": "discord"
     }
   },
   "pageSize": 12

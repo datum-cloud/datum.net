@@ -1,5 +1,5 @@
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { z } from 'astro:content';
 
 import { OIDCClient } from '@libs/oidc';
 import { incrementVote, decrementVote, getUserVoted as getUserVotedValue } from '@libs/postgres';
@@ -67,7 +67,7 @@ const loginWithDatum = defineAction({
   handler: async (): Promise<object> => {
     try {
       const oidcClient = new OIDCClient();
-      const oidcClientReturn = await oidcClient.getAuthorizationUrl();
+      const oidcClientReturn = await oidcClient.getAuthorizationUrl('login');
       return oidcClientReturn;
     } catch (error) {
       console.error('Error:', error);

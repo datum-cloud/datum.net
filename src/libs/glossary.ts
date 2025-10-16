@@ -49,7 +49,7 @@ const findHtmlFiles = (directoryPath: string): string[] => {
  * @param {string} source - Path to the glossary markdown file
  * @returns {string} - Markdown content
  */
-const glossarySource = async (source: string) => {
+const glossarySource = async (source: string): Promise<string> => {
   const fullPath = `./src/content/${source}`;
   let glossaryMarkdown = '';
 
@@ -57,7 +57,7 @@ const glossarySource = async (source: string) => {
     glossaryMarkdown = fs.readFileSync(fullPath, 'utf-8');
   } catch {
     console.warn(`%sError reading glossary source file: %s%s`, errorPrefix, errorPrefix, fullPath);
-    return;
+    return '';
   }
 
   return glossaryMarkdown;
@@ -68,7 +68,7 @@ const glossarySource = async (source: string) => {
  * @param {string} markdown - Markdown content
  * @returns {object} - Object with headings as keys and paragraphs as values
  */
-const extractMarkdown = (markdown = ''): object => {
+const extractMarkdown = (markdown: string = ''): object => {
   const headingRegex = /^(#+)\s(.+)$/gm;
   const headings: string[] = [];
   const paragraphRegex = /(^|\n\n)([^\n#].*?)(?=\n\n|$)/gs;
@@ -116,11 +116,12 @@ const extractMarkdown = (markdown = ''): object => {
 function applyGlossaryToContent(
   html: string,
   glossaryTerms: Record<string, { title: string; description: string }>
-) {
+): string {
   const $ = cheerio.load(html);
 
   // Function to process text nodes only
-  function processNode(index: number, node: any) {
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  function processNode(_index: number, node: any) {
     if (node.type === 'text') {
       const content = node.data;
 
@@ -219,6 +220,7 @@ const createGlossaryIntegration = (options: GlossaryOptions): AstroIntegration =
     hooks: {
       'astro:build:done': async () => {
         try {
+          console.log('running glossary build on build done...');
           buildGlossary(options);
         } catch (error) {
           console.log(`%sError create glossary:%s `, errorPrefix, errorPrefix, error);
@@ -226,6 +228,7 @@ const createGlossaryIntegration = (options: GlossaryOptions): AstroIntegration =
         }
       },
       'astro:server:start': async () => {
+        console.log('running glossary build on dev server start...');
         buildGlossary(options);
       },
     },

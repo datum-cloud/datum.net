@@ -10,6 +10,8 @@ import GlobalSection from '@components/GlobalSection.astro';
 import ImageSphere from '@v1/assets/images/sphere-half.png';
 import Skeleton from '@components/Skeleton.astro';
 
+import UserInfo from '@components/auth/UserInfo.astro';
+
 const page = await getCollectionEntry('pages', 'roadmap');
 
 // SEO
@@ -20,6 +22,7 @@ const description = fm.description;
 ---
 
 <Layout title={title} description={description} bodyClass="roadmap-page" meta={meta}>
+  <UserInfo />
   <section class="datum-container">
     <Hero
       class="light"

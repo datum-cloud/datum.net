@@ -304,7 +304,7 @@
   .sidebar-pane {
     @apply border-r-0 md:border-r md:border-[color:var(--color-borderpanel)];
     @apply pt-6 pr-6 pb-10 pl-6 md:pt-7 md:pb-0 md:pl-0;
-    @apply relative w-full;
+    @apply relative w-full md:h-full;
   }
 
   .searchbar-main-content {
@@ -446,10 +446,10 @@
         }
       }
     }
-    .right-sidebar-panel :global(:where(a)) {
+    .right-sidebar-panel a {
       @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
     }
-    .right-sidebar-panel :global(:where(a):hover) {
+    .right-sidebar-panel a:hover {
       color: var(--sl-color-white);
     }
   }

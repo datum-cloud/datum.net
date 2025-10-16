@@ -103,44 +103,48 @@ export default defineConfig({
 
       sidebar: [
         {
-          label: 'Overview',
+          label: 'Datum Documentation',
           link: '/docs/',
         },
         {
-          label: 'Getting Started',
-          autogenerate: { directory: 'docs/get-started' },
+          label: 'Overview',
+          autogenerate: { directory: 'docs/overview' },
         },
         {
-          label: 'Tasks',
-          autogenerate: { directory: 'docs/tasks' },
+          label: 'Quick Start',
+          autogenerate: { directory: 'docs/quickstart' },
         },
         {
-          label: 'Tutorials',
-          autogenerate: { directory: 'docs/tutorials' },
+          label: 'Platform',
+          autogenerate: { directory: 'docs/platform' },
         },
         {
-          label: 'Datum Cloud API',
+          label: 'API',
           autogenerate: { directory: 'docs/api' },
         },
         {
-          label: 'Contribution Guidelines',
-          link: 'docs/contribution-guidelines/',
+          label: 'Runtime',
+          autogenerate: { directory: 'docs/runtime' },
         },
         {
-          label: 'Datum Cloud Glossary',
+          label: 'Workflows',
+          autogenerate: { directory: 'docs/workflows' },
+        },
+        {
+          label: 'Assets',
+          autogenerate: { directory: 'docs/assets' },
+        },
+        {
+          label: 'For Alt Clouds',
+          autogenerate: { directory: 'docs/alt-cloud' },
+        },
+        {
+          label: 'Guides',
+          autogenerate: { directory: 'docs/guides' },
+        },
+        {
+          label: 'Glossary',
           link: 'docs/glossary/',
-        },
-        {
-          label: 'Guides and Demos',
-          link: 'docs/guides/',
-        },
-        {
-          label: 'Developer Guide',
-          link: 'docs/developer-guide/',
-        },
-        {
-          label: 'Galactic VPC',
-          autogenerate: { directory: 'docs/galactic-vpc' },
         },
       ],
     }),

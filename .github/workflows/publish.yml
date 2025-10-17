@@ -3,14 +3,14 @@ name: Publish Website
 on:
   push:
     paths-ignore:
-      - 'README.md'
-      - 'env.example'
-      - '.vscode/**'
-      - 'public/pagefind/**'
-      - '**/pagefind/**'
+      - "README.md"
+      - "env.example"
+      - ".vscode/**"
+      - "public/pagefind/**"
+      - "**/pagefind/**"
 
   release:
-    types: ['published']
+    types: ["published"]
 
 jobs:
   check-files:
@@ -18,58 +18,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
   build-and-push:
     permissions:
       contents: read
       packages: write
       id-token: write
-
-    runs-on: ubuntu-latest
     needs: check-files
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3.6.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/datum-cloud/datum-net
-          tags: |
-            type=ref,event=pr
-            type=ref,event=branch
-            type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
-            type=semver,pattern=v{{version}}
-            type=semver,pattern=v{{major}}.{{minor}}
-            type=semver,pattern=v{{major}}
-            type=sha
-
-      - name: Build Website
-        id: push
-        uses: docker/build-push-action@v6.18.0
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          target: production
-          build-args: |
-            ASTRO_TELEMETRY_DISABLED=1
+    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@add-build-outputs
+    with:
+      image-name: datum-net
+      target: production
+      extra-build-args: |
+        ASTRO_TELEMETRY_DISABLED=1
+    secrets: inherit
 
   publish-kustomize-bundles:
     permissions:
       id-token: write
       contents: read
       packages: write
-    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.7.1
+    needs: build-and-push
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@add-build-outputs
     with:
       bundle-name: ghcr.io/datum-cloud/datum-net-kustomize
       bundle-path: config/base
+      image-overlays: config/base
+      image-name: ghcr.io/datum-cloud/datum-net
     secrets: inherit

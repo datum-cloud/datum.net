@@ -1,6 +1,6 @@
 @layer components {
   .feature-table {
-    @apply bg-navy relative z-30 mx-auto grid max-w-391 grid-cols-1 gap-0 border border-white md:grid-cols-[minmax(300px,auto)_1fr] lg:grid-cols-[minmax(500px,auto)_1fr];
+    @apply bg-midnight-fjord relative z-30 mx-auto grid max-w-391 grid-cols-1 gap-0 border border-white md:grid-cols-[minmax(300px,auto)_1fr] lg:grid-cols-[minmax(500px,auto)_1fr];
   }
 
   .feature-table--content {
@@ -12,7 +12,7 @@
     h2,
     h3,
     h4 {
-      @apply text-lime-green font-alliance text-22 mt-0 font-normal;
+      @apply text-aurora-moss font-alliance text-22 mt-0 font-normal;
     }
 
     h2 {
@@ -44,7 +44,7 @@
         @apply bg-indigo md:text-smb m-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-normal whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
 
         &:before {
-          @apply bg-lime-green inline-block h-2 w-2 flex-shrink-0 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
+          @apply bg-aurora-moss inline-block h-2 w-2 flex-shrink-0 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
         }
       }
     }
@@ -64,11 +64,11 @@
   }
 
   .feature-card--section {
-    @apply border-navy border-b last:border-b-0;
+    @apply border-midnight-fjord border-b last:border-b-0;
   }
 
   .feature-card--content-wrapper {
-    @apply prose prose-base text-navy prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
+    @apply prose prose-base text-midnight-fjord prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
 
     h2 {
       @apply font-canela mt-0 mb-10 text-3xl leading-[1.1] font-normal -tracking-[1px];
@@ -110,9 +110,9 @@
   }
 
   .feature-card-item--content {
-    @apply prose text-17 text-navy/70 leading-[1.4];
+    @apply prose text-17 text-midnight-fjord/70 leading-[1.4];
     h3 {
-      @apply text-navy mt-0 mb-6 text-2xl leading-[1] font-normal;
+      @apply text-midnight-fjord mt-0 mb-6 text-2xl leading-[1] font-normal;
     }
     p {
       @apply last:mb-0;

@@ -27,18 +27,15 @@ const navData = navigation as NavData;
     />
   </div>
   <!-- Main Footer Content -->
-  <div class="footer-main--docs bg-navy relative z-30">
-    <div
-      class="fade-in--pure mx-auto grid max-w-391 grid-cols-1 gap-9.75 md:grid-cols-4 lg:grid-cols-5"
-      data-reveal="fade-in--pure--visible"
-    >
+  <div class="footer-main--docs bg-midnight-fjord relative z-30">
+    <div class="fade-in--pure footer-grid mx-auto max-w-391" data-reveal="fade-in--pure--visible">
       <!-- Navigation Sections -->
 
-      <div class="col-span-1 grid grid-cols-2 gap-9.75 md:col-span-4 md:grid-cols-4">
+      <div class="footer-nav-container">
         {
           navData.footerDocs.map((section) => (
-            <div>
-              <h4 class="footer-nav-section">{section.title}</h4>
+            <div class="footer-nav-section">
+              <h4 class="footer-nav-header">{section.title}</h4>
               <ul class="footer-nav-list">
                 {section.items.map((item: NavItem) => (
                   <li>
@@ -60,12 +57,10 @@ const navData = navigation as NavData;
       </div>
 
       <!-- GitHub Button Section -->
-      <div
-        class="col-span-1 flex flex-col items-center justify-between gap-4 md:col-span-4 md:flex-row md:items-end lg:col-span-1 lg:flex-col"
-      >
+      <div class="footer-actions-section">
         <div class="space-x-2">
           <Button
-            class="btn btn--clean text-blush-quartz-900 hover:text-glacier-mist-900"
+            class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
             icon={{ name: 'messages-square', size: 'md' }}
             iconPosition="left"
             iconClass="stroke-1.5"
@@ -74,7 +69,7 @@ const navData = navigation as NavData;
           />
 
           <Button
-            class="btn btn--clean text-blush-quartz-900 hover:text-glacier-mist-900"
+            class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
             icon={{ name: 'github', size: 'md' }}
             iconPosition="left"
             iconClass="stroke-1.5"

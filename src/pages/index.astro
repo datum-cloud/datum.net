@@ -1,7 +1,7 @@
 ---
 import { getEntries } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import HeroSection from '@components/home/HeroSection.astro';
+import Hero from '@components/home/Hero.astro';
 import FirstSection from '@components/home/FirstSection.astro';
 import SecondSection from '@components/home/SecondSection.astro';
 import GlobalSection from '@components/GlobalSection.astro';
@@ -22,7 +22,8 @@ const description = fm.description ? fm.description : '';
 
 <Layout title={title} description={description} bodyClass="home-page" meta={meta}>
   <section class="datum-container">
-    <HeroSection />
+    <Hero class="dark" title={fm.title} description={fm.description} />
+
     <FirstSection content={contentData[0]} />
     <SecondSection content={contentData[1]} />
     <GlobalSection />

@@ -1,8 +1,7 @@
 @layer components {
   /* Section Block */
   .section--block {
-    @apply relative overflow-hidden;
-    @apply px-6 md:px-16;
+    @apply relative z-10 overflow-hidden;
 
     &.dark {
       @apply text-white;
@@ -13,7 +12,7 @@
     }
 
     &.section--block--pad {
-      @apply py-15 md:py-28 lg:py-42;
+      @apply py-10 md:py-16 lg:py-20 xl:py-28;
     }
 
     &.section--block--small-pad {
@@ -30,7 +29,7 @@
   }
 
   .section--block-inner {
-    @apply m-auto max-w-391;
+    @apply max-width;
   }
 
   .section--block-content {
@@ -42,7 +41,7 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose prose-xl md:text-19 text-navy/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
+    @apply font-alliance prose prose-xl md:text-19 text-midnight-fjord/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
   }
 
   .h2-section {
@@ -51,13 +50,13 @@
 
   /* Footer Components */
   .footer {
-    @apply bg-dark-navy-blue relative text-white;
+    @apply bg-midnight-fjord relative text-white;
   }
   .footer-docs {
-    @apply bg-navy;
+    @apply bg-midnight-fjord;
   }
   .footer-hero {
-    @apply bg-cream text-navy relative z-10 mx-auto px-6 pt-21 md:px-16 md:pt-35 lg:pt-53;
+    @apply bg-glacier-mist-700 text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28;
   }
 
   .footer-hero-content {
@@ -69,7 +68,7 @@
   }
 
   .footer-illustration-container {
-    @apply relative;
+    @apply relative z-9 -translate-y-5;
   }
 
   .footer-illustration-image {
@@ -77,8 +76,7 @@
   }
 
   .footer-main {
-    /* @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34; */
-    @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-16 md:py-25 lg:py-34;
+    @apply max-width relative z-10 mx-auto py-9 lg:py-14 xl:py-20;
   }
 
   .footer-main--docs {
@@ -86,19 +84,17 @@
   }
 
   .footer-grid {
-    @apply grid grid-cols-1 gap-12 md:grid-cols-6 lg:grid-cols-12;
+    @apply flex flex-col gap-8 md:gap-2.5 lg:flex-row lg:gap-40;
   }
 
-  .footer-logo-section {
-    @apply col-span-6 lg:col-span-3;
+  .footer-nav-container {
+    @apply flex w-full flex-wrap justify-between space-y-7;
   }
-
-  .footer-logo-link {
-    @apply mb-8 flex items-center;
+  .footer-nav-section {
+    @apply w-1/2 md:w-auto;
   }
-
   .footer-actions-section {
-    @apply col-span-6 mt-5 flex flex-col items-center gap-6 md:col-span-2 md:mt-0 md:items-end lg:col-span-2;
+    @apply flex flex-col items-center justify-between gap-4 md:col-span-4 md:flex-row md:items-end lg:col-span-1 lg:flex-col;
   }
 
   .footer-copyright {
@@ -110,7 +106,7 @@
   }
 
   .footer-signup {
-    @apply bg-light-pink text-navy px-6 py-16;
+    @apply bg-blush-quartz text-midnight-fjord px-6 py-16;
   }
 
   .footer-signup-container {
@@ -122,96 +118,20 @@
   }
 
   .footer-signup-form {
-    @apply border-navy flex items-center border-b pb-2;
+    @apply border-midnight-fjord flex items-center border-b pb-2;
   }
 
   .footer-signup-input {
-    @apply text-navy placeholder-navy/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
+    @apply text-midnight-fjord placeholder-midnight-fjord/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
   }
 
   .footer-signup-button {
     @apply ml-4;
   }
 
-  /* Generic Button Components */
-  .btn {
-    @apply inline-flex items-center gap-3 rounded-md border px-7 py-3.5 text-base leading-[1.4] font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
-  }
-  .btn--clean {
-    @apply border-0 p-0;
-  }
-  .btn--primary {
-    @apply border-white/20 hover:bg-white/10;
-  }
-
-  .btn--secondary {
-    @apply border-gray-300/20 hover:bg-gray-300/10;
-  }
-
-  /* Button Color Variations */
-  .btn--lime {
-    @apply bg-lime-green text-navy hover:bg-lime-green/80 border-lime-green;
-  }
-
-  .btn--cream {
-    @apply bg-cream text-navy border-navy hover:bg-navy/10;
-  }
-
-  .btn--alpha {
-    @apply text-navy border-navy hover:bg-tuscany/10 bg-none;
-  }
-
-  .btn--white {
-    @apply text-navy border-white bg-white hover:bg-white/90;
-  }
-
-  .btn--navy {
-    @apply bg-navy/90 hover:bg-navy/80 border-navy text-white;
-  }
-
-  .btn--navy-alpha {
-    @apply bg-navy/90 border-white/20 text-white hover:bg-white/10;
-  }
-
-  .btn--outline {
-    @apply border-white/20 bg-transparent text-white hover:bg-white/10;
-  }
-
-  .btn--xl {
-    @apply text-base leading-relaxed md:text-lg;
-  }
-
-  .btn--2xl {
-    @apply md:text-19 text-lg leading-[1.9];
-  }
-
-  .btn--large {
-    @apply text-19 py-4 text-base leading-normal;
-  }
-
-  .btn--center {
-    @apply w-full justify-center;
-  }
-
-  .btn--medium {
-    @apply text-sm leading-relaxed font-medium;
-  }
-
-  .btn--small {
-    @apply text-xs leading-relaxed font-medium;
-  }
-
-  .btn--icon {
-    @apply px-3.5 py-3.5;
-  }
-
-  .btn-text {
-    @apply text-base leading-relaxed font-semibold tracking-tight;
-  }
-
   /* List Styles */
   .ordered-list {
-    @apply font-canela flex list-none flex-col gap-5 text-[20px] leading-[1.1] -tracking-[0.5px] md:gap-8 md:text-3xl;
+    @apply datum-list-headings flex list-none flex-col gap-5 md:gap-8;
     counter-reset: ordered-counter;
   }
 
@@ -220,7 +140,7 @@
   }
 
   .ordered-list li {
-    @apply text-navy flex items-center gap-6 md:gap-10;
+    @apply text-midnight-fjord flex items-center gap-6 md:gap-10;
     counter-increment: ordered-counter;
   }
 
@@ -235,28 +155,28 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
+    @apply font-canela text-midnight-fjord tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
   }
 
   .h2-leading {
-    @apply font-canela text-navy tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
+    @apply font-canela text-midnight-fjord tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
   }
 
   .h3-leading {
-    @apply font-canela text-navy text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
+    @apply font-canela text-midnight-fjord text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
   }
 
   .h4-leading {
-    @apply font-canela text-navy text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
+    @apply font-canela text-midnight-fjord text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
   }
 
   .text-desc {
-    @apply font-alliance text-navy md:text-19 text-xl leading-[1.4];
+    @apply font-alliance text-midnight-fjord md:text-19 text-xl leading-[1.4];
   }
 
   /* Generic Logo/Brand Grid Components */
   .logo-grid {
-    @apply border-navy grid overflow-x-auto border border-t-0;
+    @apply border-midnight-fjord grid overflow-x-auto border border-t-0;
   }
 
   .logo-grid--3-6 {
@@ -272,7 +192,7 @@
   }
 
   .logo-item {
-    @apply border-navy flex items-center justify-center border-t border-r last:border-r-0;
+    @apply border-midnight-fjord flex items-center justify-center border-t border-r last:border-r-0;
   }
 
   .logo-item--landscape {
@@ -325,7 +245,7 @@
   }
 
   .article-navigation-item {
-    @apply border-green-dark hover:bg-green-dark/5 rounded-lg border p-8;
+    @apply border-pine-forge hover:bg-pine-forge/5 rounded-lg border p-8;
   }
 
   .article-navigation-prev {
@@ -345,11 +265,11 @@
   }
 
   .article-navigation-label {
-    @apply font-alliance text-green-dark mb-4 flex items-center gap-2 text-sm font-medium tracking-wide uppercase;
+    @apply font-alliance text-pine-forge mb-4 flex items-center gap-2 text-sm font-medium tracking-wide uppercase;
   }
 
   .article-navigation-title {
-    @apply font-alliance text-green-dark hover:text-mauve text-lg font-medium transition-colors;
+    @apply font-alliance text-pine-forge hover:text-mauve text-lg font-medium transition-colors;
   }
 
   /* Glossary Tooltip */
@@ -370,5 +290,3 @@
     @apply text-sm leading-relaxed text-gray-700;
   }
 }
-
-@import './components-dark.css';

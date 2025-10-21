@@ -1,49 +1,4 @@
-@import './fonts.css';
-@import 'tailwindcss';
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/aspect-ratio";
-
-@import './theme.css';
-
-@layer base {
-  html {
-    @apply antialiased;
-    @apply font-primary;
-    @apply bg-light-gray;
-  }
-
-  html,
-  body {
-    @apply overflow-x-hidden;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-canela;
-  }
-
-  /* Prevent body scroll when mobile menu is active */
-  body {
-    &.mobile-menu-open {
-      @apply fixed w-full touch-none overflow-hidden;
-    }
-  }
-
-  /* Hide elements with x-cloak until Alpine.js initializes */
-  [x-cloak] {
-    @apply hidden;
-  }
-}
-
-@import './utilities.css';
-
-@import './components.css';
-
-@import './components-hero.css';
-
-@import './components-nav.css';
+@import './base.css';
 
 /* Brand Navigation Styles */
 @layer components {
@@ -51,8 +6,8 @@
     @apply col-span-1 pt-8 pb-8 md:col-span-3 md:pt-12 lg:col-span-2 lg:pt-17;
   }
   .brand-wrapper {
-    @apply md:border-light-gray col-span-1 md:col-span-9 md:border-l lg:col-span-10;
-    @apply border-light-gray border-t md:border-t-0;
+    @apply md:border-glacier-mist-900 col-span-1 md:col-span-9 md:border-l lg:col-span-10;
+    @apply border-glacier-mist-900 border-t md:border-t-0;
   }
   .brand-nav {
     @apply flex flex-col gap-0 space-y-8;
@@ -106,10 +61,10 @@
 
     .brand-nav-link {
       @apply inline-block py-2 transition-colors duration-300 ease-out;
-      @apply text-navy/50 hover:text-navy leading-[1.2];
+      @apply text-midnight-fjord/50 hover:text-midnight-fjord leading-[1.2];
 
       &.active {
-        @apply text-navy/70 hover:text-navy font-bold;
+        @apply text-midnight-fjord/70 hover:text-midnight-fjord font-bold;
       }
     }
   }
@@ -120,7 +75,7 @@
     }
 
     .brand-article--title {
-      @apply font-canela text-navy text-3xl leading-[1.2] font-normal -tracking-[0.5] md:text-4xl lg:text-5xl;
+      @apply font-canela text-midnight-fjord text-3xl leading-[1.2] font-normal -tracking-[0.5] md:text-4xl lg:text-5xl;
     }
 
     .brand-article--description {

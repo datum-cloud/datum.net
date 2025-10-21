@@ -2,10 +2,16 @@
   /* Section Block */
   [data-theme='dark'] {
     .btn svg {
-      @apply text-lime-green!;
+      @apply text-aurora-moss!;
     }
     .footer-docs {
       @apply border-t-1 border-[color:var(--color-borderpanel)];
+    }
+
+    html,
+    body,
+    .datum-container {
+      @apply bg-midnight-fjord;
     }
   }
 }

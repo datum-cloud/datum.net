@@ -4,24 +4,24 @@ import UIConsole from '@v1/assets/svgs/ui.svg';
 const content = await getEntry('pages', 'global-section');
 ---
 
-<section
-  class="bg-lime-green section--block section--block--big-pad flex pt-20 pb-0 align-middle md:pt-34 lg:pt-54"
->
+<section class="bg-aurora-moss section--block flex pt-16 align-middle lg:pt-20 xl:pt-28">
   <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
-    <div
-      class="fade-in--pure z-50 mx-auto mb-8 max-w-2xl text-center md:mb-18 lg:mb-22"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
-      <h2 class="h2-leading">{content?.data.title}</h2>
-      <div class="text-desc mx-auto mt-8 max-w-3xl md:mt-12">
-        <p>{content?.body}</p>
+    <div class="max-width flex flex-col align-middle">
+      <div
+        class="fade-in--pure z-50 mx-auto flex flex-col items-center space-y-6 pb-9 text-center md:max-w-124 md:pb-12 lg:space-y-10 lg:pb-10 xl:pb-20"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+      >
+        <h2 class="datum-text-8xl max-w-xs md:max-w-sm">{content?.data.title}</h2>
+        <div class="datum-text-lg">
+          <p>{content?.body}</p>
+        </div>
       </div>
-    </div>
 
-    <div class="z-0 flex w-full max-w-[1416px] items-end pl-6 mix-blend-multiply md:px-18">
-      <div class="relative mr-auto">
-        <UIConsole class="relative h-auto w-full" />
+      <div class="z-0 flex w-full items-end mix-blend-multiply">
+        <div class="relative mr-auto">
+          <UIConsole class="relative h-auto w-full" />
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,567 @@
+/* Color Palette */
+:root {
+  /* Mode 1 */
+  /* color */
+  --app---dark---utility-1: #223143;
+  --app---dark---utility-2: #384555;
+  --app---dark---utility-3: #67717c;
+  --app---dark---utility-4: #90969c;
+  --app---dark---utility-5: #e3e2df;
+  --aurora-moss: #e6f59f;
+  --black: #000000;
+  --blush-quartz: #ecd0d0;
+  --canyon-clay: #bf9595;
+  --canyon-clay---links: #9c7979;
+  --glacier-mist-700: #f6f6f5;
+  --glacier-mist-800: #efefed;
+  --glacier-mist-900: #e8e7e4;
+  --midnight-fjord: #0c1d31;
+  --pine-forge: #4d6356;
+  --potted-olive: #adbab0;
+  --white: #ffffff;
+}
+/* Spacing Scale */
+:root {
+  /* Pixels */
+  /* number */
+  --0px: 0rem;
+  --1px: 0.0625rem;
+  --2px: 0.125rem;
+  --4px: 0.25rem;
+  --6px: 0.375rem;
+  --8px: 0.5rem;
+  --10px: 0.625rem;
+  --12px: 0.75rem;
+  --14px: 0.875rem;
+  --16px: 1rem;
+  --20px: 1.25rem;
+  --22px: 1.375rem;
+  --24px: 1.5rem;
+  --28px: 1.75rem;
+  --32px: 2rem;
+  --36px: 2.25rem;
+  --40px: 2.5rem;
+  --44px: 2.75rem;
+  --48px: 3rem;
+  --56px: 3.5rem;
+  --64px: 4rem;
+  --80px: 5rem;
+  --96px: 6rem;
+  --112px: 7rem;
+  --128px: 8rem;
+  --144px: 9rem;
+  --160px: 10rem;
+  --176px: 11rem;
+  --192px: 12rem;
+  --208px: 13rem;
+  --224px: 14rem;
+  --240px: 15rem;
+  --256px: 16rem;
+  --288px: 18rem;
+  --320px: 20rem;
+  --384px: 24rem;
+}
+/* Typography */
+:root {
+  /* xl - 1280px */
+  /* number */
+  --app-body-letter-spacing: var(--xl);
+  --app-body-paragraph-spacing: var(--10px);
+  --app-body-list-spacing: var(--12px);
+  --app-body-font-size: var(--13px);
+  --app-body-line-height: var(--18px);
+  --docs-article-body-letter-spacing: var(--xl);
+  --docs-article-body-paragraph-spacing: var(--10px);
+  --docs-article-body-list-spacing: var(--12px);
+  --docs-article-body-font-size: var(--16px);
+  --docs-article-body-line-height: var(--24px);
+  --docs-sidebar-headings-letter-spacing: 0.0312rem;
+  --docs-sidebar-headings-font-size: 0.6875rem;
+  --docs-sidebar-headings-line-height: 1rem;
+  --docs-sidebar-links-letter-spacing: var(--xl);
+  --docs-sidebar-links-font-size: var(--13px);
+  --docs-sidebar-links-line-height: var(--18px);
+  --text-10xl-canela-letter-spacing: var(--xxs);
+  --text-10xl-canela-font-size: var(--60px);
+  --text-10xl-canela-line-height: var(--70px);
+  --text-11xl-canela-letter-spacing: var(--xxs);
+  --text-11xl-canela-font-size: var(--72px);
+  --text-11xl-canela-line-height: var(--80px);
+  --text-2xl-letter-spacing: var(--xl);
+  --text-2xl-font-size: var(--24px);
+  --text-2xl-line-height: 1.875rem;
+  --text-3xl-letter-spacing: var(--xl);
+  --text-3xl-font-size: var(--30px);
+  --text-3xl-line-height: var(--42px);
+  --text-4xl-letter-spacing: var(--l);
+  --text-4xl-font-size: var(--36px);
+  --text-4xl-line-height: var(--44px);
+  --text-5xl-letter-spacing: var(--m);
+  --text-5xl-font-size: var(--48px);
+  --text-5xl-line-height: var(--58px);
+  --text-6xl-letter-spacing: var(--m);
+  --text-6xl-font-size: var(--60px);
+  --text-6xl-line-height: var(--68px);
+  --text-7xl-canela-letter-spacing: var(--xs);
+  --text-7xl-canela-font-size: var(--38px);
+  --text-7xl-canela-line-height: var(--44px);
+  --text-8xl-canela-letter-spacing: var(--xxs);
+  --text-8xl-canela-font-size: var(--48px);
+  --text-8xl-canela-line-height: var(--58px);
+  --text-9xl-canela-letter-spacing: var(--xxs);
+  --text-9xl-canela-font-size: var(--54px);
+  --text-9xl-canela-line-height: var(--64px);
+  --text-article-body-letter-spacing: var(--xl);
+  --text-article-body-list-spacing: var(--10px);
+  --text-article-body-paragraph-spacing: var(--10px);
+  --text-article-body-font-size: var(--18px);
+  --text-article-body-line-height: var(--28px);
+  --text-base-letter-spacing: var(--xl);
+  --text-base-paragraph-spacing: var(--10px);
+  --text-base-list-spacing: var(--12px);
+  --text-base-font-size: var(--16px);
+  --text-base-line-height: var(--24px);
+  --text-lg-letter-spacing: var(--xl);
+  --text-lg-paragraph-spacing: var(--10px);
+  --text-lg-list-spacing: var(--12px);
+  --text-lg-font-size: var(--18px);
+  --text-lg-line-height: var(--26px);
+  --text-sm-letter-spacing: var(--xl);
+  --text-sm-font-size: var(--14px);
+  --text-sm-line-height: var(--21px);
+  --text-smallcaps-letter-spacing: var(--smallcaps);
+  --text-smallcaps-font-size: var(--12px);
+  --text-smallcaps-line-height: var(--18px);
+  --text-xl-letter-spacing: var(--xl);
+  --text-xl-font-size: var(--20px);
+  --text-xl-line-height: var(--28px);
+  --text-xs-letter-spacing: var(--xl);
+  --text-xs-font-size: var(--12px);
+  --text-xs-line-height: var(--16px);
+  /* string */
+  --app-body-font-family: var(--alliance);
+  --docs-article-body-font-family: var(--alliance);
+  --docs-sidebar-headings-font-family: var(--alliance);
+  --docs-sidebar-links-font-family: var(--alliance);
+  --text-10xl-canela-font-family: var(--canela);
+  --text-11xl-canela-font-family: var(--canela);
+  --text-2xl-font-family: var(--alliance);
+  --text-3xl-font-family: var(--alliance);
+  --text-4xl-font-family: var(--alliance);
+  --text-5xl-font-family: var(--alliance);
+  --text-6xl-font-family: var(--alliance);
+  --text-7xl-canela-font-family: var(--canela);
+  --text-8xl-canela-font-family: var(--canela);
+  --text-9xl-canela-font-family: var(--canela);
+  --text-article-body-font-family: var(--alliance);
+  --text-base-font-family: var(--alliance);
+  --text-lg-font-family: var(--alliance);
+  --text-sm-font-family: var(--alliance);
+  --text-smallcaps-font-family: var(--alliance);
+  --text-xl-font-family: var(--alliance);
+  --text-xs-font-family: var(--alliance);
+  /* lg - 1024px */
+  /* number */
+  --app-body-letter-spacing: var(--xl);
+  --app-body-paragraph-spacing: var(--8px);
+  --app-body-list-spacing: var(--10px);
+  --app-body-font-size: var(--13px);
+  --app-body-line-height: var(--18px);
+  --docs-article-body-letter-spacing: var(--xl);
+  --docs-article-body-paragraph-spacing: var(--8px);
+  --docs-article-body-list-spacing: var(--10px);
+  --docs-article-body-font-size: var(--14px);
+  --docs-article-body-line-height: var(--21px);
+  --docs-sidebar-headings-letter-spacing: 0.0312rem;
+  --docs-sidebar-headings-font-size: 0.625rem;
+  --docs-sidebar-headings-line-height: 1rem;
+  --docs-sidebar-links-letter-spacing: var(--xl);
+  --docs-sidebar-links-font-size: var(--12px);
+  --docs-sidebar-links-line-height: var(--16px);
+  --text-10xl-canela-letter-spacing: var(--xxs);
+  --text-10xl-canela-font-size: var(--54px);
+  --text-10xl-canela-line-height: var(--64px);
+  --text-11xl-canela-letter-spacing: var(--xxs);
+  --text-11xl-canela-font-size: var(--72px);
+  --text-11xl-canela-line-height: var(--80px);
+  --text-2xl-letter-spacing: var(--xl);
+  --text-2xl-font-size: var(--20px);
+  --text-2xl-line-height: var(--28px);
+  --text-3xl-letter-spacing: var(--xl);
+  --text-3xl-font-size: var(--24px);
+  --text-3xl-line-height: var(--34px);
+  --text-4xl-letter-spacing: var(--l);
+  --text-4xl-font-size: var(--36px);
+  --text-4xl-line-height: var(--44px);
+  --text-5xl-letter-spacing: var(--m);
+  --text-5xl-font-size: var(--48px);
+  --text-5xl-line-height: var(--58px);
+  --text-6xl-letter-spacing: var(--m);
+  --text-6xl-font-size: var(--60px);
+  --text-6xl-line-height: var(--68px);
+  --text-7xl-canela-letter-spacing: var(--s);
+  --text-7xl-canela-font-size: var(--30px);
+  --text-7xl-canela-line-height: var(--42px);
+  --text-8xl-canela-letter-spacing: var(--xs);
+  --text-8xl-canela-font-size: var(--38px);
+  --text-8xl-canela-line-height: var(--48px);
+  --text-9xl-canela-letter-spacing: var(--xxs);
+  --text-9xl-canela-font-size: var(--48px);
+  --text-9xl-canela-line-height: var(--58px);
+  --text-article-body-letter-spacing: var(--xl);
+  --text-article-body-paragraph-spacing: var(--8px);
+  --text-article-body-list-spacing: var(--10px);
+  --text-article-body-font-size: var(--16px);
+  --text-article-body-line-height: var(--24px);
+  --text-base-letter-spacing: var(--xl);
+  --text-base-paragraph-spacing: var(--8px);
+  --text-base-list-spacing: var(--10px);
+  --text-base-font-size: var(--14px);
+  --text-base-line-height: var(--21px);
+  --text-lg-letter-spacing: var(--xl);
+  --text-lg-paragraph-spacing: var(--8px);
+  --text-lg-list-spacing: var(--10px);
+  --text-lg-font-size: var(--16px);
+  --text-lg-line-height: var(--24px);
+  --text-sm-letter-spacing: var(--xl);
+  --text-sm-font-size: var(--12px);
+  --text-sm-line-height: var(--18px);
+  --text-smallcaps-letter-spacing: var(--smallcaps);
+  --text-smallcaps-font-size: var(--12px);
+  --text-smallcaps-line-height: var(--18px);
+  --text-xl-letter-spacing: var(--xl);
+  --text-xl-font-size: var(--18px);
+  --text-xl-line-height: var(--26px);
+  --text-xs-letter-spacing: var(--xl);
+  --text-xs-font-size: var(--10px);
+  --text-xs-line-height: var(--14px);
+  /* string */
+  --app-body-font-family: var(--alliance);
+  --docs-article-body-font-family: var(--alliance);
+  --docs-sidebar-headings-font-family: var(--alliance);
+  --docs-sidebar-links-font-family: var(--alliance);
+  --text-10xl-canela-font-family: var(--canela);
+  --text-11xl-canela-font-family: var(--canela);
+  --text-2xl-font-family: var(--alliance);
+  --text-3xl-font-family: var(--alliance);
+  --text-4xl-font-family: var(--alliance);
+  --text-5xl-font-family: var(--alliance);
+  --text-6xl-font-family: var(--alliance);
+  --text-7xl-canela-font-family: var(--canela);
+  --text-8xl-canela-font-family: var(--canela);
+  --text-9xl-canela-font-family: var(--canela);
+  --text-article-body-font-family: var(--alliance);
+  --text-base-font-family: var(--alliance);
+  --text-lg-font-family: var(--alliance);
+  --text-sm-font-family: var(--alliance);
+  --text-smallcaps-font-family: var(--alliance);
+  --text-xl-font-family: var(--alliance);
+  --text-xs-font-family: var(--alliance);
+  /* md - 768px */
+  /* number */
+  --app-body-letter-spacing: var(--xl);
+  --app-body-paragraph-spacing: var(--6px);
+  --app-body-list-spacing: var(--8px);
+  --app-body-font-size: var(--13px);
+  --app-body-line-height: var(--18px);
+  --docs-article-body-letter-spacing: var(--xl);
+  --docs-article-body-paragraph-spacing: var(--6px);
+  --docs-article-body-list-spacing: var(--8px);
+  --docs-article-body-font-size: var(--14px);
+  --docs-article-body-line-height: var(--21px);
+  --docs-sidebar-headings-letter-spacing: 0.0312rem;
+  --docs-sidebar-headings-font-size: 0.6875rem;
+  --docs-sidebar-headings-line-height: 1rem;
+  --docs-sidebar-links-letter-spacing: var(--xl);
+  --docs-sidebar-links-font-size: var(--12px);
+  --docs-sidebar-links-line-height: var(--14px);
+  --text-10xl-canela-letter-spacing: var(--xxs);
+  --text-10xl-canela-font-size: var(--48px);
+  --text-10xl-canela-line-height: var(--58px);
+  --text-11xl-canela-letter-spacing: var(--xxs);
+  --text-11xl-canela-font-size: var(--72px);
+  --text-11xl-canela-line-height: var(--80px);
+  --text-2xl-letter-spacing: var(--xl);
+  --text-2xl-font-size: var(--18px);
+  --text-2xl-line-height: var(--26px);
+  --text-3xl-letter-spacing: var(--xl);
+  --text-3xl-font-size: var(--20px);
+  --text-3xl-line-height: var(--28px);
+  --text-4xl-letter-spacing: var(--l);
+  --text-4xl-font-size: var(--36px);
+  --text-4xl-line-height: var(--44px);
+  --text-5xl-letter-spacing: var(--m);
+  --text-5xl-font-size: var(--48px);
+  --text-5xl-line-height: var(--58px);
+  --text-6xl-letter-spacing: var(--m);
+  --text-6xl-font-size: var(--60px);
+  --text-6xl-line-height: var(--68px);
+  --text-7xl-canela-letter-spacing: var(--s);
+  --text-7xl-canela-font-size: var(--24px);
+  --text-7xl-canela-line-height: var(--28px);
+  --text-8xl-canela-letter-spacing: var(--xs);
+  --text-8xl-canela-font-size: var(--36px);
+  --text-8xl-canela-line-height: var(--44px);
+  --text-9xl-canela-letter-spacing: var(--xxs);
+  --text-9xl-canela-font-size: var(--48px);
+  --text-9xl-canela-line-height: var(--58px);
+  --text-article-body-letter-spacing: var(--xl);
+  --text-article-body-paragraph-spacing: var(--6px);
+  --text-article-body-list-spacing: var(--8px);
+  --text-article-body-font-size: var(--14px);
+  --text-article-body-line-height: var(--21px);
+  --text-base-letter-spacing: var(--xl);
+  --text-base-paragraph-spacing: var(--6px);
+  --text-base-list-spacing: var(--8px);
+  --text-base-font-size: var(--14px);
+  --text-base-line-height: var(--21px);
+  --text-lg-letter-spacing: var(--xl);
+  --text-lg-paragraph-spacing: var(--6px);
+  --text-lg-list-spacing: var(--8px);
+  --text-lg-font-size: var(--14px);
+  --text-lg-line-height: var(--21px);
+  --text-sm-letter-spacing: var(--xl);
+  --text-sm-font-size: var(--10px);
+  --text-sm-line-height: var(--14px);
+  --text-smallcaps-letter-spacing: var(--smallcaps);
+  --text-smallcaps-font-size: var(--12px);
+  --text-smallcaps-line-height: var(--18px);
+  --text-xl-letter-spacing: var(--xl);
+  --text-xl-font-size: var(--16px);
+  --text-xl-line-height: var(--24px);
+  --text-xs-letter-spacing: var(--xl);
+  --text-xs-font-size: var(--10px);
+  --text-xs-line-height: var(--14px);
+  /* string */
+  --app-body-font-family: var(--alliance);
+  --docs-article-body-font-family: var(--alliance);
+  --docs-sidebar-headings-font-family: var(--alliance);
+  --docs-sidebar-links-font-family: var(--alliance);
+  --text-10xl-canela-font-family: var(--canela);
+  --text-11xl-canela-font-family: var(--canela);
+  --text-2xl-font-family: var(--alliance);
+  --text-3xl-font-family: var(--alliance);
+  --text-4xl-font-family: var(--alliance);
+  --text-5xl-font-family: var(--alliance);
+  --text-6xl-font-family: var(--alliance);
+  --text-7xl-canela-font-family: var(--canela);
+  --text-8xl-canela-font-family: var(--canela);
+  --text-9xl-canela-font-family: var(--canela);
+  --text-article-body-font-family: var(--alliance);
+  --text-base-font-family: var(--alliance);
+  --text-lg-font-family: var(--alliance);
+  --text-sm-font-family: var(--alliance);
+  --text-smallcaps-font-family: var(--alliance);
+  --text-xl-font-family: var(--alliance);
+  --text-xs-font-family: var(--alliance);
+  /* sm - 360px */
+  /* number */
+  --app-body-letter-spacing: var(--xl);
+  --app-body-paragraph-spacing: var(--4px);
+  --app-body-list-spacing: var(--6px);
+  --app-body-font-size: var(--13px);
+  --app-body-line-height: var(--18px);
+  --docs-article-body-letter-spacing: var(--xl);
+  --docs-article-body-paragraph-spacing: var(--4px);
+  --docs-article-body-list-spacing: var(--6px);
+  --docs-article-body-font-size: var(--14px);
+  --docs-article-body-line-height: var(--21px);
+  --docs-sidebar-headings-letter-spacing: 0.0312rem;
+  --docs-sidebar-headings-font-size: 0.6875rem;
+  --docs-sidebar-headings-line-height: 1rem;
+  --docs-sidebar-links-letter-spacing: var(--xl);
+  --docs-sidebar-links-font-size: var(--12px);
+  --docs-sidebar-links-line-height: var(--14px);
+  --text-10xl-canela-letter-spacing: var(--xs);
+  --text-10xl-canela-font-size: var(--36px);
+  --text-10xl-canela-line-height: var(--42px);
+  --text-11xl-canela-letter-spacing: var(--xxs);
+  --text-11xl-canela-font-size: var(--72px);
+  --text-11xl-canela-line-height: var(--80px);
+  --text-2xl-letter-spacing: var(--xl);
+  --text-2xl-font-size: var(--16px);
+  --text-2xl-line-height: var(--21px);
+  --text-3xl-letter-spacing: var(--xl);
+  --text-3xl-font-size: var(--18px);
+  --text-3xl-line-height: var(--26px);
+  --text-4xl-letter-spacing: var(--l);
+  --text-4xl-font-size: var(--36px);
+  --text-4xl-line-height: var(--44px);
+  --text-5xl-letter-spacing: var(--m);
+  --text-5xl-font-size: var(--48px);
+  --text-5xl-line-height: var(--58px);
+  --text-6xl-letter-spacing: var(--m);
+  --text-6xl-font-size: var(--60px);
+  --text-6xl-line-height: var(--68px);
+  --text-7xl-canela-letter-spacing: var(--s);
+  --text-7xl-canela-font-size: var(--24px);
+  --text-7xl-canela-line-height: 1.875rem;
+  --text-8xl-canela-letter-spacing: var(--s);
+  --text-8xl-canela-font-size: var(--30px);
+  --text-8xl-canela-line-height: var(--34px);
+  --text-9xl-canela-letter-spacing: var(--xxs);
+  --text-9xl-canela-font-size: var(--48px);
+  --text-9xl-canela-line-height: var(--58px);
+  --text-article-body-letter-spacing: var(--xl);
+  --text-article-body-list-spacing: var(--8px);
+  --text-article-body-paragraph-spacing: var(--8px);
+  --text-article-body-font-size: var(--14px);
+  --text-article-body-line-height: var(--21px);
+  --text-base-letter-spacing: var(--xl);
+  --text-base-paragraph-spacing: var(--4px);
+  --text-base-list-spacing: var(--6px);
+  --text-base-font-size: var(--14px);
+  --text-base-line-height: var(--21px);
+  --text-lg-letter-spacing: var(--xl);
+  --text-lg-paragraph-spacing: var(--4px);
+  --text-lg-list-spacing: var(--6px);
+  --text-lg-font-size: var(--14px);
+  --text-lg-line-height: var(--21px);
+  --text-sm-letter-spacing: var(--xl);
+  --text-sm-font-size: var(--10px);
+  --text-sm-line-height: var(--14px);
+  --text-smallcaps-letter-spacing: var(--smallcaps);
+  --text-smallcaps-font-size: var(--12px);
+  --text-smallcaps-line-height: var(--18px);
+  --text-xl-letter-spacing: var(--xl);
+  --text-xl-font-size: var(--14px);
+  --text-xl-line-height: 1.125rem;
+  --text-xs-letter-spacing: var(--xl);
+  --text-xs-font-size: var(--10px);
+  --text-xs-line-height: var(--14px);
+  /* string */
+  --app-body-font-family: var(--alliance);
+  --docs-article-body-font-family: var(--alliance);
+  --docs-sidebar-headings-font-family: var(--alliance);
+  --docs-sidebar-links-font-family: var(--alliance);
+  --text-10xl-canela-font-family: var(--canela);
+  --text-11xl-canela-font-family: var(--canela);
+  --text-2xl-font-family: var(--alliance);
+  --text-3xl-font-family: var(--alliance);
+  --text-4xl-font-family: var(--alliance);
+  --text-5xl-font-family: var(--alliance);
+  --text-6xl-font-family: var(--alliance);
+  --text-7xl-canela-font-family: var(--canela);
+  --text-8xl-canela-font-family: var(--canela);
+  --text-9xl-canela-font-family: var(--canela);
+  --text-article-body-font-family: var(--alliance);
+  --text-base-font-family: var(--alliance);
+  --text-lg-font-family: var(--alliance);
+  --text-sm-font-family: var(--alliance);
+  --text-smallcaps-font-family: var(--alliance);
+  --text-xl-font-family: var(--alliance);
+  --text-xs-font-family: var(--alliance);
+}
+/* Text Sizes */
+:root {
+  /* Size */
+  /* number */
+  --10px: 0.625rem;
+  --11px: 0.6875rem;
+  --12px: 0.75rem;
+  --13px: 0.8125rem;
+  --14px: 0.875rem;
+  --16px: 1rem;
+  --18px: 1.125rem;
+  --20px: 1.25rem;
+  --24px: 1.5rem;
+  --30px: 1.875rem;
+  --36px: 2.25rem;
+  --38px: 2.375rem;
+  --48px: 3rem;
+  --54px: 3.375rem;
+  --60px: 3.75rem;
+  --72px: 4.5rem;
+}
+/* Line Heights */
+:root {
+  /* Mode 1 */
+  /* number */
+  --12px: 0.75rem;
+  --14px: 0.875rem;
+  --16px: 1rem;
+  --18px: 1.125rem;
+  --21px: 1.3125rem;
+  --24px: 1.5rem;
+  --26px: 1.625rem;
+  --28px: 1.75rem;
+  --34px: 2.125rem;
+  --42px: 2.625rem;
+  --44px: 2.75rem;
+  --48px: 3rem;
+  --58px: 3.625rem;
+  --64px: 4rem;
+  --68px: 4.25rem;
+  --70px: 4.375rem;
+  --80px: 5rem;
+}
+/* Letter Spacing */
+:root {
+  /* Mode 1 */
+  /* number */
+  --xxs: -0.0938rem;
+  --xs: -0.075rem;
+  --s: -0.05rem;
+  --l: -0.0188rem;
+  --xl: 0rem;
+  --xxl: 0.0063rem;
+  --m: 0.025rem;
+  --smallcaps: 0.025rem;
+}
+/* Font Families */
+:root {
+  /* Mode 1 */
+  /* string */
+  --alliance: Alliance No.1;
+  --canela: Canela Text LC Web;
+  --frontliner: Frontliner;
+}
+/* Breakpoints */
+:root {
+  /* xl - 1280px */
+  /* number */
+  --breakpoint---internal: 76.5rem;
+  --breakpoint---full: 96rem;
+  /* lg - 1024px */
+  /* number */
+  --breakpoint---internal: 61rem;
+  --breakpoint---full: 64rem;
+  /* md - 768px */
+  /* number */
+  --breakpoint---internal: 45.25rem;
+  --breakpoint---full: 48rem;
+  /* sm - 360px */
+  /* number */
+  --breakpoint---internal: 21rem;
+  --breakpoint---full: 22.5rem;
+}
+/* Font Weights */
+:root {
+  /* Regular */
+  /* string */
+  --weight: Regular;
+  /* Medium */
+  /* string */
+  --weight: Medium;
+  /* Semi Bold */
+  /* string */
+  --weight: SemiBold;
+}
+/* Radius */
+:root {
+  /* Mode 1 */
+  /* number */
+  --radius-none: 0rem;
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5625rem;
+}
+/* 3. Mode */
+:root {
+  /* Light */
+  /* color */
+  --base-foreground: var(--colors-foreground-light);
+  /* Dark */
+  /* color */
+  --base-foreground: var(--colors-foreground-dark);
+}

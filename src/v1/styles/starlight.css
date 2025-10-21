@@ -75,7 +75,7 @@
 
     --sl-line-height-headings: 141%;
     --sl-color-text: var(--color-glacier-mist-700);
-    --sl-color-text-accent: var(--color-lime-green);
+    --sl-color-text-accent: var(--color-aurora-moss);
     --sl-line-height: 1.5;
     --sl-text-h1: 30px;
     --sl-text-h2: 20px;
@@ -83,8 +83,8 @@
 
     --sl-menu-button-size: 30px;
 
-    --sl-color-bg: var(--color-navy);
-    --sl-color-bg-sidebar: var(--color-navy);
+    --sl-color-bg: var(--color-midnight-fjord);
+    --sl-color-bg-sidebar: var(--color-midnight-fjord);
     /* Use Tailwind-configured font families. */
     --sl-font: var(--font-sans);
     --sl-font-mono: var(--font-mono);
@@ -92,9 +92,9 @@
     --sl-color-dialog: #1e2939;
     --sl-color-dialog-border: #384555;
 
-    --sl-color-search: var(--color-lime-green);
+    --sl-color-search: var(--color-aurora-moss);
     --sl-color-text-search: color-mix(in srgb, var(--color-glacier-mist-700) 60%, transparent);
-    --sl-color-kbd: color-mix(in srgb, var(--color-pearl-gray) 10%, transparent);
+    --sl-color-kbd: color-mix(in srgb, var(--color-glacier-mist-800) 10%, transparent);
 
     --sl-color-white: var(--color-white);
     --sl-color-gray-1: var(--color-gray-200);
@@ -103,15 +103,19 @@
     --sl-color-gray-4: var(--color-gray-600);
     --sl-color-gray-5: color-mix(in srgb, var(--color-glacier-mist-900) 20%, transparent);
     --sl-color-gray-6: var(--color-gray-800);
-    --sl-color-black: var(--color-navy);
+    --sl-color-black: var(--color-midnight-fjord);
     --sl-color-accent-low: var(--color-accent-950, var(--color-accent-900, #1e1b4b));
     --sl-color-accent: var(--color-accent-600, #4f46e5);
     --sl-color-accent-high: var(--color-accent-200, #c7d2fe);
     --color-borderpanel: color-mix(in srgb, var(--color-glacier-mist-900) 10%, transparent);
 
     &[data-theme='dark'] {
-      --ec-code-background: color-mix(in srgb, var(--color-cream) 7%, transparent);
-      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 3%, transparent);
+      --ec-code-background: color-mix(in srgb, var(--color-glacier-mist-700) 7%, transparent);
+      --ec-code-header-background: color-mix(
+        in srgb,
+        var(--color-glacier-mist-800) 3%,
+        transparent
+      );
     }
     /* Light mode Starlight theme variables. */
     &[data-theme='light'] {
@@ -119,10 +123,10 @@
       --sl-color-dialog-border: var(--color-glacier-mist-900);
 
       --sl-color-search: var(--color-canyon-clay);
-      --sl-color-text-search: color-mix(in srgb, var(--color-navy) 60%, transparent);
+      --sl-color-text-search: color-mix(in srgb, var(--color-midnight-fjord) 60%, transparent);
       --sl-color-kbd: var(--color-glacier-mist-800);
 
-      --sl-color-text: var(--color-navy);
+      --sl-color-text: var(--color-midnight-fjord);
       --sl-color-text-accent: var(--color-canyon-clay);
       --sl-color-bg: var(--color-glacier-mist-700);
       --sl-color-bg-sidebar: var(--color-glacier-mist-700);
@@ -142,7 +146,11 @@
       --color-borderpanel: var(--color-glacier-mist-900);
 
       --ec-code-background: var(--color-white);
-      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 40%, transparent);
+      --ec-code-header-background: color-mix(
+        in srgb,
+        var(--color-glacier-mist-800) 40%,
+        transparent
+      );
     }
   }
 }
@@ -159,8 +167,12 @@
   &[data-theme='dark'] {
     .sl-markdown-content {
       .starlight-aside {
-        @apply text-navy;
+        @apply text-midnight-fjord;
       }
+    }
+
+    .footer-docs {
+      @apply border-t-1 border-[color:var(--color-borderpanel)];
     }
   }
 
@@ -170,22 +182,22 @@
     }
 
     .starlight-aside--note {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-note)];
     }
 
     .starlight-aside--caution {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-caution)];
     }
 
     .starlight-aside--tip {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-tip)];
     }
 
     .starlight-aside__title {
-      @apply text-navy text-lg font-semibold;
+      @apply text-midnight-fjord text-lg font-semibold;
     }
   }
 }

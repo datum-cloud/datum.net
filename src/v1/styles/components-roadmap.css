@@ -16,7 +16,7 @@
   }
 
   .roadmap-card--vote-number {
-    @apply font-frontliner text-lime-green text-center text-6xl leading-tight font-light tracking-wider md:text-8xl;
+    @apply font-frontliner text-aurora-moss text-center text-6xl leading-tight font-light tracking-wider md:text-8xl;
   }
 
   .roadmap-card--vote-label {
@@ -44,7 +44,7 @@
   }
 
   .roadmap-card--vote-button {
-    @apply font-alliance text-light-pink border-light-pink border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:cursor-pointer hover:border-white hover:text-white active:text-white;
+    @apply font-alliance text-blush-quartz border-blush-quartz border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:cursor-pointer hover:border-white hover:text-white active:text-white;
   }
 
   .roadmap-card--vote-button[data-has-voted='true'] {
@@ -52,7 +52,7 @@
   }
 
   .roadmap-card--github-link {
-    @apply font-alliance text-light-pink border-light-pink border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:border-white hover:text-white active:text-white;
+    @apply font-alliance text-blush-quartz border-blush-quartz border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:border-white hover:text-white active:text-white;
   }
 
   .roadmap-container {

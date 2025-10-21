@@ -13,7 +13,7 @@
 
 @font-face {
   font-family: 'Alliance No.1';
-  font-style: normal;
+  font-style: semibold;
   font-weight: 500;
   font-display: swap;
   src:
@@ -23,7 +23,7 @@
 
 @font-face {
   font-family: 'Alliance No.1';
-  font-style: normal;
+  font-style: bold;
   font-weight: 600;
   font-display: swap;
   src:

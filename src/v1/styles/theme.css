@@ -12,53 +12,40 @@
 
   /* Main Colors */
   --color-white: #ffffff;
-  --color-navy: #0c1d31;
-  --color-cream: #f6f6f5;
-  --color-light-gray: #e8e7e4;
-  --color-lime-green: #e6f59f;
-  --color-dark-navy-blue: #111e34;
-  --color-light-pink: #ecd0d0;
+  --color-black: #000000;
+  --color-aurora-moss: #e6f59f;
   --color-mauve: #91757b;
-  --color-navy-muted: #14233d;
+  --color-midnight-fjord: #0c1d31;
+  --color-midnight-fjord-muted: #14233d;
+  --color-midnight-fjord-blue: #2c3e50;
   --color-orange: #ff6b35;
   --color-tuscany: #c49d9d;
   --color-indigo: #2d3948;
-  --color-pearl-gray: #efefed;
-  --color-green-dark: #4d6356;
-  --color-navy-blue: #2c3e50;
-
-  /* Brand Color Palette - Datum Design System */
-  /* Midnight Fjord */
-  --color-midnight-fjord-900: #0c1d31;
-
-  /* Aurora Moss */
-  --color-aurora-moss-900: #e6f59f;
-
-  /* Blush Quartz */
-  --color-blush-quartz-900: #ecd0d0;
-
-  /* Canyon Clay */
-  --color-canyon-clay: #9c7979;
-  --color-canyon-clay-900: #bf9595;
-
-  /* Pine Forge */
-  --color-pine-forge-900: #4d6356;
-
-  /* Glacier Mist */
-  --color-glacier-mist-900: #e8e7e4;
-  --color-glacier-mist-800: #efefed;
+  --color-pine-forge: #4d6356;
   --color-glacier-mist-700: #f6f6f5;
+  --color-glacier-mist-800: #efefed;
+  --color-glacier-mist-900: #e8e7e4;
+  --color-blush-quartz: #ecd0d0;
+  --color-canyon-clay: #bf9595;
+  --color-canyon-clay---links: #9c7979;
+  --color-potted-olive: #adbab0;
+  --color-cultured: #f5f5f3;
 
   /* Font Sizes */
-  --font-size-h1: 42px;
   --text-xsm: 13px;
   --text-smb: 15px;
+  --text-10: 10px;
+  --text-11: 11px;
+  --text-13: 13px;
+  --text-15: 15px;
   --text-17: 17px;
   --text-19: 19px;
   --text-22: 22px;
   --text-28: 28px;
   --text-38: 38px;
   --text-40: 40px;
+  --text-42: 42px;
+  --text-44: 44px;
   --text-46: 46px;
   --text-54: 54px;
   --text-60: 60px;

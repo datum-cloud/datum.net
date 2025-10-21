@@ -13,7 +13,7 @@
     @apply [&_*]:leading-[1.45];
   }
   .upcomming-huddle--subtitle {
-    @apply font-alliance text-lime-green mb-4 block text-sm font-medium tracking-[1px] uppercase;
+    @apply font-alliance text-aurora-moss mb-4 block text-sm font-medium tracking-[1px] uppercase;
   }
   .upcomming-huddle--title {
     @apply font-alliance lg:text-38 text-2xl font-semibold -tracking-[0.25px] md:text-3xl;
@@ -23,11 +23,11 @@
 
     a,
     button {
-      @apply hover:text-lime-green underline underline-offset-2 transition-colors hover:cursor-pointer;
+      @apply hover:text-aurora-moss underline underline-offset-2 transition-colors hover:cursor-pointer;
     }
   }
   .huddle--meta-icon {
-    @apply text-lime-green mt-0.5 mr-3;
+    @apply text-aurora-moss mt-0.5 mr-3;
   }
   .previous-huddle {
     .huddle--meta {
@@ -35,7 +35,7 @@
 
       a,
       button {
-        @apply hover:text-navy;
+        @apply hover:text-midnight-fjord;
       }
     }
     .huddle--meta-icon {
@@ -100,7 +100,7 @@
   .huddle-info-icon {
     @apply flex items-center justify-center;
     @apply h-8 w-8;
-    @apply text-green-dark;
+    @apply text-pine-forge;
   }
 
   .huddle-info-text {

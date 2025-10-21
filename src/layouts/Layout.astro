@@ -1,6 +1,5 @@
 ---
 import { SEO } from 'astro-seo';
-import '@v1/styles/global.css';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
@@ -17,6 +16,13 @@ const {
   bodyClass = 'template',
   meta,
 } = Astro.props as LayoutProps;
+
+// Import CSS conditionally
+if (bodyClass === 'home-page') {
+  await import('@v1/styles/page-home.css');
+} else {
+  await import('@v1/styles/global.css');
+}
 
 const mode = import.meta.env.MODE || process.env.NODE_ENV;
 const pageUrl = Astro.url.href;

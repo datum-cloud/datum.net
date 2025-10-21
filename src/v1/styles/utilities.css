@@ -77,10 +77,128 @@
     @apply opacity-100;
   }
 }
+
 @utility datum-container {
   @apply container m-auto max-w-[var(--datum-max-width)];
 }
+
 @utility prose-dark {
-  @apply text-white/80;
-  @apply prose-headings:text-white prose-h2:text-40 prose-headings:font-normal prose-headings:leading-[1.22] prose-h3:text-lime-green prose-h3:font-alliance prose-h3:text-xl prose-h3:font-medium prose-h4:font-alliance;
+  @apply text-white;
+  @apply prose-headings:text-white;
+}
+
+@utility max-width {
+  @apply mx-auto w-full max-w-7xl px-7;
+}
+
+@utility text-size {
+  @apply font-alliance;
+  @apply text-sm xl:text-base;
+}
+
+@utility datum-sidebar-headings {
+  @apply font-alliance font-medium uppercase;
+  @apply tracking-[0.5px];
+  @apply text-10/4;
+  @apply md:text-11/4;
+}
+
+@utility datum-list-headings {
+  @apply font-canela font-normal;
+  @apply -tracking-[0.4px] md:-tracking-[0.6px];
+  @apply text-lg/5;
+  @apply md:text-xl/5.5;
+  @apply lg:text-2xl/6.5;
+  @apply xl:text-28/7.5;
+}
+
+@utility datum-text-sm {
+  @apply font-alliance;
+  @apply text-[10px]/3.5;
+  @apply lg:text-xs/4.5;
+  @apply xl:text-sm/5.25;
+}
+
+@utility datum-text-base {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+  @apply text-sm/5.25;
+  @apply xl:text-base/6;
+}
+
+@utility datum-text-lg {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+  @apply text-sm/5.25;
+  @apply lg:text-base/6;
+  @apply xl:text-lg/6.5;
+}
+
+@utility datum-text-xl {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+  @apply text-sm/4.5;
+  @apply md:text-base/6;
+  @apply lg:text-lg/6.5;
+  @apply xl:text-xl/7;
+}
+
+@utility datum-text-2xl {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+  @apply text-base/5.25;
+  @apply md:text-lg/6.5;
+  @apply lg:text-xl/7;
+  @apply xl:text-2xl/7.5;
+}
+
+@utility datum-text-3xl {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+  @apply text-lg/6.5;
+  @apply md:text-xl/7;
+  @apply lg:text-2xl/8.5;
+  @apply xl:text-3xl/10.5;
+}
+
+@utility datum-text-7xl {
+  @apply text-balance;
+  @apply font-canela;
+  @apply -tracking-[0.8px] xl:-tracking-[1.2px];
+  @apply text-2xl/7.5;
+  @apply md:text-2xl/7;
+  @apply lg:text-3xl/10.5;
+  @apply xl:text-38/11;
+}
+
+@utility datum-text-8xl {
+  @apply text-balance;
+  @apply font-canela;
+  @apply -tracking-[0.8px] md:-tracking-[1.2px] xl:-tracking-[1.5px];
+  @apply text-3xl/8.5;
+  @apply md:text-4xl/11;
+  @apply lg:text-38/12;
+  @apply xl:text-5xl/14.5;
+}
+
+@utility datum-text-10xl {
+  @apply text-balance;
+  @apply font-canela;
+  @apply -tracking-[1.2px] md:-tracking-[1.5px];
+  @apply text-4xl/10.5;
+  @apply md:text-5xl/14.5;
+  @apply lg:text-54/16;
+  @apply xl:text-6xl/17.5;
+}
+
+@utility datum-prose-lg {
+  @apply datum-text-lg;
+  @apply prose max-w-none;
+  @apply prose-headings:mt-0 prose-headings:mb-3.5 lg:prose-headings:mb-5;
+}
+
+@utility milo-prose {
+  @apply datum-text-base;
+  @apply prose max-w-none;
+  @apply prose-headings:mt-0 prose-headings:mb-4;
 }

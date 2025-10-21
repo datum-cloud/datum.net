@@ -1,0 +1,58 @@
+@import './fonts.css';
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@import './theme.css';
+
+@layer base {
+  html {
+    @apply antialiased;
+    @apply font-primary;
+    @apply bg-glacier-mist-900;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5 {
+    @apply font-canela;
+  }
+
+  /* Prevent body scroll when mobile menu is active */
+  body {
+    &.mobile-menu-open {
+      @apply fixed w-full touch-none overflow-hidden;
+    }
+  }
+
+  /* Hide elements with x-cloak until Alpine.js initializes */
+  [x-cloak] {
+    @apply hidden;
+  }
+
+  &
+    :is(
+      :where(h1, h2, h3, h4, h5, h6, th):not(:where([class~='not-prose'], [class~='not-prose'] *))
+    ) {
+    color: inherit !important;
+  }
+}
+
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+@import './components-buttons.css';
+
+@import './components-dark.css';

@@ -19,7 +19,7 @@
   }
 
   .article-title {
-    @apply font-alliance text-navy lg:text-38 text-2xl leading-[1.2] font-medium -tracking-[0.5] md:text-3xl;
+    @apply font-alliance text-midnight-fjord lg:text-38 text-2xl leading-[1.2] font-medium -tracking-[0.5] md:text-3xl;
   }
 
   .article-body {
@@ -27,13 +27,13 @@
   }
 
   .article-paragraph {
-    @apply font-alliance text-navy text-xl leading-relaxed font-normal md:text-lg md:leading-relaxed lg:text-lg lg:leading-relaxed;
+    @apply font-alliance text-midnight-fjord text-xl leading-relaxed font-normal md:text-lg md:leading-relaxed lg:text-lg lg:leading-relaxed;
   }
 
   /* Sidebar Component Styles */
 
   aside button span {
-    @apply font-alliance text-navy leading-snug;
+    @apply font-alliance text-midnight-fjord leading-snug;
   }
 
   .handbook-sidebar {
@@ -65,7 +65,7 @@
   }
 
   .handbook-sidebar .category-button {
-    @apply text-navy flex w-full items-center;
+    @apply text-midnight-fjord flex w-full items-center;
   }
 
   .handbook-sidebar .chevron-icon {
@@ -81,7 +81,7 @@
   }
 
   .handbook-sidebar .category-title--active {
-    @apply text-navy font-extrabold capitalize;
+    @apply text-midnight-fjord font-extrabold capitalize;
   }
 
   .handbook-sidebar .menu-list {
@@ -89,7 +89,7 @@
   }
 
   .handbook-sidebar .menu-list::before {
-    @apply bg-navy/40 absolute top-1/2 left-[9px] h-full w-px;
+    @apply bg-midnight-fjord/40 absolute top-1/2 left-[9px] h-full w-px;
   }
 
   .handbook-sidebar .menu-item {
@@ -97,11 +97,11 @@
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-navy/40 hover:text-navy leading-[1.2] transition-colors duration-300 ease-out;
+    @apply text-midnight-fjord/40 hover:text-midnight-fjord leading-[1.2] transition-colors duration-300 ease-out;
   }
 
   .handbook-sidebar .menu-link--active {
-    @apply text-navy/60 hover:text-navy font-bold transition-colors duration-300 ease-out;
+    @apply text-midnight-fjord/60 hover:text-midnight-fjord font-bold transition-colors duration-300 ease-out;
   }
 
   /* Page Navigation Styles */
@@ -112,7 +112,7 @@
 
   .handbook-page-nav-link,
   .handbook-page-nav-link--next {
-    @apply hover:text-green-dark/80 text-green-dark border-green-dark hover:bg-green-dark/10 hover:border-green-dark/80 w-full justify-start gap-2 border px-8 py-10 transition-colors duration-200;
+    @apply hover:text-pine-forge/80 text-pine-forge border-pine-forge hover:bg-pine-forge/10 hover:border-pine-forge/80 w-full justify-start gap-2 border px-8 py-10 transition-colors duration-200;
   }
 
   .handbook-page-nav-link--next {
@@ -121,7 +121,7 @@
 
   .handbook-page-nav-label,
   .handbook-page-nav-label--next {
-    @apply text-green-dark mb-5 flex gap-2 text-sm leading-[1.2] tracking-[0.42px] uppercase;
+    @apply text-pine-forge mb-5 flex gap-2 text-sm leading-[1.2] tracking-[0.42px] uppercase;
   }
 
   .handbook-page-nav-label--next {

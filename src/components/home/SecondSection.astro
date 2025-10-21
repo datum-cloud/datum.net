@@ -3,54 +3,50 @@ import { Image } from 'astro:assets';
 
 import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
 import ImageRight from '@v1/assets/images/good-look-section/right-stone.png';
-import ImageSphere from '@v1/assets/images/good-look-section/sphere.png';
 import type { ContentProps } from '@/src/types/common';
 
 const { content } = Astro.props as ContentProps;
 ---
 
-<section class="bg-pearl-gray section--block section--block--big-pad flex align-middle">
+<section
+  class="bg-glacier-mist-800 section--block pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-28 lg:pb-36 xl:pt-40 xl:pb-40"
+>
+  <div class="max-width flex max-w-243 align-middle">
+    <!-- Main content container -->
+    <div
+      class="fade-in--pure relative z-10 m-auto mb-20 grid max-w-full grid-cols-1 justify-between gap-10 md:grid-cols-2 md:gap-30 xl:gap-26"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+    >
+      <!-- Left content: What does good look like? -->
+      <div class="space-y-10 text-center md:text-left">
+        <h2 class="datum-text-8xl">{content.data.title}</h2>
+        <span class="datum-text-lg">
+          <p>{content.body}</p>
+        </span>
+      </div>
+
+      <!-- Right content: Numbered list -->
+      <div>
+        {
+          content.data.items ? (
+            <ol class="ordered-list">
+              {content.data.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ol>
+          ) : (
+            ''
+          )
+        }
+      </div>
+    </div>
+  </div>
+
   <div class="absolute bottom-0 left-0 z-0 max-w-234">
     <Image src={ImageLeft} layout="constrained" alt="Scene left illustration" class="size-auto" />
   </div>
   <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
     <Image src={ImageRight} layout="constrained" alt="Scene right illustration" class="size-auto" />
-  </div>
-  <div class="absolute top-0 right-0 z-0 hidden max-w-73 md:block">
-    <Image
-      src={ImageSphere}
-      layout="constrained"
-      alt="Scene sphere illustration"
-      class="size-auto"
-    />
-  </div>
-  <!-- Main content container -->
-  <div
-    class="fade-in--pure relative z-10 m-auto mb-40 grid max-w-full grid-cols-1 justify-between gap-9 md:max-w-299 md:grid-cols-2 md:gap-25 lg:gap-35"
-    data-reveal="fade-in--pure--visible"
-    data-reveal-delay="100"
-  >
-    <!-- Left content: What does good look like? -->
-    <div class="text-center md:text-left">
-      <h2 class="h2-leading">{content.data.title}</h2>
-      <span class="text-desc">
-        <p>{content.body}</p>
-      </span>
-    </div>
-
-    <!-- Right content: Numbered list -->
-    <div>
-      {
-        content.data.items ? (
-          <ol class="ordered-list">
-            {content.data.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ol>
-        ) : (
-          ''
-        )
-      }
-    </div>
   </div>
 </section>

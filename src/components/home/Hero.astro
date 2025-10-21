@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { marked } from 'marked';
+import Illustration from '@v1/assets/images/home-illustration.png';
+import Nav from '@components/Nav.astro';
+import Button from '@components/Button.astro';
+import type { HeroProps } from '@/src/types/common';
+
+const { title = '', description = '', class: className } = Astro.props as HeroProps;
+---
+
+<section class:list={['hero--main z-11', className]}>
+  <div class="bg-midnight-fjord aspect-auto h-auto w-full md:aspect-19/9">
+    <Nav />
+    {/* Hero Main Content */}
+    <div
+      class="fade-in--small max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-20 xl:pb-44"
+      data-reveal="fade-in--small--visible"
+      data-reveal-immediate="true"
+      data-reveal-delay="200"
+    >
+      <h1
+        class="datum-text-10xl m-auto max-w-117 text-white"
+        set:html={marked.parseInline(title)}
+      />
+
+      {
+        description && (
+          <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
+        )
+      }
+
+      <div class="flex flex-col justify-center gap-6 sm:flex-row">
+        <Button
+          class="btn btn--aurora-moss"
+          text="View on GitHub"
+          icon={{ name: 'arrow-right', size: 'md' }}
+          href="https://github.com/datum-cloud/datum/"
+        />
+        <Button class="btn btn--midnight-fjord-alpha" text="About the Platform" href="/features/" />
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 z-0 flex h-full w-full items-end">
+      <Image
+        src={Illustration}
+        layout="constrained"
+        loading="eager"
+        fetchpriority="high"
+        alt="Hero Illustration"
+        class="fade-in-pure h-auto w-full translate-y-[3%] object-cover md:object-contain"
+        data-reveal="fade-in-pure--visible"
+        data-reveal-delay="300"
+        data-reveal-immediate="true"
+      />
+    </div>
+  </div>
+</section>

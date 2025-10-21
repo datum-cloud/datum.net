@@ -1,6 +1,5 @@
 ---
 import type { NavData } from '@/src/types/navigation';
-import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
 import navigation from '@data/navigation.json';
 
@@ -158,15 +157,22 @@ const mainNav = navData.main;
 
       <div class="mobile-menu-actions">
         <Button
-          class="btn btn--primary btn--navy gh-button min-w-[115px]"
+          class="btn btn--clean text-midnight-fjord/40 hover:text-midnight-fjord/80"
+          icon={{ name: 'messages-square', size: 'md' }}
+          iconPosition="left"
+          iconClass="stroke-1.5"
+          target="_blank"
+          href="https://link.datum.net/discord"
+        />
+
+        <Button
+          class="btn btn--clean text-midnight-fjord/40 hover:text-midnight-fjord/80"
           icon={{ name: 'github', size: 'md' }}
           iconPosition="left"
           iconClass="stroke-1.5"
           target="_blank"
           href="https://github.com/datum-cloud/datum/"
-        >
-          <GithubStargazerValue server:defer />
-        </Button>
+        />
       </div>
     </div>
   </div>

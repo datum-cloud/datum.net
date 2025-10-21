@@ -56,10 +56,6 @@
   ],
   "footer": [
     {
-      "title": "Product",
-      "items": [{ "text": "Features", "href": "/features/" }]
-    },
-    {
       "title": "Docs",
       "items": [
         { "text": "Getting Started", "href": "/docs/" },
@@ -85,11 +81,11 @@
       ]
     },
     {
-      "title": "Access",
+      "title": "Trust Center",
       "items": [
-        { "text": "GitHub", "href": "https://github.com/datum-cloud", "isExternal": true },
-        { "text": "Log In", "href": "https://cloud.datum.net/" },
-        { "text": "Community Huddle", "href": "/community-huddle/" }
+        { "text": "Terms of Service", "href": "/legal/terms/" },
+        { "text": "Privacy Policy", "href": "/legal/privacy/" },
+        { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }
   ],

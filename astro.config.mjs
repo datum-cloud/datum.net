@@ -103,16 +103,12 @@ export default defineConfig({
 
       sidebar: [
         {
-          label: 'Datum Documentation',
+          label: 'Introduction',
           link: '/docs/',
         },
         {
-          label: 'Overview',
+          label: 'Datum Documentation',
           autogenerate: { directory: 'docs/overview' },
-        },
-        {
-          label: 'Quick Start',
-          autogenerate: { directory: 'docs/quickstart' },
         },
         {
           label: 'Platform',

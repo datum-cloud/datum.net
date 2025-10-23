@@ -3,7 +3,7 @@
   .btn {
     @apply datum-text-base inline-flex max-h-[52px] items-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
     @apply border-white/20 hover:bg-white/10;
-    @apply px-5 py-3 md:px-6 md:py-3.5;
+    @apply px-5 py-3 md:px-6 md:py-3.75;
     .btn-icon {
       @apply text-blush-quartz;
     }
@@ -15,6 +15,9 @@
 
   /* Button Color Variations */
 
+  .btn--icon {
+    @apply px-3 md:px-5;
+  }
   .btn--pine-forge {
     @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white;
   }

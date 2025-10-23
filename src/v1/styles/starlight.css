@@ -68,6 +68,7 @@
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
     --__sl-font: var(--font-primary);
+    --sl-z-index-menu: 90;
 
     --color-note: #fffbc5;
     --color-caution: #fde2e2;
@@ -155,6 +156,18 @@
   }
 }
 
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+@import './components-buttons.css';
+
+@import './components-dark.css';
+
 @layer starlight.components {
   .expressive-code .frame pre {
     background: var(--ec-code-background) !important;
@@ -171,12 +184,16 @@
       }
     }
 
-    .footer-docs {
+    .footer {
       @apply border-t-1 border-[color:var(--color-borderpanel)];
     }
   }
 
   .sl-markdown-content {
+    @apply datum-docs-article-body;
+    /* @apply prose max-w-none; */
+    @apply text-[color:var(--sl-color-text)];
+
     .starlight-aside {
       @apply px-8 py-6;
     }
@@ -198,6 +215,24 @@
 
     .starlight-aside__title {
       @apply text-midnight-fjord text-lg font-semibold;
+    }
+
+    h1,
+    h2,
+    h3 {
+      @apply font-bold;
+    }
+
+    h1 {
+      @apply datum-text-2xl;
+    }
+
+    h2 {
+      @apply datum-text-xl;
+    }
+
+    h3 {
+      @apply datum-text-lg;
     }
   }
 }
@@ -338,7 +373,7 @@
         summary {
           @apply p-0 hover:text-(--sl-color-text-accent);
           .large {
-            @apply text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+            @apply datum-docs-sidebar-headings text-(--sl-color-text);
           }
         }
 
@@ -347,7 +382,7 @@
         }
 
         > a.large {
-          @apply p-0 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase hover:text-(--sl-color-text-accent);
+          @apply datum-docs-sidebar-headings p-0 text-(--sl-color-text) hover:text-(--sl-color-text-accent);
         }
         > a.large[aria-current='page'] {
           @apply bg-transparent font-bold text-(--sl-color-text-accent);
@@ -358,11 +393,7 @@
           @apply mb-[5px];
 
           a {
-            @apply p-0 pr-5 text-[13px] leading-[16px] text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
-
-            span {
-              @apply leading-[18px];
-            }
+            @apply datum-docs-sidebar-links p-0 pr-5 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
           }
 
           a[aria-current='page'] {
@@ -375,8 +406,6 @@
 
   .main-frame {
     @apply relative mx-auto flex w-full max-w-391;
-    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[(215px)_1fr] xl:grid-cols-[(259px)_1fr]; */
-    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[215px__1fr] lg:grid-cols-[259px__1fr]; */
   }
 
   /* End of PageFrame.astro */
@@ -399,7 +428,7 @@
       @apply border-t-0;
     }
 
-    @apply [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:text-3xl;
+    @apply [&_.content-panel:first-child_h1]:datum-text-3xl [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:font-bold;
 
     .sl-container {
       @apply max-w-none;
@@ -410,8 +439,6 @@
   /* TwoColumnContent.astro */
 
   .sl-content-panel {
-    /* @apply w-full; */
-    /* @apply grid md:grid-cols-1 lg:grid-cols-[1fr_max(198px)] xl:grid-cols-[1fr_max(213px)]; */
     @apply relative block w-full grow md:w-[calc(100%-215px)] md:pr-0 lg:w-[calc(100%-198px)] lg:pr-[198px] xl:w-[calc(100%-213px)] xl:pr-[213px];
   }
 
@@ -443,26 +470,20 @@
       @apply p-0;
 
       h2 {
-        @apply mb-3 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+        @apply datum-docs-sidebar-headings mb-3 text-(--sl-color-text);
       }
 
       ul {
         li {
           @apply mb-[5px];
           a {
-            @apply p-0 text-[13px] leading-[18px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+            @apply datum-docs-sidebar-links p-0 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
           }
         }
         ul {
           @apply mt-[5px];
         }
       }
-    }
-    .right-sidebar-panel a {
-      @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
-    }
-    .right-sidebar-panel a:hover {
-      color: var(--sl-color-white);
     }
   }
 
@@ -473,7 +494,7 @@
   nav.c-breadcrumbs {
     /* Breadcrumbs styles */
 
-    @apply mt-6 flex items-center overflow-x-hidden px-0 text-xs font-medium md:mt-9 md:px-10;
+    @apply datum-docs-sidebar-links mt-6 flex items-center overflow-x-hidden px-0 opacity-80 md:mt-9 md:px-10;
 
     ol {
       @apply flex h-6 w-full items-center;
@@ -502,7 +523,7 @@
       @apply mx-2 text-[color:var(--sl-color-text)];
     }
     a {
-      @apply text-nowrap text-[color:var(--sl-color-text)]/80 no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)]/80;
+      @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
     }
     svg {
       @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
@@ -514,22 +535,14 @@
     > a {
       @apply rounded-none border-[color:var(--sl-color-text)] px-7 py-6 transition-all duration-200 hover:border-[color:var(--sl-color-text)]/50;
       span {
-        @apply text-[11px] leading-[1.45] font-semibold uppercase;
+        @apply datum-docs-sidebar-headings;
         .link-title {
-          @apply mt-2 block text-base leading-[1.5] font-bold capitalize;
+          @apply datum-text-base mt-2 block font-bold capitalize;
         }
       }
     }
   }
 }
-
-@import './utilities.css';
-
-@import './components.css';
-
-@import './components-hero.css';
-
-@import './components-nav.css';
 
 .sl-markdown-content .expressive-code .frame {
   @apply shadow-none;

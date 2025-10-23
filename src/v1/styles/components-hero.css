@@ -92,35 +92,6 @@
     }
   }
 
-  .hero--small-pad {
-    .hero--main-content-inner {
-      @apply pb-22;
-    }
-  }
-
-  .hero--home-pad {
-    .hero--main-content-inner {
-      @apply pt-12 md:pt-9 xl:pt-16;
-    }
-
-    .hero--main-content-title-container {
-      @apply flex-col gap-5 md:gap-6 xl:gap-9;
-    }
-  }
-
-  .hero--pad {
-    .hero--main-content-inner {
-      @apply pb-36 md:pb-32 lg:pb-40;
-      @apply pt-16 lg:pt-20;
-    }
-  }
-
-  .hero--nav-pad {
-    .nav--main {
-      @apply pb-6 md:pb-9 lg:pb-12.5;
-    }
-  }
-
   .hero--main-content {
     @apply relative z-0 flex aspect-auto w-full flex-col items-center md:h-auto;
   }

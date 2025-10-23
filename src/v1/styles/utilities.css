@@ -96,11 +96,24 @@
   @apply text-sm xl:text-base;
 }
 
-@utility datum-sidebar-headings {
+@utility datum-docs-sidebar-headings {
   @apply font-alliance font-medium uppercase;
   @apply tracking-[0.5px];
   @apply text-10/4;
   @apply md:text-11/4;
+}
+
+@utility datum-docs-sidebar-links {
+  @apply font-alliance;
+  @apply text-xs/3.5;
+  @apply lg:text-xs/4;
+  @apply md:text-13/4.5;
+}
+
+@utility datum-docs-article-body {
+  @apply font-alliance;
+  @apply text-sm/5.25;
+  @apply xl:text-base/6;
 }
 
 @utility datum-list-headings {

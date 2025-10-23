@@ -2,6 +2,8 @@
 import Nav from '@components/Nav.astro';
 ---
 
-<section class="hero--main hero--nav-pad">
+<section
+  class="hero--main [&_.nav-actions_.gh-button]:md:hidden [&_.nav-actions_.gh-button]:lg:inline-flex"
+>
   <Nav showLoginButton={false} showThemeSelect={true} showGithubButton={true} />
 </section>

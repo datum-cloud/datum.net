@@ -4,7 +4,7 @@
     @apply max-width relative z-50 m-auto flex w-full items-center justify-between py-2.5 md:grid md:grid-cols-6 md:py-6;
 
     .nav-actions {
-      @apply col-span-1 mr-5 ml-auto inline-block items-center space-x-3 justify-self-end md:mr-0;
+      @apply col-span-1 mr-3 ml-auto flex items-center gap-3.5 justify-self-end md:mr-0;
 
       .btn {
         svg {

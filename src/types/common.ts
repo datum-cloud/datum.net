@@ -123,6 +123,7 @@ export interface ButtonProps {
 export interface FooterProps {
   showCTA?: boolean;
   showBackground?: boolean;
+  showIllustration?: boolean;
 }
 
 export interface ContainerProps {

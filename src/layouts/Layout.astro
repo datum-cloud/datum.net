@@ -18,8 +18,10 @@ const {
 } = Astro.props as LayoutProps;
 
 // Import CSS conditionally
-if (bodyClass === 'home-page') {
+if (bodyClass === 'page-home') {
   await import('@v1/styles/page-home.css');
+} else if (bodyClass === 'page-brand') {
+  await import('@v1/styles/page-brand.css');
 } else {
   await import('@v1/styles/global.css');
 }

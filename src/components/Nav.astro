@@ -42,10 +42,12 @@ const {
 
   {/* Desktop Actions */}
   <div class="nav-actions">
+    {showThemeSelect && <ThemeSelect />}
+
     {
       showGithubButton && (
         <Button
-          class={`btn gh-button fade-in--pure min-w-[115px]`}
+          class={`btn gh-button fade-in--pure`}
           data-reveal="fade-in--pure--visible"
           data-reveal-delay="100"
           data-reveal-immediate="true"
@@ -63,7 +65,7 @@ const {
     {
       showLoginButton && (
         <Button
-          class="btn fade-in--pure min-w-[115px]"
+          class="btn fade-in--pure"
           data-reveal="fade-in--pure--visible"
           data-reveal-delay="100"
           data-reveal-immediate="true"
@@ -75,8 +77,6 @@ const {
         />
       )
     }
-
-    {showThemeSelect && <ThemeSelect />}
   </div>
 
   {/* Mobile Menu Component */}

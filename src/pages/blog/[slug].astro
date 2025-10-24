@@ -81,8 +81,6 @@ const fm = entry.data;
 const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
-const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
-const icon = 'book-image';
 ---
 
 <Layout
@@ -96,17 +94,10 @@ const icon = 'book-image';
   meta={meta}
 >
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={icon}
-      title={title}
-      subtitle={subtitle}
-      hideContent={true}
-      class="hero--nav-pad light"
-    />
+    <Hero class="light" hideContent={true} />
 
     <section
-      class="blog-detail bg-glacier-mist-800 section--block section--block--pad pt-19 md:pt-22 lg:pt-29"
+      class="blog-detail bg-glacier-mist-700 section--block section--block--pad pt-19 md:pt-22 lg:pt-29"
     >
       <article class="blog-article">
         <!-- Hidden meta tags for Pagefind -->

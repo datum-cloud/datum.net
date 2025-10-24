@@ -36,7 +36,7 @@ const {
                   <Icon name={iconName} size="md" />
                 </div>
               )}
-              {subtitle && subtitle !== '' && <span>{subtitle}</span>}
+              {subtitle && subtitle !== '' && <span set:html={subtitle} />}
             </div>
           ) : null}
 

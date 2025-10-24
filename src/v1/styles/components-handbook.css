@@ -1,7 +1,7 @@
 /* Handbook Article Styles */
 @layer components {
   .handbook-container {
-    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20 lg:gap-30 xl:gap-35 2xl:gap-40;
+    @apply flex w-full flex-col gap-4 md:flex-row md:gap-8 xl:gap-17.25;
   }
 
   .handbook-container--no-sidebar {
@@ -11,19 +11,20 @@
   /* Main Content */
 
   .handbook-content {
-    @apply max-w-none flex-1;
+    @apply max-w-none flex-grow;
   }
 
   .article-header {
-    @apply mb-12;
+    @apply mb-8;
   }
 
   .article-title {
-    @apply font-alliance text-midnight-fjord lg:text-38 text-2xl leading-[1.2] font-medium -tracking-[0.5] md:text-3xl;
+    @apply datum-text-3xl font-semibold;
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-19 max-w-none space-y-6 text-lg md:text-xl [&_*]:leading-[1.45];
+    /* @apply prose datum-text-lg max-w-none; */
+    @apply datum-prose-lg;
   }
 
   .article-paragraph {
@@ -37,31 +38,23 @@
   }
 
   .handbook-sidebar {
-    @apply font-alliance relative flex h-full w-full flex-col gap-y-4 overflow-y-auto text-base md:w-76 md:text-lg;
+    @apply relative mb-3 flex h-full w-full flex-col gap-y-4 md:mb-0 md:max-w-58 md:min-w-58;
   }
 
   .handbook-sidebar nav {
-    @apply flex items-start justify-start gap-3;
-  }
-
-  .handbook-sidebar ul {
-    @apply flex shrink grow basis-0 flex-col gap-y-4;
-  }
-
-  .handbook-sidebar li {
-    @apply py-2 md:block md:px-2;
+    @apply flex w-full items-start justify-start;
   }
 
   .handbook-sidebar .menu-container {
-    @apply rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
+    @apply w-full space-y-2.5 rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
   }
 
   .handbook-sidebar .menu-category {
-    @apply mb-4 max-w-sm;
+    @apply w-full;
   }
 
   .handbook-sidebar .category-header {
-    @apply flex flex-row;
+    @apply flex flex-row py-1.75;
   }
 
   .handbook-sidebar .category-button {
@@ -69,7 +62,7 @@
   }
 
   .handbook-sidebar .chevron-icon {
-    @apply mt-[-.0625rem] mr-2 inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
+    @apply mt-[-.0625rem] inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
   }
 
   .handbook-sidebar .category-title-container {
@@ -77,42 +70,39 @@
   }
 
   .handbook-sidebar .category-title {
-    @apply capitalize;
+    @apply datum-docs-sidebar-headings font-medium;
   }
 
   .handbook-sidebar .category-title--active {
-    @apply text-midnight-fjord font-extrabold capitalize;
   }
 
   .handbook-sidebar .menu-list {
-    @apply relative mt-5 flex flex-col gap-0 pl-7 leading-loose before:-translate-y-1/2;
-  }
-
-  .handbook-sidebar .menu-list::before {
-    @apply bg-midnight-fjord/40 absolute top-1/2 left-[9px] h-full w-px;
+    @apply relative flex flex-col pr-7;
   }
 
   .handbook-sidebar .menu-item {
-    /* Base menu item styles */
+    @apply p-0;
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-midnight-fjord/40 hover:text-midnight-fjord leading-[1.2] transition-colors duration-300 ease-out;
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
   }
 
   .handbook-sidebar .menu-link--active {
-    @apply text-midnight-fjord/60 hover:text-midnight-fjord font-bold transition-colors duration-300 ease-out;
+    @apply text-canyon-clay---links font-bold;
   }
 
   /* Page Navigation Styles */
 
   .handbook-page-nav {
-    @apply mt-16 flex flex-col gap-4 md:flex-row;
+    @apply mt-10 flex flex-col gap-4 md:mt-14 md:flex-row;
   }
 
   .handbook-page-nav-link,
   .handbook-page-nav-link--next {
-    @apply hover:text-pine-forge/80 text-pine-forge border-pine-forge hover:bg-pine-forge/10 hover:border-pine-forge/80 w-full justify-start gap-2 border px-8 py-10 transition-colors duration-200;
+    @apply hover:text-midnight-fjord/80 text-midnight-fjord border-midnight-fjord hover:bg-midnight-fjord/5 hover:border-midnight-fjord/80;
+    @apply w-full justify-start gap-2 border transition-colors duration-200;
+    @apply px-7 py-6;
   }
 
   .handbook-page-nav-link--next {
@@ -121,7 +111,13 @@
 
   .handbook-page-nav-label,
   .handbook-page-nav-label--next {
-    @apply text-pine-forge mb-5 flex gap-2 text-sm leading-[1.2] tracking-[0.42px] uppercase;
+    @apply text-midnight-fjord flex gap-2;
+  }
+
+  .handbook-page-nav-label,
+  .handbook-page-nav-label--next {
+    @apply text-midnight-fjord mb-2;
+    @apply datum-docs-sidebar-headings font-medium;
   }
 
   .handbook-page-nav-label--next {
@@ -133,6 +129,6 @@
   }
 
   .handbook-page-nav-title {
-    @apply text-19 block leading-[1.2] font-medium;
+    @apply datum-text-base font-semibold;
   }
 }

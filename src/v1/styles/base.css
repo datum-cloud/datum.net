@@ -3,7 +3,11 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/aspect-ratio";
 
+@import './variables.css';
+
 @import './theme.css';
+
+@import './variables-breakpoints.css';
 
 @layer base {
   html {

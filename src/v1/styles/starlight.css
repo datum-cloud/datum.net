@@ -6,7 +6,11 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/aspect-ratio";
 
+@import './variables.css';
+
 @import './theme.css';
+
+@import './variables-breakpoints.css';
 
 @layer base {
   html,
@@ -68,7 +72,7 @@
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
     --__sl-font: var(--font-primary);
-    --sl-z-index-menu: 90;
+    --sl-z-index-menu: 70;
 
     --color-note: #fffbc5;
     --color-caution: #fde2e2;

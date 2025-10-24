@@ -289,4 +289,38 @@
   .glossary-tooltip-description {
     @apply text-sm leading-relaxed text-gray-700;
   }
+
+  /* article aside */
+  .article-aside {
+    @apply border-midnight-fjord/10 text-midnight-fjord relative mb-7 flex w-full flex-col gap-3 rounded-[4px] border-l-4 px-8 py-6 md:mb-11.5 xl:mb-14;
+
+    &.article-aside--note {
+      @apply bg-pale-yellow;
+    }
+
+    &.article-aside--caution {
+      @apply bg-misty-rose;
+    }
+
+    &.article-aside--tip {
+      @apply bg-platinum;
+    }
+  }
+
+  .article-aside-close {
+    @apply absolute top-6 right-8 opacity-20 transition-opacity duration-200 hover:cursor-pointer;
+    @apply hover:opacity-100;
+  }
+
+  .article-aside-header {
+    @apply flex items-center gap-2;
+  }
+
+  .article-aside-title {
+    @apply datum-text-lg font-semibold;
+  }
+
+  .article-aside-content {
+    @apply datum-text-base text-wrap;
+  }
 }

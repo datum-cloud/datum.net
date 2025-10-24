@@ -139,3 +139,9 @@ export interface CardProps {
   url?: string;
   icon?: string;
 }
+
+export interface AsideProps {
+  type?: 'note' | 'caution' | 'tip';
+  icon?: string;
+  title: string;
+}

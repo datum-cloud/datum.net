@@ -116,7 +116,7 @@
     @apply text-midnight-fjord hover:text-midnight-fjord/80 datum-text-base flex items-center gap-5 transition-colors duration-200;
 
     span {
-      @apply font-bold;
+      @apply font-semibold;
     }
   }
 
@@ -145,7 +145,7 @@
   }
 
   .hero--main-content-description {
-    @apply datum-text-xl text-cultured m-auto mt-0 mb-0 max-w-3xl opacity-80;
+    @apply datum-text-xl m-auto mt-0 mb-0 max-w-3xl opacity-80;
 
     a {
       @apply hover:text-midnight-fjord/70 hover:border-midnight-fjord/70 border-midnight-fjord border-b transition-colors hover:cursor-pointer;

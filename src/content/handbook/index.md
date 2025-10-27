@@ -1,11 +1,11 @@
 ---
 title: How we work
 subtitle: Handbook
-description: "This is our guide to understanding our company foundations: our values, beliefs, and goals."
+description: "The guide to Datum's foundations: our open source cloud for AI strategy, values, and goals. Get AI-native solutions & network infrastructure services for a modern, private cloud."
 sidebar:
   label: handbooks
 meta:
-  title: Datum Handbook
+  title: "Datum Handbook: Open Source Cloud for AI & Network Infrastructure"
 contents:
   - company
   - engineering

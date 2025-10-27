@@ -11,6 +11,10 @@
 
 @layer base {
   html {
+    scroll-behavior: smooth;
+  }
+
+  html {
     @apply antialiased;
     @apply font-primary;
     @apply bg-glacier-mist-900;
@@ -18,7 +22,7 @@
 
   html,
   body {
-    @apply overflow-x-hidden;
+    @apply overflow-x-clip;
   }
 
   .prose h1,

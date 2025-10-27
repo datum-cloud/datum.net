@@ -21,14 +21,12 @@ const pageSize = config.pageSize;
 const currentPage = 1;
 const totalItems = sortedPosts.length;
 const totalPages = Math.ceil(totalItems / pageSize);
-const currentPageData = sortedPosts.slice(0, pageSize);
+// Get featured posts (first 3 newest posts)
+const featuredPosts = sortedPosts.slice(0, 3);
 
-// Get featured post (first/newest post)
-const featuredPost = sortedPosts[0];
-
-// Get author data for current page posts
-const postsWithAuthors = await Promise.all(
-  currentPageData.map(async (post) => {
+// Get author data for featured posts
+const featuredPostsWithAuthors = await Promise.all(
+  featuredPosts.map(async (post) => {
     let authorData = null;
     if (post.data.author) {
       authorData = await getCollectionEntry('authors', post.data.author);
@@ -37,11 +35,18 @@ const postsWithAuthors = await Promise.all(
   })
 );
 
-// Get featured post author data
-let featuredAuthor = null;
-if (featuredPost?.data.author) {
-  featuredAuthor = await getCollectionEntry('authors', featuredPost.data.author);
-}
+// Get author data for current page posts (excluding featured posts)
+const remainingPosts = sortedPosts.slice(3);
+const currentPageRemainingData = remainingPosts.slice(0, pageSize - 3);
+const postsWithAuthors = await Promise.all(
+  currentPageRemainingData.map(async (post) => {
+    let authorData = null;
+    if (post.data.author) {
+      authorData = await getCollectionEntry('authors', post.data.author);
+    }
+    return { post, authorData };
+  })
+);
 
 // Pagination setup
 const baseUrl = '/blog';
@@ -49,32 +54,33 @@ const prevUrl = currentPage > 1 ? `${baseUrl}/${currentPage - 1}` : undefined;
 const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : undefined;
 ---
 
-<div class="relative m-auto md:max-w-391">
-  <!-- Featured Article Section -->
-  {featuredPost && <FeaturedPost post={featuredPost} author={featuredAuthor} />}
-
-  <!-- Category Filters and Search -->
-  <!-- <BlogFilters /> -->
-
-  <!-- Blog List -->
-  <div class="blog-list">
-    {
-      postsWithAuthors.map(({ post, authorData }) => (
-        <BlogItem post={post} authorData={authorData} />
-      ))
-    }
-  </div>
-
-  <!-- Pagination -->
+<div
+  class="featured-posts-section fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-immediate="true"
+  data-reveal-delay="100"
+>
   {
-    totalPages > 1 && (
-      <BlogPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        baseUrl={baseUrl}
-        prevUrl={prevUrl}
-        nextUrl={nextUrl}
-      />
-    )
+    featuredPostsWithAuthors.map(({ post, authorData }) => (
+      <FeaturedPost post={post} author={authorData} />
+    ))
   }
 </div>
+
+<!-- <BlogFilters /> -->
+
+<div class="blog-list">
+  {postsWithAuthors.map(({ post, authorData }) => <BlogItem post={post} authorData={authorData} />)}
+</div>
+
+{
+  totalPages > 1 && (
+    <BlogPagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      baseUrl={baseUrl}
+      prevUrl={prevUrl}
+      nextUrl={nextUrl}
+    />
+  )
+}

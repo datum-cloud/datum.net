@@ -18,6 +18,10 @@
             }
           }
         }
+
+        .link--active {
+          @apply [&>span]:border-white/70;
+        }
       }
     }
     &.light {
@@ -37,6 +41,10 @@
               @apply text-canyon-clay;
             }
           }
+        }
+
+        .link--active {
+          @apply [&>span]:border-midnight-fjord/70;
         }
       }
 
@@ -145,7 +153,7 @@
   }
 
   .hero--main-content-description {
-    @apply datum-text-xl m-auto mt-0 mb-0 max-w-3xl opacity-80;
+    @apply datum-text-xl m-auto mt-0 mb-0 max-w-xl opacity-80;
 
     a {
       @apply hover:text-midnight-fjord/70 hover:border-midnight-fjord/70 border-midnight-fjord border-b transition-colors hover:cursor-pointer;

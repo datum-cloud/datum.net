@@ -1,11 +1,16 @@
 @layer components {
+  /* Featured Posts Section */
+  .featured-posts-section {
+    @apply mb-5 flex gap-3.5 overflow-x-auto pb-3 md:mb-16 md:gap-9 md:overflow-x-clip md:pb-0 xl:gap-18;
+  }
+
   /* Featured Section */
   .blog-featured {
-    @apply relative mb-32 flex flex-col items-stretch gap-12 md:flex-row md:gap-18 lg:gap-22 xl:gap-30;
+    @apply relative flex min-w-51.5 flex-1 flex-col items-stretch gap-6 md:min-w-0 xl:gap-9;
   }
 
   .blog-featured--image {
-    @apply w-full overflow-hidden rounded-lg md:max-w-100 lg:max-w-129 xl:max-w-179;
+    @apply w-full overflow-hidden rounded-[4px];
 
     img {
       @apply size-auto w-full object-cover;
@@ -13,23 +18,24 @@
   }
 
   .blog-featured--text {
-    @apply flex w-full max-w-xl flex-1 flex-col align-middle;
+    @apply text-glacier-mist-700 flex w-full max-w-xl flex-col gap-3;
   }
 
-  .blog-featured--date {
-    @apply text-aurora-moss font-alliance mb-4 text-sm font-medium tracking-[1px] uppercase;
+  .blog--date {
+    @apply datum-text-sm opacity-40;
   }
 
   .blog-featured--title {
-    @apply font-alliance mb-5.5 text-4xl leading-[1.2] font-medium -tracking-[0.25px] text-white;
+    @apply datum-text-2xl font-medium;
   }
 
-  .blog-featured--title a {
-    @apply hover:text-aurora-moss transition-colors;
+  .blog-featured--title a,
+  .blog-item--title a {
+    @apply hover:text-glacier-mist-800 transition-colors;
   }
 
   .blog-featured--excerpt {
-    @apply font-alliance mb-8 text-xl leading-[1.6] text-white/80;
+    @apply datum-text-base opacity-80;
   }
 
   .blog-featured--author {
@@ -113,23 +119,18 @@
 
   /* Blog List */
   .blog-list {
-    @apply mb-16 space-y-8;
   }
 
   .blog-item {
-    @apply relative mb-0 flex flex-col items-start justify-between gap-6 border-b-1 border-white/25 py-8 first:border-t-1 md:flex-row;
+    @apply border-glacier-mist-900/10 relative mb-0 flex items-start justify-between gap-8 border-b-1 py-6 first:border-t-1 md:gap-12;
   }
 
   .blog-item--title {
-    @apply font-alliance flex-1 text-xl leading-tight font-medium tracking-tight text-white md:text-2xl;
-  }
-
-  .blog-item--title a {
-    @apply hover:text-aurora-moss transition-colors;
+    @apply datum-text-xl flex-1 text-white;
   }
 
   .blog-item--meta {
-    @apply flex items-center gap-6 md:gap-8 lg:gap-12 xl:gap-16;
+    @apply flex items-center gap-6;
   }
 
   .blog-item--category {
@@ -156,10 +157,6 @@
     @apply flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white;
   }
 
-  .blog-item--date {
-    @apply text-aurora-moss font-alliance max-w-25 text-right text-sm font-medium uppercase;
-  }
-
   /* Pagination */
   .blog-pagination {
     @apply flex items-center justify-center gap-4;
@@ -174,30 +171,34 @@
   }
 
   /* Blog Detail Styles */
+  .blog-detail {
+    @apply flex gap-0 md:gap-9 lg:gap-12 xl:gap-20;
+  }
+
+  .blog-aside {
+    @apply hidden w-43.5 md:inline-flex;
+  }
+
   .blog-article {
-    @apply mx-auto max-w-5xl;
+    @apply max-w-179 flex-grow;
   }
 
   .blog-article-container {
     @apply container mx-auto max-w-4xl px-6;
   }
 
-  .blog-article-header {
-    @apply m-auto mb-16 max-w-4xl text-left;
+  .blog-article-header,
+  .blog-article-image {
+    @apply mb-4 md:mb-6 lg:mb-10;
   }
 
   .blog-back-button {
     @apply hover:text-pine-forge/80 text-pine-forge inline-flex items-center gap-1.5 text-sm leading-[1.2] font-semibold tracking-[1px] uppercase transition-colors;
   }
 
-  .blog-article-meta {
-    @apply border-pine-forge/20 mb-8 border-b pb-8.25 md:mb-10 lg:mb-12;
+  .blog-aside-content {
+    @apply z-10 block w-full space-y-4 self-start pt-3;
   }
-
-  .blog-article-meta-content {
-    @apply flex items-center gap-4;
-  }
-
   .blog-article-date,
   .blog-article-share {
     @apply font-alliance text-19 text-pine-forge leading-[1.2];
@@ -216,7 +217,7 @@
   }
 
   .blog-article-title {
-    @apply font-canela text-midnight-fjord tracking-1 lg:text-54 mb-8 text-3xl leading-[1.1] font-normal md:mb-10 md:text-5xl lg:mb-12;
+    @apply datum-text-8xl;
   }
 
   .blog-article-description {
@@ -224,60 +225,23 @@
   }
 
   .blog-article-image {
-    @apply mb-16 overflow-hidden rounded-lg;
+    @apply overflow-hidden;
 
     img {
-      @apply h-auto w-full object-cover;
+      @apply h-auto w-full rounded-[4px] object-cover;
     }
   }
 
   .blog-article-content {
-    @apply prose prose-xl prose-p:mb-3 prose-p:mt-0 prose-stone font-alliance text-midnight-fjord mx-auto mb-16 max-w-4xl [&_*]:leading-[1.45];
-    @apply prose-h2:text-[32px];
-    @apply prose-h3:text-[28px];
-    @apply prose-h4:text-[24px];
-    @apply prose-h5:text-[20px];
-    @apply prose-h6:text-[16px];
-    @apply prose-headings:leading-[1.25] prose-headings:-tracking-[0.25px] prose-headings:prose-headings:mt-6 prose-headings:font-alliance prose-headings:text-midnight-fjord prose-headings:font-medium;
-
-    p,
-    ul,
-    ol,
-    a,
-    blockquote,
-    code,
-    pre,
-    figure,
-    figcaption,
-    mark,
-    time,
-    address {
-      @apply lg:text-19 text-lg md:text-xl;
-    }
-
-    a {
-      @apply text-pine-forge hover:text-mauve transition-colors;
-    }
-
-    blockquote {
-      @apply border-pine-forge text-midnight-fjord/80 border-l-4 pl-6 italic;
-    }
-
-    code {
-      @apply rounded bg-gray-100 px-2 py-1 text-base;
-    }
-
-    pre {
-      @apply rounded-lg bg-gray-900 p-4;
-    }
+    @apply datum-prose-article;
   }
 
   .blog-article-author {
-    @apply m-auto mb-16 flex max-w-4xl items-center gap-4;
+    @apply flex w-full items-center gap-4;
   }
 
   .blog-article-author-avatar {
-    @apply h-13 w-13 overflow-hidden rounded-full bg-gray-200;
+    @apply h-8.5 w-8.5 overflow-hidden rounded-[4px] bg-gray-200;
   }
 
   .blog-article-author-image {
@@ -285,7 +249,7 @@
   }
 
   .blog-article-author-name {
-    @apply font-alliance text-midnight-fjord text-lg font-medium;
+    @apply datum-text-sm font-medium;
   }
 
   .blog-article-error {
@@ -294,38 +258,5 @@
     p {
       @apply text-red-600;
     }
-  }
-
-  /* Article Navigation */
-  .article-navigation {
-    @apply m-auto mt-16 flex max-w-4xl flex-col gap-4 md:flex-row;
-  }
-
-  .article-navigation-item {
-    @apply border-pine-forge hover:bg-pine-forge/5 rounded-lg border p-8;
-  }
-
-  .article-navigation-prev {
-    @apply w-full justify-start;
-
-    .article-navigation-label {
-      @apply justify-start;
-    }
-  }
-
-  .article-navigation-next {
-    @apply w-full justify-end text-right;
-
-    .article-navigation-label {
-      @apply justify-end;
-    }
-  }
-
-  .article-navigation-label {
-    @apply font-alliance text-pine-forge mb-4 flex items-center gap-2 text-sm font-medium tracking-wide uppercase;
-  }
-
-  .article-navigation-title {
-    @apply font-alliance text-pine-forge hover:text-mauve text-lg font-medium transition-colors;
   }
 }

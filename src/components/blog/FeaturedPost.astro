@@ -2,18 +2,13 @@
 import { Image } from 'astro:assets';
 import { formatISODate, estimateReadingTime } from '@utils/dateUtils';
 
-const { post, author } = Astro.props;
+const { post } = Astro.props;
 
 // Calculate reading time
 const readingTime = estimateReadingTime(post.body || '');
 ---
 
-<div
-  class="blog-featured fade-in--pure"
-  data-reveal="fade-in--pure--visible"
-  data-reveal-immediate="true"
-  data-reveal-delay="100"
->
+<div class="blog-featured">
   <!-- Image on the left -->
   <div class="blog-featured--image">
     {
@@ -29,10 +24,16 @@ const readingTime = estimateReadingTime(post.body || '');
     }
   </div>
 
-  <!-- Content on the right -->
   <div class="blog-featured--text">
-    <!-- Date -->
-    <div class="blog-featured--date">
+    <h1 class="blog-featured--title">
+      <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+    </h1>
+
+    <p class="blog-featured--excerpt">
+      {post.data.description || ''}
+    </p>
+
+    <div class="blog--date">
       <time datetime={formatISODate(post.data.date)}>
         {
           new Date(post.data.date).toLocaleDateString('en-US', {
@@ -43,39 +44,5 @@ const readingTime = estimateReadingTime(post.body || '');
         } | {readingTime.text}
       </time>
     </div>
-
-    <!-- Title -->
-    <h1 class="blog-featured--title">
-      <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-    </h1>
-
-    <!-- Excerpt -->
-    <p class="blog-featured--excerpt">
-      {post.data.description || ''}
-    </p>
-
-    <!-- Author -->
-    {
-      author && (
-        <div class="blog-featured--author">
-          <div class="blog-featured--avatar">
-            {author.data.avatar ? (
-              <Image
-                src={author.data.avatar}
-                alt={author.data.name}
-                class="blog-featured--avatar-img"
-                width={52}
-                height={52}
-              />
-            ) : (
-              <div class="blog-featured--avatar-placeholder">
-                {author.data.name.charAt(0).toUpperCase()}
-              </div>
-            )}
-          </div>
-          <span class="blog-featured--author-name">{author.data.name}</span>
-        </div>
-      )
-    }
   </div>
 </div>

@@ -4,14 +4,15 @@ import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import Icon from '@components/Icon.astro';
-import GlobalSection from '@components/GlobalSection.astro';
+import Button from '@components/Button.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
-import { formatLongDate, formatISODate } from '@utils/dateUtils';
+import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/dateUtils';
 import { getCollectionEntry } from '@utils/collectionUtils';
+import Icon from '@components/Icon.astro';
+import { Breadcrumbs } from 'astro-breadcrumbs';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -32,11 +33,11 @@ export async function getStaticPaths() {
 
 const { entry, authorData } = Astro.props;
 const { Content } = await render(entry);
-const formattedDate = formatLongDate(entry.data.date);
+const formattedDate = formatShortDate(entry.data.date);
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
 
 // Calculate reading time from content
-// const readingTime = estimateReadingTime(entry.body || '');.
+const readingTime = estimateReadingTime(entry.body || '');
 
 // Get category data for each category
 const categoryData = await Promise.all(
@@ -77,11 +78,30 @@ if (authorData?.data.avatar) {
   }
 }
 
+// Create breadcrumbs manually based on URL path
+const breadcrumbData = [];
+
+breadcrumbData.push(
+  {
+    text: 'Home',
+    href: '/',
+  },
+  {
+    text: 'Blog',
+    href: '/blog/',
+  }
+);
+
 // SEO
 const fm = entry.data;
 const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
+
+breadcrumbData.push({
+  text: fm.title,
+  href: `/blog/${entry.id}/`,
+});
 ---
 
 <Layout
@@ -97,138 +117,184 @@ const description = fm.description ? fm.description : '';
   <section class="datum-container">
     <Hero class="light" hideContent={true} />
 
-    <section
-      class="blog-detail bg-glacier-mist-700 section--block section--block--pad pt-19 md:pt-22 lg:pt-29"
-    >
-      <article class="blog-article">
-        <!-- Hidden meta tags for Pagefind -->
-        <span class="hidden" style="display: none;">post</span>
-        <span class="hidden" style="display: none;">{authorData?.data.name || fm.author}</span>
-        <span class="hidden" style="display: none;">{processedAvatarUrl}</span>
-        <span class="hidden" style="display: none;">{formatISODate(fm.date)}</span>
-        <span class="hidden" style="display: none;"
-          >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
-        >
-        <span class="hidden" style="display: none;">{entry.data.draft ? 'true' : 'false'}</span>
+    <section class="bg-glacier-mist-700 section--block pt-6 md:pt-10 xl:pt-16">
+      <div class="max-width blog-detail max-w-256.5">
+        <aside class="blog-aside">
+          <div class="blog-aside-content sticky top-0">
+            <Button
+              class="btn btn--alpha btn--fluid mb-11"
+              text="Back to Blog"
+              icon={{ name: 'arrow-left', size: 'md' }}
+              iconPosition="left"
+              iconClass="stroke-1.5"
+              href="/blog/"
+            />
 
-        <!-- Article Header -->
-        <header class="blog-article-header">
-          <div class="blog-article-meta">
-            <div class="blog-article-meta-content flex items-center justify-between">
-              <a href="/blog" class="blog-back-button">
-                <Icon name="arrow-left" size="sm" />
-                <span>Back to Blog</span>
-              </a>
-              <!--
-              <span class="blog-article-date pr-3">
-                {readingTime.text}
-              </span>
-              -->
-              <!--
-              {
-                categoryData.length > 0 && (
-                  <div class="blog-article-categories">
-                    {categoryData.map((category) => (
-                      <span class="blog-article-category">{category.data.name}</span>
-                    ))}
+            <!-- Author Information -->
+            {
+              fm.author && authorData && (
+                <div class="blog-article-author">
+                  <div class="blog-article-author-avatar">
+                    {authorData.data.avatar ? (
+                      <a href={`/authors/${authorData.id}/`}>
+                        <Image
+                          src={authorData.data.avatar}
+                          alt={authorData.data.name || fm.author}
+                          class="blog-article-author-image"
+                          width={52}
+                          height={52}
+                        />
+                      </a>
+                    ) : (
+                      <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
+                        <span class="text-lg font-bold text-gray-600">
+                          {(authorData.data.name || fm.author).charAt(0)}
+                        </span>
+                      </a>
+                    )}
                   </div>
-                )
-              }
-              -->
-              <div>
-                <span class="blog-article-date">
-                  {formattedDate}&nbsp;&nbsp;|&nbsp;
-                </span>
+                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
+                    {authorData.data.name || fm.author}
+                  </a>
+                </div>
+              )
+            }
+
+            <span class="icon-label">
+              <div class="icon-bg">
+                <Icon name="clock" size="sm" />
+              </div>
+              <span class="icon-label-text">{readingTime.text}</span>
+            </span>
+
+            <span class="icon-label">
+              <div class="icon-bg">
+                <Icon name="calendar" size="sm" />
+              </div>
+              <span class="icon-label-text">{formattedDate}</span>
+            </span>
+
+            <span class="icon-label">
+              <div class="icon-bg">
+                <Icon name="copy" size="sm" />
+              </div>
+              <span class="icon-label-text">
                 <button
                   type="button"
-                  class="blog-article-share"
+                  class="border-b-1 hover:cursor-pointer"
                   x-data="{ copied: false }"
                   @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                  x-text="copied ? 'Copied!' : 'Share URL'"></button>
-              </div>
+                  x-text="copied ? 'Copied!' : 'Copy URL'"></button>
+              </span>
+            </span>
+          </div>
+        </aside>
+
+        <article class="blog-article">
+          <!-- Hidden meta tags for Pagefind -->
+          <span class="hidden" style="display: none;">post</span>
+          <span class="hidden" style="display: none;">{authorData?.data.name || fm.author}</span>
+          <span class="hidden" style="display: none;">{processedAvatarUrl}</span>
+          <span class="hidden" style="display: none;">{formatISODate(fm.date)}</span>
+          <span class="hidden" style="display: none;"
+            >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
+          >
+          <span class="hidden" style="display: none;">{entry.data.draft ? 'true' : 'false'}</span>
+
+          <!-- Article Header -->
+          <header class="blog-article-header">
+            <div class="blog-article-breadcrumbs">
+              <Breadcrumbs
+                linkTextFormat="sentence"
+                mainBemClass="a-breadcrumbs"
+                crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+              >
+                <svg
+                  slot="index"
+                  aria-label="Home Page"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </Breadcrumbs>
             </div>
+            <h1 class="blog-article-title">
+              {fm.title}
+            </h1>
+            <div class="datum-text-sm mt-4 flex gap-1 opacity-60 md:hidden">
+              <!-- Author Information -->
+              {
+                fm.author && authorData && (
+                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
+                    {authorData.data.name || fm.author},
+                  </a>
+                )
+              }
+
+              <span class="blog-article-meta-date">{readingTime.text}, </span>
+
+              <span class="blog-article-meta-date">{formattedDate}, </span>
+
+              <button
+                type="button"
+                class="blog-article-meta-share"
+                x-data="{ copied: false }"
+                @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                x-text="copied ? 'Copied!' : 'Copy URL'"></button>
+            </div>
+          </header>
+
+          <!-- Featured Image -->
+          {
+            fm.featuredImage && (
+              <div class="blog-article-image">
+                <Image
+                  src={fm.featuredImage}
+                  alt={fm.title}
+                  layout="constrained"
+                  class="fade-in--pure"
+                  data-reveal="fade-in--pure--visible"
+                  data-reveal-delay="100"
+                />
+              </div>
+            )
+          }
+
+          <!-- Article Content -->
+          <div class="blog-article-content">
+            <Content />
           </div>
 
-          <h1 class="blog-article-title">
-            {fm.title}
-          </h1>
+          <!-- Article Navigation -->
+          <ArticleNavigation
+            previousArticle={previousArticle
+              ? {
+                  id: previousArticle.id,
+                  title: previousArticle.data.title,
+                  url: `/blog/${previousArticle.id}/`,
+                }
+              : undefined}
+            nextArticle={nextArticle
+              ? {
+                  id: nextArticle.id,
+                  title: nextArticle.data.title,
+                  url: `/blog/${nextArticle.id}/`,
+                }
+              : undefined}
+          />
+        </article>
+      </div>
 
-          {fm.description && <p class="blog-article-description">{fm.description}</p>}
-        </header>
-
-        <!-- Featured Image -->
-        {
-          fm.featuredImage && (
-            <div class="blog-article-image">
-              <Image
-                src={fm.featuredImage}
-                alt={fm.title}
-                layout="constrained"
-                class="fade-in--pure"
-                data-reveal="fade-in--pure--visible"
-                data-reveal-delay="100"
-              />
-            </div>
-          )
-        }
-
-        <!-- Article Content -->
-        <div class="blog-article-content">
-          <Content />
-        </div>
-
-        <!-- Author Information -->
-        {
-          fm.author && authorData && (
-            <div class="blog-article-author">
-              <div class="blog-article-author-avatar">
-                {authorData.data.avatar ? (
-                  <a href={`/authors/${authorData.id}/`}>
-                    <Image
-                      src={authorData.data.avatar}
-                      alt={authorData.data.name || fm.author}
-                      class="blog-article-author-image"
-                      width={52}
-                      height={52}
-                    />
-                  </a>
-                ) : (
-                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
-                    <span class="text-lg font-bold text-gray-600">
-                      {(authorData.data.name || fm.author).charAt(0)}
-                    </span>
-                  </a>
-                )}
-              </div>
-              <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
-                {authorData.data.name || fm.author}
-              </a>
-            </div>
-          )
-        }
-
-        <!-- Article Navigation -->
-        <ArticleNavigation
-          previousArticle={previousArticle
-            ? {
-                id: previousArticle.id,
-                title: previousArticle.data.title,
-                url: `/blog/${previousArticle.id}`,
-              }
-            : undefined}
-          nextArticle={nextArticle
-            ? {
-                id: nextArticle.id,
-                title: nextArticle.data.title,
-                url: `/blog/${nextArticle.id}`,
-              }
-            : undefined}
-        />
-      </article>
+      <Footer />
     </section>
-
-    <GlobalSection />
-
-    <Footer />
   </section>
 </Layout>

@@ -22,7 +22,13 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 
 <Layout title={title || 'Datum'} description={description} bodyClass="blog-page" meta={meta}>
   <section class="datum-container">
-    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
+    <Hero
+      class="light"
+      iconName={icon}
+      title={title}
+      subtitle={subtitle}
+      description={description}
+    />
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="max-width">

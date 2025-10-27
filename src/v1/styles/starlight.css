@@ -13,8 +13,13 @@
 @import './variables-breakpoints.css';
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   html,
   body {
+    @apply antialiased;
     @apply font-primary;
   }
 
@@ -71,6 +76,7 @@
 @layer utilities {
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
+    --sl-content-gap-y: var(--docs-article-body-paragraph-spacing);
     --__sl-font: var(--font-primary);
     --sl-z-index-menu: 70;
 
@@ -194,9 +200,14 @@
   }
 
   .sl-markdown-content {
-    @apply datum-docs-article-body;
+    @apply datum-prose-docs-article;
     /* @apply prose max-w-none; */
     @apply text-[color:var(--sl-color-text)];
+
+    strong,
+    b {
+      @apply text-[color:var(--sl-color-text)];
+    }
 
     .starlight-aside {
       @apply px-8 py-6;
@@ -432,7 +443,7 @@
       @apply border-t-0;
     }
 
-    @apply [&_.content-panel:first-child_h1]:datum-text-3xl [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:font-bold;
+    @apply [&_.content-panel:first-child_h1]:datum-text-3xl [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:mt-0 [&_.content-panel:first-child_h1]:font-bold;
 
     .sl-container {
       @apply max-w-none;
@@ -459,19 +470,19 @@
   /* PageSidebar.astro */
 
   .right-sidebar-container {
-    @apply w-full overflow-y-auto lg:max-w-[198px] xl:max-w-[213px];
+    @apply w-full overflow-y-clip lg:max-w-[198px] xl:max-w-[213px];
     @apply hidden lg:flex;
     @apply absolute top-0 right-0 h-full;
     z-index: var(--sl-z-index-toc);
 
     .right-sidebar {
-      @apply h-full pt-7 pl-6;
+      @apply pt-7 pl-6;
       @apply border-l border-[color:var(--color-borderpanel)];
     }
   }
   .right-sidebar {
     .right-sidebar-panel {
-      @apply p-0;
+      @apply sticky top-3 self-start p-0;
 
       h2 {
         @apply datum-docs-sidebar-headings mb-3 text-(--sl-color-text);
@@ -493,48 +504,6 @@
 
   /* End of PageSidebar.astro */
 
-  /* ThemeSelect.astro */
-
-  nav.c-breadcrumbs {
-    /* Breadcrumbs styles */
-
-    @apply datum-docs-sidebar-links mt-6 flex items-center overflow-x-hidden px-0 opacity-80 md:mt-9 md:px-10;
-
-    ol {
-      @apply flex h-6 w-full items-center;
-      @apply m-0 list-none p-0;
-    }
-    li {
-      @apply flex items-center text-nowrap;
-    }
-    li:first-child {
-      @apply mr-2;
-      &::after {
-        @apply hidden;
-      }
-    }
-    li.docs-sm {
-      @apply after:hidden;
-    }
-    li:nth-child(2) {
-      @apply inline-block md:hidden;
-    }
-    li:nth-child(3) {
-      @apply hidden md:inline-block;
-    }
-    li:not(:last-child)::after {
-      content: '/';
-      @apply mx-2 text-[color:var(--sl-color-text)];
-    }
-    a {
-      @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
-    }
-    svg {
-      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
-    }
-  }
-  /* End of ThemeSelect.astro */
-
   .pagination-links {
     > a {
       @apply rounded-none border-[color:var(--sl-color-text)] px-7 py-6 transition-all duration-200 hover:border-[color:var(--sl-color-text)]/50;
@@ -554,12 +523,4 @@
 
 .pagination-links a {
   @apply shadow-none;
-}
-
-select:where(.astro-4yphtoen) {
-  @apply ml-1 text-sm;
-}
-
-.label-icon:where(.astro-4yphtoen) {
-  @apply stroke-1 text-[20px];
 }

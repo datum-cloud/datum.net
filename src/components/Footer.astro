@@ -18,7 +18,7 @@ const {
 const navData = navigation as NavData;
 ---
 
-<footer id="footer" class="footer">
+<footer id="footer" class:list={['footer', !showBackground && 'bg-midnight-fjord']}>
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
@@ -75,64 +75,66 @@ const navData = navigation as NavData;
   }
 
   <!-- Main Footer Content -->
-  <div class="footer-main">
-    <div
-      class="footer-grid fade-in--pure"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
-      <!-- Navigation Sections -->
+  <div class="footer-main-container bg-midnight-fjord">
+    <div class="footer-main">
+      <div
+        class="footer-grid fade-in--pure"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+      >
+        <!-- Navigation Sections -->
 
-      <div class="footer-nav-container">
-        {
-          navData.footer.map((section) => (
-            <div class="footer-nav-section">
-              <h4 class="footer-nav-header">{section.title}</h4>
-              <ul class="footer-nav-list">
-                {section.items.map((item: NavItem) => (
-                  <li>
-                    <a
-                      href={item.href}
-                      class="footer-nav-link"
-                      target={item.isExternal ? '_blank' : undefined}
-                      rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                      data-astro-prefetch="hover"
-                    >
-                      {item.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
-      <!-- GitHub Button Section -->
-      <div class="footer-actions-section">
-        <div class="space-x-2">
-          <Button
-            class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
-            icon={{ name: 'messages-square', size: 'md' }}
-            iconPosition="left"
-            iconClass="stroke-1.5"
-            target="_blank"
-            href="https://link.datum.net/discord"
-          />
-
-          <Button
-            class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
-            icon={{ name: 'github', size: 'md' }}
-            iconPosition="left"
-            iconClass="stroke-1.5"
-            target="_blank"
-            href="https://github.com/datum-cloud/datum/"
-          />
+        <div class="footer-nav-container">
+          {
+            navData.footer.map((section) => (
+              <div class="footer-nav-section">
+                <h4 class="footer-nav-header">{section.title}</h4>
+                <ul class="footer-nav-list">
+                  {section.items.map((item: NavItem) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="footer-nav-link"
+                        target={item.isExternal ? '_blank' : undefined}
+                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        data-astro-prefetch="hover"
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
         </div>
+        <!-- GitHub Button Section -->
+        <div class="footer-actions-section">
+          <div class="space-x-2">
+            <Button
+              class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
+              icon={{ name: 'messages-square', size: 'md' }}
+              iconPosition="left"
+              iconClass="stroke-1.5"
+              target="_blank"
+              href="https://link.datum.net/discord"
+            />
 
-        <p class="footer-copyright">
-          &copy; {new Date().getFullYear()}
-          <span class="whitespace-nowrap">Datum Technology, Inc.</span>
-        </p>
+            <Button
+              class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
+              icon={{ name: 'github', size: 'md' }}
+              iconPosition="left"
+              iconClass="stroke-1.5"
+              target="_blank"
+              href="https://github.com/datum-cloud/datum/"
+            />
+          </div>
+
+          <p class="footer-copyright">
+            &copy; {new Date().getFullYear()}
+            <span class="whitespace-nowrap">Datum Technology, Inc.</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>

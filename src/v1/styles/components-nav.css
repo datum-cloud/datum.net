@@ -56,27 +56,25 @@
   }
 
   .nav-dropdown-menu {
-    @apply bg-glacier-mist-900 pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-lg p-6 opacity-0 transition-all duration-200 ease-in-out;
+    @apply pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu {
     @apply pointer-events-auto visible opacity-100;
   }
 
-  .nav-dropdown-item {
-    @apply mb-5 last:mb-0;
-  }
-
-  .nav-dropdown-item:not(:last-child) {
-    @apply border-midnight-fjord/10 border-b pb-5;
+  .nav-dropdown-items {
+    @apply flex flex-col gap-7.5;
+    .nav-dropdown-item {
+    }
   }
 
   .nav-dropdown-link {
-    @apply text-midnight-fjord hover:text-midnight-fjord/80 hover:[&>span]:border-b-midnight-fjord flex items-center gap-5 transition-colors duration-200 [&>span]:border-b [&>span]:border-b-transparent hover:[&>span]:transition-all hover:[&>span]:duration-200;
+    @apply text-midnight-fjord hover:text-midnight-fjord/80 hover:[&>span]:border-midnight-fjord/70 flex items-center gap-5 transition-colors duration-200 [&>span]:border-b-2 [&>span]:border-b-transparent hover:[&>span]:transition-all hover:[&>span]:duration-200;
   }
 
   .nav-dropdown-icon {
-    @apply bg-blush-quartz flex h-8.5 w-8.5 items-center justify-center rounded;
+    @apply bg-canyon-clay/20 text-canyon-clay---links flex h-8.5 w-8.5 items-center justify-center rounded;
   }
 
   .nav-dropdown-link span {
@@ -248,19 +246,6 @@
 
   .footer-nav-link {
     @apply text-white/80 transition-colors hover:text-white;
-  }
-
-  /* Footer Image Styles */
-  .footer-illustration-container {
-    @apply bg-glacier-mist-700 relative;
-
-    &:before {
-      @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-1 w-full content-[''];
-    }
-  }
-
-  .footer-illustration-image {
-    @apply relative mr-auto size-auto max-h-43 max-w-none object-cover md:max-h-none md:max-w-full;
   }
 
   /* Logo Dropdown Styles */

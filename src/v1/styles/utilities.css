@@ -128,6 +128,14 @@
   @apply xl:text-28/7.5;
 }
 
+@utility datum-text-article-body {
+  @apply font-alliance;
+
+  @apply tracking-[var(--text-article-body-letter-spacing)];
+  @apply leading-[var(--text-article-body-line-height)];
+  @apply text-[length:var(--text-article-body-font-size)];
+}
+
 @utility datum-text-xs {
   @apply font-alliance;
 
@@ -227,4 +235,25 @@
   @apply prose max-w-none;
   @apply datum-text-base;
   @apply prose-headings:mt-0 prose-headings:mb-4;
+}
+
+@utility datum-prose-docs-article {
+  @apply prose max-w-none;
+  @apply datum-docs-article-body;
+
+  @apply prose-p:mt-0 prose-p:mb-[var(--docs-article-body-paragraph-spacing)];
+  @apply prose-li:mt-0 prose-li:mb-[var(--docs-article-body-paragraph-spacing)];
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
+  @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
+  @apply prose-headings:mt-5 prose-headings:mb-4 prose-headings:font-bold;
+}
+
+@utility datum-prose-article {
+  @apply prose max-w-none;
+  @apply datum-text-article-body;
+  @apply prose-p:mt-0 prose-p:mb-[var(--text-article-body-paragraph-spacing)];
+  @apply prose-li:mt-0 prose-li:mb-[var(--text-article-body-paragraph-spacing)];
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
+  @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-sm;
+  @apply prose-headings:mt-5 prose-headings:mb-4 prose-headings:font-bold;
 }

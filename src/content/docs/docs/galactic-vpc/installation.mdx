@@ -107,7 +107,7 @@ details on this.
 #### Galactic CNI
 
 As with the community plugins, you can retrieve the 
-[Galactic CNI binary](https://github.com/datum-cloud/galactic-cni/releases) and install it in your cluster.
+[Galactic CNI binary](https://github.com/datum-cloud/galactic-cni/releases) (named `galactic`) and install it in your cluster.
 
 
 
@@ -136,7 +136,7 @@ in a configuration file.
 [Here is an example](https://github.com/datum-cloud/galactic-agent/blob/main/config/base/daemonset.yaml) Kubernetes 
 manifest you can use.
 
-The `/var/run/galactic` host mount is where the `galactic-agent` and the `galactic-cni` by default 
+The `/var/run/galactic` host mount is where the `galactic-agent` and the `galactic` CNI plugin by default
 connect to exchange register/deregister information. You may change it, but you must adjust it in both components.
 
 `NET_ADMIN` is a mandatory capability for the `galactic-agent` to add, modify, and delete the necessary SRv6 

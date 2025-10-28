@@ -1,6 +1,6 @@
 @layer components {
   .changelog-container {
-    @apply mx-auto max-w-6xl;
+    @apply max-width;
   }
 
   .changelog-item {

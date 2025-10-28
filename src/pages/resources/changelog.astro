@@ -1,5 +1,5 @@
 ---
-import '@v1/styles/global.css';
+import '@v1/styles/page-changelog.css';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
@@ -35,7 +35,7 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Changelog';
 const icon = 'list-restart';
 ---
 
-<Layout title={title} description={description} bodyClass="resource-page" meta={meta}>
+<Layout title={title} description={description} bodyClass="changelog-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"

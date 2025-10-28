@@ -1,5 +1,5 @@
 ---
-import '@v1/styles/global.css';
+import '@v1/styles/page-huddle.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -51,7 +51,7 @@ const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle;
 ---
 
-<Layout title={title} description={description} bodyClass="huddle-page" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-huddle" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light [&_.hero--main-content-inner]:pb-15"
@@ -60,7 +60,7 @@ const subtitle = fm.subtitle;
       subtitle={subtitle}
     />
     <section class="section--block bg-glacier-mist-700 py-0 pb-12 md:pb-18 lg:pb-23">
-      <div class="bg-glacier-mist-700 m-auto max-w-391">
+      <div class="bg-glacier-mist-700 max-width">
         <div
           class="huddle-info-grid fade-in--small"
           data-reveal="fade-in--small--visible"
@@ -83,7 +83,7 @@ const subtitle = fm.subtitle;
       upcomingHuddle && (
         <div class="section--block section--block--small-pad bg-midnight-fjord">
           <div
-            class="fade-in--pure m-auto max-w-391"
+            class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
             data-reveal-immediate="true"
             data-reveal-delay="100"
@@ -99,7 +99,7 @@ const subtitle = fm.subtitle;
       previousHuddles.length > 0 && (
         <div class="section--block section--block--small-pad bg-glacier-mist-700">
           <div
-            class="fade-in--pure m-auto max-w-391"
+            class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
             data-reveal-delay="100"
           >

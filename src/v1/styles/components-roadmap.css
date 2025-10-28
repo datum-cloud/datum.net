@@ -56,6 +56,6 @@
   }
 
   .roadmap-container {
-    @apply mx-auto flex max-w-5xl flex-col gap-24;
+    @apply max-width flex flex-col gap-24;
   }
 }

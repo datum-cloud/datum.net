@@ -1,8 +1,8 @@
 ---
+import '@v1/styles/global.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import GlobalSection from '@components/GlobalSection.astro';
 import Article from '@components/handbook/Article.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -19,14 +19,14 @@ const description = fm.description;
 <Layout title={title} description={description} bodyClass="handbook-page" meta={meta}>
   <section class="datum-container">
     <Hero
-      class="light"
+      class="light bg-glacier-mist-700"
       iconName="book-text"
       title={title}
       subtitle={fm.subtitle}
       description={description}
     />
     <Article articleId="company/why-we-exist" />
-    <GlobalSection />
+
     <Footer />
   </section>
 </Layout>

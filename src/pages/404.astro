@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import '@v1/styles/global.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -14,18 +15,18 @@ const description = 'The page you are looking for does not exist.';
 
 <Layout title={title} description={description} bodyClass="page-404">
   <section class="datum-container">
-    <Hero class="light hero--small-pad" title={title} />
+    <Hero class="light" title={title} />
 
-    <div class="section--block bg-cream">
+    <div class="section--block bg-glacier-mist-700">
       <main class="mx-auto max-w-391 px-6">
         <Image src={Image404} alt="404" class="mx-auto mb-12 h-auto w-full max-w-[423px]" />
         <article class="prose prose-xl mx-auto text-center">
           <p class="mb-12">Please check the URL and try again.</p>
-          <a href="/" class="btn btn--cream btn--large mr-1">
+          <a href="/" class="btn btn--glacier-mist-700 btn--large mr-1">
             Return to homepage
             <Icon name="arrow-right" size="md" />
           </a>
-          <a href="/docs/" class="btn btn--cream btn--large ml-1">
+          <a href="/docs/" class="btn btn--glacier-mist-700 btn--large ml-1">
             Browse our Docs
             <Icon name="arrow-right" size="md" />
           </a>

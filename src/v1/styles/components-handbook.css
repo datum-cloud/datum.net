@@ -1,7 +1,7 @@
 /* Handbook Article Styles */
 @layer components {
   .handbook-container {
-    @apply m-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20 lg:gap-30 xl:gap-35 2xl:gap-40;
+    @apply flex w-full flex-col gap-4 md:flex-row md:gap-8 xl:gap-17.25;
   }
 
   .handbook-container--no-sidebar {
@@ -11,65 +11,57 @@
   /* Main Content */
 
   .handbook-content {
-    @apply max-w-none flex-1;
+    @apply max-w-none flex-grow;
   }
 
   .article-header {
-    @apply mb-12;
+    @apply mb-4 md:mb-8;
   }
 
   .article-title {
-    @apply font-alliance text-navy lg:text-38 text-2xl leading-[1.2] font-medium -tracking-[0.5] md:text-3xl;
+    @apply datum-text-3xl font-semibold;
   }
 
   .article-body {
-    @apply prose lg:prose-xl md:prose-xl lg:text-19 max-w-none space-y-6 text-lg md:text-xl [&_*]:leading-[1.45];
+    @apply datum-prose-docs-article;
   }
 
   .article-paragraph {
-    @apply font-alliance text-navy text-xl leading-relaxed font-normal md:text-lg md:leading-relaxed lg:text-lg lg:leading-relaxed;
+    @apply font-alliance text-midnight-fjord text-xl leading-relaxed font-normal md:text-lg md:leading-relaxed lg:text-lg lg:leading-relaxed;
   }
 
   /* Sidebar Component Styles */
 
   aside button span {
-    @apply font-alliance text-navy leading-snug;
+    @apply font-alliance text-midnight-fjord leading-snug;
   }
 
   .handbook-sidebar {
-    @apply font-alliance relative flex h-full w-full flex-col gap-y-4 overflow-y-auto text-base md:w-76 md:text-lg;
+    @apply relative mb-3 flex h-full w-full flex-col gap-y-4 md:mb-0 md:max-w-58 md:min-w-58;
   }
 
   .handbook-sidebar nav {
-    @apply flex items-start justify-start gap-3;
-  }
-
-  .handbook-sidebar ul {
-    @apply flex shrink grow basis-0 flex-col gap-y-4;
-  }
-
-  .handbook-sidebar li {
-    @apply py-2 md:block md:px-2;
+    @apply flex w-full items-start justify-start;
   }
 
   .handbook-sidebar .menu-container {
-    @apply rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
+    @apply w-full space-y-2.5 rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
   }
 
   .handbook-sidebar .menu-category {
-    @apply mb-4 max-w-sm;
+    @apply w-full;
   }
 
   .handbook-sidebar .category-header {
-    @apply flex flex-row;
+    @apply flex flex-row py-1.75;
   }
 
   .handbook-sidebar .category-button {
-    @apply text-navy flex w-full items-center;
+    @apply text-midnight-fjord flex w-full items-center;
   }
 
   .handbook-sidebar .chevron-icon {
-    @apply mt-[-.0625rem] mr-2 inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
+    @apply mt-[-.0625rem] inline-block transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
   }
 
   .handbook-sidebar .category-title-container {
@@ -77,62 +69,25 @@
   }
 
   .handbook-sidebar .category-title {
-    @apply capitalize;
+    @apply datum-docs-sidebar-headings font-medium;
   }
 
   .handbook-sidebar .category-title--active {
-    @apply text-navy font-extrabold capitalize;
   }
 
   .handbook-sidebar .menu-list {
-    @apply relative mt-5 flex flex-col gap-0 pl-7 leading-loose before:-translate-y-1/2;
-  }
-
-  .handbook-sidebar .menu-list::before {
-    @apply bg-navy/40 absolute top-1/2 left-[9px] h-full w-px;
+    @apply relative flex flex-col pr-7;
   }
 
   .handbook-sidebar .menu-item {
-    /* Base menu item styles */
+    @apply p-0;
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-navy/40 hover:text-navy leading-[1.2] transition-colors duration-300 ease-out;
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
   }
 
   .handbook-sidebar .menu-link--active {
-    @apply text-navy/60 hover:text-navy font-bold transition-colors duration-300 ease-out;
-  }
-
-  /* Page Navigation Styles */
-
-  .handbook-page-nav {
-    @apply mt-16 flex flex-col gap-4 md:flex-row;
-  }
-
-  .handbook-page-nav-link,
-  .handbook-page-nav-link--next {
-    @apply hover:text-green-dark/80 text-green-dark border-green-dark hover:bg-green-dark/10 hover:border-green-dark/80 w-full justify-start gap-2 border px-8 py-10 transition-colors duration-200;
-  }
-
-  .handbook-page-nav-link--next {
-    @apply justify-end text-right;
-  }
-
-  .handbook-page-nav-label,
-  .handbook-page-nav-label--next {
-    @apply text-green-dark mb-5 flex gap-2 text-sm leading-[1.2] tracking-[0.42px] uppercase;
-  }
-
-  .handbook-page-nav-label--next {
-    @apply justify-end;
-  }
-
-  .handbook-page-nav-icon {
-    @apply size-4;
-  }
-
-  .handbook-page-nav-title {
-    @apply text-19 block leading-[1.2] font-medium;
+    @apply text-canyon-clay---links font-bold;
   }
 }

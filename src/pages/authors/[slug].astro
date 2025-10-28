@@ -1,5 +1,6 @@
 ---
 // src/pages/authors/[slug].astro
+import '@v1/styles/global.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -72,7 +73,7 @@ const icon = 'user';
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 
-    <div class="section--block section--block--pad bg-navy dark">
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="relative m-auto md:max-w-391">
         <!-- Author Info Header -->
         <div class="mb-16">
@@ -92,7 +93,7 @@ const icon = 'user';
               <h2 class="font-alliance mb-2 text-2xl font-medium text-white">{author.data.name}</h2>
               {
                 author.data.title && (
-                  <p class="font-alliance text-lime-green mb-3 text-lg">{author.data.title}</p>
+                  <p class="font-alliance text-aurora-moss mb-3 text-lg">{author.data.title}</p>
                 )
               }
               <p class="font-alliance text-white/80">{author.data.bio}</p>
@@ -104,7 +105,7 @@ const icon = 'user';
                         href={author.data.social.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
                       >
                         Twitter
                       </a>
@@ -114,7 +115,7 @@ const icon = 'user';
                         href={author.data.social.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
                       >
                         GitHub
                       </a>
@@ -124,7 +125,7 @@ const icon = 'user';
                         href={author.data.social.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="font-alliance text-lime-green text-sm transition-colors hover:text-white"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
                       >
                         LinkedIn
                       </a>

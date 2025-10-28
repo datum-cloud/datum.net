@@ -122,6 +122,8 @@ export interface ButtonProps {
 
 export interface FooterProps {
   showCTA?: boolean;
+  showBackground?: boolean;
+  showIllustration?: boolean;
 }
 
 export interface ContainerProps {
@@ -136,4 +138,10 @@ export interface CardProps {
   imageAlt?: string;
   url?: string;
   icon?: string;
+}
+
+export interface AsideProps {
+  type?: 'note' | 'caution' | 'tip';
+  icon?: string;
+  title: string;
 }

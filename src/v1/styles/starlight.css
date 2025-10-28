@@ -6,11 +6,20 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/aspect-ratio";
 
+@import './variables.css';
+
 @import './theme.css';
 
+@import './variables-breakpoints.css';
+
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   html,
   body {
+    @apply antialiased;
     @apply font-primary;
   }
 
@@ -67,7 +76,9 @@
 @layer utilities {
   /* Wire up Starlight theme to use Tailwind config. */
   :root {
+    --sl-content-gap-y: var(--docs-article-body-paragraph-spacing);
     --__sl-font: var(--font-primary);
+    --sl-z-index-menu: 70;
 
     --color-note: #fffbc5;
     --color-caution: #fde2e2;
@@ -75,7 +86,7 @@
 
     --sl-line-height-headings: 141%;
     --sl-color-text: var(--color-glacier-mist-700);
-    --sl-color-text-accent: var(--color-lime-green);
+    --sl-color-text-accent: var(--color-aurora-moss);
     --sl-line-height: 1.5;
     --sl-text-h1: 30px;
     --sl-text-h2: 20px;
@@ -83,8 +94,8 @@
 
     --sl-menu-button-size: 30px;
 
-    --sl-color-bg: var(--color-navy);
-    --sl-color-bg-sidebar: var(--color-navy);
+    --sl-color-bg: var(--color-midnight-fjord);
+    --sl-color-bg-sidebar: var(--color-midnight-fjord);
     /* Use Tailwind-configured font families. */
     --sl-font: var(--font-sans);
     --sl-font-mono: var(--font-mono);
@@ -92,9 +103,9 @@
     --sl-color-dialog: #1e2939;
     --sl-color-dialog-border: #384555;
 
-    --sl-color-search: var(--color-lime-green);
+    --sl-color-search: var(--color-aurora-moss);
     --sl-color-text-search: color-mix(in srgb, var(--color-glacier-mist-700) 60%, transparent);
-    --sl-color-kbd: color-mix(in srgb, var(--color-pearl-gray) 10%, transparent);
+    --sl-color-kbd: color-mix(in srgb, var(--color-glacier-mist-800) 10%, transparent);
 
     --sl-color-white: var(--color-white);
     --sl-color-gray-1: var(--color-gray-200);
@@ -103,15 +114,19 @@
     --sl-color-gray-4: var(--color-gray-600);
     --sl-color-gray-5: color-mix(in srgb, var(--color-glacier-mist-900) 20%, transparent);
     --sl-color-gray-6: var(--color-gray-800);
-    --sl-color-black: var(--color-navy);
+    --sl-color-black: var(--color-midnight-fjord);
     --sl-color-accent-low: var(--color-accent-950, var(--color-accent-900, #1e1b4b));
     --sl-color-accent: var(--color-accent-600, #4f46e5);
     --sl-color-accent-high: var(--color-accent-200, #c7d2fe);
     --color-borderpanel: color-mix(in srgb, var(--color-glacier-mist-900) 10%, transparent);
 
     &[data-theme='dark'] {
-      --ec-code-background: color-mix(in srgb, var(--color-cream) 7%, transparent);
-      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 3%, transparent);
+      --ec-code-background: color-mix(in srgb, var(--color-glacier-mist-700) 7%, transparent);
+      --ec-code-header-background: color-mix(
+        in srgb,
+        var(--color-glacier-mist-800) 3%,
+        transparent
+      );
     }
     /* Light mode Starlight theme variables. */
     &[data-theme='light'] {
@@ -119,10 +134,10 @@
       --sl-color-dialog-border: var(--color-glacier-mist-900);
 
       --sl-color-search: var(--color-canyon-clay);
-      --sl-color-text-search: color-mix(in srgb, var(--color-navy) 60%, transparent);
+      --sl-color-text-search: color-mix(in srgb, var(--color-midnight-fjord) 60%, transparent);
       --sl-color-kbd: var(--color-glacier-mist-800);
 
-      --sl-color-text: var(--color-navy);
+      --sl-color-text: var(--color-midnight-fjord);
       --sl-color-text-accent: var(--color-canyon-clay);
       --sl-color-bg: var(--color-glacier-mist-700);
       --sl-color-bg-sidebar: var(--color-glacier-mist-700);
@@ -142,10 +157,26 @@
       --color-borderpanel: var(--color-glacier-mist-900);
 
       --ec-code-background: var(--color-white);
-      --ec-code-header-background: color-mix(in srgb, var(--color-pearl-gray) 40%, transparent);
+      --ec-code-header-background: color-mix(
+        in srgb,
+        var(--color-glacier-mist-800) 40%,
+        transparent
+      );
     }
   }
 }
+
+@import './utilities.css';
+
+@import './components.css';
+
+@import './components-hero.css';
+
+@import './components-nav.css';
+
+@import './components-buttons.css';
+
+@import './components-dark.css';
 
 @layer starlight.components {
   .expressive-code .frame pre {
@@ -159,33 +190,64 @@
   &[data-theme='dark'] {
     .sl-markdown-content {
       .starlight-aside {
-        @apply text-navy;
+        @apply text-midnight-fjord;
       }
+    }
+
+    .footer {
+      @apply border-t-1 border-[color:var(--color-borderpanel)];
     }
   }
 
   .sl-markdown-content {
+    @apply datum-prose-docs-article;
+    /* @apply prose max-w-none; */
+    @apply text-[color:var(--sl-color-text)];
+
+    strong,
+    b {
+      @apply text-[color:var(--sl-color-text)];
+    }
+
     .starlight-aside {
       @apply px-8 py-6;
     }
 
     .starlight-aside--note {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-note)];
     }
 
     .starlight-aside--caution {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-caution)];
     }
 
     .starlight-aside--tip {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-navy) 10%, transparent);
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-[var(--color-tip)];
     }
 
     .starlight-aside__title {
-      @apply text-navy text-lg font-semibold;
+      @apply text-midnight-fjord text-lg font-semibold;
+    }
+
+    h1,
+    h2,
+    h3 {
+      @apply font-bold;
+    }
+
+    h1 {
+      @apply datum-text-2xl;
+    }
+
+    h2 {
+      @apply datum-text-xl;
+    }
+
+    h3 {
+      @apply datum-text-lg;
     }
   }
 }
@@ -326,7 +388,7 @@
         summary {
           @apply p-0 hover:text-(--sl-color-text-accent);
           .large {
-            @apply text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+            @apply datum-docs-sidebar-headings text-(--sl-color-text);
           }
         }
 
@@ -335,7 +397,7 @@
         }
 
         > a.large {
-          @apply p-0 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase hover:text-(--sl-color-text-accent);
+          @apply datum-docs-sidebar-headings p-0 text-(--sl-color-text) hover:text-(--sl-color-text-accent);
         }
         > a.large[aria-current='page'] {
           @apply bg-transparent font-bold text-(--sl-color-text-accent);
@@ -346,11 +408,7 @@
           @apply mb-[5px];
 
           a {
-            @apply p-0 pr-5 text-[13px] leading-[16px] text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
-
-            span {
-              @apply leading-[18px];
-            }
+            @apply datum-docs-sidebar-links p-0 pr-5 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
           }
 
           a[aria-current='page'] {
@@ -363,8 +421,6 @@
 
   .main-frame {
     @apply relative mx-auto flex w-full max-w-391;
-    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[(215px)_1fr] xl:grid-cols-[(259px)_1fr]; */
-    /* @apply relative mx-auto grid w-full max-w-391 md:grid-cols-[215px__1fr] lg:grid-cols-[259px__1fr]; */
   }
 
   /* End of PageFrame.astro */
@@ -387,7 +443,7 @@
       @apply border-t-0;
     }
 
-    @apply [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:text-3xl;
+    @apply [&_.content-panel:first-child_h1]:datum-text-3xl [&_.content-panel:first-child]:pb-6 [&_.content-panel:first-child_h1]:mt-0 [&_.content-panel:first-child_h1]:font-bold;
 
     .sl-container {
       @apply max-w-none;
@@ -398,8 +454,6 @@
   /* TwoColumnContent.astro */
 
   .sl-content-panel {
-    /* @apply w-full; */
-    /* @apply grid md:grid-cols-1 lg:grid-cols-[1fr_max(198px)] xl:grid-cols-[1fr_max(213px)]; */
     @apply relative block w-full grow md:w-[calc(100%-215px)] md:pr-0 lg:w-[calc(100%-198px)] lg:pr-[198px] xl:w-[calc(100%-213px)] xl:pr-[213px];
   }
 
@@ -416,29 +470,29 @@
   /* PageSidebar.astro */
 
   .right-sidebar-container {
-    @apply w-full overflow-y-auto lg:max-w-[198px] xl:max-w-[213px];
+    @apply w-full overflow-y-clip lg:max-w-[198px] xl:max-w-[213px];
     @apply hidden lg:flex;
     @apply absolute top-0 right-0 h-full;
     z-index: var(--sl-z-index-toc);
 
     .right-sidebar {
-      @apply h-full pt-7 pl-6;
+      @apply pt-7 pl-6;
       @apply border-l border-[color:var(--color-borderpanel)];
     }
   }
   .right-sidebar {
     .right-sidebar-panel {
-      @apply p-0;
+      @apply sticky top-3 self-start p-0;
 
       h2 {
-        @apply mb-3 text-[11px] tracking-[0.5px] text-(--sl-color-text) uppercase;
+        @apply datum-docs-sidebar-headings mb-3 text-(--sl-color-text);
       }
 
       ul {
         li {
           @apply mb-[5px];
           a {
-            @apply p-0 text-[13px] leading-[18px] text-(--sl-color-text) hover:text-(--sl-color-text-accent);
+            @apply datum-docs-sidebar-links p-0 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
           }
         }
         ul {
@@ -446,78 +500,22 @@
         }
       }
     }
-    .right-sidebar-panel a {
-      @apply block text-xs break-words text-[color:var(--sl-color-gray-3)] no-underline;
-    }
-    .right-sidebar-panel a:hover {
-      color: var(--sl-color-white);
-    }
   }
 
   /* End of PageSidebar.astro */
-
-  /* ThemeSelect.astro */
-
-  nav.c-breadcrumbs {
-    /* Breadcrumbs styles */
-
-    @apply mt-6 flex items-center overflow-x-hidden px-0 text-xs font-medium md:mt-9 md:px-10;
-
-    ol {
-      @apply flex h-6 w-full items-center;
-      @apply m-0 list-none p-0;
-    }
-    li {
-      @apply flex items-center text-nowrap;
-    }
-    li:first-child {
-      @apply mr-2;
-      &::after {
-        @apply hidden;
-      }
-    }
-    li.docs-sm {
-      @apply after:hidden;
-    }
-    li:nth-child(2) {
-      @apply inline-block md:hidden;
-    }
-    li:nth-child(3) {
-      @apply hidden md:inline-block;
-    }
-    li:not(:last-child)::after {
-      content: '/';
-      @apply mx-2 text-[color:var(--sl-color-text)];
-    }
-    a {
-      @apply text-nowrap text-[color:var(--sl-color-text)]/80 no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)]/80;
-    }
-    svg {
-      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
-    }
-  }
-  /* End of ThemeSelect.astro */
 
   .pagination-links {
     > a {
       @apply rounded-none border-[color:var(--sl-color-text)] px-7 py-6 transition-all duration-200 hover:border-[color:var(--sl-color-text)]/50;
       span {
-        @apply text-[11px] leading-[1.45] font-semibold uppercase;
+        @apply datum-docs-sidebar-headings;
         .link-title {
-          @apply mt-2 block text-base leading-[1.5] font-bold capitalize;
+          @apply datum-text-base mt-2 block font-bold capitalize;
         }
       }
     }
   }
 }
-
-@import './utilities.css';
-
-@import './components.css';
-
-@import './components-hero.css';
-
-@import './components-nav.css';
 
 .sl-markdown-content .expressive-code .frame {
   @apply shadow-none;
@@ -525,12 +523,4 @@
 
 .pagination-links a {
   @apply shadow-none;
-}
-
-select:where(.astro-4yphtoen) {
-  @apply ml-1 text-sm;
-}
-
-.label-icon:where(.astro-4yphtoen) {
-  @apply stroke-1 text-[20px];
 }

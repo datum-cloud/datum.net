@@ -1,6 +1,6 @@
 @layer components {
   .changelog-container {
-    @apply mx-auto max-w-6xl;
+    @apply max-width;
   }
 
   .changelog-item {
@@ -28,7 +28,7 @@
   }
 
   .changelog-item--date {
-    @apply font-alliance text-lime-green mb-6 text-sm font-medium tracking-wider uppercase;
+    @apply font-alliance text-aurora-moss mb-6 text-sm font-medium tracking-wider uppercase;
   }
 
   .changelog-item--main {
@@ -61,15 +61,15 @@
   }
 
   .changelog-item--tag--fixed {
-    @apply border-light-pink text-light-pink;
+    @apply border-blush-quartz text-blush-quartz;
   }
 
   .changelog-item--tag--new {
-    @apply border-lime-green text-lime-green;
+    @apply border-aurora-moss text-aurora-moss;
   }
 
   .changelog-item--tag--changed {
-    @apply border-light-gray text-light-gray;
+    @apply border-glacier-mist-900 text-glacier-mist-900;
   }
 
   /* Responsive adjustments */

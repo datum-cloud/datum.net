@@ -1,8 +1,8 @@
 @layer components {
   /* Section Block */
   .section--block {
-    @apply relative overflow-hidden;
-    @apply px-6 md:px-16;
+    @apply relative z-10;
+    @apply overflow-clip;
 
     &.dark {
       @apply text-white;
@@ -13,7 +13,7 @@
     }
 
     &.section--block--pad {
-      @apply py-15 md:py-28 lg:py-42;
+      @apply py-10 md:py-16 lg:py-20 xl:py-28;
     }
 
     &.section--block--small-pad {
@@ -30,7 +30,7 @@
   }
 
   .section--block-inner {
-    @apply m-auto max-w-391;
+    @apply max-width;
   }
 
   .section--block-content {
@@ -42,7 +42,7 @@
   }
 
   .section--block-content-text {
-    @apply font-alliance prose prose-xl md:text-19 text-navy/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
+    @apply font-alliance prose prose-xl md:text-19 text-midnight-fjord/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
   }
 
   .h2-section {
@@ -51,13 +51,10 @@
 
   /* Footer Components */
   .footer {
-    @apply bg-dark-navy-blue relative text-white;
-  }
-  .footer-docs {
-    @apply bg-navy;
+    @apply bg-glacier-mist-700 relative text-white;
   }
   .footer-hero {
-    @apply bg-cream text-navy relative z-10 mx-auto px-6 pt-21 md:px-16 md:pt-35 lg:pt-53;
+    @apply text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28;
   }
 
   .footer-hero-content {
@@ -69,36 +66,41 @@
   }
 
   .footer-illustration-container {
-    @apply relative;
+    @apply relative z-9;
   }
 
   .footer-illustration-image {
-    @apply h-auto w-full;
+    @apply h-auto w-full -translate-y-3;
+  }
+
+  .footer-illustration-container {
+    @apply bg-glacier-mist-700 relative;
+
+    &:before {
+      @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-4 w-full content-[''];
+    }
+  }
+
+  .footer-illustration-image {
+    @apply relative mr-auto size-auto max-h-43 max-w-none object-cover md:max-h-none md:max-w-full;
   }
 
   .footer-main {
-    /* @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-30 md:py-25 lg:px-45 lg:py-34; */
-    @apply relative z-10 mx-auto max-w-391 px-6 py-16 md:px-16 md:py-25 lg:py-34;
-  }
-
-  .footer-main--docs {
-    @apply datum-container relative z-10 mx-auto px-6 py-9 md:px-16 md:py-14 lg:py-18 xl:py-20;
+    @apply max-width bg-midnight-fjord relative z-10 mx-auto py-9 lg:py-14 xl:py-20;
   }
 
   .footer-grid {
-    @apply grid grid-cols-1 gap-12 md:grid-cols-6 lg:grid-cols-12;
+    @apply flex flex-col gap-8 md:gap-2.5 lg:flex-row lg:gap-40;
   }
 
-  .footer-logo-section {
-    @apply col-span-6 lg:col-span-3;
+  .footer-nav-container {
+    @apply flex w-full flex-wrap justify-between space-y-7;
   }
-
-  .footer-logo-link {
-    @apply mb-8 flex items-center;
+  .footer-nav-section {
+    @apply w-1/2 md:w-auto;
   }
-
   .footer-actions-section {
-    @apply col-span-6 mt-5 flex flex-col items-center gap-6 md:col-span-2 md:mt-0 md:items-end lg:col-span-2;
+    @apply flex flex-col items-center justify-between gap-4 md:col-span-4 md:flex-row md:items-end lg:col-span-1 lg:flex-col;
   }
 
   .footer-copyright {
@@ -110,7 +112,7 @@
   }
 
   .footer-signup {
-    @apply bg-light-pink text-navy px-6 py-16;
+    @apply bg-blush-quartz text-midnight-fjord px-6 py-16;
   }
 
   .footer-signup-container {
@@ -122,96 +124,20 @@
   }
 
   .footer-signup-form {
-    @apply border-navy flex items-center border-b pb-2;
+    @apply border-midnight-fjord flex items-center border-b pb-2;
   }
 
   .footer-signup-input {
-    @apply text-navy placeholder-navy/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
+    @apply text-midnight-fjord placeholder-midnight-fjord/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
   }
 
   .footer-signup-button {
     @apply ml-4;
   }
 
-  /* Generic Button Components */
-  .btn {
-    @apply inline-flex items-center gap-3 rounded-md border px-7 py-3.5 text-base leading-[1.4] font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
-  }
-  .btn--clean {
-    @apply border-0 p-0;
-  }
-  .btn--primary {
-    @apply border-white/20 hover:bg-white/10;
-  }
-
-  .btn--secondary {
-    @apply border-gray-300/20 hover:bg-gray-300/10;
-  }
-
-  /* Button Color Variations */
-  .btn--lime {
-    @apply bg-lime-green text-navy hover:bg-lime-green/80 border-lime-green;
-  }
-
-  .btn--cream {
-    @apply bg-cream text-navy border-navy hover:bg-navy/10;
-  }
-
-  .btn--alpha {
-    @apply text-navy border-navy hover:bg-tuscany/10 bg-none;
-  }
-
-  .btn--white {
-    @apply text-navy border-white bg-white hover:bg-white/90;
-  }
-
-  .btn--navy {
-    @apply bg-navy/90 hover:bg-navy/80 border-navy text-white;
-  }
-
-  .btn--navy-alpha {
-    @apply bg-navy/90 border-white/20 text-white hover:bg-white/10;
-  }
-
-  .btn--outline {
-    @apply border-white/20 bg-transparent text-white hover:bg-white/10;
-  }
-
-  .btn--xl {
-    @apply text-base leading-relaxed md:text-lg;
-  }
-
-  .btn--2xl {
-    @apply md:text-19 text-lg leading-[1.9];
-  }
-
-  .btn--large {
-    @apply text-19 py-4 text-base leading-normal;
-  }
-
-  .btn--center {
-    @apply w-full justify-center;
-  }
-
-  .btn--medium {
-    @apply text-sm leading-relaxed font-medium;
-  }
-
-  .btn--small {
-    @apply text-xs leading-relaxed font-medium;
-  }
-
-  .btn--icon {
-    @apply px-3.5 py-3.5;
-  }
-
-  .btn-text {
-    @apply text-base leading-relaxed font-semibold tracking-tight;
-  }
-
   /* List Styles */
   .ordered-list {
-    @apply font-canela flex list-none flex-col gap-5 text-[20px] leading-[1.1] -tracking-[0.5px] md:gap-8 md:text-3xl;
+    @apply datum-list-headings flex list-none flex-col gap-5 md:gap-8;
     counter-reset: ordered-counter;
   }
 
@@ -220,7 +146,7 @@
   }
 
   .ordered-list li {
-    @apply text-navy flex items-center gap-6 md:gap-10;
+    @apply text-midnight-fjord flex items-center gap-6 md:gap-10;
     counter-increment: ordered-counter;
   }
 
@@ -235,32 +161,32 @@
 
   /* Font Styles */
   .h1-leading {
-    @apply font-canela text-navy tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
+    @apply font-canela text-midnight-fjord tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
   }
 
   .h2-leading {
-    @apply font-canela text-navy tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
+    @apply font-canela text-midnight-fjord tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
   }
 
   .h3-leading {
-    @apply font-canela text-navy text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
+    @apply font-canela text-midnight-fjord text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
   }
 
   .h4-leading {
-    @apply font-canela text-navy text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
+    @apply font-canela text-midnight-fjord text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
   }
 
   .text-desc {
-    @apply font-alliance text-navy md:text-19 text-xl leading-[1.4];
+    @apply font-alliance text-midnight-fjord md:text-19 text-xl leading-[1.4];
   }
 
   /* Generic Logo/Brand Grid Components */
   .logo-grid {
-    @apply border-navy grid overflow-x-auto border border-t-0;
+    @apply border-midnight-fjord grid overflow-x-auto border border-t-0;
   }
 
   .logo-grid--3-6 {
-    @apply grid-cols-3 lg:grid-cols-6 [&>div:nth-child(2n)]:border-r-0 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
+    @apply grid-cols-3 lg:grid-cols-6 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
   }
 
   .logo-grid--2-3 {
@@ -272,7 +198,7 @@
   }
 
   .logo-item {
-    @apply border-navy flex items-center justify-center border-t border-r last:border-r-0;
+    @apply border-midnight-fjord flex items-center justify-center border-t border-r last:border-r-0;
   }
 
   .logo-item--landscape {
@@ -320,38 +246,6 @@
     @apply w-2/3;
   }
 
-  .article-navigation {
-    @apply m-auto mt-16 flex max-w-4xl flex-col gap-4 md:flex-row;
-  }
-
-  .article-navigation-item {
-    @apply border-green-dark hover:bg-green-dark/5 rounded-lg border p-8;
-  }
-
-  .article-navigation-prev {
-    @apply w-full justify-start;
-
-    .article-navigation-label {
-      @apply justify-start;
-    }
-  }
-
-  .article-navigation-next {
-    @apply w-full justify-end text-right;
-
-    .article-navigation-label {
-      @apply justify-end;
-    }
-  }
-
-  .article-navigation-label {
-    @apply font-alliance text-green-dark mb-4 flex items-center gap-2 text-sm font-medium tracking-wide uppercase;
-  }
-
-  .article-navigation-title {
-    @apply font-alliance text-green-dark hover:text-mauve text-lg font-medium transition-colors;
-  }
-
   /* Glossary Tooltip */
   .glossary-term {
     @apply cursor-help border-b border-dashed no-underline;
@@ -369,6 +263,147 @@
   .glossary-tooltip-description {
     @apply text-sm leading-relaxed text-gray-700;
   }
-}
 
-@import './components-dark.css';
+  /* article aside */
+  .article-aside {
+    @apply border-midnight-fjord/10 text-midnight-fjord relative mb-7 flex w-full flex-col gap-3 rounded-[4px] border-l-4 px-8 py-6 md:mb-11.5 xl:mb-14;
+
+    &.article-aside--note {
+      @apply bg-pale-yellow;
+    }
+
+    &.article-aside--caution {
+      @apply bg-misty-rose;
+    }
+
+    &.article-aside--tip {
+      @apply bg-platinum;
+    }
+  }
+
+  .article-aside-close {
+    @apply absolute top-6 right-8 opacity-20 transition-opacity duration-200 hover:cursor-pointer;
+    @apply hover:opacity-100;
+  }
+
+  .article-aside-header {
+    @apply flex items-center gap-2;
+  }
+
+  .article-aside-title {
+    @apply datum-text-lg font-semibold;
+  }
+
+  .article-aside-content {
+    @apply datum-text-base text-wrap;
+  }
+
+  .icon-label {
+    @apply flex items-center gap-4;
+  }
+
+  .icon-label-text {
+    @apply datum-text-sm;
+  }
+
+  .icon-bg {
+    @apply bg-canyon-clay/20 aspect-1 flex h-8.5 w-8.5 items-center justify-center rounded-[4px] p-2;
+
+    svg {
+      @apply text-canyon-clay---links;
+    }
+  }
+
+  /* Page Navigation Styles */
+
+  .article-nav {
+    @apply mt-10 flex flex-col gap-4 md:mt-14 md:flex-row;
+  }
+
+  .article-nav-item {
+    @apply hover:text-midnight-fjord/80 text-midnight-fjord border-midnight-fjord hover:bg-midnight-fjord/5 hover:border-midnight-fjord/80;
+    @apply w-full gap-2 border transition-colors duration-200;
+    @apply px-7 py-6;
+
+    svg {
+      @apply size-4;
+    }
+  }
+
+  .article-nav-item--label {
+    @apply text-midnight-fjord mb-2 flex gap-2;
+    @apply datum-docs-sidebar-headings font-medium;
+  }
+
+  .article-nav-item--next {
+    @apply text-right;
+    .article-nav-item--label {
+      @apply justify-end;
+    }
+  }
+
+  .article-nav-item--prev {
+    @apply text-left;
+    .article-nav-item--label {
+      @apply justify-start;
+    }
+  }
+
+  .article-nav-item--title {
+    @apply datum-text-base font-semibold;
+  }
+
+  /* Breadcrumbs */
+
+  nav.c-breadcrumbs,
+  nav.a-breadcrumbs {
+    @apply datum-docs-sidebar-links mt-6 flex items-center overflow-x-hidden px-0 opacity-80 md:mt-9 md:px-10;
+
+    ol {
+      @apply flex h-6 w-full items-center;
+      @apply m-0 list-none p-0;
+    }
+    li {
+      @apply flex items-center text-nowrap;
+    }
+    li:first-child {
+      @apply mr-2;
+      &::after {
+        @apply hidden;
+      }
+    }
+    li.docs-sm {
+      @apply after:hidden;
+    }
+    li:nth-child(2) {
+      @apply inline-block md:hidden;
+    }
+    li:nth-child(3) {
+      @apply hidden md:inline-block;
+    }
+    li:not(:last-child)::after {
+      content: '/';
+      @apply mx-2 text-[color:var(--sl-color-text)];
+    }
+    a {
+      @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
+    }
+    svg {
+      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+    }
+    a.is-index {
+      @apply -translate-y-0.5;
+    }
+  }
+
+  nav.a-breadcrumbs {
+    @apply mt-0 mb-5 block px-0 md:hidden md:px-0;
+
+    li:nth-child(2) {
+      @apply inline-block md:inline-block;
+    }
+    li:nth-child(3) {
+      @apply inline-block;
+    }
+  }
+}

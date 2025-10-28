@@ -1,4 +1,5 @@
 ---
+import '@v1/styles/page-huddle.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -50,7 +51,7 @@ const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle;
 ---
 
-<Layout title={title} description={description} bodyClass="huddle-page" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-huddle" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light [&_.hero--main-content-inner]:pb-15"
@@ -58,8 +59,8 @@ const subtitle = fm.subtitle;
       title={title}
       subtitle={subtitle}
     />
-    <section class="section--block bg-cream py-0 pb-12 md:pb-18 lg:pb-23">
-      <div class="bg-cream m-auto max-w-391">
+    <section class="section--block bg-glacier-mist-700 py-0 pb-12 md:pb-18 lg:pb-23">
+      <div class="bg-glacier-mist-700 max-width">
         <div
           class="huddle-info-grid fade-in--small"
           data-reveal="fade-in--small--visible"
@@ -69,7 +70,7 @@ const subtitle = fm.subtitle;
             fm.pageInfo?.map((info: { icon: IconName; text: string }) => (
               <div class="huddle-info-card">
                 <div class="huddle-info-icon">
-                  <Icon name={info.icon} size="xl" class="text-green-dark" />
+                  <Icon name={info.icon} size="xl" class="text-pine-forge" />
                 </div>
                 <p class="huddle-info-text" set:html={info.text.replace(/\n/g, '<br />')} />
               </div>
@@ -80,9 +81,9 @@ const subtitle = fm.subtitle;
     </section>
     {
       upcomingHuddle && (
-        <div class="section--block section--block--small-pad bg-navy">
+        <div class="section--block section--block--small-pad bg-midnight-fjord">
           <div
-            class="fade-in--pure m-auto max-w-391"
+            class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
             data-reveal-immediate="true"
             data-reveal-delay="100"
@@ -96,13 +97,13 @@ const subtitle = fm.subtitle;
     <!-- start Previous Huddles -->
     {
       previousHuddles.length > 0 && (
-        <div class="section--block section--block--small-pad bg-pearl-gray">
+        <div class="section--block section--block--small-pad bg-glacier-mist-700">
           <div
-            class="fade-in--pure m-auto max-w-391"
+            class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
             data-reveal-delay="100"
           >
-            <div class="text-navy m-auto flex max-w-6xl flex-col">
+            <div class="text-midnight-fjord m-auto flex max-w-6xl flex-col">
               <h2 class="font-canela mb-8 text-center text-2xl font-normal -tracking-[1.5px] md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
                 Previous Huddles
               </h2>

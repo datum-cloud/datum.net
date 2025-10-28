@@ -1,4 +1,5 @@
 ---
+import '@v1/styles/page-changelog.css';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
@@ -34,7 +35,7 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Changelog';
 const icon = 'list-restart';
 ---
 
-<Layout title={title} description={description} bodyClass="resource-page" meta={meta}>
+<Layout title={title} description={description} bodyClass="changelog-page" meta={meta}>
   <section class="datum-container">
     <Hero
       class="light"
@@ -44,7 +45,7 @@ const icon = 'list-restart';
       subtitle={subtitle}
     />
 
-    <div class="section--block section--block--pad bg-navy dark">
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="changelog-container">
         {
           sortedEntries.map((item) => (

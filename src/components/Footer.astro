@@ -1,22 +1,24 @@
 ---
 import { Image } from 'astro:assets';
-import Logo from '@v1/assets/svgs/datum-logo.svg';
 import navigation from '@data/navigation.json';
 import type { NavData, NavItem } from '@/src/types/navigation';
 import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
-import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
-import Icon from '@components/Icon.astro';
+import ImageTwoMen from '@v1/assets/images/two-person-talking.png';
 
 // Get props with default values
-const { showCTA = true } = Astro.props as FooterProps;
+const {
+  showCTA = true,
+  showBackground = true,
+  showIllustration = false,
+} = Astro.props as FooterProps;
 
 // Type-safe navigation data
 const navData = navigation as NavData;
 ---
 
-<footer class="footer">
+<footer id="footer" class:list={['footer', !showBackground && 'bg-midnight-fjord']}>
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
@@ -25,7 +27,7 @@ const navData = navigation as NavData;
           <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
           <div class="footer-hero-actions">
             <Button
-              class="btn btn--cream btn--large"
+              class="btn btn--alpha"
               text="View on GitHub"
               icon={{ name: 'arrow-right', size: 'md' }}
               iconPosition="right"
@@ -39,39 +41,54 @@ const navData = navigation as NavData;
     )
   }
 
-  <!-- Background Landscape -->
-  <div class:list={['footer-illustration-container', !showCTA && 'pt-30']}>
-    <div class="relative">
-      <Image
-        src={ImageFooter}
-        layout="constrained"
-        alt="Footer illustration"
-        class="footer-illustration-image"
-      />
-    </div>
-  </div>
+  {/* Background Landscape - Conditionally rendered */}
+  {
+    showBackground && (
+      <div class:list={['footer-illustration-container', !showCTA && 'pt-30']}>
+        <div class="relative w-full">
+          <Image
+            src={ImageFooter}
+            layout="constrained"
+            alt="Footer illustration"
+            class="footer-illustration-image"
+          />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    showIllustration && (
+      <div class="3xl:right-55 2-5xl:right-50 absolute -top-[94px] right-15 z-20 hidden lg:right-25 lg:inline-block">
+        <Image
+          src={ImageTwoMen}
+          alt="Two Person Talking"
+          class="relative h-auto w-[79px]"
+          data-scroll-effect="parallax"
+          data-scroll-speed="0.1"
+          data-scroll-direction="down"
+          data-viewport-offset="-500"
+          data-max-movement="20"
+        />
+      </div>
+    )
+  }
 
   <!-- Main Footer Content -->
-  <div class="footer-main">
-    <div
-      class="footer-grid fade-in--pure"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
-      <!-- Logo Section -->
-      <div class="footer-logo-section">
-        <a href="/" aria-label="Home" class="footer-logo-link">
-          <Logo class="text-white" />
-        </a>
-      </div>
+  <div class="footer-main-container bg-midnight-fjord">
+    <div class="footer-main">
+      <div
+        class="footer-grid fade-in--pure"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+      >
+        <!-- Navigation Sections -->
 
-      <!-- Navigation Sections -->
-      <div class="footer-nav-container">
-        <div class="footer-nav-grid">
+        <div class="footer-nav-container">
           {
             navData.footer.map((section) => (
-              <div>
-                <h4 class="footer-nav-section">{section.title}</h4>
+              <div class="footer-nav-section">
+                <h4 class="footer-nav-header">{section.title}</h4>
                 <ul class="footer-nav-list">
                   {section.items.map((item: NavItem) => (
                     <li>
@@ -91,32 +108,33 @@ const navData = navigation as NavData;
             ))
           }
         </div>
-      </div>
+        <!-- GitHub Button Section -->
+        <div class="footer-actions-section">
+          <div class="space-x-2">
+            <Button
+              class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
+              icon={{ name: 'messages-square', size: 'md' }}
+              iconPosition="left"
+              iconClass="stroke-1.5"
+              target="_blank"
+              href="https://link.datum.net/discord"
+            />
 
-      <!-- GitHub Button Section -->
-      <div class="footer-actions-section">
-        <Button
-          class="btn btn--primary gh-button min-w-[115px]"
-          icon={{ name: 'github', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
-          target="_blank"
-          href="https://github.com/datum-cloud/datum/"
-        >
-          <GithubStargazerValue server:defer />
-        </Button>
-        <p class="footer-copyright">
-          <a href="https://link.datum.net/discord/" class="footer-nav-link flex items-center gap-2">
-            <Icon name="messages-square" size="md" class="text-white/40" />
-            <span class="text-nowrap">Join Datum Community Discord</span>
-          </a>
+            <Button
+              class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
+              icon={{ name: 'github', size: 'md' }}
+              iconPosition="left"
+              iconClass="stroke-1.5"
+              target="_blank"
+              href="https://github.com/datum-cloud/datum/"
+            />
+          </div>
 
-          <br />
-          <a href="/legal/terms/" class="footer-nav-link">Terms of Service</a><br />
-          <a href="/legal/privacy/" class="footer-nav-link">Privacy Policy</a><br />
-          &copy; {new Date().getFullYear()}
-          <span class="whitespace-nowrap">Datum Technology, Inc.</span>
-        </p>
+          <p class="footer-copyright">
+            &copy; {new Date().getFullYear()}
+            <span class="whitespace-nowrap">Datum Technology, Inc.</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
+import Aside from '@components/Aside.astro';
 import type { ArticleProps } from '@/src/types/common';
 import { getEntry } from 'astro:content';
 
@@ -30,60 +31,64 @@ const mainArticleEntry =
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 ---
 
-<section
-  class:list={[
-    'handbook-article bg-pearl-gray section--block section--block--pad section--block--small-pad',
-    className,
-  ]}
->
-  <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
-    {
-      showSidebar && (
-        <Sidebar
-          currentArticleId={articleId}
-          handbooks={handbooks}
-          categories={orderedCategories}
-        />
-      )
-    }
+<section class:list={['handbook-article bg-glacier-mist-700 section--block pb-9', className]}>
+  <div class="max-width max-w-263.5">
+    <Aside title="About s the Handbooks">
+      <p>
+        This is our guide to understanding our company foundations: our values, beliefs, and goals.
+        Feel free to reach out if there is something we've missed!.
+      </p>
+    </Aside>
 
-    {/* Main Content Area */}
-    <article
-      class="handbook-content fade-in--pure"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-immediate="true"
-      data-reveal-delay="100"
-    >
-      <header class="article-header">
-        <h1 class="article-title">
-          {mainArticleEntry?.data.title || 'Why does Datum exist?'}
-        </h1>
-      </header>
+    <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
+      {
+        showSidebar && (
+          <Sidebar
+            currentArticleId={articleId}
+            handbooks={handbooks}
+            categories={orderedCategories}
+          />
+        )
+      }
 
-      <div class="article-body">
-        {
-          mainArticle?.Content ? (
-            <mainArticle.Content />
-          ) : (
-            <div class="article-paragraph">
-              <p>
-                No content found for article ID: <strong>{articleId}</strong>
-              </p>
-              {mainArticleEntry ? (
-                <p>Article entry found but content failed to render.</p>
-              ) : (
+      {/* Main Content Area */}
+      <article
+        class="handbook-content fade-in--pure"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-immediate="true"
+        data-reveal-delay="100"
+      >
+        <header class="article-header">
+          <h1 class="article-title">
+            {mainArticleEntry?.data.title || 'Why does Datum exist?'}
+          </h1>
+        </header>
+
+        <div class="article-body">
+          {
+            mainArticle?.Content ? (
+              <mainArticle.Content />
+            ) : (
+              <div class="article-paragraph">
                 <p>
-                  Article entry not found. Available articles:{' '}
-                  {handbooks.map((h) => h.id).join(', ')}
+                  No content found for article ID: <strong>{articleId}</strong>
                 </p>
-              )}
-            </div>
-          )
-        }
-      </div>
+                {mainArticleEntry ? (
+                  <p>Article entry found but content failed to render.</p>
+                ) : (
+                  <p>
+                    Article entry not found. Available articles:{' '}
+                    {handbooks.map((h) => h.id).join(', ')}
+                  </p>
+                )}
+              </div>
+            )
+          }
+        </div>
 
-      {/* Navigation */}
-      <PageNav currentArticleId={articleId} categories={orderedCategories} />
-    </article>
+        {/* Navigation */}
+        <PageNav currentArticleId={articleId} categories={orderedCategories} />
+      </article>
+    </div>
   </div>
 </section>

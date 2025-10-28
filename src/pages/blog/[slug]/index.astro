@@ -1,8 +1,8 @@
 ---
+import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import GlobalSection from '@components/GlobalSection.astro';
 import { getCollection } from 'astro:content';
 import BlogItem from '@components/blog/BlogItem.astro';
 import BlogFilters from '@components/blog/BlogFilters.astro';
@@ -63,11 +63,11 @@ const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 ---
 
-<Layout title={title} description={description} bodyClass="blog-page" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-blog" meta={meta}>
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 
-    <div class="section--block section--block--pad bg-navy dark">
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="relative m-auto md:max-w-391">
         <!-- Hidden meta tag to identify this as a category page -->
         <span data-pagefind-meta="page_type" style="display: none;">category</span>
@@ -98,8 +98,6 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
         }
       </div>
     </div>
-
-    <GlobalSection />
 
     <Footer />
   </section>

@@ -1,5 +1,4 @@
 ---
-// src/pages/brand/[...slug].astro
 import '@v1/styles/page-brand.css';
 import Layout from '@layouts/LayoutSimple.astro';
 import Footer from '@components/Footer.astro';
@@ -37,9 +36,9 @@ const currentPath = Astro.url.pathname;
 
 <Layout title={fm.title} description={fm.description} bodyClass={`page--${page.id}`} meta={meta}>
   <section class="datum-container">
-    <Header class="dark hero--nav-pad" />
-    <div class="section--block bg-cream">
-      <div class="m-auto grid max-w-391 grid-cols-1 md:grid-cols-12 md:gap-10 lg:gap-12">
+    <Header class="dark" />
+    <div class="section--block bg-glacier-mist-700">
+      <div class="max-width m-auto grid grid-cols-1 md:grid-cols-12 md:gap-10 lg:gap-12">
         <sidebar class="brand-sidebar">
           <NavBrand currentPath={currentPath} />
         </sidebar>

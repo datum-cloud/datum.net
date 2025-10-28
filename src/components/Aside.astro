@@ -1,0 +1,66 @@
+---
+import Icon from '@components/Icon.astro';
+import type { AsideProps } from '@/src/types/common';
+import slugify from 'slugify';
+
+const { type = 'note', icon, title } = Astro.props as AsideProps;
+
+const asideId = title ? slugify(title, { lower: true, strict: true }) : undefined;
+
+// Set default icon based on type if no icon is provided
+const getDefaultIcon = (asideType: string) => {
+  switch (asideType) {
+    case 'caution':
+      return 'triangle-alert';
+    case 'tip':
+      return 'bulb';
+    case 'note':
+    default:
+      return 'info';
+  }
+};
+
+const iconName = icon || getDefaultIcon(type);
+---
+
+<aside
+  class={`article-aside article-aside--${type}`}
+  id={asideId}
+  x-data={`{
+    asideId: '${asideId}',
+    isHidden: false,
+    init() {
+      // Check localStorage and set initial state
+      if (typeof window !== 'undefined') {
+        this.isHidden = localStorage.getItem('aside-hidden-' + this.asideId) === 'true';
+      }
+    },
+    closeAside() {
+      this.isHidden = true;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aside-hidden-' + this.asideId, 'true');
+      }
+    }
+  }`}
+  x-show="!isHidden"
+  x-cloak
+  x-init="init()"
+  style="display: none;"
+>
+  <div class="article-aside-header">
+    <Icon name={iconName} size="md" />
+    <p class="article-aside-title">{title}</p>
+  </div>
+  <div class="article-aside-content">
+    <slot />
+  </div>
+  <button class="article-aside-close" @click="closeAside()">
+    <Icon name="x" size="md" />
+  </button>
+</aside>
+
+<style>
+  .x-cloak {
+    display: none !important;
+  }
+</style>

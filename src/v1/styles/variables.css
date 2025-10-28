@@ -1,0 +1,104 @@
+:root {
+  /* breakpoints */
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+  --breakpoint-3xl: 120rem;
+
+  /* colors */
+  --app---dark---utility-1: #223143;
+  --app---dark---utility-2: #384555;
+  --app---dark---utility-3: #67717c;
+  --app---dark---utility-4: #90969c;
+  --app---dark---utility-5: #e3e2df;
+  --aurora-moss: #e6f59f;
+  --black: #000000;
+  --blush-quartz: #ecd0d0;
+  --canyon-clay: #bf9595;
+  --canyon-clay---links: #9c7979;
+  --glacier-mist-700: #f6f6f5;
+  --glacier-mist-800: #efefed;
+  --glacier-mist-900: #e8e7e4;
+  --midnight-fjord: #0c1d31;
+  --pine-forge: #4d6356;
+  --potted-olive: #adbab0;
+  --white: #ffffff;
+
+  /* number */
+  --xxs: -0.0938rem;
+  --xs: -0.075rem;
+  --s: -0.05rem;
+  --l: -0.0188rem;
+  --xl: 0rem;
+  --xxl: 0.0063rem;
+  --m: 0.025rem;
+  --smallcaps: 0.025rem;
+
+  /* string */
+  --alliance: Alliance No.1;
+  --canela: Canela Text LC Web;
+  --frontliner: Frontliner;
+
+  /* font-sizes */
+  --0px: 0rem;
+  --1px: 0.0625rem;
+  --2px: 0.125rem;
+  --4px: 0.25rem;
+  --6px: 0.375rem;
+  --8px: 0.5rem;
+  --10px: 0.625rem;
+  --11px: 0.6875rem;
+  --12px: 0.75rem;
+  --13px: 0.8125rem;
+  --14px: 0.875rem;
+  --16px: 1rem;
+  --18px: 1.125rem;
+  --20px: 1.25rem;
+  --21px: 1.3125rem;
+  --22px: 1.375rem;
+  --24px: 1.5rem;
+  --26px: 1.625rem;
+  --28px: 1.75rem;
+  --30px: 1.875rem;
+  --32px: 2rem;
+  --34px: 2.125rem;
+  --36px: 2.25rem;
+  --38px: 2.375rem;
+  --40px: 2.5rem;
+  --42px: 2.625rem;
+  --44px: 2.75rem;
+  --48px: 3rem;
+  --54px: 3.375rem;
+  --56px: 3.5rem;
+  --58px: 3.625rem;
+  --60px: 3.75rem;
+  --64px: 4rem;
+  --68px: 4.25rem;
+  --70px: 4.375rem;
+  --72px: 4.5rem;
+  --80px: 5rem;
+  --96px: 6rem;
+  --112px: 7rem;
+  --128px: 8rem;
+  --144px: 9rem;
+  --160px: 10rem;
+  --176px: 11rem;
+  --192px: 12rem;
+  --208px: 13rem;
+  --224px: 14rem;
+  --240px: 15rem;
+  --256px: 16rem;
+  --288px: 18rem;
+  --320px: 20rem;
+  --384px: 24rem;
+  /* end of font-sizes */
+
+  /* radius */
+  --radius-none: 0rem;
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5625rem;
+}

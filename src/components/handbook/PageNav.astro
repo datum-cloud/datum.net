@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import ArticleNavigation from '@components/ArticleNavigation.astro';
 
 const {
   currentArticleId,
@@ -40,53 +41,20 @@ const nextArticle =
   currentIndex < sortedHandbooks.length - 1 ? sortedHandbooks[currentIndex + 1] : undefined;
 ---
 
-{
-  (previousArticle || nextArticle) && (
-    <nav class:list={['handbook-page-nav', className]}>
-      {previousArticle && (
-        <a href={`/handbook/${previousArticle.id}/`} class="handbook-page-nav-link">
-          <span class="handbook-page-nav-label">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="handbook-page-nav-icon"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-              />
-            </svg>
-            <span>Previous</span>
-          </span>
-          <span class="handbook-page-nav-title">{previousArticle.data.title}</span>
-        </a>
-      )}
-      {nextArticle && (
-        <a href={`/handbook/${nextArticle.id}/`} class="handbook-page-nav-link--next">
-          <span class="handbook-page-nav-label--next">
-            <span>Next</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="handbook-page-nav-icon"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-              />
-            </svg>
-          </span>
-          <span class="handbook-page-nav-title">{nextArticle.data.title}</span>
-        </a>
-      )}
-    </nav>
-  )
-}
+<ArticleNavigation
+  previousArticle={previousArticle
+    ? {
+        id: previousArticle.id,
+        title: previousArticle.data.title,
+        url: `/handbook/${previousArticle.id}/`,
+      }
+    : undefined}
+  nextArticle={nextArticle
+    ? {
+        id: nextArticle.id,
+        title: nextArticle.data.title,
+        url: `/handbook/${nextArticle.id}/`,
+      }
+    : undefined}
+  class={className}
+/>

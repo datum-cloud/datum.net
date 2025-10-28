@@ -7,21 +7,21 @@ const { title, description, imageSrc, imageAlt, url, icon = 'github' } = Astro.p
 ---
 
 <div
-  class="border-navy bg-pearl-gray relative flex flex-col justify-between gap-8 border px-9 py-8 md:gap-10 md:px-11 md:py-10 lg:gap-14 lg:px-15 lg:py-14"
+  class="border-midnight-fjord bg-glacier-mist-700 relative flex flex-col justify-between gap-8 border px-9 py-8 md:gap-10 md:px-11 md:py-10 lg:gap-14 lg:px-15 lg:py-14"
 >
   <div class="flex items-start">
     {imageSrc && <Image src={imageSrc} alt={imageAlt || ''} class="size-auto max-h-16" />}
   </div>
 
   <div class="flex items-end-safe justify-between gap-10">
-    <div class="font-alliance text-navy max-w-sm text-xl leading-[28px]">
+    <div class="font-alliance text-midnight-fjord max-w-sm text-xl leading-[28px]">
       <h3 class="font-canela mb-6 text-4xl leading-tight font-normal tracking-tight">{title}</h3>
       <p>{description}</p>
     </div>
     {
       url && (
         <a
-          class="border-navy/10 hover:border-navy/30 rounded-md border px-5 py-3 transition-all duration-200"
+          class="border-midnight-fjord/10 hover:border-midnight-fjord/30 rounded-md border px-5 py-3 transition-all duration-200"
           href={url}
           target="_blank"
           rel="noopener noreferrer"

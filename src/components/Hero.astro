@@ -40,7 +40,7 @@ const {
             </div>
           ) : null}
 
-          <h1 class="hero--main-content-title">{title}</h1>
+          <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />
           {description && (
             <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
           )}

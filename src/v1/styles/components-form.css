@@ -1,6 +1,6 @@
 @layer components {
   .form {
-    @apply bg-navy relative z-50 flex w-full max-w-[850px] flex-col gap-6 rounded-[4px] border border-white p-8 px-6 md:gap-8 md:p-12 md:px-8 lg:gap-10 lg:p-17.5 lg:px-15;
+    @apply bg-midnight-fjord relative z-50 flex w-full max-w-[850px] flex-col gap-6 rounded-[4px] border border-white p-8 px-6 md:gap-8 md:p-12 md:px-8 lg:gap-10 lg:p-17.5 lg:px-15;
   }
 
   .form--header {
@@ -28,11 +28,11 @@
   }
 
   .form--input {
-    @apply focus:ring-lime-green flex h-12 flex-row items-center gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
+    @apply focus:ring-aurora-moss flex h-12 flex-row items-center gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
   }
 
   .form--textarea {
-    @apply focus:ring-lime-green flex h-full resize-none flex-row items-start gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 py-3 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px] md:py-4;
+    @apply focus:ring-aurora-moss flex h-full resize-none flex-row items-start gap-3 self-stretch rounded-lg border border-white bg-transparent px-4 py-3 text-white placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:outline-none md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px] md:py-4;
   }
 
   .form--checkbox-container {
@@ -44,7 +44,7 @@
   }
 
   .form--checkbox {
-    @apply text-lime-green focus:ring-lime-green h-4 w-4 rounded border border-white bg-transparent focus:ring-2 focus:ring-offset-0 md:h-5 md:w-5 md:rounded-[4px];
+    @apply text-aurora-moss focus:ring-aurora-moss h-4 w-4 rounded border border-white bg-transparent focus:ring-2 focus:ring-offset-0 md:h-5 md:w-5 md:rounded-[4px];
   }
 
   .form--checkbox-label {
@@ -60,6 +60,6 @@
   }
 
   .form--submit {
-    @apply font-alliance bg-lime-green focus:ring-lime-green text-navy md:text-19 flex h-12 flex-row items-center justify-center gap-3 rounded-lg px-6 text-base leading-[1.4] font-semibold transition-colors duration-200 hover:bg-[#D4E88F] focus:ring-2 focus:ring-offset-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
+    @apply font-alliance bg-aurora-moss focus:ring-aurora-moss text-midnight-fjord md:text-19 flex h-12 flex-row items-center justify-center gap-3 rounded-lg px-6 text-base leading-[1.4] font-semibold transition-colors duration-200 hover:bg-[#D4E88F] focus:ring-2 focus:ring-offset-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
   }
 }

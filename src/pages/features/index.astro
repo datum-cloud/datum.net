@@ -1,4 +1,5 @@
 ---
+import '@v1/styles/page-features.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -8,8 +9,6 @@ import Cards from '@components/features/Cards.astro';
 
 import ImageHero from '@v1/assets/images/hero-small-illustration.png';
 import ImageConsole from '@v1/assets/images/console-2.png';
-import ImageMilo from '@v1/assets/images/milo-on-rock.png';
-import ImageSphere from '@v1/assets/images/sphere.png';
 import ImageTwoMen from '@v1/assets/images/two-men.png';
 import ImageLight from '@v1/assets/images/light-trail.png';
 
@@ -44,8 +43,8 @@ const title = fm.title ? fm.title : 'Datum Features';
 const description = fm.description;
 ---
 
-<Layout title={title} description={description} bodyClass="features-page" meta={meta}>
-  <section class="datum-container">
+<Layout title={title} description={description} bodyClass="page-features" meta={meta}>
+  <section class="datum-container overflow-clip">
     <Hero
       class="light"
       iconName="goal"
@@ -57,54 +56,42 @@ const description = fm.description;
 
     {
       firstContents[0] && (
-        <div class="section--block section--block--pad bg-navy dark pb-22">
-          <div class="absolute top-1/2 -right-30 z-20 inline-block max-w-149 -translate-y-1/2">
+        <div class="section--block section--block--pad bg-midnight-fjord dark pb-22">
+          <div class="absolute top-1/2 -right-26 z-20 inline-block max-w-149 -translate-y-1/2">
             <Image
               src={ImageLight}
               alt="Light Trail"
-              class="relative h-auto w-[408px] -rotate-45"
+              class="relative h-auto w-[670px] -rotate-45"
             />
           </div>
+          <div class="max-width">
+            <Table>
+              <h2 slot="header">{firstContents[0].data.title}</h2>
+              <div slot="description" set:html={marked.parse(firstContents[0].body)} />
 
-          <Table>
-            <h2 slot="header">{firstContents[0].data.title}</h2>
-            <div slot="description" set:html={marked.parse(firstContents[0].body)} />
+              <div slot="features">
+                <h3>Key features</h3>
+                <ul>
+                  {firstContents[0].data.keyFeatures.map((feature) => (
+                    <li>{feature}</li>
+                  ))}
+                </ul>
+              </div>
 
-            <div slot="features">
-              <h3>Key features</h3>
-              <ul>
-                {firstContents[0].data.keyFeatures.map((feature) => (
-                  <li>{feature}</li>
-                ))}
-              </ul>
-            </div>
+              <div slot="benefits">
+                <h3>Benefits</h3>
+                <p>{firstContents[0].data.benefits}</p>
+              </div>
 
-            <div slot="benefits">
-              <h3>Benefits</h3>
-              <p>{firstContents[0].data.benefits}</p>
-            </div>
-
-            <div slot="audience">
-              <h3>Perfect for</h3>
-              <ul>
-                {firstContents[0].data.perfectFor.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </Table>
-
-          <div class="3xl:left-55 2-5xl:left-50 absolute bottom-0 left-15 z-40 inline-block md:left-25">
-            <Image
-              src={ImageTwoMen}
-              alt="Two Men"
-              class="relative h-auto w-[60px] md:w-[110px]"
-              data-scroll-effect="parallax"
-              data-scroll-speed="0.1"
-              data-scroll-direction="down"
-              data-viewport-offset="-200"
-              data-max-movement="50"
-            />
+              <div slot="audience">
+                <h3>Perfect for</h3>
+                <ul>
+                  {firstContents[0].data.perfectFor.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </Table>
           </div>
         </div>
       )
@@ -112,66 +99,72 @@ const description = fm.description;
 
     {
       firstContents[1] && (
-        <div class="section--block section--block--pad bg-navy dark pt-0">
-          <Table>
-            <h2 slot="header">Networks</h2>
-
-            <div slot="description" set:html={marked.parse(firstContents[1].body)} />
-
-            <div slot="features">
-              <h3>Key features</h3>
-              <ul>
-                {firstContents[1].data.keyFeatures.map((feature) => (
-                  <li>{feature}</li>
-                ))}
-              </ul>
+        <div class="section--block section--block--pad bg-midnight-fjord dark overflow-visible pt-0">
+          <div class="max-width relative">
+            <div class="absolute top-0 left-15 z-30 inline-block -translate-y-full">
+              <Image
+                src={ImageTwoMen}
+                alt="Two Men"
+                class="relative h-auto w-[60px] md:w-[110px]"
+                data-scroll-effect="parallax"
+                data-scroll-speed="0.1"
+                data-scroll-direction="down"
+                data-viewport-offset="-200"
+                data-max-movement="50"
+              />
             </div>
+            <Table class="z-40">
+              <h2 slot="header">Networks</h2>
 
-            <div slot="benefits">
-              <h3>Benefits</h3>
-              <p>{firstContents[1].data.benefits}</p>
-            </div>
+              <div slot="description" set:html={marked.parse(firstContents[1].body)} />
 
-            <div slot="audience">
-              <h3>Perfect for</h3>
-              <ul>
-                {firstContents[1].data.perfectFor.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </Table>
+              <div slot="features">
+                <h3>Key features</h3>
+                <ul>
+                  {firstContents[1].data.keyFeatures.map((feature) => (
+                    <li>{feature}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div slot="benefits">
+                <h3>Benefits</h3>
+                <p>{firstContents[1].data.benefits}</p>
+              </div>
+
+              <div slot="audience">
+                <h3>Perfect for</h3>
+                <ul>
+                  {firstContents[1].data.perfectFor.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </Table>
+          </div>
 
           <div class="absolute bottom-1/2 -left-30 z-20 block w-auto max-w-2/3 translate-y-1/2">
-            <Image src={ImageLight} alt="Light Trail" class="relative h-auto w-[408px]" />
+            <Image src={ImageLight} alt="Light Trail" class="relative h-auto w-[650px]" />
           </div>
         </div>
       )
     }
 
-    <div class="section--block section--block--pad bg-pearl-gray">
-      <div class="absolute top-0 left-0 z-10 block w-auto max-w-2/3">
-        <Image
-          src={ImageSphere}
-          alt="Sphere"
-          class="relative w-auto max-w-2/3 -translate-x-3/5 -translate-y-3/5"
-        />
-      </div>
-
-      <Grids features={secondContents} />
-
-      <div class="absolute right-0 bottom-0 z-10 block w-auto max-w-2/3">
-        <Image src={ImageMilo} alt="Milo on the rock" class="relative translate-y-1/2" />
+    <div class="section--block section--block--pad bg-glacier-mist-800">
+      <div class="max-width">
+        <Grids features={secondContents} />
       </div>
     </div>
 
-    <div class="section--block section--block--pad bg-lime-green pb-55 md:pb-28 lg:pb-42">
+    <div class="section--block section--block--pad bg-aurora-moss pb-55 md:pb-28 lg:pb-42">
       <div
         class="absolute top-auto -right-10 -bottom-10 z-10 block w-auto max-w-114 lg:top-1/2 lg:-right-20 lg:bottom-auto lg:-translate-y-1/2 2xl:right-0"
       >
         <Image src={ImageConsole} alt="Console" class="relative" />
       </div>
-      <Cards features={thirdContents} />
+      <div class="max-width">
+        <Cards features={thirdContents} />
+      </div>
     </div>
     <Footer />
   </section>

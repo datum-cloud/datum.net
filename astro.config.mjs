@@ -111,6 +111,10 @@ export default defineConfig({
           autogenerate: { directory: 'docs/overview' },
         },
         {
+          label: 'Quickstart',
+          autogenerate: { directory: 'docs/quickstart' },
+        },
+        {
           label: 'Platform',
           autogenerate: { directory: 'docs/platform' },
         },

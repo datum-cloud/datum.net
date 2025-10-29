@@ -15,7 +15,7 @@
   }
 
   html {
-    @apply antialiased;
+    /* @apply antialiased; */
     @apply font-primary;
     @apply bg-glacier-mist-900;
   }
@@ -36,7 +36,10 @@
   /* Prevent body scroll when mobile menu is active */
   body {
     &.mobile-menu-open {
-      @apply fixed w-full touch-none overflow-hidden;
+      @apply fixed w-full overflow-hidden;
+    }
+    &[data-aside-menu-expanded] {
+      @apply fixed w-full overflow-hidden;
     }
   }
 

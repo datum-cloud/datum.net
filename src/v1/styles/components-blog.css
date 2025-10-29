@@ -259,4 +259,10 @@
       @apply text-red-600;
     }
   }
+
+  body.page-blog {
+    nav.a-breadcrumbs {
+      @apply md:hidden;
+    }
+  }
 }

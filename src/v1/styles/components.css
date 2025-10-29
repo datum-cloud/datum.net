@@ -2,7 +2,7 @@
   /* Section Block */
   .section--block {
     @apply relative z-10;
-    @apply overflow-clip;
+    /* @apply overflow-clip; */
 
     &.dark {
       @apply text-white;
@@ -266,7 +266,7 @@
 
   /* article aside */
   .article-aside {
-    @apply border-midnight-fjord/10 text-midnight-fjord relative mb-7 flex w-full flex-col gap-3 rounded-[4px] border-l-4 px-8 py-6 md:mb-11.5 xl:mb-14;
+    @apply border-midnight-fjord/10 text-midnight-fjord relative mb-4 flex w-full flex-col gap-3 rounded-[4px] border-l-4 px-8 py-6 md:mb-5 xl:mb-7;
 
     &.article-aside--note {
       @apply bg-pale-yellow;
@@ -278,6 +278,21 @@
 
     &.article-aside--tip {
       @apply bg-platinum;
+    }
+
+    &.small {
+      @apply p-5;
+
+      .article-aside-title,
+      .article-aside-content {
+        @apply datum-text-xs;
+      }
+      .article-aside-close {
+        @apply top-3 right-3;
+        svg {
+          @apply h-4! w-4!;
+        }
+      }
     }
   }
 
@@ -357,7 +372,7 @@
 
   nav.c-breadcrumbs,
   nav.a-breadcrumbs {
-    @apply datum-docs-sidebar-links mt-6 flex items-center overflow-x-hidden px-0 opacity-80 md:mt-9 md:px-10;
+    @apply datum-docs-sidebar-links mt-0 mb-5 block items-center overflow-x-hidden px-0 opacity-80 md:px-0;
 
     ol {
       @apply flex h-6 w-full items-center;
@@ -367,7 +382,7 @@
       @apply flex items-center text-nowrap;
     }
     li:first-child {
-      @apply mr-2;
+      @apply mr-1.25;
       &::after {
         @apply hidden;
       }
@@ -383,13 +398,13 @@
     }
     li:not(:last-child)::after {
       content: '/';
-      @apply mx-2 text-[color:var(--sl-color-text)];
+      @apply mx-1.25 text-[color:var(--sl-color-text)];
     }
     a {
       @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
     }
     svg {
-      @apply mr-1 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+      @apply mr-1.25 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
     }
     a.is-index {
       @apply -translate-y-0.5;
@@ -397,13 +412,68 @@
   }
 
   nav.a-breadcrumbs {
-    @apply mt-0 mb-5 block px-0 md:hidden md:px-0;
-
     li:nth-child(2) {
       @apply inline-block md:inline-block;
     }
     li:nth-child(3) {
       @apply inline-block;
     }
+  }
+
+  /* Table of Contents Styles */
+  .toc-container {
+    @apply w-full flex-col;
+  }
+
+  .toc-title {
+    @apply datum-docs-sidebar-headings py-1.75 font-medium;
+  }
+
+  .toc-nav {
+    @apply w-full;
+  }
+
+  .toc-list {
+  }
+
+  .toc-item {
+    @apply list-none;
+  }
+
+  .toc-item--level-1 {
+    @apply pl-0;
+  }
+
+  .toc-item--level-2 {
+    @apply pl-0;
+  }
+
+  .toc-item--level-3 {
+    @apply pl-1;
+  }
+
+  .toc-item--level-4 {
+    @apply pl-2;
+  }
+
+  .toc-item--level-5 {
+    @apply pl-3;
+  }
+
+  .toc-item--level-6 {
+    @apply pl-4;
+  }
+
+  .toc-link {
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
+  }
+
+  .toc-empty {
+    @apply text-midnight-fjord/60 datum-docs-sidebar-links italic;
+  }
+
+  /* Active link highlighting */
+  .toc-link.active {
+    @apply text-canyon-clay---links font-medium;
   }
 }

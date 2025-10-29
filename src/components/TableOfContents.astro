@@ -1,0 +1,83 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+const {
+  headings = [] as MarkdownHeading[],
+  title = 'Table of Contents',
+  class: className,
+  showTitle = true,
+  sticky = true,
+} = Astro.props;
+
+// Filter headings if needed (e.g., only show h2 and h3)
+const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.depth <= 3);
+---
+
+<aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
+  {showTitle && <h3 class="toc-title">{title}</h3>}
+
+  {
+    filteredHeadings.length > 0 ? (
+      <nav class={`toc-nav`}>
+        <ul class="toc-list">
+          {filteredHeadings.map((heading: MarkdownHeading) => (
+            <li class={`toc-item toc-item--level-${heading.depth}`}>
+              <a href={`#${heading.slug}`} class="toc-link" data-toc-level={heading.depth}>
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ) : (
+      <div class="toc-empty">
+        <p>No table of contents available</p>
+      </div>
+    )
+  }
+</aside>
+
+<script>
+  // Add active link highlighting based on scroll position
+  function updateActiveTOCLink() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+
+    let current = '';
+
+    sections.forEach((section) => {
+      const element = section as HTMLElement;
+      const sectionTop = element.offsetTop;
+      if (window.scrollY >= sectionTop - 200) {
+        current = section.getAttribute('id') || '';
+      }
+    });
+
+    tocLinks.forEach((link) => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // Throttle scroll events
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateActiveTOCLink);
+      ticking = true;
+    }
+  }
+
+  function handleScroll() {
+    ticking = false;
+    requestTick();
+  }
+
+  // Add scroll listener and initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    updateActiveTOCLink();
+    window.addEventListener('scroll', handleScroll);
+  });
+</script>

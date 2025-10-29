@@ -6,75 +6,58 @@ import { marked } from 'marked';
 const { content } = Astro.props as ContentProps;
 const htmlContent = marked(content.body);
 const companies = content.data.companies || [];
-const investors = content.data.investors || [];
-const link = content.data.link;
 ---
 
 <section class="bg-aurora-moss section--block section--block--pad">
-  <div class="section--block-inner">
-    <!-- Team Header -->
-    <div class="mb-16 md:mb-20">
-      <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-        <h2 class="h2-section">{content.data.title}</h2>
-        <div class="section--block-content-text text-lg lg:max-w-2xl">
-          <div set:html={htmlContent} />
+  <div class="max-width">
+    <div class="border-midnight-fjord relative z-10 m-auto border">
+      <div
+        class="fade-in--pure relative z-10 flex flex-col px-6 pt-8 pb-6 md:px-11 md:pt-11 lg:px-16 lg:pt-16 xl:px-20 xl:pt-20"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+      >
+        <!-- Team Header -->
+
+        <div
+          class="mx-auto mb-10 flex w-full flex-col justify-between gap-9 text-center md:mb-20 md:flex-row md:text-left lg:mb-20 xl:mb-24"
+        >
+          <div class="w-full max-w-none self-center md:max-w-55 lg:max-w-xs">
+            <h2 class="datum-text-8xl">{content.data.title}</h2>
+          </div>
+          <div class="max-w-115 flex-grow self-center">
+            <span class="datum-text-lg">
+              <div set:html={htmlContent} />
+            </span>
+          </div>
         </div>
+
+        <div class="mb-2.5 block w-full py-2.5">
+          <span
+            class="after:bg-midnight-fjord datum-docs-sidebar-headings flex flex-col items-center justify-center gap-7.5 align-middle uppercase after:block after:h-[1px] after:w-full after:content-[''] md:flex-row"
+          >
+            <p class="mb-0 text-balance md:whitespace-nowrap">Companies we've helped to build</p>
+          </span>
+        </div>
+
+        <!-- Companies Section -->
+        {
+          companies.length > 0 && (
+            <div>
+              <div class="grid grid-cols-3 overflow-x-auto md:grid-cols-6">
+                {companies.map((company) => (
+                  <div class="flex aspect-29/21 items-center justify-center">
+                    <Image
+                      src={company.img}
+                      alt={company.alt ?? ''}
+                      class="logo-img logo-img--standard"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        }
       </div>
     </div>
-
-    <!-- Companies Section -->
-    {
-      companies.length > 0 && (
-        <div>
-          <h3 class="text-midnight-fjord/80 font-alliance mb-8 text-sm font-semibold tracking-wider uppercase md:text-base">
-            Companies we've helped to build
-          </h3>
-          <div class="logo-grid logo-grid--3-6">
-            {companies.map((company) => (
-              <div class="logo-item logo-item--landscape">
-                <Image
-                  src={company.img}
-                  alt={company.alt ?? ''}
-                  class="logo-img logo-img--standard"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    }
-
-    <!-- Investors Section -->
-    {
-      investors.length > 0 && (
-        <div>
-          <h3 class="text-midnight-fjord/80 font-alliance mb-8 text-sm font-semibold tracking-wider uppercase md:text-base">
-            Investors who have trusted us to execute
-          </h3>
-          <div class="logo-grid logo-grid--3-6">
-            {investors.map((investor) => (
-              <div class="logo-item logo-item--landscape">
-                <Image
-                  src={investor.img}
-                  alt={investor.alt ?? ''}
-                  class="logo-img logo-img--standard"
-                />
-              </div>
-            ))}
-
-            {link && (
-              <div class="logo-item logo-item--landscape">
-                <a
-                  href={link.url}
-                  class="text-midnight-fjord/80 hover:text-midnight-fjord text-base transition-colors"
-                >
-                  {link.label}
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      )
-    }
   </div>
 </section>

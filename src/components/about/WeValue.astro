@@ -1,39 +1,53 @@
 ---
 import type { ContentProps } from '@/src/types/common';
+import Button from '@/src/components/Button.astro';
+import { Image } from 'astro:assets';
+import Illustration from '@content/about/images/rock.png';
 
 const { content } = Astro.props as ContentProps;
 const items = content.data.items || [];
 const link = content.data.link;
 ---
 
-<section class="bg-glacier-mist-900 section--block section--block--pad">
-  <div class="section--block-inner">
-    <div class="flex flex-col gap-12 md:gap-20 lg:flex-row lg:gap-32">
-      <!-- Left content: Heading and CTA -->
-      <div class="flex w-[350px] flex-col">
-        <h2 class="h2-section mb-8 md:mb-12 lg:mb-17">{content.data.title}</h2>
-        {
-          link && (
-            <div>
-              <a href={link.url} class="btn btn--alpha btn--xl">
-                {link.label}
-              </a>
-            </div>
-          )
-        }
-      </div>
-
+<section id="we-value" class="bg-glacier-mist-800 section--block section--block--pad relative">
+  <div
+    class="max-width fade-in--pure relative z-10 text-center"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+  >
+    <h3 class="datum-text-8xl mx-auto max-w-xl text-center">{content.data.title}</h3>
+    <div
+      class="flex flex-wrap justify-center-safe gap-4 py-6 md:gap-6 md:py-14 xl:gap-9 xl:py-21 [&>div]:w-[279px]"
+    >
       {
-        items.length > 0 && (
-          <div class="flex flex-1 justify-start">
-            <ol class="ordered-list ordered-list--sans">
-              {items.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ol>
-          </div>
-        )
+        items.length > 0 &&
+          items.map((item) => (
+            <div class="bg-glacier-mist-700 border-pine-forge datum-text-lg border-1 px-10 py-6 md:p-10">
+              {item}
+            </div>
+          ))
       }
     </div>
+
+    {
+      link && (
+        <Button
+          text={link.label}
+          href={link.url}
+          target="_blank"
+          class="btn btn--pine-forge"
+          icon={{ name: 'arrow-right', size: 'md' }}
+        />
+      )
+    }
+  </div>
+
+  <div class="absolute bottom-0 left-0 z-5 size-auto overflow-hidden">
+    <Image
+      src={Illustration}
+      layout="constrained"
+      alt="Scene rock illustration"
+      class="size-auto w-[334px] -translate-x-1/2 translate-y-1/10 md:translate-x-0 md:translate-y-[40%] lg:translate-x-0 lg:translate-y-0"
+    />
   </div>
 </section>

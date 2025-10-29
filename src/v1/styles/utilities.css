@@ -227,8 +227,12 @@
 @utility datum-prose-lg {
   @apply prose max-w-none;
   @apply datum-text-lg;
-  @apply prose-p:mb-3 prose-p:mt-0;
-  @apply prose-headings:mt-0 prose-headings:mb-3.5 lg:prose-headings:mb-5;
+  @apply text-inherit;
+
+  @apply prose-p:mt-0 prose-p:mb-[var(--text-lg-paragraph-spacing)];
+  @apply prose-li:mt-0 prose-li:mb-[var(--text-lg-paragraph-spacing)];
+  @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
+  @apply prose-headings:mt-5 prose-headings:mb-4 prose-headings:font-bold;
 }
 
 @utility datum-prose {

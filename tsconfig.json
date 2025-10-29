@@ -22,6 +22,7 @@
       "@libs/*": ["./src/libs/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@v1/*": ["./src/v1/*"],
+      "@content/*": ["./src/content/*"],
       "@data/*": ["./src/data/*"],
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"]

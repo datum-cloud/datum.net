@@ -4,7 +4,7 @@ export const prerender = false;
 import { OIDCClient } from '@libs/oidc';
 import type { callbackResult } from '@libs/oidc';
 import type { UserInfoResponse, IDToken } from 'openid-client';
-import { sha256 } from '@/src/libs/file';
+// import { sha256 } from '@/src/libs/file';
 
 const oidcClient = new OIDCClient();
 const currentUrl = Astro.url.toString();
@@ -14,39 +14,38 @@ const redirectUrl = Astro.cookies.has('auth_redirect')
   ? Astro.cookies.get('auth_redirect')?.value
   : '/';
 
+const cookieOptions = {
+  path: '/',
+  sameSite: 'lax' as 'none' | 'strict' | 'lax',
+  secure: true,
+};
+
 try {
   if (!codeVerifier || codeVerifier === '') {
+    console.log('No code verifier found in cookies.');
     return Astro.redirect(redirectUrl);
   }
 
   // user already logged in, skip handleCallback
-  if (Astro.cookies.get('userId')?.value) {
+  if (Astro.cookies.get('userInfo')?.value) {
     return Astro.redirect(redirectUrl);
   } else {
     let result: callbackResult = await oidcClient.handleCallback(currentUrl, codeVerifier, nonce);
-
+    // console.log('Callback result: ', result);
     if (!result.error) {
       const userInfo: UserInfoResponse = result.userInfo;
       const claims: IDToken | undefined = result.claims;
       const expired = new Date(claims?.exp ? claims.exp * 1000 : Date.now() + 3600 * 1000);
 
-      if (userInfo.email) {
-        Astro.cookies.set('userId', sha256(userInfo.email), {
-          path: '/',
-          sameSite: 'strict',
-          secure: true,
-          expires: expired,
-        });
-      }
+      Astro.cookies.set('accessToken', result.accessToken || '', {
+        expires: expired,
+        ...cookieOptions,
+      });
 
-      if (userInfo.profile) {
-        Astro.cookies.set('profile', sha256(userInfo.profile), {
-          path: '/',
-          sameSite: 'strict',
-          secure: true,
-          expires: expired,
-        });
-      }
+      Astro.cookies.set('userInfo', userInfo, {
+        expires: expired,
+        ...cookieOptions,
+      });
     }
 
     return Astro.redirect(redirectUrl);

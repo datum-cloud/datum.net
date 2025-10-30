@@ -18,6 +18,7 @@ pnpm-debug.log*
 .env.local
 .env.production
 .env.development
+
 # macOS-specific files
 .DS_Store
 
@@ -41,3 +42,6 @@ Dockerfile.bak
 
 # local storage
 .persistent/*
+
+# Cache files
+.cache/

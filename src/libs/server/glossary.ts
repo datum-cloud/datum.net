@@ -196,8 +196,8 @@ async function buildGlossary(options: GlossaryOptions) {
   }
 
   console.log(`- Files found: %s%d`, warnPrefix, files.length);
-
   console.log(`%sStart patching files`, infoPrefix);
+
   files.forEach((file: string) => {
     try {
       // Create a regex pattern to match any of the glossary terms (case-insensitive)

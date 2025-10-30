@@ -2,41 +2,14 @@ import * as client from 'openid-client';
 import type {
   TokenEndpointResponseHelpers,
   TokenEndpointResponse,
-  IDToken,
   UserInfoResponse,
+  IDToken,
 } from 'openid-client';
+
 const server = import.meta.env.AUTH_OIDC_ISSUER || process.env.AUTH_OIDC_ISSUER;
 const clientId = import.meta.env.AUTH_OIDC_CLIENT_ID || process.env.AUTH_OIDC_CLIENT_ID;
 const clientSecret = import.meta.env.AUTH_OIDC_CLIENT_SECRET || process.env.AUTH_OIDC_CLIENT_SECRET;
 const redirect_uri = import.meta.env.AUTH_OIDC_REDIRECT_URI || process.env.AUTH_OIDC_REDIRECT_URI;
-
-export interface userInfo {
-  email: string;
-  email_verified: boolean;
-  family_name: string;
-  given_name: string;
-  locale: string;
-  name: string;
-  picture: string;
-  preferred_username: string;
-  sub: string;
-  updated_at: number;
-}
-
-export interface claims {
-  amr: string[];
-  at_hash: string;
-  aud: string[];
-  auth_time: number;
-  azp: string;
-  client_id: string;
-  email: string;
-  exp: number;
-  iat: number;
-  iss: string;
-  sid: string;
-  sub: string;
-}
 
 export interface callbackResult {
   accessToken: string;
@@ -45,14 +18,6 @@ export interface callbackResult {
   claims: IDToken | undefined;
   userInfo: UserInfoResponse;
   error?: object;
-}
-
-export interface tokenResult {
-  access_token: string;
-  token_type: string;
-  id_token: string;
-  expires_in: number;
-  claims: () => claims;
 }
 
 export class OIDCClient {
@@ -102,8 +67,7 @@ export class OIDCClient {
       clientSecret
     );
 
-    let tokens: TokenEndpointResponseHelpers & TokenEndpointResponse;
-    let claims: IDToken | undefined = undefined;
+    let claims, tokens: TokenEndpointResponseHelpers & TokenEndpointResponse;
     let userInfo: UserInfoResponse;
 
     if (!currentUrl) {
@@ -120,11 +84,12 @@ export class OIDCClient {
       claims = tokens.claims();
       userInfo = await client.fetchUserInfo(config, tokens.access_token, claims?.sub ?? '');
     } catch (error) {
+      // error handling return null tokens and claims
       return {
         accessToken: '',
         refreshToken: '',
         idToken: '',
-        claims: claims,
+        claims: {} as IDToken | undefined,
         userInfo: {} as UserInfoResponse,
         error: error instanceof Error ? error : { message: String(error) },
       };

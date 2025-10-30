@@ -18,7 +18,7 @@ const {
   meta,
 } = Astro.props as LayoutProps;
 
-const mode = import.meta.env.MODE || process.env.NODE_ENV;
+const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
 const pageUrl = Astro.url.href;
 const defaultImage = new URL('/images/og-default.png', Astro.site).href;
 const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
@@ -49,8 +49,8 @@ const descriptionValue =
       title={titleValue}
       description={descriptionValue}
       canonical={canonical || pageUrl}
-      noindex={mode === 'staging' ? true : false}
-      nofollow={mode === 'staging' ? true : false}
+      noindex={mode === 'development' ? true : false}
+      nofollow={mode === 'development' ? true : false}
       openGraph={{
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,

@@ -9,7 +9,7 @@ import Footer from '@components/Footer.astro';
 import Card from '@components/roadmap/Card.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import ImageSphere from '@v1/assets/images/sphere-half.png';
-import Skeleton from '@components/Skeleton.astro';
+// import Skeleton from '@components/roadmap/Skeleton.astro';
 
 const page = await getCollectionEntry('pages', 'roadmap');
 
@@ -44,9 +44,7 @@ const description = fm.description;
         />
       </div>
       <div class="roadmap-container">
-        <Card server:defer>
-          <Skeleton slot="fallback" />
-        </Card>
+        <Card server:defer />
       </div>
     </div>
 

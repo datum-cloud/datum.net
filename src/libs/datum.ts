@@ -101,36 +101,44 @@ async function roadmaps(): Promise<RoadmapProps[]> {
   if (cache.has('roadmaps')) {
     return cache.get<RoadmapProps[]>('roadmaps') as RoadmapProps[];
   } else {
-    const query = `
-        query ($owner: String!, $name: String!, $labels: String!) {
-          repository(owner: $owner, name: $name) {
-            issues(first: 30, filterBy: { states: OPEN, labels: [$labels] }) {
-              nodes {
-                id
-                title
-                body
-                url
-                labels(first: 10) {
-                  nodes {
-                    name
+    try {
+      const query = `
+          query ($owner: String!, $name: String!, $labels: String!) {
+            repository(owner: $owner, name: $name) {
+              issues(first: 30, filterBy: { states: OPEN, labels: [$labels] }) {
+                nodes {
+                  id
+                  title
+                  body
+                  url
+                  labels(first: 10) {
+                    nodes {
+                      name
+                    }
                   }
                 }
               }
             }
           }
-        }
-      `;
+        `;
 
-    const variables = {
-      owner: owner,
-      name: 'enhancements',
-      labels: 'Roadmap Vote',
-    };
+      const variables = {
+        owner: owner,
+        name: 'enhancements',
+        labels: 'Roadmap Vote',
+      };
 
-    const response = (await graph(query, variables)) as ResponseProps;
-    roadmaps = Object(response.repository.issues.nodes).map((issue: RoadmapProps) => ({
-      ...issue,
-    }));
+      const response = (await graph(query, variables)) as ResponseProps;
+
+      if (!response || !response.repository || !response.repository.issues) {
+        return roadmaps;
+      }
+      roadmaps = Object(response.repository.issues.nodes).map((issue: RoadmapProps) => ({
+        ...issue,
+      }));
+    } catch {
+      roadmaps = [];
+    }
 
     if (roadmaps.length > 0) {
       cache.set('roadmaps', roadmaps, 1000 * 60 * 10); // cache for 30 minutes
@@ -195,7 +203,6 @@ async function changelogs(): Promise<ChangelogProps[]> {
     }
 
     const categoryId = categoryResponse.repository.discussionCategory.id as string;
-
     const query = `
       query ($owner:String!, $name:String!, $categoryId:ID!) {
         repository(owner: $owner, name: $name) {

@@ -155,8 +155,8 @@ export default defineConfig({
     playformCompress({
       CSS: true,
       HTML: true,
-      Image: true,
       JavaScript: true,
+      Image: true,
       SVG: true,
     }),
   ],

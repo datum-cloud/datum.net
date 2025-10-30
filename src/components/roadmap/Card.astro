@@ -1,75 +1,47 @@
 ---
 export const prerender = false;
-import { getRoadmap, isConnectedToDB } from '@utils/roadmap';
-import { truncate, removeHeaderTags, stripTags } from '@libs/string';
 
-const userId = Astro.cookies.get('userId')?.value || '';
-const issues = await getRoadmap(userId);
-const dbIsConnected = isConnectedToDB();
+import { marked } from 'marked';
+import { truncate, removeHeaderTags, stripTags } from '@libs/string';
+import { roadmaps, type RoadmapProps } from '@libs/datum';
+
+const issues = await roadmaps();
 ---
 
 <div class="roadmap-container">
   {
-    Array.prototype.map.call(
-      issues,
-      (issue: {
-        id: string;
-        title: string;
-        body: string;
-        url?: string;
-        vote: number;
-        hasVoted: boolean;
-      }) => (
-        <div class="roadmap-card">
-          <div class="roadmap-card--content">
-            <div class="roadmap-card--vote-section">
-              {!dbIsConnected && (
-                <div class="roadmap-card--vote-counter">
-                  <span id={`${issue.id}-value`} class="roadmap-card--vote-number">
-                    {issue.vote}
-                  </span>
-                  <span class="roadmap-card--vote-label">votes</span>
-                </div>
-              )}
+    Array.prototype.map.call(issues, (issue: RoadmapProps) => () => (
+      <div class="roadmap-card">
+        <div class="roadmap-card--content">
+          <div class="roadmap-card--vote-section" />
+
+          <div class="roadmap-card--info-section">
+            <div class="roadmap-card--text-content">
+              <h3 class="roadmap-card--title">{issue.title}</h3>
+              <div
+                class="roadmap-card--description"
+                set:html={stripTags(removeHeaderTags(marked.parse(issue.body))).then((text) =>
+                  truncate(text, 200)
+                )}
+              />
             </div>
 
-            <div class="roadmap-card--info-section">
-              <div class="roadmap-card--text-content">
-                <h3 class="roadmap-card--title">{issue.title}</h3>
-                <div
-                  class="roadmap-card--description"
-                  set:html={stripTags(removeHeaderTags(issue.body)).then((text) =>
-                    truncate(text, 200)
-                  )}
-                />
-              </div>
-
-              <div class="roadmap-card--actions">
-                {!dbIsConnected && (
-                  <button
-                    class="roadmap-card--vote-button"
-                    data-issueid={issue.id}
-                    data-has-voted={issue.hasVoted}
-                  >
-                    {issue.hasVoted ? 'Remove your vote' : 'Add your vote'}
-                  </button>
-                )}
-                {issue.url && (
-                  <a
-                    href={issue.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="roadmap-card--github-link"
-                  >
-                    Learn more on GitHub
-                  </a>
-                )}
-              </div>
+            <div class="roadmap-card--actions">
+              {issue.url && (
+                <a
+                  href={issue.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="roadmap-card--github-link"
+                >
+                  Learn more on GitHub
+                </a>
+              )}
             </div>
           </div>
         </div>
-      )
-    )
+      </div>
+    ))
   }
 
   <script>

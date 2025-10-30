@@ -1,0 +1,103 @@
+---
+export const prerender = false;
+
+import '@v1/styles/page-blog.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { createNewsletterContact } from '@libs/miloapi';
+import Signup from '../components/forms/Signup.astro';
+
+const expired = new Date(Date.now() + 3600 * 1000);
+const cookieOptions = {
+  path: '/',
+  sameSite: 'lax' as 'none' | 'strict' | 'lax',
+  secure: true,
+  expires: expired,
+};
+let creatingNewsletter: boolean = false;
+let user = {
+  given_name: '',
+  family_name: '',
+  email: '',
+};
+
+if (Astro.request.method === 'POST') {
+  console.log('Processing newsletter signup POST request...');
+  try {
+    const userInfo = Astro.cookies.get('userInfo')?.value;
+    console.log('User info cookie value:', userInfo);
+    if (!userInfo) {
+      Astro.cookies.set('auth_redirect', '/newsletter/', cookieOptions);
+      return Astro.redirect('/auth/login/');
+    } else {
+      console.log('User info from cookie:', userInfo);
+      const accessToken = Astro.cookies.get('accessToken')?.value;
+      console.log('Access token from cookie:', accessToken);
+      user = JSON.parse(userInfo);
+
+      if (accessToken) {
+        creatingNewsletter = await createNewsletterContact(
+          accessToken,
+          user.email,
+          user.family_name,
+          user.given_name
+        );
+
+        if (creatingNewsletter) {
+          console.log('Newsletter contact created successfully.');
+        } else {
+          console.error('Failed to create newsletter contact.');
+        }
+      }
+    }
+
+    // const data = await Astro.request.formData();
+    // const email = data.get('email');
+    // console.log('Newsletter signup email:', email);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+
+const icon = 'book-image';
+
+// SEO
+const title = 'Newsletter';
+const description = 'Stay updated with the latest news and updates from Datum.';
+const subtitle = 'Newsletter';
+---
+
+<Layout title={title || 'Datum'} description={description} bodyClass="blog-page">
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={icon}
+      title={title}
+      subtitle={subtitle}
+      description={description}
+    />
+
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
+      <div class="max-width">
+        {
+          creatingNewsletter ? (
+            <div class="footer-signup-container">
+              <div class="footer-signup-success">
+                <h3>
+                  <b>{user.given_name}</b>, You're on the list!
+                </h3>
+              </div>
+            </div>
+          ) : (
+            <Signup server:defer />
+          )
+        }
+      </div>
+    </div>
+
+    <Footer showCTA={false} />
+  </section>
+</Layout>

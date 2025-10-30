@@ -1,4 +1,5 @@
 ---
+export const prerender = false;
 import Icon from '@components/Icon.astro';
 ---
 
@@ -7,12 +8,17 @@ import Icon from '@components/Icon.astro';
   <div class="footer-signup-container">
     <h4 class="h4-leading mb-0">Sign up for updates</h4>
     <div class="footer-signup-form-container">
-      <div class="footer-signup-form">
-        <input type="email" placeholder="Your email" class="footer-signup-input mb-0" />
+      <form action="/newsletter/" method="POST" class="footer-signup-form">
+        <input
+          type="email"
+          name="email"
+          placeholder="Your email"
+          class="footer-signup-input mb-0"
+        />
         <button class="footer-signup-button">
           <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </div>

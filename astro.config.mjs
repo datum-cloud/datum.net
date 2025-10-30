@@ -10,13 +10,12 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
-import glossary from './src/libs/glossary.js';
+import glossary from './src/libs/server/glossary.js';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
-// const siteUrl = process.env.SITE_URL || env.SITE_URL;
-const siteUrl = 'https://www.datum.net';
+const siteUrl = import.meta.env.SITE_URL || process.env.SITE_URL || 'https://www.datum.net';
 const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
@@ -25,6 +24,7 @@ export default defineConfig({
   output: 'static',
   adapter: node({
     mode: 'standalone',
+    experimentalStaticHeaders: true,
   }),
   image: {
     layout: 'constrained',

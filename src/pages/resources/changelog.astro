@@ -1,7 +1,6 @@
 ---
 import '@v1/styles/page-changelog.css';
 import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -12,18 +11,7 @@ import ImageTwoPerson from '@v1/assets/images/two-person.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
-const changelogEntries = await getCollection('changelog', ({ id }) => id !== 'index');
 const page = await getCollectionEntry('changelog', 'index');
-
-const sortedEntries = changelogEntries.sort((a, b) => {
-  // const versionA = parseFloat(a.data.version ?? '0');
-  // const versionB = parseFloat(b.data.version ?? '0');
-  // return versionB - versionA;
-
-  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
-  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-  return dateB - dateA;
-});
 
 // SEO
 const fm = page.data;
@@ -47,17 +35,7 @@ const icon = 'list-restart';
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="changelog-container">
-        {
-          sortedEntries.map((item) => (
-            <Card
-              id={item.id}
-              date={item.data.date ?? new Date()}
-              title={item.data.title}
-              description={item.body ?? ''}
-              tags={item.data.tags}
-            />
-          ))
-        }
+        <Card />
       </div>
 
       <div class="absolute right-50 bottom-0 z-40 inline-block">

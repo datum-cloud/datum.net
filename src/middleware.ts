@@ -1,19 +1,13 @@
-import { stargazerCount } from '@utils/github';
+import { stargazerCount } from '@libs/datum';
+import { defineMiddleware } from 'astro:middleware';
 
-interface Context {
-  locals: {
-    starCount?: string;
-  };
-}
+export const onRequest = defineMiddleware(async (context, next) => {
+  const tempStarCount = await stargazerCount();
 
-type NextFunction = () => Promise<void>;
-
-export async function onRequest(context: Context, next: NextFunction) {
-  const starCount = await stargazerCount('datum-cloud', 'datum');
   const formatter = new Intl.NumberFormat('en-US', { notation: 'compact' });
-  const formattedStarCount = formatter.format(starCount);
+  const formattedStarCount = formatter.format(tempStarCount);
 
-  context.locals.starCount = formattedStarCount;
+  context.locals.starCount = () => formattedStarCount;
 
   return next();
-}
+});

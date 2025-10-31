@@ -9,13 +9,13 @@ authors: jacob
 
 We use RFCs (Request for Comments) to design significant technical changes collaboratively.
 
-**When to write an RFC:**
+## When to write an RFC
 - New product features or major changes
 - Architecture decisions that affect multiple systems
 - Breaking changes to APIs or interfaces
 - Complex technical problems requiring research
 
-**RFC process:**
+## RFC process
 1. Write the RFC document with problem, solution, alternatives
 2. Share for async feedback and iteration
 3. Schedule RFC review meeting if needed

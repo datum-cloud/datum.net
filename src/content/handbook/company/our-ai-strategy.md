@@ -9,13 +9,13 @@ authors: jacob
 
 We're not just building for the current internet - we're building the internet that AI needs.
 
-## AI is changing everything:
+## AI is changing everything
 - **Complexity explosion** - AI workloads are more distributed, data-intensive, and performance-sensitive
 - **New interfaces** - AI agents need programmatic, reasoning-friendly interfaces to infrastructure
 - **Ecosystem importance** - AI leaders win by orchestrating powerful ecosystems, not building everything themselves
 - **Global requirements** - AI services need to run everywhere with deterministic performance
 
-## How we're building for AI:**
+## How we're building for AI
 - **AI-native interfaces** - Our platform speaks the language of modern AI systems and agents
 - **Intelligent routing** - AI-driven traffic optimization and policy enforcement
 - **Ecosystem orchestration** - Seamless connection between AI providers, cloud platforms, and enterprise customers

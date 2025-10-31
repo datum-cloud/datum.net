@@ -24,7 +24,6 @@ if (!Astro.cookies.get('auth_redirect')?.value) {
 
 const authUrl = await oidcClientReturn.then(
   (result: { authUrl?: string; codeVerifier?: string; nonce?: string }) => {
-    // console.log('OIDCClient returned:', result);
     if (!result.authUrl) {
       return '/';
     }

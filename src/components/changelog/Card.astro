@@ -3,16 +3,13 @@ export const prerender = false;
 
 import { marked } from 'marked';
 import { changelogs, type ChangelogProps } from '@/src/libs/datum';
+
 const entries = await changelogs();
 ---
 
 {
   Array.prototype.map.call(entries, (entry: ChangelogProps) => () => (
-    <div
-      class="changelog-item fade-in--pure"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
+    <div class="changelog-item">
       <div class="changelog-item--timeline">
         <div class="changelog-item--timeline-dot">
           <svg

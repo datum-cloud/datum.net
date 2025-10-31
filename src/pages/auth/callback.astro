@@ -22,7 +22,6 @@ const cookieOptions = {
 
 try {
   if (!codeVerifier || codeVerifier === '') {
-    console.log('No code verifier found in cookies.');
     return Astro.redirect(redirectUrl);
   }
 
@@ -31,7 +30,7 @@ try {
     return Astro.redirect(redirectUrl);
   } else {
     let result: callbackResult = await oidcClient.handleCallback(currentUrl, codeVerifier, nonce);
-    // console.log('Callback result: ', result);
+
     if (!result.error) {
       const userInfo: UserInfoResponse = result.userInfo;
       const claims: IDToken | undefined = result.claims;

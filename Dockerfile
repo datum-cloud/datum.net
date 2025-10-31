@@ -3,6 +3,20 @@ WORKDIR /app
 
 ENV ASTRO_TELEMETRY_DISABLED=true
 
+FROM base AS build
+
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=4321
+
+RUN touch .env
+COPY package*.json ./
+RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
+COPY . .
+RUN chmod -R 755 src/pages
+
+RUN npm run build
+
 FROM base AS development
 
 ENV NODE_ENV=development
@@ -17,29 +31,11 @@ RUN chmod -R 755 src/pages
 EXPOSE 4321
 CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]
 
-FROM base AS build
-
-ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=4321
-# ARG SITE_URL
-# ENV SITE_URL=${SITE_URL}
-
-RUN touch .env
-COPY package*.json ./
-RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
-COPY . .
-RUN chmod -R 755 src/pages
-
-RUN npm run build
-
 FROM node:24.11.0-alpine3.22 AS production
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-# ARG SITE_URL
-# ENV SITE_URL=${SITE_URL}
 
 WORKDIR /app
 

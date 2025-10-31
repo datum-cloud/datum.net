@@ -66,15 +66,8 @@
   }
 
   .footer-illustration-container {
-    @apply relative z-9;
-  }
-
-  .footer-illustration-image {
-    @apply h-auto w-full -translate-y-3;
-  }
-
-  .footer-illustration-container {
     @apply bg-glacier-mist-700 relative;
+    @apply relative z-9;
 
     &:before {
       @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-4 w-full content-[''];
@@ -82,7 +75,7 @@
   }
 
   .footer-illustration-image {
-    @apply relative mr-auto size-auto max-h-43 max-w-none object-cover md:max-h-none md:max-w-full;
+    @apply relative mr-auto size-auto w-full -translate-y-3 object-cover;
   }
 
   .footer-main {

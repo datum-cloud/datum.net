@@ -3,14 +3,22 @@ import { getCollection, render } from 'astro:content';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import Aside from '@components/Aside.astro';
+import TableOfContents from '@components/TableOfContents.astro';
 import type { ArticleProps } from '@/src/types/common';
+import type { MarkdownHeading } from 'astro';
 import { getEntry } from 'astro:content';
+import { Breadcrumbs } from 'astro-breadcrumbs';
+
+interface Props extends ArticleProps {
+  headings?: MarkdownHeading[];
+}
 
 const {
   articleId: propArticleId,
   showSidebar = true,
   class: className,
-} = Astro.props as ArticleProps;
+  headings = [],
+} = Astro.props as Props;
 
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
@@ -29,17 +37,63 @@ const mainArticleEntry =
 
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
+
+// Create breadcrumbs manually based on article ID
+let breadcrumbData = [];
+
+// Add home/handbook as first items
+breadcrumbData.push(
+  {
+    text: 'Home',
+    href: '/',
+  },
+  {
+    text: 'Handbook',
+    class: 'handbook-menu-toggle',
+    href: '/handbook/',
+  },
+  {
+    text: 'Handbook',
+    href: '/handbook/',
+  }
+);
+
+// Extract path segments from article ID
+const pathSegments = articleId.split('/').filter(Boolean);
+
+if (pathSegments.length > 0) {
+  for (let i = 0; i < pathSegments.length; i++) {
+    const segment = pathSegments[i];
+
+    // Skip the last segment as it will be the current page title
+    if (i < pathSegments.length - 1) {
+      // Format the segment title (capitalize words, replace dashes with spaces)
+      const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+      breadcrumbData.push({
+        text: segmentTitle,
+      });
+    }
+  }
+
+  // Add the current page title as the last breadcrumb
+  if (mainArticleEntry?.data.title) {
+    breadcrumbData.push({
+      text: mainArticleEntry.data.title,
+      href: '/handbook/' + articleId,
+    });
+  }
+}
 ---
 
-<section class:list={['handbook-article bg-glacier-mist-700 section--block pb-9', className]}>
-  <div class="max-width max-w-263.5">
-    <Aside title="About the Handbook">
-      <p>
-        This is our guide to understanding our company foundations: our values, beliefs, and goals.
-        Feel free to reach out if there is something we've missed!.
-      </p>
-    </Aside>
-
+<section
+  class:list={[
+    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 z-70 overflow-visible border-b-1',
+    className,
+  ]}
+  id="handbook-article-container"
+>
+  <div class="max-width">
     <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
       {
         showSidebar && (
@@ -59,6 +113,30 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
         data-reveal-delay="100"
       >
         <header class="article-header">
+          <div>
+            <Breadcrumbs
+              mainBemClass="c-breadcrumbs"
+              linkTextFormat="sentence"
+              crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+            >
+              <svg
+                slot="index"
+                aria-label="Home Page"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </Breadcrumbs>
+          </div>
           <h1 class="article-title">
             {mainArticleEntry?.data.title || 'Why does Datum exist?'}
           </h1>
@@ -89,6 +167,61 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
         {/* Navigation */}
         <PageNav currentArticleId={articleId} categories={orderedCategories} />
       </article>
+
+      <aside class="handbook-toc">
+        <Aside title="About the Handbooks" class="small">
+          <p>
+            This is our guide to understanding our company foundations: our values, beliefs, and
+            goals. Feel free to reach out if there is something we've missed!.
+          </p>
+        </Aside>
+        <TableOfContents headings={headings} title="On This Page" showTitle={true} sticky={true} />
+      </aside>
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const handbookMenuToggle = document.querySelector('.handbook-menu-toggle');
+
+    // Function to toggle sidebar
+    const toggleSidebar = () => {
+      if (window.innerWidth < 768) {
+        const expanded = document.body.hasAttribute('data-aside-menu-expanded');
+
+        if (!expanded) {
+          document.body.setAttribute('data-aside-menu-expanded', '');
+          document.body.classList.add('handbook-menu-open');
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.removeAttribute('data-aside-menu-expanded');
+          document.body.classList.remove('handbook-menu-open');
+          document.body.style.overflow = '';
+        }
+      }
+    };
+
+    if (handbookMenuToggle) {
+      handbookMenuToggle.addEventListener('click', (e) => {
+        // Only enable the toggle functionality on mobile screens
+        if (window.innerWidth < 768) {
+          e.preventDefault();
+
+          // Use the toggle function
+          toggleSidebar();
+        }
+      });
+
+      // Add resize listener to disable toggle functionality on larger screens
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+          // Ensure mobile menu is closed when resizing to larger screens
+          document.body.removeAttribute('data-aside-menu-expanded');
+          document.body.classList.remove('handbook-menu-open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  });
+</script>

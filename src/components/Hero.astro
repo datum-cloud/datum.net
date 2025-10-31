@@ -17,7 +17,7 @@ const {
 } = Astro.props as HeroProps;
 ---
 
-<section class:list={['hero--main', className]}>
+<header class:list={['hero--main', className]}>
   <Nav />
   {
     !hideContent && (
@@ -61,4 +61,4 @@ const {
       </div>
     )
   }
-</section>
+</header>

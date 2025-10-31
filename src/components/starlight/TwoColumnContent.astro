@@ -199,12 +199,10 @@ const shouldRenderSearch =
 
         if (!expanded) {
           document.body.setAttribute('data-mobile-menu-expanded', '');
-          document.body.setAttribute('data-disable-lenis', '');
           document.body.classList.add('mobile-menu-open');
           document.body.style.overflow = 'hidden';
         } else {
           document.body.removeAttribute('data-mobile-menu-expanded');
-          document.body.removeAttribute('data-disable-lenis');
           document.body.classList.remove('mobile-menu-open');
           document.body.style.overflow = '';
         }
@@ -234,7 +232,6 @@ const shouldRenderSearch =
           // 768px is typically md breakpoint
           // Ensure mobile menu is closed when resizing to larger screens
           document.body.removeAttribute('data-mobile-menu-expanded');
-          document.body.removeAttribute('data-disable-lenis');
           document.body.classList.remove('mobile-menu-open');
           document.body.style.overflow = '';
         }

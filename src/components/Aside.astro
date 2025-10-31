@@ -3,7 +3,7 @@ import Icon from '@components/Icon.astro';
 import type { AsideProps } from '@/src/types/common';
 import slugify from 'slugify';
 
-const { type = 'note', icon, title } = Astro.props as AsideProps;
+const { type, icon, title, class: className } = Astro.props as AsideProps;
 
 const asideId = title ? slugify(title, { lower: true, strict: true }) : undefined;
 
@@ -20,11 +20,13 @@ const getDefaultIcon = (asideType: string) => {
   }
 };
 
-const iconName = icon || getDefaultIcon(type);
+// Only show icon if type is explicitly set or icon is provided
+const shouldShowIcon = type || icon;
+const iconName = icon || (type ? getDefaultIcon(type) : getDefaultIcon('note'));
 ---
 
 <aside
-  class={`article-aside article-aside--${type}`}
+  class={`article-aside ${type ? `article-aside--${type}` : 'article-aside--note'} ${className || ''}`}
   id={asideId}
   x-data={`{
     asideId: '${asideId}',
@@ -48,7 +50,7 @@ const iconName = icon || getDefaultIcon(type);
   style="display: none;"
 >
   <div class="article-aside-header">
-    <Icon name={iconName} size="md" />
+    {shouldShowIcon && <Icon name={iconName} size="md" />}
     <p class="article-aside-title">{title}</p>
   </div>
   <div class="article-aside-content">

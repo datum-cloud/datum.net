@@ -144,4 +144,7 @@ export interface AsideProps {
   type?: 'note' | 'caution' | 'tip';
   icon?: string;
   title: string;
+  class?: string;
 }
+
+// TOC interfaces removed - now using Astro's built-in MarkdownHeading type

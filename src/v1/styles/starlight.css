@@ -19,7 +19,7 @@
 
   html,
   body {
-    @apply antialiased;
+    /* @apply antialiased; */
     @apply font-primary;
   }
 
@@ -44,10 +44,6 @@
     &.mobile-menu-open {
       @apply fixed w-full touch-none overflow-hidden;
     }
-  }
-
-  [data-disable-lenis] {
-    @apply fixed w-full touch-none overflow-hidden;
   }
 
   [x-cloak] {
@@ -460,6 +456,12 @@
   .sl-main-content {
     /* @apply w-full max-w-[1130px]; */
     @apply max-w-full;
+
+    astro-breadcrumbs {
+      nav.c-breadcrumbs {
+        @apply mt-6! mb-0! flex! md:mt-9! md:px-10!;
+      }
+    }
   }
 
   .sl-content-wrapper {

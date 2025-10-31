@@ -22,12 +22,24 @@ export async function getStaticPaths() {
     );
   });
 
-  return handbooks.map((entry) => {
+  // Extract headings for each handbook entry
+  const renderedEntries = await Promise.all(
+    handbooks.map(async (entry) => {
+      const rendered = await render(entry);
+      return {
+        entry,
+        rendered,
+        headings: rendered.headings,
+      };
+    })
+  );
+
+  return renderedEntries.map(({ entry, rendered, headings }) => {
     return {
       params: {
         slug: entry.id,
       },
-      props: { entry: render(entry), handbooks },
+      props: { entry: rendered, handbooks, headings },
     };
   });
 }
@@ -36,22 +48,17 @@ const page = await getCollectionEntry('handbooks', 'index');
 const fm = page.data;
 
 const { slug } = Astro.params;
-const entry = await Astro.props.entry;
+const { entry, headings } = Astro.props;
 const { title, description, meta } = entry.remarkPluginFrontmatter;
 
-const pageTitle = title ? 'Datum Handbook - ' + title : 'The Datum Handbook';
+const pageTitle = title ? fm.title + ' - ' + title : fm.title;
 const pageDescription = description ? description : 'The Datum Handbook';
 ---
 
 <Layout title={pageTitle} description={pageDescription} bodyClass="handbook-page" meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light bg-glacier-mist-700"
-      iconName="book-text"
-      title={fm.title}
-      subtitle={fm.subtitle}
-    />
-    <Article articleId={slug} />
+    <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b-1" hideContent={true} />
+    <Article articleId={slug} headings={headings} />
 
     <Footer />
   </section>

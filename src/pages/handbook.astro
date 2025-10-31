@@ -18,13 +18,7 @@ const description = fm.description;
 
 <Layout title={title} description={description} bodyClass="handbook-page" meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light bg-glacier-mist-700"
-      iconName="book-text"
-      title={title}
-      subtitle={fm.subtitle}
-      description={description}
-    />
+    <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b-1" hideContent={true} />
     <Article articleId="company/why-we-exist" />
 
     <Footer />

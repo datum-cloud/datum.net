@@ -7,14 +7,14 @@ updatedDate: May 21, 2025
 authors: jacob
 ---
 
-**Development process:**
+## Development process
 1. **Design** - Create detailed specs and get feedback
 2. **Build** - Implement with automated tests
 3. **Review** - Code review and testing
 4. **Deploy** - Gradual rollout with monitoring
 5. **Measure** - Track usage and impact
 
-**Quality gates:**
+## Quality gates
 - All code must have tests
 - Security review for sensitive changes
 - Performance testing for infrastructure changes

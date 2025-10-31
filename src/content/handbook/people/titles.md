@@ -9,13 +9,13 @@ authors: jacob
 
 Titles should reflect what you actually do, not just seniority. We prefer descriptive titles that help people understand your focus and expertise.
 
-**Title philosophy:**
+## Title philosophy
 - Clarity over hierarchy
 - Function over seniority
 - Authenticity over inflation
 - Evolution as roles grow
 
-**Examples:**
+## Examples
 - "AI Infrastructure Engineer" not "Senior Engineer"
 - "Developer Experience Lead" not "Manager"
 - "Ecosystem Partnerships" not "Business Development"

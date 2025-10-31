@@ -9,13 +9,13 @@ authors: jacob
 
 Our go-to-market strategy centers on building trust with the developer community and ecosystem partners.
 
-**Core GTM philosophy:**
+## Core GTM philosophy
 - **Developers first** - Build for the people who actually use our products
 - **Community-driven** - Grow through genuine relationships and valuable contributions
 - **Partner-enabled** - Leverage ecosystem relationships for mutual benefit
 - **Value-first** - Lead with helpful content and tools, not just sales pitches
 
-**GTM channels:**
+## GTM channels
 - **Open source** - Building trust through transparent, valuable contributions
 - **Developer marketing** - Technical content, tutorials, and tools
 - **Ecosystem partnerships** - Joint solutions with complementary providers

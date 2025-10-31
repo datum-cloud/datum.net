@@ -9,19 +9,19 @@ authors: jacob
 
 We maintain a **foundational, hyperscale-ready framework** that guides the design of all user experiences within the Datum ecosystem. This design language ensures consistency while allowing for the flexibility needed across different products and contexts.
 
-**Design philosophy:**
+## Design philosophy
 - **Hyperscale-ready** - Built to work at massive scale and complexity
 - **Developer-first** - Interfaces designed for people who think in code
 - **Systematically consistent** - Coherent experience across all touchpoints
 - **Future-oriented** - Designed for the AI-native world we're building
 
-**Key design elements:**
+## Key design elements
 - **Typography** - Clean, technical fonts that maintain readability at all scales
 - **Color system** - Professional palette that works across digital and physical applications
 - **Iconography** - Systematic icon library that speaks to our technical audience
 - **Imagery** - Photography and illustrations that show real technology in action
 
-**Brand applications:**
+## Brand applications
 - Product interfaces and dashboards
 - Marketing websites and materials
 - Documentation and technical content

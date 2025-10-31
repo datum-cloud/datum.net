@@ -161,11 +161,11 @@ export default defineConfig({
       contentDir: 'docs',
     }),
     playformCompress({
-      CSS: false,
-      HTML: false,
-      JavaScript: false,
-      Image: false,
-      SVG: false,
+      CSS: true,
+      HTML: true,
+      JavaScript: true,
+      Image: true,
+      SVG: true,
     }),
   ],
 

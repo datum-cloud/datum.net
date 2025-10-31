@@ -1,6 +1,4 @@
 ---
-export const prerender = false;
-
 import '@v1/styles/global.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -39,4 +37,10 @@ const description = 'The page you are looking for does not exist.';
     </div>
     <Footer showCTA={false} />
   </section>
+
+  {
+    import.meta.env.MODE === 'production' && (
+      <script>import '/src/v1/scripts/404tracking.js';</script>
+    )
+  }
 </Layout>

@@ -1,0 +1,37 @@
+---
+import '@v1/styles/global.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { render } from 'astro:content';
+
+const page = await getCollectionEntry('pages', 'chat');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+
+const { Content } = await render(page);
+---
+
+<Layout title={fm.title} description={fm.description} bodyClass={`page--${page.id}`} meta={meta}>
+  <section
+    class="datum-container fade-in--pure"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+  >
+    <Hero
+      class="light [&_.hero--main-content-inner]:pb-15"
+      iconName={fm.iconName}
+      title={fm.title}
+      subtitle={fm.subtitle}
+    />
+
+    <div class="section--block bg-glacier-mist-700">
+      <Content />
+    </div>
+    <Footer showCTA={false} />
+  </section>
+</Layout>

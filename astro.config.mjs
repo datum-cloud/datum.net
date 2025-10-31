@@ -109,38 +109,47 @@ export default defineConfig({
         {
           label: 'Datum Documentation',
           autogenerate: { directory: 'docs/overview' },
+          collapsed: false, // First group is expanded by default
         },
         {
           label: 'Quickstart',
           autogenerate: { directory: 'docs/quickstart' },
+          collapsed: true, // All other groups are collapsed by default
         },
         {
           label: 'Platform',
           autogenerate: { directory: 'docs/platform' },
+          collapsed: true,
         },
         {
           label: 'API',
           autogenerate: { directory: 'docs/api' },
+          collapsed: true,
         },
         {
           label: 'Runtime',
           autogenerate: { directory: 'docs/runtime' },
+          collapsed: true,
         },
         {
           label: 'Workflows',
           autogenerate: { directory: 'docs/workflows' },
+          collapsed: true,
         },
         {
           label: 'Assets',
           autogenerate: { directory: 'docs/assets' },
+          collapsed: true,
         },
         {
           label: 'For Alt Clouds',
           autogenerate: { directory: 'docs/alt-cloud' },
+          collapsed: true,
         },
         {
           label: 'Guides',
           autogenerate: { directory: 'docs/guides' },
+          collapsed: true,
         },
         {
           label: 'Glossary',

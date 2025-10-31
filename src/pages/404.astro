@@ -5,8 +5,8 @@ import '@v1/styles/global.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import Button from '@components/Button.astro';
 import Image404 from '@v1/assets/images/404.png';
-import Icon from '@components/Icon.astro';
 import { Image } from 'astro:assets';
 
 const title = "Sorry, we can't find that page";
@@ -22,14 +22,18 @@ const description = 'The page you are looking for does not exist.';
         <Image src={Image404} alt="404" class="mx-auto mb-12 h-auto w-full max-w-[423px]" />
         <article class="prose prose-xl mx-auto text-center">
           <p class="mb-12">Please check the URL and try again.</p>
-          <a href="/" class="btn btn--glacier-mist-700 btn--large mr-1">
-            Return to homepage
-            <Icon name="arrow-right" size="md" />
-          </a>
-          <a href="/docs/" class="btn btn--glacier-mist-700 btn--large ml-1">
-            Browse our Docs
-            <Icon name="arrow-right" size="md" />
-          </a>
+          <Button
+            text="Return to homepage"
+            href="/"
+            class="btn btn--alpha mr-1"
+            icon={{ name: 'arrow-right', size: 'md' }}
+          />
+          <Button
+            text="Browse our Docs"
+            href="/docs/"
+            class="btn btn--alpha ml-1"
+            icon={{ name: 'arrow-right', size: 'md' }}
+          />
         </article>
       </main>
     </div>

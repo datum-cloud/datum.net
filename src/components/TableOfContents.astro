@@ -13,11 +13,10 @@ const {
 const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.depth <= 3);
 ---
 
-<aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
-  {showTitle && <h3 class="toc-title">{title}</h3>}
-
-  {
-    filteredHeadings.length > 0 ? (
+{
+  filteredHeadings.length > 0 && (
+    <aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
+      {showTitle && <h3 class="toc-title">{title}</h3>}
       <nav class={`toc-nav`}>
         <ul class="toc-list">
           {filteredHeadings.map((heading: MarkdownHeading) => (
@@ -29,54 +28,52 @@ const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.d
           ))}
         </ul>
       </nav>
-    ) : (
-      <div class="toc-empty">
-        <p>No table of contents available</p>
-      </div>
-    )
-  }
-</aside>
+    </aside>
+  )
+}
 
 <script>
-  // Add active link highlighting based on scroll position
-  function updateActiveTOCLink() {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
-
-    let current = '';
-
-    sections.forEach((section) => {
-      const element = section as HTMLElement;
-      const sectionTop = element.offsetTop;
-      if (window.scrollY >= sectionTop - 200) {
-        current = section.getAttribute('id') || '';
-      }
-    });
-
-    tocLinks.forEach((link) => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
-    });
-  }
-
-  // Throttle scroll events
-  let ticking = false;
-  function requestTick() {
-    if (!ticking) {
-      requestAnimationFrame(updateActiveTOCLink);
-      ticking = true;
-    }
-  }
-
-  function handleScroll() {
-    ticking = false;
-    requestTick();
-  }
-
-  // Add scroll listener and initialize
+  // Check if TOC exists before running the script
   document.addEventListener('DOMContentLoaded', () => {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (tocLinks.length === 0) return;
+
+    // Add active link highlighting based on scroll position
+    function updateActiveTOCLink() {
+      const sections = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+      let current = '';
+
+      sections.forEach((section) => {
+        const element = section as HTMLElement;
+        const sectionTop = element.offsetTop;
+        if (window.scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id') || '';
+        }
+      });
+
+      tocLinks.forEach((link) => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Throttle scroll events
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateActiveTOCLink);
+        ticking = true;
+      }
+    }
+
+    function handleScroll() {
+      ticking = false;
+      requestTick();
+    }
+
+    // Initialize and add scroll listener
     updateActiveTOCLink();
     window.addEventListener('scroll', handleScroll);
   });

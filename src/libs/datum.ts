@@ -181,62 +181,66 @@ async function changelogs(): Promise<ChangelogProps[]> {
   if (cache.has('changelogs')) {
     return cache.get<ChangelogProps[]>('changelogs') as ChangelogProps[];
   } else {
-    const categoryQuery = `
-      query ($owner:String!, $name:String!, $slug:String!) {
-        repository(owner: $owner, name: $name) {
-          discussionCategory(slug: $slug){
-            id,
-          }
-        }
-      }`;
-
-    const categoryResponse = (await graph(categoryQuery, categoryVariables)) as {
-      repository: { discussionCategory: { id: string } };
-    };
-
-    if (
-      !categoryResponse ||
-      !categoryResponse.repository ||
-      !categoryResponse.repository.discussionCategory
-    ) {
-      return changelogs;
-    }
-
-    const categoryId = categoryResponse.repository.discussionCategory.id as string;
-    const query = `
-      query ($owner:String!, $name:String!, $categoryId:ID!) {
-        repository(owner: $owner, name: $name) {
-          discussions(first: 30, after: null, categoryId: $categoryId) {
-            nodes {
+    try {
+      const categoryQuery = `
+        query ($owner:String!, $name:String!, $slug:String!) {
+          repository(owner: $owner, name: $name) {
+            discussionCategory(slug: $slug){
               id,
-              title,
-              body,
-              url,
-              createdAt,
-              labels (first: 5, last: null) {
-                nodes {
-                  name,
-                  color,
-                  description,
-                }
-              },
+            }
+          }
+        }`;
+
+      const categoryResponse = (await graph(categoryQuery, categoryVariables)) as {
+        repository: { discussionCategory: { id: string } };
+      };
+
+      if (
+        !categoryResponse ||
+        !categoryResponse.repository ||
+        !categoryResponse.repository.discussionCategory
+      ) {
+        return changelogs;
+      }
+
+      const categoryId = categoryResponse.repository.discussionCategory.id as string;
+      const query = `
+        query ($owner:String!, $name:String!, $categoryId:ID!) {
+          repository(owner: $owner, name: $name) {
+            discussions(first: 30, after: null, categoryId: $categoryId) {
+              nodes {
+                id,
+                title,
+                body,
+                url,
+                createdAt,
+                labels (first: 5, last: null) {
+                  nodes {
+                    name,
+                    color,
+                    description,
+                  }
+                },
+              }
             }
           }
         }
-      }
-    `;
+      `;
 
-    const variables = {
-      owner,
-      name,
-      categoryId,
-    };
+      const variables = {
+        owner,
+        name,
+        categoryId,
+      };
 
-    const response = (await graph(query, variables)) as ResponseProps;
-    changelogs = Object(response.repository.discussions.nodes).map((log: ChangelogProps) => ({
-      ...log,
-    }));
-    cache.set('changelogs', changelogs, 1000 * 60 * 10); // cache for 10 minutes
+      const response = (await graph(query, variables)) as ResponseProps;
+      changelogs = Object(response.repository.discussions.nodes).map((log: ChangelogProps) => ({
+        ...log,
+      }));
+      cache.set('changelogs', changelogs, 1000 * 60 * 10); // cache for 10 minutes
+    } catch {
+      changelogs = [];
+    }
   }
 
   return changelogs;

@@ -24,7 +24,6 @@ export default defineConfig({
   output: 'static',
   adapter: node({
     mode: 'standalone',
-    experimentalStaticHeaders: true,
   }),
   image: {
     layout: 'constrained',
@@ -162,11 +161,11 @@ export default defineConfig({
       contentDir: 'docs',
     }),
     playformCompress({
-      CSS: true,
-      HTML: true,
-      JavaScript: true,
-      Image: true,
-      SVG: true,
+      CSS: false,
+      HTML: false,
+      JavaScript: false,
+      Image: false,
+      SVG: false,
     }),
   ],
 

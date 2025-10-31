@@ -44,6 +44,10 @@
 
   .handbook-toc {
     @apply border-glacier-mist-900 relative hidden w-full flex-col gap-y-4 border-l-1 pt-9 pb-12 pl-7 md:mb-0 md:max-w-60.25 lg:flex;
+
+    .article-aside {
+      @apply mb-6;
+    }
   }
 
   .handbook-toc .toc-container {

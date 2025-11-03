@@ -1,10 +1,13 @@
 @layer components {
+  .roadmap-container {
+    @apply max-width flex max-w-166.5 flex-col gap-13.5;
+  }
   .roadmap-card {
-    @apply w-full border-b border-white/10 last:border-b-0 last:[&>.roadmap-card--content]:pb-0;
+    @apply w-full border-l border-white/10;
   }
 
   .roadmap-card--content {
-    @apply flex flex-col gap-10 pb-19 md:flex-row md:gap-22 lg:gap-33;
+    @apply flex gap-5.5 md:gap-10;
   }
 
   .roadmap-card--vote-section {
@@ -24,19 +27,19 @@
   }
 
   .roadmap-card--info-section {
-    @apply flex flex-1 flex-col gap-8;
+    @apply flex flex-1 flex-col gap-4;
   }
 
   .roadmap-card--text-content {
-    @apply space-y-7;
+    @apply space-y-4;
   }
 
   .roadmap-card--title {
-    @apply font-alliance mb-7 text-2xl leading-tight font-medium tracking-tight text-white md:text-3xl;
+    @apply datum-text-2xl font-medium text-white;
   }
 
   .roadmap-card--description {
-    @apply font-alliance prose-code:text-white prose-a:no-underline prose-a:border-b prose-a:hover:text-white prose-a:text-white/80 prose prose-lg prose-headings:font-alliance prose-headings:text-white text-lg leading-relaxed font-normal text-white opacity-80 md:text-xl [&>*]:text-white/80;
+    @apply datum-prose opacity-80;
   }
 
   .roadmap-card--actions {
@@ -52,10 +55,6 @@
   }
 
   .roadmap-card--github-link {
-    @apply font-alliance text-blush-quartz border-blush-quartz border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:border-white hover:text-white active:text-white;
-  }
-
-  .roadmap-container {
-    @apply max-width flex flex-col gap-24;
+    @apply datum-text-sm text-blush-quartz border-blush-quartz border-b-1 font-normal transition-all duration-200 hover:border-white hover:text-white active:text-white;
   }
 }

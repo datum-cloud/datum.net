@@ -136,6 +136,14 @@
   @apply text-[length:var(--text-article-body-font-size)];
 }
 
+@utility datum-text-smallcaps {
+  @apply font-alliance text-balance uppercase;
+
+  @apply tracking-[var(--text-smallcaps-letter-spacing)];
+  @apply leading-[var(--text-smallcaps-line-height)];
+  @apply text-[length:var(--text-smallcaps-font-size)];
+}
+
 @utility datum-text-xs {
   @apply font-alliance;
 
@@ -232,13 +240,20 @@
   @apply prose-p:mt-0 prose-p:mb-[var(--text-lg-paragraph-spacing)];
   @apply prose-li:mt-0 prose-li:mb-[var(--text-lg-paragraph-spacing)];
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
-  @apply prose-headings:mt-5 prose-headings:mb-4 prose-headings:font-bold;
+  @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
+  @apply [&_*]:text-inherit;
 }
 
 @utility datum-prose {
   @apply prose max-w-none;
   @apply datum-text-base;
-  @apply prose-headings:mt-0 prose-headings:mb-4;
+  @apply text-inherit;
+
+  @apply prose-p:mt-0 prose-p:mb-[var(--text-base-paragraph-spacing)];
+  @apply prose-li:mt-0 prose-li:mb-[var(--text-base-paragraph-spacing)];
+  @apply prose-h2:datum-text-xl prose-h3:datum-text-base prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
+  @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
+  @apply [&_*]:text-inherit;
 }
 
 @utility datum-prose-docs-article {
@@ -250,6 +265,7 @@
   @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
+  @apply [&_*]:text-inherit;
 }
 
 @utility datum-prose-article {
@@ -260,4 +276,5 @@
   @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
   @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
+  @apply [&_*]:text-inherit;
 }

@@ -8,19 +8,18 @@ import { roadmaps, type RoadmapProps } from '@libs/datum';
 const issues = await roadmaps();
 ---
 
-<div class="roadmap-container">
-  {
-    issues &&
-      Array.prototype.map.call(issues, (issue: RoadmapProps) => () => (
-        <div class="roadmap-card">
-          <div class="roadmap-card--content">
-            <div class="roadmap-card--vote-section" />
+{
+  issues &&
+    Array.prototype.map.call(issues, (issue: RoadmapProps) => () => (
+      <div class="roadmap-card">
+        <div class="roadmap-card--content">
+          <div class="roadmap-card--vote-section" />
 
-            <div class="roadmap-card--info-section">
-              <div class="roadmap-card--text-content">
-                <h3 class="roadmap-card--title">{issue.title}</h3>
-                <div
-                  class="roadmap-card--description"
+          <div class="roadmap-card--info-section">
+            <div class="roadmap-card--text-content">
+              <h3 class="roadmap-card--title">{issue.title}</h3>
+              <div class="roadmap-card--description">
+                <p
                   set:html={stripTags(removeHeaderTags(marked.parse(issue.body))).then((text) =>
                     truncate(text, 200)
                   )}
@@ -42,61 +41,61 @@ const issues = await roadmaps();
             </div>
           </div>
         </div>
-      ))
-  }
+      </div>
+    ))
+}
 
-  <script>
-    import { actions } from 'astro:actions';
-    import { getCookie, setCookie } from '@libs/cookie';
+<script>
+  import { actions } from 'astro:actions';
+  import { getCookie, setCookie } from '@libs/cookie';
 
-    const voteItems = document.querySelectorAll('.roadmap-card--content');
-    let userId = getCookie('userId') as string;
+  const voteItems = document.querySelectorAll('.roadmap-card--content');
+  let userId = getCookie('userId') as string;
 
-    voteItems.forEach((item) => {
-      const btnVote = item.querySelector('.roadmap-card--vote-button');
+  voteItems.forEach((item) => {
+    const btnVote = item.querySelector('.roadmap-card--vote-button');
 
-      btnVote?.addEventListener('click', async function (this: HTMLButtonElement) {
-        if (!this.dataset.issueid) {
-          throw new Error('ProjectID is missing');
-        }
+    btnVote?.addEventListener('click', async function (this: HTMLButtonElement) {
+      if (!this.dataset.issueid) {
+        throw new Error('ProjectID is missing');
+      }
 
-        if (!userId) {
-          actions.loginWithDatum().then((result: { data?: object }) => {
-            if (!result.data) {
-              return;
-            }
+      if (!userId) {
+        actions.loginWithDatum().then((result: { data?: object }) => {
+          if (!result.data) {
+            return;
+          }
 
-            const data = result.data as { authUrl: string; codeVerifier: string; nonce: string };
-            const authUrl = new URL(data.authUrl);
-            const codeVerifier = data.codeVerifier;
-            const nonce = data.nonce;
+          const data = result.data as { authUrl: string; codeVerifier: string; nonce: string };
+          const authUrl = new URL(data.authUrl);
+          const codeVerifier = data.codeVerifier;
+          const nonce = data.nonce;
 
-            if (!authUrl) {
-              window.location.href = '/resources/roadmap';
-            } else {
-              setCookie('codeVerifier', codeVerifier ?? '', 60 * 24);
-              setCookie('nonce', nonce ?? '', 60 * 24);
-              setCookie('auth_redirect', window.location.href, 60 * 24);
+          if (!authUrl) {
+            window.location.href = '/resources/roadmap';
+          } else {
+            setCookie('codeVerifier', codeVerifier ?? '', 60 * 24);
+            setCookie('nonce', nonce ?? '', 60 * 24);
+            setCookie('auth_redirect', window.location.href, 60 * 24);
 
-              window.location.href = authUrl.toString();
-            }
-          });
-        }
+            window.location.href = authUrl.toString();
+          }
+        });
+      }
 
-        const issueId = this.dataset.issueid;
-        const issueHasVoted = this.dataset.hasVoted === 'true';
-        let isSuccess;
+      const issueId = this.dataset.issueid;
+      const issueHasVoted = this.dataset.hasVoted === 'true';
+      let isSuccess;
 
-        if (issueHasVoted) {
-          isSuccess = await actions.unvote({ userId, issueId });
-        } else {
-          isSuccess = await actions.vote({ userId, issueId });
-        }
+      if (issueHasVoted) {
+        isSuccess = await actions.unvote({ userId, issueId });
+      } else {
+        isSuccess = await actions.vote({ userId, issueId });
+      }
 
-        if (isSuccess) {
-          window.location.reload();
-        }
-      });
+      if (isSuccess) {
+        window.location.reload();
+      }
     });
-  </script>
-</div>
+  });
+</script>

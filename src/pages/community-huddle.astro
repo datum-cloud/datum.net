@@ -59,7 +59,7 @@ const subtitle = fm.subtitle;
       title={title}
       subtitle={subtitle}
     />
-    <section class="section--block bg-glacier-mist-700 py-0 pb-12 md:pb-18 lg:pb-23">
+    <section class="section--block bg-glacier-mist-700 pb-10 md:pb-16 xl:pb-20">
       <div class="bg-glacier-mist-700 max-width">
         <div
           class="huddle-info-grid fade-in--small"
@@ -81,7 +81,7 @@ const subtitle = fm.subtitle;
     </section>
     {
       upcomingHuddle && (
-        <div class="section--block section--block--small-pad bg-midnight-fjord">
+        <div class="section--block section--block--pad bg-midnight-fjord">
           <div
             class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
@@ -97,16 +97,14 @@ const subtitle = fm.subtitle;
     <!-- start Previous Huddles -->
     {
       previousHuddles.length > 0 && (
-        <div class="section--block section--block--small-pad bg-glacier-mist-700">
+        <div class="section--block section--block--pad bg-glacier-mist-700">
           <div
             class="fade-in--pure max-width"
             data-reveal="fade-in--pure--visible"
             data-reveal-delay="100"
           >
             <div class="text-midnight-fjord m-auto flex max-w-6xl flex-col">
-              <h2 class="font-canela mb-8 text-center text-2xl font-normal -tracking-[1.5px] md:mb-15 md:text-3xl lg:mb-20 lg:text-5xl">
-                Previous Huddles
-              </h2>
+              <h2 class="datum-text-7xl pb-9 text-center md:pb-12 xl:pb-16">Previous Huddles</h2>
 
               <div
                 class="previous-huddles"

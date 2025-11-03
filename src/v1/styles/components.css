@@ -50,20 +50,6 @@
   }
 
   /* Footer Components */
-  .footer {
-    @apply bg-glacier-mist-700 relative text-white;
-  }
-  .footer-hero {
-    @apply text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28;
-  }
-
-  .footer-hero-content {
-    @apply text-center;
-  }
-
-  .footer-hero-actions {
-    @apply flex items-center justify-center gap-7;
-  }
 
   .footer-illustration-container {
     @apply bg-glacier-mist-700 relative;
@@ -72,10 +58,6 @@
     &:before {
       @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-4 w-full content-[''];
     }
-  }
-
-  .footer-illustration-image {
-    @apply relative mr-auto size-auto w-full -translate-y-3 object-cover;
   }
 
   .footer-main {

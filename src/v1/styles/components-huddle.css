@@ -1,22 +1,18 @@
 @layer components {
   .upcomming-huddle {
-    @apply m-auto flex max-w-6xl flex-col text-white;
+    @apply text-glacier-mist-700 m-auto flex max-w-6xl flex-col;
   }
   .upcomming-huddle--header {
-    @apply mb-10 border-b-1 border-white pb-5 md:mb-14 md:pb-8 lg:mb-18 lg:pb-11;
+    @apply mb-7 border-b-1 border-white pb-7;
   }
   .upcomming-huddle--content {
-    @apply prose prose-xl md:text-19 text-white/80;
-    @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-white;
-    @apply prose-headings:first:mt-0;
-    @apply prose-li:mt-0 prose-li:mb-[10px];
-    @apply [&_*]:leading-[1.45];
+    @apply md:col-span-2;
   }
   .upcomming-huddle--subtitle {
-    @apply font-alliance text-aurora-moss mb-4 block text-sm font-medium tracking-[1px] uppercase;
+    @apply text-aurora-moss datum-text-smallcaps mb-3.5 block font-semibold;
   }
   .upcomming-huddle--title {
-    @apply font-alliance lg:text-38 text-2xl font-semibold -tracking-[0.25px] md:text-3xl;
+    @apply datum-text-3xl font-medium;
   }
   .huddle--meta {
     @apply flex items-start;
@@ -31,7 +27,7 @@
   }
   .previous-huddle {
     .huddle--meta {
-      @apply text-lg;
+      @apply datum-text-base;
 
       a,
       button {
@@ -41,6 +37,9 @@
     .huddle--meta-icon {
       @apply text-tuscany mt-0.5 mr-3;
     }
+  }
+  .huddle--meta-wrapper {
+    @apply flex flex-col space-y-2 p-6 pl-0;
   }
   /* Previous Huddles Component */
 
@@ -53,11 +52,12 @@
   }
 
   .previous-huddle--toggle {
-    @apply relative flex w-full items-center justify-between bg-transparent px-8 py-8.5 text-left transition-colors after:absolute after:-bottom-[1px] after:left-8 after:block after:h-px after:w-[calc(100%-4rem)] after:border-b after:border-black after:content-[''] hover:cursor-pointer;
+    @apply relative flex w-full items-center justify-between bg-transparent px-7 py-6 text-left transition-colors;
+    @apply after:absolute after:-bottom-[1px] after:left-7 after:block after:h-px after:w-[calc(100%-56px)] after:border-b after:border-black after:content-[''] hover:cursor-pointer;
   }
 
   .previous-huddle--date {
-    @apply font-alliance text-2xl leading-tight font-medium tracking-tight;
+    @apply datum-text-xl font-medium;
   }
 
   .previous-huddle--icon {
@@ -68,20 +68,15 @@
     @apply overflow-hidden;
   }
 
-  .previous-huddle--content-inner {
-    @apply prose prose-xl md:text-19 px-3 text-black/80;
-    @apply prose-headings:text-xl lg:prose-headings:text-22 prose-headings:font-medium prose-headings:font-alliance prose-headings:text-black;
-    @apply prose-headings:first:mt-0;
-    @apply prose-li:mt-0 prose-li:mb-[10px];
-    @apply [&_*]:leading-[1.45];
+  .previous-huddle--content-inner,
+  .upcomming-huddle--content {
+    @apply datum-prose p-0 opacity-80 md:p-6;
+
+    @apply prose-h1:hidden;
   }
 
   .previous-huddle--content-wrapper {
-    @apply grid gap-8 px-8 py-8.5 md:grid-cols-3;
-  }
-
-  .previous-huddle--meta {
-    @apply flex flex-col space-y-6 px-3;
+    @apply grid gap-8 px-7 py-6 md:grid-cols-3;
   }
 
   /* Info Cards Grid Section */
@@ -104,7 +99,7 @@
   }
 
   .huddle-info-text {
-    @apply font-alliance text-lg leading-[1.45];
+    @apply datum-text-lg;
     @apply text-black;
     @apply text-center;
   }

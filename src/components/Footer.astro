@@ -18,14 +18,23 @@ const {
 const navData = navigation as NavData;
 ---
 
-<footer id="footer" class:list={['footer', !showBackground && 'bg-midnight-fjord']}>
+<footer
+  id="footer"
+  class:list={[
+    'footer bg-glacier-mist-700 relative text-white',
+    !showBackground && 'bg-midnight-fjord',
+  ]}
+>
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="footer-hero">
-        <div class="footer-hero-content fade-in--pure" data-reveal="fade-in--pure--visible">
-          <h3 class="h3-leading">Interested in shaping the internet for AI?</h3>
-          <div class="footer-hero-actions">
+      <div class="text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
+        <div
+          class="fade-in--pure flex flex-col gap-5.5 text-center md:gap-10"
+          data-reveal="fade-in--pure--visible"
+        >
+          <h3 class="datum-text-7xl">Interested in shaping the internet for AI?</h3>
+          <div class="flex items-center justify-center gap-7">
             <Button
               class="btn btn--alpha"
               text="View on GitHub"
@@ -50,7 +59,7 @@ const navData = navigation as NavData;
             src={ImageFooter}
             layout="constrained"
             alt="Footer illustration"
-            class="footer-illustration-image"
+            class="relative mr-auto size-auto w-full -translate-y-3 object-cover"
           />
         </div>
       </div>

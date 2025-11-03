@@ -8,7 +8,7 @@ import Footer from '@components/Footer.astro';
 import Card from '@components/changelog/Card.astro';
 import OpenNetwork from '@components/GlobalSection.astro';
 import Skeleton from '@components/changelog/Skeleton.astro';
-import ImageTwoPerson from '@v1/assets/images/two-person.png';
+import ImageTwoPerson from '@v1/assets/images/one-person.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -41,11 +41,11 @@ const icon = 'list-restart';
         </Card>
       </div>
 
-      <div class="absolute right-50 bottom-0 z-40 inline-block">
+      <div class="absolute right-20 bottom-0 z-40 inline-block">
         <Image
           src={ImageTwoPerson}
-          alt="Two Person"
-          class="relative h-auto w-[179px]"
+          alt="One Person Illustration"
+          class="relative hidden size-auto w-[54px] translate-y-7 md:block"
           data-scroll-effect="parallax"
           data-scroll-speed="0.1"
           data-scroll-direction="down"

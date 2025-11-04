@@ -104,7 +104,7 @@ export default defineConfig({
         {
           label: 'Overview',
           autogenerate: { directory: 'docs/overview' },
-          collapsed: false, // First group is expanded by default
+          collapsed: true, // First group is expanded by default
         },
         {
           label: 'Quickstart',

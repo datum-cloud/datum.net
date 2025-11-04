@@ -234,6 +234,7 @@ const features = defineCollection({
       keyFeatures: z.array(z.string()).optional(),
       benefits: z.string().optional(),
       perfectFor: z.array(z.string()).optional(),
+      iconName: z.string().optional(),
       draft: z.boolean().optional().default(false),
       meta: metaSchema,
       sections: z

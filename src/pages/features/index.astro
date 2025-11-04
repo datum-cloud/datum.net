@@ -7,8 +7,6 @@ import Table from '@components/features/Table.astro';
 import Grids from '@components/features/Grids.astro';
 import Cards from '@components/features/Cards.astro';
 
-import ImageHero from '@v1/assets/images/hero-small-illustration.png';
-import ImageConsole from '@v1/assets/images/console-2.png';
 import ImageTwoMen from '@v1/assets/images/two-men.png';
 import ImageLight from '@v1/assets/images/light-trail.png';
 
@@ -48,7 +46,6 @@ const description = fm.description;
     <Hero
       class="light"
       iconName="goal"
-      imagePath={ImageHero}
       title={title}
       description={description}
       subtitle={fm.subtitle}
@@ -67,30 +64,30 @@ const description = fm.description;
           <div class="max-width">
             <Table>
               <h2 slot="header">{firstContents[0].data.title}</h2>
-              <div slot="description" set:html={marked.parse(firstContents[0].body)} />
+              <Fragment slot="description" set:html={marked.parse(firstContents[0].body)} />
 
-              <div slot="features">
+              <Fragment slot="features">
                 <h3>Key features</h3>
                 <ul>
                   {firstContents[0].data.keyFeatures.map((feature) => (
                     <li>{feature}</li>
                   ))}
                 </ul>
-              </div>
+              </Fragment>
 
-              <div slot="benefits">
+              <Fragment slot="benefits">
                 <h3>Benefits</h3>
                 <p>{firstContents[0].data.benefits}</p>
-              </div>
+              </Fragment>
 
-              <div slot="audience">
+              <Fragment slot="audience">
                 <h3>Perfect for</h3>
                 <ul>
                   {firstContents[0].data.perfectFor.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
-              </div>
+              </Fragment>
             </Table>
           </div>
         </div>
@@ -116,30 +113,30 @@ const description = fm.description;
             <Table class="z-40">
               <h2 slot="header">Networks</h2>
 
-              <div slot="description" set:html={marked.parse(firstContents[1].body)} />
+              <Fragment slot="description" set:html={marked.parse(firstContents[1].body)} />
 
-              <div slot="features">
+              <Fragment slot="features">
                 <h3>Key features</h3>
                 <ul>
                   {firstContents[1].data.keyFeatures.map((feature) => (
                     <li>{feature}</li>
                   ))}
                 </ul>
-              </div>
+              </Fragment>
 
-              <div slot="benefits">
+              <Fragment slot="benefits">
                 <h3>Benefits</h3>
                 <p>{firstContents[1].data.benefits}</p>
-              </div>
+              </Fragment>
 
-              <div slot="audience">
+              <Fragment slot="audience">
                 <h3>Perfect for</h3>
                 <ul>
                   {firstContents[1].data.perfectFor.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
-              </div>
+              </Fragment>
             </Table>
           </div>
 
@@ -150,20 +147,17 @@ const description = fm.description;
       )
     }
 
-    <div class="section--block section--block--pad bg-glacier-mist-800">
+    <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
       <div class="max-width">
         <Grids features={secondContents} />
       </div>
     </div>
 
-    <div class="section--block section--block--pad bg-aurora-moss pb-55 md:pb-28 lg:pb-42">
-      <div
-        class="absolute top-auto -right-10 -bottom-10 z-10 block w-auto max-w-114 lg:top-1/2 lg:-right-20 lg:bottom-auto lg:-translate-y-1/2 2xl:right-0"
-      >
-        <Image src={ImageConsole} alt="Console" class="relative" />
-      </div>
+    <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
       <div class="max-width">
-        <Cards features={thirdContents} />
+        <div class="border-midnight-fjord border bg-white p-7 md:p-12 xl:p-16">
+          <Cards features={thirdContents} />
+        </div>
       </div>
     </div>
     <Footer />

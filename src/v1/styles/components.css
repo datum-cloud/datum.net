@@ -6,47 +6,15 @@
 
     &.dark {
       @apply text-white;
-
-      .section--block-content-text {
-        @apply text-white/80;
-      }
     }
 
     &.section--block--pad {
       @apply py-10 md:py-16 lg:py-20 xl:py-28;
     }
 
-    &.section--block--small-pad {
-      @apply py-15 md:py-20 lg:py-29;
+    &.section--block--pad-sm {
+      @apply py-10 md:py-16 xl:py-24;
     }
-
-    &.section--block--big-pad {
-      @apply pt-15 pb-13 md:pt-28 md:pb-25 lg:pt-60 lg:pb-53;
-    }
-  }
-
-  .section--block-illustration {
-    @apply absolute bottom-0 left-0 z-0 flex h-full w-auto items-end;
-  }
-
-  .section--block-inner {
-    @apply max-width;
-  }
-
-  .section--block-content {
-    @apply relative z-10 flex justify-start;
-
-    .section--block-content-inner {
-      @apply flex flex-col gap-6 md:gap-10;
-    }
-  }
-
-  .section--block-content-text {
-    @apply font-alliance prose prose-xl md:text-19 text-midnight-fjord/80 text-22 prose-a:hover:no-underline max-w-none leading-[1.45];
-  }
-
-  .h2-section {
-    @apply font-canela text-2xl leading-[1.1] font-normal -tracking-[1.5px] md:text-3xl lg:text-4xl;
   }
 
   /* Footer Components */
@@ -87,11 +55,11 @@
   }
 
   .footer-signup {
-    @apply bg-blush-quartz text-midnight-fjord px-6 py-16;
+    @apply bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20;
   }
 
   .footer-signup-container {
-    @apply mx-auto flex max-w-227 flex-col items-center gap-0 py-2 md:flex-row md:gap-20;
+    @apply max-width flex max-w-190 flex-col items-center gap-4 md:flex-row md:gap-11 lg:gap-14 xl:gap-16;
   }
 
   .footer-signup-form-container {
@@ -103,7 +71,7 @@
   }
 
   .footer-signup-input {
-    @apply text-midnight-fjord placeholder-midnight-fjord/60 font-alliance flex-1 bg-transparent text-lg font-semibold outline-none;
+    @apply text-midnight-fjord placeholder-midnight-fjord datum-text-lg flex-1 bg-transparent outline-none;
   }
 
   .footer-signup-button {

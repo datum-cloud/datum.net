@@ -1,17 +1,21 @@
 ---
 import type { FeaturesProps } from '@/src/types/features';
+import Icon from '@components/Icon.astro';
 
 const { features } = Astro.props as FeaturesProps;
 ---
 
 <div
-  class="feature-cards-grid 3xl:ml-10 fade-in--pure ml-0 xl:ml-3 2xl:ml-8"
+  class="feature-cards-grid fade-in--pure"
   data-reveal="fade-in--pure--visible"
   data-reveal-delay="100"
 >
   {
     features.map((feature) => (
-      <div class="feature-card-item">
+      <div class="feature-card-item flex flex-row items-start gap-5">
+        <div class="iconize">
+          <Icon name={feature.data.iconName} size="md" />
+        </div>
         <div class="feature-card-item--content">
           <h3>{feature.data.title}</h3>
           <p>{feature.body}</p>

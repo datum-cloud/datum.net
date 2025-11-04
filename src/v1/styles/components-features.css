@@ -3,28 +3,15 @@
     @apply bg-midnight-fjord relative z-30 mx-auto grid max-w-391 grid-cols-1 gap-0 border border-white md:grid-cols-[minmax(300px,auto)_1fr] lg:grid-cols-[minmax(500px,auto)_1fr];
   }
 
-  .feature-table--content {
-    @apply prose prose-ul:mb-0 prose-li:leading-[1.4] lg:text-22 max-w-none text-lg leading-[1.4] text-white md:text-xl;
-    h2 {
-      @apply mb-0;
-    }
-    h1,
-    h2,
-    h3,
-    h4 {
-      @apply text-aurora-moss font-alliance text-22 mt-0 font-normal;
-    }
-
-    h2 {
-      @apply font-canela tracking-1 text-4xl text-white;
-    }
-  }
-
   .feature-table--header {
     @apply flex flex-col items-start justify-start border-r md:col-span-1 md:row-span-4;
 
     .feature-table--content {
-      @apply px-8 py-12 md:px-13 md:py-11 lg:px-18 lg:py-21;
+      @apply text-glacier-mist-700 p-9 lg:p-12 xl:p-16;
+
+      h2 {
+        @apply datum-text-7xl;
+      }
     }
   }
 
@@ -32,19 +19,22 @@
     @apply flex flex-col gap-7 border-b border-white last:border-b-0 md:col-span-1 md:row-span-1;
 
     .feature-table--content {
-      @apply px-8 py-12 md:px-13 md:py-11;
+      @apply p-7 md:p-9 lg:p-9 xl:p-12;
+      @apply datum-prose-lg;
+      @apply text-glacier-mist-700;
+      @apply prose-headings:text-aurora-moss;
     }
   }
 
   .role-tags {
     ul {
-      @apply m-0 flex list-none flex-wrap items-center gap-4 p-0 lg:gap-4;
+      @apply m-0! flex list-none flex-wrap items-center gap-4 p-0! lg:gap-4;
 
       li {
-        @apply bg-indigo md:text-smb m-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-normal whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
+        @apply bg-indigo datum-text-sm m-0 flex items-center gap-2.5 rounded-full px-4! py-2.5 whitespace-nowrap lg:gap-2 lg:px-5 lg:py-2;
 
         &:before {
-          @apply bg-aurora-moss inline-block h-2 w-2 flex-shrink-0 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
+          @apply bg-aurora-moss inline-block h-2 w-2 rounded-full content-[''] lg:h-[9px] lg:w-[9px];
         }
       }
     }
@@ -52,7 +42,7 @@
 
   /* Features Grid Component */
   .features-grid {
-    @apply m-auto grid max-w-391 grid-cols-1 content-start gap-25 lg:grid-cols-3;
+    @apply m-auto grid grid-cols-1 content-start gap-9 md:grid-cols-3 lg:gap-12 xl:gap-24;
   }
 
   .feature-card {
@@ -60,45 +50,39 @@
   }
 
   .feature-card--content {
-    @apply flex flex-col gap-10;
-  }
-
-  .feature-card--section {
-    @apply border-midnight-fjord border-b last:border-b-0;
+    @apply flex flex-col gap-4;
   }
 
   .feature-card--content-wrapper {
-    @apply prose prose-base text-midnight-fjord prose-li:mb-[12px] prose-li:mt-0 pb-10 leading-[1.4] last:[&>ul]:mb-0;
-
-    h2 {
-      @apply font-canela mt-0 mb-10 text-3xl leading-[1.1] font-normal -tracking-[1px];
-    }
-
-    h3 {
-      @apply font-alliance text-mauve mt-0 mb-6 text-lg leading-[1.4] font-normal;
-    }
-
-    p {
-      @apply mb-0;
-    }
+    @apply space-y-4;
   }
 
   .feature-card--content--header {
     .feature-card--content-wrapper {
-      @apply prose-lg prose-h2:mb-10 leading-[1.4];
-
       h2 {
-        @apply mt-0;
+        @apply datum-text-2xl mt-0 font-medium;
       }
       p {
-        @apply mb-0;
+        @apply datum-text-base;
+      }
+    }
+  }
+
+  .feature-card--section {
+    .feature-card--content-wrapper {
+      @apply datum-text-base text-midnight-fjord;
+      ul {
+        @apply list-disc space-y-2.5 pl-5;
+      }
+      h3 {
+        @apply datum-text-lg text-canyon-clay---links font-semibold;
       }
     }
   }
 
   /* Feature Cards Grid - New Design */
   .feature-cards-grid {
-    @apply grid max-w-none grid-cols-1 gap-12 md:grid-cols-2 lg:max-w-180 xl:max-w-230 xl:grid-cols-3 2xl:max-w-264;
+    @apply grid max-w-none grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2 md:gap-y-8 xl:grid-cols-3;
   }
 
   .feature-card-item {
@@ -110,12 +94,12 @@
   }
 
   .feature-card-item--content {
-    @apply prose text-17 text-midnight-fjord/70 leading-[1.4];
+    @apply text-midnight-fjord;
     h3 {
-      @apply text-midnight-fjord mt-0 mb-6 text-2xl leading-[1] font-normal;
+      @apply datum-text-lg mb-2.5 font-semibold;
     }
     p {
-      @apply last:mb-0;
+      @apply datum-text-base opacity-80;
     }
   }
 }

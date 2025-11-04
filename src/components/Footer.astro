@@ -6,6 +6,7 @@ import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
 import ImageTwoMen from '@v1/assets/images/two-person-talking.png';
+import Signup from '@components/forms/Signup.astro';
 
 // Get props with default values
 const {
@@ -147,4 +148,6 @@ const navData = navigation as NavData;
       </div>
     </div>
   </div>
+
+  <Signup server:defer />
 </footer>

@@ -1,24 +1,37 @@
 ---
 export const prerender = false;
 import Icon from '@components/Icon.astro';
+
+const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
+let isSignupNewsletter: boolean = false;
+
+// only for development mode, to ease testing
+if (mode == 'development') {
+  isSignupNewsletter = Astro.cookies.get('isSignupNewsletter')?.value === 'true' ? true : false;
+} else {
+  isSignupNewsletter = false;
+}
 ---
 
-<!-- Signup Section -->
-<div class="footer-signup">
-  <div class="footer-signup-container">
-    <h4 class="datum-text-7xl mb-0">Sign up for updates</h4>
-    <div class="footer-signup-form-container">
-      <form action="/newsletter/" method="POST" class="footer-signup-form">
-        <input
-          type="email"
-          name="email"
-          placeholder="Your email"
-          class="footer-signup-input mb-0"
-        />
-        <button class="footer-signup-button">
-          <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
-        </button>
-      </form>
+<!-- Signup Section -->{
+  !isSignupNewsletter && (
+    <div class="footer-signup">
+      <div class="footer-signup-container">
+        <h4 class="h4-leading mb-0">Sign up for updates</h4>
+        <div class="footer-signup-form-container">
+          <form action="/newsletter/" method="POST" class="footer-signup-form">
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              class="footer-signup-input mb-0"
+            />
+            <button class="footer-signup-button">
+              <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  )
+}

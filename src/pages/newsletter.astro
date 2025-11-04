@@ -5,56 +5,58 @@ import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import { createNewsletterContact } from '@libs/miloapi';
-import Signup from '../components/forms/Signup.astro';
 
-const expired = new Date(Date.now() + 3600 * 1000);
+import { K8sClient } from '@libs/k8s-client';
+import { createContact, type ContactSpec } from '@/src/types/k8s-resources';
+
+const expired = new Date(Date.now() + 3600 * 1000 * 24); // 24 hours
 const cookieOptions = {
   path: '/',
   sameSite: 'lax' as 'none' | 'strict' | 'lax',
   secure: true,
   expires: expired,
 };
-let creatingNewsletter: boolean = false;
-let user = {
-  given_name: '',
-  family_name: '',
+
+let contact: ContactSpec = {
   email: '',
+  givenName: 'newsletter_name',
+  familyName: 'newsletter_familyName',
+  company: 'newsletter_company',
+  tags: ['newsletter', 'customer'],
 };
 
+let isSignupNewsletter: boolean =
+  Astro.cookies.get('isSignupNewsletter')?.value === 'true' ? true : false;
+
 if (Astro.request.method === 'POST') {
-  console.log('Processing newsletter signup POST request...');
+  const data = await Astro.request.formData();
+  contact.email = data.get('email') ? (data.get('email') as string) : '';
+  contact.givenName = data.get('given_name') ? (data.get('given_name') as string) : '';
+  contact.familyName = data.get('family_name') ? (data.get('family_name') as string) : '';
+  contact.company = data.get('company') ? (data.get('company') as string) : '';
+
   try {
-    const userInfo = Astro.cookies.get('userInfo')?.value;
-    console.log('User info cookie value:', userInfo);
-    if (!userInfo) {
-      Astro.cookies.set('auth_redirect', '/newsletter/', cookieOptions);
-      return Astro.redirect('/auth/login/');
-    } else {
-      console.log('User info from cookie:', userInfo);
-      const accessToken = Astro.cookies.get('accessToken')?.value;
-      console.log('Access token from cookie:', accessToken);
-      user = JSON.parse(userInfo);
+    const client = new K8sClient({
+      kubeconfigPath: './config/kubeconfig.yaml',
+      namespace: import.meta.env.K8S_NAMESPACE || process.env.K8S_NAMESPACE || 'milo-system',
+    });
 
-      if (accessToken) {
-        creatingNewsletter = await createNewsletterContact(
-          accessToken,
-          user.email,
-          user.family_name,
-          user.given_name
-        );
+    const contactResource = createContact(contact.givenName, contact);
 
-        if (creatingNewsletter) {
-          console.log('Newsletter contact created successfully.');
-        } else {
-          console.error('Failed to create newsletter contact.');
-        }
-      }
+    try {
+      const created = await client.createCustomResource<ContactSpec>(
+        'notification.miloapis.com',
+        'v1alpha1',
+        'contacts',
+        contactResource
+      );
+
+      console.log('Contact created:', created.metadata.name);
+      Astro.cookies.set('isSignupNewsletter', 'true', cookieOptions);
+      isSignupNewsletter = true;
+    } catch (error) {
+      console.error('Error creating contact:', error);
     }
-
-    // const data = await Astro.request.formData();
-    // const email = data.get('email');
-    // console.log('Newsletter signup email:', email);
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -80,21 +82,21 @@ const subtitle = 'Newsletter';
       description={description}
     />
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark">
+    <div class="section--block section--block--pad bg-glacier-mist-700 light">
       <div class="max-width">
-        {
-          creatingNewsletter ? (
-            <div class="footer-signup-container">
-              <div class="footer-signup-success">
+        <div class="footer-signup-containe">
+          <div class="footer-signup-success">
+            {
+              isSignupNewsletter ? (
                 <h3>
-                  <b>{user.given_name}</b>, You're on the list!
+                  <b>{contact.email}</b>, You're on the list!
                 </h3>
-              </div>
-            </div>
-          ) : (
-            <Signup server:defer />
-          )
-        }
+              ) : (
+                <h3>Failed</h3>
+              )
+            }
+          </div>
+        </div>
       </div>
     </div>
 

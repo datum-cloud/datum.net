@@ -3,6 +3,7 @@ import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
+import Signup from '@components/forms/Signup.astro';
 // import '@v1/styles/global.css';
 
 const {
@@ -134,7 +135,7 @@ const descriptionValue =
   </head>
   <body class={bodyClass}>
     <slot />
-
+    <Signup server:defer />
     <script>
       import '/src/v1/scripts/lenis-parallax.js';
     </script>

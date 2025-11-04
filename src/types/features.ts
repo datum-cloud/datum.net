@@ -4,6 +4,7 @@ export interface FeaturesDataProps {
   keyFeatures: string[];
   benefits: string;
   perfectFor: string[];
+  iconName?: string;
 }
 
 export interface FeaturesProps {

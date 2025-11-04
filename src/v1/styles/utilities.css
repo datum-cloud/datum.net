@@ -1,6 +1,6 @@
 @layer utilities {
   .datum-container {
-    @apply container m-auto max-w-[var(--datum-max-width)];
+    @apply container m-auto max-w-(--datum-max-width);
   }
 
   /* General fade-in reveal animations */
@@ -79,7 +79,7 @@
 }
 
 @utility datum-container {
-  @apply container m-auto max-w-[var(--datum-max-width)];
+  @apply container m-auto max-w-(--datum-max-width);
 }
 
 @utility prose-dark {
@@ -91,6 +91,10 @@
   @apply mx-auto w-full max-w-7xl px-7;
 }
 
+@utility max-width-internal {
+  @apply mx-auto w-full max-w-(--breakpoint---internal);
+}
+
 @utility text-size {
   @apply font-alliance;
   @apply text-sm xl:text-base;
@@ -98,25 +102,25 @@
 
 @utility datum-docs-sidebar-headings {
   @apply font-alliance font-medium uppercase;
-  @apply tracking-[var(--docs-sidebar-headings-letter-spacing)];
-  @apply leading-[var(--docs-sidebar-headings-line-height)];
-  @apply text-[length:var(--docs-sidebar-headings-font-size)];
+  @apply tracking-(--docs-sidebar-headings-letter-spacing);
+  @apply leading-(--docs-sidebar-headings-line-height);
+  @apply text-(length:--docs-sidebar-headings-font-size);
 }
 
 @utility datum-docs-sidebar-links {
   @apply font-alliance;
 
-  @apply tracking-[var(--docs-sidebar-links-letter-spacing)];
-  @apply leading-[var(--docs-sidebar-links-line-height)];
-  @apply text-[length:var(--docs-sidebar-links-font-size)];
+  @apply tracking-(--docs-sidebar-links-letter-spacing);
+  @apply leading-(--docs-sidebar-links-line-height);
+  @apply text-(length:--docs-sidebar-links-font-size);
 }
 
 @utility datum-docs-article-body {
   @apply font-alliance;
 
-  @apply tracking-[var(--docs-article-body-letter-spacing)];
-  @apply leading-[var(--docs-article-body-line-height)];
-  @apply text-[length:var(--docs-article-body-font-size)];
+  @apply tracking-(--docs-article-body-letter-spacing);
+  @apply leading-(--docs-article-body-line-height);
+  @apply text-(length:--docs-article-body-font-size);
 }
 
 @utility datum-list-headings {
@@ -131,105 +135,105 @@
 @utility datum-text-article-body {
   @apply font-alliance;
 
-  @apply tracking-[var(--text-article-body-letter-spacing)];
-  @apply leading-[var(--text-article-body-line-height)];
-  @apply text-[length:var(--text-article-body-font-size)];
+  @apply tracking-(--text-article-body-letter-spacing);
+  @apply leading-(--text-article-body-line-height);
+  @apply text-(length:--text-article-body-font-size);
 }
 
 @utility datum-text-smallcaps {
   @apply font-alliance text-balance uppercase;
 
-  @apply tracking-[var(--text-smallcaps-letter-spacing)];
-  @apply leading-[var(--text-smallcaps-line-height)];
-  @apply text-[length:var(--text-smallcaps-font-size)];
+  @apply tracking-(--text-smallcaps-letter-spacing);
+  @apply leading-(--text-smallcaps-line-height);
+  @apply text-(length:--text-smallcaps-font-size);
 }
 
 @utility datum-text-xs {
   @apply font-alliance;
 
-  @apply tracking-[var(--text-xs-letter-spacing)];
-  @apply leading-[var(--text-xs-line-height)];
-  @apply text-[length:var(--text-xs-font-size)];
+  @apply tracking-(--text-xs-letter-spacing);
+  @apply leading-(--text-xs-line-height);
+  @apply text-(length:--text-xs-font-size);
 }
 
 @utility datum-text-sm {
   @apply font-alliance;
 
-  @apply tracking-[var(--text-sm-letter-spacing)];
-  @apply leading-[var(--text-sm-line-height)];
-  @apply text-[length:var(--text-sm-font-size)];
+  @apply tracking-(--text-sm-letter-spacing);
+  @apply leading-(--text-sm-line-height);
+  @apply text-(length:--text-sm-font-size);
 }
 
 @utility datum-text-base {
   @apply font-normal text-balance;
   @apply font-alliance;
 
-  @apply tracking-[var(--text-base-letter-spacing)];
-  @apply leading-[var(--text-base-line-height)];
-  @apply text-[length:var(--text-base-font-size)];
+  @apply tracking-(--text-base-letter-spacing);
+  @apply leading-(--text-base-line-height);
+  @apply text-(length:--text-base-font-size);
 }
 
 @utility datum-text-lg {
   @apply font-normal text-balance;
   @apply font-alliance;
 
-  @apply tracking-[var(--text-lg-letter-spacing)];
-  @apply leading-[var(--text-lg-line-height)];
-  @apply text-[length:var(--text-lg-font-size)];
+  @apply tracking-(--text-lg-letter-spacing);
+  @apply leading-(--text-lg-line-height);
+  @apply text-(length:--text-lg-font-size);
 }
 
 @utility datum-text-xl {
   @apply font-normal text-balance;
   @apply font-alliance;
 
-  @apply tracking-[var(--text-xl-letter-spacing)];
-  @apply leading-[var(--text-xl-line-height)];
-  @apply text-[length:var(--text-xl-font-size)];
+  @apply tracking-(--text-xl-letter-spacing);
+  @apply leading-(--text-xl-line-height);
+  @apply text-(length:--text-xl-font-size);
 }
 
 @utility datum-text-2xl {
   @apply font-normal text-balance;
   @apply font-alliance;
 
-  @apply tracking-[var(--text-2xl-letter-spacing)];
-  @apply leading-[var(--text-2xl-line-height)];
-  @apply text-[length:var(--text-2xl-font-size)];
+  @apply tracking-(--text-2xl-letter-spacing);
+  @apply leading-(--text-2xl-line-height);
+  @apply text-(length:--text-2xl-font-size);
 }
 
 @utility datum-text-3xl {
   @apply font-normal text-balance;
   @apply font-alliance;
 
-  @apply tracking-[var(--text-3xl-letter-spacing)];
-  @apply leading-[var(--text-3xl-line-height)];
-  @apply text-[length:var(--text-3xl-font-size)];
+  @apply tracking-(--text-3xl-letter-spacing);
+  @apply leading-(--text-3xl-line-height);
+  @apply text-(length:--text-3xl-font-size);
 }
 
 @utility datum-text-7xl {
   @apply text-balance;
   @apply font-canela;
 
-  @apply tracking-[var(--text-7xl-canela-letter-spacing)];
-  @apply leading-[var(--text-7xl-canela-line-height)];
-  @apply text-[length:var(--text-7xl-canela-font-size)];
+  @apply tracking-(--text-7xl-canela-letter-spacing);
+  @apply leading-(--text-7xl-canela-line-height);
+  @apply text-(length:--text-7xl-canela-font-size);
 }
 
 @utility datum-text-8xl {
   @apply text-balance;
   @apply font-canela;
 
-  @apply tracking-[var(--text-8xl-canela-letter-spacing)];
-  @apply leading-[var(--text-8xl-canela-line-height)];
-  @apply text-[length:var(--text-8xl-canela-font-size)];
+  @apply tracking-(--text-8xl-canela-letter-spacing);
+  @apply leading-(--text-8xl-canela-line-height);
+  @apply text-(length:--text-8xl-canela-font-size);
 }
 
 @utility datum-text-10xl {
   @apply text-balance;
   @apply font-canela;
 
-  @apply tracking-[var(--text-10xl-canela-letter-spacing)];
-  @apply leading-[var(--text-10xl-canela-line-height)];
-  @apply text-[length:var(--text-10xl-canela-font-size)];
+  @apply tracking-(--text-10xl-canela-letter-spacing);
+  @apply leading-(--text-10xl-canela-line-height);
+  @apply text-(length:--text-10xl-canela-font-size);
 }
 
 @utility datum-prose-lg {
@@ -237,11 +241,11 @@
   @apply datum-text-lg;
   @apply text-inherit;
 
-  @apply prose-p:mt-0 prose-p:mb-[var(--text-lg-paragraph-spacing)];
-  @apply prose-li:mt-0 prose-li:mb-[var(--text-lg-paragraph-spacing)];
+  @apply prose-p:mt-0 prose-p:mb-(--text-lg-paragraph-spacing);
+  @apply prose-li:mt-0 prose-li:mb-(--text-lg-paragraph-spacing);
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply [&_*]:text-inherit;
+  @apply **:text-inherit;
 }
 
 @utility datum-prose {
@@ -249,32 +253,32 @@
   @apply datum-text-base;
   @apply text-inherit;
 
-  @apply prose-p:mt-0 prose-p:mb-[var(--text-base-paragraph-spacing)];
-  @apply prose-li:mt-0 prose-li:mb-[var(--text-base-paragraph-spacing)];
+  @apply prose-p:mt-0 prose-p:mb-(--text-base-paragraph-spacing);
+  @apply prose-li:mt-0 prose-li:mb-(--text-base-paragraph-spacing);
   @apply prose-h2:datum-text-xl prose-h3:datum-text-base prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply [&_*]:text-inherit;
+  @apply **:text-inherit;
 }
 
 @utility datum-prose-docs-article {
   @apply prose max-w-none;
   @apply datum-docs-article-body;
 
-  @apply prose-p:mt-0 prose-p:mb-[var(--docs-article-body-paragraph-spacing)];
-  @apply prose-li:mt-0 prose-li:mb-[var(--docs-article-body-paragraph-spacing)];
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
+  @apply prose-p:mt-0 prose-p:mb-(--docs-article-body-paragraph-spacing);
+  @apply prose-li:mt-0 prose-li:mb-(--docs-article-body-paragraph-spacing);
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply [&_*]:text-inherit;
+  @apply **:text-inherit;
 }
 
 @utility datum-prose-article {
   @apply prose max-w-none;
   @apply datum-text-article-body;
-  @apply prose-p:mt-0 prose-p:mb-[var(--text-article-body-paragraph-spacing)];
-  @apply prose-li:mt-0 prose-li:mb-[var(--text-article-body-paragraph-spacing)];
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/100;
+  @apply prose-p:mt-0 prose-p:mb-(--text-article-body-paragraph-spacing);
+  @apply prose-li:mt-0 prose-li:mb-(--text-article-body-paragraph-spacing);
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply [&_*]:text-inherit;
+  @apply **:text-inherit;
 }

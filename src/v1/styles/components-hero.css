@@ -128,7 +128,8 @@
     }
   }
 
-  .hero--main-content-icon-inner {
+  .hero--main-content-icon-inner,
+  .iconize {
     @apply bg-canyon-clay/20 aspect-1 flex h-8.5 w-8.5 items-center justify-center rounded-[4px] p-2;
 
     svg {

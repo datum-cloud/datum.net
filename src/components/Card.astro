@@ -7,28 +7,32 @@ const { title, description, imageSrc, imageAlt, url, icon = 'github' } = Astro.p
 ---
 
 <div
-  class="border-midnight-fjord bg-glacier-mist-700 relative flex flex-col justify-between gap-8 border px-9 py-8 md:gap-10 md:px-11 md:py-10 lg:gap-14 lg:px-15 lg:py-14"
+  class="border-midnight-fjord bg-glacier-mist-700 relative flex flex-col justify-between gap-3 border p-6 md:gap-6 lg:gap-8 lg:p-9 xl:p-11"
 >
   <div class="flex items-start">
     {imageSrc && <Image src={imageSrc} alt={imageAlt || ''} class="size-auto max-h-16" />}
   </div>
 
   <div class="flex items-end-safe justify-between gap-10">
-    <div class="font-alliance text-midnight-fjord max-w-sm text-xl leading-[28px]">
-      <h3 class="font-canela mb-6 text-4xl leading-tight font-normal tracking-tight">{title}</h3>
+    <div class="datum-text-sm">
+      <div class="mb-2 flex items-center gap-3">
+        <h3 class="datum-text-xl font-medium">{title}</h3>
+
+        {
+          url && (
+            <a
+              class="text-canyon-clay---links hover:text-canyon-clay---links/80 transition-all duration-200"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name={icon} size="md" />
+            </a>
+          )
+        }
+      </div>
+
       <p>{description}</p>
     </div>
-    {
-      url && (
-        <a
-          class="border-midnight-fjord/10 hover:border-midnight-fjord/30 rounded-md border px-5 py-3 transition-all duration-200"
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Icon name={icon} size="md" />
-        </a>
-      )
-    }
   </div>
 </div>

@@ -102,11 +102,7 @@ export default defineConfig({
 
       sidebar: [
         {
-          label: 'Introduction',
-          link: '/docs/',
-        },
-        {
-          label: 'Datum Documentation',
+          label: 'Overview',
           autogenerate: { directory: 'docs/overview' },
           collapsed: false, // First group is expanded by default
         },

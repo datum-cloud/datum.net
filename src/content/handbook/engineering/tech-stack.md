@@ -5,6 +5,9 @@ sidebar:
   order: 1
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Engineering Tech Stack: Go, Rust, Kubernetes, eBPF"
+  description: "Explore Datum's core tech stack: Go, Rust, and TypeScript for core reliability; Kubernetes, Terraform, and high-performance networking via eBPF and DPDK."
 ---
 
 ## Core infrastructure

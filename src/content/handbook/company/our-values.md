@@ -5,6 +5,9 @@ sidebar:
   order: 3
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Values - Connectivity, Humility & Ownership"
+  description: "Explore Datum’s values - connecting people and businesses, embracing grit and humility, building deep relationships, and operating with owner-like responsibility. Learn how our culture drives honesty, empathy, and bold action at scale."
 ---
 
 ## We are connectors

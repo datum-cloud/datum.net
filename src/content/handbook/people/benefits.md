@@ -5,6 +5,9 @@ sidebar:
   order: 3
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Employee Benefits Guide - Wellness, Flexibility, Work Setup, and Equity"
+  description: "Explore Datum’s employee benefits. Comprehensive health insurance, mental health support, fitness and home office stipends, unlimited PTO, flexible work, parental leave, competitive equity, salary reviews, and transparent compensation."
 ---
 
 ## Health & Wellness

@@ -5,6 +5,9 @@ sidebar:
   order: 4
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Spending Guidelines - Datum Handbook for Approvals & Responsible Use"
+  description: "See Datum’s handbook - spending guidelines, approval rules, and principles for responsible, transparent company expenses."
 ---
 
 We trust team members to spend money responsibly on behalf of the company. 

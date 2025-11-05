@@ -5,6 +5,9 @@ sidebar:
   order: 2
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Handbook: Remote Work Policy & Culture"
+  description: "See how Datum designs its processes and culture around remote work. Learn about benefits, written communication standards, and annual team gatherings."
 ---
 
 Remote work isn't just about where we sit - it's about how we design processes, communication, and culture to work better for everyone.

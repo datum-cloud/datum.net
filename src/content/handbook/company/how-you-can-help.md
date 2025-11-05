@@ -5,6 +5,9 @@ sidebar:
   order: 15
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Help Build Datum - Contribute, Partner, and Explore Career Opportunities"
+  description: "Help Datum advance open source networking: contribute code, share feedback, partner for AI innovation, and explore career opportunities on our team."
 ---
 
 ## If you're a developer or infrastructure operator

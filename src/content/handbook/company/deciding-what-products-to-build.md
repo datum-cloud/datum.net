@@ -5,6 +5,9 @@ sidebar:
   order: 13
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "How Datum Decides What to Build - Product Strategy & Mission Handbook"
+  description: "Discover how Datum decides what products to build guided by our mission to empower digital businesses and developers with modern networking superpowers. Learn about our product philosophy, developer-centered focus, and the “why” behind our roadmap."
 ---
 
 Datum is the neutral, open network cloud designed to power the next 1,000 hyperscalers.

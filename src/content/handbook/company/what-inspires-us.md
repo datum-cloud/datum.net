@@ -5,6 +5,9 @@ sidebar:
   order: 9
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Handbook: What Inspires Our Company & Vision"
+  description: "Learn what inspires Datum: updating the original internet for the AI era, democratizing infrastructure for the next 1,000 hyperscalers, and empowering developers."
 ---
 
 ## The original internet 

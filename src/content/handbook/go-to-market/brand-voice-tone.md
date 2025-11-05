@@ -5,6 +5,9 @@ sidebar:
   order: 6
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Brand Voice & Tone - Handbook for Clear, Inclusive, Technical Communication"
+  description: "Explore Datum’s brand voice and tone guidelines for clear, confident, and accessible technical communication. Learn how we balance expertise and inclusivity, use active voice, and lead with authenticity and useful examples."
 ---
 
 ## Voice characteristics

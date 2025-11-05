@@ -5,6 +5,9 @@ sidebar:
   order: 1
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum GTM Philosophy - Developer, Partner & Value-First Go-to-Market Guide"
+  description: "Discover Datum’s go-to-market approach: developer-first, community-driven, and partner-enabled. Learn about our philosophy, trusted channels, and how we build value through open source, technical content, ecosystem partnerships, and advocacy."
 ---
 
 Our go-to-market strategy centers on building trust with the developer community and ecosystem partners.

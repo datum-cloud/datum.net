@@ -5,6 +5,9 @@ sidebar:
   order: 4
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "How We Ship New Features - Datum Handbook for Development & Quality Gates"
+  description: "Learn how Datum ships new features from design and specs to code review, deployment, and impact measurement. Explore our development workflow, automated testing, security reviews, performance checks, and documentation requirements for quality launches."
 ---
 
 ## Development process

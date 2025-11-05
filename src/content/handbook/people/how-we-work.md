@@ -5,6 +5,9 @@ sidebar:
   order: 1
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Work Principles - Our Guide for Remote, Async & Transparent Teams"
+  description: "See Datum’s handbook for remote-first, async work and autonomy. Principles include transparency, goal alignment, and open communication."
 ---
 
 We're a remote-first company that believes in async-first communication and autonomy. Every team member is empowered to make decisions in their domain and drive projects forward.

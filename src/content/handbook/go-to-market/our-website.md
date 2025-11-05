@@ -5,6 +5,9 @@ sidebar:
   order: 3
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Our Website Philosophy - Datum Digital for Modern Network Infrastructure"
+  description: "Learn how Datum approaches our website strategy - educating developers about networking superpowers, demonstrating real examples, converting visitors, and supporting with comprehensive docs, blog content, and community resources."
 ---
 
 Our website should be the best resource for understanding modern network infrastructure for AI.

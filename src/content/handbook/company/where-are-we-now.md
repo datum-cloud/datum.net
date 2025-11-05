@@ -5,6 +5,9 @@ sidebar:
   order: 14
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Where We Are Now - Datum Handbook for Company Status & Key Metrics (2025)"
+  description: "See the current state of Datum in 2025: MVPs in development, open source foundations, strategic partnerships, and rapid community growth. Track monthly revenue, platform organizations, contributor growth, ecosystem, and customer satisfaction."
 ---
 
 ## Current state (2025)

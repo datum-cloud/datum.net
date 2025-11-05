@@ -5,6 +5,9 @@ sidebar:
   order: 4
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Swag Guide - Useful, High-Quality Reflecting our Engineering Culture"
+  description: "Datum swag combines useful items, high-quality standards, tasteful design, and engineering culture with limited editions for real impact and connection."
 ---
 
 Swag should be useful, high-quality, and reflect our engineering culture.

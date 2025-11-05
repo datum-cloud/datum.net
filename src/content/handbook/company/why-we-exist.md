@@ -5,6 +5,9 @@ sidebar:
   order: 1
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum’s Purpose - Digital Transformation & Developer Mission"
+  description: "Learn why Datum exists - empowering digital businesses and developers with hyperscaler networking, private connectivity, and modern infrastructure to win in a fragmented, data-driven world. Discover our mission and vision for the future of networking."
 ---
 
 ## Our "why"

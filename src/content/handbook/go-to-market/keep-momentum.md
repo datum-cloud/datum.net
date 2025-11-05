@@ -5,6 +5,9 @@ sidebar:
   order: 2
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Keeping Momentum at Datum - Content, Community & Open Source Growth"
+  description: "Learn how Datum keeps momentum with deep technical content, open source updates, customer showcases, research insights, and community involvement in key developer spaces."
 ---
 
 ## Content strategy

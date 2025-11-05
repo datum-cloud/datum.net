@@ -5,6 +5,9 @@ sidebar:
   order: 7
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "How We Recognize Peers - Datum Guide to Employee Recognition & Awards"
+  description: "Datum celebrates values-driven contributions with shout-outs, peer nominations, quarterly awards, and new growth opportunities for standout team members."
 ---
 
 Recognition reinforces our values and celebrates great work.

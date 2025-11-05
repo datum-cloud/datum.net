@@ -5,6 +5,9 @@ sidebar:
   order: 7
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum AI Strategy - Building Infrastructure for AI Agents & Global Ecosystems"
+  description: "Discover Datum’s AI strategy in building infrastructure for distributed, performance-sensitive workloads and reasoning-friendly AI interfaces. AI-native, intelligent routing, ecosystem orchestration, and global guarantees support trusted AI interactions and mission-critical services."
 ---
 
 We're not just building for the current internet - we're building the internet that AI needs.

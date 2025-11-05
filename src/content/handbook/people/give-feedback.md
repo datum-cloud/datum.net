@@ -5,6 +5,9 @@ sidebar:
   order: 6
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Giving and Receiving Feedback - Datum Handbook for Growth-Oriented Communication"
+  description: "Learn how Datum fosters growth through specific, kind, and constructive feedback. Explore guidelines for giving, receiving, and formal feedback including 1:1's, reviews, and project sessions."
 ---
 
 Feedback is a gift - both giving and receiving it well is essential for our growth.

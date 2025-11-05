@@ -5,6 +5,9 @@ sidebar:
   order: 6
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "CI/CD & Deployment Practices: Datum Engineering Handbook"
+  description: "Learn Datum's CI/CD approach: fast continuous integration, automated security scanning, gradual rollouts with feature flags, and comprehensive real-time monitoring."
 ---
 
 ## Continuous Integration

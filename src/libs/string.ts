@@ -1,14 +1,21 @@
+/**
+ * Truncate a string to a maximum number of characters without cutting words
+ * @param str - The input string
+ * @param maxChar - Maximum number of characters
+ * @param suffix - Suffix to append if truncated
+ * @returns Truncated
+ */
 function truncate(str = '', maxChar = 100, suffix = '...'): string {
   return str.length < maxChar
     ? str
     : `${str.slice(0, str.slice(0, maxChar - suffix.length).lastIndexOf(' '))}${suffix}`;
 }
 
-async function stripTags(html: string | Promise<string> = Promise.resolve('')): Promise<string> {
-  const resolvedHtml = await html;
-  return resolvedHtml.replace(/<[^>]*>/g, '').trim();
-}
-
+/**
+ * Remove all header tags (h1 to h6) from the given HTML content
+ * @param html - The HTML content
+ * @returns HTML content without header tags
+ */
 async function removeHeaderTags(
   html: string | Promise<string> = Promise.resolve('')
 ): Promise<string> {
@@ -16,9 +23,20 @@ async function removeHeaderTags(
   return resolvedHtml.replace(/<h[1-6]>.*?<\/h[1-6]>/gi, '').trim();
 }
 
-function excerpt(html = '', maxChar = 150, suffix = '...'): string {
-  // Remove HTML tags and decode HTML entities
-  const textContent = html
+/**
+ * Generate a text excerpt from HTML content without HTML tags
+ * @param html - The HTML content
+ * @param maxChar - Maximum number of characters for the excerpt
+ * @param suffix - Suffix to append if truncated
+ * @returns Excerpt string
+ */
+async function stripTags(
+  html: string | Promise<string> = Promise.resolve(''),
+  maxChar: number = 0,
+  suffix: string = ''
+): Promise<string> {
+  const resolvedHtml = await html;
+  const textContent = resolvedHtml
     .replace(/<[^>]*>/g, '') // Remove HTML tags
     .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
     .replace(/&amp;/g, '&') // Decode ampersands
@@ -29,7 +47,23 @@ function excerpt(html = '', maxChar = 150, suffix = '...'): string {
     .replace(/\s+/g, ' ') // Normalize whitespace
     .trim();
 
+  if (maxChar <= 0) {
+    return textContent;
+  }
+
   return truncate(textContent, maxChar, suffix);
 }
 
-export { truncate, excerpt, removeHeaderTags, stripTags };
+/**
+ * Generates a random string of specified length
+ * @param length - The desired length of the random string
+ * @returns Random string containing lowercase letters and numbers
+ */
+const generateRandomString = (length: number): string => {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length))
+  ).join('');
+};
+
+export { truncate, removeHeaderTags, stripTags, generateRandomString };

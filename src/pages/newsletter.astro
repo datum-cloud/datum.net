@@ -6,64 +6,6 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 
-import { K8sClient } from '@libs/k8s-client';
-import { createContact, type ContactSpec } from '@/src/types/k8s-resources';
-
-const expired = new Date(Date.now() + 3600 * 1000 * 24); // 24 hours
-const cookieOptions = {
-  path: '/',
-  sameSite: 'lax' as 'none' | 'strict' | 'lax',
-  secure: true,
-  expires: expired,
-};
-
-let contact: ContactSpec = {
-  email: '',
-  givenName: 'newsletter_name',
-  familyName: 'newsletter_familyName',
-  company: 'newsletter_company',
-  tags: ['newsletter', 'customer'],
-};
-
-let isSignupNewsletter: boolean =
-  Astro.cookies.get('isSignupNewsletter')?.value === 'true' ? true : false;
-
-if (Astro.request.method === 'POST') {
-  const data = await Astro.request.formData();
-  contact.email = data.get('email') ? (data.get('email') as string) : '';
-  contact.givenName = data.get('given_name') ? (data.get('given_name') as string) : '';
-  contact.familyName = data.get('family_name') ? (data.get('family_name') as string) : '';
-  contact.company = data.get('company') ? (data.get('company') as string) : '';
-
-  try {
-    const client = new K8sClient({
-      kubeconfigPath: './config/kubeconfig.yaml',
-      namespace: import.meta.env.K8S_NAMESPACE || process.env.K8S_NAMESPACE || 'milo-system',
-    });
-
-    const contactResource = createContact(contact.givenName, contact);
-
-    try {
-      const created = await client.createCustomResource<ContactSpec>(
-        'notification.miloapis.com',
-        'v1alpha1',
-        'contacts',
-        contactResource
-      );
-
-      console.log('Contact created:', created.metadata.name);
-      Astro.cookies.set('isSignupNewsletter', 'true', cookieOptions);
-      isSignupNewsletter = true;
-    } catch (error) {
-      console.error('Error creating contact:', error);
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-  }
-}
-
 // SEO
 const title = 'Newsletter';
 const description = 'Stay updated with the latest news and updates from Datum.';
@@ -98,23 +40,9 @@ const description = 'Stay updated with the latest news and updates from Datum.';
             </p>
           </div>
         </div>
-
-        <div class="footer-signup-containe">
-          <div class="footer-signup-success">
-            {
-              isSignupNewsletter ? (
-                <h3>
-                  <b>{contact.email}</b>, You're on the list!
-                </h3>
-              ) : (
-                <h3>Failed</h3>
-              )
-            }
-          </div>
-        </div>
       </div>
     </div>
 
-    <Footer showCTA={false} />
+    <Footer showCTA={false} showSignup={false} />
   </section>
 </Layout>

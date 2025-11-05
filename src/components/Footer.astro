@@ -13,6 +13,7 @@ const {
   showCTA = true,
   showBackground = true,
   showIllustration = false,
+  showSignup = true,
 } = Astro.props as FooterProps;
 
 // Type-safe navigation data
@@ -149,5 +150,5 @@ const navData = navigation as NavData;
     </div>
   </div>
 
-  <Signup server:defer />
+  {showSignup && <Signup server:defer />}
 </footer>

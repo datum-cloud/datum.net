@@ -124,6 +124,7 @@ export interface FooterProps {
   showCTA?: boolean;
   showBackground?: boolean;
   showIllustration?: boolean;
+  showSignup?: boolean;
 }
 
 export interface ContainerProps {

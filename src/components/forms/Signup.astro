@@ -24,6 +24,7 @@ if (mode !== 'development') {
         <button class="footer-signup-button">
           <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
         </button>
+
         <div
           class="footer-signup-wait-message datum-text-sm text-canyon-clay---links absolute bottom-0 left-0 hidden translate-y-8 text-nowrap"
         >
@@ -43,16 +44,13 @@ if (mode !== 'development') {
   import { actions } from 'astro:actions';
 
   const form = document.querySelector('.footer-signup-form') as HTMLFormElement;
-  const formContainer = document.querySelector('.footer-signup-form-container') as HTMLDivElement;
   const errorMessage = document.querySelector('.footer-signup-error-message') as HTMLDivElement;
   const waitMessage = document.querySelector('.footer-signup-wait-message') as HTMLDivElement;
 
   form.addEventListener('submit', function (this: HTMLFormElement) {
-    formContainer.classList.add('hidden');
     waitMessage.classList.remove('hidden');
     actions.signup({ email: form.email.value }).then((result: { data?: boolean }) => {
       if (!result.data) {
-        formContainer.classList.remove('hidden');
         waitMessage.classList.add('hidden');
         errorMessage.classList.remove('hidden');
       } else {

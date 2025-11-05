@@ -23,18 +23,10 @@ const signup = defineAction({
         namespace: import.meta.env.K8S_NAMESPACE || process.env.K8S_NAMESPACE || 'milo-system',
       });
 
-      console.log({
-        uniqueId,
-        specs: {
-          email: input.email,
-          givenName: emailName,
-          familyName: '',
-        },
-      });
       const contactResource = createContact(uniqueId, {
         email: input.email,
         givenName: emailName,
-        familyName: uniqueId,
+        familyName: '',
       });
 
       try {

@@ -11,12 +11,12 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    @apply scroll-smooth;
   }
 
-  html {
-    /* @apply antialiased; */
+  body {
     @apply font-primary;
+    @apply antialiased;
     @apply bg-glacier-mist-900;
   }
 

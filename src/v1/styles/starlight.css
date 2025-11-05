@@ -14,12 +14,11 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    @apply scroll-smooth;
   }
 
-  html,
   body {
-    /* @apply antialiased; */
+    @apply antialiased;
     @apply font-primary;
   }
 

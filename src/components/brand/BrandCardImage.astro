@@ -1,11 +1,16 @@
 ---
-// src/components/brand/BrandCard.astro
+// src/components/brand/BrandCardImage.astro
+// Card component for brand images with optional link
 import type { BrandCardProps } from '@/src/types/brand';
 
-const { url, title }: BrandCardProps = Astro.props;
+interface Props extends BrandCardProps {
+  class?: string;
+}
+
+const { url, title, class: className = '' } = Astro.props as Props;
 ---
 
-<div class="brand-card-image">
+<div class={`brand-card-image ${className}`}>
   <div class="brand-card-image--content">
     <slot />
   </div>

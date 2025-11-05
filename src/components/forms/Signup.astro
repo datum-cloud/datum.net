@@ -14,7 +14,7 @@ if (mode !== 'development') {
   <div class="footer-signup-container">
     <h4 class="h4-leading mb-0">Sign up for updates</h4>
     <div class="footer-signup-form-container">
-      <form action="#" class="footer-signup-form" onsubmit="return false;">
+      <form action="#" class="footer-signup-form relative" onsubmit="return false;">
         <input
           type="email"
           name="email"
@@ -24,10 +24,18 @@ if (mode !== 'development') {
         <button class="footer-signup-button">
           <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
         </button>
+        <div
+          class="footer-signup-wait-message datum-text-sm text-canyon-clay---links absolute bottom-0 left-0 hidden translate-y-8 text-nowrap"
+        >
+          Please wait..
+        </div>
+        <div
+          class="footer-signup-error-message datum-text-sm text-canyon-clay---links absolute bottom-0 left-0 hidden translate-y-8 text-nowrap"
+        >
+          Something went wrong. Please try again in a minute or two.
+        </div>
       </form>
     </div>
-    <div class="footer-signup-wait-message hidden">Please wait..</div>
-    <div class="footer-signup-error-message hidden">Failed to sign up. Please try again.</div>
   </div>
 </div>
 

@@ -1,5 +1,7 @@
 ---
-title: Overview
+title: Our visual identitiy
+subtitle: Design Assets
+icon: image
 description: "Resources rooted in our brand foundation that reflect and amplify our purpose, people, and product."
 slug: "brand"
 meta:
@@ -10,11 +12,9 @@ meta:
 import Container from '@components/Container.astro';
 import BrandCard from '@components/brand/BrandCard.astro';
 
-A foundational, hyperscale-ready framework that guides the design of all user experiences within the Datum ecosystem.
 
 
-<Container tag="section" class="grid gap-7.5 md:grid-cols-2 lg:grid-cols-3 max-w-none lg:mt-16 md:mt-12 mt-8 content-stretch">
-
+<Container tag="section" class="grid gap-6 xl:gap-9 md:grid-cols-2 lg:grid-cols-3 max-w-none content-stretch">
 <BrandCard
   title="Principles"
   url="/brand/principles/"
@@ -24,14 +24,6 @@ A foundational, hyperscale-ready framework that guides the design of all user ex
   </Fragment>
 </BrandCard>
 
-<BrandCard
-  title="Gallery"
-  url="/brand/gallery/"
->
-  <Fragment slot="image">
-    ![Gallery](./assets/gallery.png)
-  </Fragment>
-</BrandCard>
 
 <BrandCard
   title="Typography"
@@ -86,15 +78,5 @@ A foundational, hyperscale-ready framework that guides the design of all user ex
     ![Social](./assets/social.png)
   </Fragment>
 </BrandCard>
-
-<BrandCard
-  title="Resources"
-  url="/brand/resources/"
->
-  <Fragment slot="image">
-    ![Resources](./assets/resources.png)
-  </Fragment>
-</BrandCard>
-
 
 </Container>

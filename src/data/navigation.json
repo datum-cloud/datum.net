@@ -94,8 +94,7 @@
       "title": "Brand Overview",
       "items": [
         { "text": "Overview", "href": "/brand/" },
-        { "text": "Principles", "href": "/brand/principles/" },
-        { "text": "Gallery", "href": "/brand/gallery/" }
+        { "text": "Principles", "href": "/brand/principles/" }
       ]
     },
     {
@@ -108,10 +107,6 @@
         { "text": "Illustration Suite", "href": "/brand/imagery/" },
         { "text": "Social", "href": "/brand/social/" }
       ]
-    },
-    {
-      "title": "Brand Resources",
-      "items": [{ "text": "Resources", "href": "/brand/resources" }]
     }
   ],
   "footerDocs": [

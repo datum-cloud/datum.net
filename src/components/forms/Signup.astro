@@ -5,7 +5,7 @@ import Icon from '@components/Icon.astro';
 const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
 
 // only for development mode, to ease testing
-if (mode !== 'development') {
+if (mode == 'production') {
   return;
 }
 ---

@@ -1,0 +1,94 @@
+---
+export const prerender = false;
+
+if (!Astro.cookies.has('accessToken')) {
+  const expired = new Date(Date.now() + 3600 * 1000); // 1 hour
+  const cookieOptions = {
+    path: '/',
+    sameSite: 'lax' as 'none' | 'strict' | 'lax',
+    secure: true,
+  };
+
+  Astro.cookies.set('auth_redirect', Astro.request.url, {
+    expires: expired,
+    ...cookieOptions,
+  });
+
+  return Astro.redirect('/auth/login/');
+}
+
+type EnvValue = string | number | boolean | undefined;
+type EnvRecord = Record<string, EnvValue>;
+
+const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
+  return Object.fromEntries(
+    Object.entries(envVars).map(([key, value]) => {
+      if (key === '_') return [key, undefined];
+      const lowerKey = key.toLowerCase();
+      // Check for common sensitive variable patterns in keys
+      const sensitiveKeyPatterns = [
+        'key',
+        'secret',
+        'password',
+        'token',
+        'auth',
+        'credential',
+        'private',
+        'user',
+        'home',
+        'dir',
+        'path',
+        'id',
+        'login',
+        'pwd',
+        'logname',
+        'shell',
+        'pass',
+        'cwd',
+        'npm',
+      ];
+
+      // Check if any sensitive pattern exists in the key
+      const hasSensitivePattern = sensitiveKeyPatterns.some((pattern) =>
+        lowerKey.includes(pattern)
+      );
+
+      // Check if value contains file paths with usernames
+      const isValueWithUserPath =
+        typeof value === 'string' &&
+        (value.includes('/Users/') || value.includes('/home/') || value.includes('\\Users\\'));
+
+      // If sensitive, return the key with masked value
+      if (hasSensitivePattern || isValueWithUserPath) {
+        return [key, value ? '***' : ''];
+      }
+
+      // If not sensitive, return as is
+      return [key, value];
+    })
+  );
+};
+
+const responseObj = {
+  meta: filterSensitiveVars(import.meta.env),
+  process: filterSensitiveVars(process.env),
+  nodeVersion: process.version,
+  platform: {
+    arch: process.arch,
+    platform: process.platform,
+    release: process.release,
+    uptime: process.uptime(),
+  },
+
+  //   {
+  //   'meta.env': filterSensitiveVars(import.meta.env),
+  //   'process.env': filterSensitiveVars(process.env),
+  // };
+};
+return new Response(JSON.stringify(responseObj, null, 2), {
+  status: 200,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+---

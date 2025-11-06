@@ -1,4 +1,13 @@
 @layer components {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-blush-quartz) inset !important;
+    -webkit-text-fill-color: black !important;
+    background-color: var(--color-blush-quartz) !important;
+  }
+
   /* Section Block */
   .section--block {
     @apply relative z-10;
@@ -71,7 +80,7 @@
   }
 
   .footer-signup-input {
-    @apply text-midnight-fjord placeholder-midnight-fjord datum-text-lg flex-1 bg-transparent outline-none;
+    @apply text-midnight-fjord placeholder-midnight-fjord datum-text-lg bg-blush-quartz flex-1 outline-none;
   }
 
   .footer-signup-button {

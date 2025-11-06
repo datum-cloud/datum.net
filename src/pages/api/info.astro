@@ -17,6 +17,13 @@ export const prerender = false;
 //   return Astro.redirect('/auth/login/');
 // }
 
+const mode = process.env.MODE || import.meta.env.MODE;
+
+// only for development mode, to ease testing
+if (mode == 'production') {
+  return;
+}
+
 type EnvValue = string | number | boolean | undefined;
 type EnvRecord = Record<string, EnvValue>;
 
@@ -79,11 +86,6 @@ const responseObj = {
     release: process.release,
     uptime: process.uptime(),
   },
-
-  //   {
-  //   'meta.env': filterSensitiveVars(import.meta.env),
-  //   'process.env': filterSensitiveVars(process.env),
-  // };
 };
 return new Response(JSON.stringify(responseObj, null, 2), {
   status: 200,

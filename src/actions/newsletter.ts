@@ -13,7 +13,7 @@ const signup = defineAction({
   input: z.object({
     email: z.string(),
   }),
-  handler: async (input: SignupInput): Promise<boolean> => {
+  handler: async (input: SignupInput): Promise<{ success: boolean; message?: string }> => {
     const emailName = input.email.split('@')[0].toLowerCase().replace(/\./g, '-');
     const uniqueId = `newsletter-${emailName}-${generateRandomString(6)}`;
 
@@ -38,17 +38,19 @@ const signup = defineAction({
         );
 
         if (created.metadata) {
-          return true;
+          return {
+            success: true,
+            message: `Contact ${created.metadata.name} created successfully.`,
+          };
         }
       } catch (error) {
-        console.error(error);
+        return { success: false, message: error?.toString() };
       }
     } catch (error) {
-      console.error(error);
-      return false;
+      return { success: false, message: error?.toString() };
     }
 
-    return false;
+    return { success: false, message: 'Unknown error' };
   },
 });
 

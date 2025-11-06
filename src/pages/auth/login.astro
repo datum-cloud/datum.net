@@ -5,7 +5,7 @@ import { OIDCClient } from '@libs/oidc';
 
 const oidcClient = new OIDCClient();
 const oidcClientReturn = oidcClient.getAuthorizationUrl('login');
-const expired = new Date(Date.now() + 3600 * 1000);
+const expired = new Date(Date.now() + 3600 * 1000 * 1);
 
 const cookieOptions = {
   path: '/',

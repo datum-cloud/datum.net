@@ -117,24 +117,23 @@ const descriptionValue =
       })(window, document, window.Beacon || function () {});
     </script>
     {
-      import.meta.env.MODE === 'production' && (
+      mode === 'production' && (
         <script type="text/javascript" defer is:inline>
           window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
         </script>
       )
     }
 
-    {import.meta.env.MODE === 'production' && <script src="/scripts/markerio.js" defer is:inline />}
+    {mode === 'production' && <script src="/scripts/markerio.js" defer is:inline />}
 
     {
-      import.meta.env.MODE === 'production' && (
+      mode === 'production' && (
         <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
       )
     }
   </head>
   <body class={bodyClass}>
     <slot />
-
     <script>
       import '/src/v1/scripts/lenis-parallax.js';
     </script>

@@ -10,6 +10,7 @@ ENV HOST=0.0.0.0
 ENV PORT=4321
 
 COPY package*.json ./
+COPY ./.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install
 COPY . .
 RUN chmod -R 755 src/pages
@@ -25,8 +26,8 @@ ENV PORT=4321
 # ARG SITE_URL
 # ENV SITE_URL=${SITE_URL}
 
-RUN touch .env
 COPY package*.json ./
+COPY ./.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .
 RUN chmod -R 755 src/pages
@@ -45,6 +46,7 @@ WORKDIR /app
 
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
+COPY --from=build /app/.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --ignore-scripts
 COPY --from=build /app/src/pages ./src/pages
 RUN chmod -R 755 src/pages

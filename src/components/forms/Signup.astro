@@ -1,14 +1,20 @@
 ---
 export const prerender = false;
 import Icon from '@components/Icon.astro';
+
+const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
+
+// only for development mode, to ease testing
+if (mode !== 'development') {
+  return;
+}
 ---
 
-<!-- Signup Section -->
 <div class="footer-signup">
   <div class="footer-signup-container">
-    <h4 class="datum-text-7xl mb-0">Sign up for updates</h4>
+    <h4 class="h4-leading mb-0">Sign up for updates</h4>
     <div class="footer-signup-form-container">
-      <form action="/newsletter/" method="POST" class="footer-signup-form">
+      <form action="#" class="footer-signup-form relative" onsubmit="return false;">
         <input
           type="email"
           name="email"
@@ -18,7 +24,38 @@ import Icon from '@components/Icon.astro';
         <button class="footer-signup-button">
           <Icon name="circle-arrow-right" size="xl" class="stroke-[1.25]" />
         </button>
+
+        <div
+          class="footer-signup-wait-message datum-text-sm text-canyon-clay---links absolute bottom-0 left-0 hidden translate-y-8 text-nowrap"
+        >
+          Please wait..
+        </div>
+        <div
+          class="footer-signup-error-message datum-text-sm text-canyon-clay---links absolute bottom-0 left-0 hidden translate-y-8 text-nowrap"
+        >
+          Something went wrong. Please try again in a minute or two.
+        </div>
       </form>
     </div>
   </div>
 </div>
+
+<script>
+  import { actions } from 'astro:actions';
+
+  const form = document.querySelector('.footer-signup-form') as HTMLFormElement;
+  const errorMessage = document.querySelector('.footer-signup-error-message') as HTMLDivElement;
+  const waitMessage = document.querySelector('.footer-signup-wait-message') as HTMLDivElement;
+
+  form.addEventListener('submit', function (this: HTMLFormElement) {
+    waitMessage.classList.remove('hidden');
+    actions.signup({ email: form.email.value }).then((result: { data?: boolean }) => {
+      if (!result.data) {
+        waitMessage.classList.add('hidden');
+        errorMessage.classList.remove('hidden');
+      } else {
+        window.location.href = '/newsletter/';
+      }
+    });
+  });
+</script>

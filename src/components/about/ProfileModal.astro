@@ -1,0 +1,213 @@
+---
+// src/components/about/ProfileModal.astro
+import Icon from '@components/Icon.astro';
+
+const { class: className } = Astro.props as { class?: string };
+---
+
+<profile-modal class={className}>
+  <dialog aria-label="Team member profile">
+    <div class="profile-modal--frame" data-lenis-prevent>
+      <button
+        data-close-modal
+        class="profile-modal--close"
+        aria-label="Close profile"
+        type="button"
+      >
+        <Icon name="close" size="sm" class="profile-modal--close-icon" />
+      </button>
+      <div class="profile-modal--content" id="profile-content">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </dialog>
+</profile-modal>
+
+<script>
+  // Create a custom event for opening the profile modal
+  const PROFILE_MODAL_OPEN_EVENT = 'profile-modal-open';
+  const PROFILE_MODAL_CLOSE_EVENT = 'profile-modal-close';
+
+  interface MemberData {
+    data: {
+      name: string;
+      bio?: string;
+      title?: string;
+      avatar?: { src: string };
+      tick?: string;
+      surprising?: string;
+      weekends?: string;
+    };
+  }
+
+  // Add event names to window object
+  declare global {
+    interface Window {
+      PROFILE_MODAL_OPEN_EVENT: string;
+      PROFILE_MODAL_CLOSE_EVENT: string;
+    }
+
+    interface CustomEventMap {
+      'profile-modal-open': CustomEvent<{ member: MemberData }>;
+      'profile-modal-close': CustomEvent;
+    }
+  }
+
+  class ProfileModal extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    contentContainer: HTMLElement;
+    dialogOpenedAt: number = 0;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.profile-modal--frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.contentContainer = this.querySelector<HTMLElement>('#profile-content')!;
+
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      // Listen for the custom event to open the modal
+      document.addEventListener(PROFILE_MODAL_OPEN_EVENT, (e: Event) => {
+        const customEvent = e as CustomEvent<{ member: MemberData }>;
+        this.openModal(customEvent.detail.member);
+      });
+
+      // Close button event listener
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+
+      // Dialog close event
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-profile-modal-open', false);
+        window.removeEventListener('click', this.onClick);
+        document.dispatchEvent(new CustomEvent(PROFILE_MODAL_CLOSE_EVENT));
+      });
+
+      // Listen for ESC key
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isLink = 'href' in (target || {});
+      const isOutsideDialog = document.body.contains(target) && !this.dialogFrame.contains(target);
+
+      // Check if click is inside a dialog but outside dialog-frame
+      const isInDialog = target.closest('dialog') !== null;
+      const isInDialogFrame = target.closest('.profile-modal--frame') !== null;
+      const isDialogBackdropClick = isInDialog && !isInDialogFrame;
+
+      // Prevent closing if click happens too soon after opening (within 300ms)
+      const clickTime = Date.now();
+      const timeSinceOpen = clickTime - this.dialogOpenedAt;
+      const isTooSoon = timeSinceOpen < 300;
+
+      // Handle different click scenarios
+      if (isDialogBackdropClick) {
+        // This is a click on the dialog backdrop
+        this.closeModal();
+      } else if ((isLink || isOutsideDialog) && !isTooSoon) {
+        // This is a click outside the dialog or on a link
+        this.closeModal();
+      }
+    };
+
+    openModal(member: MemberData) {
+      // Populate the modal with member data
+      this.populateContent(member);
+
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-profile-modal-open', true);
+
+      // Record when the dialog was opened
+      this.dialogOpenedAt = Date.now();
+
+      // Add a small delay before adding the click listener to prevent immediate closing
+      setTimeout(() => {
+        window.addEventListener('click', this.onClick);
+      }, 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+
+    populateContent(member: MemberData) {
+      const { data } = member;
+
+      // Build avatar HTML
+      const avatarHTML = data.avatar
+        ? `<div class="profile-modal--avatar">
+             <img src="${data.avatar.src}" alt="${data.name}" />
+           </div>`
+        : '';
+
+      // Build meta grid items
+      const metaItems = [];
+
+      if (data.bio) {
+        metaItems.push(`
+          <div class="profile-modal--meta-item">
+            <label>About</label>
+            <p>${data.bio}</p>
+          </div>
+        `);
+      }
+      if (data.tick) {
+        metaItems.push(`
+          <div class="profile-modal--meta-item">
+            <label>What makes me tick</label>
+            <p>${data.tick}</p>
+          </div>
+        `);
+      }
+      if (data.surprising) {
+        metaItems.push(`
+          <div class="profile-modal--meta-item">
+            <label>Something surprising</label>
+            <p>${data.surprising}</p>
+          </div>
+        `);
+      }
+      if (data.weekends) {
+        metaItems.push(`
+          <div class="profile-modal--meta-item">
+            <label>On weekends I'm</label>
+            <p>${data.weekends}</p>
+          </div>
+        `);
+      }
+
+      // Populate the content
+      this.contentContainer.innerHTML = `
+        <div class="profile-modal--row-first">
+          ${avatarHTML}
+          <div class="profile-modal--info">
+            <div class="profile-modal--info-header">
+              <h2>${data.name}</h2>
+              ${data.title ? `<p>${data.title}</p>` : ''}
+            </div>
+
+          </div>
+        </div>
+
+        ${metaItems.length > 0 ? `<div class="profile-modal--row-second">${metaItems.join('')}</div>` : ''}
+      `;
+    }
+  }
+
+  customElements.define('profile-modal', ProfileModal);
+
+  // Export the event names for other components to use
+  window.PROFILE_MODAL_OPEN_EVENT = PROFILE_MODAL_OPEN_EVENT;
+  window.PROFILE_MODAL_CLOSE_EVENT = PROFILE_MODAL_CLOSE_EVENT;
+</script>

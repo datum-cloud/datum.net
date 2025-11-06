@@ -1,12 +1,12 @@
 ---
-import '@v1/styles/global.css';
+import '@v1/styles/page-about.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import FirstSection from '@components/about/OurPurpose.astro';
-import SecondSection from '@components/about/Team.astro';
-import ThirdSection from '@components/about/WeValue.astro';
-
+import OurMission from '@components/about/OurMission.astro';
+import Companies from '@components/about/Companies.astro';
+import Investors from '@components/about/Investors.astro';
+import People from '@components/about/People.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
 
@@ -23,16 +23,16 @@ const description = fm.description ? fm.description : '';
 
 <Layout title={title} description={description} bodyClass="page-about" meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      title={fm.title}
-      subtitle={fm.subtitle}
-      iconName={fm.iconName}
-      description={fm.description}
-    />
-    <FirstSection content={contentData[0]} />
-    <ThirdSection content={contentData[2]} />
-    <SecondSection content={contentData[1]} />
+    <Hero class="light bg-white" />
+
+    <OurMission content={contentData[0]} />
+
+    <Companies content={contentData[1]} />
+
+    <People />
+
+    <Investors content={contentData[2]} />
+
     <Footer />
   </section>
 </Layout>

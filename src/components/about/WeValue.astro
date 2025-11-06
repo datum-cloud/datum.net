@@ -1,10 +1,10 @@
 ---
-import type { ContentProps } from '@/src/types/common';
+import { type CollectionEntry } from 'astro:content';
 import Button from '@/src/components/Button.astro';
 import { Image } from 'astro:assets';
 import Illustration from '@content/about/images/rock.png';
 
-const { content } = Astro.props as ContentProps;
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
 const items = content.data.items || [];
 const link = content.data.link;
 ---

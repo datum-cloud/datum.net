@@ -2,12 +2,12 @@
 export const prerender = false;
 import Icon from '@components/Icon.astro';
 
-// const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
+const mode = process.env.MODE || import.meta.env.MODE;
 
 // only for development mode, to ease testing
-// if (mode == 'production') {
-//   return;
-// }
+if (mode == 'production') {
+  return;
+}
 ---
 
 <div class="footer-signup">
@@ -49,12 +49,13 @@ import Icon from '@components/Icon.astro';
 
   form.addEventListener('submit', function (this: HTMLFormElement) {
     waitMessage.classList.remove('hidden');
-    actions.signup({ email: form.email.value }).then((result: { data?: boolean }) => {
-      if (!result.data) {
+    actions.signup({ email: form.email.value }).then((result) => {
+      if (!result.data?.success) {
+        console.log('Signup error:', result.data?.message);
         waitMessage.classList.add('hidden');
         errorMessage.classList.remove('hidden');
       } else {
-        window.location.href = '/newsletter/';
+        // window.location.href = '/newsletter/';
       }
     });
   });

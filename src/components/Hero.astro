@@ -28,23 +28,28 @@ const {
         data-reveal-delay="100"
       >
         {/* Hero Main Content */}
-        <div class="hero--main-content-inner">
-          {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
-            <div class="hero--main-content-icon">
-              {iconName && iconName !== '' && (
-                <div class="hero--main-content-icon-inner">
-                  <Icon name={iconName} size="md" />
-                </div>
-              )}
-              {subtitle && subtitle !== '' && <span set:html={subtitle} />}
-            </div>
-          ) : null}
+        {(title || description) && (
+          <div class="hero--main-content-inner">
+            {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
+              <div class="hero--main-content-icon">
+                {iconName && iconName !== '' && (
+                  <div class="hero--main-content-icon-inner">
+                    <Icon name={iconName} size="md" />
+                  </div>
+                )}
+                {subtitle && subtitle !== '' && <span set:html={subtitle} />}
+              </div>
+            ) : null}
 
-          <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />
-          {description && (
-            <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
-          )}
-        </div>
+            {title && <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />}
+            {description && (
+              <p
+                class="hero--main-content-description"
+                set:html={marked.parseInline(description)}
+              />
+            )}
+          </div>
+        )}
         {imagePath && (
           <div class="hero--main-content-image">
             <Image

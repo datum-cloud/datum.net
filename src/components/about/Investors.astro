@@ -1,0 +1,49 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
+const investors = content.data.investors || [];
+---
+
+<section id="investors" class="bg-aurora-moss section--block section--block--pad relative">
+  <div
+    class="max-width fade-in--pure relative z-10 text-center"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+  >
+    <h3
+      class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:mb-12 md:max-w-xl lg:mb-16 xl:mb-21"
+    >
+      {content.data.title}
+    </h3>
+
+    <div class="flex flex-wrap justify-center-safe gap-4 md:gap-6 xl:gap-9 [&>div]:w-[279px]">
+      {
+        investors.length > 0 &&
+          investors.map(
+            (investor) =>
+              investor.img && (
+                <div class="border-pine-forge bg-aurora-moss flex items-center justify-center border px-8 py-4 md:p-10">
+                  {investor.url ? (
+                    <a href={investor.url} target="_blank" rel="noreferrer" class="block">
+                      <Image
+                        src={investor.img}
+                        alt={investor.alt ?? ''}
+                        class="logo-img logo-img--standard size-auto max-h-19 max-w-38 mix-blend-multiply"
+                      />
+                    </a>
+                  ) : (
+                    <Image
+                      src={investor.img}
+                      alt={investor.alt ?? ''}
+                      class="logo-img logo-img--standard size-auto max-h-19 max-w-38 mix-blend-multiply"
+                    />
+                  )}
+                </div>
+              )
+          )
+      }
+    </div>
+  </div>
+</section>

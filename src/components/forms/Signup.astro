@@ -2,12 +2,12 @@
 export const prerender = false;
 import Icon from '@components/Icon.astro';
 
-const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
+// const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
 
 // only for development mode, to ease testing
-if (mode == 'production') {
-  return;
-}
+// if (mode == 'production') {
+//   return;
+// }
 ---
 
 <div class="footer-signup">

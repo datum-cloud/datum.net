@@ -65,6 +65,7 @@ export default defineConfig({
         },
       ],
       components: {
+        Head: '@components/starlight/Head.astro',
         PageFrame: '@components/starlight/PageFrame.astro',
         PageSidebar: '@components/starlight/PageSidebar.astro',
         TwoColumnContent: '@components/starlight/TwoColumnContent.astro',

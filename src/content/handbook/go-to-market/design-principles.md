@@ -5,6 +5,9 @@ sidebar:
   order: 7
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Design Principles - Handbook for Grounded, Approachable, Ethical Branding"
+  description: "Learn how Datum’s brand design principles balance ambition with real-world problem solving, expertise with approachability, and transparency with ethical responsibility for a distinctive identity."
 ---
 
 Our brand personality and visual identity are guided by five core principles that reflect who we are and how we show up in the world:

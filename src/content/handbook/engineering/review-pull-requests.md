@@ -5,6 +5,9 @@ sidebar:
   order: 5
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Code Review & CI/CD Practices - Guide to Reviewing & Deploying Code"
+  description: "Learn how Datum reviews pull requests to ensure code quality, security, and maintainability. Follow our review checklist, approval processes, CI/CD and deployment strategies, and monitoring best practices for engineering excellence."
 ---
 
 Code review is essential for code quality, knowledge sharing, and catching issues early.

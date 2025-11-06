@@ -5,6 +5,9 @@ sidebar:
   order: 5
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Common Use Cases for AI Infrastructure & Cloud Networking | Datum Handbook"
+  description: "Explore common use cases for Datum's open source cloud and alternative cloud platform. Power AI-native solutions with global, private cloud, and network infrastructure services for AI and SaaS."
 ---
 
 ## AI Infrastructure Providers

@@ -5,6 +5,9 @@ sidebar:
   order: 8
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Design Philosophy - Consistent, Future-Proof, AI-Native Experiences"
+  description: "Explore Datum’s design language - hyperscale-ready, developer-first, and systematically consistent for all products and experiences. Learn our design philosophy, key elements, and brand applications across interfaces, marketing, and documentation."
 ---
 
 We maintain a **foundational, hyperscale-ready framework** that guides the design of all user experiences within the Datum ecosystem. This design language ensures consistency while allowing for the flexibility needed across different products and contexts.

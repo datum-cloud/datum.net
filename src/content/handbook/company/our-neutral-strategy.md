@@ -5,6 +5,9 @@ sidebar:
   order: 6
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum's Neutral Strategy Handbook: Cloud AI Infrastructure & Network Infrastructure"
+  description: "Explore Datum's Neutral Strategy, which avoids hyperscale vendor lock-in and margin stacking. We are building the 'Switzerland' of digital infrastructure—a technology agnostic, partner-first ecosystem that amplifies your differentiation for Cloud for AI solutions."
 ---
 
 Unlike hyperscale clouds that want to lock you into their ecosystem, we're building Datum to be genuinely neutral. We succeed when our ecosystem partners succeed.

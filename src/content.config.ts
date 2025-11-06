@@ -282,6 +282,7 @@ export const collections = {
       extend: z.object({
         // override lastUpdated from original schema
         updatedDate: z.string().optional(),
+        meta: metaSchema,
       }),
     }),
   }),

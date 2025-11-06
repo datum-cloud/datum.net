@@ -5,6 +5,9 @@ sidebar:
   order: 11
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Company Rituals & Rhythms - Datum Handbook for Syncs, Demos & Planning Cycles"
+  description: "Explore Datum’s company rituals, from weekly team syncs and Demo Fridays to monthly all-hands, customer feedback reviews, and quarterly planning cycles. Learn how we foster collaboration, transparency, and innovation at every level."
 ---
 
 ## Weekly rhythms

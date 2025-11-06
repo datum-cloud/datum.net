@@ -5,6 +5,9 @@ sidebar:
   order: 5
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Employee Travel Policy - Business, Team Event, and Conference Guidelines"
+  description: "Learn about Datum’s employee travel policy, including business trip booking, expense guidelines, team gathering accommodations, and conference travel procedures. Covers cost control, convenience, and company-paid expenses."
 ---
 
 ## Business travel

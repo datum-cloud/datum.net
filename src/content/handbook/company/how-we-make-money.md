@@ -5,6 +5,9 @@ sidebar:
   order: 10
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Business Model - Revenue, Pricing & Marketplace Vision"
+  description: "Datum’s revenue model aligns with customer success. Usage-based pricing, free experimentation, no margin stacking, and clear growth goals for ecosystem prosperity."
 ---
 
 We make money when our ecosystem thrives. Our business model aligns our success with our customers' success.

@@ -1,0 +1,55 @@
+---
+// Overwrite @astrojs/starlight/components/Head.astro
+const { head } = Astro.locals.starlightRoute;
+const { entry } = Astro.locals.starlightRoute;
+
+// SEO
+const fm = entry.data;
+const meta = fm.meta || {};
+const title = meta.title ?? fm.title;
+const description = meta.description ?? fm.description;
+---
+
+{
+  head.map(({ tag: Tag, attrs, content }) => {
+    if (title && Tag === 'title') {
+      return <Tag>{title}</Tag>;
+    }
+
+    if (description && Tag === 'meta' && attrs && attrs.name === 'description') {
+      return <Tag {...attrs} content={description} />;
+    }
+
+    if (meta.og && meta.og.title && Tag === 'meta' && attrs && attrs.property === 'og:title') {
+      return <Tag {...attrs} content={meta.og.title} />;
+    }
+
+    if (
+      meta.og &&
+      meta.og.description &&
+      Tag === 'meta' &&
+      attrs &&
+      attrs.property === 'og:description'
+    ) {
+      return <Tag {...attrs} content={meta.og.description} />;
+    }
+
+    if (meta.og && meta.og.image && Tag === 'meta' && attrs && attrs.property === 'og:image') {
+      return <Tag {...attrs} content={meta.og.image} />;
+    }
+
+    if (meta.og && meta.og.url && Tag === 'meta' && attrs && attrs.property === 'og:url') {
+      return <Tag {...attrs} content={meta.og.url} />;
+    }
+
+    if (meta.og && meta.og.article && Tag === 'meta' && attrs && attrs.property === 'og:type') {
+      return <Tag {...attrs} content="article" />;
+    }
+
+    if (meta.og && meta.og.url && Tag === 'meta' && attrs && attrs.property === 'og:url') {
+      return <Tag {...attrs} content={meta.og.url} />;
+    }
+
+    return <Tag {...attrs} set:html={content} />;
+  })
+}

@@ -5,6 +5,9 @@ sidebar:
   order: 8
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum’s Journey - How We Got Here"
+  description: "Learn Datum’s founding story - building from Packet/Equinix, bridging the developer-networking gap, and committing to open source and neutral infrastructure."
 ---
 
 ## Born different

@@ -5,6 +5,9 @@ sidebar:
   order: 3
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "How We Plan Our Cycles - Datum Cycle for Builds & Cool-Downs"
+  description: "Learn how Datum plans work cycles: 6 weeks focused building followed by 2-week cool-downs for fixes, exploration, and next cycle planning. Discover principles of work shaping, team assignment, and customer-focused iteration."
 ---
 
 ## 6w2w

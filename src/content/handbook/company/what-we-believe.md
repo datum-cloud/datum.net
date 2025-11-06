@@ -5,6 +5,9 @@ sidebar:
   order: 2
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Core Beliefs - Open Source, AI-Native & Partner Ecosystem"
+  description: "Explore Datum’s beliefs - open source for trust and innovation, developer-first design, real partner value, and a focus on differentiated providers. Learn how our AGPLv3 model and neutral platform encourage unique solutions."
 ---
 
 ## Open is better

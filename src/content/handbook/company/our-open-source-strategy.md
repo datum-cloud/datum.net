@@ -5,6 +5,9 @@ sidebar:
   order: 5
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Datum Open Source Approach - AGPLv3, Contributor Innovation & Neutrality"
+  description: "Learn why Datum Cloud is fully open source - built for trust, transparency, and community with AGPLv3 licensing. Discover our commitment to no lock-in, neutrality, and community-driven innovation, plus extensive documentation and contributor paths."
 ---
 
 We're building Datum Cloud as open source with AGPLv3 licensing because we believe transparency and community are essential for infrastructure that people depend on. 

@@ -5,6 +5,9 @@ sidebar:
   order: 4
 updatedDate: May 21, 2025
 authors: jacob
+meta:
+  title: "Who Are We Building For? - Datum and our AI-First & Digital Leaders"
+  description: "Discover who Datum is building for - AI-native startups, alt clouds, and global digital leaders such as Vercel, Snowflake, Roblox, Hugging Face, American Express, and Databricks. Learn why providers choose Datum for hyperscaler advantages, secure connectivity, observability, and evolving with AI."
 ---
 
 ## The customers

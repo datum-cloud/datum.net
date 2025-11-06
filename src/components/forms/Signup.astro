@@ -4,7 +4,7 @@ import Icon from '@components/Icon.astro';
 
 const mode = process.env.MODE || import.meta.env.MODE;
 
-// only for development mode, to ease testing
+// Only for development mode, to ease testing
 if (mode == 'production') {
   return;
 }
@@ -48,14 +48,14 @@ if (mode == 'production') {
   const waitMessage = document.querySelector('.footer-signup-wait-message') as HTMLDivElement;
 
   form.addEventListener('submit', function (this: HTMLFormElement) {
+    errorMessage.classList.add('hidden');
     waitMessage.classList.remove('hidden');
     actions.signup({ email: form.email.value }).then((result) => {
-      if (!result.data?.success) {
-        console.log('Signup error:', result.data?.message);
+      if (!result.data) {
         waitMessage.classList.add('hidden');
         errorMessage.classList.remove('hidden');
       } else {
-        // window.location.href = '/newsletter/';
+        window.location.href = '/newsletter/';
       }
     });
   });

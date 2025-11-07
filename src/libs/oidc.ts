@@ -6,10 +6,10 @@ import type {
   IDToken,
 } from 'openid-client';
 
-const server = import.meta.env.AUTH_OIDC_ISSUER || process.env.AUTH_OIDC_ISSUER;
-const clientId = import.meta.env.AUTH_OIDC_CLIENT_ID || process.env.AUTH_OIDC_CLIENT_ID;
-const clientSecret = import.meta.env.AUTH_OIDC_CLIENT_SECRET || process.env.AUTH_OIDC_CLIENT_SECRET;
-const redirect_uri = import.meta.env.AUTH_OIDC_REDIRECT_URI || process.env.AUTH_OIDC_REDIRECT_URI;
+const server = process.env.AUTH_OIDC_ISSUER || import.meta.env.AUTH_OIDC_ISSUER;
+const clientId = process.env.AUTH_OIDC_CLIENT_ID || import.meta.env.AUTH_OIDC_CLIENT_ID;
+const clientSecret = process.env.AUTH_OIDC_CLIENT_SECRET || import.meta.env.AUTH_OIDC_CLIENT_SECRET;
+const redirect_uri = process.env.AUTH_OIDC_REDIRECT_URI || import.meta.env.AUTH_OIDC_REDIRECT_URI;
 
 export interface callbackResult {
   accessToken: string;

@@ -1,5 +1,6 @@
 ---
 export const prerender = false;
+import { dbConnect } from '@libs/postgres';
 
 const mode = process.env.MODE || import.meta.env.MODE;
 
@@ -8,9 +9,28 @@ if (mode == 'production') {
   return;
 }
 
+/**
+ * Database testing
+ */
+let dbConnected = false;
+try {
+  const sql = await dbConnect();
+  const tables = await sql`SHOW TABLES`;
+  if (tables) {
+    dbConnected = true;
+  }
+} catch {
+  dbConnected = false;
+}
+
 type EnvValue = string | number | boolean | undefined;
 type EnvRecord = Record<string, EnvValue>;
 
+/**
+ * Filters out sensitive environment variables by masking their values.
+ * Sensitive variables are identified by common keywords in their names
+ * or if their values contain user-specific file paths.
+ */
 const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
   return Object.fromEntries(
     Object.entries(envVars).map(([key, value]) => {
@@ -70,7 +90,11 @@ const responseObj = {
     release: process.release,
     uptime: process.uptime(),
   },
+  database: {
+    connected: dbConnected,
+  },
 };
+
 return new Response(JSON.stringify(responseObj, null, 2), {
   status: 200,
   headers: {

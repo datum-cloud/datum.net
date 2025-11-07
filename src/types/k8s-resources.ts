@@ -9,8 +9,8 @@ import type { K8sCustomResource } from '@libs/k8s-client';
  */
 export interface ContactSpec {
   email: string;
-  givenName: string;
-  familyName: string;
+  givenName?: string;
+  familyName?: string;
   phoneNumber?: string;
   company?: string;
   tags?: string[];

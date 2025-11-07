@@ -1,22 +1,6 @@
 ---
 export const prerender = false;
 
-// if (!Astro.cookies.has('accessToken')) {
-//   const expired = new Date(Date.now() + 3600 * 1000); // 1 hour
-//   const cookieOptions = {
-//     path: '/',
-//     sameSite: 'lax' as 'none' | 'strict' | 'lax',
-//     secure: true,
-//   };
-
-//   Astro.cookies.set('auth_redirect', Astro.request.url, {
-//     expires: expired,
-//     ...cookieOptions,
-//   });
-
-//   return Astro.redirect('/auth/login/');
-// }
-
 const mode = process.env.MODE || import.meta.env.MODE;
 
 // only for development mode, to ease testing

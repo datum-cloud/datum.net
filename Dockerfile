@@ -23,8 +23,6 @@ FROM base AS build
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-# ARG SITE_URL
-# ENV SITE_URL=${SITE_URL}
 
 COPY package*.json ./
 COPY ./.kube/config.yaml ./.kube/config.yaml
@@ -39,8 +37,6 @@ FROM node:24.11.0-alpine3.22 AS production
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
-# ARG SITE_URL
-# ENV SITE_URL=${SITE_URL}
 
 WORKDIR /app
 

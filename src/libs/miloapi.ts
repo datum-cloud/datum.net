@@ -19,8 +19,14 @@ async function createNewsletterContact(
       },
     });
     console.log('Request body for creating newsletter contact:', body);
+
+    const host =
+      process.env.MODE === 'development'
+        ? 'https://api.staging.env.datum.net'
+        : 'https://api.datum.net';
+
     const response = await fetch(
-      'https://api.staging.env.datum.net/apis/notification.miloapis.com/v1alpha1/namespaces/milo-system/contacts',
+      host + '/apis/notification.miloapis.com/v1alpha1/namespaces/milo-system/contacts',
       {
         method: 'POST',
         headers: {

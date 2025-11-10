@@ -206,6 +206,12 @@
 
     .starlight-aside {
       @apply px-8 py-6;
+      @apply mb-[var(--sl-content-gap-y)]!;
+
+      a {
+        @apply text-[color:var(--color-canyon-clay---links)]!;
+        @apply hover:text-[color:var(--color-canyon-clay---links)]/80!;
+      }
     }
 
     .starlight-aside--note {

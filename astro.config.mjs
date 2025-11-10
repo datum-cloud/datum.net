@@ -15,7 +15,7 @@ import glossary from './src/libs/server/glossary.js';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
-const siteUrl = import.meta.env.SITE_URL || process.env.SITE_URL || 'https://www.datum.net';
+const siteUrl = process.env.SITE_URL || import.meta.env.SITE_URL || 'https://www.datum.net';
 const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
@@ -171,6 +171,9 @@ export default defineConfig({
     plugins: [tailwindcss()],
     css: {
       devSourcemap: true,
+    },
+    ssr: {
+      noExternal: ['zod'],
     },
   },
 

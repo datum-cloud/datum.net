@@ -1,0 +1,99 @@
+@import './base.css';
+
+@import './components-faq.css';
+
+/* Pricing Card Grid */
+.pricing-card-wrapper {
+  @apply col-span-3 md:col-span-1;
+}
+
+/* Pricing Card Container */
+.pricing-card {
+  @apply text-midnight-fjord flex h-full flex-col gap-5 rounded-lg border border-black/10 bg-white pb-7 md:pb-9;
+  @apply border-midnight-fjord overflow-clip shadow-sm;
+}
+
+/* Pricing Card Header */
+
+.pricing-card--subtitle {
+  @apply datum-text-smallcaps border-midnight-fjord bg-glacier-mist-700 border-b p-3 text-center font-semibold;
+}
+
+.pricing-card--header {
+  @apply flex flex-col gap-3.5 px-7 lg:px-9;
+}
+
+.pricing-card--title {
+  @apply datum-text-xl font-semibold;
+}
+
+.pricing-card--description {
+  @apply datum-text-base text-midnight-fjord/80;
+}
+
+/* Pricing Section */
+.pricing-card--price-section {
+  @apply mt-1 flex flex-col gap-1;
+}
+
+.pricing-card--price-badge {
+  @apply datum-text-2xl text-midnight-fjord font-medium;
+}
+
+.pricing-card--price-note {
+  @apply datum-text-sm text-midnight-fjord/80;
+}
+
+.pricing-card--price-wrapper {
+  @apply flex flex-col gap-1;
+}
+
+.pricing-card--price-prefix {
+  @apply datum-text-sm text-midnight-fjord/80;
+}
+
+.pricing-card--price-amount-row {
+  @apply flex flex-row items-center gap-1 md:flex-col md:items-start lg:flex-row lg:items-center;
+}
+
+.pricing-card--price-amount {
+  @apply datum-text-4xl font-medium;
+}
+
+.pricing-card--price-suffix {
+  @apply datum-app-body;
+}
+
+/* CTA Section */
+.pricing-card--cta {
+  @apply px-7 lg:px-9;
+
+  .btn {
+    @apply w-full;
+  }
+}
+
+/* Features Section */
+.pricing-card--features {
+  @apply flex flex-col gap-4 px-7 lg:px-9;
+}
+
+.pricing-card--feature-group {
+  @apply flex flex-col gap-4;
+}
+
+.pricing-card--feature-group-title {
+  @apply datum-text-sm text-midnight-fjord font-medium;
+}
+
+.pricing-card--feature-list {
+  @apply space-y-1;
+}
+
+.pricing-card--feature-item {
+  @apply datum-text-sm text-midnight-fjord flex items-start gap-3;
+
+  svg {
+    @apply text-midnight-fjord mt-0.5;
+  }
+}

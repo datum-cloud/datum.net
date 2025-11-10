@@ -1,0 +1,28 @@
+{
+  "title": "Scaler",
+  "subtitle": "Datum for Scalers",
+  "description": "Designed for production applications that interact with cloud services.",
+  "order": 2,
+  "price": {
+    "amount": "$20",
+    "suffix": "/ month + traffic usage"
+  },
+  "cta": {
+    "label": "Coming in 2026",
+    "class": "btn btn--outline"
+  },
+  "featureGroups": [
+    {
+      "title": "Everything in Builder plan plus:",
+      "items": [
+        "$10 in usage credits included",
+        "Galactic VPC",
+        "Ecosystem Connections to AWS & GCP",
+        "SSL for SaaS with unlimited certs",
+        "Fine grained permissions and SSO",
+        "Uptime SLAs and 24/7 email support"
+      ]
+    }
+  ]
+}
+

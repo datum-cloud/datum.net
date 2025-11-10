@@ -140,6 +140,14 @@
   @apply text-(length:--text-article-body-font-size);
 }
 
+@utility datum-app-body {
+  @apply font-alliance;
+
+  @apply tracking-(--app-body-letter-spacing);
+  @apply leading-(--app-body-line-height);
+  @apply text-(length:--app-body-font-size);
+}
+
 @utility datum-text-smallcaps {
   @apply font-alliance text-balance uppercase;
 
@@ -207,6 +215,15 @@
   @apply tracking-(--text-3xl-letter-spacing);
   @apply leading-(--text-3xl-line-height);
   @apply text-(length:--text-3xl-font-size);
+}
+
+@utility datum-text-4xl {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+
+  @apply tracking-(--text-4xl-letter-spacing);
+  @apply leading-(--text-4xl-line-height);
+  @apply text-(length:--text-4xl-font-size);
 }
 
 @utility datum-text-7xl {

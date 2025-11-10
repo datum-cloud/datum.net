@@ -1,7 +1,7 @@
 @layer components {
   /* Generic Button Components */
   .btn {
-    @apply datum-text-base inline-flex max-h-[52px] items-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
+    @apply datum-text-base inline-flex max-h-[52px] items-center justify-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
     @apply border-white/20 hover:bg-white/10;
     @apply px-5 py-3 md:px-6 md:py-3.75;
     .btn-icon {
@@ -56,7 +56,7 @@
   }
 
   .btn--outline {
-    @apply border-white/20 bg-transparent text-white hover:bg-white/10;
+    @apply text-midnight-fjord hover:bg-canyon-clay/10 border-[var(--app---dark---utility-5)] bg-none;
   }
 
   .btn-icon {

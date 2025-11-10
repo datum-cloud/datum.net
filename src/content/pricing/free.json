@@ -1,0 +1,27 @@
+{
+  "title": "Builder",
+  "subtitle": "Datum for Builders",
+  "description": "For personal projects, development, and aggressive experimentation.",
+  "order": 1,
+  "price": {
+    "amount": "$0",
+    "suffix": "/ month"
+  },
+  "cta": {
+    "label": "Join the waitlist",
+    "class": "btn btn--pine-forge"
+  },
+  "featureGroups": [
+    {
+      "title": "Get started with:",
+      "items": [
+        "Runtime: DNS, Proxy, AI Gateway",
+        "Connections: Tunnels, VPNs",
+        "Workflows: 1-Click WAF, Metrics Export",
+        "Assets: Domains, Secrets",
+        "Teams, RBAC, & Machine Accounts"
+      ]
+    }
+  ]
+}
+

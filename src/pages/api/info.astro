@@ -80,25 +80,30 @@ const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
   );
 };
 
-const responseObj = {
-  meta: filterSensitiveVars(import.meta.env),
-  process: filterSensitiveVars(process.env),
-  nodeVersion: process.version,
-  platform: {
-    arch: process.arch,
-    platform: process.platform,
-    release: process.release,
-    uptime: process.uptime(),
-  },
-  database: {
-    connected: dbConnected,
-  },
-};
-
-return new Response(JSON.stringify(responseObj, null, 2), {
-  status: 200,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+return new Response(
+  JSON.stringify(
+    {
+      meta: filterSensitiveVars(import.meta.env),
+      process: filterSensitiveVars(process.env),
+      nodeVersion: process.version,
+      platform: {
+        arch: process.arch,
+        platform: process.platform,
+        release: process.release,
+        uptime: process.uptime(),
+      },
+      database: {
+        connected: dbConnected,
+      },
+    },
+    null,
+    2
+  ),
+  {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+);
 ---

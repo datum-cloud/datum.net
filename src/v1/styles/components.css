@@ -84,7 +84,7 @@
   }
 
   .footer-signup-button {
-    @apply ml-4;
+    @apply ml-4 hover:cursor-pointer;
   }
 
   /* List Styles */

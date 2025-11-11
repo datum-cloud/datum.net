@@ -1,11 +1,11 @@
 ---
-title: What does good look like?
+title: "What's under the hood?"
 items:
-  - Open Source
-  - Neutral by design
-  - Goes everywhere
-  - Programmatic
-  - Enables new providers
+  - 'Runtime: DNS, Proxies, Gateways'
+  - 'Connections: Galactic VPCs and Tunnels'
+  - 'Workflows: From Metrics to WAFs'
+  - 'Assets: Domains, Secrets, and Certs'
+  - 'Experience: Datum MCP & datumctl'
 ---
 
-In the future we’re building, any company, app or agent can connect privately and deterministically with whatever it needs. Low barriers to entry, all the creature comforts of cloud, and a business model focused on nurturing ecosystems.
+Unlike existing alternatives, our open network cloud is built specifically for modern service providers, can be shipped anywhere, and is backed by an AGPLv3 open source license.

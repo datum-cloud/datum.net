@@ -1,5 +1,5 @@
 ---
-title: Why evolve the internet?
+title: Our vision, explained
 images:
   - img: images/svgs/AWS.svg
     alt: AWS
@@ -39,4 +39,4 @@ images:
     alt: Databricks
 ---
 
-The internet was built by a group of humans who knew and trusted each other. Today's reality is different, and interactions between machines, models, services, and systems are far more complex. Datum exists to upgrade the internet for a world accelerated by AI.
+Datum exists to upgrade the internet for a world accelerated by AI. In the future we're building, any company, app or agent can interact privately and deterministically with whatever it needs.

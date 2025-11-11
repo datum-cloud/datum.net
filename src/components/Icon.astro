@@ -1,6 +1,7 @@
 ---
 import { getIcon } from '@utils/iconMap';
 import DiscordIcon from '@v1/assets/icons/discord.svg';
+import GrafanaIcon from '@v1/assets/icons/grafana.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -18,6 +19,8 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
 {
   name === 'discord' ? (
     <DiscordIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'grafana' ? (
+    <GrafanaIcon class={`${sizeClass} ${className}`} />
   ) : IconComponent ? (
     <IconComponent class={`${sizeClass} ${className}`} />
   ) : (

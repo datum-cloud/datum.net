@@ -228,12 +228,21 @@ const features = defineCollection({
   schema: () =>
     z.object({
       title: z.string(),
+      slug: z.string().optional(),
       subtitle: z.string().optional(),
       description: z.string().optional(),
       order: z.number().optional(),
       keyFeatures: z.array(z.string()).optional(),
       benefits: z.string().optional(),
       perfectFor: z.array(z.string()).optional(),
+      readTheDocs: z
+        .array(
+          z.object({
+            label: z.string(),
+            url: z.string().url().optional(),
+          })
+        )
+        .optional(),
       iconName: z.string().optional(),
       draft: z.boolean().optional().default(false),
       meta: metaSchema,

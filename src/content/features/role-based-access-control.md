@@ -3,4 +3,4 @@ title: Role Based Access Control
 iconName: user-lock
 ---
 
-Fine-grained permissions management with user roles, groups, and policy enforcement.
+Coarse-grained permissions management with default user roles and policy enforcement.

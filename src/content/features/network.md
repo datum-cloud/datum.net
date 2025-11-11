@@ -1,14 +1,13 @@
 ---
-title: Network
+title: Connections
+slug: network
 keyFeatures:
-  - Multi-cloud VPC orchestration across AWS, Azure, GCP, and on-premises
-  - Deterministic traffic routing and controls
-  - Programmatic, private ecosystem connectivity
+  - Galactic VPC - Private Internet backbones that span clouds with policy controls.
+  - Tunnels - Instant access to any system without network pain. No dynamic DNS, no port forwarding, no VPNs.
 benefits: Eliminate vendor lock-in with seamless multi-cloud connectivity. Reduce network complexity by 60% while improving security posture. Enable rapid scaling across regions without infrastructure constraints.
-perfectFor:
-  - Platform Engineers
-  - DevOps Teams
-  - Cloud Architects
+readTheDocs:
+  - label: Galactic VPC - Tunnels
+    url: "https://www.datum.net/docs/galactic-vpc/"
 ---
 
-Control traffic with Galactic VPCs that span clouds and datacenters, providing unified network management across hybrid and multi-cloud environments.
+Securely interact with various infrastructure environments as well as clouds, partners and customers.

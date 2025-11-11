@@ -9,7 +9,7 @@ interface SignupInput {
   email: string;
 }
 
-const signup = defineAction({
+const signUp = defineAction({
   input: z.object({
     email: z.string(),
   }),
@@ -55,4 +55,4 @@ const signup = defineAction({
   },
 });
 
-export { signup };
+export { signUp };

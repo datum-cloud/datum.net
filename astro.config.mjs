@@ -172,6 +172,9 @@ export default defineConfig({
     css: {
       devSourcemap: true,
     },
+    ssr: {
+      noExternal: ['zod'],
+    },
   },
 
   experimental: {},

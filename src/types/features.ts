@@ -4,6 +4,7 @@ export interface FeaturesDataProps {
   keyFeatures: string[];
   benefits: string;
   perfectFor: string[];
+  readTheDocs: { label: string; url: string }[];
   iconName?: string;
 }
 

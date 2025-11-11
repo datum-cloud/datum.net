@@ -13,6 +13,7 @@ if (mode == 'production') {
  * Database testing
  */
 let dbConnected = false;
+
 try {
   const sql = await dbConnect();
   const tables = await sql`SHOW TABLES`;

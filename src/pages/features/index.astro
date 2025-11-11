@@ -4,7 +4,6 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Table from '@components/features/Table.astro';
-import Grids from '@components/features/Grids.astro';
 import Cards from '@components/features/Cards.astro';
 
 import ImageTwoMen from '@v1/assets/images/two-men.png';
@@ -23,17 +22,12 @@ const fm = page.data;
 const firstContents: Array<{
   data: FeaturesDataProps;
   body: string;
-}> = await getEntries(page.data.sections.first);
+}> = fm.sections.first && (await getEntries(fm.sections.first));
 
 const secondContents: Array<{
   data: FeaturesDataProps;
   body: string;
-}> = await getEntries(page.data.sections.second);
-
-const thirdContents: Array<{
-  data: FeaturesDataProps;
-  body: string;
-}> = await getEntries(page.data.sections.third);
+}> = fm.sections.second && (await getEntries(fm.sections.second));
 
 // SEO
 const meta = fm.meta || {};
@@ -66,28 +60,47 @@ const description = fm.description;
               <h2 slot="header">{firstContents[0].data.title}</h2>
               <Fragment slot="description" set:html={marked.parse(firstContents[0].body)} />
 
-              <Fragment slot="features">
-                <h3>Key features</h3>
-                <ul>
-                  {firstContents[0].data.keyFeatures.map((feature) => (
-                    <li>{feature}</li>
-                  ))}
-                </ul>
-              </Fragment>
+              {firstContents[0].data.keyFeatures && (
+                <Fragment slot="features">
+                  <h3>Key features</h3>
+                  <ul>
+                    {firstContents[0].data.keyFeatures.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
 
-              <Fragment slot="benefits">
-                <h3>Benefits</h3>
-                <p>{firstContents[0].data.benefits}</p>
-              </Fragment>
+              {firstContents[0].data.benefits && (
+                <Fragment slot="benefits">
+                  <h3>Benefits</h3>
+                  <p>{firstContents[0].data.benefits}</p>
+                </Fragment>
+              )}
 
-              <Fragment slot="audience">
-                <h3>Perfect for</h3>
-                <ul>
-                  {firstContents[0].data.perfectFor.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </Fragment>
+              {firstContents[0].data.perfectFor && (
+                <Fragment slot="audience">
+                  <h3>Perfect for</h3>
+                  <ul>
+                    {firstContents[0].data.perfectFor.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
+
+              {firstContents[0].data.readTheDocs && (
+                <Fragment slot="docs">
+                  <h3>Read the docs</h3>
+                  <ul>
+                    {firstContents[0].data.readTheDocs.map((item) => (
+                      <li>
+                        <a href={item.url}>{item.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
             </Table>
           </div>
         </div>
@@ -111,32 +124,51 @@ const description = fm.description;
               />
             </div>
             <Table class="z-40">
-              <h2 slot="header">Networks</h2>
+              <h2 slot="header">{firstContents[1].data.title}</h2>
 
               <Fragment slot="description" set:html={marked.parse(firstContents[1].body)} />
 
-              <Fragment slot="features">
-                <h3>Key features</h3>
-                <ul>
-                  {firstContents[1].data.keyFeatures.map((feature) => (
-                    <li>{feature}</li>
-                  ))}
-                </ul>
-              </Fragment>
+              {firstContents[1].data.keyFeatures && (
+                <Fragment slot="features">
+                  <h3>Key features</h3>
+                  <ul>
+                    {firstContents[1].data.keyFeatures.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
 
-              <Fragment slot="benefits">
-                <h3>Benefits</h3>
-                <p>{firstContents[1].data.benefits}</p>
-              </Fragment>
+              {firstContents[1].data.benefits && (
+                <Fragment slot="benefits">
+                  <h3>Benefits</h3>
+                  <p>{firstContents[1].data.benefits}</p>
+                </Fragment>
+              )}
 
-              <Fragment slot="audience">
-                <h3>Perfect for</h3>
-                <ul>
-                  {firstContents[1].data.perfectFor.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </Fragment>
+              {firstContents[1].data.perfectFor && (
+                <Fragment slot="audience">
+                  <h3>Perfect for</h3>
+                  <ul>
+                    {firstContents[1].data.perfectFor.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
+
+              {firstContents[1].data.readTheDocs && (
+                <Fragment slot="docs">
+                  <h3>Read the docs</h3>
+                  <ul>
+                    {firstContents[1].data.readTheDocs.map((item) => (
+                      <li>
+                        <a href={item.url}>{item.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
             </Table>
           </div>
 
@@ -147,19 +179,17 @@ const description = fm.description;
       )
     }
 
-    <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
-      <div class="max-width">
-        <Grids features={secondContents} />
-      </div>
-    </div>
-
-    <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
-      <div class="max-width">
-        <div class="border-midnight-fjord border bg-white p-7 md:p-12 xl:p-16">
-          <Cards features={thirdContents} />
+    {
+      secondContents && (
+        <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
+          <div class="max-width">
+            <div class="border-midnight-fjord border bg-white p-7 md:p-12 xl:p-16">
+              <Cards features={secondContents} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )
+    }
     <Footer />
   </section>
 </Layout>

@@ -3,6 +3,7 @@ import type { FeaturesProps } from '@/src/types/features';
 import Icon from '@components/Icon.astro';
 
 const { features } = Astro.props as FeaturesProps;
+if (!features) return null;
 ---
 
 <div

@@ -2,6 +2,7 @@
 import type { FeaturesProps } from '@/src/types/features';
 
 const { features } = Astro.props as FeaturesProps;
+if (!features) return null;
 ---
 
 <div

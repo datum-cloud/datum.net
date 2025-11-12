@@ -14,6 +14,16 @@ const starlightRoute = Astro.locals.starlightRoute;
 // Create breadcrumbs manually based on URL path
 let breadcrumbData = [];
 
+// Get the current URL path
+const fullPath = Astro.url.pathname;
+
+// Extract path segments (skip the /docs/ prefix)
+const pathSegments = fullPath
+  .replace(/^\/?docs\//, '')
+  .replace(/\/$/, '')
+  .split('/')
+  .filter(Boolean);
+
 // Add home/docs as first item
 breadcrumbData.push(
   {
@@ -32,16 +42,6 @@ breadcrumbData.push(
   }
 );
 
-// Get the current URL path
-const fullPath = Astro.url.pathname;
-
-// Extract path segments (skip the /docs/ prefix)
-const pathSegments = fullPath
-  .replace(/^\/?docs\//, '')
-  .replace(/\/$/, '')
-  .split('/')
-  .filter(Boolean);
-
 // Get all docs entries to look up real titles
 const allDocs = await getCollection('docs');
 
@@ -49,8 +49,11 @@ const allDocs = await getCollection('docs');
 if (pathSegments.length > 0) {
   let currentPath = '';
   let currentSlug = '';
+  let lastSegment = pathSegments.at(-1);
 
   for (const segment of pathSegments) {
+    if (segment == 'overview') continue; // Skipping overview because it's have sama url as root
+
     currentPath += '/' + segment;
     currentSlug = currentSlug ? `${currentSlug}/${segment}` : segment;
 
@@ -79,7 +82,7 @@ if (pathSegments.length > 0) {
       // Use the index file's title for this breadcrumb
       breadcrumbData.push({
         text: indexFile.data.title,
-        href: '/docs' + currentPath + '/',
+        href: lastSegment != segment ? '/docs' + currentPath + '/' : null,
       });
 
       // Continue to the next segment
@@ -120,7 +123,7 @@ if (pathSegments.length > 0) {
 
     breadcrumbData.push({
       text: segmentTitle,
-      href: '/docs' + currentPath + '/',
+      href: lastSegment != segment ? '/docs' + currentPath + '/' : null,
     });
   }
 
@@ -142,6 +145,7 @@ const shouldRenderSearch =
     <Breadcrumbs
       linkTextFormat="sentence"
       crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+      customizeLinks={[{ index: 'last', 'aria-disabled': true }]}
     >
       <svg
         slot="index"

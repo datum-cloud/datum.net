@@ -7,6 +7,15 @@
     .btn-icon {
       @apply text-blush-quartz;
     }
+
+    &.btn--sm {
+      @apply px-5 py-2.5 md:px-5.5 md:py-3 lg:px-6 lg:py-3.5;
+      @apply datum-text-sm max-h-[48px];
+
+      svg {
+        @apply h-3.25! w-3.25! md:h-3.5! md:w-3.5! lg:h-5! lg:w-5!;
+      }
+    }
   }
 
   .btn--clean {
@@ -21,14 +30,27 @@
   /* Button Color Variations */
 
   .btn--icon {
-    @apply px-3 md:px-5;
+    @apply p-2.5 md:p-2.75 lg:p-3.5;
+
+    svg {
+      @apply h-3.5! w-3.5! md:h-4! md:w-4! lg:h-5! lg:w-5!;
+    }
   }
+
+  .theme-icon-button {
+    @apply datum-text-sm max-h-[48px];
+  }
+
   .btn--pine-forge {
     @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white;
   }
 
   .btn--canyon-clay {
     @apply bg-canyon-clay hover:bg-canyon-clay/80 border-none text-white;
+  }
+
+  .btn--canyon-clay---links {
+    @apply bg-canyon-clay---links hover:bg-canyon-clay---links/80 border-none text-white;
   }
 
   .btn--aurora-moss {

@@ -1,7 +1,7 @@
 {
   "title": "Builder",
   "subtitle": "Datum for Builders",
-  "description": "For personal projects, development, and aggressive experimentation.",
+  "description": "A low-friction plan for personal projects, development, & experimentation.",
   "order": 1,
   "price": {
     "amount": "$0",
@@ -9,7 +9,9 @@
   },
   "cta": {
     "label": "Join the waitlist",
-    "class": "btn btn--pine-forge"
+    "class": "btn btn--pine-forge",
+    "href": "https://auth.datum.net/ui/v2/login/register",
+    "isExternal": true
   },
   "featureGroups": [
     {

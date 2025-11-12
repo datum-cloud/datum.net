@@ -1,7 +1,7 @@
 {
   "title": "Provider",
-  "subtitle": "Datum for alt clouds",
-  "description": "A high-touch offering for alt clouds, to grow revenue and scale.",
+  "subtitle": "Datum for Alt Clouds",
+  "description": "A high-touch offering designed to help modern service providers win.",
   "order": 3,
   "price": {
     "amount": "$2,500",
@@ -22,7 +22,6 @@
         "Custom AnyCAST and IP Space",
         "Up to 45 global edge locations",
         "Certificate management",
-        "Domain Connect",
         "Premium + Slack support"
       ]
     }

@@ -94,6 +94,7 @@
   @apply datum-text-sm text-midnight-fjord flex items-start gap-3;
 
   svg {
-    @apply text-midnight-fjord mt-0.5;
+    @apply text-midnight-fjord mt-0.5 -translate-y-0.5;
+    @apply h-3.5 w-3.5 lg:h-5 lg:w-5;
   }
 }

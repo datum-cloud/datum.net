@@ -1,25 +1,25 @@
 {
   "title": "Scaler",
-  "subtitle": "Datum for Scalers",
-  "description": "Designed for production applications that interact with cloud services.",
+  "subtitle": "Datum for SaaS",
+  "description": "A comprehensive platform to scale production apps & accelerate revenue.",
   "order": 2,
   "price": {
     "amount": "$20",
-    "suffix": "/ month + traffic usage"
+    "suffix": "/ month + usage"
   },
   "cta": {
     "label": "Coming in 2026",
-    "class": "btn btn--outline"
+    "class": "btn btn--outline",
+    "href": "#"
   },
   "featureGroups": [
     {
       "title": "Everything in Builder plan plus:",
       "items": [
         "$10 in usage credits included",
-        "Galactic VPC",
-        "Ecosystem Connections to AWS & GCP",
+        "Galactic VPC & Cloud Onramps",
         "SSL for SaaS with unlimited certs",
-        "Fine grained permissions and SSO",
+        "Domain Connect",
         "Uptime SLAs and 24/7 email support"
       ]
     }

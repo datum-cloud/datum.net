@@ -32,7 +32,7 @@ const { content } = Astro.props as ContentProps;
           content.data.items ? (
             <ol class="ordered-list">
               {content.data.items.map((item) => (
-                <li>{item}</li>
+                <li set:html={item} />
               ))}
             </ol>
           ) : (

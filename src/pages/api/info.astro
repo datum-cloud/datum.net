@@ -6,22 +6,19 @@ const mode = process.env.MODE || import.meta.env.MODE;
 
 // only for development mode, to ease testing
 if (mode == 'production') {
-  return;
+  return Astro.redirect('/');
 }
 
 /**
  * Database testing
  */
-let dbConnected = false;
+let psqlInfo = null;
 
 try {
   const sql = await dbConnect();
-  const tables = await sql`SHOW TABLES`;
-  if (tables) {
-    dbConnected = true;
-  }
+  psqlInfo = await sql`SELECT version()`;
 } catch {
-  dbConnected = false;
+  psqlInfo = null;
 }
 
 type EnvValue = string | number | boolean | undefined;
@@ -81,11 +78,21 @@ const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
   );
 };
 
+const metaEnv = filterSensitiveVars(import.meta.env);
+const sortedMeta = Object.keys(metaEnv)
+  .sort()
+  .reduce((acc, key) => ({ ...acc, [key]: metaEnv[key] }), {});
+
+const processEnv = filterSensitiveVars(process.env);
+const sortedProcess = Object.keys(processEnv)
+  .sort()
+  .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {});
+
 return new Response(
   JSON.stringify(
     {
-      meta: filterSensitiveVars(import.meta.env),
-      process: filterSensitiveVars(process.env),
+      meta: sortedMeta,
+      process: sortedProcess,
       nodeVersion: process.version,
       platform: {
         arch: process.arch,
@@ -94,7 +101,7 @@ return new Response(
         uptime: process.uptime(),
       },
       database: {
-        connected: dbConnected,
+        info: psqlInfo,
       },
     },
     null,

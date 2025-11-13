@@ -1,0 +1,63 @@
+---
+import '@v1/styles/global.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { render } from 'astro:content';
+import Button from '@components/Button.astro';
+import ImageFounder from '@content/pages/assets/chat/founders.png';
+import Image from 'astro/components/Image.astro';
+
+const page = await getCollectionEntry('pages', 'contact');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+
+const { Content } = await render(page);
+---
+
+<Layout title={fm.title} description={fm.description} bodyClass={`page-${page.id}`} meta={meta}>
+  <section
+    class="datum-container fade-in--pure"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+  >
+    <Hero class="light" hideContent={true} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700">
+      <div class="max-width max-w-(--breakpoint---internal)">
+        <div class="grid grid-cols-6 gap-15 md:gap-20 lg:gap-25 xl:gap-28">
+          <div class="col-span-6 md:col-span-3">
+            <h2 class="datum-text-8xl mb-5 lg:mb-8">{fm.title}</h2>
+            <div class="datum-prose-lg">
+              <Content />
+            </div>
+          </div>
+          <div class="col-span-6 md:col-span-3">
+            <div
+              class="rounded-lg border-1 border-[var(--app---dark---utility-2)] bg-white px-7 py-9 shadow-sm"
+            >
+              <div class="flex flex-col items-center justify-center gap-2.5 text-center">
+                <Image src={ImageFounder} alt="Founders" class="mb-4.5 size-auto max-w-60" />
+                <h3 class="datum-text-2xl font-semibold">Schedule time with a founder</h3>
+                <p class="datum-text-sm m-auto mb-4 max-w-59 opacity-80">
+                  Connect with a founder for coffee, questions or idea sharing.
+                </p>
+                <Button
+                  text="Book a time"
+                  class="btn btn--canyon-clay---links btn--sm"
+                  href="https://link.datum.net/founders"
+                  target="_blank"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Footer showCTA={false} />
+  </section>
+</Layout>

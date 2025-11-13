@@ -7,11 +7,11 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 
 // SEO
-const title = 'Newsletter';
-const description = 'Stay updated with the latest news and updates from Datum.';
+const title = "You're on the list!";
+const description = "We're excited to get you onto the platform.";
 ---
 
-<Layout title={title || 'Datum'} description={description} bodyClass="blog-page">
+<Layout title={title || 'Datum'} description={description} bodyClass="page-newsletter">
   <section class="datum-container">
     <Hero class="light" />
 
@@ -33,10 +33,10 @@ const description = 'Stay updated with the latest news and updates from Datum.';
           </div>
           <div class="datum-prose border-glacier-mist-900 mt-8 border p-6">
             <p>
-              In the meantime, join us on <a href="https://link.datum.net/discord">Discord</a>, drop
-              by an upcoming <a href="/community-huddle/">Community Huddle</a>, or check out our <a
-                href="/docs/">Docs</a
-              >.
+              In the meantime, join us on <a href="https://link.datum.net/discord" target="_blank"
+                >Discord</a
+              >, drop by an upcoming <a href="/community-huddle/">Community Huddle</a>, or check out
+              our <a href="/docs/">Docs</a>.
             </p>
           </div>
         </div>

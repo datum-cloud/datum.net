@@ -55,7 +55,12 @@ const pageTitle = title ? fm.title + ' - ' + title : fm.title;
 const pageDescription = description ? description : 'The Datum Handbook';
 ---
 
-<Layout title={pageTitle} description={pageDescription} bodyClass="handbook-page" meta={meta}>
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  bodyClass={`page-handbook page-handbook--${slug}`}
+  meta={meta}
+>
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
     <Article articleId={slug} headings={headings} />

@@ -20,17 +20,17 @@ const {
 }: Props = Astro.props;
 ---
 
-<nav class="nav--main">
+<nav
+  class="nav--main fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+  data-reveal-immediate="true"
+>
   {/* Logo */}
 
   <div class="nav-logo-container">
     <a href="/" class="nav-logo" id="logo-link" aria-label="Datum Logo" title="Datum Logo">
-      <Logo
-        class="fade-in--pure"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-delay="100"
-        data-reveal-immediate="true"
-      />
+      <Logo />
     </a>
 
     {/* Logo Download Dropdown */}
@@ -47,10 +47,7 @@ const {
     {
       showGithubButton && (
         <Button
-          class={`btn gh-button fade-in--pure`}
-          data-reveal="fade-in--pure--visible"
-          data-reveal-delay="100"
-          data-reveal-immediate="true"
+          class="btn gh-button btn--sm hidden md:inline-flex"
           icon={{ name: 'github', size: 'md' }}
           iconPosition="left"
           iconClass="stroke-1.5"
@@ -62,13 +59,13 @@ const {
       )
     }
 
+    <Button class="btn btn--sm" target="_blank" href="https://auth.datum.net/ui/v2/login/register">
+      Request Access
+    </Button>
     {
       showLoginButton && (
         <Button
-          class="btn fade-in--pure"
-          data-reveal="fade-in--pure--visible"
-          data-reveal-delay="100"
-          data-reveal-immediate="true"
+          class="btn btn--sm"
           text="Log In"
           icon={{ name: 'user', size: 'md' }}
           iconPosition="left"

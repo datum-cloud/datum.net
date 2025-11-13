@@ -1,0 +1,28 @@
+{
+  "title": "Scaler",
+  "subtitle": "Datum for SaaS",
+  "description": "A comprehensive platform to scale production apps & accelerate revenue.",
+  "order": 2,
+  "price": {
+    "amount": "$20",
+    "suffix": "/ month + usage"
+  },
+  "cta": {
+    "label": "Coming in 2026",
+    "class": "btn btn--outline",
+    "href": "#"
+  },
+  "featureGroups": [
+    {
+      "title": "Everything in Builder plan plus:",
+      "items": [
+        "$10 in usage credits included",
+        "Galactic VPC & Cloud Onramps",
+        "SSL for SaaS with unlimited certs",
+        "Domain Connect",
+        "Uptime SLAs and 24/7 email support"
+      ]
+    }
+  ]
+}
+

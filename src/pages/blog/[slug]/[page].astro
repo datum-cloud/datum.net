@@ -81,7 +81,12 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 const icon = 'book-image';
 ---
 
-<Layout title={title} description={description} bodyClass="page-blog" meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass={`page-blog page-blog--${category.id} page-blog--${currentPage}`}
+  meta={meta}
+>
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 

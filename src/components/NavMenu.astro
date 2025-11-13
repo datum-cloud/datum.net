@@ -12,18 +12,9 @@ const mainNav = navData.main;
 type Props = {
   items?: NavMainItem[];
   class?: string;
-  dataReveal?: string;
-  dataRevealDelay?: string;
-  dataRevealImmediate?: string;
 };
 
-const {
-  items = mainNav,
-  class: className = '',
-  dataReveal = 'fade-in--pure--visible',
-  dataRevealDelay = '100',
-  dataRevealImmediate = 'true',
-}: Props = Astro.props;
+const { items = mainNav, class: className = '' }: Props = Astro.props;
 
 // Get current URL path
 const currentPath = Astro.url.pathname;
@@ -54,12 +45,7 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
 ---
 
 <div class="nav-menu-wrapper">
-  <ul
-    class={`nav-menu fade-in--pure ${className}`}
-    data-reveal={dataReveal}
-    data-reveal-delay={dataRevealDelay}
-    data-reveal-immediate={dataRevealImmediate}
-  >
+  <ul class={`nav-menu ${className}`}>
     {
       items.map((item) => {
         const isActive = isActivePath(item.href, currentPath);

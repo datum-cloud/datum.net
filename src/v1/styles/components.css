@@ -56,7 +56,7 @@
   }
 
   .footer-copyright {
-    @apply text-xsm text-center text-white/40 md:text-right;
+    @apply datum-text-xs text-center whitespace-nowrap text-white/40 md:text-right;
 
     .footer-nav-link {
       @apply text-white/40 transition-colors hover:text-white;

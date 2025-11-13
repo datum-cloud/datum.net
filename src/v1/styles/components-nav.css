@@ -1,10 +1,10 @@
 /* Navigation Component */
 @layer components {
   .nav--main {
-    @apply max-width relative z-80 m-auto flex w-full items-center justify-between py-2.5 md:grid md:grid-cols-6 md:py-6;
+    @apply max-width relative z-80 m-auto flex w-full items-center justify-between py-2.5 md:grid md:grid-cols-12 md:py-6;
 
     .nav-actions {
-      @apply col-span-1 mr-3 ml-auto flex items-center gap-3.5 justify-self-end md:mr-0;
+      @apply mr-3 ml-auto flex items-center gap-3 justify-self-end md:col-span-3 md:mr-0 md:gap-3.25;
 
       .btn {
         svg {
@@ -22,7 +22,7 @@
     }
 
     .nav-menu-wrapper {
-      @apply col-span-4 hidden justify-center md:inline-block;
+      @apply hidden justify-center md:col-span-7 md:inline-block;
     }
 
     .nav-menu {
@@ -245,12 +245,12 @@
   }
 
   .footer-nav-link {
-    @apply text-white/80 transition-colors hover:text-white;
+    @apply flex items-center gap-2 text-white/80 transition-colors hover:text-white;
   }
 
   /* Logo Dropdown Styles */
   .nav-logo-container {
-    @apply relative col-span-1;
+    @apply relative md:col-span-2;
   }
 
   .nav-logo {

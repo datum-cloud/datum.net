@@ -5,23 +5,23 @@
       "href": "/features/"
     },
     {
+      "text": "Pricing",
+      "href": "/pricing/"
+    },
+    {
       "text": "Docs",
       "href": "/docs/"
     },
     {
-      "text": "Huddle",
-      "href": "/community-huddle/"
-    },
-    {
-      "text": "Resources",
+      "text": "Community",
       "href": "#",
       "isMegaDropdown": true,
       "children": [
         {
           "items": [
-            { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
+            { "icon": "heart-handshake", "text": "Huddle", "href": "/community-huddle/" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
-            { "icon": "messages-square", "text": "Community Chat", "href": "/chat/" },
+            { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
             { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
           ]
         }
@@ -36,6 +36,7 @@
             { "icon": "default", "text": "About", "href": "/about/" },
             { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
             { "icon": "book-image", "text": "Blog", "href": "/blog/" },
+            { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" },
             { "icon": "paintbrush", "text": "Design Assets", "href": "/brand/" }
           ]
         }
@@ -44,30 +45,27 @@
   ],
   "right": [
     {
-      "text": "Login",
-      "href": "https://cloud.datum.net/login",
-      "isExternal": true
-    },
-    {
       "text": "Request Access",
-      "href": "https://cloud.datum.net",
+      "href": "https://auth.datum.net/ui/v2/login/register",
       "isExternal": true
     }
   ],
   "footer": [
     {
-      "title": "Docs",
+      "title": "General",
       "items": [
-        { "text": "Getting Started", "href": "/docs/" },
-        { "text": "API Reference", "href": "/docs/api/" }
+        { "text": "Home", "href": "/" },
+        { "text": "Product", "href": "/features/" },
+        { "text": "Pricing", "href": "/pricing/" },
+        { "text": "Docs", "href": "/docs/" }
       ]
     },
     {
-      "title": "Resources",
+      "title": "Community",
       "items": [
-        { "text": "Changelog", "href": "/resources/changelog/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
-        { "text": "Community Chat", "href": "/chat/" },
+        { "text": "Changelog", "href": "/resources/changelog/" },
+        { "text": "Community Huddle", "href": "/community-huddle/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },
@@ -77,15 +75,19 @@
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
         { "text": "Blog", "href": "/blog/" },
+        { "text": "Get In Touch", "href": "/contact/" },
         { "text": "Design Assets", "href": "/brand/" }
       ]
     },
     {
-      "title": "Trust Center",
+      "title": "Access",
       "items": [
-        { "text": "Terms of Service", "href": "/legal/terms/" },
-        { "text": "Privacy Policy", "href": "/legal/privacy/" },
-        { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
+        { "text": "Github", "href": "https://github.com/datum-cloud", "isExternal": true },
+        {
+          "text": "Request Access",
+          "href": "https://auth.datum.net/ui/v2/login/register",
+          "isExternal": true
+        }
       ]
     }
   ],
@@ -122,7 +124,7 @@
       "items": [
         { "text": "Changelog", "href": "/resources/changelog/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
-        { "text": "Community Chat", "href": "/chat/" },
+        { "text": "Get In Touch", "href": "/contact/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },
@@ -146,19 +148,19 @@
   ],
   "social": [
     {
-      "href": "https://twitter.com/datumcloud",
-      "text": "Twitter",
-      "icon": "twitter",
+      "href": "https://link.datum.net/discord",
+      "text": "Discord",
+      "icon": "discord",
       "isExternal": true
     },
     {
-      "href": "https://github.com/datum-cloud",
-      "text": "GitHub",
-      "icon": "github",
+      "href": "https://link.datum.net/youtube",
+      "text": "YouTube",
+      "icon": "youtube",
       "isExternal": true
     },
     {
-      "href": "https://www.linkedin.com/company/datum-cloud/",
+      "href": "https://link.datum.net/linkedin",
       "text": "LinkedIn",
       "icon": "linkedin",
       "isExternal": true

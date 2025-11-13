@@ -1,0 +1,76 @@
+---
+import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+type PricingData = CollectionEntry<'pricing'>['data'];
+
+interface Props extends PricingData {
+  id?: string;
+}
+
+const { id, title, subtitle, description, price, cta, featureGroups } = Astro.props as Props;
+
+const target = cta?.isExternal ? '_blank' : '_self';
+---
+
+<div class="pricing-card-wrapper" id={id}>
+  <div class="pricing-card">
+    <div class="pricing-card--subtitle">{subtitle}</div>
+
+    <div class="pricing-card--header">
+      <h3 class="pricing-card--title">{title}</h3>
+      {description && <p class="pricing-card--description">{description}</p>}
+      <div class="pricing-card--price-section">
+        {
+          price?.badge ? (
+            <>
+              <div class="pricing-card--price-badge">{price.badge}</div>
+              {price?.note && <div class="pricing-card--price-note">{price.note}</div>}
+            </>
+          ) : (
+            price && (
+              <div class="pricing-card--price-wrapper">
+                {price.prefix && <div class="pricing-card--price-prefix">{price.prefix}</div>}
+                <div class="pricing-card--price-amount-row">
+                  {price.amount && <div class="pricing-card--price-amount">{price.amount}</div>}
+                  {price.suffix && <div class="pricing-card--price-suffix">{price.suffix}</div>}
+                </div>
+                {price.note && <div class="pricing-card--price-note">{price.note}</div>}
+              </div>
+            )
+          )
+        }
+      </div>
+    </div>
+
+    <div class="pricing-card--cta">
+      <Button
+        class={cta?.class || 'btn btn--alpha'}
+        text={cta?.label || 'Learn more'}
+        href={cta?.href || '#'}
+        target={target}
+      />
+    </div>
+
+    {
+      featureGroups?.length ? (
+        <div class="pricing-card--features">
+          {featureGroups.map((group) => (
+            <div class="pricing-card--feature-group">
+              {group.title && <div class="pricing-card--feature-group-title">{group.title}</div>}
+              <ul class="pricing-card--feature-list">
+                {group.items.map((item) => (
+                  <li class="pricing-card--feature-item">
+                    <Icon name="check" class="text-pine-forge!" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : null
+    }
+  </div>
+</div>

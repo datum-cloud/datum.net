@@ -93,34 +93,52 @@ const descriptionValue =
       }}
     />
 
-    <script type="text/javascript" defer is:inline>
-      /* eslint @typescript-eslint/no-unused-expressions: "off" */
-      !(function (e, t, n) {
-        function a() {
-          var e = t.getElementsByTagName('script')[0],
-            n = t.createElement('script');
-          ((n.type = 'text/javascript'),
-            (n.async = !0),
-            (n.src = 'https://beacon-v2.helpscout.net'),
-            e.parentNode.insertBefore(n, e));
-        }
-        if (
-          ((e.Beacon = n =
-            function (t, n, a) {
-              e.Beacon.readyQueue.push({ method: t, options: n, data: a });
-            }),
-          (n.readyQueue = []),
-          'complete' === t.readyState)
-        )
-          return a();
-        e.attachEvent ? e.attachEvent('onload', a) : e.addEventListener('load', a, !1);
-      })(window, document, window.Beacon || function () {});
-    </script>
     {
       mode === 'production' && (
-        <script type="text/javascript" defer is:inline>
+        <script
+          type="text/javascript"
+          defer
+          is:inline
+          set:html={`
+
+            /* eslint @typescript-eslint/no-unused-expressions: "off" */
+          !(function (e, t, n) {
+            function a() {
+              var e = t.getElementsByTagName('script')[0],
+                n = t.createElement('script');
+              ((n.type = 'text/javascript'),
+                (n.async = !0),
+                (n.src = 'https://beacon-v2.helpscout.net'),
+                e.parentNode.insertBefore(n, e));
+            }
+            if (
+              ((e.Beacon = n =
+                function (t, n, a) {
+                  e.Beacon.readyQueue.push({ method: t, options: n, data: a });
+                }),
+              (n.readyQueue = []),
+              'complete' === t.readyState)
+            )
+              return a();
+            e.attachEvent ? e.attachEvent('onload', a) : e.addEventListener('load', a, !1);
+          })(window, document, window.Beacon || function () {});
+
           window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
-        </script>
+
+          document.addEventListener('DOMContentLoaded', function () {
+            // Handle HelpScout Beacon open trigger
+            const beaconTriggers = document.querySelectorAll('.open-beacon');
+            beaconTriggers.forEach((trigger) => {
+              trigger.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (window.Beacon) {
+                  window.Beacon('open');
+                }
+              });
+            });
+          });
+        `}
+        />
       )
     }
 

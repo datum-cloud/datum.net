@@ -28,7 +28,12 @@ const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
 ---
 
-<Layout title={title} description={description} bodyClass={`page--${page.id}`} meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass={`page-legal page-legal--${page.id}`}
+  meta={meta}
+>
   <section class="datum-container">
     <Hero
       class="light [&_.hero--main-content-inner]:pb-15"

@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Icon from '@components/Icon.astro';
+
+export interface Props {
+  faq: CollectionEntry<'faq'>;
+  index: number;
+}
+
+const { faq, index } = Astro.props;
+const { Content } = await render(faq);
+const faqContentId = `faq-content-${faq.id}`;
+---
+
+<div class="faq-item" data-faq-id={faq.id}>
+  <button
+    class="faq-item--toggle"
+    @click={`expandedFaq = expandedFaq === ${index} ? null : ${index}`}
+    :aria-expanded={`expandedFaq === ${index}`}
+    aria-controls={faqContentId}
+  >
+    <span class="faq-item--question">
+      {faq.data.question}
+    </span>
+    <div class="faq-item--icon">
+      <Icon name="plus" class="faq-item--icon-plus" />
+      <Icon name="minus" class="faq-item--icon-minus" />
+    </div>
+  </button>
+
+  <div
+    class="faq-item--content"
+    id={faqContentId}
+    :aria-hidden={`expandedFaq !== ${index}`}
+    x-show={`expandedFaq === ${index}`}
+    x-collapse
+  >
+    <div class="faq-item--content-wrapper">
+      <Content />
+    </div>
+  </div>
+</div>

@@ -140,6 +140,14 @@
   @apply text-(length:--text-article-body-font-size);
 }
 
+@utility datum-app-body {
+  @apply font-alliance;
+
+  @apply tracking-(--app-body-letter-spacing);
+  @apply leading-(--app-body-line-height);
+  @apply text-(length:--app-body-font-size);
+}
+
 @utility datum-text-smallcaps {
   @apply font-alliance text-balance uppercase;
 
@@ -209,6 +217,15 @@
   @apply text-(length:--text-3xl-font-size);
 }
 
+@utility datum-text-4xl {
+  @apply font-normal text-balance;
+  @apply font-alliance;
+
+  @apply tracking-(--text-4xl-letter-spacing);
+  @apply leading-(--text-4xl-line-height);
+  @apply text-(length:--text-4xl-font-size);
+}
+
 @utility datum-text-7xl {
   @apply text-balance;
   @apply font-canela;
@@ -243,6 +260,7 @@
 
   @apply prose-p:mt-0 prose-p:mb-(--text-lg-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--text-lg-paragraph-spacing);
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
   @apply **:text-inherit;
@@ -255,6 +273,7 @@
 
   @apply prose-p:mt-0 prose-p:mb-(--text-base-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--text-base-paragraph-spacing);
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-base prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
   @apply **:text-inherit;

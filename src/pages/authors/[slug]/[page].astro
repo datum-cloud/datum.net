@@ -75,7 +75,7 @@ const baseUrl = `/authors/${slug}`;
 <Layout
   title={`${author.data.name} - Author - Page ${currentPage}`}
   description={author.data.bio}
-  bodyClass="author-page"
+  bodyClass={`page-author page-author--${slug} page-author--${currentPage}`}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />

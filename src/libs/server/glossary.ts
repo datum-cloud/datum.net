@@ -216,7 +216,7 @@ async function buildGlossary(options: GlossaryOptions) {
 
 const createGlossaryIntegration = (options: GlossaryOptions): AstroIntegration => {
   return {
-    name: 'reader',
+    name: 'GlosarryBuilder',
     hooks: {
       'astro:build:done': async () => {
         try {

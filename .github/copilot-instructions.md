@@ -136,8 +136,8 @@ npm run test:e2e         # Playwright E2E tests
 
 ### Environment Variables
 
-- Always check both `import.meta.env.VAR` AND `process.env.VAR`
-- Pattern: `import.meta.env.SITE_URL || process.env.SITE_URL || 'fallback'`
+- Always check both `process.env.VAR` AND `import.meta.env.VAR`
+- Pattern: `process.env.SITE_URL || import.meta.env.SITE_URL || 'fallback'`
 - See `.env.example` for required vars
 
 ### Markdown/MDX Content

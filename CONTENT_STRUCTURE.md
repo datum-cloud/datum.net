@@ -1,488 +1,452 @@
 # Content Structure
 
-This document provides a detailed overview of the content organization in `src/content/`.
+This document details the organization of content in the Datum Inc. website. All content is managed through Astro's Content Collections for type-safety and validation.
+
+## Content Collections Overview
+
+The `/src/content` directory contains all MDX/Markdown content organized into collections:
+
+| Collection   | Purpose                         | Route Pattern               |
+| :----------- | :------------------------------ | :-------------------------- |
+| `about`      | About company pages             | `/about/*`                  |
+| `authors`    | Author profiles for blog posts  | `/authors/[author]`         |
+| `blog`       | Blog posts and articles         | `/blog/[slug]`              |
+| `categories` | Blog post categories            | `/blog/category/[category]` |
+| `changelog`  | Product release notes           | `/resources/changelog`      |
+| `docs`       | Technical documentation         | `/docs/*`                   |
+| `faq`        | Frequently asked questions      | Embedded in other pages     |
+| `features`   | Product feature descriptions    | `/features/[feature]`       |
+| `handbook`   | Company handbook and culture    | `/handbook/*`               |
+| `huddles`    | Community meeting notes         | `/community-huddle`         |
+| `legal`      | Legal documents                 | `/legal/*`                  |
+| `pages`      | Static and dynamic pages        | Various routes              |
+| `pricing`    | Pricing tier information (JSON) | `/pricing`                  |
+
+## Detailed Directory Structure
+
+### `/about` - Company Information
 
 ```
-src/content/
-├── about/ (/about)
-│   ├── images/
-│   │   ├── amplify.png
-│   │   ├── cervin.png
-│   │   ├── encoded.png
-│   │   ├── highwinds.png
-│   │   ├── illustration.png
-│   │   ├── packet.png
-│   │   ├── rock.png
-│   │   ├── sf.png
-│   │   ├── softlayer.png
-│   │   ├── stackpath.png
-│   │   ├── vine.png
-│   │   ├── voxel.jpeg
-│   │   ├── voxel.png
-│   │   └── zscaler.png
-│   ├── index.mdx (main page)
-│   ├── our-purpose.mdx
-│   ├── team.mdx
-│   └── we-value.mdx
-│
-├── authors/
-│   ├── alex.mdx
-│   ├── assets/
-│   │   └── images/
-│   │       ├── alex.png
-│   │       ├── chris.png
-│   │       ├── felix.png
-│   │       ├── jacob.png
-│   │       ├── jose.png
-│   │       ├── joshua.webp
-│   │       ├── scot.webp
-│   │       ├── steve.webp
-│   │       ├── yahya.png
-│   │       └── zac.png
-│   ├── chris.mdx
-│   ├── fwidjaja.mdx
-│   ├── groupTeam.json
-│   ├── jacob-smith.mdx
-│   ├── jose.mdx
-│   ├── josh.mdx
-│   ├── scot.mdx
-│   ├── steve.mdx
-│   ├── yahya.mdx
-│   └── zac-smith.mdx
-│
-├── blog/ (/blog)
-│   ├── assets/
-│   │   └── images/
-│   │       ├── blog-1-thumb.png
-│   │       ├── blog-1.png
-│   │       ├── blog-2-thumb.png
-│   │       ├── blog-2.png
-│   │       ├── blog-3-thumb.png
-│   │       └── blog-3.png
-│   ├── learning-from-dying-networks.mdx
-│   ├── open-source-strategy.mdx
-│   └── the-network-stupid.mdx
-│
-├── categories/
-│   ├── business-strategy.mdx
-│   ├── cloud-infrastructure.mdx
-│   ├── network-architecture.mdx
-│   ├── network-security.mdx
-│   └── open-source.mdx
-│
-├── changelog/ (/resources/changelog)
-│   ├── 0.0.1.md
-│   ├── 0.1.0.md
-│   ├── 0.1.1.md
-│   └── index.md (main page)
-│
-├── docs/
-│   └── docs/
-│       ├── alt-cloud/
-│       │   ├── domain-validation.mdx
-│       │   └── index.mdx
-│       ├── api/
-│       │   ├── authenticating.mdx
-│       │   ├── connecting-to-the-api.mdx
-│       │   ├── index.mdx
-│       │   ├── locations.mdx
-│       │   ├── networks.mdx
-│       │   ├── reference.mdx
-│       │   ├── resources.mdx
-│       │   └── workloads.mdx
-│       ├── assets/
-│       │   ├── domains.mdx
-│       │   ├── index.mdx
-│       │   └── secrets.mdx
-│       ├── developer-guide.mdx
-│       ├── galactic-vpc/
-│       │   ├── index.mdx
-│       │   ├── installation.mdx
-│       │   └── naming-numbering.mdx
-│       ├── glossary.mdx
-│       ├── guides/
-│       │   ├── contribution-guidelines.mdx
-│       │   ├── index.mdx
-│       │   ├── using-byoc.mdx
-│       │   └── using-claude-code.mdx
-│       ├── guides.mdx
-│       ├── index.mdx
-│       ├── overview/
-│       │   ├── pricing.mdx
-│       │   ├── support.mdx
-│       │   └── why-datum.mdx
-│       ├── platform/
-│       │   ├── authentication.mdx
-│       │   ├── groups-members.mdx
-│       │   ├── index.mdx
-│       │   ├── organizations.mdx
-│       │   ├── projects.mdx
-│       │   └── user-preferences.mdx
-│       ├── quickstart/
-│       │   ├── account-setup.mdx
-│       │   ├── datum-concepts.mdx
-│       │   ├── datum-mcp.mdx
-│       │   ├── datumctl.mdx
-│       │   └── index.mdx
-│       ├── runtime/
-│       │   ├── ai-gateway.mdx
-│       │   ├── dns.mdx
-│       │   ├── index.mdx
-│       │   └── proxy.mdx
-│       ├── tasks/
-│       │   └── index.mdx
-│       ├── tutorials/
-│       │   ├── index.mdx
-│       │   └── infra-provider-gcp.mdx
-│       └── workflows/
-│           ├── 1-click-waf.mdx
-│           ├── grafana-cloud.mdx
-│           ├── index.mdx
-│
-├── faq/
-│   ├── builder-tier-free.mdx
-│   ├── provider-tier.mdx
-│   ├── scaler-launch.mdx
-│   └── traffic-usage.mdx
-│
-├── features/ (/features)
-│   ├── 1-click-waf.md
-│   ├── agpl-license.md
-│   ├── aws-gcp-byoc.md
-│   ├── bring-your-ip-space.md
-│   ├── built-with-zero-trust.md
-│   ├── datum-mcp.md
-│   ├── domains.md
-│   ├── enterprise-ready.md
-│   ├── grafana-cloud.md
-│   ├── index.mdx (main page)
-│   ├── internet-edge.md
-│   ├── kubernetes-friendly.md
-│   ├── machine-accounts.md
-│   ├── network.md
-│   ├── role-based-access-control.md
-│   ├── social-logins.md
-│   └── sso-support.md
-│
-├── handbook/ (/about/handbook)
-│   ├── assets/
-│   │   └── sample.png
-│   ├── company/
-│   │   ├── deciding-what-products-to-build.md
-│   │   ├── how-we-got-here.md
-│   │   ├── how-we-make-money.md
-│   │   ├── how-we-talk-to-each-other.md
-│   │   ├── how-you-can-help.md
-│   │   ├── our-ai-strategy.md
-│   │   ├── our-neutral-strategy.md
-│   │   ├── our-open-source-strategy.md
-│   │   ├── our-values.md
-│   │   ├── what-are-our-rituals.md
-│   │   ├── what-inspires-us.md
-│   │   ├── what-we-believe.md
-│   │   ├── where-are-we-now.md
-│   │   ├── who-are-we-building-for.md
-│   │   └── why-we-exist.md
-│   ├── engineering/
-│   │   ├── ci-cd.md
-│   │   ├── plan-cycles.md
-│   │   ├── review-pull-requests.md
-│   │   ├── rfc.md
-│   │   ├── ship-new-features.md
-│   │   └── tech-stack.md
-│   ├── go-to-market/
-│   │   ├── approach-gtm.md
-│   │   ├── brand-voice-tone.md
-│   │   ├── common-use-cases.md
-│   │   ├── design-language.md
-│   │   ├── design-principles.md
-│   │   ├── keep-momentum.md
-│   │   ├── our-website.md
-│   │   └── swag.md
-│   ├── index.md (main page)
-│   └── people/
-│       ├── benefits.md
-│       ├── give-feedback.md
-│       ├── how-we-work.md
-│       ├── recognize-peers.md
-│       ├── remote-work.md
-│       ├── spend-money.md
-│       ├── titles.md
-│       └── travel-policy.md
-│
-├── huddles/
-│   ├── 2024-12-04.mdx
-│   ├── 2025-01-15.mdx
-│   ├── 2025-02-12.mdx
-│   ├── 2025-03-12.mdx
-│   ├── 2025-04-09.mdx
-│   ├── 2025-05-14.mdx
-│   ├── 2025-06-11.mdx
-│   ├── 2025-07-09.mdx
-│   ├── 2025-08-13.mdx
-│   ├── 2025-09-10.mdx
-│   ├── 2025-10-08.mdx
-│   ├── 2025-11-12.mdx
-│   └── 2025-12-11.mdx
-│
-├── legal/
-│   ├── privacy.mdx
-│   └── terms.mdx
-│
-├── pages/
-│   ├── assets/
-│   │   ├── chat/
-│   │   │   ├── founders.png
-│   │   │   ├── Frame 1410121753.png
-│   │   │   ├── Frame 1410121754.png
-│   │   │   └── Frame 1410121755.png
-│   │   └── home/
-│   │       ├── anthropic.webp
-│   │       ├── aws.webp
-│   │       ├── databricks.webp
-│   │       ├── mistralai.webp
-│   │       ├── openai.webp
-│   │       └── stabilityai.webp
-│   ├── blog.mdx
-│   ├── brand/
-│   │   ├── assets/
-│   │   │   ├── color-weight.png
-│   │   │   ├── color.png
-│   │   │   ├── colors.png
-│   │   │   ├── gallery/
-│   │   │   │   ├── apps-connections-metric.png
-│   │   │   │   ├── hero.png
-│   │   │   │   ├── open-network.png
-│   │   │   │   ├── our-purpose.png
-│   │   │   │   ├── qa.png
-│   │   │   │   ├── signup.png
-│   │   │   │   ├── use-cases.png
-│   │   │   │   └── what-does-good-look-like.png
-│   │   │   ├── gallery.png
-│   │   │   ├── iconography.png
-│   │   │   ├── illustration.png
-│   │   │   ├── illustrations/
-│   │   │   │   ├── illa-1.png
-│   │   │   │   ├── illa-2.png
-│   │   │   │   ├── illa-3.png
-│   │   │   │   └── illa-4.png
-│   │   │   ├── logos/
-│   │   │   │   ├── horizontal-dark.png
-│   │   │   │   ├── horizontal-light.png
-│   │   │   │   ├── stacked-dark.png
-│   │   │   │   └── stacked-light.png
-│   │   │   ├── logos.png
-│   │   │   ├── lucide-icons.png
-│   │   │   ├── principles.png
-│   │   │   ├── resources.png
-│   │   │   ├── social/
-│   │   │   │   ├── favicons.png
-│   │   │   │   ├── github.png
-│   │   │   │   ├── opengraph.png
-│   │   │   │   └── social-icons.png
-│   │   │   ├── social.png
-│   │   │   └── typography/
-│   │   │       ├── alliance.png
-│   │   │       └── canela.png
-│   │   ├── color.mdx
-│   │   ├── iconography.mdx
-│   │   ├── imagery.mdx
-│   │   ├── index.mdx
-│   │   ├── logos.mdx
-│   │   ├── principles.mdx
-│   │   ├── social.mdx
-│   │   └── typography.mdx
-│   ├── community-huddle.mdx
-│   ├── contact.mdx
-│   ├── docs.mdx
-│   ├── global-section.md
-│   ├── home/
-│   │   ├── images/
-│   │   │   ├── Antrhopic.png
-│   │   │   ├── AWS.png
-│   │   │   ├── Cockroach.png
-│   │   │   ├── Coreweave.png
-│   │   │   ├── Crosby.png
-│   │   │   ├── Databricks.png
-│   │   │   ├── Domo.png
-│   │   │   ├── Google-Cloud.png
-│   │   │   ├── Grafana.png
-│   │   │   ├── Harvey.png
-│   │   │   ├── Loveable.png
-│   │   │   ├── OpenAI.png
-│   │   │   ├── Perplexity.png
-│   │   │   ├── Robovision.png
-│   │   │   ├── Snowflakes.png
-│   │   │   ├── svgs/
-│   │   │   │   ├── Antrhopic.svg
-│   │   │   │   ├── AWS.svg
-│   │   │   │   ├── Cockroach.svg
-│   │   │   │   ├── Coreweave.svg
-│   │   │   │   ├── Crosby.svg
-│   │   │   │   ├── Databricks.svg
-│   │   │   │   ├── Domo.svg
-│   │   │   │   ├── Google-Cloud.svg
-│   │   │   │   ├── Grafana.svg
-│   │   │   │   ├── Harvey.svg
-│   │   │   │   ├── Loveable.svg
-│   │   │   │   ├── OpenAI.svg
-│   │   │   │   ├── Perplexity.svg
-│   │   │   │   ├── Robovision.svg
-│   │   │   │   ├── Snowflakes.svg
-│   │   │   │   ├── Together.svg
-│   │   │   │   ├── Vercel.svg
-│   │   │   │   └── Wasmer.svg
-│   │   │   ├── Together.png
-│   │   │   ├── Vercel.png
-│   │   │   └── Wasmer.png
-│   │   ├── what-does-good-look-like.md
-│   │   └── why-evolve.md
-│   ├── home.mdx (main page)
-│   ├── pricing.mdx
-│   ├── request-access.mdx
-│   ├── resources/
-│   │   ├── images/
-│   │   │   ├── crossplane.png
-│   │   │   ├── datum.png
-│   │   │   ├── envoy.png
-│   │   │   ├── hickorydns.png
-│   │   │   ├── iroh.png
-│   │   │   ├── iroh.svg
-│   │   │   ├── ren.png
-│   │   │   └── srv6.png
-│   │   └── open-source.mdx
-│   └── roadmap.mdx
-│
-└── pricing/
-    ├── free.json
-    ├── provider.json
-    └── scaler.json
+about/
+├── images/                    # Company and partner logos
+│   ├── amplify.png
+│   ├── cervin.png
+│   ├── encoded.png
+│   ├── highwinds.png
+│   ├── illustration.png
+│   ├── investors/             # Investor logos
+│   ├── packet.png
+│   ├── rock.png
+│   ├── sf.png
+│   ├── softlayer.png
+│   ├── stackpath.png
+│   ├── vine.png
+│   ├── voxel.jpeg
+│   ├── voxel.png
+│   └── zscaler.png
+├── index.mdx                  # Main about page
+├── our-purpose.mdx           # Purpose statement
+├── team.mdx                  # Team information
+└── we-value.mdx              # Company values
 ```
 
-## Content Organization
+**Route:** `/about`
 
-### About (`about/`)
+### `/authors` - Blog Authors
 
-Company information pages including:
+```
+authors/
+├── assets/
+│   └── images/               # Author profile photos
+│       ├── alex.png
+│       ├── chris.png
+│       ├── felix.png
+│       ├── jacob.png
+│       ├── jose.png
+│       ├── joshua.webp
+│       ├── scot.webp
+│       ├── steve.webp
+│       ├── yahya.png
+│       └── zac.png
+├── alex.mdx                  # Individual author profiles
+├── chris.mdx
+├── fwidjaja.mdx
+├── groupTeam.json            # Team grouping data
+├── jacob-smith.mdx
+├── jose.mdx
+├── josh.mdx
+├── scot.mdx
+├── steve.mdx
+├── yahya.mdx
+└── zac-smith.mdx
+```
 
-- Main about page (`index.mdx`)
-- Our purpose, team, and values pages
-- Company logo images
+**Routes:**
 
-### Authors (`authors/`)
+- `/authors` - Author listing
+- `/authors/[author]` - Individual author page
 
-Author profiles for blog posts:
+### `/blog` - Blog Posts
 
-- Individual author MDX files
-- Author images in `assets/images/`
-- Team grouping configuration (`groupTeam.json`)
+```
+blog/
+├── assets/
+│   └── images/               # Blog post images
+│       ├── blog-1-thumb.png
+│       ├── blog-1.png
+│       ├── blog-2-thumb.png
+│       ├── blog-2.png
+│       ├── blog-3-thumb.png
+│       └── blog-3.png
+├── learning-from-dying-networks.mdx
+├── open-source-strategy.mdx
+└── the-network-stupid.mdx
+```
 
-### Blog (`blog/`)
+**Routes:**
 
-Blog posts and related assets:
+- `/blog` - Blog listing
+- `/blog/[slug]` - Individual blog post
 
-- Blog post MDX files
-- Blog images in `assets/images/`
+### `/categories` - Blog Categories
 
-### Categories (`categories/`)
+```
+categories/
+├── business-strategy.mdx
+├── cloud-infrastructure.mdx
+├── network-architecture.mdx
+├── network-security.mdx
+└── open-source.mdx
+```
 
-Blog post category definitions:
+**Route:** `/blog/category/[category]`
 
-- Business strategy
-- Cloud infrastructure
-- Network architecture
-- Network security
-- Open source
+### `/changelog` - Release Notes
 
-### Changelog (`changelog/`)
+```
+changelog/
+├── 0.0.1.md                  # Version release notes
+├── 0.1.0.md
+├── 0.1.1.md
+└── index.md                  # Changelog index
+```
 
-Version changelog entries:
+**Route:** `/resources/changelog`
 
-- Version-specific changelog files (e.g., `0.0.1.md`)
-- Main changelog index page
+### `/docs` - Technical Documentation
 
-### Documentation (`docs/docs/`)
+```
+docs/
+└── docs/
+    ├── alt-cloud/            # Alternative cloud docs (2 files)
+    ├── api/                  # API documentation (8 files)
+    │   ├── authenticating.mdx
+    │   ├── connecting-to-the-api.mdx
+    │   ├── index.mdx
+    │   ├── locations.mdx
+    │   ├── networks.mdx
+    │   ├── resources.mdx
+    │   └── workloads.mdx
+    ├── assets/               # Asset management docs (3 files)
+    ├── developer-guide.mdx
+    ├── galactic-vpc/         # Galactic VPC docs (3 files)
+    ├── glossary.mdx
+    ├── guides/               # How-to guides (4 files)
+    ├── guides.mdx
+    ├── index.mdx
+    ├── overview/             # Product overview (3 files)
+    ├── platform/             # Platform docs (6 files)
+    ├── quickstart/           # Getting started (5 files)
+    ├── runtime/              # Runtime docs (4 files)
+    ├── tasks/                # Task guides (1 file)
+    ├── tutorials/            # Step-by-step tutorials (2 files)
+    └── workflows/            # Workflow docs (3 files)
+```
 
-Starlight-based documentation organized by topic:
+**Route:** `/docs/*` - Powered by Astro Starlight
 
-- **alt-cloud/** - Alternative cloud configurations
-- **api/** - API documentation
-- **assets/** - Asset management (domains, secrets)
-- **galactic-vpc/** - Galactic VPC documentation
-- **guides/** - User guides and tutorials
-- **overview/** - Platform overview and pricing
-- **platform/** - Platform features (auth, organizations, projects)
-- **quickstart/** - Getting started guides
-- **runtime/** - Runtime features (AI gateway, DNS, proxy)
-- **tasks/** - Task documentation
-- **tutorials/** - Step-by-step tutorials
-- **workflows/** - Workflow documentation
+### `/faq` - Frequently Asked Questions
 
-### FAQ (`faq/`)
+```
+faq/
+├── builder-tier-free.mdx     # Builder tier questions
+├── provider-tier.mdx         # Provider tier questions
+├── scaler-launch.mdx         # Scaler tier questions
+└── traffic-usage.mdx         # Traffic usage questions
+```
 
-Frequently asked questions:
+**Usage:** Embedded in various pages (pricing, features, etc.)
 
-- Builder tier questions
-- Provider tier questions
-- Scaler launch information
-- Traffic usage information
+### `/features` - Product Features
 
-### Features (`features/`)
+```
+features/
+├── 1-click-waf.md            # Web Application Firewall
+├── agpl-license.md           # Licensing information
+├── aws-gcp-byoc.md          # Bring Your Own Cloud
+├── bring-your-ip-space.md   # IP space management
+├── built-with-zero-trust.md # Zero trust architecture
+├── datum-mcp.md             # Model Context Protocol
+├── domains.md               # Domain management
+├── enterprise-ready.md      # Enterprise features
+├── grafana-cloud.md         # Grafana integration
+├── index.mdx                # Features index
+├── internet-edge.md         # Edge computing
+├── kubernetes-friendly.md   # Kubernetes support
+├── machine-accounts.md      # Machine authentication
+├── network.md               # Network features
+├── role-based-access-control.md  # RBAC
+├── social-logins.md         # OAuth integrations
+└── sso-support.md           # Single sign-on
+```
 
-Feature descriptions and documentation:
+**Routes:**
 
-- Feature markdown files
-- Main features index page
+- `/features` - Features overview
+- `/features/[feature]` - Individual feature page
 
-### Handbook (`handbook/`)
+### `/handbook` - Company Handbook
 
-Company handbook organized by department:
+```
+handbook/
+├── assets/
+│   └── sample.png
+├── company/                  # Company information (15 files)
+│   ├── deciding-what-products-to-build.md
+│   ├── how-we-got-here.md
+│   ├── how-we-make-money.md
+│   ├── how-we-talk-to-each-other.md
+│   ├── how-you-can-help.md
+│   ├── our-ai-strategy.md
+│   ├── our-neutral-strategy.md
+│   ├── our-open-source-strategy.md
+│   ├── our-values.md
+│   ├── what-are-our-rituals.md
+│   ├── what-inspires-us.md
+│   ├── what-we-believe.md
+│   ├── where-are-we-now.md
+│   ├── who-are-we-building-for.md
+│   └── why-we-exist.md
+├── engineering/              # Engineering practices (6 files)
+│   ├── ci-cd.md
+│   ├── plan-cycles.md
+│   ├── review-pull-requests.md
+│   ├── rfc.md
+│   ├── ship-new-features.md
+│   └── tech-stack.md
+├── go-to-market/            # GTM strategies (8 files)
+│   ├── approach-gtm.md
+│   ├── brand-voice-tone.md
+│   ├── common-use-cases.md
+│   ├── design-language.md
+│   ├── design-principles.md
+│   ├── keep-momentum.md
+│   ├── our-website.md
+│   └── swag.md
+├── index.md                 # Handbook index
+└── people/                  # People operations (8 files)
+    ├── benefits.md
+    ├── give-feedback.md
+    ├── how-we-work.md
+    ├── recognize-peers.md
+    ├── remote-work.md
+    ├── spend-money.md
+    ├── titles.md
+    └── travel-policy.md
+```
 
-- **company/** - Company culture, values, and strategy
-- **engineering/** - Engineering practices and processes
-- **go-to-market/** - GTM strategy and brand guidelines
-- **people/** - HR policies and benefits
+**Routes:**
 
-### Huddles (`huddles/`)
+- `/handbook` - Handbook home
+- `/handbook/*` - Handbook sections
 
-Community huddle content:
+### `/huddles` - Community Meetings
 
-- Date-based huddle files (YYYY-MM-DD.mdx format)
+```
+huddles/
+├── 2024-12-04.mdx           # Monthly community huddle notes
+├── 2025-01-15.mdx
+├── 2025-02-12.mdx
+├── 2025-03-12.mdx
+├── 2025-04-09.mdx
+├── 2025-05-14.mdx
+├── 2025-06-11.mdx
+├── 2025-07-09.mdx
+├── 2025-08-13.mdx
+├── 2025-09-10.mdx
+├── 2025-10-08.mdx
+├── 2025-11-12.mdx
+└── 2025-12-11.mdx
+```
 
-### Legal (`legal/`)
+**Route:** `/community-huddle`
 
-Legal documents:
+### `/legal` - Legal Documents
 
-- Privacy policy
-- Terms of service
+```
+legal/
+├── privacy.mdx              # Privacy policy
+└── terms.mdx                # Terms of service
+```
 
-### Pages (`pages/`)
+**Routes:**
 
-Static page content:
+- `/legal/privacy`
+- `/legal/terms`
 
-- **brand/** - Brand guidelines and assets
-- **home/** - Homepage content and images
-- **resources/** - Resource pages and images
-- Various page MDX files (blog, contact, docs, pricing, etc.)
+### `/pages` - General Pages
 
-### Pricing (`pricing/`)
+```
+pages/
+├── assets/
+│   ├── chat/                # Chat feature images (4 files)
+│   └── home/                # Homepage assets (6 files)
+├── blog.mdx                 # Blog landing page
+├── brand/                   # Brand guidelines
+│   ├── assets/              # Brand assets (34+ files)
+│   ├── color.mdx
+│   ├── iconography.mdx
+│   ├── imagery.mdx
+│   ├── index.mdx
+│   ├── logos.mdx
+│   ├── principles.mdx
+│   ├── social.mdx
+│   └── typography.mdx
+├── community-huddle.mdx     # Community huddle landing
+├── contact.mdx              # Contact page
+├── docs.mdx                 # Documentation landing
+├── global-section.md        # Shared content sections
+├── home/
+│   ├── images/              # Homepage images (36 files)
+│   ├── what-does-good-look-like.md
+│   └── why-evolve.md
+├── home.mdx                 # Homepage content
+├── pricing.mdx              # Pricing page content
+├── request-access.mdx       # Access request form
+├── resources/
+│   ├── images/              # Resource images (8 files)
+│   └── open-source.mdx      # Open source page
+└── roadmap.mdx              # Product roadmap
+```
 
-Pricing tier configurations (JSON):
+**Various Routes:** Depends on content and page structure
 
-- Free tier
-- Provider tier
-- Scaler tier
+### `/pricing` - Pricing Tiers
 
-## File Naming Conventions
+```
+pricing/
+├── free.json                # Free tier configuration
+├── provider.json            # Provider tier configuration
+└── scaler.json              # Scaler tier configuration
+```
 
-- **Content files**: kebab-case (e.g., `our-purpose.mdx`, `team.mdx`)
-- **Image files**: kebab-case or camelCase (e.g., `blog-1.png`, `Antrhopic.png`)
-- **Huddle files**: Date format (e.g., `2025-01-15.mdx`)
-- **Changelog files**: Version format (e.g., `0.1.0.md`)
+**Route:** `/pricing` (JSON data consumed by pricing page)
 
-## Content Types
+## Content Schemas
 
-- **MDX files** (`.mdx`) - Content with React component support
-- **Markdown files** (`.md`) - Standard markdown content
-- **JSON files** (`.json`) - Structured data (pricing, team groups)
-- **Image files** - PNG, JPEG, WebP, SVG formats
+All collections are type-safe with schemas defined in `/src/content.config.ts`:
+
+### Example: Blog Post Schema
+
+```typescript
+{
+  title: string;           // Post title
+  description: string;     // Meta description
+  publishDate: Date;       // Publication date
+  author: reference;       // Reference to author
+  category: reference;     // Reference to category
+  image?: ImageMetadata;   // Featured image
+  tags?: string[];         // Post tags
+}
+```
+
+### Example: Feature Schema
+
+```typescript
+{
+  title: string;           // Feature name
+  description: string;     // Short description
+  icon?: string;          // Icon identifier
+  category?: string;      // Feature category
+}
+```
+
+## Adding New Content
+
+### 1. Create a new file in the appropriate collection:
+
+```bash
+# Blog post
+src/content/blog/my-new-post.mdx
+
+# Feature
+src/content/features/my-feature.md
+
+# Handbook page
+src/content/handbook/engineering/my-guide.md
+```
+
+### 2. Add frontmatter matching the schema:
+
+```mdx
+---
+title: 'My New Post'
+description: 'Post description'
+publishDate: 2025-01-15
+author: 'zac-smith'
+category: 'network-architecture'
+---
+
+Your content here...
+```
+
+### 3. Add images to the appropriate assets folder:
+
+```bash
+src/content/blog/assets/images/my-image.png
+```
+
+### 4. Reference the content in pages:
+
+```astro
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+---
+```
+
+## Content Guidelines
+
+### File Naming
+
+- Use kebab-case: `my-feature-name.mdx`
+- Be descriptive and concise
+- Match the slug used in URLs
+
+### Frontmatter
+
+- Required fields must be present
+- Dates in ISO format: `YYYY-MM-DD`
+- References must match existing collection entries
+- Images should use relative paths
+
+### Images
+
+- Store in collection-specific `assets/` or `images/` folders
+- Optimize images before committing
+- Use descriptive filenames
+- Provide alt text in markdown
+
+### Content Style
+
+- Use MDX for interactive components
+- Keep markdown clean and semantic
+- Use proper heading hierarchy (h2 → h3 → h4)
+- Include meta descriptions for SEO
+
+## Learn More
+
+- [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
+- [MDX Documentation](https://mdxjs.com/)
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - Overall project structure

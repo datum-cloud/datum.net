@@ -32,9 +32,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+bun-debug.log*
 
 # Testing
 coverage
+test-results
+playwright-report
+playwright/.cache
 
 # System Files
 .DS_Store
@@ -43,6 +47,23 @@ Thumbs.db
 # Docker
 Dockerfile
 .dockerignore
+docker-compose.yml
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github
+
+# Local development files
+.husky
+.persistent
 
 # Vercel
-.vercel 
+.vercel
+
+# Package manager lock files (keep bun.lock)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml 

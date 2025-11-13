@@ -1,283 +1,284 @@
 # Contributing to Datum Inc. Website
 
-Thank you for your interest in contributing to the Datum Inc. website! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the Datum Inc. website! This guide will help you get started.
+
+## Table of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Development Workflow](#development-workflow)
+- [Coding Standards](#coding-standards)
+- [Commit Guidelines](#commit-guidelines)
+- [Pull Request Process](#pull-request-process)
+- [Testing](#testing)
 
 ## Code of Conduct
 
-By participating in this project, you agree to maintain a respectful and inclusive environment for all contributors.
+By participating in this project, you agree to abide by our Code of Conduct:
 
-## How to Contribute
+- Be respectful and inclusive
+- Welcome newcomers and help them learn
+- Focus on constructive feedback
+- Accept constructive criticism gracefully
+- Prioritize the community and project health
 
-### Reporting Bugs
-
-If you find a bug, please create an issue with:
-
-- A clear, descriptive title
-- Steps to reproduce the issue
-- Expected vs. actual behavior
-- Screenshots if applicable
-- Environment details (browser, OS, Node.js version)
-
-### Suggesting Features
-
-Feature suggestions are welcome! Please create an issue with:
-
-- A clear description of the feature
-- Use cases and benefits
-- Any mockups or examples if available
-
-### Pull Requests
-
-1. **Fork the repository** and create a feature branch:
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** following our coding standards
-
-3. **Test your changes**:
-
-   ```bash
-   npm run typecheck
-   npm run lint
-   npm run test:e2e
-   ```
-
-4. **Commit your changes** using our commit message conventions (see below)
-
-5. **Push to your fork** and create a pull request
-
-6. **Ensure all checks pass** - CI will run type checking, linting, and tests
-
-## Development Setup
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (version specified in `package.json`)
-- npm or compatible package manager
+- [Bun](https://bun.sh) (latest version)
+- Git
+- Code editor (VS Code recommended)
 
-### Getting Started
+### Initial Setup
 
-1. **Clone the repository**:
+1. **Fork and clone the repository**
 
-   ```bash
-   git clone https://github.com/your-org/datum.net.git
-   cd datum.net
-   ```
+```bash
+git clone https://github.com/YOUR_USERNAME/datum.net.git
+cd datum.net
+```
 
-2. **Install dependencies**:
+2. **Install dependencies**
 
-   ```bash
-   npm install
-   ```
+```bash
+bun install
+```
 
-3. **Set up environment variables**:
+3. **Set up environment variables**
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-4. **Build for pagefind** (required for dev mode):
+4. **Start development server**
 
-   ```bash
-   npm run build
-   ```
-
-5. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+```bash
+bun run dev
+```
 
 The site will be available at `http://localhost:4321`
 
-## Code Style Guidelines
+## Development Workflow
+
+### Creating a Branch
+
+Create a feature branch from `main`:
+
+```bash
+git checkout -b feature/your-feature-name
+# or
+git checkout -b fix/your-bug-fix
+```
+
+Branch naming conventions:
+
+- `feature/` - New features
+- `fix/` - Bug fixes
+- `docs/` - Documentation updates
+- `refactor/` - Code refactoring
+- `test/` - Test additions or updates
+- `chore/` - Maintenance tasks
+
+### Making Changes
+
+1. Make your changes in your feature branch
+2. Test your changes locally
+3. Run code quality checks:
+
+```bash
+bun run typecheck  # TypeScript checks
+bun run lint       # ESLint
+bun run format     # Prettier formatting
+```
+
+4. Run tests if applicable:
+
+```bash
+bun run test:e2e   # End-to-end tests
+```
+
+### Pre-commit Checks
+
+The project uses Husky for pre-commit hooks. Before committing, the following will run automatically:
+
+- TypeScript type checking
+- ESLint linting
+- Prettier formatting
+- Markdown linting
+
+If any check fails, fix the issues before committing.
+
+## Coding Standards
 
 ### TypeScript
 
 - Use TypeScript for all new code
-- Follow strict TypeScript rules
-- Use `@ts-expect-error` instead of `@ts-ignore` when suppressing errors
-- Define types in `src/types/` for reusable types
+- Define types/interfaces for props and data structures
+- Avoid `any` types - use `unknown` if necessary
+- Enable strict mode compliance
 
 ### Astro Components
 
-- Use PascalCase for component file names
-- Keep components focused and reusable
-- Use TypeScript for component scripts
-- Follow Astro best practices for component structure
+```astro
+---
+// Props interface at the top
+interface Props {
+  title: string;
+  description?: string;
+}
 
-### CSS and Styling
+const { title, description } = Astro.props;
+---
 
-- Use Tailwind CSS for styling
-- Use `--` as the separator in CSS class names (not `__`)
-- Follow mobile-first responsive design principles
-- Keep styles scoped to components when possible
+<div class="component">
+  <h2>{title}</h2>
+  {description && <p>{description}</p>}
+</div>
+```
+
+### CSS/Styling
+
+- Use Tailwind CSS utility classes
+- Follow mobile-first responsive design
+- Use CSS class naming convention: `component--modifier` (not `component__element`)
+- Keep custom CSS minimal
 
 ### File Organization
 
-- Place components in `src/components/` organized by feature
-- Place utilities in `src/utils/`
-- Place types in `src/types/`
-- Place content in `src/content/` following the content structure
+- One component per file
+- Co-locate related files (components, types, utils)
+- Use index files for public exports
+- Keep files under 300 lines when possible
 
-### Naming Conventions
+### Code Quality
 
-- **Components**: PascalCase (e.g., `Button.astro`)
-- **Utilities**: camelCase (e.g., `dateUtils.ts`)
-- **Types**: camelCase (e.g., `brand.ts`)
-- **Content**: kebab-case (e.g., `our-purpose.mdx`)
+- Write self-documenting code
+- Add comments for complex logic
+- Use meaningful variable and function names
+- Keep functions small and focused
+- Avoid deep nesting (max 3 levels)
 
-## Commit Message Conventions
+## Commit Guidelines
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
-
-### Commit Types
-
-#### Primary Commit Types
-
-1. **`fix:`** - Bug fixes
-
-   ```bash
-   git commit -m "fix: resolve bug in search functionality"
-   ```
-
-2. **`feat:`** - New features
-
-   ```bash
-   git commit -m "feat: add new search feature"
-   ```
-
-3. **`feat!:`** or **`BREAKING CHANGE:`** - Breaking changes
-
-   ```bash
-   git commit -m "feat!: completely redesign the UI"
-   # or
-   git commit -m "feat: new API design
-
-   BREAKING CHANGE: This changes the entire API structure"
-   ```
-
-#### Other Commit Types
-
-- **`docs:`** - Documentation changes
-
-  ```bash
-  git commit -m "docs: update README"
-  ```
-
-- **`chore:`** - Maintenance tasks
-
-  ```bash
-  git commit -m "chore: update dependencies"
-  ```
-
-- **`style:`** - Code style changes (formatting, etc.)
-
-  ```bash
-  git commit -m "style: format code"
-  ```
-
-- **`refactor:`** - Code refactoring
-
-  ```bash
-  git commit -m "refactor: restructure components"
-  ```
-
-- **`test:`** - Test additions or changes
-
-  ```bash
-  git commit -m "test: add e2e tests for homepage"
-  ```
-
-- **`perf:`** - Performance improvements
-  ```bash
-  git commit -m "perf: optimize image loading"
-  ```
+We follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
 ### Commit Message Format
 
 ```
-<type>: <subject>
+<type>(<scope>): <subject>
 
-[optional body]
+<body>
 
-[optional footer]
+<footer>
 ```
 
-Examples:
+### Types
 
-- `fix: resolve navigation menu overflow issue`
-- `feat: add dark mode support`
-- `docs: update contributing guidelines`
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, missing semicolons, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
 
-## Code Quality
-
-### Pre-commit Checks
-
-Before committing, ensure all checks pass:
+### Examples
 
 ```bash
-npm run precommit
+# Feature
+git commit -m "feat(blog): add social share buttons"
+
+# Bug fix
+git commit -m "fix(nav): resolve mobile menu z-index issue"
+
+# Documentation
+git commit -m "docs: update installation instructions"
+
+# Breaking change
+git commit -m "feat(api)!: change response format
+
+BREAKING CHANGE: API responses now use camelCase"
 ```
 
-This runs:
+### Version Bumps
 
-- TypeScript type checking
-- ESLint linting
-- Markdown linting
-- Code formatting checks
+Commits trigger automatic version bumps via Release Please:
 
-### Manual Checks
+- `fix:` → Patch version (0.0.x)
+- `feat:` → Minor version (0.x.0)
+- `feat!:` or `BREAKING CHANGE:` → Major version (x.0.0)
 
-You can run individual checks:
+## Pull Request Process
+
+### Before Submitting
+
+1. ✅ All tests pass
+2. ✅ Code is linted and formatted
+3. ✅ Type checking passes
+4. ✅ Documentation updated (if needed)
+5. ✅ Commits follow conventional format
+
+### Creating a Pull Request
+
+1. **Push your branch**
 
 ```bash
-npm run typecheck  # TypeScript checking
-npm run lint       # Linting
-npm run lint:md    # Markdown linting
-npm run format:check  # Format checking
+git push origin feature/your-feature-name
 ```
 
-### Auto-fix
+2. **Open a Pull Request** on GitHub
 
-Many issues can be auto-fixed:
+3. **Fill out the PR template**:
+   - Clear title describing the change
+   - Description of what changed and why
+   - Link to related issues
+   - Screenshots (for UI changes)
+   - Breaking changes (if any)
+
+4. **Request review** from maintainers
+
+### PR Review Process
+
+- Maintainers will review your PR
+- Address feedback and update your PR
+- Once approved, your PR will be merged
+- The branch will be deleted automatically
+
+### After Merge
+
+- Delete your local branch:
 
 ```bash
-npm run lint:fix      # Fix linting issues
-npm run lint:md:fix   # Fix markdown issues
-npm run format        # Format code
+git branch -d feature/your-feature-name
+```
+
+- Pull the latest changes:
+
+```bash
+git checkout main
+git pull origin main
 ```
 
 ## Testing
 
-### End-to-End Tests
-
-We use Playwright for end-to-end testing:
+### Running Tests
 
 ```bash
-# Run all tests
-npm run test:e2e
+# Run all e2e tests
+bun run test:e2e
 
-# Run tests with UI (recommended for development)
-npm run test:e2e:ui
+# Run tests in UI mode
+bun run test:e2e:ui
 
 # Run tests in debug mode
-npm run test:e2e:debug
-
-# Show test report
-npm run test:e2e:report
+bun run test:e2e:debug
 ```
 
 ### Writing Tests
 
-- Place tests in `tests/e2e/`
-- Follow the existing test structure
-- Test critical user flows
-- Ensure tests are deterministic and reliable
-
-Example test structure:
+Place tests in `/tests/e2e/`:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -285,41 +286,48 @@ import { test, expect } from '@playwright/test';
 test.describe('Feature Name', () => {
   test('should do something specific', async ({ page }) => {
     await page.goto('/');
-    // Test implementation
+
+    // Your test assertions
+    await expect(page.locator('h1')).toContainText('Expected Text');
   });
 });
 ```
 
-## Pull Request Process
+### Test Guidelines
 
-1. **Ensure your PR**:
-   - Follows the code style guidelines
-   - Includes tests if applicable
-   - Updates documentation if needed
-   - Passes all CI checks
+- Write descriptive test names
+- Test user behavior, not implementation
+- Keep tests independent and isolated
+- Clean up test data after tests
+- Use page objects for complex pages
 
-2. **Write a clear PR description**:
-   - What changes were made
-   - Why the changes were made
-   - How to test the changes
-   - Any breaking changes
+## Documentation
 
-3. **Keep PRs focused**:
-   - One feature or fix per PR
-   - Keep changes reasonably sized
-   - Avoid unrelated changes
+### Updating Documentation
 
-4. **Respond to feedback**:
-   - Address review comments promptly
-   - Be open to suggestions
-   - Update the PR as needed
+- Update README.md for setup/usage changes
+- Update PROJECT_STRUCTURE.md for structural changes
+- Update inline code comments for complex logic
+- Add JSDoc comments for public APIs
 
-## Questions?
+### Documentation Style
 
-If you have questions about contributing:
+- Use clear, concise language
+- Include code examples
+- Keep documentation up-to-date with code
+- Use proper markdown formatting
 
-- Check existing issues and PRs
-- Create a new issue with the `question` label
-- Reach out to maintainers
+## Need Help?
 
-Thank you for contributing! 🎉
+- 📖 Check the [README](README.md) for setup instructions
+- 🏗️ Review [Project Structure](PROJECT_STRUCTURE.md)
+- 💬 Ask questions in GitHub Discussions
+- 🐛 Report bugs via GitHub Issues
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the same license as the project.
+
+---
+
+Thank you for contributing to Datum Inc. website! 🎉

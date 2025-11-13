@@ -1,338 +1,224 @@
 # Project Structure
 
-This document provides a comprehensive overview of the Datum Inc. website project structure.
+This document provides an overview of the Datum Inc. website project structure and organization.
 
-## Root Directory Structure
+## Directory Overview
 
 ```
 .
-├── src/                    # Source code
-├── public/                 # Static files served as-is
-├── config/                 # Kubernetes and deployment configuration
-├── dist/                   # Build output (generated)
-├── tests/                  # End-to-end tests
-├── init/                   # Database initialization scripts
-├── .github/                # GitHub configuration and workflows
-├── .vscode/                # VS Code settings
-├── astro.config.mjs        # Astro configuration
-├── docker-compose.yml      # Docker Compose configuration
-├── Dockerfile              # Docker build configuration
-├── package.json            # Project dependencies and scripts
-├── tailwind.starlight.config.cjs  # Tailwind CSS configuration for Starlight
-├── tsconfig.json           # TypeScript configuration
-├── eslint.config.mjs       # ESLint configuration
-├── playwright.config.ts    # Playwright test configuration
-├── pagefind.yml            # Pagefind search configuration
-└── starlight.d.ts          # Starlight TypeScript definitions
+├── src/                # Source code
+│   ├── actions/        # Server actions for forms and API interactions
+│   ├── assets/         # Static assets (images, fonts, etc.)
+│   ├── components/     # Reusable UI components
+│   │   ├── about/      # About page components
+│   │   ├── auth/       # Authentication components
+│   │   ├── blog/       # Blog-specific components
+│   │   ├── brand/      # Brand assets and components
+│   │   ├── changelog/  # Changelog components
+│   │   ├── features/   # Feature showcase components
+│   │   ├── forms/      # Form components
+│   │   ├── handbook/   # Handbook components
+│   │   ├── home/       # Homepage components
+│   │   ├── huddles/    # Community huddle components
+│   │   ├── roadmap/    # Roadmap components
+│   │   └── starlight/  # Documentation (Starlight) components
+│   ├── content/        # MDX content files
+│   │   ├── about/      # About page content
+│   │   ├── authors/    # Author profiles
+│   │   ├── blog/       # Blog posts
+│   │   ├── categories/ # Content categories
+│   │   ├── changelog/  # Release notes and changelog
+│   │   ├── docs/       # Documentation pages
+│   │   ├── faq/        # Frequently asked questions
+│   │   ├── features/   # Feature descriptions
+│   │   ├── handbook/   # Company handbook
+│   │   ├── huddles/    # Community huddle notes
+│   │   ├── legal/      # Legal documents (privacy, terms)
+│   │   ├── pages/      # Static pages content
+│   │   └── pricing/    # Pricing tier information
+│   ├── data/           # Static data files (JSON)
+│   │   ├── logos.json         # Logo assets configuration
+│   │   ├── navigation.json    # Navigation structure
+│   │   └── siteConfig.json    # Site-wide configuration
+│   ├── layouts/        # Page layouts and templates
+│   │   ├── Handbook.astro     # Handbook layout
+│   │   ├── Layout.astro       # Main layout
+│   │   ├── LayoutMd.astro     # Markdown content layout
+│   │   ├── LayoutSimple.astro # Simplified layout
+│   │   └── NotFound.astro     # 404 page layout
+│   ├── libs/           # Library integrations and utilities
+│   │   ├── cache.ts           # Caching utilities
+│   │   ├── cookie.ts          # Cookie management
+│   │   ├── datum.ts           # Datum API integration
+│   │   ├── file.ts            # File utilities
+│   │   ├── github.ts          # GitHub API integration
+│   │   ├── k8s-client.ts      # Kubernetes client
+│   │   ├── miloapi.ts         # Milo API integration
+│   │   ├── oidc.ts            # OIDC authentication
+│   │   ├── postgres.ts        # PostgreSQL database
+│   │   ├── string.ts          # String utilities
+│   │   └── server/            # Server-side utilities
+│   ├── pages/          # Page components and routing
+│   │   └── api/        # API endpoints
+│   ├── styles/         # Global styles and CSS
+│   ├── types/          # TypeScript type definitions
+│   │   ├── brand.ts           # Brand-related types
+│   │   ├── changelog.ts       # Changelog types
+│   │   ├── common.ts          # Common shared types
+│   │   ├── features.ts        # Feature types
+│   │   ├── form.ts            # Form types
+│   │   ├── k8s-resources.ts   # Kubernetes resource types
+│   │   ├── navigation.ts      # Navigation types
+│   │   ├── roadmap.ts         # Roadmap types
+│   │   └── team.ts            # Team member types
+│   ├── utils/          # Utility functions and helpers
+│   │   ├── collectionUtils.ts # Content collection helpers
+│   │   ├── dateUtils.ts       # Date formatting utilities
+│   │   ├── envLogger.ts       # Environment logging
+│   │   ├── file.ts            # File operations
+│   │   ├── github.ts          # GitHub utilities
+│   │   ├── iconMap.ts         # Icon mapping
+│   │   ├── imageUtils.ts      # Image processing
+│   │   └── roadmap.ts         # Roadmap utilities
+│   ├── v1/             # Legacy v1 assets and styles
+│   │   ├── assets/     # Legacy images and media
+│   │   ├── scripts/    # Legacy JavaScript
+│   │   └── styles/     # Legacy CSS
+│   ├── content.config.ts      # Content collection configuration
+│   ├── entrypoint.ts          # Application entry point
+│   ├── env.d.ts               # Environment type definitions
+│   └── middleware.ts          # Astro middleware
+├── public/             # Static files served as-is
+│   ├── download/       # Downloadable assets
+│   ├── fonts/          # Web fonts
+│   ├── images/         # Static images
+│   ├── scripts/        # Third-party scripts
+│   ├── favicon.ico     # Favicon
+│   └── site.webmanifest # PWA manifest
+├── config/             # Deployment configuration files
+│   ├── base/           # Base Kubernetes config
+│   ├── dev/            # Development environment config
+│   └── gateway/        # API Gateway configuration
+├── tests/              # Test files
+│   └── e2e/            # End-to-end tests
+├── .github/            # GitHub configuration and workflows
+├── .vscode/            # VS Code settings
+├── astro.config.mjs    # Astro configuration
+├── docker-compose.yml  # Docker Compose configuration
+├── Dockerfile          # Docker build configuration
+├── eslint.config.mjs   # ESLint configuration
+├── package.json        # Project dependencies and scripts
+├── playwright.config.ts # Playwright testing configuration
+├── tailwind.config.mjs # Tailwind CSS configuration
+└── tsconfig.json       # TypeScript configuration
 ```
 
-## Source Code (`src/`)
+## Key Directories Explained
 
-### Actions (`src/actions/`)
+### `/src/components`
 
-Server-side actions for form submissions and API interactions:
+Reusable UI components organized by feature or page area. Each subdirectory contains related components:
 
-- `index.ts` - Main actions export
-- `newsletter.ts` - Newsletter subscription actions
-- `roadmap.ts` - Roadmap-related actions
+- Atomic components (buttons, cards, etc.) at the root level
+- Feature-specific components in subdirectories
+- Shared components used across multiple pages
 
-### Components (`src/components/`)
+### `/src/content`
 
-Reusable UI components organized by feature:
+Content collections managed by Astro's content layer. All MDX files are type-safe and validated:
 
-#### Core Components
+- Blog posts with frontmatter metadata
+- Documentation pages with navigation
+- Author profiles and team information
+- Legal documents and static pages
 
-- `Button.astro` - Button component
-- `Card.astro` - Card component
-- `Container.astro` - Container wrapper
-- `Icon.astro` - Icon component
-- `Pagination.astro` - Pagination component
-- `TableOfContents.astro` - Table of contents component
+### `/src/libs`
 
-#### Layout Components
+Third-party integrations and service clients:
 
-- `Header.astro` - Site header
-- `Footer.astro` - Site footer
-- `FooterDocs.astro` - Documentation footer
-- `Nav.astro` - Navigation component
-- `NavMenu.astro` - Navigation menu
-- `MobileMenu.astro` - Mobile navigation menu
-- `LogoDropdown.astro` - Logo dropdown menu
-- `ThemeSelect.astro` - Theme selector
+- Database connections
+- API clients (GitHub, Kubernetes, etc.)
+- Authentication providers
+- Caching and utilities
 
-#### Feature-Specific Components
+### `/src/pages`
 
-**About** (`about/`)
+File-based routing powered by Astro. Each file becomes a route:
 
-- `OurPurpose.astro`
-- `Team.astro`
-- `WeValue.astro`
+- `.astro` files for server-rendered pages
+- `.ts` files for API endpoints
+- Supports dynamic routes with `[param]` syntax
 
-**Blog** (`blog/`)
+### `/src/v1`
 
-- `Blog.astro` - Blog listing page
-- `BlogFilters.astro` - Blog filtering
-- `BlogItem.astro` - Individual blog post card
-- `BlogPagination.astro` - Blog pagination
-- `FeaturedPost.astro` - Featured blog post
+Legacy assets from previous version:
 
-**Brand** (`brand/`)
+- Maintained for backward compatibility
+- Gradual migration to new architecture
+- Will be deprecated in future releases
 
-- `BrandCard.astro` - Brand card component
-- `BrandCardImage.astro` - Brand card image
-- `BrandCardText.astro` - Brand card text
-- `ColorPalette.astro` - Color palette display
-- `NavBrand.astro` - Brand navigation
+## Configuration Files
 
-**Changelog** (`changelog/`)
+| File                   | Purpose                       |
+| :--------------------- | :---------------------------- |
+| `astro.config.mjs`     | Astro framework configuration |
+| `tailwind.config.mjs`  | Tailwind CSS design system    |
+| `tsconfig.json`        | TypeScript compiler options   |
+| `eslint.config.mjs`    | Code linting rules            |
+| `playwright.config.ts` | E2E testing configuration     |
+| `docker-compose.yml`   | Local development environment |
+| `Dockerfile`           | Production container build    |
 
-- `Card.astro` - Changelog card
-- `Skeleton.astro` - Loading skeleton
+## Content Collections
 
-**Features** (`features/`)
+The project uses Astro's Content Collections for type-safe content management:
 
-- `Cards.astro` - Feature cards
-- `Grids.astro` - Feature grid layout
-- `Table.astro` - Feature comparison table
+```typescript
+// Defined in src/content.config.ts
+- authors      # Author profiles
+- blog         # Blog posts
+- docs         # Documentation
+- changelog    # Release notes
+- features     # Product features
+- handbook     # Company handbook
+- huddles      # Community meetings
+```
 
-**Forms** (`forms/`)
+Each collection has a defined schema ensuring content consistency.
 
-- `Contact.astro` - Contact form
-- `Signup.astro` - Signup form
+## Development Patterns
 
-**Handbook** (`handbook/`)
+### Component Organization
 
-- `Article.astro` - Handbook article layout
-- `PageNav.astro` - Page navigation
-- `Sidebar.astro` - Handbook sidebar
+- One component per file
+- Use `.astro` for components with markup
+- Use `.ts` for utility functions and types
+- Props interfaces defined at file top
 
-**Home** (`home/`)
+### Styling Approach
 
-- `Hero.astro` - Homepage hero section
-- `FirstSection.astro` - First section component
-- `SecondSection.astro` - Second section component
+- Tailwind CSS for utility-first styling
+- CSS modules for component-specific styles
+- Global styles in `/src/v1/styles` (legacy)
+- Design tokens in Tailwind config
 
-**Huddles** (`huddles/`)
+### Type Safety
 
-- `PreviousHuddle.astro` - Previous huddle display
-- `UpcomingHuddle.astro` - Upcoming huddle display
+- All content collections have TypeScript schemas
+- API responses typed with interfaces
+- Props validated at build time
+- Strict TypeScript configuration
 
-**Roadmap** (`roadmap/`)
+## Build Output
 
-- `Card.astro` - Roadmap card
-- `Skeleton.astro` - Loading skeleton
+The build process generates:
 
-**Starlight** (`starlight/`)
-
-- Custom Starlight theme components for documentation
-- `Footer.astro`, `Header.astro`, `Sidebar.astro`, etc.
-
-**Other Components**
-
-- `ArticleNavigation.astro` - Article navigation
-- `Aside.astro` - Aside component
-- `FAQ.astro` - FAQ component
-- `GlobalSection.astro` - Global section wrapper
-- `GrafanaResourceGenerator.astro` - Grafana resource generator
-- `GrafanaUrlGenerator.astro` - Grafana URL generator
-- `GithubStargazerValue.astro` - GitHub stargazer counter
-- `Hero.astro` - Hero component
-- `PricingCard.astro` - Pricing card component
-- `TeamMemberCard.astro` - Team member card
-
-### Content (`src/content/`)
-
-Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_STUCTURE.md) for detailed content organization.
-
-#### Main Content Directories
-
-- `about/` - About page content and images
-- `authors/` - Author profiles and assets
-- `blog/` - Blog posts and assets
-- `categories/` - Blog post categories
-- `changelog/` - Changelog entries
-- `docs/` - Documentation (Starlight)
-- `faq/` - Frequently asked questions
-- `features/` - Feature descriptions
-- `handbook/` - Company handbook
-- `huddles/` - Community huddle content
-- `legal/` - Legal documents
-- `pages/` - Static page content
-- `pricing/` - Pricing configuration (JSON)
-
-### Data (`src/data/`)
-
-Static data files:
-
-- `logos.json` - Logo data
-- `navigation.json` - Navigation structure
-- `siteConfig.json` - Site configuration
-
-### Layouts (`src/layouts/`)
-
-Page layout templates:
-
-- `Layout.astro` - Default layout
-- `LayoutMd.astro` - Markdown content layout
-- `LayoutSimple.astro` - Simple layout
-- `Handbook.astro` - Handbook layout
-- `NotFound.astro` - 404 page layout
-
-### Libraries (`src/libs/`)
-
-Reusable utility libraries:
-
-- `cache.ts` - Caching utilities
-- `cookie.ts` - Cookie handling
-- `datum.ts` - Datum API client
-- `file.ts` - File utilities
-- `github.ts` - GitHub API client
-- `k8s-client.ts` - Kubernetes client
-- `miloapi.ts` - Milo API client
-- `oidc.ts` - OpenID Connect client
-- `postgres.ts` - PostgreSQL client
-- `string.ts` - String utilities
-- `server/` - Server-side utilities
-  - `glossary.ts` - Glossary utilities
-  - `sitemap.ts` - Sitemap generation
-
-### Pages (`src/pages/`)
-
-Page components and routing (file-based routing):
-
-- `index.astro` - Homepage
-- `404.astro` - 404 error page
-- `_[...slug].astro` - Catch-all route for dynamic pages
-- `about/` - About pages
-- `api/` - API endpoints
-- `auth/` - Authentication pages
-- `authors/` - Author pages
-- `blog/` - Blog pages
-- `blog.astro` - Blog listing
-- `brand/` - Brand pages
-- `community-huddle.astro` - Community huddle page
-- `contact.astro` - Contact page
-- `features/` - Feature pages
-- `handbook/` - Handbook pages
-- `handbook.astro` - Handbook listing
-- `legal/` - Legal pages
-- `pricing.astro` - Pricing page
-- `request-access.astro` - Request access page
-- `resources/` - Resource pages
-- `waitlist.astro` - Waitlist page
-- `llms.txt.ts` - LLMs.txt endpoint
-- `llms-full.txt.ts` - Full LLMs.txt endpoint
-
-### Types (`src/types/`)
-
-TypeScript type definitions:
-
-- `brand.ts` - Brand types
-- `changelog.ts` - Changelog types
-- `common.ts` - Common types
-- `features.ts` - Feature types
-- `form.ts` - Form types
-- `k8s-resources.ts` - Kubernetes resource types
-- `navigation.ts` - Navigation types
-- `roadmap.ts` - Roadmap types
-- `team.ts` - Team types
-
-### Utils (`src/utils/`)
-
-Utility functions:
-
-- `collectionUtils.ts` - Collection utilities
-- `dateUtils.ts` - Date utilities
-- `envLogger.ts` - Environment logger
-- `file.ts` - File utilities
-- `github.ts` - GitHub utilities
-- `iconMap.ts` - Icon mapping
-- `imageUtils.ts` - Image utilities
-- `roadmap.ts` - Roadmap utilities
-
-### Legacy (`src/v1/`)
-
-Legacy v1 assets and styles:
-
-- `assets/` - Legacy images, SVGs, and other assets
-- `scripts/` - Legacy JavaScript files
-- `styles/` - Legacy CSS files
-
-### Configuration Files
-
-- `content.config.ts` - Content collection configuration
-- `entrypoint.ts` - Application entry point
-- `env.d.ts` - Environment type definitions
-- `middleware.ts` - Astro middleware
-
-## Public Assets (`public/`)
-
-Static files served as-is:
-
-- `fonts/` - Web fonts
-- `images/` - Static images
-- `scripts/` - Client-side scripts
-- `download/` - Downloadable assets
-- `favicon.ico`, `favicon.png`, `favicon.svg` - Favicons
-- `site.webmanifest` - Web app manifest
-- `apple-touch-icon.png` - Apple touch icon
-- Brand logos (SVG files)
-
-## Configuration (`config/`)
-
-Kubernetes and deployment configuration:
-
-- `base/` - Base Kubernetes manifests
-  - `deployment.yaml` - Deployment configuration
-  - `service.yaml` - Service configuration
-  - `http-route.yaml` - HTTP route configuration
-  - `kustomization.yaml` - Kustomize configuration
-- `dev/` - Development environment configuration
-  - `postgres-config.yaml` - PostgreSQL configuration
-  - `postgres-values.yaml` - PostgreSQL Helm values
-- `gateway/` - Gateway configuration
-  - `endpoint.yaml` - Endpoint configuration
-  - `gateway.yaml` - Gateway configuration
-  - `httproute.yaml` - HTTP route
-  - `httproute-redirect.yaml` - HTTP redirect route
-  - `kustomization.yaml` - Kustomize configuration
-  - `namespace.yaml` - Namespace configuration
-
-## Tests (`tests/`)
-
-End-to-end tests using Playwright:
-
-- `e2e/` - End-to-end test files
-  - `home.spec.ts` - Homepage tests
-
-## Build Output (`dist/`)
-
-Generated build artifacts (not committed):
-
-- `client/` - Client-side build output
-- `server/` - Server-side build output
-
-## Content Structure
-
-For detailed content organization, see [CONTENT_STRUCTURE.md](./CONTENT_STUCTURE.md).
-
-## File Naming Conventions
-
-- **Components**: PascalCase (e.g., `Button.astro`, `BlogItem.astro`)
-- **Pages**: kebab-case or PascalCase (e.g., `index.astro`, `blog.astro`)
-- **Utilities**: camelCase (e.g., `dateUtils.ts`, `imageUtils.ts`)
-- **Types**: camelCase (e.g., `brand.ts`, `common.ts`)
-- **Content**: kebab-case (e.g., `our-purpose.mdx`, `team.mdx`)
-
-## Component Organization
-
-Components are organized by feature/domain when they belong to a specific section of the site. Shared/common components are placed directly in `src/components/`.
-
-## Routing
-
-Astro uses file-based routing:
-
-- Files in `src/pages/` automatically become routes
-- `index.astro` files create index routes
-- `_[...slug].astro` creates catch-all dynamic routes
-- Folders create nested routes
+- `/dist/client` - Static assets and HTML
+- `/dist/server` - Server-side rendering code
+- `/public/pagefind` - Search index
+
+## Learn More
+
+- [Astro Documentation](https://docs.astro.build)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Content Collections](https://docs.astro.build/en/guides/content-collections/)

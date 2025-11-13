@@ -6,14 +6,14 @@ This is the official website for Datum Inc., built with Astro.
 
 ### Prerequisites
 
-- Node.js (version specified in package.json)
+- Bun (latest version recommended) - [Install Bun](https://bun.sh)
 
 ### Installation
 
 1. Install dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
 2. Set up environment variables:
@@ -26,24 +26,20 @@ cp .env.example .env
 3. Build file to enable pagefind in dev mode
 
 ```bash
-npm run build
+bun run build
 ```
 
 4. Start the development server:
 
 ```bash
-npm run dev
+bun run dev
 ```
 
-For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
+## Project Structure
 
-### Handbook
+For a detailed overview of the project structure and organization, see [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
 
-Main file: src/content/handbook/index.md
-
-### Handbook
-
-Main file: src/content/handbook/index.md
+For content organization and content collections, see [CONTENT_STRUCTURE.md](CONTENT_STRUCTURE.md).
 
 ## Docker Setup
 
@@ -69,14 +65,14 @@ Main file: src/content/handbook/index.md
    ```
 
    This will:
-   - Build the development image using Node.js 22 Alpine
+   - Build the development image using Bun Alpine
    - Mount your local codebase for hot-reloading
    - Make the app available at http://localhost:4321
 
 3. Development Features:
    - Hot-reloading enabled
    - Source code mounted from host
-   - Node modules cached in Docker volume
+   - Dependencies cached in Docker volume
    - Full access to development tools
    - Network access from other devices via host IP
 
@@ -109,23 +105,36 @@ Main file: src/content/handbook/index.md
 
 ### Docker Configuration Details
 
-The setup uses a multi-stage Dockerfile:
+The setup uses multi-stage Dockerfile for faster builds:
 
-1. Base stage (`node:22-alpine`)
-   - Minimal Alpine Linux with Node.js 22
+1. **Base stage** (`oven/bun:1.2.3-alpine`)
+   - Minimal Alpine Linux with Bun runtime
    - Common workspace setup
 
-2. Development stage
-   - Full development dependencies
-   - Source code mounting
-   - Hot-reload enabled
-   - Development-specific configurations
+2. **Dependencies stage** (shared cache)
+   - Installs all dependencies once
+   - Shared between development and build stages
+   - Uses BuildKit cache mounts for faster rebuilds
 
-3. Production stage
-   - Multi-stage build for optimization
-   - Only production dependencies
-   - Pre-built assets
-   - Minimal final image size
+3. **Development stage**
+   - Copies pre-built dependencies from cache
+   - Source code mounting for hot-reload
+   - Full development environment
+
+4. **Build stage**
+   - Extends dependencies stage (reuses node_modules)
+   - Compiles production assets
+   - Optimized for build performance
+
+5. **Production-deps stage**
+   - Installs production dependencies only
+   - Runs in parallel with build stage
+   - Smaller dependency footprint
+
+6. **Production stage**
+   - Copies only production dependencies
+   - Pre-built assets from build stage
+   - Minimal final image size (~200MB)
 
 ### Network Configuration
 
@@ -163,6 +172,26 @@ The setup uses a multi-stage Dockerfile:
 
    # Remove volumes too
    docker compose down -v
+   ```
+
+4. If builds are slow or dependency issues occur:
+
+   ```bash
+   # Clear Docker build cache
+   docker builder prune -af
+   
+   # Rebuild from scratch
+   docker compose build --no-cache dev
+   ```
+
+5. To optimize build performance:
+
+   ```bash
+   # Enable BuildKit (if not default)
+   export DOCKER_BUILDKIT=1
+   
+   # Build with inline cache
+   docker compose build --pull
    ```
 
 ### Development with local kubernetes
@@ -212,7 +241,54 @@ helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://re
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on our code of conduct, development setup, and the process for submitting pull requests.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## Version Management
+
+This project uses [Release Please](https://github.com/googleapis/release-please) for automated version management. To bump the version, follow these commit message conventions:
+
+### Version Bump Types
+
+1. **Patch Version (0.0.x)** - For bug fixes:
+
+   ```bash
+   git commit -m "fix: resolve bug in search functionality"
+   ```
+
+2. **Minor Version (0.x.0)** - For new features:
+
+   ```bash
+   git commit -m "feat: add new search feature"
+   ```
+
+3. **Major Version (x.0.0)** - For breaking changes:
+
+   ```bash
+   git commit -m "feat!: completely redesign the UI"
+   # or
+   git commit -m "feat: new API design
+
+   BREAKING CHANGE: This changes the entire API structure"
+   ```
+
+### Other Commit Types
+
+These types don't trigger version bumps but are included in the changelog:
+
+```bash
+git commit -m "docs: update README"
+git commit -m "chore: update dependencies"
+git commit -m "style: format code"
+git commit -m "refactor: restructure components"
+```
+
+After pushing commits to the main branch:
+
+1. Release Please will create a PR with the version bump
+2. The PR will include updated:
+   - `package.json` version
+   - `CHANGELOG.md`
+3. When the PR is merged, it will create a new release
 
 ## 🧞 Commands
 
@@ -220,20 +296,20 @@ All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                                 |
 | :------------------------ | :----------------------------------------------------- |
-| `npm install`             | Installs dependencies                                  |
-| `npm run dev`             | Starts local dev server at `localhost:4321`            |
-| `npm run build`           | Build your production site to `./dist/`                |
-| `npm run preview`         | Preview your build locally, before deploying           |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`       |
-| `npm run astro -- --help` | Get help using the Astro CLI                           |
-| `npm run lint`            | Check for linting and formatting issues                |
-| `npm run lint:fix`        | Automatically fix linting and formatting issues        |
-| `npm run lint:md`         | Check for markdown linting issues                      |
-| `npm run lint:md:fix`     | Automatically fix markdown linting issues              |
-| `npm run format`          | Format all files using Prettier                        |
-| `npm run format:check`    | Check if files are formatted correctly                 |
-| `npm run typecheck`       | Astro typescript check                                 |
-| `npm run precommit`       | Run all checks (typecheck, lint, format) before commit |
+| `bun install`             | Installs dependencies                                  |
+| `bun run dev`             | Starts local dev server at `localhost:4321`            |
+| `bun run build`           | Build your production site to `./dist/`                |
+| `bun run preview`         | Preview your build locally, before deploying           |
+| `bun run astro ...`       | Run CLI commands like `astro add`, `astro check`       |
+| `bun run astro -- --help` | Get help using the Astro CLI                           |
+| `bun run lint`            | Check for linting and formatting issues                |
+| `bun run lint:fix`        | Automatically fix linting and formatting issues        |
+| `bun run lint:md`         | Check for markdown linting issues                      |
+| `bun run lint:md:fix`     | Automatically fix markdown linting issues              |
+| `bun run format`          | Format all files using Prettier                        |
+| `bun run format:check`    | Check if files are formatted correctly                 |
+| `bun run typecheck`       | Astro typescript check                                 |
+| `bun run precommit`       | Run all checks (typecheck, lint, format) before commit |
 
 ## Code Quality
 
@@ -273,13 +349,13 @@ The markdownlint configuration (`.markdownlint.json`) is optimized for MDX and R
 To check markdown files:
 
 ```bash
-npm run lint:md
+bun run lint:md
 ```
 
 To automatically fix markdown issues:
 
 ```bash
-npm run lint:md:fix
+bun run lint:md:fix
 ```
 
 The linter will only check files in the `/src/content/` directory, including:
@@ -333,23 +409,23 @@ This project uses Playwright for end-to-end testing, providing reliable testing 
 1. Install dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
 2. Install Playwright browsers:
 
 ```bash
-npx playwright install
+bunx playwright install
 ```
 
 ### Running Tests
 
 | Command                   | Action                                       |
 | :------------------------ | :------------------------------------------- |
-| `npm run test:e2e`        | Run all tests in headless mode               |
-| `npm run test:e2e:ui`     | Run tests with UI mode (recommended for dev) |
-| `npm run test:e2e:debug`  | Run tests in debug mode                      |
-| `npm run test:e2e:report` | Show the last test report                    |
+| `bun run test:e2e`        | Run all tests in headless mode               |
+| `bun run test:e2e:ui`     | Run tests with UI mode (recommended for dev) |
+| `bun run test:e2e:debug`  | Run tests in debug mode                      |
+| `bun run test:e2e:report` | Show the last test report                    |
 
 ### Test Structure
 

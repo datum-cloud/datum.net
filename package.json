@@ -3,26 +3,26 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build:pagefind": "npx pagefind",
-    "build:pagefind:blog": "npx pagefind --site dist/client --glob '**/blog/**/*.{html}' --output-path dist/pagefind-blog",
-    "copy:pagefind": "npx shx cp -r dist/client/pagefind public/",
-    "copy:pagefind:blog": "npx shx cp -r dist/pagefind-blog public/",
+    "build:pagefind": "bunx pagefind",
+    "build:pagefind:blog": "bunx pagefind --site dist/client --glob '**/blog/**/*.{html}' --output-path dist/pagefind-blog",
+    "copy:pagefind": "bunx shx cp -r dist/client/pagefind public/",
+    "copy:pagefind:blog": "bunx shx cp -r dist/pagefind-blog public/",
     "dev:astro": "astro dev --host --typecheck",
     "build:astro": "astro check --skip-playwright && astro build",
-    "dev": "npm run dev:astro && npm run build:pagefind && npm run copy:pagefind",
-    "build": "npm run build:astro && npm run build:pagefind",
-    "start": "node ./dist/server/entry.mjs",
+    "dev": "bun run dev:astro && bun run build:pagefind && bun run copy:pagefind",
+    "build": "bun run build:astro && bun run build:pagefind",
+    "start": "bun ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro,.md,.mdx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro,.md,.mdx --fix",
-    "lint:md": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\"",
-    "lint:md:fix": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\" --fix",
+    "lint:md": "bunx markdownlint-cli \"src/content/**/*.{md,mdx}\"",
+    "lint:md:fix": "bunx markdownlint-cli \"src/content/**/*.{md,mdx}\" --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "prepare": "husky",
     "typecheck": "astro check",
-    "precommit": "npm run typecheck && npm run lint && npm run lint:md && npm run lint:md:fix && npm run format && npm run format:check",
+    "precommit": "bun run typecheck && bun run lint && bun run lint:md && bun run lint:md:fix && bun run format && bun run format:check",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
@@ -92,17 +92,17 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
-      "npm run typecheck",
-      "npm run lint",
-      "npm run format:check"
+      "bun run typecheck",
+      "bun run lint",
+      "bun run format:check"
     ],
     "*.{md,mdx}": [
-      "npm run lint:md",
-      "npm run lint:md:fix"
+      "bun run lint:md",
+      "bun run lint:md:fix"
     ],
     "*.{json,css,scss}": [
-      "npm run format:check",
-      "npm run format"
+      "bun run format:check",
+      "bun run format"
     ]
   }
 }

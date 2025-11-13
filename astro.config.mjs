@@ -185,7 +185,6 @@ export default defineConfig({
   ],
 
   vite: {
-    // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
     css: {
       devSourcemap: true,

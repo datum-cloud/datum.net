@@ -46,8 +46,12 @@ import Icon from '@components/Icon.astro';
   form.addEventListener('submit', function (this: HTMLFormElement) {
     signupMessage.textContent = 'Please wait..';
     actions.signUp({ email: form.email.value }).then((result) => {
-      if (!result.data) {
-        signupMessage.textContent = 'Something went wrong. Please try again in a minute or two.';
+      if (!result.data || result.data != 200) {
+        if (result.data == 422) {
+          signupMessage.textContent = "Looks like you're already subscribed!";
+        } else {
+          signupMessage.textContent = 'Something went wrong. Please try again in a minute or two.';
+        }
       } else {
         signupMessage.textContent = "You're on the list";
         signupForm.classList.add('hidden');

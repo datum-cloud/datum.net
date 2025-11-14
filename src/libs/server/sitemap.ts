@@ -20,7 +20,7 @@ const writeSitemapFile = (filePath: string, entries: string[]) => {
       </urlset>`;
 
     fs.writeFileSync(filePath, sitemapXml, 'utf-8');
-    console.log(`%sSitemap generated at: %s%s`, infoPrefix, filePath, resetPrefix);
+    console.log(`Generated at: %s%s\n`, filePath, resetPrefix);
   } catch (err) {
     console.log(
       `%sError writing sitemap file: %s%s`,
@@ -50,6 +50,7 @@ const createSitemapBuilderIntegration = (options?: SitemapOptions): AstroIntegra
             );
             return;
           }
+          console.log(`%s[Sitemap Generator]`, infoPrefix);
 
           const fullSitemapFilePath = `./dist/client/sitemap.xml`;
           const finalSiteUrl = new URL(config.base, config.site);

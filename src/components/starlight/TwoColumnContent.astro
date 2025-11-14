@@ -1,30 +1,22 @@
 ---
-// src/components/starlight/TwoColumnContent.astro
-
 import config from 'virtual:starlight/user-config';
 import PageSidebar from './PageSidebar.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import SearchButton from './SearchButton.astro';
 import { getCollection } from 'astro:content';
 
-// Get Starlight route data
 const { hasSidebar } = Astro.locals.starlightRoute;
 const starlightRoute = Astro.locals.starlightRoute;
 
-// Create breadcrumbs manually based on URL path
 let breadcrumbData = [];
-
-// Get the current URL path
 const fullPath = Astro.url.pathname;
 
-// Extract path segments (skip the /docs/ prefix)
 const pathSegments = fullPath
   .replace(/^\/?docs\//, '')
   .replace(/\/$/, '')
   .split('/')
   .filter(Boolean);
 
-// Add home/docs as first item
 breadcrumbData.push(
   {
     text: 'Home',
@@ -42,25 +34,19 @@ breadcrumbData.push(
   }
 );
 
-// Get all docs entries to look up real titles
 const allDocs = await getCollection('docs');
 
-// Build breadcrumbs for each path segment
 if (pathSegments.length > 0) {
   let currentPath = '';
   let currentSlug = '';
   let lastSegment = pathSegments.at(-1);
 
   for (const segment of pathSegments) {
-    if (segment == 'overview') continue; // Skipping overview because it's have sama url as root
+    if (segment == 'overview') continue;
 
     currentPath += '/' + segment;
     currentSlug = currentSlug ? `${currentSlug}/${segment}` : segment;
 
-    // Process each segment to build breadcrumbs
-
-    // Try to find index files for this segment first (more accurate titles)
-    // First try with the exact segment name
     const segmentIndexPaths = [
       `docs/${segment}/index`,
       `${segment}/index`,
@@ -69,55 +55,50 @@ if (pathSegments.length > 0) {
 
     const indexFile = allDocs.find(
       (entry) =>
-        // Check against our list of possible paths
         segmentIndexPaths.includes(entry.id) ||
-        // Also check with the current slug
         entry.id === `docs/${currentSlug}/index` ||
         entry.id === `${currentSlug}/index` ||
-        // Also check for exact segment match in the last part of the path
         (entry.id.endsWith('/index') && entry.id.split('/').includes(segment))
     );
 
     if (indexFile) {
-      // Use the index file's title for this breadcrumb
+      // Replace "Overview" titles with formatted segment name
+      const titleText =
+        indexFile.data.title === 'Overview'
+          ? segment.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
+          : indexFile.data.title;
+
       breadcrumbData.push({
-        text: indexFile.data.title,
+        text: titleText,
         href: lastSegment != segment ? '/docs' + currentPath + '/' : null,
       });
 
-      // Continue to the next segment
       continue;
     }
 
-    // Try to find the actual document title from the collection
-    // First try to find the exact id match
     let docEntry = allDocs.find((entry) => entry.id === currentSlug);
 
-    // If not found, try to find an index file in that directory
     if (!docEntry) {
-      // Standard handling for segments
       const indexEntries = allDocs.filter(
         (entry) =>
-          // Match both "segment" and "segment/index" patterns that might exist in Starlight
           entry.id === currentSlug ||
           (entry.id.startsWith(`${currentSlug}/`) && entry.id.split('/').pop() === 'index') ||
-          // Also try with docs/ prefix
           entry.id === `docs/${currentSlug}` ||
           (entry.id.startsWith(`docs/${currentSlug}/`) && entry.id.split('/').pop() === 'index')
       );
 
       if (indexEntries.length > 0) {
-        // Prefer exact directory match if available
         docEntry = indexEntries.find((entry) => entry.id === currentSlug) || indexEntries[0];
       }
     }
 
-    // Use the real title if found, otherwise format the segment
     let segmentTitle;
     if (docEntry && docEntry.data.title) {
-      segmentTitle = docEntry.data.title;
+      segmentTitle =
+        docEntry.data.title === 'Overview'
+          ? segment.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
+          : docEntry.data.title;
     } else {
-      // Format the segment title (capitalize words, replace dashes with spaces)
       segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
     }
 
@@ -127,9 +108,16 @@ if (pathSegments.length > 0) {
     });
   }
 
+  // Override last breadcrumb with current page title
   if (starlightRoute.entry?.data?.title) {
-    // Replace the last item's text with the actual page title from the current route
-    breadcrumbData[breadcrumbData.length - 1].text = starlightRoute.entry.data.title;
+    const pageTitle = starlightRoute.entry.data.title;
+    if (pageTitle === 'Overview' && lastSegment) {
+      breadcrumbData[breadcrumbData.length - 1].text = lastSegment
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
+    } else {
+      breadcrumbData[breadcrumbData.length - 1].text = pageTitle;
+    }
   }
 }
 
@@ -196,7 +184,6 @@ const shouldRenderSearch =
       .split('/')
       .filter(Boolean);
 
-    // Function to toggle sidebar
     const toggleSidebar = () => {
       if (window.innerWidth < 768) {
         const expanded = document.body.hasAttribute('data-mobile-menu-expanded');
@@ -213,28 +200,21 @@ const shouldRenderSearch =
       }
     };
 
-    // Auto-trigger toggle if we're at the root docs page
+    // Auto-open sidebar on root docs page
     if (pathSegments.length === 0 && window.location.pathname.includes('/docs')) {
-      setTimeout(() => toggleSidebar(), 100); // Small delay to ensure DOM is fully loaded
+      setTimeout(() => toggleSidebar(), 100);
     }
 
     if (docsMenuToggle) {
       docsMenuToggle.addEventListener('click', (e) => {
-        // Only enable the toggle functionality on mobile screens
         if (window.innerWidth < 768) {
-          // 768px is typically md breakpoint
           e.preventDefault();
-
-          // Use the shared toggle function
           toggleSidebar();
         }
       });
 
-      // Add resize listener to disable toggle functionality on larger screens
       window.addEventListener('resize', () => {
         if (window.innerWidth >= 768) {
-          // 768px is typically md breakpoint
-          // Ensure mobile menu is closed when resizing to larger screens
           document.body.removeAttribute('data-mobile-menu-expanded');
           document.body.classList.remove('mobile-menu-open');
           document.body.style.overflow = '';

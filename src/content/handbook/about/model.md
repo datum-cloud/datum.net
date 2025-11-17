@@ -1,7 +1,7 @@
 ---
-title: Model
+title: How we make money
 sidebar:
-  label: Model
+  label: How we make money
   order: 4
 updatedDate: Nov 13, 2025
 authors: jacob

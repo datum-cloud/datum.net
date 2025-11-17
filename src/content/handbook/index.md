@@ -15,5 +15,5 @@ contents:
   - policy
 ---
 
-Welcome to Datum’s public handbook! This is a living document intended to help internal and external folks better understand our company: our values, beliefs, goals, and ways of working.
-*We believe in openness, clarity, and collaboration — so if something in this handbook can be improved or clarified, please speak up or open a pull request.*
+Welcome to Datum’s public handbook! This is a living document intended to help internal and external folks better understand our company: our values, goals, and ways of working.
+We believe in openness, clarity, and collaboration — so if something in this handbook can be improved or clarified, please hit us up or open a pull request. Thank you!

@@ -1,7 +1,7 @@
 ---
-title: How we Operate
+title: Working at Datum
 sidebar:
-  label: Culture
+  label: Working at Datum
   order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
@@ -10,7 +10,7 @@ meta:
   description: ""
 ---
 
-We’re a remote-first and open source company that believes in transparency and autonomy. Each team member is empowered to make decisions in their domain and drive projects forward.
+We’re a company that believes in transparency and autonomy. Each team member is empowered to make decisions in their domain and drive projects forward.
 
 ## Core principles:
 * Remote-first - We’re designed for distributed work across time zones
@@ -19,7 +19,7 @@ We’re a remote-first and open source company that believes in transparency and
 * Transparent by default - Things are open unless there’s a reason to keep it private
 
 We believe in respecting each other’s time, enabling deep focus, and building a culture where thoughtful communication beats instant responses. Here’s how we make it work: 
-* There’s a slack channel for everything and everyone 
+* There’s a slack channel for just about everything and everyone 
 * We respect time and focus. Async doesn’t mean always-on. 
 * Protect deep work and personal balance (no @channels here!) 
 * We have regularly scheduled syncs, but leave time for adhoc catchups

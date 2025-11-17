@@ -1,7 +1,7 @@
 ---
-title: Pricing strategy
+title: Pricing
 sidebar:
-  label: Pricing strategy
+  label: Pricing
   order: 4
 updatedDate: Nov 13, 2025
 authors: jacob
@@ -10,7 +10,7 @@ meta:
   description: ""
 ---
 
-We have outlined three tiers of service, based upon the following logic. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our pricing page or pricing API for the latest official details. 
+We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](https://www.datum.net/pricing/) for the latest official details. 
 
 **Datum for Builders** (Forever free)
 Our initial focus is to help a new class of builders get access to the core ‘internet superpowers’ for learning, integration, testing, and exploring new use cases. We also want to make their lives easier when it comes to troublesome bits like domains, certificates, and DNS. 

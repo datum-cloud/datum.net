@@ -1,5 +1,10 @@
 import fs from 'node:fs';
-import type { AstroConfig, AstroIntegration } from 'astro';
+import type {
+  AstroConfig,
+  AstroIntegration,
+  IntegrationResolvedRoute,
+  AstroIntegrationLogger,
+} from 'astro';
 
 const errorPrefix = '\x1b[31m';
 const infoPrefix = '\x1b[32m';
@@ -33,6 +38,7 @@ const writeSitemapFile = (filePath: string, entries: string[]) => {
 
 const createSitemapBuilderIntegration = (options?: SitemapOptions): AstroIntegration => {
   let config: AstroConfig;
+  let routes: IntegrationResolvedRoute[];
 
   return {
     name: 'SitemapBuilder',
@@ -40,8 +46,13 @@ const createSitemapBuilderIntegration = (options?: SitemapOptions): AstroIntegra
       'astro:config:done': async ({ config: cfg }) => {
         config = cfg;
       },
-
-      'astro:build:done': async ({ routes, pages }) => {
+      'astro:routes:resolved': (options: {
+        routes: IntegrationResolvedRoute[];
+        logger: AstroIntegrationLogger;
+      }) => {
+        routes = options.routes;
+      },
+      'astro:build:done': async ({ pages }) => {
         try {
           if (!config.site) {
             console.log(

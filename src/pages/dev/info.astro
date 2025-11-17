@@ -2,13 +2,6 @@
 export const prerender = false;
 import { dbConnect } from '@libs/postgres';
 
-const mode = process.env.MODE || import.meta.env.MODE;
-
-// only for development mode, to ease testing
-if (mode == 'production') {
-  return Astro.redirect('/');
-}
-
 /**
  * Database testing
  */
@@ -88,30 +81,25 @@ const sortedProcess = Object.keys(processEnv)
   .sort()
   .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {});
 
-return new Response(
-  JSON.stringify(
-    {
-      meta: sortedMeta,
-      process: sortedProcess,
-      nodeVersion: process.version,
-      platform: {
-        arch: process.arch,
-        platform: process.platform,
-        release: process.release,
-        uptime: process.uptime(),
-      },
-      database: {
-        info: psqlInfo,
-      },
-    },
-    null,
-    2
-  ),
-  {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }
-);
+const response = {
+  meta: sortedMeta,
+  process: sortedProcess,
+  nodeVersion: process.version,
+  platform: {
+    arch: process.arch,
+    platform: process.platform,
+    release: process.release,
+    uptime: process.uptime(),
+  },
+  database: {
+    info: psqlInfo,
+  },
+};
+
+return new Response(JSON.stringify(response, null, 2), {
+  status: 200,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 ---

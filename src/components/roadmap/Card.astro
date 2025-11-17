@@ -9,7 +9,7 @@ const issues = await roadmaps();
 ---
 
 {
-  issues &&
+  issues.length > 0 ? (
     Array.prototype.map.call(issues, (issue: RoadmapProps) => () => (
       <div class="roadmap-card">
         <div class="roadmap-card--content">
@@ -43,6 +43,11 @@ const issues = await roadmaps();
         </div>
       </div>
     ))
+  ) : (
+    <div class="fade-in--pure fade-in--pure--visible z-50 mx-auto flex flex-col items-center space-y-10 text-center md:max-w-124">
+      <div class="datum-text-2xl md:max-w-sm">No roadmap entries found.</div>
+    </div>
+  )
 }
 
 <script>

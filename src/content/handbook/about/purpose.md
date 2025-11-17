@@ -19,7 +19,7 @@ We believe that most people devote their time, energy, families, reputations and
 * We believe that “open” is better, software is the customer, and partners have real value.
 * We value grit, humility and hunger. 
 
-Focus & Niche
+## Focus & Niche
 The next thing we share is our [Hedgehog concept](https://www.jimcollins.com/concepts/the-hedgehog-concept.html), which was articulated by Jim Collins in his iconic book Good to Great. Similar to the Japanese concept of [ikigai](https://en.wikipedia.org/wiki/Ikigai), the Hedgehog concept is the intersection of three circles: 1) what you are deeply passionate about, 2) what you can be the best in the world at, and 3) what best drives your economic or resource engine.
 * **Our Purpose/Cause/Passion** - Helping 1k new clouds thrive in the age of AI.
 * **Our “best in the world” niche** - We unlock internet superpowers for builders

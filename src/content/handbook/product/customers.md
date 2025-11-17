@@ -1,7 +1,7 @@
 ---
-title: Customers
+title: Who we are building for
 sidebar:
-  label: Customers
+  label: Who we are building for
   order: 1
 updatedDate: Nov 13, 2025
 authors: jacob

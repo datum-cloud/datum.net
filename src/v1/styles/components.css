@@ -52,7 +52,7 @@
     @apply w-1/2 md:w-auto;
   }
   .footer-actions-section {
-    @apply flex flex-col items-center justify-between gap-4 md:col-span-4 md:flex-row md:items-end lg:col-span-1 lg:flex-col;
+    @apply flex flex-col items-center justify-between gap-4 md:col-span-4 md:items-end lg:col-span-1 lg:flex-col;
   }
 
   .footer-copyright {

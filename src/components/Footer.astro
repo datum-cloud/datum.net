@@ -127,21 +127,29 @@ const navData = navigation as NavData;
         </div>
         <!-- Social Links Section -->
         <div class="footer-actions-section">
-          <div class="space-x-3">
-            {
-              navData.social.map((item) => (
-                <Button
-                  class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
-                  icon={{ name: item.icon, size: 'md' }}
-                  iconPosition="left"
-                  iconClass="stroke-1.5"
-                  target={item.isExternal ? '_blank' : '_self'}
-                  href={item.href}
-                  text=""
-                  title={item.text}
-                />
-              ))
-            }
+          <div class="w-full space-y-3">
+            <div class="flex w-full justify-center space-x-3 md:justify-end-safe">
+              {
+                navData.social.map((item) => (
+                  <Button
+                    class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
+                    icon={{ name: item.icon, size: 'md' }}
+                    iconPosition="left"
+                    iconClass="stroke-1.5"
+                    target={item.isExternal ? '_blank' : '_self'}
+                    href={item.href}
+                    text=""
+                    title={item.text}
+                  />
+                ))
+              }
+            </div>
+            <p
+              class="footer-copyright w-full text-center text-nowrap md:text-right [&_a]:inline-block"
+            >
+              <a href="/legal/terms/" class="footer-nav-link">Terms of Service</a>,
+              <a href="/legal/privacy/" class="footer-nav-link">Privacy Policy</a>
+            </p>
           </div>
 
           <p class="footer-copyright">

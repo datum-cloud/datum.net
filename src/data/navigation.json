@@ -36,8 +36,7 @@
             { "icon": "default", "text": "About", "href": "/about/" },
             { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
             { "icon": "book-image", "text": "Blog", "href": "/blog/" },
-            { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" },
-            { "icon": "paintbrush", "text": "Design Assets", "href": "/brand/" }
+            { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" }
           ]
         }
       ]

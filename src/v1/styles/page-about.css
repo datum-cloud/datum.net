@@ -128,7 +128,7 @@
   }
 
   .profile-modal--meta-item p {
-    @apply datum-text-base m-0 opacity-80;
+    @apply datum-text-base m-0 text-pretty opacity-80;
   }
 
   /* Modal responsive styles */

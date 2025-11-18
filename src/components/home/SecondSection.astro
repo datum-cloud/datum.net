@@ -9,17 +9,18 @@ const { content } = Astro.props as ContentProps;
 ---
 
 <section
+  id="under-the-hood"
   class="bg-glacier-mist-800 section--block overflow-clip pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-28 lg:pb-36 xl:pt-40 xl:pb-40"
 >
-  <div class="max-width flex max-w-243 align-middle">
+  <div class="max-width flex max-w-264 align-middle">
     <!-- Main content container -->
     <div
-      class="fade-in--pure relative z-10 m-auto mb-20 grid max-w-full grid-cols-1 justify-between gap-10 md:grid-cols-2 md:gap-30 xl:gap-26"
+      class="fade-in--pure relative z-10 m-auto mb-20 flex flex-col gap-10 md:flex-row md:gap-18 xl:gap-20"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
       <!-- Left content: What does good look like? -->
-      <div class="space-y-10 text-center md:text-left">
+      <div class="max-w-full space-y-10 text-center md:max-w-60 md:text-left lg:max-w-99">
         <h2 class="datum-text-8xl">{content.data.title}</h2>
         <span class="datum-text-lg">
           <p>{content.body}</p>
@@ -27,13 +28,23 @@ const { content } = Astro.props as ContentProps;
       </div>
 
       <!-- Right content: Numbered list -->
-      <div>
+      <div class="flex-1">
         {
           content.data.items ? (
-            <ol class="ordered-list">
-              {content.data.items.map((item) => (
-                <li set:html={item} />
-              ))}
+            <ol class="ordered-list grid grid-cols-2 gap-5">
+              {content.data.items.map((item) => {
+                const parts = item.split(':');
+                const title = parts[0]?.trim() || '';
+                const description = parts.slice(1).join(':').trim();
+                return (
+                  <li>
+                    <div class="flex flex-col gap-3.5">
+                      <div class="item-title">{title}</div>
+                      {description && <div class="item-description">{description}</div>}
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
           ) : (
             ''

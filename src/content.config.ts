@@ -195,7 +195,14 @@ const handbooks = defineCollection({
         .optional(),
       featuredImage: image().optional(),
       meta: metaSchema,
-      contents: z.array(z.string()).optional(),
+      contents: z
+        .array(
+          z.object({
+            slug: z.string(),
+            label: z.string(),
+          })
+        )
+        .optional(),
     }),
 });
 

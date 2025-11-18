@@ -43,7 +43,7 @@
   }
 
   .handbook-toc {
-    @apply border-glacier-mist-900 relative hidden w-full flex-col gap-y-4 border-l-1 pt-9 pb-12 pl-7 md:mb-0 md:max-w-60.25 lg:flex;
+    @apply border-glacier-mist-900 relative hidden w-full flex-col gap-y-4 border-l pt-9 pb-12 pl-7 md:mb-0 md:max-w-60.25 md:min-w-60.25 lg:flex;
 
     .article-aside {
       @apply mb-6;
@@ -55,8 +55,8 @@
   }
 
   .handbook-sidebar {
-    @apply relative w-full flex-col gap-y-4 pt-9 pr-0 pb-0 md:mb-0 md:max-w-64.75 md:pr-7 md:pb-12;
-    @apply border-glacier-mist-900 border-r-0 md:border-r-1;
+    @apply relative w-full flex-col gap-y-4 pt-9 pr-0 pb-0 md:mb-0 md:max-w-64.75 md:min-w-64.75 md:pr-7 md:pb-12;
+    @apply border-glacier-mist-900 border-r-0 md:border-r;
     @apply hidden md:flex;
   }
 
@@ -106,7 +106,7 @@
   }
 
   .handbook-sidebar .category-title {
-    @apply datum-docs-sidebar-headings font-medium;
+    @apply datum-docs-sidebar-headings font-medium text-nowrap;
   }
 
   .handbook-sidebar .category-title--active {

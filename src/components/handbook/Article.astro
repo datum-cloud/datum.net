@@ -1,47 +1,45 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import Aside from '@components/Aside.astro';
 import TableOfContents from '@components/TableOfContents.astro';
-import type { ArticleProps } from '@/src/types/common';
+
 import type { MarkdownHeading } from 'astro';
-import { getEntry } from 'astro:content';
-import { Breadcrumbs } from 'astro-breadcrumbs';
+import type { SidebarItems } from '@/src/types/common';
 
-interface Props extends ArticleProps {
-  headings?: MarkdownHeading[];
-}
+const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+const handbookIndex = await getEntry('handbooks', 'index');
 
-const {
-  articleId: propArticleId,
-  showSidebar = true,
-  class: className,
-  headings = [],
-} = Astro.props as Props;
+const { articleId: propArticleId, showSidebar = true, class: className } = Astro.props;
 
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
-const articleId = propArticleId || urlParam || 'company/why-we-exist';
+const articleId = propArticleId || urlParam || 'index';
 
-// ordering categories
-const handbookIndex = await getEntry('handbooks', 'index');
-const orderedCategories = handbookIndex?.data.contents;
-
-const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+let mainArticleEntry;
 
 // Get the specified article for main content display
-const mainArticleEntry =
-  handbooks.find((h) => h.id === articleId) ||
-  handbooks.find((h) => h.id === 'company/why-we-exist');
+if (articleId === 'index') {
+  mainArticleEntry = handbookIndex;
+} else {
+  mainArticleEntry = handbooks.find((h) => h.id === articleId);
+}
 
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 
-// Create breadcrumbs manually based on article ID
-let breadcrumbData = [];
+/**
+ * Headings extraction for the main article
+ */
+const headings: MarkdownHeading[] = mainArticle ? mainArticle.headings : [];
 
-// Add home/handbook as first items
+/**
+ * Create breadcrumbs manually based on article ID
+ * since Astro-Breadcrumbs doesn't support dynamic routes well.
+ */
+let breadcrumbData = [];
 breadcrumbData.push(
   {
     text: 'Home',
@@ -61,14 +59,16 @@ breadcrumbData.push(
 // Extract path segments from article ID
 const pathSegments = articleId.split('/').filter(Boolean);
 
-if (pathSegments.length > 0) {
+if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
   for (let i = 0; i < pathSegments.length; i++) {
     const segment = pathSegments[i];
 
     // Skip the last segment as it will be the current page title
     if (i < pathSegments.length - 1) {
       // Format the segment title (capitalize words, replace dashes with spaces)
-      const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      const segmentTitle = segment
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
 
       breadcrumbData.push({
         text: segmentTitle,
@@ -83,27 +83,86 @@ if (pathSegments.length > 0) {
       href: '/handbook/' + articleId,
     });
   }
+} else {
+  breadcrumbData = [];
 }
+
+/**
+ * Build items structure from categories and handbooks data
+ * to pass to Sidebar component
+ */
+const categories = handbookIndex?.data.contents;
+let items: {
+  [key: string]: SidebarItems;
+} = {};
+
+const getCategory = (url: string) => {
+  let urlSplit = url.split('/');
+  return urlSplit[0];
+};
+
+handbooks.forEach((collection) => {
+  if (!collection.data.draft) {
+    let categorySlug = getCategory(collection.id);
+
+    if (categories) {
+      const indexBySlug = categories?.findIndex((cat) => cat.slug === categorySlug);
+      if (indexBySlug === -1 || indexBySlug === undefined) {
+        console.log(
+          'Category:%s not found in list. Available categories:%O',
+          categorySlug,
+          categories
+        );
+        return;
+      }
+      if (items[indexBySlug] && items[indexBySlug].childs) {
+        items[indexBySlug].childs.push({
+          slug: collection.id,
+          label: collection.data.sidebar.label || collection.data.title,
+          title: collection.data.title,
+          order: collection.data.sidebar.order || 0,
+        });
+        items[indexBySlug].childs.sort(function (a, b) {
+          return a.order - b.order;
+        });
+      } else {
+        try {
+          items[indexBySlug] = {
+            slug: categories[indexBySlug].slug,
+            label: categories[indexBySlug].label,
+            childs: [
+              {
+                slug: collection.id,
+                label: collection.data.sidebar.label || collection.data.title,
+                title: collection.data.title,
+                order: collection.data.sidebar.order || 0,
+              },
+            ],
+          };
+        } catch (error) {
+          console.log(
+            'Error creating category for slug:%s with index:%d',
+            categorySlug,
+            indexBySlug,
+            error
+          );
+        }
+      }
+    }
+  }
+});
 ---
 
 <section
   class:list={[
-    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 z-70 overflow-visible border-b-1',
+    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 z-70 overflow-visible border-b',
     className,
   ]}
   id="handbook-article-container"
 >
   <div class="max-width">
     <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
-      {
-        showSidebar && (
-          <Sidebar
-            currentArticleId={articleId}
-            handbooks={handbooks}
-            categories={orderedCategories}
-          />
-        )
-      }
+      {showSidebar && <Sidebar selectedId={articleId} items={items} />}
 
       {/* Main Content Area */}
       <article
@@ -113,32 +172,37 @@ if (pathSegments.length > 0) {
         data-reveal-delay="100"
       >
         <header class="article-header">
-          <div>
-            <Breadcrumbs
-              mainBemClass="c-breadcrumbs"
-              linkTextFormat="sentence"
-              crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-            >
-              <svg
-                slot="index"
-                aria-label="Home Page"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-            </Breadcrumbs>
-          </div>
+          {
+            breadcrumbData.length > 0 && (
+              <div>
+                <Breadcrumbs
+                  mainBemClass="c-breadcrumbs"
+                  linkTextFormat="sentence"
+                  crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                >
+                  <svg
+                    slot="index"
+                    aria-label="Home Page"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </Breadcrumbs>
+              </div>
+            )
+          }
+
           <h1 class="article-title">
-            {mainArticleEntry?.data.title || 'Why does Datum exist?'}
+            {mainArticleEntry?.data.title}
           </h1>
         </header>
 
@@ -155,8 +219,13 @@ if (pathSegments.length > 0) {
                   <p>Article entry found but content failed to render.</p>
                 ) : (
                   <p>
-                    Article entry not found. Available articles:{' '}
-                    {handbooks.map((h) => h.id).join(', ')}
+                    Available articles:
+                    {Object.values(handbooks).map((handbook) => (
+                      <div>
+                        <strong>{handbook.data.title}:</strong>{' '}
+                        <a href={`/handbook/${handbook.id}`}>{handbook.id}</a>
+                      </div>
+                    ))}
                   </p>
                 )}
               </div>
@@ -165,11 +234,11 @@ if (pathSegments.length > 0) {
         </div>
 
         {/* Navigation */}
-        <PageNav currentArticleId={articleId} categories={orderedCategories} />
+        <PageNav currentArticleId={articleId} categories={categories} items={items} />
       </article>
 
       <aside class="handbook-toc">
-        <Aside title="About the Handbooks" class="small">
+        <Aside title="About the Handbook" class="small">
           <p>
             This is our guide to understanding our company foundations: our values, beliefs, and
             goals. Feel free to reach out if there is something we've missed!.

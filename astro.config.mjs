@@ -12,6 +12,7 @@ import playformCompress from '@playform/compress';
 
 import glossary from './src/libs/server/glossary.ts';
 import sitemap from './src/libs/server/sitemap.ts';
+import announcement from './src/libs/server/announcement.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -30,6 +31,16 @@ export default defineConfig({
     layout: 'constrained',
   },
   integrations: [
+    announcement({
+      show: false,
+      label: "We've Launched!",
+      text: 'Introducing our company, $13.6M in funding, and core features',
+      href: '',
+      icon: {
+        name: 'arrow-right',
+        size: 'sm',
+      },
+    }),
     robotsTxt({
       sitemap: false,
       policy: [

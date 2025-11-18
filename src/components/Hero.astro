@@ -4,6 +4,8 @@ import { marked } from 'marked';
 
 import Nav from '@components/Nav.astro';
 import Icon from '@components/Icon.astro';
+import Announcement from '@components/Announcement.astro';
+
 import type { HeroProps } from '@/src/types/common';
 
 const {
@@ -18,6 +20,7 @@ const {
 ---
 
 <header class:list={['hero--main', className]}>
+  <Announcement />
   <Nav />
   {
     !hideContent && (

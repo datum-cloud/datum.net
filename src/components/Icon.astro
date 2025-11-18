@@ -24,6 +24,8 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <DiscordIcon class={`${sizeClass} ${className}`} />
   ) : name === 'grafana' ? (
     <GrafanaIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'close' ? (
+    <CloseIcon class={`${sizeClass} ${className}`} />
   ) : name === 'youtube' ? (
     <YoutubeIcon class={`${sizeClass} ${className}`} />
   ) : name === 'linkedin' ? (

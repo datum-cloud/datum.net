@@ -1,6 +1,6 @@
-declare module '@alpinejs/collapse';
-
 /// <reference types="astro/client" />
+
+declare module '@alpinejs/collapse';
 
 interface Window {
   Alpine: import('alpinejs').Alpine;
@@ -8,7 +8,7 @@ interface Window {
 
 declare namespace App {
   interface Locals {
-    starCount: () => string | number;
+    starCount: () => string;
   }
 }
 

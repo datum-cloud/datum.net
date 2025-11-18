@@ -437,4 +437,29 @@
   .toc-link.active {
     @apply text-canyon-clay---links font-medium;
   }
+
+  /* announcement */
+
+  .announcement {
+    @apply datum-app-body relative z-40 mb-2.5 flex items-center justify-center gap-4 px-7 py-[15.5px];
+    @apply bg-blush-quartz;
+
+    label {
+      @apply rounded-md px-2 py-0.5 font-semibold text-nowrap;
+      @apply bg-midnight-fjord text-white;
+    }
+
+    a {
+      @apply flex items-center gap-2 text-balance transition-colors duration-200 ease-out;
+      @apply hover:cursor-pointer;
+
+      @apply hover:opacity-80;
+    }
+
+    .announcement-close {
+      @apply opacity-20 transition-opacity duration-200 hover:cursor-pointer;
+      @apply hover:opacity-100;
+      @apply absolute top-1/2 right-3 -translate-y-1/2;
+    }
+  }
 }

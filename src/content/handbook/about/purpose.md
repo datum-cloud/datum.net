@@ -2,7 +2,7 @@
 title: Our story
 sidebar:
   label: Our story
-  order: 1
+  order: 2
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

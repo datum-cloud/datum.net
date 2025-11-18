@@ -55,9 +55,15 @@ export interface ArticleProps {
   class?: string;
 }
 
+export interface SidebarItems {
+  slug: string;
+  label: string;
+  childs?: { slug: string; label: string; title?: string; order: number }[];
+}
+
 export interface SidebarProps {
   selectedId: string;
-  items: { slug: string; label: string; childs?: { slug: string; label: string }[] }[];
+  items: SidebarItems[];
 }
 
 export interface ContentProps {

@@ -3,7 +3,7 @@ title: Overview
 slug: about
 sidebar:
   label: Overview
-  order: 0
+  order: 1
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

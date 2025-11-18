@@ -1,13 +1,13 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import Aside from '@components/Aside.astro';
 import TableOfContents from '@components/TableOfContents.astro';
-// import type { ArticleProps } from '@/src/types/common';
+
 import type { MarkdownHeading } from 'astro';
-import { getEntry } from 'astro:content';
-import { Breadcrumbs } from 'astro-breadcrumbs';
+import type { SidebarItems } from '@/src/types/common';
 
 const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 const handbookIndex = await getEntry('handbooks', 'index');
@@ -18,8 +18,8 @@ const { articleId: propArticleId, showSidebar = true, class: className } = Astro
 const urlParam = Astro.url.searchParams.get('article');
 const articleId = propArticleId || urlParam || 'index';
 
-console.log('=== articleId', articleId);
 let mainArticleEntry;
+
 // Get the specified article for main content display
 if (articleId === 'index') {
   mainArticleEntry = handbookIndex;
@@ -59,7 +59,7 @@ breadcrumbData.push(
 // Extract path segments from article ID
 const pathSegments = articleId.split('/').filter(Boolean);
 
-if (pathSegments.length > 0) {
+if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
   for (let i = 0; i < pathSegments.length; i++) {
     const segment = pathSegments[i];
 
@@ -83,7 +83,12 @@ if (pathSegments.length > 0) {
       href: '/handbook/' + articleId,
     });
   }
+} else {
+  console.log('-===masuk');
+  breadcrumbData = [];
 }
+
+console.log('=== breadcrumbData: ', pathSegments);
 
 /**
  * Build items structure from categories and handbooks data
@@ -91,11 +96,7 @@ if (pathSegments.length > 0) {
  */
 const categories = handbookIndex?.data.contents;
 let items: {
-  [key: string]: {
-    slug: string;
-    label: string;
-    childs: { slug: string; label: string; order: number }[];
-  };
+  [key: string]: SidebarItems;
 } = {};
 
 const getCategory = (url: string) => {
@@ -117,10 +118,11 @@ handbooks.forEach((collection) => {
         );
         return;
       }
-      if (items[indexBySlug]) {
+      if (items[indexBySlug] && items[indexBySlug].childs) {
         items[indexBySlug].childs.push({
           slug: collection.id,
           label: collection.data.sidebar.label || collection.data.title,
+          title: collection.data.title,
           order: collection.data.sidebar.order || 0,
         });
         items[indexBySlug].childs.sort(function (a, b) {
@@ -135,6 +137,7 @@ handbooks.forEach((collection) => {
               {
                 slug: collection.id,
                 label: collection.data.sidebar.label || collection.data.title,
+                title: collection.data.title,
                 order: collection.data.sidebar.order || 0,
               },
             ],
@@ -172,30 +175,34 @@ handbooks.forEach((collection) => {
         data-reveal-delay="100"
       >
         <header class="article-header">
-          <div>
-            <Breadcrumbs
-              mainBemClass="c-breadcrumbs"
-              linkTextFormat="sentence"
-              crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-            >
-              <svg
-                slot="index"
-                aria-label="Home Page"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-            </Breadcrumbs>
-          </div>
+          {
+            breadcrumbData.length > 0 && (
+              <div>
+                <Breadcrumbs
+                  mainBemClass="c-breadcrumbs"
+                  linkTextFormat="sentence"
+                  crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                >
+                  <svg
+                    slot="index"
+                    aria-label="Home Page"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </Breadcrumbs>
+              </div>
+            )
+          }
 
           <h1 class="article-title">
             {mainArticleEntry?.data.title}
@@ -230,11 +237,11 @@ handbooks.forEach((collection) => {
         </div>
 
         {/* Navigation */}
-        <PageNav currentArticleId={articleId} categories={categories} />
+        <PageNav currentArticleId={articleId} categories={categories} items={items} />
       </article>
 
       <aside class="handbook-toc">
-        <Aside title="About the Handbooks" class="small">
+        <Aside title="About the Handbook" class="small">
           <p>
             This is our guide to understanding our company foundations: our values, beliefs, and
             goals. Feel free to reach out if there is something we've missed!.

@@ -2,7 +2,7 @@
 title: Trends
 sidebar:
   label: Trends
-  order: 2
+  order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

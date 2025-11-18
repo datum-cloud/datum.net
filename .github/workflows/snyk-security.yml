@@ -15,9 +15,9 @@ jobs:
     with:
       command: "test"
       fail-on-issues: false
-      severity-threshold: "high"
+      severity-threshold: "low"
       args: "--report --strict-out-of-sync=false"
       upload-sarif: false
-      debug: true
+      debug: false
       snyk-org: ${{ vars.SNYK_ORG }}
     secrets: inherit

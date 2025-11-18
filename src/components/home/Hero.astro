@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import Illustration from '@v1/assets/images/home-illustration.png';
+import Illustration from '@v1/assets/images/home-illustration.webp';
 import Nav from '@components/Nav.astro';
 import Button from '@components/Button.astro';
 import type { HeroProps } from '@/src/types/common';
@@ -10,7 +10,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 ---
 
 <section class:list={['hero--main z-11', className]}>
-  <div class="bg-midnight-fjord aspect-auto h-auto w-full md:aspect-19/9">
+  <div class="bg-midnight-fjord aspect-auto h-auto w-full">
     <Nav />
     {/* Hero Main Content */}
     <div
@@ -55,7 +55,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         loading="eager"
         fetchpriority="high"
         alt="Hero Illustration"
-        class="fade-in--pure h-auto w-full translate-y-[3%] object-cover md:object-contain"
+        class="fade-in--pure h-auto w-full translate-y-[7%] object-cover md:object-contain"
         data-reveal="fade-in--pure--visible"
         data-reveal-delay="300"
         data-reveal-immediate="true"

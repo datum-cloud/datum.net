@@ -1,7 +1,7 @@
 ---
-title: Incident response policy
+title: Incident disclosure policy
 sidebar:
-  label: Incident response policy
+  label: Incident disclosure policy
   order: 5
 updatedDate: Nov 13, 2025
 authors: jacob
@@ -26,8 +26,6 @@ We will disclose a security vulnerability when a fix is available and any of the
 We will notify users directly about a security vulnerability when we can confirm that the Organization was affected, and any of the following is true:
 * User action is needed to fix the vulnerability, and it is a critical or high impact vulnerability; or
 * We can confirm that Organization metadata or data was visible to an unauthorized party.
-
----
 
 ## How We Notify Users
 To disclose security vulnerabilities (broad audience), Datum publishes security bulletins publicly at https://www.datum.net/blog/. These can be consumed directly, via RSS readers or via social media bot accounts.

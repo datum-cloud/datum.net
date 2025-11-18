@@ -1,7 +1,7 @@
 ---
-title: Risk assessment Policy
+title: Risk assessment policy
 sidebar:
-  label: Risk assessment Policy
+  label: Risk assessment policy
   order: 2
 updatedDate: Nov 13, 2025
 authors: jacob

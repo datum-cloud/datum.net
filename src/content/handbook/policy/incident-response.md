@@ -1,7 +1,7 @@
 ---
-title: Incident Disclosure policy
+title: Incident response policy
 sidebar:
-  label: Incident Disclosure policy
+  label: Incident response policy
   order: 6
 updatedDate: Nov 13, 2025
 authors: jacob
@@ -10,7 +10,7 @@ meta:
   description: ""
 ---
 
-Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](../technical/incidents/).
+Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](../../technical/incidents/).
 
 The following minimum standards apply to Datum’s assets as managed by employees, contractors and vendors. These recommendations represent the recommended minimum efforts necessary for incident detection and response.
 
@@ -31,14 +31,14 @@ All employees should watch for potentially suspicious activities, including:
 
 Datum regularly reviews logs to detect and track attempted intrusions and other suspicious activity. These include git, cloud, networking, SaaS tools, and other infrastructure logs.
 
-The Security Team:
+### The Security Team:
 * Ensures that a very high level of logging is enabled
 * Checks logs regularly for suspicious activities and entries
 * Looks for missing time spans in logs
 * Checks for repeated login failures or account lockouts
 * Investigates unexpected system reboots
 
-Incident Response
+## Incident Response
 Datum’s Security Team reviews and responds to potential third-party reports of security issues sent to security@datum.net promptly. If a suspected incident is detected, it should be reported immediately. We respond to reported incidents, and resolve and determine impact as soon as possible. We aim to remediate incidents as soon as possible.
 
-Confirmed incidents may be disclosed publicly per our [disclosure policy](incident-disclosure/).
+Confirmed incidents may be disclosed publicly per our [disclosure policy](../incident-disclosure/).

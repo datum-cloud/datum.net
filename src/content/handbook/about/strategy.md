@@ -1,7 +1,7 @@
 ---
-title: Strategy
+title: Our strategy
 sidebar:
-  label: Strategy
+  label: Our strategy
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob

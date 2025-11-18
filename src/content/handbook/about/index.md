@@ -1,5 +1,6 @@
 ---
 title: Overview
+slug: 'about'
 sidebar:
   label: Overview
   order: 0

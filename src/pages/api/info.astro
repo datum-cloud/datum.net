@@ -84,15 +84,14 @@ const sortedMeta = Object.keys(metaEnv)
   .reduce((acc, key) => ({ ...acc, [key]: metaEnv[key] }), {});
 
 const processEnv = filterSensitiveVars(process.env);
-const sortedProcess = Object.keys(processEnv)
-  .sort()
-  .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {});
 
 return new Response(
   JSON.stringify(
     {
       meta: sortedMeta,
-      process: sortedProcess,
+      process: Object.keys(processEnv)
+        .sort()
+        .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {}),
       nodeVersion: process.version,
       platform: {
         arch: process.arch,

@@ -61,6 +61,10 @@ npm run dev
 └── tsconfig.json       # TypeScript configuration
 ```
 
+### Handbook
+
+Main file: src/content/handbook/index.md
+
 ## Docker Setup
 
 ### Prerequisites

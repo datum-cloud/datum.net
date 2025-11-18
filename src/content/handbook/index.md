@@ -7,12 +7,18 @@ sidebar:
 meta:
   title: "Datum Handbook: Open Source Cloud for AI & Network Infrastructure"
 contents:
-  - about
-  - product
-  - technical
-  - culture
-  - how-to-help
-  - policy
+  - slug: about
+    label: Company
+  - slug: product
+    label: "What We’re Building"
+  - slug: technical
+    label: How We Build Software
+  - slug: culture
+    label: How We Operate
+  - slug: "how-to-help"
+    label: How You Can Help
+  - slug: policy
+    label: Compliance
 ---
 
 Welcome to Datum’s public handbook! This is a living document intended to help internal and external folks better understand our company: our values, goals, and ways of working.

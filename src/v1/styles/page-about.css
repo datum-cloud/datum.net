@@ -1,0 +1,141 @@
+@import './base.css';
+
+@layer components {
+  /* People Card Styles */
+  .people--card {
+    @apply text-midnight-fjord flex w-full cursor-pointer flex-col border-0 bg-transparent p-0 text-left transition-transform duration-200 ease-in-out;
+  }
+
+  .people--card:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .people--card:focus-visible {
+    @apply outline-glacier-mist-700 rounded outline outline-offset-4;
+  }
+
+  .people--card-avatar {
+    @apply relative mb-4 aspect-square w-full transition-shadow duration-100 ease-in-out;
+  }
+
+  .people--card:hover .people--card-avatar {
+    @apply shadow-sm;
+  }
+
+  .people--card-founder-label {
+    @apply bg-blush-quartz datum-text-sm text-canyon-clay---links absolute -right-2 -bottom-2 inline-flex -rotate-5 rounded-[4px] px-2 py-1;
+  }
+
+  .people--card-name {
+    @apply datum-text-base mb-1 block text-left font-semibold;
+  }
+
+  .people--card-title {
+    @apply datum-text-base text-left;
+  }
+
+  .people--card-title p {
+    @apply m-0;
+  }
+
+  /* Profile Modal Styles */
+  profile-modal {
+    @apply contents;
+  }
+
+  profile-modal dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply max-width mx-auto my-auto h-max min-h-80 w-[90%] max-w-246.5;
+    @apply max-h-[calc(100vh-8rem)];
+    @apply bg-transparent;
+  }
+
+  profile-modal dialog[open] {
+    @apply flex;
+  }
+
+  profile-modal dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  .profile-modal--frame {
+    @apply relative flex w-full grow flex-col overflow-auto rounded-[9px];
+  }
+
+  .profile-modal--close {
+    @apply absolute top-3 right-3 z-10;
+    @apply cursor-pointer border p-0 outline-0;
+    @apply transition-all duration-200 ease-in-out;
+    @apply border-0 bg-transparent;
+    @apply text-app---dark---utility-2;
+  }
+
+  .profile-modal--close-icon {
+    @apply h-[17px]! w-[17px]!;
+  }
+
+  .profile-modal--close:hover {
+    @apply text-white/30;
+  }
+
+  .profile-modal--content {
+    @apply text-midnight-fjord mx-auto flex w-full flex-col bg-white md:flex-row;
+  }
+
+  /* First Row - Avatar on left, Info on right */
+  .profile-modal--row-first {
+    @apply flex flex-col;
+    @apply border-glacier-mist-900 border-b;
+  }
+
+  /* Second Row - Main Content Grid */
+  .profile-modal--row-second {
+    @apply text-glacier-mist-700 bg-midnight-fjord flex w-full flex-col gap-0 px-12 py-10;
+  }
+
+  .profile-modal--avatar {
+    @apply w-full overflow-hidden md:w-84 lg:w-101.5;
+  }
+
+  .profile-modal--avatar img {
+    @apply size-auto w-full object-cover md:w-84 lg:w-101.5;
+  }
+
+  .profile-modal--info {
+    @apply flex flex-col gap-3;
+  }
+
+  .profile-modal--info-header {
+    @apply flex flex-col gap-2 p-8;
+
+    h2 {
+      @apply datum-text-lg m-0 font-semibold;
+    }
+
+    p {
+      @apply datum-text-lg m-0;
+    }
+  }
+
+  .profile-modal--meta-item {
+    @apply border-app---dark---utility-1 flex flex-col gap-4 border-b;
+    @apply last:border-b-0;
+    @apply py-6 first:pt-0 last:pb-0;
+  }
+
+  .profile-modal--meta-item label {
+    @apply datum-text-base m-0;
+  }
+
+  .profile-modal--meta-item p {
+    @apply datum-text-base m-0 text-pretty opacity-80;
+  }
+
+  /* Modal responsive styles */
+  @media (min-width: 40rem) {
+    /* Global modal state */
+    [data-profile-modal-open] {
+      @apply overflow-hidden;
+    }
+  }
+}

@@ -68,7 +68,7 @@ const icon = 'user';
 <Layout
   title={`${author.data.name} - Author`}
   description={author.data.bio}
-  bodyClass="author-page"
+  bodyClass={`page-author page-author--${slug}`}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />

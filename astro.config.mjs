@@ -10,7 +10,8 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
-import glossary from './src/libs/server/glossary.js';
+import glossary from './src/libs/server/glossary.ts';
+import sitemap from './src/libs/server/sitemap.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -30,8 +31,7 @@ export default defineConfig({
   },
   integrations: [
     robotsTxt({
-      sitemap: true,
-      sitemapBaseFileName: 'sitemap',
+      sitemap: false,
       policy: [
         {
           userAgent: '*',
@@ -156,6 +156,18 @@ export default defineConfig({
     glossary({
       source: 'docs/docs/glossary.mdx',
       contentDir: 'docs',
+    }),
+    sitemap({
+      exclude: [
+        '404',
+        'auth/callback',
+        'auth/login',
+        'api/info',
+        'waitlist',
+        'request-access',
+        'authors/jacob-smith/1',
+        'authors/zac-smith/1',
+      ],
     }),
     playformCompress({
       CSS: true,

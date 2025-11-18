@@ -1,0 +1,65 @@
+/* FAQ Component Styles */
+
+.faq-list {
+  @apply flex flex-col gap-2 md:gap-4 lg:gap-5;
+}
+
+.faq-item {
+  @apply border-midnight-fjord border-t;
+}
+
+.faq-item--toggle {
+  @apply flex w-full items-start justify-between gap-2.5 py-6 text-left;
+  @apply transition-colors duration-200;
+  @apply hover:cursor-pointer hover:opacity-80;
+}
+
+.faq-item--question {
+  @apply datum-text-lg text-midnight-fjord flex-1 font-medium;
+}
+
+.faq-item--icon {
+  @apply relative flex h-6 w-6 flex-shrink-0 items-center justify-center;
+}
+
+.faq-item--icon svg {
+  @apply text-midnight-fjord absolute inset-0;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
+  transform-origin: center;
+}
+
+/* Plus icon - visible by default, hidden when expanded */
+.faq-item--icon-plus {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+[aria-expanded='true'] .faq-item--icon-plus {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+/* Minus icon - hidden by default, visible when expanded */
+.faq-item--icon-minus {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+[aria-expanded='true'] .faq-item--icon-minus {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.faq-item--content {
+  @apply overflow-hidden;
+}
+
+.faq-item--content-wrapper {
+  @apply text-midnight-fjord datum-text-base pb-6;
+}
+
+.faq-item--content-wrapper p:not(:last-child) {
+  @apply mb-4;
+}

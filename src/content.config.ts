@@ -76,6 +76,16 @@ const about = defineCollection({
           z.object({
             img: image().optional(),
             alt: z.string().optional(),
+            url: z.string().optional(),
+          })
+        )
+        .optional(),
+      investors: z
+        .array(
+          z.object({
+            img: image().optional(),
+            alt: z.string().optional(),
+            url: z.string().optional(),
           })
         )
         .optional(),
@@ -144,6 +154,9 @@ const authors = defineCollection({
           linkedin: z.string().optional(),
         })
         .optional(),
+      tick: z.string().optional(),
+      surprising: z.string().optional(),
+      weekends: z.string().optional(),
     }),
 });
 
@@ -195,7 +208,14 @@ const handbooks = defineCollection({
         .optional(),
       featuredImage: image().optional(),
       meta: metaSchema,
-      contents: z.array(z.string()).optional(),
+      contents: z
+        .array(
+          z.object({
+            slug: z.string(),
+            label: z.string(),
+          })
+        )
+        .optional(),
     }),
 });
 
@@ -256,6 +276,44 @@ const features = defineCollection({
     }),
 });
 
+// Define pricing collections
+const pricing = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/pricing' }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      description: z.string(),
+      order: z.number().optional().default(0),
+      price: z
+        .object({
+          badge: z.string().optional(),
+          prefix: z.string().optional(),
+          amount: z.string().optional(),
+          suffix: z.string().optional(),
+          note: z.string().optional(),
+        })
+        .optional(),
+      cta: z
+        .object({
+          label: z.string(),
+          href: z.string().optional(),
+          class: z.string().optional(),
+          isExternal: z.boolean().optional(),
+        })
+        .optional(),
+      featureGroups: z
+        .array(
+          z.object({
+            title: z.string().optional(),
+            items: z.array(z.string()),
+          })
+        )
+        .optional(),
+      meta: metaSchema,
+    }),
+});
+
 // Define huddles collections
 const huddles = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/huddles' }),
@@ -274,6 +332,18 @@ const huddles = defineCollection({
     }),
 });
 
+// Define FAQ collections
+const faq = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/faq' }),
+  schema: () =>
+    z.object({
+      question: z.string(),
+      order: z.number().optional().default(0),
+      category: z.string().optional(),
+      draft: z.boolean().optional().default(false),
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -284,7 +354,9 @@ export const collections = {
   handbooks,
   changelog,
   features,
+  pricing,
   huddles,
+  faq,
   docs: defineCollection({
     loader: docsLoader(),
     schema: docsSchema({

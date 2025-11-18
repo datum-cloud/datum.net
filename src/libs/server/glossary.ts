@@ -211,12 +211,12 @@ async function buildGlossary(options: GlossaryOptions) {
       return;
     }
   });
-  console.log(`\n%sGlossary applied to %d files.%s`, infoPrefix, files.length, resetPrefix);
+  console.log(`%sGlossary applied to %d files.%s\n`, infoPrefix, files.length, resetPrefix);
 }
 
 const createGlossaryIntegration = (options: GlossaryOptions): AstroIntegration => {
   return {
-    name: 'reader',
+    name: 'GlosarryBuilder',
     hooks: {
       'astro:build:done': async () => {
         try {

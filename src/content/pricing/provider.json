@@ -1,0 +1,30 @@
+{
+  "title": "Provider",
+  "subtitle": "Datum for Alt Clouds",
+  "description": "A high-touch offering designed to help modern service providers win.",
+  "order": 3,
+  "price": {
+    "amount": "$2,500",
+    "suffix": "/ month (probably!)"
+  },
+  "cta": {
+    "label": "Meet with a founder",
+    "class": "btn btn--pine-forge",
+    "href": "https://link.datum.net/founders",
+    "isExternal": true
+  },
+  "featureGroups": [
+    {
+      "title": "Everything in Scaler plan plus:",
+      "items": [
+        "Dedicated namespace",
+        "Private virtual backbones",
+        "Custom AnyCAST and IP Space",
+        "Up to 45 global edge locations",
+        "Certificate management",
+        "Premium + Slack support"
+      ]
+    }
+  ]
+}
+

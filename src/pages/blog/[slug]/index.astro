@@ -63,7 +63,12 @@ const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 ---
 
-<Layout title={title} description={description} bodyClass="page-blog" meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass={`page-blog page-blog--${slug}`}
+  meta={meta}
+>
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 

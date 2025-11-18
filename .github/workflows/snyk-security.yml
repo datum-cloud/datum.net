@@ -21,3 +21,20 @@ jobs:
       debug: false
       snyk-org: ${{ vars.SNYK_ORG }}
     secrets: inherit
+
+  snyk-code-scan:
+    name: Snyk Code Scan (SAST)
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    uses: datum-cloud/actions/.github/workflows/snyk-scan.yaml@59769c197eef6e792c22365a03b1b674033b4657
+    with:
+      command: "code test"
+      fail-on-issues: false
+      severity-threshold: "low"
+      args: "--report"
+      upload-sarif: false
+      debug: false
+      snyk-org: ${{ vars.SNYK_ORG }}
+    secrets: inherit

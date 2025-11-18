@@ -4,6 +4,7 @@ import DiscordIcon from '@v1/assets/icons/discord.svg';
 import GrafanaIcon from '@v1/assets/icons/grafana.svg';
 import YoutubeIcon from '@v1/assets/icons/youtube.svg';
 import LinkedinIcon from '@v1/assets/icons/linkedin.svg';
+import CloseIcon from '@v1/assets/icons/close.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -23,6 +24,12 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <DiscordIcon class={`${sizeClass} ${className}`} />
   ) : name === 'grafana' ? (
     <GrafanaIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'youtube' ? (
+    <YoutubeIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'linkedin' ? (
+    <LinkedinIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'close' ? (
+    <CloseIcon class={`${sizeClass} ${className}`} />
   ) : name === 'youtube' ? (
     <YoutubeIcon class={`${sizeClass} ${className}`} />
   ) : name === 'linkedin' ? (

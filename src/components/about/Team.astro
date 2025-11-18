@@ -1,10 +1,9 @@
 ---
 import { Image } from 'astro:assets';
-import type { ContentProps } from '@/src/types/common';
-import { marked } from 'marked';
+import { render, type CollectionEntry } from 'astro:content';
 
-const { content } = Astro.props as ContentProps;
-const htmlContent = marked(content.body);
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
+const { Content } = await render(content);
 const companies = content.data.companies || [];
 ---
 
@@ -24,10 +23,10 @@ const companies = content.data.companies || [];
           <div class="w-full max-w-none self-center md:max-w-55 lg:max-w-xs">
             <h2 class="datum-text-8xl">{content.data.title}</h2>
           </div>
-          <div class="max-w-115 flex-grow self-center">
-            <span class="datum-text-lg">
-              <div set:html={htmlContent} />
-            </span>
+          <div class="max-w-115 grow self-center">
+            <div class="datum-text-lg">
+              <Content />
+            </div>
           </div>
         </div>
 
@@ -44,15 +43,18 @@ const companies = content.data.companies || [];
           companies.length > 0 && (
             <div>
               <div class="grid grid-cols-3 overflow-x-auto md:grid-cols-6">
-                {companies.map((company) => (
-                  <div class="flex aspect-29/21 items-center justify-center">
-                    <Image
-                      src={company.img}
-                      alt={company.alt ?? ''}
-                      class="logo-img logo-img--standard"
-                    />
-                  </div>
-                ))}
+                {companies.map(
+                  (company) =>
+                    company.img && (
+                      <div class="flex aspect-29/21 items-center justify-center">
+                        <Image
+                          src={company.img}
+                          alt={company.alt ?? ''}
+                          class="logo-img logo-img--standard"
+                        />
+                      </div>
+                    )
+                )}
               </div>
             </div>
           )

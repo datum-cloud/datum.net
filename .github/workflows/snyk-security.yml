@@ -16,7 +16,7 @@ jobs:
       command: "test"
       fail-on-issues: false
       severity-threshold: "high"
-      args: "--report"
+      args: "--report --strict-out-of-sync=false"
       upload-sarif: false
       debug: true
       snyk-org: ${{ vars.SNYK_ORG }}

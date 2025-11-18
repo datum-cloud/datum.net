@@ -98,7 +98,7 @@
   }
 
   .ordered-list li {
-    @apply text-midnight-fjord flex items-start gap-6 md:gap-8 lg:gap-10;
+    @apply text-midnight-fjord flex items-start gap-3 md:gap-5;
     counter-increment: ordered-counter;
 
     .item-title {
@@ -112,7 +112,7 @@
 
   .ordered-list li::before {
     @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
-    @apply translate-y-3;
+    @apply translate-y-2.5 md:translate-y-0.5 lg:translate-y-2 xl:translate-y-3;
     content: '0' counter(ordered-counter) '.';
   }
 

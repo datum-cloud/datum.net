@@ -3,7 +3,6 @@ import { getCollection, getEntry, render } from 'astro:content';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
-import Aside from '@components/Aside.astro';
 import TableOfContents from '@components/TableOfContents.astro';
 
 import type { MarkdownHeading } from 'astro';
@@ -238,12 +237,6 @@ handbooks.forEach((collection) => {
       </article>
 
       <aside class="handbook-toc">
-        <Aside title="About the Handbook" class="small">
-          <p>
-            This is our guide to understanding our company foundations: our values, beliefs, and
-            goals. Feel free to reach out if there is something we've missed!.
-          </p>
-        </Aside>
         <TableOfContents headings={headings} title="On This Page" showTitle={true} sticky={true} />
       </aside>
     </div>

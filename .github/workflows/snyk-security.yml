@@ -1,0 +1,23 @@
+name: Snyk Security Scan
+
+on:
+  workflow_call:
+  push:
+
+jobs:
+  snyk-deps-scan:
+    name: Snyk Dependencies Scan
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    uses: datum-cloud/actions/.github/workflows/snyk-scan.yaml@59769c197eef6e792c22365a03b1b674033b4657
+    with:
+      command: "test"
+      fail-on-issues: false
+      severity-threshold: "high"
+      args: "--report"
+      upload-sarif: false
+      debug: false
+      snyk-org: ${{ vars.SNYK_ORG }}
+    secrets: inherit

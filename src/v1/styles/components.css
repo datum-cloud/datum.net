@@ -89,7 +89,7 @@
 
   /* List Styles */
   .ordered-list {
-    @apply datum-list-headings flex list-none flex-col gap-5 md:gap-8;
+    @apply datum-list-headings flex list-none flex-col gap-5 lg:gap-8;
     counter-reset: ordered-counter;
   }
 
@@ -98,12 +98,21 @@
   }
 
   .ordered-list li {
-    @apply text-midnight-fjord flex items-center gap-6 md:gap-10;
+    @apply text-midnight-fjord flex items-start gap-6 md:gap-8 lg:gap-10;
     counter-increment: ordered-counter;
+
+    .item-title {
+      @apply datum-text-7xl;
+    }
+
+    .item-description {
+      @apply datum-text-base;
+    }
   }
 
   .ordered-list li::before {
     @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
+    @apply translate-y-3;
     content: '0' counter(ordered-counter) '.';
   }
 

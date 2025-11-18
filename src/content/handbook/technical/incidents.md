@@ -28,6 +28,9 @@ Incidents are an anchor of real-world learning for the team. Every engineer need
 * Read, or at least skim, design docs for major components of the system.
 
 There are two things happening during every incident. One is the synchronous, somewhat chaotic problem-solving to restore service or otherwise mitigate the customer impact. This usually looks like a Slack channel and, for the bigger impact incidents, an accompanying Zoom.
+
 The other component is asynchronous: capturing knowledge. Like any investigation, there is evidence collection that will be used for weaving together a narrative to make sense of what created the chain of events that needed the expensive process of humans rallying together to fix the robots.
+
 The analysis of an incident is just as important as mitigating the customer impact. Without good post-incident hygiene, a team is doomed to (a) repeat handling the incident in perpetuity and (b) continue to design systems with yesterday's understanding instead of today's.
+
 By doing incidents well, a lot of good habits will form naturally around the team, which will lead to a stronger team, working on more interesting and business-critical problems, and having a better time working together.

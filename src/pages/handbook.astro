@@ -6,15 +6,8 @@ import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { render } from 'astro:content';
 
 const page = await getCollectionEntry('handbooks', 'index');
-const mainArticle = await getCollectionEntry('handbooks', 'about');
-
-// TODO: remove heading, because component Article already extracts headings
-// Extract headings for the main article
-const rendered = await render(mainArticle);
-const headings = rendered.headings;
 
 // SEO
 const fm = page.data;
@@ -26,7 +19,7 @@ const description = fm.description;
 <Layout title={title} description={description} bodyClass="page-handbook" meta={meta}>
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
-    <Article headings={headings} />
+    <Article articleId="index" />
 
     <Footer />
   </section>

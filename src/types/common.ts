@@ -56,7 +56,7 @@ export interface ArticleProps {
 }
 
 export interface SidebarProps {
-  selectedId?: string;
+  selectedId: string;
   items: { slug: string; label: string; childs?: { slug: string; label: string }[] }[];
 }
 

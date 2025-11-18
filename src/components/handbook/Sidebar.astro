@@ -2,6 +2,13 @@
 import type { SidebarProps } from '@/src/types/common';
 
 const { selectedId, items } = Astro.props as SidebarProps;
+
+const getCategory = (url: string) => {
+  let urlSplit = url.split('/');
+  return urlSplit[0];
+};
+
+const selectedCategory = getCategory(selectedId);
 ---
 
 <aside class:list={['handbook-sidebar']}>
@@ -16,10 +23,9 @@ const { selectedId, items } = Astro.props as SidebarProps;
         Object.values(items).map(
           (item: { slug: string; label: string; childs?: { slug: string; label: string }[] }) => {
             if (item) {
-              console.log(item);
               return (
                 <div
-                  x-data={`{ isExpanded: ${selectedId === item.slug} }`}
+                  x-data={`{ isExpanded: ${selectedCategory === item.slug} }`}
                   class="menu-category"
                   id={item.slug}
                 >
@@ -63,7 +69,6 @@ const { selectedId, items } = Astro.props as SidebarProps;
                   <ul x-show="isExpanded" x-collapse class="menu-list">
                     {item.childs &&
                       item.childs.map((child) => {
-                        console.log(child);
                         return (
                           <li class="menu-item">
                             <a
@@ -74,7 +79,7 @@ const { selectedId, items } = Astro.props as SidebarProps;
                                   : 'menu-link'
                               }
                             >
-                              {child.label}{' '}
+                              {child.label}
                             </a>
                           </li>
                         );

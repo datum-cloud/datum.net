@@ -4,7 +4,7 @@ import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import Aside from '@components/Aside.astro';
 import TableOfContents from '@components/TableOfContents.astro';
-import type { ArticleProps } from '@/src/types/common';
+// import type { ArticleProps } from '@/src/types/common';
 import type { MarkdownHeading } from 'astro';
 import { getEntry } from 'astro:content';
 import { Breadcrumbs } from 'astro-breadcrumbs';
@@ -12,27 +12,28 @@ import { Breadcrumbs } from 'astro-breadcrumbs';
 const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 const handbookIndex = await getEntry('handbooks', 'index');
 
-interface Props extends ArticleProps {
-  headings?: MarkdownHeading[];
-}
-
-const {
-  articleId: propArticleId,
-  showSidebar = true,
-  class: className,
-  headings = [],
-} = Astro.props as Props;
+const { articleId: propArticleId, showSidebar = true, class: className } = Astro.props;
 
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
-const articleId = propArticleId || urlParam || 'about';
+const articleId = propArticleId || urlParam || 'index';
 
+console.log('=== articleId', articleId);
+let mainArticleEntry;
 // Get the specified article for main content display
-const mainArticleEntry =
-  handbooks.find((h) => h.id === articleId) || handbooks.find((h) => h.id === 'about');
+if (articleId === 'index') {
+  mainArticleEntry = handbookIndex;
+} else {
+  mainArticleEntry = handbooks.find((h) => h.id === articleId);
+}
 
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
+
+/**
+ * Headings extraction for the main article
+ */
+const headings: MarkdownHeading[] = mainArticle ? mainArticle.headings : [];
 
 /**
  * Create breadcrumbs manually based on article ID
@@ -65,7 +66,9 @@ if (pathSegments.length > 0) {
     // Skip the last segment as it will be the current page title
     if (i < pathSegments.length - 1) {
       // Format the segment title (capitalize words, replace dashes with spaces)
-      const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      const segmentTitle = segment
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
 
       breadcrumbData.push({
         text: segmentTitle,
@@ -88,7 +91,11 @@ if (pathSegments.length > 0) {
  */
 const categories = handbookIndex?.data.contents;
 let items: {
-  [key: string]: { slug: string; label: string; childs: { slug: string; label: string }[] };
+  [key: string]: {
+    slug: string;
+    label: string;
+    childs: { slug: string; label: string; order: number }[];
+  };
 } = {};
 
 const getCategory = (url: string) => {
@@ -114,6 +121,10 @@ handbooks.forEach((collection) => {
         items[indexBySlug].childs.push({
           slug: collection.id,
           label: collection.data.sidebar.label || collection.data.title,
+          order: collection.data.sidebar.order || 0,
+        });
+        items[indexBySlug].childs.sort(function (a, b) {
+          return a.order - b.order;
         });
       } else {
         try {
@@ -124,15 +135,16 @@ handbooks.forEach((collection) => {
               {
                 slug: collection.id,
                 label: collection.data.sidebar.label || collection.data.title,
+                order: collection.data.sidebar.order || 0,
               },
             ],
           };
-        } catch (e) {
+        } catch (error) {
           console.log(
             'Error creating category for slug:%s with index:%d',
             categorySlug,
             indexBySlug,
-            e
+            error
           );
         }
       }
@@ -184,8 +196,9 @@ handbooks.forEach((collection) => {
               </svg>
             </Breadcrumbs>
           </div>
+
           <h1 class="article-title">
-            {mainArticleEntry?.data.title || 'Why does Datum exist?'}
+            {mainArticleEntry?.data.title}
           </h1>
         </header>
 
@@ -202,8 +215,13 @@ handbooks.forEach((collection) => {
                   <p>Article entry found but content failed to render.</p>
                 ) : (
                   <p>
-                    Article entry not found. Available articles:{' '}
-                    {handbooks.map((h) => h.id).join(', ')}
+                    Available articles:
+                    {Object.values(handbooks).map((handbook) => (
+                      <div>
+                        <strong>{handbook.data.title}:</strong>{' '}
+                        <a href={`/handbook/${handbook.id}`}>{handbook.id}</a>
+                      </div>
+                    ))}
                   </p>
                 )}
               </div>

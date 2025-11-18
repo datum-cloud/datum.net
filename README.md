@@ -37,6 +37,10 @@ npm run dev
 
 For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
 
+### Handbook
+
+Main file: src/content/handbook/index.md
+
 ## Docker Setup
 
 ### Prerequisites

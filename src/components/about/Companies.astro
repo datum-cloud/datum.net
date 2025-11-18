@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import { type CollectionEntry } from 'astro:content';
+import Illustration from '@content/about/images/illustration-2.png';
+
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
+const companies = content.data.companies || [];
+---
+
+<section class="bg-glacier-mist-800 section--block section--block--pad relative">
+  <Image
+    src={Illustration}
+    alt="Illustration"
+    class="fade-in--pure absolute right-0 bottom-0 hidden size-auto w-[194px] md:block"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+  />
+  <div class="max-width">
+    <div class="border-midnight-fjord bg-glacier-mist-800 relative z-10 m-auto border">
+      <div
+        class="fade-in--pure relative z-10 flex flex-col"
+        data-reveal="fade-in--pure--visible"
+        data-reveal-delay="100"
+        data-reveal-immediate="true"
+      >
+        <span class="absolute top-0 left-0 translate-x-8 -translate-y-4">
+          <p
+            class="datum-docs-sidebar-headings bg-glacier-mist-800 inline-flex px-5 py-2 text-balance uppercase md:whitespace-nowrap"
+          >
+            {content.data.title}
+          </p>
+        </span>
+
+        <!-- Companies Section -->
+        {
+          companies.length > 0 && (
+            <div class="px-6 py-4 md:px-10 md:py-6.25 xl:px-12 xl:py-8.75">
+              <div class="grid grid-cols-3 overflow-x-auto md:grid-cols-7">
+                {companies.map(
+                  (company) =>
+                    company.img && (
+                      <div class="flex aspect-29/21 items-center justify-center">
+                        <Image
+                          src={company.img}
+                          alt={company.alt ?? ''}
+                          class="logo-img logo-img--standard"
+                        />
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

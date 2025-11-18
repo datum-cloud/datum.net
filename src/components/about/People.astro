@@ -1,0 +1,115 @@
+---
+// src/components/about/People.astro
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import ProfileModal from './ProfileModal.astro';
+import '@v1/styles/page-about.css';
+
+// Fetch all authors where isTeam is true and sort by order
+const teamMembers = (await getCollection('authors', ({ data }) => data.isTeam === true)).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+
+// Prepare team member data for client-side modal (serialize data)
+const teamMembersData = teamMembers.map((member) => ({
+  id: member.id,
+  data: {
+    name: member.data.name,
+    bio: member.data.bio,
+    title: member.data.title,
+    avatar: member.data.avatar ? { src: member.data.avatar.src } : undefined,
+    tick: member.data.tick,
+    surprising: member.data.surprising,
+    weekends: member.data.weekends,
+  },
+}));
+---
+
+<section class="bg-glacier-mist-700 section--block section--block--pad">
+  <div class="max-width">
+    <div
+      class="fade-in--pure relative z-10"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-immediate="true"
+      data-reveal-delay="100"
+    >
+      <h3 class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:max-w-md lg:mb-10">
+        Meet the people behind Datum
+      </h3>
+
+      <p
+        class="datum-text-lg mx-auto mb-8 max-w-sm text-center md:mb-12 lg:mb-16 lg:max-w-lg xl:mb-21"
+      >
+        We are infrastructure, open source software, and design nerds who love building for the
+        future.
+      </p>
+
+      <div class="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-5">
+        {
+          teamMembers.map((member, index) => (
+            <button
+              class="people--card"
+              data-member-trigger
+              data-member-index={index}
+              type="button"
+              tabindex={index + 1}
+              aria-label={`View ${member.data.name}'s profile`}
+            >
+              {member.data.avatar && (
+                <div class="people--card-avatar">
+                  <Image
+                    src={member.data.avatar}
+                    alt={member.data.name}
+                    class="size-auto w-full bg-cover"
+                  />
+                  {/* Check if member.data.title contains "Co-Founder" and show Founder label */}
+                  {member.data.title && member.data.title.includes('Co-Founder') && (
+                    <label class="people--card-founder-label">Founder</label>
+                  )}
+                </div>
+              )}
+
+              <h4 class="people--card-name">{member.data.name}</h4>
+
+              <div class="people--card-title">
+                {member.data.title && <p>{member.data.title}</p>}
+              </div>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <ProfileModal />
+</section>
+
+<script is:inline define:vars={{ teamMembersData }}>
+  // Store team members data for the modal
+  const teamData = teamMembersData;
+
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const triggers = document.querySelectorAll('[data-member-trigger]');
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        if (!target) return;
+
+        const memberIndex = target.getAttribute('data-member-index');
+        const index = parseInt(memberIndex || '0', 10);
+        const member = teamData[index];
+
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
+          // Dispatch event with member data
+          document.dispatchEvent(
+            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
+              detail: { member },
+            })
+          );
+        }
+      });
+    });
+  });
+</script>

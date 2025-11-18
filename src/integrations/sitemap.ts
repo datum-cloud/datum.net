@@ -77,7 +77,7 @@ const createSitemapBuilderIntegration = (options?: SitemapOptions): AstroIntegra
               return new URL(fullPath, finalSiteUrl).href;
             });
 
-          const routeUrls = routes.reduce<string[]>((urls, r) => {
+          const routeUrls = routes.reduce<string[]>((urls: string[], r) => {
             if (r.type !== 'page') return urls;
 
             if (r.pathname && !excepts.includes(r.pathname.replace(/^\/|\/$/g, ''))) {

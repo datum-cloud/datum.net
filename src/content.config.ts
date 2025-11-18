@@ -76,6 +76,16 @@ const about = defineCollection({
           z.object({
             img: image().optional(),
             alt: z.string().optional(),
+            url: z.string().optional(),
+          })
+        )
+        .optional(),
+      investors: z
+        .array(
+          z.object({
+            img: image().optional(),
+            alt: z.string().optional(),
+            url: z.string().optional(),
           })
         )
         .optional(),
@@ -144,6 +154,9 @@ const authors = defineCollection({
           linkedin: z.string().optional(),
         })
         .optional(),
+      tick: z.string().optional(),
+      surprising: z.string().optional(),
+      weekends: z.string().optional(),
     }),
 });
 
@@ -195,7 +208,14 @@ const handbooks = defineCollection({
         .optional(),
       featuredImage: image().optional(),
       meta: metaSchema,
-      contents: z.array(z.string()).optional(),
+      contents: z
+        .array(
+          z.object({
+            slug: z.string(),
+            label: z.string(),
+          })
+        )
+        .optional(),
     }),
 });
 

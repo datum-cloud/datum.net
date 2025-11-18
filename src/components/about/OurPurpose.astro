@@ -1,11 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import { marked } from 'marked';
+import { render, type CollectionEntry } from 'astro:content';
 import Illustration from '@content/about/images/illustration.png';
-import type { ContentProps } from '@/src/types/common';
 
-const { content } = Astro.props as ContentProps;
-const contentBody = marked.parse(content.body);
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
+const { Content } = await render(content);
 ---
 
 <section class="bg-midnight-fjord section--block relative">
@@ -22,13 +21,15 @@ const contentBody = marked.parse(content.body);
     <div class="absolute top-0 left-0 z-20 h-full w-full">
       <div class="max-width flex h-full w-full items-center justify-center lg:justify-start">
         <div
-          class="bg-midnight-fjord fade-in--pure border-glacier-mist-700 text-glacier-mist-700 flex w-72 flex-col space-y-8 border-1 p-8 md:w-104.5 md:p-16 lg:space-y-12 xl:w-129"
+          class="bg-midnight-fjord fade-in--pure border-glacier-mist-700 text-glacier-mist-700 flex w-72 flex-col space-y-8 border p-8 md:w-104.5 md:p-16 lg:space-y-12 xl:w-129"
           data-reveal="fade-in--pure--visible"
           data-reveal-delay="300"
           data-reveal-immediate="true"
         >
           <h2 class="datum-text-8xl">{content.data.title}</h2>
-          <div class="datum-prose-lg" set:html={contentBody} />
+          <div class="datum-prose-lg">
+            <Content />
+          </div>
         </div>
       </div>
     </div>

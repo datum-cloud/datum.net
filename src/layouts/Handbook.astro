@@ -20,7 +20,7 @@ export interface Props {
 }
 
 const {
-  title = siteMeta.title || 'Datum Inc. Site',
+  title = siteMeta.title || 'Datum',
   description = siteMeta.description || 'A modern website built with Astro, MDX, and TailwindCSS',
   image = '/images/og-default.png', // Ensure this exists in your public folder
   article = false,
@@ -53,7 +53,7 @@ const imageUrl = new URL(image, Astro.site).href;
         },
         optional: {
           description: description,
-          siteName: 'Datum Inc. Site',
+          siteName: 'Datum',
           locale: 'en_US',
         },
         ...(article && publishDate

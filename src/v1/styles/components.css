@@ -102,7 +102,7 @@
     counter-increment: ordered-counter;
 
     .item-title {
-      @apply datum-text-7xl;
+      @apply datum-text-3xl font-canela -tracking-[0.8px];
     }
 
     .item-description {
@@ -112,7 +112,7 @@
 
   .ordered-list li::before {
     @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
-    @apply translate-y-2.5 md:translate-y-0.5 lg:translate-y-2 xl:translate-y-3;
+    @apply translate-y-1.25 md:translate-y-0 lg:translate-y-2;
     content: '0' counter(ordered-counter) '.';
   }
 

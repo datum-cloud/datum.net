@@ -21,7 +21,7 @@
       @apply bg-(--app---dark---utility-1)/50;
 
       label {
-        @apply bg-canyon-clay text-midnight-fjord;
+        @apply bg-blush-quartz text-midnight-fjord;
       }
 
       a {

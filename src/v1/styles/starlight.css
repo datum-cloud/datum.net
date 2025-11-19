@@ -421,7 +421,7 @@
   }
 
   .main-frame {
-    @apply relative mx-auto flex w-full max-w-391;
+    @apply relative flex w-full;
   }
 
   /* End of PageFrame.astro */

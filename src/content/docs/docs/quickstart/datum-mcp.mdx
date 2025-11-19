@@ -1,10 +1,59 @@
 ---
 title: Datum MCP
 sidebar:
-  order: 4
+  order: 5
 ---
 
-## We're exploring unchartered territory
-Every great mission starts with preparation. We're currently fine-tuning the navigation systems and getting everything ready for the journey ahead. Stay tuned for what's next.
+Datum’s [official MCP server](https://modelcontextprotocol.io/) helps builders connect AI tools to their Datum projects with a rapidly evolving open standard. Datum MCP gives AI tools secure access to your Datum resources so you can understand their current state, suggest and implement changes, and diagnose common configuration issues.
 
-![Team of four with light beam, moon in the background ](/images/beam.webp)
+Datum MCP integrates with popular AI assistants like Cursor, enabling you to view and manage:
+- Organizations
+- Users
+- Projects
+- Domains
+- Proxies 
+- API’s (CRDs list/describe)
+
+Datum MCP implements the latest [MCP Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) specifications and supports OAuth 2.1 (PKCE) auth or macOS Keychain token storage. 
+
+**Install** - We offer three ways to get started:
+1. Quick install
+2. Manual download
+3. Add to Cursor locally
+
+Visit the [Datum MCP repo on GitHub](https://github.com/datum-cloud/datum-mcp) for more information. 
+
+From the command line, this will install Datum MCP on your system:
+```
+curl -fsSL https://github.com/datum-cloud/datum-mcp/releases/latest/download/install.sh | sh
+```
+
+The [latest release](https://github.com/datum-cloud/datum-mcp/releases/latest) is available at https://github.com/datum-cloud/datum-mcp/releases/latest. Binaries are available for Linux, MacOS and Windows on x86 and arm64 versions.
+
+Add this to your AI client config to run the server via stdio. 
+```
+{
+  "datum-mcp": {
+    "command": "datum-mcp",
+    "args": []
+  }
+}
+```
+
+To add the Datum MCP to Cursor, this one-click command will suffice:  [Add to Cursor](https://cursor.com/en-US/install-mcp?name=datum-mcp\&config=eyJ0eXBlIjoic3RkaW8iLCJlbnYiOnt9LCJjb21tYW5kIjoiL3Vzci9sb2NhbC9iaW4vZGF0dW0tbWNwICJ9)
+
+**Auth Flow** - When you first use Datum MCP, the server opens a browser for OAuth (PKCE), then stores credentials (including a refresh token) in the system keychain. Subsequent calls reuse/refresh the token from the keychain automatically.
+
+**Available tools** - Datum MCP provides a comprehensive set of tools for searching documentation and managing your Datum projects. Datum MCP currently supports the following tools:
+- organizationmemberships (organizations) - list, get, set
+- users - list
+- projects - list, get, set, create
+- domains - list, get, create, update, delete
+- httpproxies - list, get, create, update, delete
+- httproutes - list, get, create, update, delete
+- gateways - list, get, create, update, delete
+- trafficprotectionpolicies - list, get, create, update, delete
+- apis - list, get 
+- dnszones - list, get, create, update, delete
+- dnsrecordsets - list, get, create, update, delete
+- dnszoneclass - list, get

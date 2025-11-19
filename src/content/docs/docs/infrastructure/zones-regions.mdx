@@ -1,0 +1,29 @@
+---
+title: Zones and regions
+sidebar:
+  order: 2
+---
+
+Datum’s infrastructure footprint is organized into points of presence (PoPs) that are packaged into Regions and Availability Zones (AZs). Each Region represents a specific geographic and network boundary, while each AZ provides independent capacity within that Region. This structure supports predictable latency, fault isolation, and regulatory alignment.
+
+Similar to the large public clouds, Datum uses a country-anchored naming format with the following elements:
+
+| Field | Description |
+| :--- | :--- |
+| Geography | Two-letter ISO country code (example: US, DE, IN) |
+| Cardinal Direction | Directional indicator within the country: north, south, east, west, or central. |
+| Number | Region index within that location. |
+| Count | Availability Zone identifier: a, b, c, etc. |
+
+For example, here is how we describe the first region and availability zone in the eastern US.
+```
+<Geography>-<Location>-<Number><Count>
+Example: us-east-1a
+```
+
+Regions and AZs are defined by distance and policy boundaries. 
+* When Points of Presence in the same country are separated by more than about 5 milliseconds round-trip time (RTT), a new Region is created. 
+* If multiple PoPs exist in the same metro but operate independently (for example, separate network clusters or facilities), they are modeled as separate AZs. Increment the Count value to the next letter.
+* If PoPs are within about 5 milliseconds RTT and part of the same operational domain, they remain in the same Region. Example: us-east-1a, us-east-1b, us-east-1c.
+
+_Note: regulatory and export control requirements may restrict or define where data and workloads can reside. These boundaries take precedence over latency-based placement rules._

@@ -2,160 +2,57 @@
 title: datumctl
 description: Set up tools to work with Datum.
 sidebar:
-  order: 5
+  order: 6
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+datumctl is our CLI for managing Datum Cloud resources via the command line. It provides authorization, API management, and has the ability to manage .kubeconfig files so that you can leverage kubectl for day to day interaction with Datum Cloud.
 
-The Datum control plane is a collection of multiple projects developed with
-Kubernetes control plane technology, most of which can be installed into native
-Kubernetes clusters.
+Let’s assume that you have a working set of Kubernetes command line tools installed on your system, especially \`kubectl\` (which is used to apply resources to the cluster and to inspect the status of work as it happens). In addition, we’ll note that if you want or need to build our tooling from scratch you’ll want to have a Go compiler available. 
 
-As a result, you will leverage common Kubernetes tooling such as [kubectl][kubectl]
-to interact with Datum.
+## Installing datumctl
+datumctl is straightforward to install from prebuilt binaries on many systems, and since it’s open source, you can build it from scratch if that suits your needs. 
 
-## Install Tools
+### Mac with Homebrew
 
-### datumctl
+Use the Homebrew package manager to install datumctl.
+```
+brew install datum-cloud/tap/datumctl
+```
 
-<Tabs>
-  <TabItem label="Brew">
+### Linux with curl
 
-Install datumctl with the [Homebrew](https://brew.sh/) package manager on macOS or Linux:
-
-  ```shell
-  brew install datum-cloud/tap/datumctl
-  ```
-
-  </TabItem>
-  <TabItem label="Curl">
-Install manually with curl on Linux or macOS
-
-```shell
+_Warning this script does not work on arm64 systems, needs some sed to modify $ARCH_
+```
 export OS=$(uname -s)
 export ARCH=$(uname -m)
 
 curl -Lo ./datumctl.tar.gz https://github.com/datum-cloud/datumctl/releases/latest/download/datumctl_${OS}_${ARCH}.tar.gz
-
-# Extract and install the datumctl binary
 tar zxvf datumctl.tar.gz datumctl
 chmod +x datumctl
 mkdir -p ~/.local/bin
 mv ./datumctl ~/.local/bin/datumctl
-# and then append (or prepend) ~/.local/bin to $PATH
 ```
 
-  </TabItem>
-  <TabItem label="Go">
+### Go with Go [v1.XX](http://v1.xx)+
 
-Install via Go
-
-```shell
+You must have Go version [1.XX](http://1.xx) or better for this to work as expected. 
+```
 go install go.datum.net/datumctl@latest
 # Ensure that $GOPATH/bin is in your PATH
 export PATH=$PATH:$(go env GOPATH)/bin
-  ```
+```
 
-  </TabItem>
-  <TabItem label="Windows Powershell">
+### Windows Powershell
 
 Install datumctl on Windows using PowerShell
 
-  ```powershell
-  Invoke-WebRequest -Uri "https://github.com/datum-cloud/datumctl/releases/latest/download/datumctl_Windows_x86_64.zip"  -OutFile "datumctl.zip"
-  Expand-Archive -Path "datumctl.zip" -DestinationPath "datumctl"
-  ```
-
-  Move the `datumctl.exe` file to a directory in your `PATH` or simply run it from the current directory:
-
-  ```powershell
-  .\datumctl\datumctl.exe
-  ```
-
-  </TabItem>
-</Tabs>
-
-### kubectl
-
-Refer to the [official Kubernetes documentation][kubectl-task] for installation
-instructions, making sure to **skip the Verify kubectl configuration** section in
-the guide you choose.
-
-Later in this guide, you will configure a [kubeconfig file](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)
-as required to interact with Datum via kubectl.
-
-[kubectl]: https://kubernetes.io/docs/reference/kubectl/kubectl/
-[kubectl-task]: https://kubernetes.io/docs/tasks/tools/#kubectl
-
-For convenience, homebrew instructions are below:
-
-<Tabs>
-  <TabItem label="Brew">
-
-Install kubectl with the [Homebrew](https://brew.sh/) package manager on macOS or Linux:
-
-  ```shell
-  brew install kubectl
-  ```
-
-  </TabItem>
-</Tabs>
-
-## Configure Tools
-
-### Authentication
-
 ```shell
-datumctl auth login
+Invoke-WebRequest -Uri "https://github.com/datum-cloud/datumctl/releases/latest/download/datumctl_Windows_x86_64.zip" - OutFile "datumctl.zip"
+Expand-Archive -Path "datumctl.zip" -DestinationPath "datumctl"
 ```
 
-1. Run the command to open a browser window and sign in with your organization’s identity provider.
-2. When **Authentication successful** appears, credentials are cached locally for subsequent datumctl and kubectl commands.
-
-### Add a kubeconfig context for your organization
-
-Obtain your organization's resource ID with datumctl by listing organizations
-that your user has access to:
+Move the `datumctl.exe` file to a directory in your `PATH` or simply run it from the current directory:
 
 ```shell
-datumctl get organizations
-```
-
-The output is similar to:
-
-```shell
-DISPLAY NAME           RESOURCE ID
-Personal Organization  pp4zn7tiw5be3beygm2d6mbcfe
-```
-
-Create a kubeconfig context to access your organization's resources by copying
-the the `RESOURCE ID` value and executing following command, replacing
-`RESOURCE_ID` with the value:
-
-```shell
-datumctl auth update-kubeconfig --organization RESOURCE_ID
-```
-
-The output is similar to:
-
-```shell
-Successfully updated kubeconfig at getting-started.kubeconfig
-```
-
-### Verify kubectl configuration
-
-Check that kubectl is properly configured by getting authorized user info:
-
-```shell
-kubectl auth whoami
-```
-
-The output is similar to:
-
-```shell
-ATTRIBUTE                                                VALUE
-Username                                                 datum@example.com
-Groups                                                   [system:authenticated]
-Extra: authentication.datum.net/datum-organization-uid   [pp4zn7tiw5be3beygm2d6mbcfe]
-Extra: authentication.kubernetes.io/credential-id        [JTI=01jgsr1m8fpb9cn0yrh05taa5v]
+.\datumctl\datumctl.exe
 ```

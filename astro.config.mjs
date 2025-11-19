@@ -124,18 +124,23 @@ export default defineConfig({
           collapsed: true, // All other groups are collapsed by default
         },
         {
+          label: 'Our Infrastructure',
+          autogenerate: { directory: 'docs/infrastructure' },
+          collapsed: true,
+        },
+        {
           label: 'Platform',
           autogenerate: { directory: 'docs/platform' },
           collapsed: true,
         },
         {
-          label: 'API',
-          autogenerate: { directory: 'docs/api' },
+          label: 'Runtime',
+          autogenerate: { directory: 'docs/runtime' },
           collapsed: true,
         },
         {
-          label: 'Runtime',
-          autogenerate: { directory: 'docs/runtime' },
+          label: 'Connections',
+          autogenerate: { directory: 'docs/connections' },
           collapsed: true,
         },
         {
@@ -146,16 +151,6 @@ export default defineConfig({
         {
           label: 'Assets',
           autogenerate: { directory: 'docs/assets' },
-          collapsed: true,
-        },
-        {
-          label: 'For Alt Clouds',
-          autogenerate: { directory: 'docs/alt-cloud' },
-          collapsed: true,
-        },
-        {
-          label: 'Guides',
-          autogenerate: { directory: 'docs/guides' },
           collapsed: true,
         },
         {

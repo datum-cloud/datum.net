@@ -5,7 +5,8 @@ description: "The guide to Datum's foundations: our open source cloud for AI str
 sidebar:
   label: handbooks
 meta:
-  title: "Datum Handbook: Open Source Cloud for AI & Network Infrastructure"
+  title: "Datum Handbook: The Guide to How We Work"
+  description: "The guide to Datum's foundations: what we are building, our open source and neutral strategy, and company values, goals and beliefs."
 contents:
   - slug: about
     label: Company

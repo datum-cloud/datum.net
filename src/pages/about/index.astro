@@ -5,7 +5,7 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import OurMission from '@components/about/OurMission.astro';
 import Companies from '@components/about/Companies.astro';
-// import Investors from '@components/about/Investors.astro';
+import Investors from '@components/about/Investors.astro';
 import People from '@components/about/People.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
@@ -31,7 +31,7 @@ const description = fm.description ? fm.description : '';
 
     <People />
 
-    <!-- <Investors content={contentData[2]} /> -->
+    <Investors content={contentData[2]} />
 
     <Footer />
   </section>

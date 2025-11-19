@@ -4,12 +4,14 @@ import { marked } from 'marked';
 import Illustration from '@v1/assets/images/home-illustration.webp';
 import Nav from '@components/Nav.astro';
 import Button from '@components/Button.astro';
+import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
 ---
 
-<section class:list={['hero--main z-11', className]}>
+<header class:list={['hero--main z-11', className]}>
+  <Announcement />
   <div class="bg-midnight-fjord aspect-auto h-auto w-full">
     <Nav />
     {/* Hero Main Content */}
@@ -62,4 +64,4 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       />
     </div>
   </div>
-</section>
+</header>

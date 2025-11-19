@@ -153,4 +153,15 @@ export interface AsideProps {
   class?: string;
 }
 
+export interface AnnouncementProps {
+  show?: boolean;
+  label?: string;
+  text?: string;
+  href?: string;
+  icon?: {
+    name: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+  };
+}
+
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

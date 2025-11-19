@@ -14,4 +14,21 @@
       @apply bg-midnight-fjord;
     }
   }
+
+  .hero--main.dark {
+    .announcement {
+      @apply border-b border-(--app---dark---utility-1);
+      @apply bg-(--app---dark---utility-1)/50;
+
+      label {
+        @apply bg-canyon-clay text-midnight-fjord;
+      }
+
+      a {
+        svg {
+          @apply text-glacier-mist-900;
+        }
+      }
+    }
+  }
 }

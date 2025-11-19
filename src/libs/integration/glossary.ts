@@ -236,3 +236,5 @@ const createGlossaryIntegration = (options: GlossaryOptions): AstroIntegration =
 };
 
 export default createGlossaryIntegration;
+
+export { buildGlossary };

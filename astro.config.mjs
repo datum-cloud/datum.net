@@ -10,9 +10,9 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
-import glossary from './src/libs/server/glossary.ts';
-import sitemap from './src/libs/server/sitemap.ts';
-import announcement from './src/libs/server/announcement.ts';
+import glossary from './src/libs/integration/glossary.ts';
+import sitemap from './src/libs/integration/sitemap.ts';
+import announcement from './src/libs/integration/announcement.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 

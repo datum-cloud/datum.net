@@ -1,0 +1,22 @@
+---
+export const prerender = false;
+
+import { buildGlossary } from '@libs/integration/glossary';
+
+if (!Astro.cookies.get('userInfo')?.value) {
+  return Astro.redirect('/auth/login/?auth_redirect=/api/rebuild-glossary');
+}
+
+buildGlossary({
+  source: 'docs/docs/glossary.mdx',
+  contentDir: 'docs',
+})
+  .then(() => {
+    console.log('Glossary rebuilt successfully.');
+  })
+  .catch((error) => {
+    console.error('Error rebuilding glossary:', error);
+  });
+---
+
+Done

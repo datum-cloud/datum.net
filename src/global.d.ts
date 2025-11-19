@@ -1,4 +1,4 @@
-import type { AnnouncementConfig } from './libs/server/announcement';
+import type { AnnouncementConfig } from './libs/integration/announcement';
 
 declare global {
   // eslint-disable-next-line no-var

@@ -32,10 +32,10 @@ export default defineConfig({
   },
   integrations: [
     announcement({
-      show: false,
+      show: true,
       label: "We've Launched!",
       text: 'Introducing our company, $13.6M in funding, and core features',
-      href: '',
+      href: 'https://www.datum.net/blog/internet-superpowers-for-every-builder/',
       icon: {
         name: 'arrow-right',
         size: 'sm',

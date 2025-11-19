@@ -17,7 +17,9 @@ This policy applies to code developed by Datum for its clients or run on its pro
 
 ## Code Changes
 Changes to production code which alter Datum’s product functionality should be tested by Datum’s continuous integration (CI) system prior to being merged. Testing should not be conducted locally in a development environment or in production.
-Exceptionally, changes to production code may be merged without first testing them, such as to resolve an incident. See the Change management policy.
+
+Exceptionally, changes to production code may be merged without first testing them, such as to resolve an incident. See the [Change management policy](../change-management/).
+
 Changes to production code which do not alter product functionality, e.g., changes to documentation, may be but do not need to be tested.
 
 ## Client Releases

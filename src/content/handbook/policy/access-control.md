@@ -1,7 +1,7 @@
 ---
-title: Password policy
+title: Access Control Policy
 sidebar:
-  label: Password policy
+  label: Access Control Policy
   order: 8
 updatedDate: Nov 13, 2025
 authors: jacob
@@ -14,12 +14,16 @@ Datum limits access control based on job requirements, following the principle o
 
 ## Scope
 This policy applies to Datum’s internal systems, including its production network, production servers, and hosted applications.
+
 This policy applies throughout the entire lifecycle of employee, contractor, or vendor access, from onboarding of new individuals who need access, to the removal of existing individuals who no longer need access.
 
 ## Access to internal systems
 Where possible, access policies are enforced by technical measures.
+
 Datum should implement monitoring on its systems where possible, to record logon attempts and failures, successful logons and date and time of logon and logoff. Activities performed as administrator are logged where it is feasible to do so.
+
 Personnel who have administrative system access should use other less powerful accounts for performing non-administrative tasks.
+
 Where possible, more than one person must have full rights to any critical piece of infrastructure serving or storing production services or customer data.
 
 ## Granular access controls

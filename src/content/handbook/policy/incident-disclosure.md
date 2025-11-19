@@ -11,8 +11,11 @@ meta:
 ---
 
 This policy specifies when and how we notify users about security incidents.
+
 Both client software and our managed infrastructure (i.e. Datum Cloud) are in scope for this policy.
+
 For incidents that fall under any legal disclosure requirements (such as [California’s Data Security Breach Reporting](https://oag.ca.gov/privacy/databreach/reporting)), those requirements will take precedence over this policy.
+
 By “notify” here we mean explicitly contacting users in addition to regular release notes in our [changelog](https://www.datum.net/resources/changelog/) and GitHub commit history. For example, you may read about minor vulnerability patches in release notes, but we may not notify users via a dedicated security bulletin.
 
 ## When We Notify Users

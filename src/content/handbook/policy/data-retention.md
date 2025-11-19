@@ -1,7 +1,7 @@
 ---
-title: Data retention and deletion policy
+title: Data retention policy
 sidebar:
-  label: Data retention and deletion policy
+  label: Data retention policy
   order: 13
 updatedDate: Nov 13, 2025
 authors: jacob

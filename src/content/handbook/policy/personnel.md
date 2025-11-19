@@ -1,7 +1,7 @@
 ---
-title: Personnel Policy
+title: Personnel policy
 sidebar:
-  label: Personnel Policy
+  label: Personnel policy
   order: 1
 updatedDate: Nov 13, 2025
 authors: jacob

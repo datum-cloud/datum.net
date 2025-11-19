@@ -1,7 +1,7 @@
 ---
-title: Pricing Strategy
+title: Pricing
 sidebar:
-  label: Pricing Strategy
+  label: Pricing
   order: 4
 updatedDate: Nov 13, 2025
 authors: jacob

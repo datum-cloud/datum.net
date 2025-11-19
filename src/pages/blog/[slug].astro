@@ -98,6 +98,15 @@ const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
 
+// Set default blog OG image - always use blog.png unless explicitly overridden
+const blogMeta = {
+  ...meta,
+  og: {
+    ...meta?.og,
+    image: '/images/og/blog.png',
+  },
+};
+
 breadcrumbData.push({
   text: fm.title,
   href: `/blog/${entry.id}/`,
@@ -112,7 +121,7 @@ breadcrumbData.push({
   publishDate={fm.date}
   author={fm.author}
   bodyClass={`page-blog page-blog--${entry.id}`}
-  meta={meta}
+  meta={blogMeta}
 >
   <section class="datum-container">
     <Hero class="light" hideContent={true} />

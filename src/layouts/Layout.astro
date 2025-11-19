@@ -19,13 +19,15 @@ const {
 
 const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
 const pageUrl = Astro.url.href;
-const defaultImage = new URL('/images/og-default.png', Astro.site).href;
+const defaultImage = new URL('/images/og/default.png', Astro.site).href;
 const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
 
 // Overwrite with meta
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
+const twitterImageUrl =
+  meta && meta.og && meta.og.image ? new URL(meta.og.image, Astro.site).href : imageUrl;
 ---
 
 <!doctype html>
@@ -44,6 +46,7 @@ const descriptionValue =
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://edge.marker.io" />
 
+    <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
     <SEO
       title={titleValue}
       description={descriptionValue}
@@ -54,7 +57,8 @@ const descriptionValue =
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image: meta && meta.og && meta.og.image ? meta.og.image : imageUrl,
+          image:
+            meta && meta.og && meta.og.image ? new URL(meta.og.image, Astro.site).href : imageUrl,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -77,7 +81,7 @@ const descriptionValue =
         creator: config.socials.twitter.handle || '@datumcloud',
         title: titleValue,
         description: descriptionValue,
-        image: imageUrl,
+        image: twitterImageUrl,
       }}
       extend={{
         meta: [
@@ -85,9 +89,9 @@ const descriptionValue =
           { name: 'theme-color', content: '#3b82f6' },
         ],
         link: [
-          { rel: 'icon', href: '/favicon.png' },
-          { rel: 'mask-icon', href: '/favicon.png' },
-          { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+          { rel: 'icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'mask-icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'apple-touch-icon', href: new URL('/apple-touch-icon.png', Astro.site).href },
         ],
       }}
     />

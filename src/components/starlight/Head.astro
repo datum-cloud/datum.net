@@ -8,6 +8,18 @@ const fm = entry.data;
 const meta = fm.meta || {};
 const title = meta.title ?? fm.title;
 const description = meta.description ?? fm.description;
+
+// Default OG image for docs
+const defaultOgImage = new URL('/images/og/docs.png', Astro.site).href;
+const ogImage = meta.og?.image ? new URL(meta.og.image, Astro.site).href : defaultOgImage;
+
+// Check if og:image and twitter:image exist in head
+const hasOgImage = head.some(
+  ({ tag, attrs }) => tag === 'meta' && attrs && attrs.property === 'og:image'
+);
+const hasTwitterImage = head.some(
+  ({ tag, attrs }) => tag === 'meta' && attrs && attrs.name === 'twitter:image'
+);
 ---
 
 {
@@ -34,8 +46,12 @@ const description = meta.description ?? fm.description;
       return <Tag {...attrs} content={meta.og.description} />;
     }
 
-    if (meta.og && meta.og.image && Tag === 'meta' && attrs && attrs.property === 'og:image') {
-      return <Tag {...attrs} content={meta.og.image} />;
+    if (Tag === 'meta' && attrs && attrs.property === 'og:image') {
+      return <Tag {...attrs} content={ogImage} />;
+    }
+
+    if (Tag === 'meta' && attrs && attrs.name === 'twitter:image') {
+      return <Tag {...attrs} content={ogImage} />;
     }
 
     if (meta.og && meta.og.url && Tag === 'meta' && attrs && attrs.property === 'og:url') {
@@ -53,3 +69,8 @@ const description = meta.description ?? fm.description;
     return <Tag {...attrs} set:html={content} />;
   })
 }
+
+<!-- Add og:logo, og:image and twitter:image if not present in Starlight's head -->
+<meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
+{!hasOgImage && <meta property="og:image" content={ogImage} />}
+{!hasTwitterImage && <meta name="twitter:image" content={ogImage} />}

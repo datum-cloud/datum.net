@@ -18,9 +18,18 @@ const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
+
+// Set default blog OG image - always use blog.png
+const blogMeta = {
+  ...meta,
+  og: {
+    ...meta?.og,
+    image: '/images/og/blog.png',
+  },
+};
 ---
 
-<Layout title={title || 'Datum'} description={description} bodyClass="page-blog" meta={meta}>
+<Layout title={title || 'Datum'} description={description} bodyClass="page-blog" meta={blogMeta}>
   <section class="datum-container">
     <Hero
       class="light"

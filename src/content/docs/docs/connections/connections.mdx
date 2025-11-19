@@ -1,0 +1,11 @@
+---
+title: Connections
+sidebar:
+  order: 3
+---
+
+Much like any backbone, Galactic VPC’s virtual backbone capability will need a place to meet with more networks. In the traditional datacenter and physical network world, this would commonly be a shared “meet me room” or managed interconnection service from a colocation provider, that allows you to request connections to or accept connections from other networks.
+
+With Galactic, Datum is providing a virtual meet me room equivalent that will start with overlay connections (VPN’s, SD-WAN, Tailscale, etc) and later support physical connections, network-as-a-service providers (Equinix Fabric, Megaport, etc) and cloud provider connectivity (AWS Direct Connect, Azure Express Route, etc).
+
+The first connection we are working to enable is Datum Tunnel built on Iroh, a QUIC-based protocol with peer-2-peer capabilities and robust, certificate based routing.  Datum Tunnel will allow for a reverse-tunnel connection to be created from a desktop or server/container environment and connect to Datum’s proxy service.  Later, this will be managed with integration to Galactic VPC as the service becomes production ready.

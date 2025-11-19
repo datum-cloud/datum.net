@@ -87,7 +87,7 @@
 }
 
 .pricing-card--feature-list {
-  @apply space-y-1;
+  @apply space-y-1.5;
 }
 
 .pricing-card--feature-item {

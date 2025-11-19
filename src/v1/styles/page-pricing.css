@@ -53,15 +53,15 @@
 }
 
 .pricing-card--price-amount-row {
-  @apply flex flex-row items-center gap-1 md:flex-col md:items-start lg:flex-row lg:items-center;
+  @apply flex flex-row items-end-safe gap-1 md:flex-col md:items-start lg:flex-row lg:items-end-safe;
 }
 
 .pricing-card--price-amount {
-  @apply datum-text-4xl font-medium;
+  @apply datum-text-4xl font-medium text-nowrap;
 }
 
 .pricing-card--price-suffix {
-  @apply datum-app-body;
+  @apply datum-app-body -translate-y-[7px] text-nowrap;
 }
 
 /* CTA Section */

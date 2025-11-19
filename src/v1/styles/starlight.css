@@ -502,7 +502,7 @@
       span {
         @apply datum-docs-sidebar-headings;
         .link-title {
-          @apply datum-text-base mt-2 block font-bold capitalize;
+          @apply datum-text-base mt-2 block font-bold normal-case;
         }
       }
     }

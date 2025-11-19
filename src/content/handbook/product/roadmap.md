@@ -1,7 +1,7 @@
 ---
-title: Product Vision
+title: Roadmap
 sidebar:
-  label: Product Vision
+  label: Roadmap
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob

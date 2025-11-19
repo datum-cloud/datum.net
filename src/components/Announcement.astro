@@ -48,8 +48,11 @@ if (!show) {
   style="display: none;"
 >
   <label>{label}</label>
-  <p>
-    <a href={href}>{text} {icon && <Icon name={icon.name} size={icon.size || 'sm'} />}</a>
+  <p class="pr-3 md:pr-0">
+    <a href={href}
+      >{text}
+      {icon && <Icon name={icon.name} size={icon.size || 'sm'} class="hidden md:inline-flex" />}</a
+    >
   </p>
   <button class="announcement-close" @click="closeAnnouncement()" aria-label="Close announcement">
     <Icon name="close" size="md" />

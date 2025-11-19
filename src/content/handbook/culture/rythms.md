@@ -11,7 +11,9 @@ meta:
 ---
 
 Datum is an early stage startup, working to find its way to users, customers, and world-changing outcomes. While some people absolutely love the dynamic, iterative nature of “zero to one” companies, we recognize that it isn’t for everyone. This is an especially tricky balance in the infrastructure and network layers, where stability is part of the promise.
+
 In addition to understanding our small size and big ambitions, it’s important that everyone working at Datum understands our core values, goals, and strategy. This is the “why” that not only gets us out of bed on a rainy day, but helps us keep our compass pointed in the right direction when things get tough. 
+
 Many of our operating norms (including this focus on values) are based on the [Entrepreneurial Operating System](https://www.eosworldwide.com/what-is-eos) framework created by Gino Wickman. This is especially true for our leadership team and how we set goals for the company. Here is a summary:
 
 * Annual - The most important part of the cycle is the annual planning cycle where we take two full days to dig deep into everything that drives our company forward. We start with a review of our values and 10-year target, and then work our way backwards into annual and Q1 goals. It’s an intense but critical few days.

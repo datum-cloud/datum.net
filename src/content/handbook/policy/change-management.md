@@ -14,8 +14,11 @@ To avoid potential security incidents, Datum requires change management controls
 
 ## Code changes
 Changes to code in Datum’s environment made by an employee or contractor must be tested and approved by another employee prior to being merged and rolled out.
+
 Datum uses branch protection rules on GitHub to require changes be made through a pull request with a second review prior to merging code.
+
 Exceptionally, employees can push changes without a second review where they are required to mitigate an incident. Changes pushed without prior approval to customer facing environments are audited based on manual and automated reporting after the fact, within 2 business days.
+
 Changes to update dependencies, publish documentation, changes to the marketing website or related marketing assets, or non-substantive code changes are exempt from this policy.
 
 ## Dependencies

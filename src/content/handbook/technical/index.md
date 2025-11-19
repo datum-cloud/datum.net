@@ -1,5 +1,5 @@
 ---
-title: What We're Building
+title: How we build and run
 sidebar:
   label: Overview
   order: 0

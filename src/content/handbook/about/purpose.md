@@ -1,7 +1,7 @@
 ---
-title: Our story
+title: Purpose
 sidebar:
-  label: Our story
+  label: Purpose
   order: 2
 updatedDate: Nov 13, 2025
 authors: jacob

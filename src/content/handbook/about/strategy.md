@@ -11,9 +11,13 @@ meta:
 ---
 
 If you’ve read any business books over the last twenty years, you know about big, hairy, audacious goals (BHAGs). Ours is to be the most trusted way for AI & digital ecosystems to interact. We think we’ll need millions, or even billions, of active connections to prove it.
+
 Essentially, this describes a network effect, which is a notoriously difficult thing to kickstart! 
+
 To get there, we’re inspired by the original concept of the internet, which was based on a collaborative, open architecture. As such, for most of its existence, the internet was a pretty approachable surface area for new builders. Often, a local ISP would help you get set up with the necessary ingredients: a quarter rack in the corner. a router, some IP space, etc, 
+
 For a variety of reasons, but especially scale, this just isn’t possible anymore. Quarter racks have become megawatts, and simply “showing up” on the internet as a true participant might require 20+ global locations backed by legitimate capacity.
+
 To update the concept in an age of AI and complex digital ecosystems, we are building what we describe as the world’s first truly open network cloud. Open in terms of accessibility and participation, but also open source (mainly AGPLv3 licenses). Here’s why open source matters to us:
 * Trust: Our customers can see exactly what they’re running and how it works
 * No lock-in: You can run Datum Cloud anywhere - our cloud, your cloud, or on-premises

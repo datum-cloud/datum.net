@@ -18,7 +18,8 @@ We believe this focus sets us apart from existing players in the market, but it 
 - “Go Anywhere” Software - Builders are gonna build, new clouds are gonna scale, and they need to do stuff far beyond Datum’s boundaries. While we are committed to making the Datum experience “just work” on our managed infrastructure, we’re building core aspects of our cloud to run anywhere you need it: from your desktop or CI/CD pipeline, to thousands of retail stores, a private datacenter, or across the large public clouds (those commits aren’t going to spend themselves!). 
 - A “Sits in the Middle” Network - In order for good things to happen, there needs to be a neutral place where connections can be made. But instead of the physical internet exchanges (IX) and “meet me rooms” (MMR) of the past, we’re working to move the activity up a few layers so that builders, apps, platforms, and agents that don’t have traditional network assets can also participate. That’s why we need a robust, global, network-focused infrastructure footprint.
 
-Something __we are not building is a content delivery network__ (CDN). Instead of optimizing for delivery to end users, we’re focused on making connections between participants. And while we expect to do plenty of traffic on our network, we’re far more interested in securely connecting the dots between an ecosystem of companies, networks, apps, agents, data, etc. 
+Something __we are not building is a content delivery network__ (CDN). Instead of optimizing for delivery to end users, we’re focused on making connections between participants. And while we expect to do plenty of traffic on our network, we’re far more interested in securely connecting the dots between an ecosystem of companies, networks, apps, agents, data, etc.
+
 Think of it like Plaid, but for alt clouds instead of banks. :-) 
 
 Here are some use cases we’re excited about: 

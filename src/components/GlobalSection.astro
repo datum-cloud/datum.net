@@ -1,12 +1,15 @@
 ---
 import { getEntry } from 'astro:content';
-import UIConsole from '@v1/assets/svgs/ui.svg';
+import UIConsole from '@content/pages/assets/ui.svg';
 const content = await getEntry('pages', 'global-section');
 ---
 
-<section class="bg-aurora-moss section--block flex pt-16 align-middle lg:pt-20 xl:pt-28">
+<section
+  id="tomorrow-clouds"
+  class="bg-aurora-moss section--block flex pt-16 align-middle lg:pt-20 xl:pt-28"
+>
   <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
-    <div class="max-width flex flex-col align-middle">
+    <div class="max-width flex max-w-299.75 flex-col align-middle">
       <div
         class="fade-in--pure z-50 mx-auto flex flex-col items-center space-y-6 pb-9 text-center md:max-w-124 md:pb-12 lg:space-y-10 lg:pb-10 xl:pb-20"
         data-reveal="fade-in--pure--visible"
@@ -19,9 +22,7 @@ const content = await getEntry('pages', 'global-section');
       </div>
 
       <div class="z-0 flex w-full items-end mix-blend-multiply">
-        <div class="relative mr-auto">
-          <UIConsole class="relative h-auto w-full" />
-        </div>
+        <UIConsole class="relative size-auto w-full" />
       </div>
     </div>
   </div>

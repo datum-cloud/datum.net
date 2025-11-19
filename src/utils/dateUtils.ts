@@ -139,6 +139,6 @@ export const estimateReadingTime = (
 
   return {
     minutes,
-    text: `${minutes} minute${minutes === 1 ? '' : 's'} read`,
+    text: `${minutes} minute read`,
   };
 };

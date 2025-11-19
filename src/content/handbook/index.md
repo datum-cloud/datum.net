@@ -16,7 +16,7 @@ contents:
   - slug: product
     label: "What We’re Building"
   - slug: technical
-    label: How We Build Software
+    label: How We Build and Run
   - slug: culture
     label: How We Operate
   - slug: "how-to-help"

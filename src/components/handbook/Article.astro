@@ -71,6 +71,7 @@ if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
 
       breadcrumbData.push({
         text: segmentTitle,
+        href: '/handbook/' + segment + '/',
       });
     }
   }
@@ -79,7 +80,6 @@ if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
   if (mainArticleEntry?.data.title) {
     breadcrumbData.push({
       text: mainArticleEntry.data.title,
-      href: '/handbook/' + articleId,
     });
   }
 } else {
@@ -178,6 +178,7 @@ handbooks.forEach((collection) => {
                   mainBemClass="c-breadcrumbs"
                   linkTextFormat="sentence"
                   crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                  customizeLinks={[{ index: 'last', 'aria-disabled': true }]}
                 >
                   <svg
                     slot="index"

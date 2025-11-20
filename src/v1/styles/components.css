@@ -509,4 +509,22 @@
       @apply absolute top-1/2 right-3 -translate-y-1/2;
     }
   }
+
+  .uc-card {
+    @apply bg-midnight-fjord relative flex flex-col justify-between gap-8 border border-white px-9 py-8 md:gap-10 md:px-10 md:py-14 lg:gap-14 lg:px-12.5 lg:py-16;
+    @apply transition-colors duration-300 ease-linear hover:border-white/60;
+    @apply min-h-[300px] md:min-h-[574px];
+  }
+
+  .uc-card-title {
+    @apply font-canela text-2xl leading-[1.2] font-normal -tracking-[0.5px] text-white md:text-3xl lg:text-4xl;
+  }
+
+  .uc-card-content {
+    @apply font-alliance m-0 text-base leading-[1.4] text-white/80 md:text-lg;
+  }
+
+  .uc-card-link {
+    @apply absolute top-0 left-0 h-full w-full overflow-hidden -indent-[9999px];
+  }
 }

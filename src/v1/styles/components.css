@@ -438,6 +438,53 @@
     @apply text-canyon-clay---links font-medium;
   }
 
+  /* figure */
+  figure {
+    .figure-image-wrapper {
+      @apply [&_img]:w-full;
+    }
+
+    &.figure--left {
+      @apply text-left;
+      @apply float-left;
+      @apply my-4 pr-8;
+
+      @apply max-w-1/2;
+    }
+
+    &.figure--center {
+      @apply text-center;
+      @apply [&_img]:w-full;
+    }
+
+    &.figure--right {
+      @apply text-right;
+      @apply float-right;
+      @apply my-4 pl-8;
+
+      @apply max-w-1/2;
+    }
+
+    img {
+      @apply my-0!;
+    }
+
+    figcaption {
+      @apply datum-text-sm text-canyon-clay! italic;
+    }
+  }
+
+  img[src*='#center'] {
+    @apply m-auto my-8 w-full;
+  }
+
+  img[src*='#left'] {
+    @apply float-left my-8 ml-auto max-w-1/2 pr-8;
+  }
+
+  img[src*='#right'] {
+    @apply float-right my-8 mr-auto max-w-1/2 pl-8;
+  }
   /* announcement */
 
   .announcement {

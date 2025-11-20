@@ -1,0 +1,36 @@
+---
+/**
+ * Figure Component
+ *
+ * A semantic figure component for displaying images with captions and alignment options.
+ *
+ * @usage
+ *
+ * ```mdx
+ * import Figure from '@components/Figure.astro';
+ *
+ * <Figure title="Caption text" align="left / center / right">
+ *   ![Alt text](./path/to/image.jpg)
+ * </Figure>
+ * ```
+ *
+ * @props
+ * - `title` (string, optional): The caption text displayed below the image
+ * - `align` ('left' | 'center' | 'right', default: 'center'): Image alignment
+ * - `class` (string, optional): Additional CSS classes
+ *
+ */
+
+import type { FigureProps } from '@/src/types/common';
+
+const { title, align = 'center', class: className } = Astro.props as FigureProps;
+
+const alignClass = `figure--${align}`;
+---
+
+<figure class:list={[alignClass, className]}>
+  <div class="figure-image-wrapper">
+    <slot />
+  </div>
+  {title && <figcaption>{title}</figcaption>}
+</figure>

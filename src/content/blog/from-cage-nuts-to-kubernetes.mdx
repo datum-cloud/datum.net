@@ -1,6 +1,6 @@
 ---
-title: "From Cage Nuts to Kubernetes"
-date: 2025-11-19
+title: "From cage nuts to Kubernetes"
+date: 2025-11-19 02:00:00
 slug: "from-cage-nuts-to-kubernetes"
 description: "Why now is the time to translate the complex, long-lived, learned experiences of network operators into a systematic platform driven by the modern Kubernetes ecosystem."
 thumbnail: assets/images/blog-5.png
@@ -13,17 +13,15 @@ meta:
   og:
     title: A personal journey from cage nuts to Kubernetes
     description: Datum is working to transform the messy, arcane playbooks of Internet infrastructure into programmable, declarative, repeatable primitives.
-    image: https://www.datum.net/images/og-default.png
 ---
+
+import Figure from '@components/Figure.astro';
 
 On June 12, 2008, I had cuts on my fingers from cage nuts, the local pubs had closed for the night, and I was exhausted from a long day racking, stacking, and cabling at the Equinix AM2 datacenter in Amsterdam, Netherlands. We were proud of our work: a perfect rack layout, swirls of cabling designed to eliminate stress on connectors, and plenty of room for future expansion. This point of presence (POP) would be one of 15x deployed to build the DynECT Managed DNS global network.
 
 In my role as co-founder and CTO at Dynamic Network Services ([DynDNS.org](http://DynDNS.org)), I was sometimes able to get out into the field to help deploy new infrastructure. Getting into the datacenter is a chance to connect a virtual world to the physical world - concrete floors, tilt up slabs, plumbing, power, cooling, and of course, fiber optics. For me, that time in the datacenter is a welcome relief from the desk jockeying that precedes in bringing a new POP online.
 
-<p align="center">
-  <img src="/src/content/blog/assets/images/from-cage-1.jpg" width="60%" alt="A rack filled with dozen servers"/>
-</p>
-_Image: DynECT Managed DNS deployment at Equinix AM2; June 2008_
+<Figure title="DynECT Managed DNS deployment at Equinix AM2; June 2008" align="right">![A rack filled with dozen servers](./assets/images/from-cage-1.jpg)</Figure>
 
 As experienced infrastructure operators can attest, racking, stacking, and cabling a POP is often the culmination of many months of effort - there is a ton of work that starts long before anyone can get past the datacenter’s guard desk. There are so many tasks to get done before a piece of gear can ever land in a POP:
 - Site Selection: Where, why, and how will you deploy?
@@ -33,11 +31,8 @@ As experienced infrastructure operators can attest, racking, stacking, and cabli
 - Master Service Agreements, Statements of Work, Service Level Agreements, etc.
 - Hardware Procurement, Shipping, Importation, Logistics, and Insurance
 - Datacenter Procedures: Physical Access, Ordering Cross Connects, Accessing Remote Hands
-  
-<p align="center">
-  <img src="/src/content/blog/assets/images/from-cage-2.jpg" width="100%" alt="Piled boxes of network tools inside office"/>
-</p>
-_Image: DynDNS Offices, DynECT Managed DNS Newark NJ Core POP - Staged for Shipment by Van; February 2009_
+
+<Figure title="DynDNS Offices, DynECT Managed DNS Newark NJ Core POP - Staged for Shipment by Van; February 2009">![Piled boxes of network tools inside office](./assets/images/from-cage-2.jpg)</Figure>
 
 These steps, this toil, this paperwork - well, it is commonly months of effort to complete. Master Service Agreement negotiations often involve representatives from technical, business, legal, and procurement teams. Evaluation of a connectivity partner requires technical due diligence, network surveillance, and proof of concept deployments. Shipping equipment across international borders requires new business entities for importation, payment of duties, and tax management strategies. For worldwide networks like DynECT, this isn’t “just a rack of gear” - it is a massive commitment in capital expenditures and future operating expenditures.
 
@@ -53,10 +48,7 @@ Racking and stacking the gear is only one part of the puzzle. That was the part 
 
 The list goes on and on and on. Every time a global network is deployed, someone is doing this work.
 
-<p align="center">
-  <img src="/src/content/blog/assets/images/from-cage-3.png" width="100%" alt="Routing security dashboard UI"/>
-</p>
-_Image: ARIN Routing Security Dashboard, November 2025_
+<Figure title="Routing security dashboard UI">![Piled boxes of network tools inside office](./assets/images/from-cage-3.jpg)</Figure>
 
 Last I checked, there was no Ansible Playbook for setting up BGP RPKI ROAs at an RIR. There is no Terraform script for generating IRRdb records. And there is no Kubernetes Operator for managing Nameserver Glue Records. _Or is there - hint hint hint?_
 
@@ -88,7 +80,7 @@ Hearing Alex describe Zac and Jacob’s new venture felt like someone saying, �
 
 And that’s where the story picks up — the collision between two decades of muscle memory and a new idea that infrastructure deployment doesn’t have to feel like a pilgrimage with a screwdriver and a stack of NDAs.
 
-For reference, Amazon EC2 became Generally Available in 2008. Amazon has done this work too. And so has Google Cloud, Oracle, Verisign, UltraDNS, ISC, Packet Clearing House, and every other major cloud provider, bare metal provider, DNS host, and content delivery network (CDN) - _yeah, I built one of those too -_ did the same work_._ 
+For reference, Amazon EC2 became Generally Available in 2008. Amazon has done this work too. And so has Google Cloud, Oracle, Verisign, UltraDNS, ISC, Packet Clearing House, and every other major cloud provider, bare metal provider, DNS host, and content delivery network (CDN) - _yeah, I built one of those too - did the same work_.
 
 Even as virtual machines became APIs and entire data centers dissolved behind glossy cloud consoles, this part of the job never actually changed. The servers moved, the buttons moved, but the bureaucracy and the tribal knowledge stayed stubbornly physical. And so did the network.
 
@@ -109,15 +101,12 @@ Datum is working to take these complex, long-lived, learned experiences of netwo
 
 Datum’s goal is simple: take the messy, arcane playbooks of Internet infrastructure and turn them into programmable, declarative, repeatable primitives — the same way Kubernetes did for distributed compute - but for networks. Datum distills years of toil and experience in Internet engineering so everyone in the AI generation can enjoy the feeling of running on a powerful network they fully control.
 
-<p align="center">
-  <img src="/src/content/blog/assets/images/from-cage-4.png" width="100%" alt="Domain as Datum K8s resource definition"/>
-</p>
-_Image: Domains as a Datum K8s Resource Definition, November 2025_
+<Figure title="Domains as a Datum K8s Resource Definition, November 2025">![Domain as Datum K8s resource definition](/src/content/blog/assets/images/from-cage-4.jpg)</Figure>
 
-Datum isn’t going at this effort alone. Datum has recruited a powerful community of modern infrastructure providers to power their network. These infrastructure providers are best in class at hosting, advanced BGP routing, and transit connectivity. They have exposed APIs to automate provisioning, configuration management, and deployment. Datum is layering on those stacks to deliver the “networking creature comforts” that we’ve all missed when operating in the Cloud. 
+Datum isn’t going at this effort alone. Datum has recruited a powerful community of modern infrastructure providers to power their network. These infrastructure providers are best in class at hosting, advanced BGP routing, and transit connectivity. They have exposed APIs to automate provisioning, configuration management, and deployment. Datum is layering on those stacks to deliver the “networking creature comforts” that we’ve all missed when operating in the Cloud.
 
 Datum turned up AS33438 in less than 60 days in 12 cities globally while performing the tedious steps above — the same steps that used to take quarters of planning and operators with decades of scars. And now it's automated, routine, and repeatable. And available to everyone “in the tent” by API.
 
-At DynDNS, we knew what we were building: core Internet infrastructure (compute, storage, and network) that just could not go down. We enjoyed direct and hands-on access to the network that allowed us to deliver a superior product offering. We had our networking superpowers in hand. 
+At DynDNS, we knew what we were building: core Internet infrastructure (compute, storage, and network) that just could not go down. We enjoyed direct and hands-on access to the network that allowed us to deliver a superior product offering. We had our networking superpowers in hand.
 
-At Datum, the team has a vision to bring these networking superpowers to the next wave of builders. No networking team required. 
+At Datum, the team has a vision to bring these networking superpowers to the next wave of builders. No networking team required.

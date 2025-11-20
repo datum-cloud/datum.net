@@ -15,9 +15,18 @@ const plans = (await getCollection('pricing')).sort(
 const faqs = (await getCollection('faq'))
   .filter((faq) => !faq.data.draft && faq.data.category === 'pricing')
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
 ---
 
-<Layout title={page.data.title} description={page.data.description} bodyClass={`page-${page.id}`}>
+<Layout
+  title={page.data.title}
+  description={page.data.description}
+  bodyClass={`page-${page.id}`}
+  meta={meta}
+>
   <section class="datum-container">
     <Hero
       class="light"

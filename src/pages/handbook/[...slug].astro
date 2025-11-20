@@ -46,13 +46,22 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { entry } = Astro.props;
 const { title, description, meta } = entry.remarkPluginFrontmatter;
+
+// Set default handbook OG image if not specified in frontmatter
+const handbookMeta = {
+  ...meta,
+  og: {
+    ...meta?.og,
+    image: meta?.og?.image || '/images/og/handbook.png',
+  },
+};
 ---
 
 <Layout
   title={title}
   description={description}
   bodyClass={`page-handbook page-handbook--${slug}`}
-  meta={meta}
+  meta={handbookMeta}
 >
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />

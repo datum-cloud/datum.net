@@ -67,6 +67,15 @@ const title = fm.title;
 const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 
+// Set default blog OG image - always use blog.png
+const blogMeta = {
+  ...meta,
+  og: {
+    ...meta?.og,
+    image: '/images/og/blog.png',
+  },
+};
+
 const icon = 'book-image';
 ---
 
@@ -74,7 +83,7 @@ const icon = 'book-image';
   title={title}
   description={description}
   bodyClass={`page-blog page-blog--${currentPage}`}
-  meta={meta}
+  meta={blogMeta}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />

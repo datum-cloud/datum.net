@@ -14,9 +14,18 @@ const fm = page.data;
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'The Datum Handbook';
 const description = fm.description;
+
+// Set default handbook OG image if not specified in frontmatter
+const handbookMeta = {
+  ...meta,
+  og: {
+    ...meta?.og,
+    image: meta?.og?.image || '/images/og/handbook.png',
+  },
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-handbook" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-handbook" meta={handbookMeta}>
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
     <Article articleId="index" />

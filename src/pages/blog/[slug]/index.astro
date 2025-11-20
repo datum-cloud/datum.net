@@ -22,20 +22,20 @@ const { category } = Astro.props;
 const { slug } = Astro.params;
 
 // Get all blog posts in this category
-const allPosts = await getCollection('blog', ({ data }) => {
+const blogs = await getCollection('blog', ({ data }) => {
   return !data.draft && data.categories?.includes(slug) && new Date(data.date) <= new Date();
 });
 
-const sortedPosts = allPosts.sort((a, b) => {
+blogs.sort((a, b) => {
   return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
 });
 
 // Set up pagination
 const pageSize = config.pageSize;
 const currentPage = 1;
-const totalItems = sortedPosts.length;
+const totalItems = blogs.length;
 const totalPages = Math.ceil(totalItems / pageSize);
-const currentPageData = sortedPosts.slice(0, pageSize);
+const currentPageData = blogs.slice(0, pageSize);
 
 // Get author data for current page posts
 const postsWithAuthors = await Promise.all(

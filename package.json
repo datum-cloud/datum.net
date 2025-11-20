@@ -33,6 +33,7 @@
     "@astrojs/alpinejs": "^0.4.9",
     "@astrojs/mdx": "^4.3.10",
     "@astrojs/node": "^9.5.0",
+    "@astrojs/rss": "^4.0.14",
     "@astrojs/starlight": "^0.36.2",
     "@astrojs/ts-plugin": "^1.10.5",
     "@kubernetes/client-node": "^1.4.0",

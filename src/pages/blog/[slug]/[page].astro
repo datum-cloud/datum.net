@@ -22,12 +22,11 @@ export async function getStaticPaths() {
   return categories.flatMap((category) => {
     // Get all posts for this category
     const categoryPosts = allPosts.filter((post) => post.data.categories?.includes(category.id));
-
-    const sortedPosts = categoryPosts.sort((a, b) => {
+    categoryPosts.sort((a, b) => {
       return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
     });
 
-    const totalPages = Math.ceil(sortedPosts.length / pageSize);
+    const totalPages = Math.ceil(categoryPosts.length / pageSize);
 
     // Only generate pages if there are more than 1 page
     if (totalPages <= 1) return [];
@@ -44,7 +43,7 @@ export async function getStaticPaths() {
         },
         props: {
           category,
-          posts: sortedPosts.slice(start, end),
+          posts: categoryPosts.slice(start, end),
           currentPage: pageNum,
           totalPages: totalPages,
           prevUrl: pageNum > 2 ? `/blog/${category.id}/${pageNum - 1}` : `/blog/${category.id}`,

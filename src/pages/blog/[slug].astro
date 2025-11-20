@@ -47,21 +47,17 @@ const categoryData = await Promise.all(
 );
 
 // Get all blog entries for navigation
-const allBlogEntries = await getCollection('blog');
+const blogs = await getCollection(
+  'blog',
+  ({ data }) => !data.draft && new Date(data.date) <= new Date()
+);
 
 // Get navigation articles (sorted by date, newest first)
-const sortedBlogs = allBlogEntries
-  .filter((b) => !b.data.draft)
-  .sort((a, b) => {
-    const dateA = new Date(a.data.date || 0);
-    const dateB = new Date(b.data.date || 0);
-    return dateB.getTime() - dateA.getTime(); // Newest first
-  });
+blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-const currentIndex = sortedBlogs.findIndex((b) => b.id === entry.id);
-const previousArticle = currentIndex > 0 ? sortedBlogs[currentIndex - 1] : undefined;
-const nextArticle =
-  currentIndex < sortedBlogs.length - 1 ? sortedBlogs[currentIndex + 1] : undefined;
+const currentIndex = blogs.findIndex((b) => b.id === entry.id);
+const previousArticle = currentIndex > 0 ? blogs[currentIndex - 1] : undefined;
+const nextArticle = currentIndex < blogs.length - 1 ? blogs[currentIndex + 1] : undefined;
 
 // Get processed avatar URL
 let processedAvatarUrl = '';
@@ -190,7 +186,7 @@ breadcrumbData.push({
               <span class="icon-label-text">
                 <button
                   type="button"
-                  class="border-b-1 hover:cursor-pointer"
+                  class="border-b hover:cursor-pointer"
                   x-data="{ copied: false }"
                   @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
                   x-text="copied ? 'Copied!' : 'Copy URL'"></button>

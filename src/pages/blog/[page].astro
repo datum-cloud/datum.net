@@ -17,16 +17,14 @@ const page = await getCollectionEntry('pages', 'blog');
 export async function getStaticPaths() {
   // Constants
   const BASE_URL = '/blog';
-  const allPosts = await getCollection('blog', ({ data }) => {
+  const blogs = await getCollection('blog', ({ data }) => {
     return !data.draft && new Date(data.date) <= new Date();
   });
 
-  const sortedPosts = allPosts.sort((a, b) => {
-    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-  });
+  blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
   const pageSize = config.pageSize;
-  const totalPages = Math.ceil(sortedPosts.length / pageSize);
+  const totalPages = Math.ceil(blogs.length / pageSize);
 
   return Array.from({ length: totalPages - 1 }, (_, i) => {
     const pageNum = i + 2; // Start from page 2
@@ -36,7 +34,7 @@ export async function getStaticPaths() {
     return {
       params: { page: pageNum.toString() },
       props: {
-        posts: sortedPosts.slice(start, end),
+        posts: blogs.slice(start, end),
         currentPage: pageNum,
         totalPages: totalPages,
         baseUrl: BASE_URL,

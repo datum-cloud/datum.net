@@ -4,26 +4,22 @@ import { formatISODate } from '@utils/dateUtils';
 const { post } = Astro.props;
 ---
 
-<article
-  class="blog-item fade-in--pure"
-  data-reveal="fade-in--pure--visible"
-  data-reveal-delay="100"
->
-  <h2 class="blog-item--title">
-    <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-  </h2>
+<div class="blog-item fade-in--pure" data-reveal="fade-in--pure--visible" data-reveal-delay="100">
+  <a href={`/blog/${post.id}/`} title={post.data.title} class="blog-item--wrapper">
+    <p class="blog-item--title">{post.data.title}</p>
 
-  <div class="blog-item--meta">
-    <div class="blog--date">
-      <time datetime={formatISODate(post.data.date)}>
-        {
-          new Date(post.data.date).toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          })
-        }
-      </time>
+    <div class="blog-item--meta">
+      <div class="blog--date">
+        <time datetime={formatISODate(post.data.date)}>
+          {
+            new Date(post.data.date).toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })
+          }
+        </time>
+      </div>
     </div>
-  </div>
-</article>
+  </a>
+</div>

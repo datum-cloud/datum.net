@@ -3,6 +3,7 @@ import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
+import Favicons from '@components/Favicons.astro';
 
 const {
   title,
@@ -36,12 +37,8 @@ const twitterImageUrl =
     <meta charset="UTF-8" />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="96x96" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="apple-mobile-web-app-title" content="Datum" />
+
+    <Favicons />
 
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://edge.marker.io" />

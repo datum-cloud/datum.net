@@ -1,5 +1,7 @@
 ---
 // Overwrite @astrojs/starlight/components/Head.astro
+import Favicons from '@components/Favicons.astro';
+
 const { head } = Astro.locals.starlightRoute;
 const { entry } = Astro.locals.starlightRoute;
 
@@ -66,9 +68,25 @@ const hasTwitterImage = head.some(
       return <Tag {...attrs} content={meta.og.url} />;
     }
 
+    // Filter out Starlight's default favicon links - we handle favicons in Favicons.astro
+    if (Tag === 'link' && attrs && attrs.rel) {
+      const relValue = attrs.rel;
+      if (
+        relValue === 'icon' ||
+        relValue === 'shortcut icon' ||
+        relValue === 'mask-icon' ||
+        relValue === 'apple-touch-icon'
+      ) {
+        return null;
+      }
+    }
+
     return <Tag {...attrs} set:html={content} />;
   })
 }
+
+<!-- Favicons -->
+<Favicons />
 
 <!-- Add og:logo, og:image and twitter:image if not present in Starlight's head -->
 <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />

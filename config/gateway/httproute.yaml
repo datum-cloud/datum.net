@@ -4,25 +4,25 @@ metadata:
   name: datum-net-http-route
 spec:
   parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: datum-net-gateway
-      sectionName: https-www-datum-net
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: datum-net-gateway
+    sectionName: https-www-datum-net
   rules:
-    - backendRefs:
-        - group: discovery.k8s.io
-          kind: EndpointSlice
-          name: datum-net
-          port: 443
-          weight: 1
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            hostname: 'website.prod.env.datum.net'
-      matches:
-        - path:
-            type: PathPrefix
-            value: /
-      timeouts:
-        backendRequest: 25s
-        request: 25s
+  - backendRefs:
+    - group: discovery.k8s.io
+      kind: EndpointSlice
+      name: datum-net
+      port: 443
+      weight: 1
+    filters:
+      - type: URLRewrite
+        urlRewrite:
+          hostname: "website.prod.env.datum.net"
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+    timeouts:
+      backendRequest: 25s
+      request: 25s

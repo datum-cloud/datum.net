@@ -83,6 +83,7 @@ src/content/blog/from-cage-nuts-to-kubernetes.mdx
 ![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#right)
 ```
 
+
 ## Docker Setup
 
 ### Prerequisites

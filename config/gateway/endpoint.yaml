@@ -10,6 +10,6 @@ ports:
     port: 443
 endpoints:
   - addresses:
-      - 'website.prod.env.datum.net'
+      - "website.prod.env.datum.net"
     conditions:
       ready: true

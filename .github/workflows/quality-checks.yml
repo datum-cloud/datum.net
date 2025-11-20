@@ -5,11 +5,11 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - 'README.md'
-      - 'env.example'
-      - '.vscode/**'
-      - 'public/pagefind/**'
-      - '**/pagefind/**'
+      - "README.md"
+      - "env.example"
+      - ".vscode/**"
+      - "public/pagefind/**"
+      - "**/pagefind/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
@@ -48,7 +48,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
@@ -78,7 +78,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci

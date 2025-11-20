@@ -3,14 +3,14 @@ name: Publish Website
 on:
   push:
     paths-ignore:
-      - "README.md"
-      - "env.example"
-      - ".vscode/**"
-      - "public/pagefind/**"
-      - "**/pagefind/**"
+      - 'README.md'
+      - 'env.example'
+      - '.vscode/**'
+      - 'public/pagefind/**'
+      - '**/pagefind/**'
 
   release:
-    types: ["published"]
+    types: ['published']
 
 jobs:
   check-files:

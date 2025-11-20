@@ -6,108 +6,108 @@ spec:
   # Match the port 80 and 443 listeners for datum.net, docs.datum.net, and brand.datum.net domains
   # so we can redirect to https://www.datum.net.
   parentRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: https-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: http-www-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: http-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: http-docs-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: https-docs-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: http-brand-datum-net-redirect
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: datum-net-gateway
-    sectionName: https-brand-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: https-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: http-www-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: http-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: http-docs-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: https-docs-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: http-brand-datum-net-redirect
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: datum-net-gateway
+      sectionName: https-brand-datum-net-redirect
   rules:
-  # Exact match for docs.datum.net/ redirects to www.datum.net/docs
-  - matches:
-    - path:
-        type: Exact
-        value: /
-      headers:
-      - name: Host
-        value: docs.datum.net
-    filters:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: www.datum.net
-        scheme: https
-        statusCode: 301
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /docs
-  # All other docs.datum.net paths redirect to www.datum.net preserving path
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-      headers:
-      - name: Host
-        value: docs.datum.net
-    filters:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: www.datum.net
-        scheme: https
-        statusCode: 301
-  # Exact match for brand.datum.net/ redirects to www.datum.net/brand
-  - matches:
-    - path:
-        type: Exact
-        value: /
-      headers:
-      - name: Host
-        value: brand.datum.net
-    filters:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: www.datum.net
-        scheme: https
-        statusCode: 301
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /brand
-  # All other brand.datum.net paths redirect to www.datum.net/brand preserving path
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-      headers:
-      - name: Host
-        value: brand.datum.net
-    filters:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: www.datum.net
-        scheme: https
-        statusCode: 301
-        path:
-          type: ReplacePrefixMatch
-          replacePrefixMatch: /brand
-  # datum.net and www.datum.net redirects to www.datum.net preserving path
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    filters:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: www.datum.net
-        scheme: https
-        statusCode: 301
+    # Exact match for docs.datum.net/ redirects to www.datum.net/docs
+    - matches:
+        - path:
+            type: Exact
+            value: /
+          headers:
+            - name: Host
+              value: docs.datum.net
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            hostname: www.datum.net
+            scheme: https
+            statusCode: 301
+            path:
+              type: ReplaceFullPath
+              replaceFullPath: /docs
+    # All other docs.datum.net paths redirect to www.datum.net preserving path
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+          headers:
+            - name: Host
+              value: docs.datum.net
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            hostname: www.datum.net
+            scheme: https
+            statusCode: 301
+    # Exact match for brand.datum.net/ redirects to www.datum.net/brand
+    - matches:
+        - path:
+            type: Exact
+            value: /
+          headers:
+            - name: Host
+              value: brand.datum.net
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            hostname: www.datum.net
+            scheme: https
+            statusCode: 301
+            path:
+              type: ReplaceFullPath
+              replaceFullPath: /brand
+    # All other brand.datum.net paths redirect to www.datum.net/brand preserving path
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+          headers:
+            - name: Host
+              value: brand.datum.net
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            hostname: www.datum.net
+            scheme: https
+            statusCode: 301
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /brand
+    # datum.net and www.datum.net redirects to www.datum.net preserving path
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            hostname: www.datum.net
+            scheme: https
+            statusCode: 301

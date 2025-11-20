@@ -153,6 +153,12 @@ export interface AsideProps {
   class?: string;
 }
 
+export interface FigureProps {
+  title?: string;
+  align?: 'left' | 'center' | 'right';
+  class?: string;
+}
+
 export interface AnnouncementProps {
   show?: boolean;
   label?: string;

@@ -41,9 +41,48 @@ For detailed information about the project structure, see [PROJECT_STRUCTURE.md]
 
 Main file: src/content/handbook/index.md
 
-### Handbook
+### Image
 
-Main file: src/content/handbook/index.md
+Import component
+
+```
+import Figure from '@components/Figure.astro';
+```
+
+Example in real use:
+
+```
+src/content/blog/from-cage-nuts-to-kubernetes.mdx
+```
+
+#### Caption + Alignment
+
+```
+<Figure title="Caption text" align="left/center/right">
+ ![Alt text](./path/to/image.jpg)
+</Figure>
+```
+
+#### Alignment
+
+##### Align left
+
+```
+![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#left)
+```
+
+##### Align center
+
+```
+![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#center)
+```
+
+##### Align right
+
+```
+![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#right)
+```
+
 
 ## Docker Setup
 

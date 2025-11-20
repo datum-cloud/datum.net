@@ -1,6 +1,7 @@
 ---
-title: "From Cage Nuts to Kubernetes"
+title: "From cage nuts to Kubernetes"
 date: 2025-11-19
+order: 2
 slug: "from-cage-nuts-to-kubernetes"
 description: "Why now is the time to translate the complex, long-lived, learned experiences of network operators into a systematic platform driven by the modern Kubernetes ecosystem."
 thumbnail: assets/images/blog-5.png
@@ -21,7 +22,7 @@ On June 12, 2008, I had cuts on my fingers from cage nuts, the local pubs had cl
 
 In my role as co-founder and CTO at Dynamic Network Services ([DynDNS.org](http://DynDNS.org)), I was sometimes able to get out into the field to help deploy new infrastructure. Getting into the datacenter is a chance to connect a virtual world to the physical world - concrete floors, tilt up slabs, plumbing, power, cooling, and of course, fiber optics. For me, that time in the datacenter is a welcome relief from the desk jockeying that precedes in bringing a new POP online.
 
-<Figure title="DynECT Managed DNS deployment at Equinix AM2; June 2008">![A rack filled with dozen servers](./assets/images/from-cage-1.jpg)</Figure>
+<Figure title="DynECT Managed DNS deployment at Equinix AM2; June 2008" align="right">![A rack filled with dozen servers](./assets/images/from-cage-1.jpg)</Figure>
 
 As experienced infrastructure operators can attest, racking, stacking, and cabling a POP is often the culmination of many months of effort - there is a ton of work that starts long before anyone can get past the datacenter’s guard desk. There are so many tasks to get done before a piece of gear can ever land in a POP:
 - Site Selection: Where, why, and how will you deploy?
@@ -32,7 +33,7 @@ As experienced infrastructure operators can attest, racking, stacking, and cabli
 - Hardware Procurement, Shipping, Importation, Logistics, and Insurance
 - Datacenter Procedures: Physical Access, Ordering Cross Connects, Accessing Remote Hands
 
-<Figure title="DynDNS Offices, DynECT Managed DNS Newark NJ Core POP - Staged for Shipment by Van; February 2009" align="right">![Piled boxes of network tools inside office](./assets/images/from-cage-2.jpg)</Figure>
+<Figure title="DynDNS Offices, DynECT Managed DNS Newark NJ Core POP - Staged for Shipment by Van; February 2009">![Piled boxes of network tools inside office](./assets/images/from-cage-2.jpg)</Figure>
 
 These steps, this toil, this paperwork - well, it is commonly months of effort to complete. Master Service Agreement negotiations often involve representatives from technical, business, legal, and procurement teams. Evaluation of a connectivity partner requires technical due diligence, network surveillance, and proof of concept deployments. Shipping equipment across international borders requires new business entities for importation, payment of duties, and tax management strategies. For worldwide networks like DynECT, this isn’t “just a rack of gear” - it is a massive commitment in capital expenditures and future operating expenditures.
 
@@ -48,16 +49,11 @@ Racking and stacking the gear is only one part of the puzzle. That was the part 
 
 The list goes on and on and on. Every time a global network is deployed, someone is doing this work.
 
-![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#center)
+<Figure title="Routing security dashboard UI">![Piled boxes of network tools inside office](./assets/images/from-cage-3.png)</Figure>
 
 Last I checked, there was no Ansible Playbook for setting up BGP RPKI ROAs at an RIR. There is no Terraform script for generating IRRdb records. And there is no Kubernetes Operator for managing Nameserver Glue Records. _Or is there - hint hint hint?_
 
-![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#left)
-
 Let’s fast forward this story to December 2024 — when my phone buzzed with a call from a longtime friend, Alex Benik from Encoded VC. Alex is the kind of person who doesn’t call just to chat. His calls come with a gravitational pull — if he’s dialing, something interesting is happening somewhere on Earth.
-
-![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#right)
-
 
 “Tom,” he said, after the usual two-second pleasantries, “you’re not going to believe what Zac and Jacob Smith are up to.”
 
@@ -85,7 +81,7 @@ Hearing Alex describe Zac and Jacob’s new venture felt like someone saying, �
 
 And that’s where the story picks up — the collision between two decades of muscle memory and a new idea that infrastructure deployment doesn’t have to feel like a pilgrimage with a screwdriver and a stack of NDAs.
 
-For reference, Amazon EC2 became Generally Available in 2008. Amazon has done this work too. And so has Google Cloud, Oracle, Verisign, UltraDNS, ISC, Packet Clearing House, and every other major cloud provider, bare metal provider, DNS host, and content delivery network (CDN) - _yeah, I built one of those too -_ did the same work_._
+For reference, Amazon EC2 became Generally Available in 2008. Amazon has done this work too. And so has Google Cloud, Oracle, Verisign, UltraDNS, ISC, Packet Clearing House, and every other major cloud provider, bare metal provider, DNS host, and content delivery network (CDN) - _yeah, I built one of those too - did the same work_.
 
 Even as virtual machines became APIs and entire data centers dissolved behind glossy cloud consoles, this part of the job never actually changed. The servers moved, the buttons moved, but the bureaucracy and the tribal knowledge stayed stubbornly physical. And so did the network.
 
@@ -106,7 +102,7 @@ Datum is working to take these complex, long-lived, learned experiences of netwo
 
 Datum’s goal is simple: take the messy, arcane playbooks of Internet infrastructure and turn them into programmable, declarative, repeatable primitives — the same way Kubernetes did for distributed compute - but for networks. Datum distills years of toil and experience in Internet engineering so everyone in the AI generation can enjoy the feeling of running on a powerful network they fully control.
 
-<Figure title="Domains as a Datum K8s Resource Definition, November 2025" align="left">![Domain as Datum K8s resource definition](/src/content/blog/assets/images/from-cage-4.png)</Figure>
+<Figure title="Domains as a Datum K8s Resource Definition, November 2025">![Domain as Datum K8s resource definition](/src/content/blog/assets/images/from-cage-4.png)</Figure>
 
 Datum isn’t going at this effort alone. Datum has recruited a powerful community of modern infrastructure providers to power their network. These infrastructure providers are best in class at hosting, advanced BGP routing, and transit connectivity. They have exposed APIs to automate provisioning, configuration management, and deployment. Datum is layering on those stacks to deliver the “networking creature comforts” that we’ve all missed when operating in the Cloud.
 

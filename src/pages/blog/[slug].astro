@@ -286,6 +286,7 @@ breadcrumbData.push({
                   id: previousArticle.id,
                   title: previousArticle.data.title,
                   url: `/blog/${previousArticle.id}/`,
+                  navLabel: 'Next article',
                 }
               : undefined}
             nextArticle={nextArticle
@@ -293,6 +294,7 @@ breadcrumbData.push({
                   id: nextArticle.id,
                   title: nextArticle.data.title,
                   url: `/blog/${nextArticle.id}/`,
+                  navLabel: 'Previous article',
                 }
               : undefined}
           />

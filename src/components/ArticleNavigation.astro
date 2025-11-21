@@ -7,11 +7,13 @@ interface ArticleNavigationProps {
     id: string;
     title: string;
     url: string;
+    navLabel?: string;
   };
   nextArticle?: {
     id: string;
     title: string;
     url: string;
+    navLabel?: string;
   };
   class?: string;
 }
@@ -25,7 +27,8 @@ const { previousArticle, nextArticle, class: className } = Astro.props as Articl
       {previousArticle && (
         <a href={previousArticle.url} class="article-nav-item article-nav-item--prev">
           <div class="article-nav-item--label">
-            <Icon name="arrow-left" size="sm" /> <span>Previous article</span>
+            <Icon name="arrow-left" size="sm" />{' '}
+            <span>{previousArticle.navLabel || 'Previous article'}</span>
           </div>
 
           <span class="article-nav-item--title">{previousArticle.title}</span>
@@ -35,7 +38,8 @@ const { previousArticle, nextArticle, class: className } = Astro.props as Articl
       {nextArticle && (
         <a href={nextArticle.url} class="article-nav-item article-nav-item--next">
           <div class="article-nav-item--label">
-            <span>Next article</span> <Icon name="arrow-right" size="sm" />
+            <span>{nextArticle.navLabel || 'Next article'}</span>{' '}
+            <Icon name="arrow-right" size="sm" />
           </div>
 
           <span class="article-nav-item--title">{nextArticle.title}</span>

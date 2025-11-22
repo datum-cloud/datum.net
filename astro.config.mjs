@@ -124,6 +124,11 @@ export default defineConfig({
           collapsed: true, // All other groups are collapsed by default
         },
         {
+          label: 'API',
+          autogenerate: { directory: 'docs/api' },
+          collapsed: true,
+        },
+        {
           label: 'Our Infrastructure',
           autogenerate: { directory: 'docs/infrastructure' },
           collapsed: true,

@@ -25,7 +25,7 @@ jobs:
       packages: write
       id-token: write
     needs: check-files
-    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.7.4
+    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.8.1
     with:
       image-name: datum-net
       target: production
@@ -39,7 +39,7 @@ jobs:
       contents: read
       packages: write
     needs: build-and-push
-    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.7.4
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.8.1
     with:
       bundle-name: ghcr.io/datum-cloud/datum-net-kustomize
       bundle-path: config/base

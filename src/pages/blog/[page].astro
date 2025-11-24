@@ -18,7 +18,7 @@ export async function getStaticPaths() {
   // Constants
   const BASE_URL = '/blog';
   const blogs = await getCollection('blog', ({ data }) => {
-    return !data.draft && new Date(data.date) <= new Date();
+    return !data.draft;
   });
 
   blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());

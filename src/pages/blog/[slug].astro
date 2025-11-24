@@ -47,10 +47,7 @@ const categoryData = await Promise.all(
 );
 
 // Get all blog entries for navigation
-const blogs = await getCollection(
-  'blog',
-  ({ data }) => !data.draft && new Date(data.date) <= new Date()
-);
+const blogs = await getCollection('blog', ({ data }) => !data.draft);
 
 // Get navigation articles (sorted by date, newest first)
 blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());

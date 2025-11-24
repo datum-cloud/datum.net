@@ -23,7 +23,7 @@ const { slug } = Astro.params;
 
 // Get all blog posts in this category
 const blogs = await getCollection('blog', ({ data }) => {
-  return !data.draft && data.categories?.includes(slug) && new Date(data.date) <= new Date();
+  return !data.draft && data.categories?.includes(slug);
 });
 
 blogs.sort((a, b) => {

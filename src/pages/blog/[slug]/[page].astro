@@ -14,7 +14,7 @@ import { getCollectionEntry } from '@utils/collectionUtils';
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
   const allPosts = await getCollection('blog', ({ data }) => {
-    return !data.draft && new Date(data.date) <= new Date();
+    return !data.draft;
   });
 
   const pageSize = config.pageSize;

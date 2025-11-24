@@ -56,7 +56,8 @@
         { "text": "Home", "href": "/" },
         { "text": "Product", "href": "/features/" },
         { "text": "Pricing", "href": "/pricing/" },
-        { "text": "Docs", "href": "/docs/" }
+        { "text": "Docs", "href": "/docs/" },
+        { "text": "Status", "href": "https://www.datumstatus.com/", "isExternal": true }
       ]
     },
     {

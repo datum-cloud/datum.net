@@ -191,5 +191,30 @@ const twitterImageUrl =
         }
       });
     </script>
+
+    <script src="https://hyperping.com/badge.js" async is:inline></script>
+    <script is:inline>
+      window.onload = function () {
+        /*eslint no-undef: "off"*/
+        Hyperping.init({
+          statuspage: 'https://www.datumstatus.com',
+          border: 'none',
+          borderColor: '#30363D',
+          uptime: false,
+          dot: true,
+          dotSize: 10,
+          isNeutral: false,
+          dotOk: '#2BAC76',
+          dotIncident: '#FFAF36',
+          dotOutage: '#E95858',
+          dotMaintenance: '#0070F3',
+          dotNeutral: '#0070F3',
+          operational: 'All systems normal',
+          incident: 'Under investigation',
+          outage: 'System outage',
+          maintenance: 'Under maintenance',
+        });
+      };
+    </script>
   </body>
 </html>

@@ -111,11 +111,19 @@ const navData = navigation as NavData;
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
                       >
-                        {item.text}
-                        {item.text.toLowerCase() === 'github' && (
-                          <span class="datum-docs-sidebar-headings bg-glacier-mist-900/15 text-glacier-mist-700 rounded-md px-[6px] py-[2px]">
-                            <GithubStargazerValue server:defer />
-                          </span>
+                        {item.text.toLowerCase() === 'github' ? (
+                          <>
+                            {item.text}
+                            <span class="datum-docs-sidebar-headings bg-glacier-mist-900/15 text-glacier-mist-700 rounded-md px-[6px] py-[2px]">
+                              <GithubStargazerValue server:defer />
+                            </span>
+                          </>
+                        ) : item.text.toLowerCase() === 'status' ? (
+                          <>
+                            <span id="hyperping-badge" />
+                          </>
+                        ) : (
+                          item.text
                         )}
                       </a>
                     </li>

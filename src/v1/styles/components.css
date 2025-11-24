@@ -509,4 +509,21 @@
       @apply absolute top-1/2 right-3 -translate-y-1/2;
     }
   }
+
+  /* expressive code */
+  .expressive-code {
+    @apply my-4!;
+
+    .frame {
+      @apply shadow-none!;
+
+      pre {
+        @apply bg-white;
+      }
+
+      .header {
+        @apply bg-[color-mix(in_srgb,var(--color-glacier-mist-800)_40%,transparent)];
+      }
+    }
+  }
 }

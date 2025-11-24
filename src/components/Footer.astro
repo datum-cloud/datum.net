@@ -101,6 +101,7 @@ const navData = navigation as NavData;
             navData.footer.map((section) => (
               <div class="footer-nav-section">
                 <h4 class="footer-nav-header">{section.title}</h4>
+                {section.title == 'General' && <div id="hyperping-badge" />}
                 <ul class="footer-nav-list">
                   {section.items.map((item: NavItem) => (
                     <li>
@@ -144,6 +145,7 @@ const navData = navigation as NavData;
                 ))
               }
             </div>
+
             <p
               class="footer-copyright mb-2 w-full text-center text-nowrap md:text-right [&_a]:inline-block"
             >
@@ -160,4 +162,29 @@ const navData = navigation as NavData;
   </div>
 
   {showSignup && <Signup server:defer />}
+
+  <script src="https://hyperping.com/badge.js" async></script>
+  <script is:inline>
+    window.onload = function () {
+      /*eslint no-undef: "off"*/
+      Hyperping.init({
+        statuspage: 'https://www.datumstatus.com',
+        border: 'none',
+        borderColor: '#30363D',
+        uptime: false,
+        dot: true,
+        dotSize: 10,
+        isNeutral: false,
+        dotOk: '#2BAC76',
+        dotIncident: '#FFAF36',
+        dotOutage: '#E95858',
+        dotMaintenance: '#0070F3',
+        dotNeutral: '#0070F3',
+        operational: 'All systems normal',
+        incident: 'Under investigation',
+        outage: 'Service disruption',
+        maintenance: 'Under maintenance',
+      });
+    };
+  </script>
 </footer>

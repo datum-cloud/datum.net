@@ -31,6 +31,26 @@
     url('/fonts/datum/allianceno1-semibold-webfont.woff') format('woff');
 }
 
+@font-face {
+  font-family: 'Alliance No.1';
+  src:
+    url('/fonts/datum/allianceno1-medium-italic-webfont.woff2') format('woff2'),
+    url('/fonts/datum/allianceno1-medium-italic-webfont.woff') format('woff');
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alliance No.1';
+  src:
+    url('/fonts/datum/allianceno1-regular-italic-webfont.woff2') format('woff2'),
+    url('/fonts/datum/allianceno1-regular-italic-webfont.woff') format('woff');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
 /* Canela Text Font Family */
 @font-face {
   font-family: 'Canela Text';

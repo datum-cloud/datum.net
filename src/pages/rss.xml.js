@@ -8,10 +8,7 @@ const title = index.data.title || index.data.meta.title;
 const description = index.data.description || index.data.meta.description;
 
 export async function GET(context) {
-  const blogs = await getCollection(
-    'blog',
-    ({ data }) => !data.draft && new Date(data.date) <= new Date()
-  );
+  const blogs = await getCollection('blog', ({ data }) => !data.draft);
 
   blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 

@@ -9,7 +9,7 @@ import config from '@data/siteConfig.json';
 
 // Get all published blog posts and sort them by date (newest first)
 const blogs = await getCollection('blog', ({ data }) => {
-  return !data.draft && new Date(data.date) <= new Date();
+  return !data.draft;
 });
 
 blogs.sort((a, b) => {

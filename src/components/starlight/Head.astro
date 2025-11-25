@@ -1,6 +1,7 @@
 ---
 // Overwrite @astrojs/starlight/components/Head.astro
 import Favicons from '@components/Favicons.astro';
+import defaultOgImage from '@content/images/og/default.png';
 
 const { head } = Astro.locals.starlightRoute;
 const { entry } = Astro.locals.starlightRoute;
@@ -12,8 +13,7 @@ const title = meta.title ?? fm.title;
 const description = meta.description ?? fm.description;
 
 // Default OG image for docs
-const defaultOgImage = new URL('/images/og/docs.png', Astro.site).href;
-const ogImage = meta.og?.image ? new URL(meta.og.image, Astro.site).href : defaultOgImage;
+const ogImage = meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage;
 
 // Check if og:image and twitter:image exist in head
 const hasOgImage = head.some(
@@ -90,5 +90,5 @@ const hasTwitterImage = head.some(
 
 <!-- Add og:logo, og:image and twitter:image if not present in Starlight's head -->
 <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
-{!hasOgImage && <meta property="og:image" content={ogImage} />}
-{!hasTwitterImage && <meta name="twitter:image" content={ogImage} />}
+{!hasOgImage && <meta property="og:image" content={ogImage.src} />}
+{!hasTwitterImage && <meta name="twitter:image" content={ogImage.src} />}

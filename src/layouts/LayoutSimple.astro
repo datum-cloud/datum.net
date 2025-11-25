@@ -4,6 +4,7 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import defaultOgImage from '@content/images/og/default.png';
 
 const {
   title,
@@ -19,8 +20,7 @@ const {
 } = Astro.props as LayoutProps;
 
 const pageUrl = Astro.url.href;
-const defaultImage = new URL('/images/og/default.png', Astro.site).href;
-const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
+const imageContent = image ? image : defaultOgImage;
 
 // Overwrite with meta
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
@@ -50,8 +50,7 @@ const descriptionValue =
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image:
-            meta && meta.og && meta.og.image ? new URL(meta.og.image, Astro.site).href : imageUrl,
+          image: meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -74,7 +73,7 @@ const descriptionValue =
         creator: config.socials.twitter.handle || '@datumcloud',
         title: titleValue,
         description: descriptionValue,
-        image: imageUrl,
+        image: imageContent.src,
       }}
       extend={{
         meta: [

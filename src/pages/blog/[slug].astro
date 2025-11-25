@@ -13,6 +13,7 @@ import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/date
 import { getCollectionEntry } from '@utils/collectionUtils';
 import Icon from '@components/Icon.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
+import defaultOgImage from '@content/images/og/blog.png';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -95,7 +96,7 @@ const description = fm.description ? fm.description : '';
 const blogMeta = {
   ...meta,
   og: {
-    image: '/images/og/blog.png',
+    image: defaultOgImage,
     ...meta?.og,
   },
 };

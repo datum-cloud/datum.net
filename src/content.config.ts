@@ -3,25 +3,47 @@ import { glob } from 'astro/loaders';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
-const metaSchema = z
-  .object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    image: z.string().optional(),
-    keywords: z.array(z.string()).optional(),
-    og: z
-      .object({
-        title: z.string().optional(),
-        description: z.string().optional(),
-        image: z.string().optional(),
-        url: z.string().optional(),
-        article: z.boolean().default(false).optional(),
-        published: z.date().optional(),
-        author: z.string().optional(),
-      })
-      .optional(),
-  })
-  .optional();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const metaSchema = (image?: any) =>
+  z
+    .object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      image: z.string().optional(),
+      keywords: z.array(z.string()).optional(),
+      og: z
+        .object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          image: image().optional(),
+          url: z.string().optional(),
+          article: z.boolean().default(false).optional(),
+          published: z.date().optional(),
+          author: z.string().optional(),
+        })
+        .optional(),
+    })
+    .optional();
+
+// Define blog collections
+const blog = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      slug: z.string().optional(),
+      subtitle: z.string().optional(),
+      description: z.string().optional(),
+      date: z.date(),
+      author: z.string().optional(),
+      categories: z.array(z.string()).optional().default([]),
+      thumbnail: image().optional(),
+      featuredImage: image().optional(),
+      draft: z.boolean().optional().default(false),
+      updatedDate: z.string().optional(),
+      meta: metaSchema(image),
+    }),
+});
 
 // Define pages collections
 const pages = defineCollection({
@@ -54,7 +76,7 @@ const pages = defineCollection({
           })
         )
         .optional(),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
@@ -96,41 +118,21 @@ const about = defineCollection({
           label: z.string(),
         })
         .optional(),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
 // Define legal collections
 const legal = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/legal' }),
-  schema: () =>
-    z.object({
-      title: z.string(),
-      slug: z.string().optional(),
-      subtitle: z.string().optional(),
-      description: z.string().optional(),
-      iconName: z.string().optional(),
-      meta: metaSchema,
-    }),
-});
-
-// Define blog collections
-const blog = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
       slug: z.string().optional(),
       subtitle: z.string().optional(),
       description: z.string().optional(),
-      date: z.date(),
-      author: z.string().optional(),
-      categories: z.array(z.string()).optional().default([]),
-      thumbnail: image().optional(),
-      featuredImage: image().optional(),
-      draft: z.boolean().optional().default(false),
-      updatedDate: z.string().optional(),
-      meta: metaSchema,
+      iconName: z.string().optional(),
+      meta: metaSchema(image),
     }),
 });
 
@@ -170,7 +172,7 @@ const categories = defineCollection({
       description: z.string().optional(),
       slug: z.string().optional(),
       featuredImage: image().optional(),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
@@ -207,7 +209,7 @@ const handbooks = defineCollection({
         })
         .optional(),
       featuredImage: image().optional(),
-      meta: metaSchema,
+      meta: metaSchema(image),
       contents: z
         .array(
           z.object({
@@ -222,7 +224,7 @@ const handbooks = defineCollection({
 // Define changelog collections
 const changelog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/changelog' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       title: z.string(),
       date: z.date().optional(),
@@ -238,14 +240,14 @@ const changelog = defineCollection({
         )
         .optional()
         .default([]),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
 // Define features collections
 const features = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/features' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       title: z.string(),
       slug: z.string().optional(),
@@ -265,7 +267,7 @@ const features = defineCollection({
         .optional(),
       iconName: z.string().optional(),
       draft: z.boolean().optional().default(false),
-      meta: metaSchema,
+      meta: metaSchema(image),
       sections: z
         .object({
           first: z.array(reference('features')).optional(),
@@ -279,7 +281,7 @@ const features = defineCollection({
 // Define pricing collections
 const pricing = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/pricing' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       title: z.string(),
       subtitle: z.string().optional(),
@@ -310,14 +312,14 @@ const pricing = defineCollection({
           })
         )
         .optional(),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
 // Define huddles collections
 const huddles = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/huddles' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       title: z.string(),
       subtitle: z.string().optional(),
@@ -328,7 +330,7 @@ const huddles = defineCollection({
       zoomPass: z.string().optional(),
       slidesUrl: z.string().url().optional(),
       draft: z.boolean().optional().default(false),
-      meta: metaSchema,
+      meta: metaSchema(image),
     }),
 });
 
@@ -360,11 +362,12 @@ export const collections = {
   docs: defineCollection({
     loader: docsLoader(),
     schema: docsSchema({
-      extend: z.object({
-        // override lastUpdated from original schema
-        updatedDate: z.string().optional(),
-        meta: metaSchema,
-      }),
+      extend: ({ image }) =>
+        z.object({
+          // override lastUpdated from original schema
+          updatedDate: z.string().optional(),
+          meta: metaSchema(image),
+        }),
     }),
   }),
 };

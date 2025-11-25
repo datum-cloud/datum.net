@@ -4,6 +4,7 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import defaultOgImage from '@content/images/og/default.png';
 
 const {
   title,
@@ -18,17 +19,16 @@ const {
   meta,
 } = Astro.props as LayoutProps;
 
-const mode = import.meta.env.MODE || process.env.NODE_ENV || process.env.MODE;
+const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
 const pageUrl = Astro.url.href;
-const defaultImage = new URL('/images/og/default.png', Astro.site).href;
-const imageUrl = image ? new URL(image, Astro.site).href : defaultImage;
+const imageContent = image ? image : defaultOgImage;
 
 // Overwrite with meta
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
-const twitterImageUrl =
-  meta && meta.og && meta.og.image ? new URL(meta.og.image, Astro.site).href : imageUrl;
+const twitterImage =
+  meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
 ---
 
 <!doctype html>
@@ -54,8 +54,7 @@ const twitterImageUrl =
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image:
-            meta && meta.og && meta.og.image ? new URL(meta.og.image, Astro.site).href : imageUrl,
+          image: meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -78,7 +77,7 @@ const twitterImageUrl =
         creator: config.socials.twitter.handle || '@datumcloud',
         title: titleValue,
         description: descriptionValue,
-        image: twitterImageUrl,
+        image: twitterImage?.src,
       }}
       extend={{
         meta: [

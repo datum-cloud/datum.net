@@ -17,7 +17,7 @@ import announcement from './src/libs/integration/announcement.ts';
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // Also check process.env for environment variables
-const siteUrl = process.env.SITE_URL || import.meta.env.SITE_URL;
+const siteUrl = process.env.SITE_URL || import.meta.env.SITE_URL || 'https://www.datum.net';
 const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({

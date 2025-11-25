@@ -6,6 +6,7 @@ import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import BlogIndex from '@components/blog/Blog.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
+import defaultOgImage from '@content/images/og/blog.png';
 
 // Get blog landing page from blog/index.mdx
 const page = await getCollectionEntry('pages', 'blog');
@@ -23,8 +24,8 @@ const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 const blogMeta = {
   ...meta,
   og: {
+    image: defaultOgImage,
     ...meta?.og,
-    image: '/images/og/blog.png',
   },
 };
 ---

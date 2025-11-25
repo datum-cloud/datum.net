@@ -10,7 +10,7 @@ meta:
   og: 
     title: "The foundation to how we work"
     description: "A living document that gives insight into our values, goals, and ways of working"
-    image: "/images/og/handbook.png"
+    image: "../images/og/handbook.png"
 contents:
   - slug: about
     label: Company

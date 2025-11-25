@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 export interface LayoutProps {
   title: string;
   description?: string;
-  image?: string;
+  image?: ImageMetadata;
   article?: boolean;
   publishDate?: Date;
   author?: string;
@@ -20,7 +20,7 @@ export interface LayoutProps {
     og?: {
       title?: string;
       description?: string;
-      image?: string;
+      image?: ImageMetadata;
       url?: string;
     };
   };

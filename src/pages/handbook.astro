@@ -4,6 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -19,8 +20,8 @@ const description = fm.description;
 const handbookMeta = {
   ...meta,
   og: {
+    image: defaultOgImage,
     ...meta?.og,
-    image: meta?.og?.image || '/images/og/handbook.png',
   },
 };
 ---

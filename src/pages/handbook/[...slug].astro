@@ -4,6 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollection, render } from 'astro:content';
 
@@ -51,8 +52,8 @@ const { title, description, meta } = entry.remarkPluginFrontmatter;
 const handbookMeta = {
   ...meta,
   og: {
+    image: defaultOgImage,
     ...meta?.og,
-    image: meta?.og?.image || '/images/og/handbook.png',
   },
 };
 ---

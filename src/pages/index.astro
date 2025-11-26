@@ -4,6 +4,7 @@ import { getEntries } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/home/Hero.astro';
 import FirstSection from '@components/home/FirstSection.astro';
+import LatestBlogSection from '@components/blog/Latest.astro';
 import SecondSection from '@components/home/SecondSection.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import Footer from '@components/Footer.astro';
@@ -28,6 +29,11 @@ const description = fm.description ? fm.description : '';
     <FirstSection content={contentData[0]} />
     <SecondSection content={contentData[1]} />
     <GlobalSection />
+    <section id="latest-blog" class="bg-glacier-mist-800 section--block section--block--pad">
+      <div class="max-width">
+        <LatestBlogSection />
+      </div>
+    </section>
     <Footer />
   </section>
 </Layout>

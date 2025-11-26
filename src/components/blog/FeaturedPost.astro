@@ -12,10 +12,10 @@ const readingTime = estimateReadingTime(post.body || '');
   <!-- Image on the left -->
   <div class="blog-featured--image">
     {
-      post.data.featuredImage && (
+      post.data.thumbnail && (
         <a href={`/blog/${post.id}/`} title={post.data.title}>
           <Image
-            src={post.data.featuredImage}
+            src={post.data.thumbnail}
             layout="constrained"
             alt={post.data.title}
             width={717}

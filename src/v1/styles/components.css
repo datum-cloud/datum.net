@@ -98,7 +98,7 @@
   }
 
   .ordered-list li {
-    @apply text-midnight-fjord flex items-start gap-3 md:gap-5;
+    @apply text-midnight-fjord flex gap-3 md:gap-5;
     counter-increment: ordered-counter;
 
     .item-title {
@@ -116,29 +116,10 @@
     content: '0' counter(ordered-counter) '.';
   }
 
-  .ordered-list span {
-    @apply font-frontliner text-mauve text-xl leading-relaxed font-light tracking-widest;
-  }
-
-  /* Font Styles */
-  .h1-leading {
-    @apply font-canela text-midnight-fjord tracking-1 mb-17.5 text-4xl leading-[1.1] text-balance md:text-5xl lg:text-6xl;
-  }
-
-  .h2-leading {
-    @apply font-canela text-midnight-fjord tracking-1 mb-8 text-3xl leading-[1.1] text-balance md:mb-10 md:text-5xl lg:text-6xl;
-  }
-
-  .h3-leading {
-    @apply font-canela text-midnight-fjord text-22 lg:text-46 tracking-1 mb-14 leading-[1.1] text-balance md:text-3xl;
-  }
-
-  .h4-leading {
-    @apply font-canela text-midnight-fjord text-28 lg:text-46 tracking-1 mb-8 leading-[1.1] text-balance md:text-4xl;
-  }
-
-  .text-desc {
-    @apply font-alliance text-midnight-fjord md:text-19 text-xl leading-[1.4];
+  .label {
+    @apply datum-text-sm font-semibold;
+    @apply px-2 py-1;
+    @apply border-app---dark---utility-4/50 rounded-md border;
   }
 
   /* Generic Logo/Brand Grid Components */
@@ -147,7 +128,7 @@
   }
 
   .logo-grid--3-6 {
-    @apply grid-cols-3 lg:grid-cols-6 lg:[&>div:nth-child(3)]:border-r-1! [&>div:nth-child(3n)]:border-r-0;
+    @apply grid-cols-3 lg:grid-cols-6 lg:[&>div:nth-child(3)]:border-r! [&>div:nth-child(3n)]:border-r-0;
   }
 
   .logo-grid--2-3 {

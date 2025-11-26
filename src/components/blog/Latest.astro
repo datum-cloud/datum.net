@@ -17,19 +17,22 @@ const latestBlogs = blogs.slice(0, 3);
 const [featured, ...posts] = latestBlogs;
 ---
 
-<h2 class="datum-text-xl border-midnight-fjord m-0 mb-16 w-full border-b pb-8">
+<h2
+  class="datum-text-xl border-midnight-fjord m-0 mb-8 w-full border-b pb-6 md:mb-12 lg:mb-16 lg:pb-8"
+>
   Latest thoughts from the team
 </h2>
 
-<div class="grid grid-cols-11 gap-8 lg:flex-row lg:gap-11">
+<div class="grid grid-cols-4 gap-8 md:grid-cols-11 lg:flex-row lg:gap-11">
   {
     featured && (
-      <div class="lg:cols-span-6 col-span-11 flex flex-1 flex-col md:col-span-5">
+      <div class="lg:cols-span-6 col-span-4 flex flex-1 flex-col md:col-span-5">
         <div class="flex flex-col">
-          {featured.data.featuredImage && (
+          {featured.data.thumbnail && (
             <a href={`/blog/${featured.id}/`} title={featured.data.title} class="mb-6 w-full">
               <Image
-                src={featured.data.featuredImage}
+                layout="constrained"
+                src={featured.data.thumbnail}
                 alt={featured.data.title}
                 class="block size-auto w-full rounded-sm object-cover"
               />
@@ -46,7 +49,7 @@ const [featured, ...posts] = latestBlogs;
             </a>
           </h3>
           {featured.data.description && (
-            <p class="datum-text-base mb-3 opacity-80">{featured.data.description}</p>
+            <p class="datum-text-base mb-3 text-pretty opacity-80">{featured.data.description}</p>
           )}
           <div>
             <time datetime={featured.data.date.toISOString()} class="datum-text-sm opacity-40">
@@ -58,14 +61,15 @@ const [featured, ...posts] = latestBlogs;
     )
   }
 
-  <div class="lg:cols-span-5 col-span-11 flex gap-8 md:col-span-6 lg:gap-11">
+  <div class="lg:cols-span-5 col-span-4 flex gap-6 md:col-span-6 md:gap-8 lg:gap-11">
     {
       posts.map((post) => (
         <div class="flex flex-1 flex-col">
-          {post.data.featuredImage && (
+          {post.data.thumbnail && (
             <a href={`/blog/${post.id}/`} title={post.data.title} class="mb-6 w-full">
               <Image
-                src={post.data.featuredImage}
+                layout="constrained"
+                src={post.data.thumbnail}
                 alt={post.data.title}
                 class="block size-auto w-full rounded-sm object-cover"
               />
@@ -82,7 +86,7 @@ const [featured, ...posts] = latestBlogs;
             </a>
           </h4>
           {post.data.description && (
-            <p class="datum-text-sm mb-3 opacity-80">{post.data.description}</p>
+            <p class="datum-text-sm mb-3 text-pretty opacity-80">{post.data.description}</p>
           )}
           <div>
             <time datetime={post.data.date.toISOString()} class="datum-text-sm opacity-40">

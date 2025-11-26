@@ -10,12 +10,12 @@ const { content } = Astro.props as ContentProps;
 
 <section
   id="under-the-hood"
-  class="bg-glacier-mist-800 section--block overflow-clip pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-28 lg:pb-36 xl:pt-40 xl:pb-40"
+  class="bg-glacier-mist-800 section--block section--block--pad overflow-clip"
 >
-  <div class="max-width flex max-w-276 align-middle">
+  <div class="max-width">
     <!-- Main content container -->
     <div
-      class="fade-in--pure relative z-10 m-auto mb-20 flex flex-col gap-10 md:flex-row md:gap-18 xl:gap-20"
+      class="fade-in--pure relative z-10 m-auto mb-20 flex w-full flex-col justify-between gap-10 md:flex-row md:gap-30"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
@@ -28,19 +28,25 @@ const { content } = Astro.props as ContentProps;
       </div>
 
       <!-- Right content: Numbered list -->
-      <div class="flex-1">
+      <div class="max-w-162.25 flex-1">
         {
           content.data.items ? (
-            <ol class="ordered-list grid grid-cols-2">
+            <ol class="ordered-list">
               {content.data.items.map((item) => {
                 const parts = item.split(':');
                 const title = parts[0]?.trim() || '';
                 const description = parts.slice(1).join(':').trim();
                 return (
-                  <li>
-                    <div class="flex flex-col gap-3.5">
+                  <li class="w-full flex-1">
+                    <div class="flex w-full flex-1 flex-col justify-between gap-3.5 md:flex-row">
                       <div class="item-title">{title}</div>
-                      {description && <div class="item-description">{description}</div>}
+                      {description && (
+                        <div class="item-description flex items-center gap-2">
+                          {description.split(',').map((label) => (
+                            <span class="label">{label.trim()}</span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </li>
                 );

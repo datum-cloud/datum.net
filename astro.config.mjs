@@ -222,8 +222,8 @@ export default defineConfig({
     '/blog/internet-superpowers-for-every-builder/)_/':
       '/blog/internet-superpowers-for-every-builder/',
     '/legal/': '/legal/terms/',
-    '/privacy-policy/': '/legal/privacy-policy/',
-    '/privacy/': '/legal/privacy-policy/',
+    '/privacy-policy/': '/legal/privacy/',
+    '/privacy/': '/legal/privacy/',
     '/terms-of-service/': '/legal/terms/',
     '/index.asp': '/',
     '/logon.html': 'https://auth.datum.net/ui/v2/login/loginname',

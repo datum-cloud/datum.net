@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { formatShortDate } from '@utils/dateUtils';
+
+// Get the 3 latest published blog posts
+const blogs = await getCollection('blog', ({ data }) => {
+  return !data.draft;
+});
+
+// Sort by date (newest first) and take the first 3
+blogs.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const latestBlogs = blogs.slice(0, 3);
+const [featured, ...posts] = latestBlogs;
+---
+
+<h2 class="datum-text-xl border-midnight-fjord m-0 mb-16 w-full border-b pb-8">
+  Latest thoughts from the team
+</h2>
+
+<div class="grid grid-cols-11 gap-8 lg:flex-row lg:gap-11">
+  {
+    featured && (
+      <div class="lg:cols-span-6 col-span-11 flex flex-1 flex-col md:col-span-5">
+        <div class="flex flex-col">
+          {featured.data.featuredImage && (
+            <a href={`/blog/${featured.id}/`} title={featured.data.title} class="mb-6 w-full">
+              <Image
+                src={featured.data.featuredImage}
+                alt={featured.data.title}
+                class="block size-auto w-full rounded-sm object-cover"
+              />
+            </a>
+          )}
+
+          <h3 class="datum-text-2xl mb-3">
+            <a
+              href={`/blog/${featured.id}/`}
+              title={featured.data.title}
+              class="transition-opacity duration-200 hover:opacity-70"
+            >
+              {featured.data.title}
+            </a>
+          </h3>
+          {featured.data.description && (
+            <p class="datum-text-base mb-3 opacity-80">{featured.data.description}</p>
+          )}
+          <div>
+            <time datetime={featured.data.date.toISOString()} class="datum-text-sm opacity-40">
+              {formatShortDate(featured.data.date)}
+            </time>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="lg:cols-span-5 col-span-11 flex gap-8 md:col-span-6 lg:gap-11">
+    {
+      posts.map((post) => (
+        <div class="flex flex-1 flex-col">
+          {post.data.featuredImage && (
+            <a href={`/blog/${post.id}/`} title={post.data.title} class="mb-6 w-full">
+              <Image
+                src={post.data.featuredImage}
+                alt={post.data.title}
+                class="block size-auto w-full rounded-sm object-cover"
+              />
+            </a>
+          )}
+
+          <h4 class="datum-text-xl mb-3">
+            <a
+              href={`/blog/${post.id}/`}
+              title={post.data.title}
+              class="transition-opacity duration-200 hover:opacity-70"
+            >
+              {post.data.title}
+            </a>
+          </h4>
+          {post.data.description && (
+            <p class="datum-text-sm mb-3 opacity-80">{post.data.description}</p>
+          )}
+          <div>
+            <time datetime={post.data.date.toISOString()} class="datum-text-sm opacity-40">
+              {formatShortDate(post.data.date)}
+            </time>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>

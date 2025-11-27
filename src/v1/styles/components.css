@@ -89,7 +89,7 @@
 
   /* List Styles */
   .ordered-list {
-    @apply datum-list-headings flex list-none flex-col gap-5 lg:gap-8;
+    @apply datum-list-headings flex list-none flex-col;
     counter-reset: ordered-counter;
   }
 
@@ -98,7 +98,9 @@
   }
 
   .ordered-list li {
-    @apply text-midnight-fjord flex gap-3 md:gap-5;
+    @apply text-midnight-fjord flex gap-3.75 py-4 md:gap-5 md:py-4.75;
+    @apply border-b-glacier-mist-900 border-b;
+    @apply last:border-b-0;
     counter-increment: ordered-counter;
 
     .item-title {

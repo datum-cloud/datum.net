@@ -53,38 +53,142 @@ const shouldRenderSearch =
   }
 </style>
 
-<script type="text/javascript" defer is:inline>
-  /* eslint @typescript-eslint/no-unused-expressions: "off" */
-  !(function (e, t, n) {
-    function a() {
-      var e = t.getElementsByTagName('script')[0],
-        n = t.createElement('script');
-      ((n.type = 'text/javascript'),
-        (n.async = !0),
-        (n.src = 'https://beacon-v2.helpscout.net'),
-        e.parentNode.insertBefore(n, e));
-    }
-    if (
-      ((e.Beacon = n =
-        function (t, n, a) {
-          e.Beacon.readyQueue.push({ method: t, options: n, data: a });
-        }),
-      (n.readyQueue = []),
-      'complete' === t.readyState)
-    )
-      return a();
-    e.attachEvent ? e.attachEvent('onload', a) : e.addEventListener('load', a, !1);
-  })(window, document, window.Beacon || function () {});
-</script>
-{
-  import.meta.env.MODE === 'production' && (
-    <script type="text/javascript" defer is:inline>
-      window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
-    </script>
-  )
-}
-
 <script>
   import '/src/v1/scripts/lenis-parallax.js';
   import '/src/v1/scripts/glossary-tooltip.js';
+</script>
+
+{/* HelpScout Beacon open trigger handler */}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const beaconTriggers = document.querySelectorAll('.open-beacon');
+    beaconTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        // @ts-expect-error Beacon is loaded from HelpScout script
+        if (window.Beacon) {
+          // @ts-expect-error Beacon is loaded from HelpScout script
+          window.Beacon('open');
+        }
+      });
+    });
+  });
+</script>
+
+{/* Hyperping Status Badge - Load on idle to not block main thread */}
+<script is:inline>
+  /* eslint-disable no-undef */
+  (function () {
+    function initHyperping() {
+      var script = document.createElement('script');
+      script.src = 'https://hyperping.com/badge.js';
+      script.async = true;
+      script.onload = function () {
+        if (typeof Hyperping !== 'undefined') {
+          Hyperping.init({
+            statuspage: 'https://www.datumstatus.com',
+            border: 'none',
+            borderColor: '#30363D',
+            uptime: false,
+            dot: true,
+            dotSize: 10,
+            isNeutral: false,
+            dotOk: '#2BAC76',
+            dotIncident: '#FFAF36',
+            dotOutage: '#E95858',
+            dotMaintenance: '#0070F3',
+            dotNeutral: '#0070F3',
+            operational: 'All systems normal',
+            incident: 'Under investigation',
+            outage: 'System outage',
+            maintenance: 'Under maintenance',
+          });
+        }
+      };
+      document.body.appendChild(script);
+    }
+    // Load on idle or after 3s timeout (whichever comes first)
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initHyperping, { timeout: 3000 });
+    } else {
+      setTimeout(initHyperping, 2000);
+    }
+  })();
+</script>
+
+{/* HelpScout Beacon - Deferred loading on idle */}
+<script is:inline data-production={import.meta.env.PROD ? 'true' : 'false'}>
+  (function () {
+    var isProduction = document.currentScript.getAttribute('data-production') === 'true';
+    if (!isProduction) return;
+
+    function loadHelpScout() {
+      if (window.__helpScoutLoaded) return;
+      window.__helpScoutLoaded = true;
+
+      // Initialize Beacon stub
+      window.Beacon =
+        window.Beacon ||
+        function (method, options, data) {
+          window.Beacon.readyQueue = window.Beacon.readyQueue || [];
+          window.Beacon.readyQueue.push({ method: method, options: options, data: data });
+        };
+      window.Beacon.readyQueue = [];
+
+      // Load HelpScout script
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://beacon-v2.helpscout.net';
+      script.onload = function () {
+        window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
+      };
+      document.body.appendChild(script);
+    }
+
+    // Load HelpScout on first user interaction or after 5s
+    var events = ['mousemove', 'touchstart', 'scroll', 'keydown'];
+    var loaded = false;
+
+    function onInteraction() {
+      if (loaded) return;
+      loaded = true;
+      events.forEach(function (e) {
+        document.removeEventListener(e, onInteraction);
+      });
+      loadHelpScout();
+    }
+
+    events.forEach(function (e) {
+      document.addEventListener(e, onInteraction, { once: true, passive: true });
+    });
+
+    // Fallback: load after 5 seconds if no interaction
+    setTimeout(function () {
+      if (!loaded) {
+        loaded = true;
+        loadHelpScout();
+      }
+    }, 5000);
+  })();
+</script>
+
+{/* Marker.io - Load on idle for feedback collection */}
+<script is:inline data-production={import.meta.env.PROD ? 'true' : 'false'}>
+  (function () {
+    var isProduction = document.currentScript.getAttribute('data-production') === 'true';
+    if (!isProduction) return;
+
+    function loadMarker() {
+      var script = document.createElement('script');
+      script.src = '/scripts/markerio.js';
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadMarker, { timeout: 4000 });
+    } else {
+      setTimeout(loadMarker, 3000);
+    }
+  })();
 </script>

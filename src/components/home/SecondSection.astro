@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 
 import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
-import ImageRight from '@v1/assets/images/good-look-section/right-stone.png';
 import type { ContentProps } from '@/src/types/common';
 
 const { content } = Astro.props as ContentProps;
@@ -10,12 +9,12 @@ const { content } = Astro.props as ContentProps;
 
 <section
   id="under-the-hood"
-  class="bg-glacier-mist-800 section--block section--block--pad overflow-clip"
+  class="bg-glacier-mist-800 section--block section--block--pad relative overflow-hidden"
 >
   <div class="max-width">
     <!-- Main content container -->
     <div
-      class="fade-in--pure relative z-10 m-auto mb-20 flex w-full flex-col justify-between gap-10 md:flex-row md:gap-30"
+      class="fade-in--pure relative z-10 m-auto flex w-full flex-col justify-between gap-10 md:flex-row md:gap-30"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
@@ -60,10 +59,12 @@ const { content } = Astro.props as ContentProps;
     </div>
   </div>
 
-  <div class="absolute bottom-0 left-0 z-0 max-w-234">
-    <Image src={ImageLeft} layout="constrained" alt="Scene left illustration" class="size-auto" />
-  </div>
-  <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
-    <Image src={ImageRight} layout="constrained" alt="Scene right illustration" class="size-auto" />
+  <div class="absolute bottom-0 left-0 z-0 max-w-126">
+    <Image
+      src={ImageLeft}
+      layout="constrained"
+      alt="Scene left illustration"
+      class="size-auto w-full"
+    />
   </div>
 </section>

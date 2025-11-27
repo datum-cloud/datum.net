@@ -89,7 +89,7 @@
 
   /* List Styles */
   .ordered-list {
-    @apply datum-list-headings flex list-none flex-col gap-5 lg:gap-8;
+    @apply datum-list-headings flex list-none flex-col;
     counter-reset: ordered-counter;
   }
 
@@ -98,7 +98,9 @@
   }
 
   .ordered-list li {
-    @apply text-midnight-fjord flex gap-3 md:gap-5;
+    @apply text-midnight-fjord flex gap-3.75 py-4 md:gap-5 md:py-4.75;
+    @apply border-b-glacier-mist-900 border-b;
+    @apply last:border-b-0;
     counter-increment: ordered-counter;
 
     .item-title {
@@ -112,7 +114,7 @@
 
   .ordered-list li::before {
     @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
-    @apply translate-y-1.25 md:translate-y-0 lg:translate-y-2;
+    @apply translate-y-1.25 md:translate-y-0 lg:translate-y-1 xl:translate-y-2.25;
     content: '0' counter(ordered-counter) '.';
   }
 

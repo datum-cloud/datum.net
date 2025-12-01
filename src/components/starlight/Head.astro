@@ -88,6 +88,23 @@ const hasTwitterImage = head.some(
 <!-- Favicons -->
 <Favicons />
 
+<!-- DNS Prefetch for external domains (low priority hints) -->
+<link rel="dns-prefetch" href="https://api.github.com" />
+<link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
+
+<!-- Preconnect to critical external domains (loads within ~5s) -->
+<link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+<link rel="preconnect" href="https://edge.marker.io" crossorigin />
+
+<!-- Preload critical font for better performance -->
+<link
+  rel="preload"
+  href="/fonts/datum/allianceno1-regular-webfont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
 <!-- Add og:logo, og:image and twitter:image if not present in Starlight's head -->
 <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
 {!hasOgImage && <meta property="og:image" content={ogImage.src} />}

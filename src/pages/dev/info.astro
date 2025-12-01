@@ -12,10 +12,13 @@ if (mode == 'production') {
 /**
  * Database testing
  */
-const sql = await dbConnect();
-const psqlInfo = await sql`SELECT version()`;
-
-console.log(psqlInfo);
+let psqlInfo;
+try {
+  const sql = await dbConnect();
+  psqlInfo = await sql`SELECT version()`;
+} catch {
+  psqlInfo = null;
+}
 
 type EnvValue = string | number | boolean | undefined;
 type EnvRecord = Record<string, EnvValue>;
@@ -75,36 +78,32 @@ const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
 };
 
 const metaEnv = filterSensitiveVars(import.meta.env);
-const sortedMeta = Object.keys(metaEnv);
-
-sortedMeta.sort().reduce((acc, key) => ({ ...acc, [key]: metaEnv[key] }), {});
-
-return new Response(
-  JSON.stringify(
-    {
-      meta: sortedMeta,
-      process: Object.keys(filterSensitiveVars(process.env))
-        .sort()
-        .reduce((acc, key) => ({ ...acc, [key]: process.env[key] }), {}),
-      nodeVersion: process.version,
-      platform: {
-        arch: process.arch,
-        platform: process.platform,
-        release: process.release,
-        uptime: process.uptime(),
-      },
-      database: {
-        info: psqlInfo || null,
-      },
-    },
-    null,
-    2
-  ),
+const sortedMeta = Object.keys(metaEnv)
+  .sort()
+  .reduce((acc, key) => ({ ...acc, [key]: metaEnv[key] }), {});
+const processEnv = filterSensitiveVars(process.env);
+const response = JSON.stringify(
   {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
+    meta: sortedMeta,
+    process: Object.keys(processEnv)
+      .sort()
+      .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {}),
+    nodeVersion: process.version,
+    platform: {
+      arch: process.arch,
+      platform: process.platform,
+      release: process.release,
+      uptime: process.uptime(),
     },
-  }
+    database: {
+      info: psqlInfo || null,
+    },
+  },
+  null,
+  2
 );
 ---
+
+<pre><code>
+  {response}
+</code></pre>

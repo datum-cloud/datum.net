@@ -5,6 +5,7 @@ import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
 import defaultOgImage from '@content/images/og/default.png';
+import homeIllustration from '@v1/assets/images/home-illustration.webp';
 
 const {
   title,
@@ -58,6 +59,19 @@ const twitterImage =
       type="font/woff2"
       crossorigin
     />
+
+    {
+      /* Preload LCP image for homepage - improves Largest Contentful Paint */
+      Astro.url.pathname === '/' && (
+        <link
+          rel="preload"
+          as="image"
+          href={homeIllustration.src}
+          type="image/webp"
+          fetchpriority="high"
+        />
+      )
+    }
 
     <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
     <SEO

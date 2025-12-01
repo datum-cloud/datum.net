@@ -34,6 +34,7 @@ if (content.data.images) {
     <Image
       src={sceneTree}
       layout="constrained"
+      loading="lazy"
       alt="Scene tree illustration"
       class="ml-10 size-auto w-full max-w-3xl -scale-x-100 self-end"
     />
@@ -43,7 +44,7 @@ if (content.data.images) {
       <Image
         src={asideNote}
         layout="constrained"
-        alt="Scene tree illustration"
+        alt="Aside note illustration"
         class="absolute -bottom-17 left-5 z-15 size-auto w-full max-w-67.25 md:-bottom-12 md:left-5 lg:-bottom-18 lg:-left-5 xl:-bottom-16 xl:-left-10"
       />
       <!-- Scene Tree Image -->
@@ -60,7 +61,7 @@ if (content.data.images) {
             <h2 class="datum-text-8xl">{content.data.title}</h2>
           </div>
           <!-- Right: Body Text -->
-          <div class="max-w-115 flex-grow self-center">
+          <div class="max-w-115 grow self-center">
             <span class="datum-text-lg">
               <p>{content.body}</p>
             </span>
@@ -92,6 +93,7 @@ if (content.data.images) {
                         <Image
                           src={logo.src}
                           alt={logo.alt}
+                          loading="lazy"
                           class={`logo-cycle absolute mx-10 max-h-15 max-w-18 object-contain md:max-w-25 lg:max-w-30 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
                           data-logo-index={logo.index}
                           data-column-logo-index={logoIndex}

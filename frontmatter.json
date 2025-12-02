@@ -1,0 +1,340 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.publicFolder": {
+    "path": "src/assets",
+    "relative": true
+  },
+  "frontMatter.extends": [
+    ".frontmatter/starlight/contenttypes.json",
+    ".frontmatter/starlight/pagefolders.json",
+    ".frontmatter/starlight/aside.json"
+  ],
+  "frontMatter.taxonomy.fieldGroups": [
+    {
+      "id": "companies",
+      "labelField": "alt",
+      "fields": [
+        {
+          "title": "Image",
+          "name": "img",
+          "type": "image"
+        },
+        {
+          "title": "Alternative text",
+          "name": "alt",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "investors",
+      "labelField": "alt",
+      "fields": [
+        {
+          "title": "Image",
+          "name": "img",
+          "type": "image"
+        },
+        {
+          "title": "Alternative text",
+          "name": "alt",
+          "type": "string"
+        },
+        {
+          "title": "URL",
+          "name": "url",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "images",
+      "labelField": "alt",
+      "fields": [
+        {
+          "title": "Image",
+          "name": "img",
+          "type": "image"
+        },
+        {
+          "title": "Alternative text",
+          "name": "alt",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "pageInfo",
+      "labelField": "text",
+      "fields": [
+        {
+          "title": "Icon",
+          "name": "icon",
+          "type": "string"
+        },
+        {
+          "title": "Text",
+          "name": "text",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "labelField": "twitter",
+      "fields": [
+        {
+          "title": "Twitter",
+          "name": "twitter",
+          "type": "string"
+        },
+        {
+          "title": "GitHub",
+          "name": "github",
+          "type": "string"
+        },
+        {
+          "title": "LinkedIn",
+          "name": "linkedin",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "readTheDocs",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "Label",
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "title": "URL",
+          "name": "url",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "link",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "Label",
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "title": "URL",
+          "name": "url",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "price",
+      "labelField": "amount",
+      "fields": [
+        {
+          "title": "Badge",
+          "name": "badge",
+          "type": "string"
+        },
+        {
+          "title": "Prefix",
+          "name": "prefix",
+          "type": "string"
+        },
+        {
+          "title": "Amount",
+          "name": "amount",
+          "type": "string"
+        },
+        {
+          "title": "Suffix",
+          "name": "suffix",
+          "type": "string"
+        },
+        {
+          "title": "Note",
+          "name": "note",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "Label",
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "title": "Href",
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "title": "Class",
+          "name": "class",
+          "type": "string"
+        },
+        {
+          "title": "External Link",
+          "name": "isExternal",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "featureGroups",
+      "labelField": "title",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Items",
+          "name": "items",
+          "type": "list"
+        }
+      ]
+    },
+    {
+      "id": "og",
+      "labelField": "title",
+      "fields": [
+        {
+          "title": "OG Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "OG Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "OG Image",
+          "name": "image",
+          "type": "image"
+        },
+        {
+          "title": "OG URL",
+          "name": "url",
+          "type": "string"
+        },
+        {
+          "title": "OG Article",
+          "name": "article",
+          "type": "boolean"
+        },
+        {
+          "title": "OG Published",
+          "name": "published",
+          "type": "datetime"
+        },
+        {
+          "title": "OG Author",
+          "name": "author",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "sidebarBadge",
+      "labelField": "text",
+      "fields": [
+        {
+          "title": "Text",
+          "name": "text",
+          "type": "string"
+        },
+        {
+          "title": "Variant",
+          "name": "variant",
+          "type": "choice",
+          "choices": ["info", "caution", "danger"]
+        }
+      ]
+    },
+    {
+      "id": "heroImage",
+      "labelField": "alt",
+      "fields": [
+        {
+          "title": "File",
+          "name": "file",
+          "type": "string"
+        },
+        {
+          "title": "Alternative text",
+          "name": "alt",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "hero",
+      "labelField": "tagline",
+      "fields": [
+        {
+          "title": "Tagline",
+          "name": "tagline",
+          "type": "string"
+        },
+        {
+          "title": "Image",
+          "name": "image",
+          "type": "block",
+          "fieldGroup": ["heroImage"]
+        }
+      ]
+    },
+    {
+      "id": "contents",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Label",
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "id": "changelogTags",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "Label",
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "title": "Type",
+          "name": "type",
+          "type": "choice",
+          "choices": ["fixed", "new", "changed"]
+        },
+        {
+          "title": "Value",
+          "name": "value",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

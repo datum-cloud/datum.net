@@ -1,0 +1,1799 @@
+{
+  "$schema": "https://beta.frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "single": true
+        }
+      ]
+    },
+    {
+      "name": "about-we-value",
+      "pageBundle": false,
+      "previewPath": "about",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Items",
+          "name": "items",
+          "type": "list"
+        },
+        {
+          "title": "Link",
+          "name": "link",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Label",
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "title": "URL",
+              "name": "url",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "about-index",
+      "pageBundle": false,
+      "previewPath": "about",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Icon",
+          "name": "iconName",
+          "type": "choice",
+          "choices": [
+            "datum",
+            "arrow-left",
+            "arrow-right",
+            "book-image",
+            "book-open",
+            "book-text",
+            "bulb",
+            "calendar",
+            "calendar-days",
+            "calendar-plus",
+            "calendar-range",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "chevrons-left-right-ellipsis",
+            "circle-arrow-right",
+            "circle-check",
+            "circle-gauge",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloudy",
+            "code",
+            "command",
+            "copy",
+            "database",
+            "file-text",
+            "git-branch",
+            "git-commit",
+            "git-compare",
+            "git-merge",
+            "git-pull-request",
+            "github",
+            "globe",
+            "goal",
+            "handshake",
+            "heart",
+            "heart-handshake",
+            "house",
+            "id-card",
+            "image",
+            "info",
+            "key",
+            "key-round",
+            "link",
+            "linkedin",
+            "list-restart",
+            "lock",
+            "lock-open",
+            "log-in",
+            "map-pin-house",
+            "menu",
+            "message-square-plus",
+            "messages-square",
+            "minus",
+            "moon",
+            "network",
+            "package",
+            "paintbrush",
+            "plus",
+            "power",
+            "presentation",
+            "search",
+            "server",
+            "settings",
+            "shield",
+            "shield-plus",
+            "shirt",
+            "slack",
+            "star",
+            "sun",
+            "terminal",
+            "triangle-alert",
+            "twitter",
+            "user",
+            "user-lock",
+            "users",
+            "video",
+            "waypoints",
+            "wallet",
+            "wallet-minimal",
+            "webhook",
+            "x",
+            "zap"
+          ]
+        },
+        {
+          "title": "Contents",
+          "name": "contents",
+          "type": "list"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "about-investors",
+      "pageBundle": false,
+      "previewPath": "about",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Items",
+          "name": "items",
+          "type": "block",
+          "fieldGroup": ["investors"]
+        }
+      ]
+    },
+    {
+      "name": "about-companies",
+      "pageBundle": false,
+      "previewPath": "about",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Companies",
+          "name": "companies",
+          "type": "block",
+          "fieldGroup": ["companies"]
+        },
+        {
+          "title": "Link",
+          "name": "link",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Label",
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "title": "URL",
+              "name": "url",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "pageBundle": false,
+      "previewPath": "docs",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Updated Date",
+          "name": "updatedDate",
+          "type": "string"
+        },
+        {
+          "title": "Sidebar",
+          "name": "sidebar",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Order",
+              "name": "order",
+              "type": "number"
+            },
+            {
+              "title": "Label",
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "title": "Badge",
+              "name": "badge",
+              "type": "block",
+              "fieldGroup": ["sidebarBadge"]
+            }
+          ]
+        },
+        {
+          "title": "Hero",
+          "name": "hero",
+          "type": "block",
+          "fieldGroup": ["hero"]
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "blog",
+      "pageBundle": false,
+      "previewPath": "blog",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}"
+        },
+        {
+          "title": "Author",
+          "name": "author",
+          "type": "string"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "list"
+        },
+        {
+          "title": "Thumbnail",
+          "name": "thumbnail",
+          "type": "image"
+        },
+        {
+          "title": "Featured Image",
+          "name": "featuredImage",
+          "type": "image"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Updated Date",
+          "name": "updatedDate",
+          "type": "string"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authors",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Name",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "title": "Bio",
+          "name": "bio",
+          "type": "string"
+        },
+        {
+          "title": "Avatar",
+          "name": "avatar",
+          "type": "image"
+        },
+        {
+          "title": "Is Team Member",
+          "name": "isTeam",
+          "type": "boolean"
+        },
+        {
+          "title": "Team",
+          "name": "team",
+          "type": "choice",
+          "choices": ["founders", "team"]
+        },
+        {
+          "title": "Position",
+          "name": "position",
+          "type": "string"
+        },
+        {
+          "title": "Order",
+          "name": "order",
+          "type": "number",
+          "default": 999
+        },
+        {
+          "title": "Social",
+          "name": "social",
+          "type": "block",
+          "fieldGroup": ["social"]
+        },
+        {
+          "title": "Tick",
+          "name": "tick",
+          "type": "string"
+        },
+        {
+          "title": "Surprising",
+          "name": "surprising",
+          "type": "string"
+        },
+        {
+          "title": "Weekends",
+          "name": "weekends",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "handbook",
+      "pageBundle": false,
+      "previewPath": "handbook",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Reading Time",
+          "name": "readingTime",
+          "type": "string"
+        },
+        {
+          "title": "Updated Date",
+          "name": "updatedDate",
+          "type": "string"
+        },
+        {
+          "title": "Authors",
+          "name": "authors",
+          "type": "string"
+        },
+        {
+          "title": "Sidebar",
+          "name": "sidebar",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Order",
+              "name": "order",
+              "type": "number"
+            },
+            {
+              "title": "Label",
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "title": "Badge",
+              "name": "badge",
+              "type": "block",
+              "fieldGroup": ["sidebarBadge"]
+            }
+          ]
+        },
+        {
+          "title": "Hero",
+          "name": "hero",
+          "type": "block",
+          "fieldGroup": ["hero"]
+        },
+        {
+          "title": "Featured Image",
+          "name": "featuredImage",
+          "type": "image"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Contents",
+          "name": "contents",
+          "type": "block",
+          "fieldGroup": ["contents"]
+        }
+      ]
+    },
+    {
+      "name": "changelog",
+      "pageBundle": false,
+      "previewPath": "resources/changelog",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Version",
+          "name": "version",
+          "type": "string"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "block",
+          "fieldGroup": ["changelogTags"]
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "features",
+      "pageBundle": false,
+      "previewPath": "features",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Order",
+          "name": "order",
+          "type": "number"
+        },
+        {
+          "title": "Key Features",
+          "name": "keyFeatures",
+          "type": "list"
+        },
+        {
+          "title": "Benefits",
+          "name": "benefits",
+          "type": "string"
+        },
+        {
+          "title": "Perfect For",
+          "name": "perfectFor",
+          "type": "list"
+        },
+        {
+          "title": "Read the Docs",
+          "name": "readTheDocs",
+          "type": "block",
+          "fieldGroup": ["readTheDocs"]
+        },
+        {
+          "title": "Icon Name",
+          "name": "iconName",
+          "type": "choice",
+          "choices": [
+            "datum",
+            "arrow-left",
+            "arrow-right",
+            "book-image",
+            "book-open",
+            "book-text",
+            "bulb",
+            "calendar",
+            "calendar-days",
+            "calendar-plus",
+            "calendar-range",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "chevrons-left-right-ellipsis",
+            "circle-arrow-right",
+            "circle-check",
+            "circle-gauge",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloudy",
+            "code",
+            "command",
+            "copy",
+            "database",
+            "file-text",
+            "git-branch",
+            "git-commit",
+            "git-compare",
+            "git-merge",
+            "git-pull-request",
+            "github",
+            "globe",
+            "goal",
+            "handshake",
+            "heart",
+            "heart-handshake",
+            "house",
+            "id-card",
+            "image",
+            "info",
+            "key",
+            "key-round",
+            "link",
+            "linkedin",
+            "list-restart",
+            "lock",
+            "lock-open",
+            "log-in",
+            "map-pin-house",
+            "menu",
+            "message-square-plus",
+            "messages-square",
+            "minus",
+            "moon",
+            "network",
+            "package",
+            "paintbrush",
+            "plus",
+            "power",
+            "presentation",
+            "search",
+            "server",
+            "settings",
+            "shield",
+            "shield-plus",
+            "shirt",
+            "slack",
+            "star",
+            "sun",
+            "terminal",
+            "triangle-alert",
+            "twitter",
+            "user",
+            "user-lock",
+            "users",
+            "video",
+            "waypoints",
+            "wallet",
+            "wallet-minimal",
+            "webhook",
+            "x",
+            "zap"
+          ]
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "huddles",
+      "pageBundle": false,
+      "previewPath": "community-huddle",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}"
+        },
+        {
+          "title": "Time",
+          "name": "time",
+          "type": "string"
+        },
+        {
+          "title": "Zoom Link",
+          "name": "zoomLink",
+          "type": "string"
+        },
+        {
+          "title": "Zoom Password",
+          "name": "zoomPass",
+          "type": "string"
+        },
+        {
+          "title": "Slides URL",
+          "name": "slidesUrl",
+          "type": "string"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "faq",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Question",
+          "name": "question",
+          "type": "string"
+        },
+        {
+          "title": "Order",
+          "name": "order",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Category",
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "pageBundle": false,
+      "previewPath": "blog/category",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Name",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Featured Image",
+          "name": "featuredImage",
+          "type": "image"
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pages",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Icon Name",
+          "name": "iconName",
+          "type": "choice",
+          "choices": [
+            "datum",
+            "arrow-left",
+            "arrow-right",
+            "book-image",
+            "book-open",
+            "book-text",
+            "bulb",
+            "calendar",
+            "calendar-days",
+            "calendar-plus",
+            "calendar-range",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "chevrons-left-right-ellipsis",
+            "circle-arrow-right",
+            "circle-check",
+            "circle-gauge",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloudy",
+            "code",
+            "command",
+            "copy",
+            "database",
+            "file-text",
+            "git-branch",
+            "git-commit",
+            "git-compare",
+            "git-merge",
+            "git-pull-request",
+            "github",
+            "globe",
+            "goal",
+            "handshake",
+            "heart",
+            "heart-handshake",
+            "house",
+            "id-card",
+            "image",
+            "info",
+            "key",
+            "key-round",
+            "link",
+            "linkedin",
+            "list-restart",
+            "lock",
+            "lock-open",
+            "log-in",
+            "map-pin-house",
+            "menu",
+            "message-square-plus",
+            "messages-square",
+            "minus",
+            "moon",
+            "network",
+            "package",
+            "paintbrush",
+            "plus",
+            "power",
+            "presentation",
+            "search",
+            "server",
+            "settings",
+            "shield",
+            "shield-plus",
+            "shirt",
+            "slack",
+            "star",
+            "sun",
+            "terminal",
+            "triangle-alert",
+            "twitter",
+            "user",
+            "user-lock",
+            "users",
+            "video",
+            "waypoints",
+            "wallet",
+            "wallet-minimal",
+            "webhook",
+            "x",
+            "zap"
+          ]
+        },
+        {
+          "title": "Featured Image",
+          "name": "featuredImage",
+          "type": "image"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Order",
+          "name": "order",
+          "type": "number",
+          "default": 0
+        },
+        {
+          "title": "Updated Date",
+          "name": "updatedDate",
+          "type": "string"
+        },
+        {
+          "title": "Images",
+          "name": "images",
+          "type": "block",
+          "fieldGroup": ["images"]
+        },
+        {
+          "title": "Page Info",
+          "name": "pageInfo",
+          "type": "block",
+          "fieldGroup": ["pageInfo"]
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "legal",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "string"
+        },
+        {
+          "title": "Subtitle",
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Icon Name",
+          "name": "iconName",
+          "type": "choice",
+          "choices": [
+            "datum",
+            "arrow-left",
+            "arrow-right",
+            "book-image",
+            "book-open",
+            "book-text",
+            "bulb",
+            "calendar",
+            "calendar-days",
+            "calendar-plus",
+            "calendar-range",
+            "check",
+            "chevron-down",
+            "chevron-left",
+            "chevron-right",
+            "chevrons-left-right-ellipsis",
+            "circle-arrow-right",
+            "circle-check",
+            "circle-gauge",
+            "circle-x",
+            "clock",
+            "cloud",
+            "cloudy",
+            "code",
+            "command",
+            "copy",
+            "database",
+            "file-text",
+            "git-branch",
+            "git-commit",
+            "git-compare",
+            "git-merge",
+            "git-pull-request",
+            "github",
+            "globe",
+            "goal",
+            "handshake",
+            "heart",
+            "heart-handshake",
+            "house",
+            "id-card",
+            "image",
+            "info",
+            "key",
+            "key-round",
+            "link",
+            "linkedin",
+            "list-restart",
+            "lock",
+            "lock-open",
+            "log-in",
+            "map-pin-house",
+            "menu",
+            "message-square-plus",
+            "messages-square",
+            "minus",
+            "moon",
+            "network",
+            "package",
+            "paintbrush",
+            "plus",
+            "power",
+            "presentation",
+            "search",
+            "server",
+            "settings",
+            "shield",
+            "shield-plus",
+            "shirt",
+            "slack",
+            "star",
+            "sun",
+            "terminal",
+            "triangle-alert",
+            "twitter",
+            "user",
+            "user-lock",
+            "users",
+            "video",
+            "waypoints",
+            "wallet",
+            "wallet-minimal",
+            "webhook",
+            "x",
+            "zap"
+          ]
+        },
+        {
+          "title": "Meta (SEO)",
+          "name": "meta",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Title",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "title": "Description",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "title": "Image",
+              "name": "image",
+              "type": "image",
+              "isPreviewImage": false
+            },
+            {
+              "title": "Keywords",
+              "name": "metaKeywords",
+              "type": "string"
+            },
+            {
+              "title": "OG (Open graph)",
+              "name": "og",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "OG Title",
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Description",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Image",
+                  "name": "image",
+                  "type": "image",
+                  "isPreviewImage": false
+                },
+                {
+                  "title": "OG URL",
+                  "name": "url",
+                  "type": "string"
+                },
+                {
+                  "title": "OG Article",
+                  "name": "article",
+                  "type": "boolean"
+                },
+                {
+                  "title": "OG Publish at",
+                  "name": "published",
+                  "type": "datetime"
+                },
+                {
+                  "title": "OG Author",
+                  "name": "author",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

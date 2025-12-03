@@ -335,6 +335,7 @@ For the best development experience, install the following VS Code extensions:
 1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 2. [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 3. [Markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+4. [Front Matter CMS](https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter) - For content management
 
 The project includes VS Code settings (`.vscode/settings.json`) that enable:
 
@@ -343,6 +344,63 @@ The project includes VS Code settings (`.vscode/settings.json`) that enable:
 - Automatic ESLint fixes on save
 - Proper formatting for Astro, TypeScript, JavaScript, and Markdown files
 - TypeScript SDK integration
+
+## Content Management with Front Matter CMS
+
+This project uses [Front Matter CMS](https://frontmatter.codes/) - a powerful headless CMS that runs directly in VS Code, providing a GUI for managing your Astro content collections.
+
+### Installation & Setup
+
+1. Open VS Code
+2. Go to Extensions (⌘+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
+3. Search for "Front Matter CMS"
+4. Click "Install" on the extension by Elio Struyf
+
+**Note**: This project already has Front Matter configuration in `.frontmatter/starlight/contenttypes.json`, so you can skip manual initialization.
+
+### Content Collections Configuration
+
+The project has pre-configured content types for all Astro collections:
+
+#### Available Content Types
+
+| Content Type | Description                     | Location                  |
+| ------------ | ------------------------------- | ------------------------- |
+| `docs`       | Documentation pages (Starlight) | `src/content/docs/`       |
+| `blog`       | Blog posts                      | `src/content/blog/`       |
+| `authors`    | Author profiles                 | `src/content/authors/`    |
+| `handbook`   | Company handbook                | `src/content/handbook/`   |
+| `changelog`  | Version changelogs              | `src/content/changelog/`  |
+| `features`   | Product features                | `src/content/features/`   |
+| `huddles`    | Community events                | `src/content/huddles/`    |
+| `faq`        | FAQ entries                     | `src/content/faq/`        |
+| `categories` | Blog categories                 | `src/content/categories/` |
+| `pages`      | Marketing pages                 | `src/content/pages/`      |
+| `about`      | About pages                     | `src/content/about/`      |
+| `legal`      | Legal documents                 | `src/content/legal/`      |
+
+### Field Groups
+
+The project uses reusable field groups for complex structures:
+
+| Field Group     | Used In        | Purpose                                        |
+| --------------- | -------------- | ---------------------------------------------- |
+| `og`            | Meta fields    | Open Graph social sharing data                 |
+| `hero`          | Docs, handbook | Hero section with tagline and image            |
+| `social`        | Authors        | Social media links (Twitter, GitHub, LinkedIn) |
+| `price`         | Pricing        | Price structure (badge, amount, note)          |
+| `cta`           | Pricing, pages | Call-to-action buttons                         |
+| `images`        | Pages, about   | Image galleries with alt text                  |
+| `readTheDocs`   | Features       | Documentation links                            |
+| `changelogTags` | Changelog      | Tag entries (fixed/new/changed)                |
+
+### Troubleshooting
+
+#### Front Matter Panel Not Showing
+
+1. Ensure you have a content file open
+2. Check the file is in `src/content/` directory
+3. Try reloading VS Code: `Developer: Reload Window`
 
 ### Ignore Files
 
@@ -429,3 +487,10 @@ The tests are configured to run in CI environments:
 - Generates HTML reports
 - Takes screenshots on failures
 - Supports parallel test execution
+
+### Resources
+
+- [Front Matter CMS Documentation](https://frontmatter.codes/docs)
+- [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
+- [Zod Schema Validation](https://zod.dev/)
+- [Project Content Structure](./CONTENT_STRUCTURE.md)

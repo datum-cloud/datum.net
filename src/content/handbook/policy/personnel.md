@@ -2,7 +2,7 @@
 title: Personnel policy
 sidebar:
   label: Personnel policy
-  order: 1
+  order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

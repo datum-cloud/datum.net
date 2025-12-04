@@ -58,6 +58,7 @@
     @apply relative w-full flex-col gap-y-4 pt-9 pr-0 pb-0 md:mb-0 md:max-w-64.75 md:min-w-64.75 md:pr-7 md:pb-12;
     @apply border-glacier-mist-900 border-r-0 md:border-r;
     @apply hidden md:flex;
+    @apply mt-17.5 md:mt-0 md:flex;
   }
 
   /* Mobile menu styles */
@@ -114,6 +115,7 @@
 
   .handbook-sidebar .menu-list {
     @apply relative flex flex-col pr-7;
+    @apply leading-normal;
   }
 
   .handbook-sidebar .menu-item {
@@ -122,6 +124,7 @@
 
   .handbook-sidebar .menu-link {
     @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
+    @apply inline-block py-1;
   }
 
   .handbook-sidebar .menu-link--active {

@@ -45,20 +45,20 @@ Report discrimination or harassment immediately through any of these channels:
 
 You do not need to confront the harasser before reporting. Anonymous reports are welcome. When reporting, provide as much detail as possible including names, dates, locations, descriptions of incidents, and any supporting documentation.
 
-## Investigation Process
+## Investigation process
 Upon receiving a complaint, we will acknowledge receipt promptly, assess whether interim measures are needed, and begin investigation immediately. All investigations will be prompt, thorough, impartial, documented, and confidential (shared only on a need-to-know basis).
 
 We may implement interim measures during investigation such as temporary schedule changes, reassignment, or administrative leave. Upon conclusion, both parties will be informed of the outcome, appropriate action will be taken if violations are substantiated, and follow-up will ensure no retaliation occurs.
 
-## Disciplinary Action
+## Disciplinary action
 Violations may result in verbal or written warning, mandatory training, loss of privileges, demotion, suspension, termination, or legal action. The Company may take immediate action, including termination, for severe violations.
 
-## Non-Retaliation
+## Non-retaliation
 Datum strictly prohibits retaliation against anyone who reports discrimination or harassment in good faith, participates in investigations, opposes discriminatory conduct, or requests reasonable accommodation.
 
 Retaliation includes termination, demotion, suspension, threats, negative performance evaluations not based on performance, unjustified changes in duties or conditions, or social ostracism. Retaliation is a serious violation and may result in discipline up to and including termination, even if the underlying complaint is not substantiated.
 
-## False Complaints
+## False complaints
 While we encourage reporting concerns in good faith, knowingly making false accusations will result in disciplinary action up to and including termination. A complaint made in good faith that is not substantiated is not considered a false complaint.
 
 ## Confidentiality

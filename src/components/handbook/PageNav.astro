@@ -1,15 +1,19 @@
 ---
+// src/components/handbook/PageNav.astro
 import ArticleNavigation from '@components/ArticleNavigation.astro';
+import LastUpdated from '@components/handbook/LastUpdated.astro';
 import type { SidebarItems } from '@/src/types/common';
 
 const {
   currentArticleId,
   items,
+  lastUpdated,
   class: className,
 } = Astro.props as {
   currentArticleId: string;
   class?: string;
   items: SidebarItems[];
+  lastUpdated?: Date;
 };
 
 const handbookItems: Array<{ id: string; data: { title: string } }> = [];
@@ -32,20 +36,25 @@ const nextArticle =
   currentIndex < handbookItems.length - 1 ? handbookItems[currentIndex + 1] : undefined;
 ---
 
-<ArticleNavigation
-  previousArticle={previousArticle
-    ? {
-        id: previousArticle.id,
-        title: previousArticle.data.title,
-        url: `/handbook/${previousArticle.id}/`,
-      }
-    : undefined}
-  nextArticle={nextArticle
-    ? {
-        id: nextArticle.id,
-        title: nextArticle.data.title,
-        url: `/handbook/${nextArticle.id}/`,
-      }
-    : undefined}
-  class={className}
-/>
+{/* Last Updated */}
+<footer id="footer-article" class="article-footer">
+  {lastUpdated && <LastUpdated date={lastUpdated} />}
+
+  <ArticleNavigation
+    previousArticle={previousArticle
+      ? {
+          id: previousArticle.id,
+          title: previousArticle.data.title,
+          url: `/handbook/${previousArticle.id}/`,
+        }
+      : undefined}
+    nextArticle={nextArticle
+      ? {
+          id: nextArticle.id,
+          title: nextArticle.data.title,
+          url: `/handbook/${nextArticle.id}/`,
+        }
+      : undefined}
+    class={className}
+  />
+</footer>

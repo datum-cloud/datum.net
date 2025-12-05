@@ -29,7 +29,7 @@
   }
 
   .article-body {
-    @apply datum-prose-docs-article;
+    @apply datum-prose-docs-article flow-root;
   }
 
   .article-paragraph {

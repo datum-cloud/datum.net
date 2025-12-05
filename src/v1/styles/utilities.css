@@ -287,7 +287,8 @@
   @apply prose-li:mt-0 prose-li:mb-(--docs-article-body-paragraph-spacing);
   @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
-  @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
+  @apply prose-headings:mt-3 prose-headings:mb-4 prose-headings:font-bold;
+  @apply prose-headings:pt-px prose-headings:inline-block;
   @apply **:text-inherit;
 }
 

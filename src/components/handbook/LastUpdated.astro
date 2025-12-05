@@ -1,0 +1,24 @@
+---
+import { formatLongDate, formatISODate } from '@utils/dateUtils';
+
+interface LastUpdatedProps {
+  date?: Date;
+}
+
+const { date } = Astro.props as LastUpdatedProps;
+
+if (!date) {
+  return null;
+}
+
+const formattedDate = formatLongDate(date);
+const dateTime = formatISODate(date);
+---
+
+{
+  date && (
+    <p class="last-updated">
+      Last updated: <time datetime={dateTime}>{formattedDate}</time>
+    </p>
+  )
+}

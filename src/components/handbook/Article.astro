@@ -1,4 +1,5 @@
 ---
+// src/components/handbook/Article.astro
 import { getCollection, getEntry, render } from 'astro:content';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
@@ -234,7 +235,12 @@ handbooks.forEach((collection) => {
         </div>
 
         {/* Navigation */}
-        <PageNav currentArticleId={articleId} categories={categories} items={items} />
+        <PageNav
+          currentArticleId={articleId}
+          categories={categories}
+          items={items}
+          lastUpdated={mainArticleEntry?.data.lastUpdated}
+        />
       </article>
 
       <aside class="handbook-toc">

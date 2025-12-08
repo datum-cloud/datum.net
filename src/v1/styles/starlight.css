@@ -201,7 +201,14 @@
     @apply datum-prose-docs-article;
     /* @apply prose max-w-none; */
     @apply text-[color:var(--sl-color-text)];
-
+    th {
+      @apply table-cell;
+    }
+    table {
+      code {
+        @apply text-nowrap;
+      }
+    }
     strong,
     b {
       @apply text-[color:var(--sl-color-text)];

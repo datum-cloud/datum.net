@@ -1,5 +1,4 @@
 ---
-// src/components/handbook/Article.astro
 import { getCollection, getEntry, render } from 'astro:content';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
@@ -8,6 +7,11 @@ import TableOfContents from '@components/TableOfContents.astro';
 
 import type { MarkdownHeading } from 'astro';
 import type { SidebarItems } from '@/src/types/common';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 const handbookIndex = await getEntry('handbooks', 'index');
@@ -29,6 +33,16 @@ if (articleId === 'index') {
 
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
+
+/**
+ * Format last modified date from frontmatter
+ */
+const lastModified =
+  mainArticle && mainArticle?.remarkPluginFrontmatter.updatedDate
+    ? mainArticle?.remarkPluginFrontmatter.updatedDate
+    : mainArticle?.remarkPluginFrontmatter.lastModified
+      ? dayjs(mainArticle.remarkPluginFrontmatter.lastModified).utc().format('MMM DD, YYYY')
+      : null;
 
 /**
  * Headings extraction for the main article
@@ -239,7 +253,7 @@ handbooks.forEach((collection) => {
           currentArticleId={articleId}
           categories={categories}
           items={items}
-          lastUpdated={mainArticleEntry?.data.lastUpdated}
+          lastUpdated={lastModified}
         />
       </article>
 

@@ -1,6 +1,10 @@
 # build output
 dist/
 
+# Bun
+bun.lockb
+.bun/
+
 # generated types
 .astro/
 
@@ -45,3 +49,6 @@ Dockerfile.bak
 
 # Cache files
 .cache/
+
+# others
+bunfig.toml

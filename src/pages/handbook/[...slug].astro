@@ -39,14 +39,14 @@ export async function getStaticPaths() {
       params: {
         slug: entry.id,
       },
-      props: { entry: rendered, handbooks, headings },
+      props: { entry, rendered, handbooks, headings },
     };
   });
 }
 
 const { slug } = Astro.params;
 const { entry } = Astro.props;
-const { title, description, meta } = entry.remarkPluginFrontmatter;
+const { title, description, meta } = entry.data;
 
 // Set default handbook OG image if not specified in frontmatter
 const handbookMeta = {
@@ -66,6 +66,7 @@ const handbookMeta = {
 >
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
+
     <Article articleId={slug} />
 
     <Footer />

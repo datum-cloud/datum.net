@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
@@ -10,9 +9,10 @@ import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 
-import glossary from './src/libs/integration/glossary.ts';
-import sitemap from './src/libs/integration/sitemap.ts';
-import announcement from './src/libs/integration/announcement.ts';
+import glossary from './src/plugins/glossary.js';
+import sitemap from './src/plugins/sitemap.js';
+import announcement from './src/plugins/announcement.ts';
+import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -27,6 +27,9 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  markdown: {
+    remarkPlugins: [remarkModifiedTime],
+  },
   image: {
     layout: 'constrained',
   },
@@ -188,9 +191,7 @@ export default defineConfig({
       SVG: true,
     }),
   ],
-
   vite: {
-    // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
     css: {
       devSourcemap: true,
@@ -199,10 +200,8 @@ export default defineConfig({
       noExternal: ['zod'],
     },
   },
-
   experimental: {},
   prefetch: true,
-
   redirects: {
     '/product': '/features/',
     '/feature/': '/features/',

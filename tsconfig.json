@@ -20,6 +20,7 @@
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
       "@libs/*": ["./src/libs/*"],
+      "@plugins/*": ["./src/plugins/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@v1/*": ["./src/v1/*"],
       "@content/*": ["./src/content/*"],

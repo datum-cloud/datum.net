@@ -1,4 +1,4 @@
-@import './fonts.css';
+/* @import './fonts.css'; */
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/aspect-ratio';

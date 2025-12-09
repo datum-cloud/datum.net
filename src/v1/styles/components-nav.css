@@ -51,7 +51,8 @@
     @apply transition-transform duration-200 ease-in-out;
   }
 
-  .nav-dropdown:hover .nav-dropdown-arrow {
+  .nav-dropdown:hover .nav-dropdown-arrow,
+  .nav-dropdown:focus-within .nav-dropdown-arrow {
     @apply rotate-180;
   }
 
@@ -59,7 +60,8 @@
     @apply pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
-  .nav-dropdown:hover .nav-dropdown-menu {
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
     @apply pointer-events-auto visible opacity-100;
   }
 

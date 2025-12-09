@@ -62,6 +62,7 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
               href={item.href}
               class={`nav-menu-link ${isActive ? 'link--active' : ''}`}
               data-astro-prefetch="hover"
+              tabindex="0"
             >
               <span>{item.text}</span>
               {item.children && <Arrow class="nav-dropdown-arrow" />}
@@ -89,6 +90,7 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
                               href={subItem.href}
                               class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
                               data-astro-prefetch="hover"
+                              tabindex="0"
                             >
                               {'icon' in subItem && subItem.icon && (
                                 <div class="nav-dropdown-icon">

@@ -96,7 +96,7 @@ const navData = navigation as NavData;
       >
         <!-- Navigation Sections -->
 
-        <div class="footer-nav-container">
+        <div class="footer-nav-container" role="navigation">
           {
             navData.footer.map((section) => (
               <div class="footer-nav-section">
@@ -110,6 +110,7 @@ const navData = navigation as NavData;
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
+                        tabindex="0"
                       >
                         {item.text.toLowerCase() === 'github' ? (
                           <>
@@ -134,7 +135,7 @@ const navData = navigation as NavData;
           }
         </div>
         <!-- Social Links Section -->
-        <div class="footer-actions-section">
+        <div class="footer-actions-section" role="contentinfo">
           <div class="w-full">
             <div class="mb-8 flex w-full justify-center space-x-3 md:justify-end-safe">
               {
@@ -155,8 +156,8 @@ const navData = navigation as NavData;
             <p
               class="footer-copyright mb-2 w-full text-center text-nowrap md:text-right [&_a]:inline-block"
             >
-              <a href="/legal/terms/" class="footer-nav-link">Terms of Service</a>,
-              <a href="/legal/privacy/" class="footer-nav-link">Privacy Policy</a>
+              <a href="/legal/terms/" class="footer-nav-link" tabindex="0">Terms of Service</a>,
+              <a href="/legal/privacy/" class="footer-nav-link" tabindex="0">Privacy Policy</a>
             </p>
             <p class="footer-copyright">
               &copy; {new Date().getFullYear()} Datum Technology, Inc.

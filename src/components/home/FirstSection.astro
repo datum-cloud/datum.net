@@ -29,7 +29,11 @@ if (content.data.images) {
 }
 ---
 
-<section class="bg-glacier-mist-700 section--block section--block--pad overflow-clip">
+<section
+  class="bg-glacier-mist-700 section--block section--block--pad fade-in--pure overflow-clip"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-immediate="true"
+>
   <div class="absolute right-0 bottom-0 z-0 flex w-[663px]">
     <Image
       src={sceneTree}
@@ -49,9 +53,7 @@ if (content.data.images) {
       />
       <!-- Scene Tree Image -->
       <div
-        class="fade-in--pure relative z-10 flex flex-col px-6 pt-8 pb-6 md:px-11 md:pt-11 lg:px-16 lg:pt-16 xl:px-20 xl:pt-20"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-delay="100"
+        class="relative z-10 flex flex-col px-6 pt-8 pb-6 md:px-11 md:pt-11 lg:px-16 lg:pt-16 xl:px-20 xl:pt-20"
       >
         <div
           class="mx-auto mb-10 flex w-full flex-col justify-between gap-9 text-center md:mb-20 md:flex-row md:text-left lg:mb-20 xl:mb-24"

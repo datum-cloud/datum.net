@@ -44,7 +44,6 @@ src/content/
 │   ├── groupTeam.json
 │   ├── jacob-smith.mdx
 │   ├── jose.mdx
-│   ├── josh.mdx
 │   ├── scot.mdx
 │   ├── steve.mdx
 │   ├── yahya.mdx

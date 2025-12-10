@@ -8,6 +8,7 @@ import UpcomingHuddle from '@components/huddles/UpcomingHuddle.astro';
 import PreviousHuddle from '@components/huddles/PreviousHuddle.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 import type { IconName } from '@utils/iconMap';
 
 const page = await getCollectionEntry('pages', 'community-huddle');
@@ -72,7 +73,7 @@ const subtitle = fm.subtitle;
                 <div class="huddle-info-icon">
                   <Icon name={info.icon} size="xl" class="text-pine-forge" />
                 </div>
-                <p class="huddle-info-text" set:html={info.text.replace(/\n/g, '<br />')} />
+                <p class="huddle-info-text" set:html={marked.parseInline(info.text)} />
               </div>
             ))
           }

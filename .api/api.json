@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "luma-docs",
+      "source": "@luma-docs/v1.0#etkcz6w2fmixm0pha",
+      "integrity": "sha512-WFFzK160pCas3fyQ/qgvz9SGY1fWHLsX5teIO/OY0IctkkJOs6IVhVW0+py1/+HfLU4DV23GksNbZ11KLYT0dA==",
+      "installerVersion": "6.1.3"
+    }
+  ]
+}

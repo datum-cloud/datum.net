@@ -60,6 +60,7 @@ export default defineConfig({
       title: 'Datum',
       disable404Route: true,
       credits: false,
+      prerender: false,
       editLink: {
         baseUrl: 'https://github.com/datum-cloud/datum.net/edit/main/',
       },

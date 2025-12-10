@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.15.2",
+    "@api/luma-docs": "file:.api/apis/luma-docs",
     "@astrojs/alpinejs": "^0.4.9",
     "@astrojs/mdx": "^4.3.12",
     "@astrojs/node": "^9.5.1",

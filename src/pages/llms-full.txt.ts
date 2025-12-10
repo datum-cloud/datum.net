@@ -292,8 +292,8 @@ export const GET: APIRoute = async () => {
         }
 
         // Add updated date if available
-        if (handbook.data.lastModified) {
-          llmsContent += `Updated: ${handbook.data.lastModified}\n\n`;
+        if (handbook.data.lastUpdated) {
+          llmsContent += `Updated: ${handbook.data.lastUpdated}\n\n`;
         }
 
         // Add authors if available

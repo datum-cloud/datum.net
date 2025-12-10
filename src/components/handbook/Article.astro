@@ -37,11 +37,11 @@ const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 /**
  * Format last modified date from frontmatter
  */
-const lastModified =
+const lastUpdated =
   mainArticle && mainArticle?.remarkPluginFrontmatter.updatedDate
     ? mainArticle?.remarkPluginFrontmatter.updatedDate
-    : mainArticle?.remarkPluginFrontmatter.lastModified
-      ? dayjs(mainArticle.remarkPluginFrontmatter.lastModified).utc().format('MMM DD, YYYY')
+    : mainArticle?.remarkPluginFrontmatter.lastUpdated
+      ? dayjs(mainArticle.remarkPluginFrontmatter.lastUpdated).utc().format('MMM DD, YYYY')
       : null;
 
 /**
@@ -253,7 +253,7 @@ handbooks.forEach((collection) => {
           currentArticleId={articleId}
           categories={categories}
           items={items}
-          lastUpdated={lastModified}
+          lastUpdated={lastUpdated}
         />
       </article>
 

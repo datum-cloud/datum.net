@@ -1,6 +1,5 @@
 ---
 title: Code of conduct
-lastUpdated: 2025-12-04
 sidebar:
   label: Code of conduct
   order: 1

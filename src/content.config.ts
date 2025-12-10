@@ -187,7 +187,7 @@ const handbooks = defineCollection({
       slug: z.string().optional(),
       draft: z.boolean().optional(),
       readingTime: z.string().optional(),
-      lastModified: z.string().optional(),
+      lastUpdated: z.string().optional(),
       authors: z.string().optional(),
       sidebar: z.object({
         label: z.string().optional(),

@@ -58,16 +58,17 @@
     @apply relative w-full flex-col gap-y-4 pt-9 pr-0 pb-0 md:mb-0 md:max-w-64.75 md:min-w-64.75 md:pr-7 md:pb-12;
     @apply border-glacier-mist-900 border-r-0 md:border-r;
     @apply hidden md:flex;
-    @apply mt-17.5 md:mt-0 md:flex;
+    @apply md:mt-0 md:flex;
   }
 
   /* Mobile menu styles */
   body[data-aside-menu-expanded] .handbook-sidebar {
-    @apply bg-glacier-mist-700 w-screen px-7;
-    @apply fixed top-[150px] left-0 pt-0;
-    @apply left-0 w-screen;
+    @apply bg-glacier-mist-700 px-0;
+    @apply relative top-15 left-0 pt-0;
+    @apply left-0 w-full;
     @apply overflow-y-auto;
-    @apply block h-[calc(100%-150px)];
+    @apply block h-[calc(100vh-100px)];
+    @apply absolute;
 
     nav {
       @apply mt-0 block;

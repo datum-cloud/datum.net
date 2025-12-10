@@ -1,4 +1,5 @@
 ---
+import fontsCss from '@v1/styles/fonts.css?raw';
 import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
@@ -46,7 +47,7 @@ const descriptionValue =
     <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
     <link rel="preconnect" href="https://edge.marker.io" crossorigin />
 
-    <!-- Preload critical font (primary font used throughout the site) -->
+    <!-- Preload critical fonts (used above the fold) -->
     <link
       rel="preload"
       href="/fonts/datum/allianceno1-regular-webfont.woff2"
@@ -54,6 +55,28 @@ const descriptionValue =
       type="font/woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-medium-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-semibold-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/canelatextlcweb-regular-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style is:inline set:html={fontsCss}></style>
 
     <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
 
@@ -111,7 +134,9 @@ const descriptionValue =
     }
   </head>
   <body class={bodyClass}>
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     <script>
       import '/src/v1/scripts/lenis-parallax.js';

@@ -1,6 +1,5 @@
 @layer base, starlight, theme, components, utilities;
 
-@import './fonts.css';
 @import 'tailwindcss';
 
 @plugin '@tailwindcss/typography';

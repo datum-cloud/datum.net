@@ -92,6 +92,19 @@ const huddleContentId = `huddle-content-${huddle.id}`;
         }
 
         {
+          huddle.data.youtubeLink && (
+            <div class="huddle--meta">
+              <div class="huddle--meta-icon">
+                <Icon name="youtube" size="lg" />
+              </div>
+              <a href={huddle.data.youtubeLink} target="_blank" rel="noopener noreferrer">
+                Watch the recording
+              </a>
+            </div>
+          )
+        }
+
+        {
           huddle.data.zoomLink && (
             <div class="huddle--meta">
               <div class="huddle--meta-icon">

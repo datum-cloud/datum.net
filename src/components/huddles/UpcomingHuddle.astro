@@ -40,6 +40,20 @@ const { Content } = await render(huddle);
       }
 
       {
+        huddle.data.eventLink && (
+          <div class="huddle--meta">
+            <div class="huddle--meta-icon">
+              <Icon name="calendar-plus" />
+            </div>
+
+            <a href={huddle.data.eventLink} target="_blank" rel="noopener noreferrer">
+              Register to Attend
+            </a>
+          </div>
+        )
+      }
+
+      {
         huddle.data.zoomLink && (
           <div class="huddle--meta">
             <div class="huddle--meta-icon">

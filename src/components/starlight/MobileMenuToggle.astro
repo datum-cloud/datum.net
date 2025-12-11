@@ -45,7 +45,6 @@ import Icon from '@components/Icon.astro';
       this.setAttribute('aria-expanded', String(expanded));
       this.btn.setAttribute('aria-expanded', String(expanded));
       document.body.toggleAttribute('data-mobile-menu-expanded', expanded);
-      document.body.toggleAttribute('data-disable-lenis', expanded);
 
       if (expanded) {
         document.body.classList.add('mobile-menu-open');

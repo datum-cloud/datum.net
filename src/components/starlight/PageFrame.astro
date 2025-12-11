@@ -26,7 +26,7 @@ const shouldRenderSearch =
         {
           hasSidebar && (
             <nav class="sidebar" aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}>
-              <div id="starlight__sidebar" class="sidebar-pane" data-lenis-prevent>
+              <div id="starlight__sidebar" class="sidebar-pane">
                 <div class="sidebar-content sl-flex">
                   <div class="hidden md:flex print:hidden">
                     {shouldRenderSearch && <SearchButton class={Astro.props.class} />}
@@ -54,7 +54,7 @@ const shouldRenderSearch =
 </style>
 
 <script>
-  import '/src/v1/scripts/lenis-parallax.js';
+  import '/src/v1/scripts/scroll-effects.js';
   import '/src/v1/scripts/glossary-tooltip.js';
 </script>
 

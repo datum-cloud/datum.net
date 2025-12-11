@@ -103,10 +103,6 @@ export default defineConfig({
             'data-site': 'PXKRQKIZ',
           },
         },
-        {
-          tag: 'script',
-          content: `document.documentElement.setAttribute('data-smooth-scroll', 'false');`,
-        },
       ],
       expressiveCode: {
         themes: ['github-light', 'github-dark'],

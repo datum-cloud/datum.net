@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '@components/Icon.astro';
+import VideoModal from './VideoModal.astro';
+import ImageVideo from '@v1/assets/images/zac-video.png';
+---
+
+<div class="flex flex-row items-center gap-6 rounded-md bg-white p-5 shadow-sm md:gap-9.5">
+  <div>
+    <button
+      type="button"
+      class="relative block transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
+      data-video-trigger
+      aria-label="Play video"
+    >
+      <Icon
+        name="play"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+      />
+      <Image
+        src={ImageVideo}
+        layout="constrained"
+        alt="Zac Smith"
+        class="size-auto w-full max-w-42.5 min-w-35 rounded-md md:min-w-42.5"
+      />
+    </button>
+  </div>
+  <div>
+    <p class="datum-text-xl mb-1.75 font-semibold text-balance">
+      Co-founder Zac on why we’re building Datum
+    </p>
+    <span class="datum-text-xs opacity-40">Video | 3 minute watch</span>
+  </div>
+
+  <VideoModal />
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.querySelector('[data-video-trigger]');
+    if (!trigger) return;
+
+    const openVideoModal = () => {
+      if (window.VIDEO_MODAL_OPEN_EVENT) {
+        document.dispatchEvent(new CustomEvent(window.VIDEO_MODAL_OPEN_EVENT));
+      }
+    };
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openVideoModal();
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openVideoModal();
+      }
+    });
+  });
+</script>

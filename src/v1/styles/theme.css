@@ -87,6 +87,7 @@
   --color-borderpaneldark: #313066;
 
   --shadow-sm: 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
+  --shadow-modal: 0 4px 16px 0 rgba(0, 0, 0, 0.05), 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);

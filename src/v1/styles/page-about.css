@@ -59,7 +59,7 @@
   }
 
   .profile-modal--frame {
-    @apply relative flex w-full grow flex-col overflow-auto rounded-[9px];
+    @apply shadow-modal relative flex w-full grow flex-col overflow-auto rounded-lg;
   }
 
   .profile-modal--close {
@@ -131,11 +131,8 @@
     @apply datum-text-base m-0 text-pretty opacity-80;
   }
 
-  /* Modal responsive styles */
-  @media (min-width: 40rem) {
-    /* Global modal state */
-    [data-profile-modal-open] {
-      @apply overflow-hidden;
-    }
+  /* Prevent page scroll when modal is open */
+  body[data-profile-modal-open] {
+    @apply overflow-clip;
   }
 }

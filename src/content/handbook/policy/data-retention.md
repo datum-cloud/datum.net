@@ -1,13 +1,13 @@
 ---
-title: Data retention and deletion policy
+title: "Data retention and deletion policy"
 sidebar:
   label: Data retention and deletion policy
   order: 13
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Data Retention Policy - Compliance & Schedules"
+  description: "How we manage data longevity. Guidelines on the storage, archiving, and secure destruction of data throughout its lifecycle on the Datum platform."
 ---
 
 Datum must retain and process certain kinds of customer and user data to deliver the Datum Solution and to comply with our customer commitments and legal requirements. At the same time, Datum wants to avoid retaining data for longer than is necessary.

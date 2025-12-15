@@ -1,13 +1,13 @@
 ---
-title: Incidents
+title: "Incidents"
 sidebar:
   label: Incidents
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Incident Post-Mortems & RCAs at Datum"
+  description: "We learn and build in public. Browse the technical archive of Datum's incident post-mortems and Root Cause Analyses (RCAs) to understand how we improve system reliability."
 ---
 
 We define incidents as unplanned events which require intervention of humans to reduce or eliminate a negative impact to customers, internal or external. Those impacts can include:

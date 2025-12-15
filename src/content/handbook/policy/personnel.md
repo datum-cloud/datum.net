@@ -1,13 +1,13 @@
 ---
-title: Personnel policy
+title: "Personnel policy"
 sidebar:
   label: Personnel policy
   order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Employment & Personnel Policies - Datum Handbook"
+  description: "Guidelines for employment at Datum. Learn about our hiring standards, employee status definitions, and the human resources policies that guide our team."
 ---
 
 Datum is a growing company that reviews risks on a regular basis and updates its hiring and personnel policies accordingly. 

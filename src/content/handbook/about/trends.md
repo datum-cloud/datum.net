@@ -1,13 +1,13 @@
 ---
-title: Trends
+title: "Trends"
 sidebar:
   label: Trends
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Trends in Cloud Infrastructure - The AI Workload Era"
+  description: "AI is changing infrastructure. Read about the explosion of specialized AI and alt clouds and the 'talent gap' that makes Datum's open network cloud essential."
 ---
 
 As we look around us, here are some of the big trends that inform our approach

@@ -1,13 +1,13 @@
 ---
-title: Incident disclosure policy
+title: "Incident disclosure policy"
 sidebar:
   label: Incident disclosure policy
   order: 5
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Incident Disclosure Policy & Notifications"
+  description: "We believe in radical transparency. Explore Datum's policy on disclosing security incidents and vulnerabilities to customers, partners, and the open source community."
 ---
 
 This policy specifies when and how we notify users about security incidents.

@@ -1,13 +1,13 @@
 ---
-title: Purchasing
+title: "Purchasing"
 sidebar:
   label: Purchasing
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Purchasing & Expenses - Datum Employee Handbook"
+  description: "Our philosophy on company spending. We trust you to spend responsibly. Read the Datum purchasing guidelines for travel, procurement, and reimbursements."
 ---
 
 We trust team members to spend money responsibly on behalf of the company. As such, our spending caps below (enforced via Ramp, our expense management tool) are not hard limits, but guardrails. In general, we ask that each employee act like an owner and spend company money like it's your own. When in doubt, just ask! 

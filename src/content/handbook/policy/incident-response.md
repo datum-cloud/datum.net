@@ -1,13 +1,13 @@
 ---
-title: Incident response policy
+title: "Incident response policy"
 sidebar:
   label: Incident response policy
   order: 6
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Incident Response Policy - Detection & Recovery"
+  description: "Read Datum's Incident Response Policy. Our framework for detecting, containing, and recovering from security incidents to maintain platform resilience."
 ---
 
 Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](../../technical/incidents/).

@@ -1,13 +1,13 @@
 ---
-title: Purpose
+title: "Purpose"
 sidebar:
   label: Purpose
   order: 2
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum's Purpose - Upgrading the Internet for AI"
+  description: "Why we build. Datum's mission is to democratize access to internet superpowers—like global backbones and authoritative DNS—so you can build without barriers."
 ---
 
 We believe that most people devote their time, energy, families, reputations and money to something not because of what it does, but why it exists and what it believes about the world. When we introduce Datum to prospective users, customers, investors, partners or employees, here is what we share.

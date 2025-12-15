@@ -1,13 +1,13 @@
 ---
-title: Rhythms
+title: "Rhythms"
 sidebar:
   label: Rhythms
   order: 1
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Company Rhythms & Meeting Cadence"
+  description: "The heartbeat of Datum. Discover the communication cycles and rituals that keep our distributed team aligned, from 1:1s to company-wide all-hands."
 ---
 
 Datum is an early stage startup, working to find its way to users, customers, and world-changing outcomes. While some people absolutely love the dynamic, iterative nature of “zero to one” companies, we recognize that it isn’t for everyone. This is an especially tricky balance in the infrastructure and network layers, where stability is part of the promise.

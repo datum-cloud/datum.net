@@ -1,13 +1,13 @@
 ---
-title: How we fit
+title: "How we fit"
 sidebar:
   label: How we fit
   order: 2
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Product to Market Fit Philosophy"
+  description: "Where Datum fits in the cloud ecosystem. Our perspective on Product-Market Fit (PMF), distinguishing our open network cloud from hyperscalers and traditional ISPs."
 ---
 
 We like to say that the most interesting thing about Datum isn’t __what__ we’re building, but __who__ we’re building it for: 

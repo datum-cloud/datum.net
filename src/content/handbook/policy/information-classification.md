@@ -1,13 +1,13 @@
 ---
-title: Information classification policy
+title: "Information classification policy"
 sidebar:
   label: Information classification policy
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Information Classification Policy"
+  description: "Read Datum's Information Classification Policy. Definitions of data sensitivity levels—Public, Internal, and Confidential—and standards for data protection."
 ---
 
 To understand its potential exposure from a security risk, issue or incident, Datum regularly catalogues and classifies its data and other in-scope assets, in order to apply risk-based controls.

@@ -1,13 +1,13 @@
 ---
-title: Who we are building for
+title: "Who we are building for"
 sidebar:
   label: Who we are building for
   order: 1
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Customer Segments & Market Focus at Datum"
+  description: "Empowering the builders. Read about the user personas that drive our product decisions, from network architects to developers needing programmable infrastructure."
 ---
 
 Our customers are AI-native providers and digital leaders: AI startups, alt clouds, and next-gen enterprises who are building what’s next. They’re focused on innovation, speed to market, and making the future possible.

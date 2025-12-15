@@ -1,13 +1,13 @@
 ---
-title: Components
+title: "Components"
 sidebar:
   label: Components
   order: 1
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "System Components & Architecture - Datum Handbook"
+  description: "Explore the building blocks of Datum. A technical breakdown of our system components, including the control plane, data plane, and edge infrastructure."
 ---
 
 There are four main components that we assemble to make Datum work for customers: infrastructure, platform, backend, cloud.

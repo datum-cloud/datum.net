@@ -1,8 +1,27 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { marked } from 'marked';
 
 import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
+import ImageHalfSphere from '@v1/assets/images/good-look-section/half-sphere.png';
+import ImageGrid from '@v1/assets/images/good-look-section/grid.svg';
 import type { ContentProps } from '@/src/types/common';
+import itemsData from '@content/pages/home/items.json';
+
+// Dynamically import all images from the hood directory
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '@content/pages/home/images/hood/*.png',
+  { eager: true }
+);
+
+// Create a map from JSON paths to imported images
+const imageMap: Record<string, ImageMetadata> = {};
+for (const [modulePath, module] of Object.entries(imageModules)) {
+  const filename = modulePath.split('/').pop() || '';
+  const jsonPath = `pages/home/images/hood/${filename}`;
+  imageMap[jsonPath] = module.default;
+}
 
 const { content } = Astro.props as ContentProps;
 ---
@@ -11,43 +30,54 @@ const { content } = Astro.props as ContentProps;
   id="under-the-hood"
   class="bg-glacier-mist-800 section--block section--block--pad relative overflow-hidden"
 >
+  <div class="absolute top-0 left-10 z-0 max-w-80.25">
+    <Image
+      src={ImageHalfSphere}
+      layout="constrained"
+      alt="Half Sphere illustration"
+      class="size-auto w-full"
+      data-scroll-effect="parallax"
+      data-scroll-speed="0.1"
+      data-scroll-direction="up"
+      data-viewport-offset="-200"
+      data-max-movement="50"
+    />
+  </div>
+
   <div class="max-width">
     <!-- Main content container -->
     <div
-      class="fade-in--pure relative z-10 m-auto flex w-full flex-col justify-between gap-10 md:flex-row md:gap-30"
+      class="fade-in--pure md::gap-8.25 relative z-10 m-auto flex w-full flex-col items-center gap-8"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
       <!-- Left content: What does good look like? -->
-      <div class="max-w-full space-y-10 text-center md:max-w-60 md:text-left lg:max-w-99">
+      <div class="max-w-full space-y-10 text-center md:max-w-95 lg:max-w-110 xl:max-w-120">
         <h2 class="datum-text-8xl">{content.data.title}</h2>
-        <span class="datum-text-lg">
-          <p>{content.body}</p>
-        </span>
+        <span class="datum-text-lg text-pretty" set:html={marked.parse(content.body)} />
       </div>
 
-      <!-- Right content: Numbered list -->
-      <div class="max-w-162.25 flex-1">
+      <div class="relative w-full px-0 py-0 lg:px-10.5 lg:py-11.5">
         {
-          content.data.items ? (
-            <ol class="ordered-list">
-              {content.data.items.map((item) => {
-                const parts = item.split(':');
+          itemsData && itemsData.length > 0 ? (
+            <ol class="relative z-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
+              {itemsData.map((item) => {
+                const parts = item.text.split(':');
                 const title = parts[0]?.trim() || '';
                 const description = parts.slice(1).join(':').trim();
+                const image = item.image ? imageMap[item.image] : null;
                 return (
-                  <li class="w-full flex-1">
-                    <div class="flex w-full flex-1 flex-col justify-between gap-3.5 md:flex-row">
-                      <div class="item-title">{title}</div>
-                      {description && (
-                        <div class="item-description flex items-center gap-2">
-                          {description.split(',').map((label) => (
-                            <span class="label">{label.trim()}</span>
-                          ))}
+                  <div class="bg-glacier-mist-700 rounded-lg px-5 py-7.5 shadow-sm">
+                    <div class="flex w-full flex-col items-center gap-1.5">
+                      {image && (
+                        <div class="mb-4.5 w-20.75">
+                          <Image src={image} alt={title} class="size-auto w-full" loading="lazy" />
                         </div>
                       )}
+                      <div class="datum-text-xl font-semibold">{title}</div>
+                      {description && <div class="datum-text-sm text-nowrap">{description}</div>}
                     </div>
-                  </li>
+                  </div>
                 );
               })}
             </ol>
@@ -55,16 +85,23 @@ const { content } = Astro.props as ContentProps;
             ''
           )
         }
+
+        <Image
+          src={ImageGrid}
+          layout="constrained"
+          alt="Grid"
+          class="absolute top-0 left-0 z-5 hidden size-auto w-full lg:block"
+        />
       </div>
     </div>
   </div>
 
-  <div class="absolute bottom-0 left-0 z-0 max-w-126">
+  <div class="absolute right-0 bottom-0 z-0 max-w-126">
     <Image
       src={ImageLeft}
       layout="constrained"
       alt="Scene left illustration"
-      class="size-auto w-full"
+      class="size-auto w-full -scale-x-100 transform"
     />
   </div>
 </section>

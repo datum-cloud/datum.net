@@ -1,13 +1,13 @@
 ---
-title: Compliance
+title: "Compliance"
 sidebar:
   label: Overview
   order: -1
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Information Security & Compliance Policies at Datum"
+  description: "Ensure compliance and security. Read Datum's official policies on data retention, incident response, access control, and disaster recovery standards."
 ---
 
 Building trust with customers is essential to our business strategy. One of the most important ways to do that as an operator is with a culture that underpins a rigorous operational and security stance.

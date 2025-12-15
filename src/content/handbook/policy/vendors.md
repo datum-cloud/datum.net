@@ -1,13 +1,13 @@
 ---
-title: Third party vendor review policy
+title: "Third party vendor review policy"
 sidebar:
   label: Third party vendor review policy
   order: 4
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Vendor Management & Onboarding - Datum Policy"
+  description: "Securing our ecosystem. Learn about Datum's rigorous process for assessing vendors and ensuring third-party compliance with our security and privacy standards."
 ---
 
 Datum reviews vendor security practices before contracting, and on a regular basis, to ensure vendors properly handle Datum’s customer data, confidential data, and other data.

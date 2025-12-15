@@ -1,5 +1,5 @@
 ---
-title: Code of conduct
+title: "Code of conduct"
 lastUpdated: 2025-12-04
 sidebar:
   label: Code of conduct
@@ -7,8 +7,8 @@ sidebar:
 updatedDate: Dec 4, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Professional Standards - Datum Code of Conduct"
+  description: "Read the Datum Code of Conduct. Our standards for ethical business practices, covering conflicts of interest, confidentiality, and legal compliance."
 ---
 
 This policy articulates the standards of behavior expected of everyone at Datum, as well as in our community forums (e.g. Discord, meetups, etc). As such, it applies to all work-related settings and activities, including at our offices, events, travel, client sites, and online communications related to Datum.

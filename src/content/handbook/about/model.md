@@ -1,13 +1,13 @@
 ---
-title: How we make money
+title: "How we make money"
 sidebar:
   label: How we make money
   order: 5
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "How We Make Money - Datum Business Model"
+  description: "Our approach to building a sustainable open source company. Learn about Datum's commercial strategy, AGPLv3 licensing, and how we prioritize value for builders."
 ---
 
 At the highest level, Datum’s economic model includes consumption-based usage of our network cloud infrastructure; orchestrating interactions between cloud, SaaS, and enterprise participants in virtual “meet me” rooms; and managing virtual global backbones for scaled provider and SaaS customers.

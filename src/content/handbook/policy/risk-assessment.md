@@ -1,13 +1,13 @@
 ---
-title: Risk assessment policy
+title: "Risk assessment policy"
 sidebar:
   label: Risk assessment policy
   order: 2
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Risk Assessment Policy - Datum Security Framework"
+  description: "Read Datum's Risk Assessment Policy. Our official framework for identifying, evaluating, and mitigating security and operational risks across the platform."
 ---
 
 ## Scope

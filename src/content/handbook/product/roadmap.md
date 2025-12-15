@@ -1,13 +1,13 @@
 ---
-title: Roadmap
+title: "Roadmap"
 sidebar:
   label: Roadmap
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Product Roadmap - Future Releases & Strategy"
+  description: "What's next for Datum? Read our roadmap to see planned updates for the AI Gateway, Adaptive Proxy, and global interconnection services."
 ---
 
 Working in the open is a core construct at Datum, but the area of transparency that we put the most effort into is communicating our roadmap as well as our backlog for consideration.

@@ -1,13 +1,13 @@
 ---
-title: Patch management policy
+title: "Patch management policy"
 sidebar:
   label: Patch management policy
   order: 12
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Patch Management Policy - Remediation SLAs"
+  description: "Maintaining a secure platform. Learn about our procedures for identifying, testing, and applying security patches to protect customer workloads."
 ---
 
 To avoid potential security incidents, Datum regularly reviews potential vulnerabilities in its environment and applies relevant patches.

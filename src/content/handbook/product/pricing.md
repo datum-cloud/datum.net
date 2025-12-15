@@ -1,13 +1,13 @@
 ---
-title: Pricing
+title: "Pricing"
 sidebar:
   label: Pricing
   order: 4
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Pricing Tiers & Models - Datum Product Strategy"
+  description: "Understanding our billing model. A guide to Datum's pricing tiers, from the free Builder plan to Enterprise interconnection, and the logic behind our rate limits."
 ---
 
 We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](https://www.datum.net/pricing/) for the latest official details. 

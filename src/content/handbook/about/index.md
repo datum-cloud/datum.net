@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: "Why Datum"
 slug: about
 sidebar:
   label: Overview
@@ -7,8 +7,8 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Company Overview - Our Mission & Strategy"
+  description: "Learn about Datum's purpose and strategy. We are upgrading the internet with a neutral, open source interconnection system to give every builder access to core internet capabilities."
 ---
 
 Datum is venture-backed startup reimagining the internet for the AI era. 

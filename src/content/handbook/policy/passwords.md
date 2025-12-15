@@ -1,13 +1,13 @@
 ---
-title: Password policy
+title: "Password policy"
 sidebar:
   label: Password policy
   order: 9
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Password Policy & Authentication Standards at Datum"
+  description: "How to secure your Datum account. Guidelines for creating strong passwords, using password managers, and enabling Multi-Factor Authentication (MFA)."
 ---
 
 To avoid potential security incidents, Datum requires employees to follow password requirements.

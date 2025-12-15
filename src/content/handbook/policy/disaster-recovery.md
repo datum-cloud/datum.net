@@ -1,13 +1,13 @@
 ---
-title: Disaster recovery policy
+title: "Disaster recovery policy"
 sidebar:
   label: Disaster recovery policy
   order: 7
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Disaster Recovery Policy - RTO & RPO Standards"
+  description: "Ensuring platform availability. Learn about our disaster recovery strategies, including failover testing, backup restoration, and maintaining resilience for your workloads."
 ---
 
 Datum’s customers are dependent on our services operating as expected. Proper planning, monitoring, and recovery steps are critical to address incidents that may impact the integrity or availability of services and data is critical to the operation of Datum. Disaster Recovery is a set of processes and techniques used to help an organization like ours recover from a disaster and resume routine business operations.

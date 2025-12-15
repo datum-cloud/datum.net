@@ -1,13 +1,13 @@
 ---
-title: What We're Building
+title: "What We're Building"
 sidebar:
   label: Overview
   order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Datum Product Strategy - Vision & Roadmap"
+  description: "The Datum way of building. Guidelines on our product development lifecycle, from gathering user feedback to roadmap planning and release cycles."
 ---
 
 Datum is working to bring the internet superpowers all the big guys use directly into tools like Cursor and Kubernetes.

@@ -1,13 +1,13 @@
 ---
-title: Overview
+title: "How we work"
 sidebar:
   label: Overview
   order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Engineering & Design Principles - Datum Technical Docs"
+  description: "How Datum is built. A technical guide to our global infrastructure, open source components, and the engineering principles behind our neutral platform."
 ---
 
 Datum is an operator-led culture. This means we put a lot of emphasis on our role, and experience, as operators. 

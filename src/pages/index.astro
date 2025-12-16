@@ -7,6 +7,7 @@ import FirstSection from '@components/home/FirstSection.astro';
 import LatestBlogSection from '@components/blog/Latest.astro';
 import SecondSection from '@components/home/SecondSection.astro';
 import GlobalSection from '@components/GlobalSection.astro';
+import TeamCarousel from '@components/home/TeamCarousel.astro';
 import Footer from '@components/Footer.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -34,6 +35,7 @@ const description = fm.description ? fm.description : '';
         <LatestBlogSection />
       </div>
     </section>
+    <TeamCarousel />
     <Footer />
   </section>
 </Layout>

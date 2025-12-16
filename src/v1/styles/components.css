@@ -18,7 +18,7 @@
     }
 
     &.section--block--pad {
-      @apply py-10 md:py-16 lg:py-20 xl:py-28;
+      @apply py-8 md:py-13 lg:py-16 xl:py-23;
     }
 
     &.--pad-mobile {

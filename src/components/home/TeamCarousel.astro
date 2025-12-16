@@ -1,0 +1,168 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import ProfileModal from '@components/about/ProfileModal.astro';
+
+// Fetch all authors where isTeam is true and sort by order
+const teamMembers = (await getCollection('authors', ({ data }) => data.isTeam === true)).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+
+// Prepare team member data for client-side modal (serialize data)
+const teamMembersData = teamMembers.map((member) => ({
+  id: member.id,
+  data: {
+    name: member.data.name,
+    bio: member.data.bio,
+    title: member.data.title,
+    avatar: member.data.avatar ? { src: member.data.avatar.src } : undefined,
+    tick: member.data.tick,
+    surprising: member.data.surprising,
+    weekends: member.data.weekends,
+  },
+}));
+---
+
+<section class="bg-midnight-fjord section--block section--block--pad">
+  <div class="max-width">
+    <h2 class="datum-text-xl mb-6 border-b border-white/20 pb-6 text-white md:mb-8 lg:mb-10">
+      Meet the Team
+    </h2>
+
+    <div
+      x-data="{
+        currentIndex: 0,
+        itemsToShow: 5,
+        get totalItems() { return {teamCount}; },
+        get maxIndex() {
+          const max = Math.max(0, this.totalItems - this.itemsToShow);
+          return max;
+        },
+        get canPrev() { return this.currentIndex > 0; },
+        get canNext() { return this.currentIndex < this.maxIndex; },
+        prev() {
+          if (this.canPrev) {
+            this.currentIndex = Math.max(0, this.currentIndex - 1);
+          }
+        },
+        next() {
+          if (this.canNext) {
+            this.currentIndex = Math.min(this.maxIndex, this.currentIndex + 1);
+          }
+        },
+        getTransform() {
+          const cardWidth = 100 / this.itemsToShow;
+          return `translateX(-${this.currentIndex * cardWidth}%)`;
+        }
+      }"
+      x-init="
+        // Adjust items to show based on screen size
+        const updateItemsToShow = () => {
+          if (window.innerWidth < 768) {
+            itemsToShow = 2;
+          } else if (window.innerWidth < 1024) {
+            itemsToShow = 3;
+          } else {
+            itemsToShow = 5;
+          }
+          // Reset to start if current index is now invalid
+          if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+          }
+        };
+        updateItemsToShow();
+        window.addEventListener('resize', updateItemsToShow);
+      "
+      class="carousel-wrapper"
+    >
+      <!-- Previous button -->
+      <button
+        @click="prev()"
+        x-show="canPrev"
+        class="carousel-btn carousel-btn--prev"
+        aria-label="Previous team members"
+        type="button"
+      >
+        ←
+      </button>
+
+      <!-- Carousel track -->
+      <div class="overflow-hidden">
+        <div class="carousel-track gap-4 md:gap-6" :style="`transform: ${getTransform()}`">
+          {
+            teamMembers.map((member, index) => (
+              <button
+                class="carousel-card flex-shrink-0"
+                style="width: calc((100% - 1 * 1rem) / 2); min-width: calc((100% - 1 * 1rem) / 2);"
+                data-member-trigger
+                data-member-index={index}
+                type="button"
+                aria-label={`View ${member.data.name}'s profile`}
+                x-bind:style="{
+                  width: 'calc((100% - ' + (itemsToShow - 1) + ' * 1.5rem) / ' + itemsToShow + ')',
+                  minWidth: 'calc((100% - ' + (itemsToShow - 1) + ' * 1.5rem) / ' + itemsToShow + ')'
+                }"
+              >
+                {member.data.avatar && (
+                  <Image
+                    src={member.data.avatar}
+                    alt={member.data.name}
+                    class="carousel-card-image"
+                  />
+                )}
+
+                <div class="carousel-card-content">
+                  <h4 class="carousel-card-name">{member.data.name}</h4>
+                  {member.data.title && <p class="carousel-card-title">{member.data.title}</p>}
+                </div>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Next button -->
+      <button
+        @click="next()"
+        x-show="canNext"
+        class="carousel-btn carousel-btn--next"
+        aria-label="Next team members"
+        type="button"
+      >
+        →
+      </button>
+    </div>
+  </div>
+
+  <ProfileModal />
+</section>
+
+<script is:inline define:vars={{ teamMembersData }}>
+  // Store team members data for the modal
+  const teamData = teamMembersData;
+
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const triggers = document.querySelectorAll('[data-member-trigger]');
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        if (!target) return;
+
+        const memberIndex = target.getAttribute('data-member-index');
+        const index = parseInt(memberIndex || '0', 10);
+        const member = teamData[index];
+
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
+          // Dispatch event with member data
+          document.dispatchEvent(
+            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
+              detail: { member },
+            })
+          );
+        }
+      });
+    });
+  });
+</script>

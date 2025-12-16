@@ -30,7 +30,9 @@ const { content } = Astro.props as ContentProps;
   id="under-the-hood"
   class="bg-glacier-mist-800 section--block section--block--pad relative overflow-hidden"
 >
-  <div class="absolute top-0 left-10 z-0 max-w-80.25">
+  <div
+    class="absolute top-0 left-0 z-0 max-w-50.25 md:left-5 md:max-w-75.25 lg:left-10 lg:max-w-80.25"
+  >
     <Image
       src={ImageHalfSphere}
       layout="constrained"

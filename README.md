@@ -494,3 +494,10 @@ The tests are configured to run in CI environments:
 - [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
 - [Zod Schema Validation](https://zod.dev/)
 - [Project Content Structure](./CONTENT_STRUCTURE.md)
+
+### Tools
+
+https://cdn.jsdelivr.net
+https://marker.io
+https://hyperping.com
+https://usefathom.com

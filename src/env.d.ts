@@ -16,5 +16,6 @@ declare namespace NodeJS {
   interface ProcessEnv {
     NODE_ENV: 'development' | 'production' | 'local';
     MODE: 'development' | 'production' | 'local';
+    LUMA_API_KEY: string;
   }
 }

@@ -1,0 +1,154 @@
+---
+// src/components/events/Card.astro
+// Display list of events from Luma
+
+export const prerender = false;
+
+import { fetchLumaEvents } from '@libs/luma';
+import type { LumaEvent } from '@libs/luma';
+import FeaturedEvent from '@components/events/FeaturedEvent.astro';
+import EventListItem from '@components/events/EventListItem.astro';
+
+let upcomingEvents: LumaEvent[] = [];
+let pastEvents: LumaEvent[] = [];
+let error: string | null = null;
+
+try {
+  const { upcoming, past } = await fetchLumaEvents();
+  upcomingEvents = upcoming;
+  pastEvents = past;
+} catch (e) {
+  error = e instanceof Error ? e.message : 'Failed to fetch events';
+  console.error('Error loading events:', e);
+}
+
+// Get the first upcoming event as featured, rest as other upcoming events
+const featuredEvent = upcomingEvents[0];
+const otherUpcomingEvents = upcomingEvents.slice(1);
+
+// Extract unique locations from all events
+const allEvents = [...upcomingEvents, ...pastEvents];
+const locations = [
+  ...new Set(
+    allEvents
+      .map((event) => event.geo_address_json?.city || (event.meeting_url ? 'Online' : null))
+      .filter((loc): loc is string => loc !== null && loc !== undefined)
+  ),
+].sort();
+---
+
+<div
+  class="events-card -mb-40 -translate-y-40 md:-mb-50 md:-translate-y-50 lg:-mb-55 lg:-translate-y-55 xl:-mb-65 xl:-translate-y-65"
+>
+  {
+    error ? (
+      <div class="events-error">
+        <p>Unable to load events. Please try again later.</p>
+      </div>
+    ) : upcomingEvents.length === 0 && pastEvents.length === 0 ? (
+      <div class="events-empty">
+        <p>No events at the moment. Check back soon!</p>
+      </div>
+    ) : (
+      <>
+        {/* Featured Event - Always Visible */}
+        {featuredEvent && (
+          <div class="mb-16 flex justify-center">
+            <FeaturedEvent event={featuredEvent} />
+          </div>
+        )}
+
+        {/* Tab Navigation */}
+        <div x-data="{ activeTab: 'future', selectedLocation: 'all' }">
+          <div class="events-header">
+            <div class="events-tabs">
+              <button
+                class="events-tab"
+                x-bind:class="{ 'events-tab--active': activeTab === 'future' }"
+                x-on:click="activeTab = 'future'"
+                type="button"
+              >
+                Future Events
+              </button>
+              <button
+                class="events-tab"
+                x-bind:class="{ 'events-tab--active': activeTab === 'past' }"
+                x-on:click="activeTab = 'past'"
+                type="button"
+              >
+                Past Events
+              </button>
+            </div>
+
+            {/* Location Filter */}
+            {locations.length > 0 && (
+              <div class="events-location-filter">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="events-location-filter--icon"
+                >
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <select x-model="selectedLocation" class="events-location-filter--select">
+                  <option value="all">All locations</option>
+                  {locations.map((location) => (
+                    <option value={location}>{location}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+
+          {/* Future Events Tab Content */}
+          <div class="events-tab-content" x-show="activeTab === 'future'" id="future-events">
+            {otherUpcomingEvents.length > 0 ? (
+              <div class="entry-list">
+                {otherUpcomingEvents.map((event) => {
+                  const loc = event.geo_address_json?.city || (event.meeting_url ? 'Online' : '');
+                  return (
+                    <div x-show={`selectedLocation === 'all' || selectedLocation === '${loc}'`}>
+                      <EventListItem event={event} />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div class="events-empty">
+                <p>No other upcoming events at the moment.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Past Events Tab Content */}
+          <div class="events-tab-content" x-show="activeTab === 'past'" id="past-events">
+            {pastEvents.length > 0 ? (
+              <div class="entry-list">
+                {pastEvents.map((event) => {
+                  const loc = event.geo_address_json?.city || (event.meeting_url ? 'Online' : '');
+                  return (
+                    <div x-show={`selectedLocation === 'all' || selectedLocation === '${loc}'`}>
+                      <EventListItem event={event} />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div class="events-empty">
+                <p>No past events to display.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    )
+  }
+</div>

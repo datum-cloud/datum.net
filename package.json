@@ -104,14 +104,13 @@
     "*.{js,jsx,ts,tsx,astro}": [
       "npm run typecheck",
       "npm run lint",
-      "npm run format:check"
+      "npm run format"
     ],
     "*.{md,mdx}": [
       "npm run lint:md",
       "npm run lint:md:fix"
     ],
     "*.{json,css,scss}": [
-      "npm run format:check",
       "npm run format"
     ]
   }

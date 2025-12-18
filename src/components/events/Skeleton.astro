@@ -1,0 +1,19 @@
+---
+// src/components/events/Skeleton.astro
+// Loading skeleton for events list
+---
+
+<div class="flex flex-col gap-8">
+  {
+    [...Array(2)].map(() => (
+      <div class="flex flex-col">
+        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
+        <div class="mb-2.5 h-7 max-w-[200px] animate-pulse rounded-full bg-gray-700" />
+        <div class="mb-2.5 h-5 max-w-[360px] animate-pulse rounded-full bg-gray-700" />
+        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
+        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
+        <div class="mb-2.5 h-5 max-w-[150px] animate-pulse rounded-full bg-gray-700" />
+      </div>
+    ))
+  }
+</div>

@@ -106,7 +106,7 @@ const navData = navigation as NavData;
                     <li>
                       <a
                         href={item.href}
-                        class="footer-nav-link"
+                        class="footer-nav-link relative"
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
@@ -121,7 +121,11 @@ const navData = navigation as NavData;
                           </>
                         ) : item.text.toLowerCase() === 'status' ? (
                           <>
-                            <span id="hyperping-badge" />
+                            <span class="hidden md:inline-block">Status</span>
+                            <span
+                              id="hyperping-badge"
+                              class="datum-docs-sidebar-headings text-glacier-mist-700 [&>div]:bg-logo-object/15 min-w-[140px] normal-case [&>div]:rounded-md [&>div]:px-2 [&>div]:py-1"
+                            />
                           </>
                         ) : (
                           item.text

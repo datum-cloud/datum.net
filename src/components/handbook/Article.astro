@@ -30,7 +30,6 @@ if (articleId === 'index') {
 } else {
   mainArticleEntry = handbooks.find((h) => h.id === articleId);
 }
-
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 
@@ -250,7 +249,7 @@ handbooks.forEach((collection) => {
 
         {/* Navigation */}
         <PageNav
-          currentArticleId={articleId}
+          currentArticle={{ id: articleId, path: mainArticleEntry?.filePath }}
           categories={categories}
           items={items}
           lastUpdated={lastModified}

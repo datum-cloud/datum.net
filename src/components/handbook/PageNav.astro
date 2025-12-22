@@ -2,15 +2,16 @@
 // src/components/handbook/PageNav.astro
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import LastUpdated from '@components/handbook/LastUpdated.astro';
+import EditPage from '@components/handbook/EditPage.astro';
 import type { SidebarItems } from '@/src/types/common';
 
 const {
-  currentArticleId,
+  currentArticle,
   items,
   lastUpdated,
   class: className,
 } = Astro.props as {
-  currentArticleId: string;
+  currentArticle: { id: string; path: string };
   class?: string;
   items: SidebarItems[];
   lastUpdated?: Date;
@@ -30,7 +31,7 @@ Object.values(items).forEach((item: SidebarItems) => {
 });
 
 // Find current article index for navigation
-const currentIndex = handbookItems.findIndex((h) => h.id === currentArticleId);
+const currentIndex = handbookItems.findIndex((h) => h.id === currentArticle.id);
 const previousArticle = currentIndex > 0 ? handbookItems[currentIndex - 1] : undefined;
 const nextArticle =
   currentIndex < handbookItems.length - 1 ? handbookItems[currentIndex + 1] : undefined;
@@ -38,7 +39,10 @@ const nextArticle =
 
 {/* Last Updated */}
 <footer id="footer-article" class="article-footer">
-  {lastUpdated && <LastUpdated date={lastUpdated} />}
+  <div class="flex flex-wrap justify-between">
+    {currentArticle && <EditPage filePath={currentArticle.path} />}
+    {lastUpdated && <LastUpdated date={lastUpdated} />}
+  </div>
 
   <ArticleNavigation
     previousArticle={previousArticle

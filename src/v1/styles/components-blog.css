@@ -117,26 +117,11 @@
     @apply mt-1 text-sm text-white/70;
   }
 
-  /* Blog List */
+  /* Blog List - Uses shared list component styles */
   .blog-list {
   }
 
-  .blog-item {
-    @apply border-glacier-mist-900/10 relative mb-0 border-b first:border-t;
-  }
-
-  .blog-item--wrapper {
-    @apply flex items-start justify-between gap-8 py-6 md:gap-12;
-    @apply transition-all duration-200 ease-linear hover:opacity-70;
-  }
-
-  .blog-item--title {
-    @apply datum-text-xl flex-1 text-white;
-  }
-
-  .blog-item--meta {
-    @apply flex items-center gap-6;
-  }
+  /* Keep blog-specific date styling */
 
   .blog-item--category {
     @apply flex items-center;

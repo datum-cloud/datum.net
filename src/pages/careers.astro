@@ -1,0 +1,58 @@
+---
+// src/pages/careers.astro
+import '@v1/styles/page-careers.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Mission from '@components/career/Mission.astro';
+import Culture from '@components/career/Culture.astro';
+import Benefits from '@components/career/Benefits.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+// Get career landing page from pages/career.mdx
+const page = await getCollectionEntry('pages', 'career');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title || 'Careers';
+const description = fm.description || '';
+---
+
+<Layout title={title} description={description} bodyClass="page-careers" meta={meta}>
+  <section class="datum-container">
+    <Hero class="light bg-white" />
+
+    <Mission content={page} />
+
+    <Culture />
+
+    <Benefits />
+
+    <section
+      id="jobs"
+      class="section--block section--block--pad fade-in--pure bg-white"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+    >
+      <div class="max-width">
+        <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
+
+        <div id="ashby_embed"></div>
+        <script>
+          // @ts-expect-error - Ashby is a global variable
+          window.__Ashby = {
+            settings: {
+              ashbyBaseJobBoardUrl: 'https://jobs.ashbyhq.com/datum',
+              autoLoad: true,
+              autoScroll: false,
+            },
+          };
+        </script>
+        <script src="https://jobs.ashbyhq.com/datum/embed?version=2" is:inline defer></script>
+      </div>
+    </section>
+
+    <Footer />
+  </section>
+</Layout>

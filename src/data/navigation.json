@@ -74,6 +74,7 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
+        { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Blog", "href": "/blog/" },
         { "text": "Get In Touch", "href": "/contact/" },
         { "text": "Design Assets", "href": "/brand/" }
@@ -133,6 +134,7 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
+        { "text": "Careers", "href": "/careers/" },
         { "text": "Blog", "href": "/blog/" },
         { "text": "Design Assets", "href": "/brand/" }
       ]

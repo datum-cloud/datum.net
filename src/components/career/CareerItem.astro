@@ -1,0 +1,34 @@
+---
+// src/components/career/CareerItem.astro
+import type { CollectionEntry } from 'astro:content';
+
+const { career } = Astro.props as { career: CollectionEntry<'career'> };
+---
+
+<div
+  class="entry-list-item fade-in--pure"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-delay="100"
+>
+  <a
+    href={`/careers/${career.id}/`}
+    title={career.data.title}
+    class="entry-list-item--wrapper flex-col gap-2 md:flex-row"
+  >
+    <p class="entry-list-item--title">{career.data.title}</p>
+
+    <div class="entry-list-item--meta">
+      {
+        career.data.department && (
+          <span class="entry-list-item--meta-text">{career.data.department}</span>
+        )
+      }
+      {
+        career.data.location && (
+          <span class="entry-list-item--meta-text">{career.data.location}</span>
+        )
+      }
+      {career.data.type && <span class="entry-list-item--meta-text">{career.data.type}</span>}
+    </div>
+  </a>
+</div>

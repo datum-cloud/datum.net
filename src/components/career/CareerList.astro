@@ -1,0 +1,22 @@
+---
+// src/components/career/CareerList.astro
+import { getCollection } from 'astro:content';
+import CareerItem from './CareerItem.astro';
+
+const careers = await getCollection('career', ({ data }) => {
+  return !data.draft;
+});
+
+careers.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return dateB - dateA;
+});
+
+// Limit to 8 jobs as per design note
+const displayedCareers = careers.slice(0, 8);
+---
+
+<div class="entry-list">
+  {displayedCareers.map((career) => <CareerItem career={career} />)}
+</div>

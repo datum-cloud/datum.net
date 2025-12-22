@@ -1,0 +1,58 @@
+@layer components {
+  /* Career Detail Page Styles */
+  .career-article-meta {
+    @apply datum-text-sm mt-4 flex flex-wrap gap-2 opacity-60;
+  }
+
+  .career-meta-item {
+    @apply after:content-[','] last:after:content-[''];
+  }
+
+  .career-section {
+    @apply mb-12 last:mb-0;
+  }
+
+  .career-section--title {
+    @apply datum-text-4xl text-midnight-fjord mb-6 font-medium;
+  }
+
+  .career-section--content {
+    @apply datum-prose-lg text-midnight-fjord;
+  }
+
+  .career-responsibility-group {
+    @apply mb-8 last:mb-0;
+  }
+
+  .career-responsibility-group--title {
+    @apply datum-text-2xl text-midnight-fjord mb-4 font-medium;
+  }
+
+  .career-bucket {
+    @apply mb-10 last:mb-0;
+  }
+
+  .career-list {
+    @apply list-disc space-y-3 pl-6;
+  }
+
+  .career-list-item {
+    @apply datum-text-base text-midnight-fjord;
+  }
+
+  .career-benefit-value {
+    @apply font-semibold;
+  }
+
+  .career-section--cta {
+    @apply flex justify-center pt-8;
+  }
+
+  .career-sidebar-footer {
+    @apply border-midnight-fjord/20 border-t pt-6;
+  }
+
+  .career-equal-opportunity {
+    @apply datum-text-xs opacity-80;
+  }
+}

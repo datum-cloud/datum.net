@@ -1,0 +1,23 @@
+@import './base.css';
+
+@import './components-list.css';
+@import './components-features.css';
+
+@layer components {
+  /* Career Mission Section */
+  .career-mission {
+    color: var(--color-white);
+  }
+
+  .career-mission--content {
+    @apply mx-auto max-w-4xl text-center;
+  }
+
+  .career-mission--title {
+    @apply datum-text-7xl mb-6 font-medium;
+  }
+
+  .career-mission--description {
+    @apply datum-text-xl opacity-90;
+  }
+}

@@ -292,12 +292,12 @@
     }
 
     .last-updated {
-      @apply datum-text-base text-midnight-fjord/60 flex gap-1;
+      @apply datum-text-sm text-midnight-fjord/60 flex gap-1;
       @apply text-midnight-fjord/60;
     }
 
     .edit-page {
-      @apply datum-text-base text-midnight-fjord/60 hover:text-midnight-fjord flex gap-1;
+      @apply datum-text-sm text-midnight-fjord/60 hover:text-midnight-fjord flex items-center gap-1;
       svg {
         @apply text-midnight-fjord/60 hover:text-midnight-fjord;
       }

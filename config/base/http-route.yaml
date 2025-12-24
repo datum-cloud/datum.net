@@ -9,6 +9,40 @@ spec:
     - name: external
       namespace: gateway-system
   rules:
+    - filters:
+      - type: ResponseHeaderModifier
+        responseHeaderModifier:
+          add:
+            # X-Content-Type-Options: Prevent MIME sniffing
+            - name: X-Content-Type-Options
+              value: nosniff
+            # Referrer-Policy: Control referrer information
+            - name: Referrer-Policy
+              value: strict-origin-when-cross-origin
+            # X-Frame-Options: Prevent clickjacking
+            - name: X-Frame-Options
+              value: DENY
+            # Strict-Transport-Security: Force HTTPS
+            - name: Strict-Transport-Security
+              value: max-age=63072000; includeSubDomains; preload
+            # Cross-Origin-Opener-Policy: Isolate browsing context
+            - name: Cross-Origin-Opener-Policy
+              value: same-origin
+            # Cross-Origin-Resource-Policy: Control resource loading
+            - name: Cross-Origin-Resource-Policy
+              value: same-site
+            # Cross-Origin-Embedder-Policy: Prevent loading cross-origin resources
+            - name: Cross-Origin-Embedder-Policy
+              value: require-corp
+            # Permissions-Policy: Disable unnecessary browser features
+            - name: Permissions-Policy
+              value: geolocation=(), camera=(), microphone=()
+            # X-XSS-Protection: Disable legacy XSS filter (CSP preferred)
+            - name: X-XSS-Protection
+              value: "0"
+            # Content-Security-Policy: Prevent XSS, clickjacking, and code injection
+            - name: Content-Security-Policy
+              value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://*.marker.io https://hyperping.com https://*.usefathom.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://www.datumstatus.net https://api.github.com https://*.datum.net https://*.marker.io https://*.helpscout.net; frame-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
     - matches:
         - path:
             type: PathPrefix

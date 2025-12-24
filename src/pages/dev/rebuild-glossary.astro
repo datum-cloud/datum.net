@@ -4,7 +4,7 @@ export const prerender = false;
 import { buildGlossary } from '@plugins/glossary';
 
 if (!Astro.cookies.get('userInfo')?.value) {
-  return Astro.redirect('/auth/login/?auth_redirect=/api/rebuild-glossary');
+  return Astro.redirect('/auth/login/?auth_redirect=/dev/rebuild-glossary');
 }
 
 buildGlossary({

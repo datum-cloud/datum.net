@@ -204,7 +204,6 @@ export default defineConfig({
     '/feature/': '/features/',
     '/product/overview/overview': '/features/',
     '/team': '/about/',
-    '/careers/': '/about/',
     '/jobs/': '/about/',
     '/docs/overview/': '/docs/',
     '/docs/roadmap': '/resources/roadmap/',

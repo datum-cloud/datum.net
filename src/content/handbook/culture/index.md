@@ -1,12 +1,12 @@
 ---
-title: "Working at Datum"
+title: "Culture"
 sidebar:
-  label: Working at Datum
+  label: Culture
   order: 0
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Working at Datum - Building Internet Superpowers"
+  title: "Working at Datum - key elements of our operating culture"
   description: "Join our mission to empower the next 1k clouds. Read about our engineering culture, collaborative environment, and the values guiding our work experience."
 ---
 

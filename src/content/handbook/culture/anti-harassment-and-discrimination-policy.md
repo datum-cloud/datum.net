@@ -1,9 +1,10 @@
 ---
-title: "Anti-Harassment and Discrimination Policy"
+title: "Anti-harassment and discrimination policy"
 sidebar:
-  label: Anti-Harassment and Discrimination Policy
+  label: Anti-harassment policy
   order: 4
-updatedDate: Dec 4, 2025
+updatedDate: Dec 26
+, 2025
 authors: jacob
 meta:
   title: "Anti-Harassment & Discrimination Policy at Datum"

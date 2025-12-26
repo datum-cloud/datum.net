@@ -348,50 +348,6 @@ const faq = defineCollection({
     }),
 });
 
-// Define career collections
-const career = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/career' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      slug: z.string().optional(),
-      description: z.string().optional(),
-      department: z.string().optional(),
-      location: z.string().optional(),
-      type: z.enum(['full-time', 'part-time', 'contract', 'internship']).optional(),
-      date: z.date().optional(),
-      draft: z.boolean().optional().default(false),
-      url: z.string().url().optional(),
-      overview: z.string().optional(),
-      resposibilities: z
-        .array(
-          z.object({
-            title: z.string().optional(),
-            items: z.array(z.string()),
-          })
-        )
-        .optional(),
-      summary: z
-        .array(
-          z.object({
-            title: z.string(),
-            items: z.array(z.string()),
-          })
-        )
-        .optional(),
-      qualifications: z.array(z.string()).optional(),
-      benefits: z
-        .array(
-          z.object({
-            label: z.string(),
-            value: z.string().optional(),
-          })
-        )
-        .optional(),
-      meta: metaSchema(image),
-    }),
-});
-
 export const collections = {
   pages,
   about,
@@ -405,7 +361,6 @@ export const collections = {
   pricing,
   huddles,
   faq,
-  career,
   docs: defineCollection({
     loader: docsLoader(),
     schema: docsSchema({

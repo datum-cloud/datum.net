@@ -1,0 +1,96 @@
+---
+// src/components/career/Culture.astro
+import { Image } from 'astro:assets';
+import ImageRight from '@v1/assets/images/good-look-section/left-stone.png';
+import ImageLeft from '@v1/assets/images/good-look-section/right-stone.png';
+---
+
+<section
+  id="culture"
+  class="career-culture section--block section--block--pad fade-in--pure bg-glacier-mist-800 overflow-clip"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-immediate="true"
+>
+  <div class="max-width-internal relative z-20">
+    <div class="text-midnight-fjord grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-20 lg:gap-26">
+      <div class="col-span-1 flex flex-col gap-6">
+        <h2 class="datum-text-8xl mb-6 font-medium">A culture shaped by our mission</h2>
+        <p class="datum-text-lg">
+          People first and purpose driven, we are dedicated to connecting others to their advantage.
+          We strive to balance a sense of humility with a strong conviction for what's next.
+        </p>
+      </div>
+
+      <div class="flex grid-cols-1 flex-col gap-7">
+        <div class="flex-1">
+          <h3 class="datum-text-lg mb-4 font-medium">Who we are:</h3>
+          <ul class="datum-text-base space-y-1">
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We are connectors — of people, businesses, apps and networks. ABCD!
+            </li>
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We are operators at heart
+            </li>
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We are passionate about working in the open
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex-1">
+          <h3 class="datum-text-lg mb-4 font-medium">How we act:</h3>
+          <ul class="datum-text-base space-y-1">
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We find creative answers to hard problems
+            </li>
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We prioritize outcomes for users, customers, and partners
+            </li>
+            <li
+              class="datum-text-base before:bg-blush-quartz relative pl-6 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:content-['']"
+            >
+              We write our own words
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          Read more about
+          <a
+            href="/handbook/"
+            class="datum-text-base text-canyon-clay---links hover:text-canyon-clay---links/80 underline transition-opacity hover:opacity-80"
+            >how we work</a
+          >.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 z-0 max-w-1/3 md:max-w-64 lg:max-w-84">
+    <Image
+      src={ImageLeft}
+      layout="constrained"
+      alt="Scene left illustration"
+      class="w-half size-auto -scale-x-100 transform"
+    />
+  </div>
+
+  <div class="absolute right-0 bottom-0 z-0 max-w-1/2 md:max-w-110 lg:max-w-120">
+    <Image
+      src={ImageRight}
+      layout="constrained"
+      alt="Scene right illustration"
+      class="size-auto w-full -scale-x-100 transform"
+    />
+  </div>
+</section>

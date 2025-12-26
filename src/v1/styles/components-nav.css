@@ -242,7 +242,11 @@
     @apply datum-text-base text-white opacity-80;
 
     li {
-      @apply mb-1.5;
+      @apply mb-1.5 flex gap-2;
+    }
+
+    .nav-label {
+      @apply text-glacier-mist-700 bg-logo-object/15 datum-docs-sidebar-headings rounded-md px-2 py-1 normal-case;
     }
   }
 

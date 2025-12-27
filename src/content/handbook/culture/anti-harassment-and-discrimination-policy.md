@@ -3,8 +3,7 @@ title: "Anti-harassment and discrimination policy"
 sidebar:
   label: Anti-harassment policy
   order: 4
-updatedDate: Dec 26
-, 2025
+updatedDate: Dec 26, 2025
 authors: jacob
 meta:
   title: "Anti-Harassment & Discrimination Policy at Datum"

@@ -20,17 +20,28 @@ const description = fm.description || '';
 ---
 
 <Layout title={title} description={description} bodyClass="page-careers" meta={meta}>
-  <section class="datum-container">
+  <section
+    class="datum-container"
+    x-data="{
+      hasAshbyJobId: false,
+      init() {
+        const urlParams = new URLSearchParams(window.location.search);
+        this.hasAshbyJobId = urlParams.has('ashby_jid');
+      }
+    }"
+  >
     <Hero class="light bg-white" />
 
-    <Mission content={page} />
+    <div x-show="!hasAshbyJobId" x-cloak>
+      <Mission content={page} />
 
-    <Culture />
+      <Culture />
 
-    <Benefits />
+      <Benefits />
+    </div>
 
     <section
-      id="jobs"
+      id="careers"
       class="section--block section--block--pad fade-in--pure bg-white"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"

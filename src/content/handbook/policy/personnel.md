@@ -18,7 +18,7 @@ As part of its hiring process, Datum does not perform full criminal background c
 ## Physical meeting requirement
 To mitigate the risks of impersonation in our remote-first company, all prospective contractors and employees must meet in person with a Datum representative before being granted access to internal systems.
 
-## Security Awareness training
+## Security awareness training
 All employees must complete Datum’s information security awareness training as part of their initial onboarding and thereafter, while still under contract, on an annual basis.
 
 ## Performance reviews

@@ -114,8 +114,9 @@ const twitterImage =
         card: 'summary_large_image',
         site: config.socials.twitter.handle || '@datumcloud',
         creator: config.socials.twitter.handle || '@datumcloud',
-        title: titleValue,
-        description: descriptionValue,
+        title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
+        description:
+          meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
         image: twitterImage?.src,
       }}
       extend={{

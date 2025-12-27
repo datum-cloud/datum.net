@@ -92,7 +92,7 @@
 }
 
 @utility max-width-internal {
-  @apply mx-auto w-full max-w-(--breakpoint---internal);
+  @apply mx-auto w-full max-w-(--breakpoint---internal) px-7;
 }
 
 @utility text-size {

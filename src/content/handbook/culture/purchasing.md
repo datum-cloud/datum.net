@@ -1,12 +1,12 @@
 ---
-title: "Purchasing"
+title: "Spending money"
 sidebar:
-  label: Purchasing
+  label: Spending money
   order: 3
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Purchasing & Expenses - Datum Employee Handbook"
+  title: "How employees can spend money at Datum"
   description: "Our philosophy on company spending. We trust you to spend responsibly. Read the Datum purchasing guidelines for travel, procurement, and reimbursements."
 ---
 

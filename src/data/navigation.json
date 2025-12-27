@@ -36,6 +36,7 @@
             { "icon": "default", "text": "About", "href": "/about/" },
             { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
             { "icon": "book-image", "text": "Blog", "href": "/blog/" },
+            { "icon": "backpack", "text": "Careers", "href": "/careers/" },
             { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" }
           ]
         }
@@ -74,8 +75,8 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
-        { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Blog", "href": "/blog/" },
+        { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Get In Touch", "href": "/contact/" },
         { "text": "Design Assets", "href": "/brand/" }
       ]

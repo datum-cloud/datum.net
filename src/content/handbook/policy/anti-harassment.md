@@ -1,12 +1,12 @@
 ---
 title: "Anti-harassment and discrimination policy"
 sidebar:
-  label: Anti-harassment policy
-  order: 4
+  label: Anti-harassment and discrimination policy
+  order: 0
 updatedDate: Dec 26, 2025
 authors: jacob
 meta:
-  title: "Anti-Harassment & Discrimination Policy at Datum"
+  title: "Anti-Harassment and discrimination policy at Datum"
   description: "Datum has zero tolerance for harassment. Read our policy on prohibited conduct, including discrimination based on race, gender, and sexual orientation."
 ---
 

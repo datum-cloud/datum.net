@@ -8,6 +8,7 @@ import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
+import compressor from 'astro-compressor';
 
 import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
@@ -186,6 +187,10 @@ export default defineConfig({
       JavaScript: true,
       Image: true,
       SVG: true,
+    }),
+    compressor({
+      gzip: true,
+      brotli: true,
     }),
   ],
   vite: {

@@ -2,7 +2,7 @@
 title: "Compliance"
 sidebar:
   label: Overview
-  order: -1
+  order: -2
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

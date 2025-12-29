@@ -62,7 +62,8 @@
     "reading-time": "^1.5.0",
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.18",
-    "zod": "^4.2.1"
+    "zod": "^4.2.1",
+    "astro-compressor": "^1.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",

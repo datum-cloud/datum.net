@@ -8,7 +8,7 @@ meta:
   description: "Guide to managing Domains in Datum. Learn to verify ownership, configure authoritative DNS services, and link domains to your cloud network infrastructure."
 ---
 
-Users gain visibility to all of their domains when added to Datum, regardless of where they are registered or where DNS is hosted. In addition, domains that are also verified become available as “domain resources” which can be enabled with Datum services such as Proxy and DNS Hosting. Domains can be managed via the customer portal as well as our programmatic interfaces (MCP and datumctl).
+Users gain visibility to all of their domains when added to Datum, regardless of where they are registered or where DNS is hosted. In addition, domains that are also verified become available as “domain resources” which can be enabled with Datum services such as Proxy and DNS Hosting. Domains can be managed via the customer portal as well as our programmatic interfaces (MCP and datumctl). In some cases, such as when creating DNS zones, Datum will automatically create and continuously ensure a corresponding Domain resource if one does not already exist, since Domains are a dependency for certain platform services.
 
 1. Add Single Domain - Add a domain and optionally a useful description.
 2. Bulk Add – Add domains in bulk via the portal (copy/paste list) or API.

@@ -14,7 +14,7 @@ We believe that most people devote their time, energy, families, reputations and
 
 ## Values
 Who we are:
-* We are connectors — of people, businesses, apps and networks
+* We are connectors — of people, businesses, apps and networks. ABCD!
 * We are operators at heart 
 * We are passionate about working in the open
 

@@ -8,6 +8,7 @@ import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
+import compressor from 'astro-compressor';
 
 import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
@@ -25,7 +26,7 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'static',
   adapter: node({
-    mode: 'standalone',
+    mode: 'middleware', // Changed from 'standalone' to allow custom server with compression
   }),
   markdown: {
     remarkPlugins: [remarkModifiedTime],
@@ -187,6 +188,10 @@ export default defineConfig({
       Image: true,
       SVG: true,
     }),
+    compressor({
+      gzip: true,
+      brotli: true,
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -200,44 +205,60 @@ export default defineConfig({
   experimental: {},
   prefetch: true,
   redirects: {
-    '/product': '/features/',
+    '/product': { status: 302, destination: '/features/' },
     '/feature/': '/features/',
     '/product/overview/overview': '/features/',
-    '/team': '/about/',
-    '/jobs/': '/about/',
-    '/docs/overview/': '/docs/',
-    '/docs/roadmap': '/resources/roadmap/',
-    '/docs/tutorials/gateway': '/docs/tutorials/httpproxy/',
-    '/docs/get-started/datum-concepts/': '/docs/quickstart/datum-concepts/',
-    '/docs/tasks/create-project/': '/docs/platform/projects/',
-    '/docs/tasks/developer-guide': '/docs/developer-guide/',
+    '/team': { status: 302, destination: '/about/' },
+    '/jobs/': { status: 302, destination: '/careers/' },
+    '/docs/overview/': { status: 302, destination: '/docs/' },
+    '/docs/roadmap': { status: 302, destination: '/resources/roadmap/' },
+    '/docs/tutorials/gateway': { status: 302, destination: '/docs/tutorials/httpproxy/' },
+    '/docs/get-started/datum-concepts/': {
+      status: 302,
+      destination: '/docs/quickstart/datum-concepts/',
+    },
+    '/docs/tasks/create-project/': { status: 302, destination: '/docs/platform/projects/' },
+    '/docs/tasks/developer-guide': { status: 302, destination: '/docs/developer-guide/' },
     '/docs/task/tools/': '/docs/',
     '/docs/tutorials/grafana/': '/docs/workflows/grafana-cloud/',
     '/docs/tutorials/httpproxy/': '/docs/runtime/proxy/',
-    '/docs/get-started/': '/docs/quickstart/',
+    '/docs/get-started/': { status: 302, destination: '/docs/quickstart/' },
     '/docs/contribution-guidelines/': '/docs/',
     '/docs/guides/using-byoc/': '/docs/',
     '/handbook/engineering/rfc/': '/handbook/technical/',
-    '/handbook/company/what-we-believe/': '/handbook/about/purpose/',
-    '/handbook/company/who-are-we-building-for/': '/handbook/product/customers/',
-    '/handbook/people/travel-policy/': '/handbook/culture/traveling/',
-    '/handbook/company/where-are-we-now/': '/handbook/about/strategy/',
-    '/handbook/go-to-market/keep-momentum/': '/handbook/about/strategy/',
-    '/handbook/go-to-market/approach-gtm/': '/handbook/about/model/',
+    '/handbook/company/what-we-believe/': { status: 302, destination: '/handbook/about/purpose/' },
+    '/handbook/culture/anti-harassment-and-discrimination-policy/': {
+      status: 302,
+      destination: '/handbook/policy/anti-harassment/',
+    },
+    '/handbook/company/who-are-we-building-for/': {
+      status: 302,
+      destination: '/handbook/product/customers/',
+    },
+    '/handbook/people/travel-policy/': { status: 302, destination: '/handbook/culture/traveling/' },
+    '/handbook/company/where-are-we-now/': {
+      status: 302,
+      destination: '/handbook/about/strategy/',
+    },
+    '/handbook/go-to-market/keep-momentum/': {
+      status: 302,
+      destination: '/handbook/about/strategy/',
+    },
+    '/handbook/go-to-market/approach-gtm/': { status: 302, destination: '/handbook/about/model/' },
     '/netzero/overview/overview': '/',
     '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
     '/blog/internet-superpowers-for-every-builder/)_/':
     '/blog/internet-superpowers-for-every-builder/',
-    '/legal/': '/legal/terms/',
-    '/privacy-policy/': '/legal/privacy/',
-    '/privacy/': '/legal/privacy/',
-    '/terms-of-service/': '/legal/terms/',
+    '/legal/': { status: 302, destination: '/legal/terms/' },
+    '/privacy-policy/': { status: 302, destination: '/legal/privacy/' },
+    '/privacy/': { status: 302, destination: '/legal/privacy/' },
+    '/terms-of-service/': { status: 302, destination: '/legal/terms/' },
     '/index.asp': '/',
     '/logon.html': 'https://auth.datum.net/ui/v2/login/loginname',
     '/public-slack/': 'https://link.datum.net/discord',
-    '/handbook/company/': '/handbook/about/',
-    '/handbook/engineering/': '/handbook/technical/',
-    '/handbook/go-to-market/': '/handbook/about/',
-    '/handbook/people/': '/handbook/culture/',
+    '/handbook/company/': { status: 302, destination: '/handbook/about/' },
+    '/handbook/engineering/': { status: 302, destination: '/handbook/technical/' },
+    '/handbook/go-to-market/': { status: 302, destination: '/handbook/about/' },
+    '/handbook/people/': { status: 302, destination: '/handbook/culture/' },
   },
 });

@@ -8,7 +8,7 @@ meta:
   description: "Manage authoritative DNS with Datum. Built on PowerDNS and HickoryDNS, our globally distributed service offers high-performance, programmable DNS records."
 ---
 
-Fast, reliable authoritative DNS hosting for your domains. Manage DNS zones through the portal as well as API’s. Current features focus on DNS record management, zone file operations, and integration with other Datum services (such as Proxies).
+Fast, reliable authoritative DNS hosting for your domains. Manage DNS zones through the portal as well as API’s. Current features focus on DNS record management, zone file operations, and integration with other Datum services (such as Proxies). When a DNS zone is created, Datum will automatically create and ensure a corresponding Domain resource if one does not already exist.
 
 1. Zone Management – Add DNS zones for any domain and subdomain, whether they are hosted by Datum or externally, for broad visibility across all of your DNS zones.
 2. Global Authoritative DNS – Datum serves authoritative DNS via a globally distributed anycast system for performance and redundancy. Any domain or subdomain can use Datum’s authoritative DNS by setting up the domain in Datum Cloud ([cloud.datum.net](http://cloud.datum.net) or via _datumctl_) and then adjusting your domain to point to Datum’s nameservers:

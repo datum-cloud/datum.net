@@ -50,4 +50,5 @@ spec:
       backendRefs:
         - name: datum-net
           kind: Service
+          group: ''
           port: 4321

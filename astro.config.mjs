@@ -26,7 +26,7 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'static',
   adapter: node({
-    mode: 'middleware', // Changed from 'standalone' to allow custom server with compression
+    mode: 'standalone',
   }),
   markdown: {
     remarkPlugins: [remarkModifiedTime],

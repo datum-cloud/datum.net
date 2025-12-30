@@ -24,7 +24,6 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 FROM node:24.12.0-alpine3.22 AS production
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/server.mjs ./server.mjs
 COPY --from=build /app/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --ignore-scripts
 COPY --from=build /app/src/pages ./src/pages
@@ -33,4 +32,4 @@ RUN chmod -R 755 src/pages
 ENV HOST=0.0.0.0
 ENV PORT=4321
 EXPOSE 4321
-CMD ["node", "./server.mjs"]
+CMD ["node", "./dist/server/entry.mjs"]

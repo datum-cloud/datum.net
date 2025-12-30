@@ -46,7 +46,7 @@ const CONTENT_TYPES = {
 
 const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
 
-// Static file server for images, fonts, and other assets
+// Static file server for pre-rendered pages and assets
 const staticServer = sirv(CLIENT_DIR, {
   maxAge: 31536000,
   immutable: true,
@@ -54,7 +54,8 @@ const staticServer = sirv(CLIENT_DIR, {
   brotli: true,
   etag: true,
   dotfiles: false,
-  extensions: [],
+  extensions: ['html'], // Auto-append .html for clean URLs
+  single: false, // Don't serve index.html for all routes (SPA mode)
   setHeaders: (res, pathname) => {
     if (pathname.includes('/_astro/')) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
@@ -144,6 +145,15 @@ function serveCompressed(req, res, next) {
 const server = createServer((req, res) => {
   if (process.env.NODE_ENV !== 'production') {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  }
+
+  const url = req.url.split('?')[0];
+
+  // Health check endpoints for Kubernetes probes
+  if (url === '/healthz' || url === '/livez' || url === '/readyz') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('OK');
+    return;
   }
 
   // Middleware order: compressed files → static files → Astro handler

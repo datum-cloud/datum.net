@@ -1,5 +1,4 @@
 ---
-fmContentType: docs
 title: "Zones and regions"
 sidebar:
   order: 2
@@ -25,8 +24,8 @@ For example, here is how we describe the first region and availability zone in t
 Example: us-east-1a
 ```
 
-Regions and AZs are defined by distance and policy boundaries. 
-* When Points of Presence in the same country are separated by more than about 5 milliseconds round-trip time (RTT), a new Region is created. 
+Regions and AZs are defined by distance and policy boundaries.
+* When Points of Presence in the same country are separated by more than about 5 milliseconds round-trip time (RTT), a new Region is created.
 * If multiple PoPs exist in the same metro but operate independently (for example, separate network clusters or facilities), they are modeled as separate AZs. Increment the Count value to the next letter.
 * If PoPs are within about 5 milliseconds RTT and part of the same operational domain, they remain in the same Region. Example: us-east-1a, us-east-1b, us-east-1c.
 

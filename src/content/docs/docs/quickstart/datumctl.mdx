@@ -1,5 +1,4 @@
 ---
-fmContentType: docs
 title: "datumctl"
 description: Set up tools to work with Datum.
 sidebar:
@@ -11,10 +10,10 @@ meta:
 
 datumctl is our CLI for managing Datum Cloud resources via the command line. It provides authorization, API management, and has the ability to manage .kubeconfig files so that you can leverage kubectl for day to day interaction with Datum Cloud.
 
-Let’s assume that you have a working set of Kubernetes command line tools installed on your system, especially \`kubectl\` (which is used to apply resources to the cluster and to inspect the status of work as it happens). In addition, we’ll note that if you want or need to build our tooling from scratch you’ll want to have a Go compiler available. 
+Let’s assume that you have a working set of Kubernetes command line tools installed on your system, especially \`kubectl\` (which is used to apply resources to the cluster and to inspect the status of work as it happens). In addition, we’ll note that if you want or need to build our tooling from scratch you’ll want to have a Go compiler available.
 
 ## Installing datumctl
-datumctl is straightforward to install from prebuilt binaries on many systems, and since it’s open source, you can build it from scratch if that suits your needs. 
+datumctl is straightforward to install from prebuilt binaries on many systems, and since it’s open source, you can build it from scratch if that suits your needs.
 
 ### Mac with Homebrew
 
@@ -39,7 +38,7 @@ mv ./datumctl ~/.local/bin/datumctl
 
 ### Go with Go [v1.XX](http://v1.xx)+
 
-You must have Go version [1.XX](http://1.xx) or better for this to work as expected. 
+You must have Go version [1.XX](http://1.xx) or better for this to work as expected.
 ```
 go install go.datum.net/datumctl@latest
 # Ensure that $GOPATH/bin is in your PATH

@@ -160,6 +160,11 @@ export default defineConfig({
           collapsed: true,
         },
         {
+          label: 'Metrics',
+          autogenerate: { directory: 'docs/metrics' },
+          collapsed: true,
+        },
+        {
           label: 'Glossary',
           link: 'docs/glossary/',
         },

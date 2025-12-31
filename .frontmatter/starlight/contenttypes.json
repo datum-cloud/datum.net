@@ -426,7 +426,7 @@
       ]
     },
     {
-      "name": "blog",
+      "name": "blogPost",
       "pageBundle": false,
       "previewPath": "blog",
       "filePrefix": null,
@@ -440,11 +440,6 @@
         {
           "title": "Slug",
           "name": "slug",
-          "type": "string"
-        },
-        {
-          "title": "Subtitle",
-          "name": "subtitle",
           "type": "string"
         },
         {
@@ -482,11 +477,6 @@
           "title": "Draft",
           "name": "draft",
           "type": "boolean"
-        },
-        {
-          "title": "Updated Date",
-          "name": "updatedDate",
-          "type": "string"
         },
         {
           "title": "Meta (SEO)",
@@ -634,7 +624,7 @@
       ]
     },
     {
-      "name": "handbook",
+      "name": "handbookPost",
       "pageBundle": false,
       "previewPath": "handbook",
       "filePrefix": null,
@@ -1123,7 +1113,7 @@
       ]
     },
     {
-      "name": "huddles",
+      "name": "huddlePost",
       "pageBundle": false,
       "previewPath": "community-huddle",
       "filePrefix": null,
@@ -1792,6 +1782,56 @@
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "changelog",
+      "pageBundle": false,
+      "previewPath": "changelog",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}"
+        }
+      ]
+    },
+    {
+      "name": "faqPost",
+      "pageBundle": false,
+      "previewPath": null,
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Question",
+          "name": "question",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Order",
+          "name": "order",
+          "type": "number"
+        },
+        {
+          "title": "Category",
+          "name": "category",
+          "type": "string"
         }
       ]
     }

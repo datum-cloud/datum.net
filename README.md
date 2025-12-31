@@ -205,7 +205,11 @@ The setup uses a multi-stage Dockerfile:
 
 ### Development with local kubernetes
 
-1. Install [Minikube](https://minikube.sigs.k8s.io/docs/).
+1. Install [Minikube](https://minikube.sigs.k8s.io/docs/) and start minikube
+
+```
+minikube start
+```
 
 2. Create secret.yaml file separated with this source. Value:
 
@@ -224,25 +228,33 @@ data:
   APP_PRIVATE_KEY:
 ```
 
-Then apply with command:
+3. Then apply with command:
 
-```bash
-kubectl apply -f <this_secret_file_path>
+Create namespace
+
+```
+kubectl create namespace datum-net
 ```
 
-3. Apply the kustomize config file
+Apply secret
+
+```bash
+kubectl apply -f config/dev/secret.yaml
+```
+
+Apply the kustomize config file
 
 ```bash
 kubectl apply -k config/base
 ```
 
-4. Apply the kustomize postgres config file
+Apply the kustomize postgres config file
 
 ```bash
 kubectl apply -k config/dev/postgres-config.yaml
 ```
 
-5. Install postgresql helm. example from bitnami source
+4. Install postgresql helm. example from bitnami source
 
 ```bash
 helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://registry-1.docker.io/bitnamicharts/postgresql

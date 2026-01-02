@@ -150,11 +150,6 @@ export default defineConfig({
           collapsed: true,
         },
         {
-          label: 'Workflows',
-          autogenerate: { directory: 'docs/workflows' },
-          collapsed: true,
-        },
-        {
           label: 'Assets',
           autogenerate: { directory: 'docs/assets' },
           collapsed: true,
@@ -230,6 +225,8 @@ export default defineConfig({
     '/docs/get-started/': { status: 302, destination: '/docs/quickstart/' },
     '/docs/contribution-guidelines/': '/docs/',
     '/docs/guides/using-byoc/': '/docs/',
+    '/docs/workflows/': { status: 302, destination: '/docs/' },
+    '/docs/workflows/1-click-waf/': { status: 302, destination: '/docs/runtime/proxy/' },
     '/handbook/engineering/rfc/': '/handbook/technical/',
     '/handbook/company/what-we-believe/': { status: 302, destination: '/handbook/about/purpose/' },
     '/handbook/culture/anti-harassment-and-discrimination-policy/': {

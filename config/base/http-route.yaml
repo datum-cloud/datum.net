@@ -46,7 +46,7 @@ spec:
                 value: '0'
               # Content-Security-Policy: Prevent XSS, clickjacking, and code injection
               - name: Content-Security-Policy
-                value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net hyperping.com *.usefathom.com edge.marker.io marker.io *.datum.net *.helpscout.net *.cloudfront.net *.ashbyhq.com; style-src 'self' 'unsafe-inline' *.datum.net *.marker.io *.helpscout.net; img-src 'self' data: blob: *.datum.net cdn.jsdelivr.net *.usefathom.com *.marker.io *.helpscout.net; font-src 'self' data: *.datum.net cdn.jsdelivr.net *.usefathom.com *.marker.io *.helpscout.net; connect-src 'self' https://www.datumstatus.net https://api.github.com https://*.datum.net https://*.marker.io https://*.helpscout.net https://*.cloudfront.net https://*.ashbyhq.com; manifest-src 'self'; frame-src 'self' *.datum.net *.marker.io *.helpscout.net *.ashbyhq.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+                value: "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-src 'self' *.helpscout.net *.ashbyhq.com;"
       backendRefs:
         - name: datum-net
           kind: Service

@@ -1,4 +1,4 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: datum-net
@@ -13,6 +13,37 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # X-Content-Type-Options: Prevent MIME sniffing
+              - name: X-Content-Type-Options
+                value: nosniff
+              # Referrer-Policy: Control referrer information
+              - name: Referrer-Policy
+                value: strict-origin-when-cross-origin
+              # X-Frame-Options: Prevent clickjacking
+              - name: X-Frame-Options
+                value: DENY
+              # Strict-Transport-Security: Force HTTPS
+              - name: Strict-Transport-Security
+                value: max-age=63072000; includeSubDomains; preload
+              # Cross-Origin-Opener-Policy: Isolate browsing context
+              - name: Cross-Origin-Opener-Policy
+                value: same-origin
+              # Cross-Origin-Resource-Policy: Control resource loading
+              - name: Cross-Origin-Resource-Policy
+                value: same-site
+              # Cross-Origin-Embedder-Policy: Allow cross-origin resources
+              - name: Cross-Origin-Embedder-Policy
+                value: credentialless
+              # X-XSS-Protection: Disable legacy XSS filter (CSP preferred)
+              - name: X-XSS-Protection
+                value: '0'
+              # Content-Security-Policy: Prevent XSS, clickjacking, and code injection
+              - name: Content-Security-Policy
+                value: "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-src 'self' *.helpscout.net *.ashbyhq.com; manifest-src 'self' *.google.com;"
       backendRefs:
         - name: datum-net
           kind: Service

@@ -1,0 +1,23 @@
+---
+title: "Change Management"
+sidebar:
+  label: Change Management
+  order: 3
+updatedDate: Jan 5, 2026
+authors: drew
+meta:
+  title: "Scheduling Change at Datum"
+  description: "Systems, and their operators, exist in time and space. Production changes are calendar events, not chat messages."
+---
+
+Infrastructure, and its human operators, exists in time and space. Many outages are the result of simply changing a running system, either because the change had unintended effects, or there was a mistake in the planning and execution. Conversely, when a change is performed flawlessly, it is often unseen and unknown.
+
+Therefore, production changes are **calendar events**. Though we design our systems for idempotency and resiliency, that's not always possible to achieve, or there is a bug which breaks that ideal. The knowledge that a change is upcoming is an organizational power tool. It eliminates the first question everyone asks when something breaks: "What changed?" It also greatly shortens the debug cycle, because the collectively organizational intuition has been passively heightened prior to the change and is able to draw connections.
+
+It doesn't hurt to also announce a change in chat, but a change to our infrastructure requires, at minimum, the same level of coordination we would put into a meeting. 
+
+The process looks like:
+1. Work already captured in a **GitHub issue**. No change originates in a vacuum. There should be a trail of activity and planning leading up to a change, even if it happens over minutes with one engineer. A single line of configuration can affect thousands of customers.
+2. Create an **event** in the `Datum Engineering` calendar. Link to the relevant GitHub issue from step 1, and invite any active participants or critical stakeholders as named attendees. Optionally include a Zoom link depending on the blast radius of the change. Folks who don't play an active role should be subscribed to the calendar for awareness.
+3. **Keep the event updated** with changes to the schedule. Any changes to the *plan* for the work just happens in the GitHub issue, but scope and timing should be reflected in the event.
+

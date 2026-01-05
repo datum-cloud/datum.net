@@ -261,6 +261,6 @@ export default defineConfig({
     '/handbook/company/': { status: 302, destination: '/handbook/about/' },
     '/handbook/engineering/': { status: 302, destination: '/handbook/technical/' },
     '/handbook/go-to-market/': { status: 302, destination: '/handbook/about/' },
-    '/handbook/people/': { status: 302, destination: '/handbook/culture/' },
+    '/handbook/culture/rythms/': '/handbook/culture/rhythms/',
   },
 });

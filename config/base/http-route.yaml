@@ -38,15 +38,12 @@ spec:
               # Cross-Origin-Embedder-Policy: Allow cross-origin resources
               - name: Cross-Origin-Embedder-Policy
                 value: credentialless
-              # Permissions-Policy: Disable unnecessary browser features
-              - name: Permissions-Policy
-                value: geolocation=(), camera=(), microphone=()
               # X-XSS-Protection: Disable legacy XSS filter (CSP preferred)
               - name: X-XSS-Protection
                 value: '0'
               # Content-Security-Policy: Prevent XSS, clickjacking, and code injection
               - name: Content-Security-Policy
-                value: "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-src 'self' *.helpscout.net *.ashbyhq.com;"
+                value: "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-src 'self' *.helpscout.net *.ashbyhq.com; manifest-src 'self' *.google.com;"
       backendRefs:
         - name: datum-net
           kind: Service

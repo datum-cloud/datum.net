@@ -1,0 +1,28 @@
+---
+title: "Metrics Overview"
+sidebar:
+  order: 1
+meta:
+  title: "Cloud Security & Observability - Datum Metrics"
+  description: "Monitor and observe your workloads. Learn how to export OpenTelemetry metrics from Datum to Grafana Cloud."
+---
+
+Datum collects OpenTelemetry metrics from your Datum infrastructure and services, providing visibility into the performance and health of your workloads.
+
+## Exporting Metrics
+
+Currently, Datum supports exporting metrics to **Grafana Cloud**. Custom export policies for other observability platforms are coming soon.
+
+ExportPolicies allow you to configure how metrics are exported from the Datum platform to Grafana Cloud. Each ExportPolicy defines:
+
+- **Sources**: Select metrics using MetricSQL queries to filter which telemetry data to export
+- **Sinks**: Configure destination endpoints where metrics should be sent (Prometheus remote write endpoints for Grafana Cloud)
+
+## Getting Started
+
+See our [Export to Grafana Cloud](/docs/metrics/grafana-cloud/) guide for a step-by-step tutorial on setting up metric export to Grafana Cloud. The guide walks you through:
+
+1. Accessing your Grafana Cloud instance
+2. Generating Prometheus remote write configuration
+3. Creating the necessary Datum Secret and ExportPolicy resources
+4. Verifying your metrics are being exported successfully

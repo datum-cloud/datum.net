@@ -250,7 +250,7 @@ export default defineConfig({
     '/netzero/overview/overview': '/',
     '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
     '/blog/internet-superpowers-for-every-builder/)_/':
-      '/blog/internet-superpowers-for-every-builder/',
+    '/blog/internet-superpowers-for-every-builder/',
     '/legal/': { status: 302, destination: '/legal/terms/' },
     '/privacy-policy/': { status: 302, destination: '/legal/privacy/' },
     '/privacy/': { status: 302, destination: '/legal/privacy/' },

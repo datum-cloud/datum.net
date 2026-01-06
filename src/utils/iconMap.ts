@@ -93,7 +93,7 @@ import {
   Webhook,
   X,
   Zap,
-} from 'lucide-astro';
+} from '@lucide/astro';
 
 // Icon mapping object
 const iconMap = {

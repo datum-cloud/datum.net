@@ -67,7 +67,7 @@
     "sirv": "^3.0.2",
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.18",
-    "zod": "^4.2.1"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
@@ -76,8 +76,8 @@
     "@types/alpinejs__collapse": "^3.13.4",
     "@types/node": "^24.10.4",
     "@types/pg": "^8.16.0",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.5.0",
@@ -95,7 +95,7 @@
     "typescript": "^5.9.3"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "4.54.0"
+    "@rollup/rollup-linux-arm64-gnu": "4.55.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [

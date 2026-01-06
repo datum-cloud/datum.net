@@ -32,7 +32,7 @@
     },
     {
       "title": "Huddle",
-      "path": "[[workspace]]/src/content/huddle",
+      "path": "[[workspace]]/src/content/huddles",
       "previewPath": "community-huddle",
       "contentTypes": ["huddlePost"]
     },

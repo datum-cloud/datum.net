@@ -50,7 +50,7 @@ export PATH=$PATH:$(go env GOPATH)/bin
 Install datumctl on Windows using PowerShell
 
 ```shell
-Invoke-WebRequest -Uri "https://github.com/datum-cloud/datumctl/releases/latest/download/datumctl_Windows_x86_64.zip" - OutFile "datumctl.zip"
+Invoke-WebRequest -Uri "https://github.com/datum-cloud/datumctl/releases/latest/download/datumctl_Windows_x86_64.zip" -OutFile "datumctl.zip"
 Expand-Archive -Path "datumctl.zip" -DestinationPath "datumctl"
 ```
 

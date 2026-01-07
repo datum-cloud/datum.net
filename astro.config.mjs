@@ -37,9 +37,9 @@ export default defineConfig({
   integrations: [
     announcement({
       show: true,
-      label: "We've Launched!",
-      text: 'Introducing our company, $13.6M in funding, and core features',
-      href: 'https://www.datum.net/blog/internet-superpowers-for-every-builder/',
+      label: "We're hiring!",
+      text: "We're actively building our team, join us",
+      href: '/careers/',
       icon: {
         name: 'arrow-right',
         size: 'sm',
@@ -250,7 +250,7 @@ export default defineConfig({
     '/netzero/overview/overview': '/',
     '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
     '/blog/internet-superpowers-for-every-builder/)_/':
-    '/blog/internet-superpowers-for-every-builder/',
+      '/blog/internet-superpowers-for-every-builder/',
     '/legal/': { status: 302, destination: '/legal/terms/' },
     '/privacy-policy/': { status: 302, destination: '/legal/privacy/' },
     '/privacy/': { status: 302, destination: '/legal/privacy/' },

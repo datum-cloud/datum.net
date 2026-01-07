@@ -32,9 +32,6 @@ spec:
               # Cross-Origin-Opener-Policy: Isolate browsing context
               - name: Cross-Origin-Opener-Policy
                 value: same-origin
-              # X-XSS-Protection: Disable legacy XSS filter (CSP preferred)
-              - name: X-XSS-Protection
-                value: '0'
               # Content-Security-Policy: Prevent XSS, clickjacking, and code injection
               - name: Content-Security-Policy
                 value: "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;"

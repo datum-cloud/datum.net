@@ -1,57 +1,13 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
-
-// Function to extract the frontmatter as text
-const extractFrontmatter = (content: string | undefined): string => {
-  if (!content) return '';
-
-  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-  return frontmatterMatch ? frontmatterMatch[1] : '';
-};
-
-// Function to clean content while keeping relevant information
-const cleanContent = (content: string | undefined): string => {
-  if (!content) return 'No content available';
-
-  // Extract the frontmatter as text
-  const frontmatterText = extractFrontmatter(content);
-
-  // Remove the frontmatter delimiters
-  let cleanedContent = content.replace(/^---\n[\s\S]*?\n---/, '');
-
-  // Clean up MDX-specific imports
-  cleanedContent = cleanedContent.replace(/import\s+.*\s+from\s+['"].*['"];?\s*/g, '');
-
-  // Remove MDX component declarations
-  cleanedContent = cleanedContent.replace(/<\w+\s+.*?\/>/g, '');
-
-  // Clean up multiple newlines
-  cleanedContent = cleanedContent.replace(/\n\s*\n\s*\n/g, '\n\n');
-
-  // Return the frontmatter as text, followed by the cleaned content
-  return frontmatterText + '\n\n' + cleanedContent.trim();
-};
-
-// Extract description from a page or post for the concise version
-const extractDescription = (content: string | undefined, fallback: string = ''): string => {
-  if (!content) return fallback;
-  const cleaned = cleanContent(content);
-  const firstParagraph = cleaned.match(/\n\n(.*?)\n\n/);
-  return firstParagraph ? firstParagraph[1].trim().substring(0, 150) + '...' : fallback;
-};
-
-// Format date safely
-const formatDate = (date: Date | string | undefined): string => {
-  if (!date) return 'No date available';
-
-  try {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return dateObj.toISOString().split('T')[0]; // YYYY-MM-DD format
-  } catch {
-    return 'Invalid date';
-  }
-};
+import {
+  extractDescription,
+  cleanContent,
+  formatDate,
+  buildUrl,
+  buildDocsUrl,
+} from '@utils/llmsUtils';
 
 export const GET: APIRoute = async () => {
   try {
@@ -72,15 +28,7 @@ export const GET: APIRoute = async () => {
     llmsContent += `## Pages\n\n`;
 
     for (const page of sortedPages) {
-      // Add page metadata
-      let pageUrl: string;
-      if (page.id === 'index') {
-        pageUrl = `${siteUrl}/`;
-      } else if (page.id.endsWith('/index')) {
-        pageUrl = `${siteUrl}/${page.id.replace('/index', '')}/`;
-      } else {
-        pageUrl = `${siteUrl}/${page.id}/`;
-      }
+      const pageUrl = buildUrl(page.id);
       llmsContent += `- [${page.data.title || page.id}](${pageUrl})\n`;
     }
 
@@ -96,14 +44,7 @@ export const GET: APIRoute = async () => {
     llmsContent += `\n## Blog\n\n`;
 
     for (const post of sortedPosts) {
-      let postUrl: string;
-      if (post.id === 'index') {
-        postUrl = `${siteUrl}/blog/`;
-      } else if (post.id.endsWith('/index')) {
-        postUrl = `${siteUrl}/blog/${post.id.replace('/index', '')}/`;
-      } else {
-        postUrl = `${siteUrl}/blog/${post.id}/`;
-      }
+      const postUrl = buildUrl(post.id, 'blog');
       llmsContent += `- [${post.data.title || post.id}](${postUrl})\n`;
     }
 
@@ -116,14 +57,7 @@ export const GET: APIRoute = async () => {
       for (const doc of docs) {
         const description =
           doc.data.description || extractDescription(doc.body, 'No description available');
-        let docUrl: string;
-        if (doc.id === 'index') {
-          docUrl = `${siteUrl}/`;
-        } else if (doc.id.endsWith('/index')) {
-          docUrl = `${siteUrl}/${doc.id.replace('/index', '')}/`;
-        } else {
-          docUrl = `${siteUrl}/${doc.id}/`;
-        }
+        const docUrl = buildDocsUrl(doc.id);
         llmsContent += `- [${doc.data.title}](${docUrl}) - ${description}\n`;
       }
     }
@@ -142,15 +76,7 @@ export const GET: APIRoute = async () => {
 
     for (const page of sortedPages) {
       llmsContent += `### ${page.data.title || page.id}\n\n`;
-      let pageUrl: string;
-      if (page.id === 'index') {
-        pageUrl = `${siteUrl}/`;
-      } else if (page.id.endsWith('/index')) {
-        pageUrl = `${siteUrl}/${page.id.replace('/index', '')}/`;
-      } else {
-        pageUrl = `${siteUrl}/${page.id}/`;
-      }
-      llmsContent += `URL: ${pageUrl}\n\n`;
+      llmsContent += `URL: ${buildUrl(page.id)}\n\n`;
 
       // Add description if available
       if (page.data.description) {
@@ -171,15 +97,7 @@ export const GET: APIRoute = async () => {
 
     for (const post of sortedPosts) {
       llmsContent += `### ${post.data.title || post.id}\n\n`;
-      let postUrl: string;
-      if (post.id === 'index') {
-        postUrl = `${siteUrl}/blog/`;
-      } else if (post.id.endsWith('/index')) {
-        postUrl = `${siteUrl}/blog/${post.id.replace('/index', '')}/`;
-      } else {
-        postUrl = `${siteUrl}/blog/${post.id}/`;
-      }
-      llmsContent += `URL: ${postUrl}\n\n`;
+      llmsContent += `URL: ${buildUrl(post.id, 'blog')}\n\n`;
 
       // Add date if available
       if (post.data.date) {
@@ -214,15 +132,7 @@ export const GET: APIRoute = async () => {
       llmsContent += `## Docs\n\n`;
       for (const doc of docs) {
         llmsContent += `### ${doc.data.title || doc.id}\n\n`;
-        let docUrl: string;
-        if (doc.id === 'index') {
-          docUrl = `${siteUrl}/`;
-        } else if (doc.id.endsWith('/index')) {
-          docUrl = `${siteUrl}/${doc.id.replace('/index', '')}/`;
-        } else {
-          docUrl = `${siteUrl}/${doc.id}/`;
-        }
-        llmsContent += `URL: ${docUrl}\n\n`;
+        llmsContent += `URL: ${buildDocsUrl(doc.id)}\n\n`;
 
         // Add description if available
         if (doc.data.description) {
@@ -270,15 +180,7 @@ export const GET: APIRoute = async () => {
 
       for (const handbook of sortedHandbooks) {
         llmsContent += `#### ${handbook.data.title}\n\n`;
-        let handbookUrl: string;
-        if (handbook.id === 'index') {
-          handbookUrl = `${siteUrl}/handbook/`;
-        } else if (handbook.id.endsWith('/index')) {
-          handbookUrl = `${siteUrl}/handbook/${handbook.id.replace('/index', '')}/`;
-        } else {
-          handbookUrl = `${siteUrl}/handbook/${handbook.id}/`;
-        }
-        llmsContent += `URL: ${handbookUrl}\n\n`;
+        llmsContent += `URL: ${buildUrl(handbook.id, 'handbook')}\n\n`;
 
         // Add description if available
         if (handbook.data.description) {

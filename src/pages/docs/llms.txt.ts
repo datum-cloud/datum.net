@@ -44,10 +44,11 @@ export const GET: APIRoute = async () => {
       const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
       llmsContent += `- [${categoryName}](#${category})\n`;
       for (const doc of docCategories[category]) {
-        const description =
-          doc.data.description || extractDescription(doc.body, 'No description available');
+        const description = doc.data.description || extractDescription(doc.body, '');
         const docUrl = buildDocsUrl(doc.id);
-        llmsContent += `  - [${doc.data.title}](${docUrl}) - ${description}\n`;
+        llmsContent += description
+          ? `  - [${doc.data.title}](${docUrl}) - ${description}\n`
+          : `  - [${doc.data.title}](${docUrl})\n`;
       }
     }
 

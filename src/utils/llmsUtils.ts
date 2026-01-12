@@ -36,7 +36,7 @@ export const extractDescription = (content: string | undefined, fallback: string
   if (!content) return fallback;
   const cleaned = cleanContent(content);
   const firstParagraph = cleaned.match(/\n\n(.*?)\n\n/);
-  return firstParagraph ? firstParagraph[1].trim().substring(0, 150) + '...' : fallback;
+  return firstParagraph ? firstParagraph[1].trim() : fallback;
 };
 
 // Format date safely
@@ -69,11 +69,14 @@ export const buildUrl = (id: string, basePath: string = ''): string => {
 export const buildDocsUrl = (id: string): string => {
   const siteUrl = site;
 
-  if (id === 'index') {
+  // Strip leading 'docs/' if present (content lives in docs/docs/)
+  const cleanId = id.startsWith('docs/') ? id.slice(5) : id;
+
+  if (cleanId === 'index') {
     return `${siteUrl}/docs/`;
-  } else if (id.endsWith('/index')) {
-    return `${siteUrl}/docs/${id.replace('/index', '')}/`;
+  } else if (cleanId.endsWith('/index')) {
+    return `${siteUrl}/docs/${cleanId.replace('/index', '')}/`;
   } else {
-    return `${siteUrl}/docs/${id}/`;
+    return `${siteUrl}/docs/${cleanId}/`;
   }
 };

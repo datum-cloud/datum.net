@@ -12,8 +12,7 @@ export const GET: APIRoute = async () => {
     llmsContent += `> This file is optimized for LLMs to understand our documentation.\n\n`;
     llmsContent += `## About\n\n`;
     llmsContent += `Datum provides enterprise-grade cloud network solutions. This document contains comprehensive documentation for developers and operators.\n\n`;
-    llmsContent += `For the full site content including blog posts and handbook, see: ${siteUrl}/llms.txt\n`;
-    llmsContent += `For full content with all text: ${siteUrl}/llms-full.txt\n\n`;
+    llmsContent += `For the full site content including blog posts and handbook, see: ${siteUrl}/llms.txt\n\n`;
 
     // Get all Docs entries
     const docs = await getCollection('docs');

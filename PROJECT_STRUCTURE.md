@@ -221,7 +221,6 @@ Page components and routing (file-based routing):
 - `resources/` - Resource pages
 - `waitlist.astro` - Waitlist page
 - `llms.txt.ts` - LLMs.txt endpoint
-- `llms-full.txt.ts` - Full LLMs.txt endpoint
 
 ### Types (`src/types/`)
 

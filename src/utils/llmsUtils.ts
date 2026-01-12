@@ -69,8 +69,13 @@ export const buildUrl = (id: string, basePath: string = ''): string => {
 export const buildDocsUrl = (id: string): string => {
   const siteUrl = site;
 
-  // Strip leading 'docs/' if present (content lives in docs/docs/)
-  const cleanId = id.startsWith('docs/') ? id.slice(5) : id;
+  // Strip leading 'docs/' or exact 'docs' (content lives in docs/docs/)
+  let cleanId = id;
+  if (id === 'docs') {
+    cleanId = 'index';
+  } else if (id.startsWith('docs/')) {
+    cleanId = id.slice(5);
+  }
 
   if (cleanId === 'index') {
     return `${siteUrl}/docs/`;

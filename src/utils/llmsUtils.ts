@@ -35,8 +35,36 @@ export const cleanContent = (content: string | undefined): string => {
 export const extractDescription = (content: string | undefined, fallback: string = ''): string => {
   if (!content) return fallback;
   const cleaned = cleanContent(content);
-  const firstParagraph = cleaned.match(/\n\n(.*?)\n\n/);
-  return firstParagraph ? firstParagraph[1].trim() : fallback;
+
+  // Split into paragraphs and find the first real text paragraph
+  const paragraphs = cleaned.split(/\n\n+/);
+
+  for (const paragraph of paragraphs) {
+    const trimmed = paragraph.trim();
+    // Skip empty paragraphs, frontmatter-like lines, headers, and code comments
+    if (
+      !trimmed ||
+      (trimmed.includes(':') && !trimmed.includes(' ')) || // frontmatter key without space
+      /^#{1,6}\s/.test(trimmed) || // markdown headers
+      /^\/\//.test(trimmed) || // comment lines
+      /^import\s/.test(trimmed) || // import statements
+      /^</.test(trimmed) // JSX/HTML tags
+    ) {
+      continue;
+    }
+    // Clean up any remaining artifacts
+    const description = trimmed
+      .replace(/^#+\s*/, '') // remove leading headers
+      .replace(/\/\/+/g, '') // remove comment markers
+      .replace(/\s+/g, ' ') // normalize whitespace
+      .trim();
+
+    if (description.length > 0) {
+      return description;
+    }
+  }
+
+  return fallback;
 };
 
 // Format date safely
@@ -53,31 +81,36 @@ export const formatDate = (date: Date | string | undefined): string => {
 
 // Build URL for a content item
 export const buildUrl = (id: string, basePath: string = ''): string => {
-  const siteUrl = site;
+  // Normalize siteUrl - remove trailing slashes
+  const siteUrl = (site || '').replace(/\/+$/, '');
   const prefix = basePath ? `${basePath}/` : '';
 
-  if (id === 'index') {
+  // Normalize id - remove leading/trailing slashes
+  const cleanId = id.replace(/^\/+|\/+$/g, '');
+
+  if (cleanId === '' || cleanId === 'index') {
     return basePath ? `${siteUrl}/${basePath}/` : `${siteUrl}/`;
-  } else if (id.endsWith('/index')) {
-    return `${siteUrl}/${prefix}${id.replace('/index', '')}/`;
+  } else if (cleanId.endsWith('/index')) {
+    return `${siteUrl}/${prefix}${cleanId.replace('/index', '')}/`;
   } else {
-    return `${siteUrl}/${prefix}${id}/`;
+    return `${siteUrl}/${prefix}${cleanId}/`;
   }
 };
 
 // Build URL specifically for docs (special case: docs live at /docs/ path)
 export const buildDocsUrl = (id: string): string => {
-  const siteUrl = site;
+  // Normalize siteUrl - remove trailing slashes
+  const siteUrl = (site || '').replace(/\/+$/, '');
 
   // Strip leading 'docs/' or exact 'docs' (content lives in docs/docs/)
-  let cleanId = id;
-  if (id === 'docs') {
+  let cleanId = id.replace(/^\/+|\/+$/g, '');
+  if (cleanId === 'docs') {
     cleanId = 'index';
-  } else if (id.startsWith('docs/')) {
-    cleanId = id.slice(5);
+  } else if (cleanId.startsWith('docs/')) {
+    cleanId = cleanId.slice(5);
   }
 
-  if (cleanId === 'index') {
+  if (cleanId === '' || cleanId === 'index') {
     return `${siteUrl}/docs/`;
   } else if (cleanId.endsWith('/index')) {
     return `${siteUrl}/docs/${cleanId.replace('/index', '')}/`;

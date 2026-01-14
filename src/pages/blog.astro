@@ -1,12 +1,15 @@
 ---
+// src/pages/blog.astro
+
 import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
-import BlogIndex from '@components/blog/Blog.astro';
-import { getCollectionEntry } from '@utils/collectionUtils';
+import BlogStrapiIndex from '@components/blog/BlogStrapi.astro';
+import BlogStrapiSkeleton from '@components/blog/BlogStrapiSkeleton.astro';
 import defaultOgImage from '@content/images/og/blog.png';
+import { getCollectionEntry } from '@utils/collectionUtils';
 
 // Get blog landing page from blog/index.mdx
 const page = await getCollectionEntry('pages', 'blog');
@@ -42,7 +45,9 @@ const blogMeta = {
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="max-width">
-        <BlogIndex />
+        <BlogStrapiIndex server:defer>
+          <BlogStrapiSkeleton slot="fallback" />
+        </BlogStrapiIndex>
       </div>
     </div>
 

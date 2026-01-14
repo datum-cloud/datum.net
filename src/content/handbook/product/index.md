@@ -47,16 +47,16 @@ Finally, we're investing ahead of our own needs [with Milo](https://www.datum.ne
 ## Product values
 It's hard to translate high level company values directly into daily work, so we've created a short list of product values to primarily help engineers move faster and with more confidence:
 
-- AX, then DX, then UX
-- Build for 1M backbones, 1B tunnels
-- Make it fast, sturdy, and ergonomic (function over fancy)
-- Be humble, curious, and helpful (we’re operators at heart)
-- No weird sales gates, lock-in, or marketing crap
+* AX, then DX, then UX
+* Build for 1M backbones, 1B tunnels
+* Make it fast, sturdy, and ergonomic (function over fancy)
+* Be humble, curious, and helpful (we’re operators at heart)
+* No weird sales gates, lock-in, or marketing crap
 
 You can read more about our product values [on our blog](https://www.datum.net/blog/finding-our-footing-product-values/).
 
 ## Product rituals
-You can read more about our overall company rhythms [here](https://www.datum.net/handbook/operate/rhythms/), but when it comes to building products we focus on a monthly cycle.  
+You can read more about our overall company rhythms [in the operate rhythms section](https://www.datum.net/handbook/operate/rhythms/), but when it comes to building products we focus on a monthly cycle.  
 
 * [Monthly milestones](https://github.com/datum-cloud/enhancements/milestones) are the basis of our planning, as well as our marketing
 * We name our monthly milestones after little known innovators. Fun is encouraged! 

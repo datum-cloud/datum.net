@@ -25,26 +25,6 @@ const metaSchema = (image?: any) =>
     })
     .optional();
 
-// Define blog collections
-const blog = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      slug: z.string().optional(),
-      subtitle: z.string().optional(),
-      description: z.string().optional(),
-      date: z.date(),
-      author: z.string().optional(),
-      categories: z.array(z.string()).optional().default([]),
-      thumbnail: image().optional(),
-      featuredImage: image().optional(),
-      draft: z.boolean().optional().default(false),
-      updatedDate: z.string().optional(),
-      meta: metaSchema(image),
-    }),
-});
-
 // Define pages collections
 const pages = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/pages' }),
@@ -133,32 +113,6 @@ const legal = defineCollection({
       description: z.string().optional(),
       iconName: z.string().optional(),
       meta: metaSchema(image),
-    }),
-});
-
-// Define authors collections
-const authors = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/authors' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string().optional(),
-      name: z.string(),
-      bio: z.string(),
-      avatar: image().optional(),
-      isTeam: z.boolean().optional().default(false),
-      team: z.enum(['founders', 'team']).optional(),
-      position: z.string().optional(),
-      social: z
-        .object({
-          twitter: z.string().optional(),
-          github: z.string().optional(),
-          linkedin: z.string().optional(),
-        })
-        .optional(),
-      tick: z.string().optional(),
-      surprising: z.string().optional(),
-      weekends: z.string().optional(),
-      bgColor: z.string().optional(),
     }),
 });
 
@@ -332,8 +286,6 @@ export const collections = {
   pages,
   about,
   legal,
-  blog,
-  authors,
   categories,
   handbooks,
   changelog,

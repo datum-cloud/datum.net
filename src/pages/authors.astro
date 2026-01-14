@@ -1,0 +1,87 @@
+---
+// src/pages/authors.astro
+export const prerender = false;
+
+import '@v1/styles/page-blog.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import { fetchStrapiAuthors, fetchStrapiArticles, getStrapiMediaUrl } from '@libs/strapi';
+import type { StrapiAuthorFull } from '@libs/strapi';
+const icon = 'user';
+const title = 'Authors';
+const description = 'Blog authors';
+const subtitle = 'Authors';
+
+const authors = await fetchStrapiAuthors();
+const articles = await fetchStrapiArticles();
+
+// Only show authors that have at least one article
+const authorNamesWithPosts = new Set(
+  articles.map((a) => a.author?.name).filter((n): n is string => Boolean(n))
+);
+const authorsWithPosts = authors.filter((a) => authorNamesWithPosts.has(a.name));
+---
+
+<Layout title={title} description={description} bodyClass="page-author page-authors" meta={{}}>
+  <section class="datum-container">
+    <Hero
+      class="light"
+      iconName={icon}
+      title={title}
+      subtitle={subtitle}
+      description={description}
+    />
+
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
+      <div class="max-width relative">
+        <div class="blog-list">
+          {
+            authorsWithPosts.length === 0 ? (
+              <p class="font-alliance text-white/80">No authors with posts yet.</p>
+            ) : (
+              authorsWithPosts.map((author: StrapiAuthorFull) => {
+                const authorSlug = author.slug ?? author.documentId;
+                const avatarUrl = author.avatar ? getStrapiMediaUrl(author.avatar.url) : undefined;
+                return (
+                  <a
+                    href={`/authors/${authorSlug}/`}
+                    class="entry-list-item entry-list-item--wrapper flex items-center gap-4 rounded-lg p-4 transition-colors hover:bg-white/5"
+                    title={author.name}
+                  >
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt={author.name}
+                        class="h-14 w-14 rounded-full object-cover"
+                        width={56}
+                        height={56}
+                      />
+                    ) : (
+                      <span class="font-alliance flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-lg font-medium text-white">
+                        {author.name.charAt(0)}
+                      </span>
+                    )}
+                    <div>
+                      <p class="entry-list-item--title font-alliance text-right text-white">
+                        {author.name}
+                      </p>
+                      {author.title && (
+                        <p class="font-alliance text-right text-sm text-white/70">{author.title}</p>
+                      )}
+                    </div>
+                  </a>
+                );
+              })
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
+</Layout>

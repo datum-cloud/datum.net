@@ -255,4 +255,70 @@
       @apply md:hidden;
     }
   }
+
+  /* Blog Strapi Skeleton */
+  .blog-strapi-skeleton {
+    .skeleton-box {
+      @apply bg-glacier-mist-700/30 rounded;
+      animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .skeleton-image {
+      @apply aspect-16/9 w-full;
+    }
+
+    .skeleton-title {
+      @apply mb-4 h-8 w-3/4;
+    }
+
+    .skeleton-excerpt {
+      @apply mb-2 h-4 w-full;
+    }
+
+    .skeleton-excerpt--short {
+      @apply mb-4 h-4 w-2/3;
+    }
+
+    .skeleton-date {
+      @apply h-3 w-32;
+    }
+
+    .skeleton-list-title {
+      @apply mb-2 h-6 w-2/3;
+    }
+
+    .skeleton-list-date {
+      @apply h-3 w-24;
+    }
+
+    .skeleton-item {
+      animation-delay: calc(var(--index, 0) * 100ms);
+    }
+
+    .skeleton-item[data-index='1'] {
+      --index: 0;
+    }
+
+    .skeleton-item[data-index='2'] {
+      --index: 1;
+    }
+
+    .skeleton-item[data-index='3'] {
+      --index: 2;
+    }
+
+    .skeleton-item[data-index='4'] {
+      --index: 3;
+    }
+  }
+
+  @keyframes skeleton-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
 }

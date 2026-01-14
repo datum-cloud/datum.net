@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, buildDocsUrl } from '@utils/llmsUtils';
+import { fetchStrapiArticles } from '@libs/strapi';
 
 export const GET: APIRoute = async () => {
   try {
@@ -28,19 +29,20 @@ export const GET: APIRoute = async () => {
       llmsContent += `- [${page.data.title}](${pageUrl}) - ${description}\n`;
     }
 
-    // Get all blog posts sorted by date (newest first)
-    const posts = await getCollection('blog', ({ data }) => !data.draft);
-    const sortedPosts = posts.sort(
-      (a, b) => new Date(b.data.date || 0).valueOf() - new Date(a.data.date || 0).valueOf()
-    );
+    // Get all blog posts from Strapi sorted by date (newest first)
+    const strapiArticles = await fetchStrapiArticles();
+    const sortedPosts = strapiArticles.sort((a, b) => {
+      const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+      const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+      return dateB - dateA;
+    });
 
     llmsContent += `\n## Blog\n\n`;
 
     for (const post of sortedPosts) {
-      const description =
-        post.data.description || extractDescription(post.body, 'No description available');
-      const postUrl = buildUrl(post.id, 'blog');
-      llmsContent += `- [${post.data.title}](${postUrl}) - ${description}\n`;
+      const description = post.description || 'No description available';
+      const postUrl = buildUrl(post.slug, 'blog');
+      llmsContent += `- [${post.title}](${postUrl}) - ${description}\n`;
     }
 
     // Get all Docs entries

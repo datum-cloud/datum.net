@@ -1,8 +1,8 @@
 ---
 // src/components/about/People.astro
-import { Image } from 'astro:assets';
 import ProfileModal from './ProfileModal.astro';
 import { getTeamMembers, getTeamBgColor } from '@utils/authorUtils';
+import { getStrapiMediaUrl } from '@libs/strapi';
 import '@v1/styles/page-about.css';
 
 // Fetch all authors where isTeam is true and sort by order
@@ -16,7 +16,7 @@ const teamMembersData = teamMembers.map((member, index) => ({
     name: member.data.name,
     bio: member.data.bio,
     title: member.data.title,
-    avatar: member.data.avatar ? { src: member.data.avatar.src } : undefined,
+    avatar: member.data.avatar ? { src: getStrapiMediaUrl(member.data.avatar.src) } : undefined,
     tick: member.data.tick,
     surprising: member.data.surprising,
     weekends: member.data.weekends,
@@ -56,13 +56,15 @@ const teamMembersData = teamMembers.map((member, index) => ({
             >
               {member.data.avatar && (
                 <div class="people--card-avatar">
-                  <Image
-                    src={member.data.avatar}
+                  <img
+                    src={getStrapiMediaUrl(member.data.avatar.src)}
                     alt={member.data.name}
                     class="size-auto w-full bg-cover"
                     style={`background-color: ${getTeamBgColor(index)}`}
+                    width={300}
+                    height={300}
+                    loading="lazy"
                   />
-                  {/* Check if member.data.title contains "Co-Founder" and show Founder label */}
                   {member.data.title && member.data.title.includes('Co-Founder') && (
                     <label class="people--card-founder-label">Founder</label>
                   )}

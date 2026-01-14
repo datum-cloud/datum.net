@@ -1,125 +1,129 @@
 ---
 // src/pages/blog/[slug].astro
+export const prerender = false;
+
 import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Button from '@components/Button.astro';
-import ArticleNavigation from '@components/ArticleNavigation.astro';
-import { getCollection, render } from 'astro:content';
-import { Image, getImage } from 'astro:assets';
-import { getMetaImageUrl } from '@utils/imageUtils';
-import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/dateUtils';
-import { getCollectionEntry } from '@utils/collectionUtils';
-import { getAuthorBgColor } from '@utils/authorUtils';
 import Icon from '@components/Icon.astro';
-import { truncateByWords } from '@libs/string';
+import ArticleNavigation from '@components/ArticleNavigation.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
+import {
+  getStrapiMediaUrl,
+  resolveMarkdownStrapiUrls,
+  fetchStrapiArticles,
+  fetchStrapiArticleBySlug,
+} from '@libs/strapi';
+import type { StrapiArticle, StrapiBlock } from '@libs/strapi';
+import { formatShortDate, estimateReadingTime } from '@utils/dateUtils';
+import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
+import { marked } from 'marked';
+import { truncateByWords } from '@libs/string';
+import { transformMarkdownFigures } from '@utils/markdownFigure';
 
-export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
-  const authors = await getCollection('authors');
+const { slug } = Astro.params;
 
-  return blogEntries
-    .filter((entry) => !entry.data.draft) // Exclude draft posts
-    .map((entry) => {
-      // Find the author data if it exists
-      const authorData = authors.find((author) => author.id === entry.data.author);
-
-      return {
-        params: { slug: entry.id },
-        props: { entry, authorData },
-      };
-    });
+// Fetch article detail (per-slug cache)
+const article = await fetchStrapiArticleBySlug(slug as string);
+if (!article) {
+  return Astro.redirect('/404');
 }
 
-const { entry, authorData } = Astro.props;
-const { Content } = await render(entry);
-const formattedDate = formatShortDate(entry.data.date);
-const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
-
-// Get author background color for consistent styling with team section
-const authorBgColor = authorData ? await getAuthorBgColor(authorData.id) : undefined;
-
-// Calculate reading time from content
-const readingTime = estimateReadingTime(entry.body || '');
-
-// Get category data for each category
-const categoryData = await Promise.all(
-  (entry.data.categories || []).map(async (categorySlug) => {
-    return await getCollectionEntry('categories', categorySlug);
-  })
-);
-
-// Get all blog entries for navigation
-const blogs = await getCollection('blog', ({ data }) => !data.draft);
-
-// Get navigation articles (sorted by date, newest first)
-blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-const currentIndex = blogs.findIndex((b) => b.id === entry.id);
-const previousArticle = currentIndex > 0 ? blogs[currentIndex - 1] : undefined;
-const nextArticle = currentIndex < blogs.length - 1 ? blogs[currentIndex + 1] : undefined;
-
-// Get processed avatar URL
-let processedAvatarUrl = '';
-if (authorData?.data.avatar) {
-  try {
-    const processedImage = await getImage({
-      src: authorData.data.avatar,
-      width: 40,
-      height: 40,
-    });
-    processedAvatarUrl = processedImage.src;
-  } catch (error) {
-    console.warn('Failed to process avatar image:', error);
-  }
-}
-
-// Create breadcrumbs manually based on URL path
-const breadcrumbData = [];
-
-breadcrumbData.push(
-  {
-    text: 'Home',
-    href: '/',
-  },
-  {
-    text: 'Blog',
-    href: '/blog/',
-  }
-);
-
-// SEO
-const fm = entry.data;
-const meta = fm.meta || {};
-const title = fm.title;
-const description = fm.description ? fm.description : '';
-
-// Set default blog OG image - always use blog.png unless explicitly overridden
-const blogMeta = {
-  ...meta,
-  og: {
-    image: defaultOgImage,
-    ...meta?.og,
-  },
+// Extract article data
+const fm = {
+  title: article.title,
+  description: article.description,
+  date: article.originalPublishedAt,
+  featuredImage: article.cover
+    ? getStrapiMediaUrl(article.cover.formats?.large?.url) || getStrapiMediaUrl(article.cover.url)
+    : undefined,
+  author: article.author?.name,
 };
+
+const formattedDate = fm.date ? formatShortDate(fm.date) : '';
+const readingTime = estimateReadingTime(
+  article.blocks?.map((b: StrapiBlock) => b.body).join('\n') || ''
+);
+
+// Get author data
+const authorName = article.author?.name || '';
+const authorSlug = article.author?.slug ?? article.author?.documentId;
+const authorHref = authorSlug ? `/authors/${authorSlug}/` : undefined;
+const authorAvatar = article.author?.avatar
+  ? getStrapiMediaUrl(article.author.avatar.url)
+  : undefined;
+const authorBgColor = authorName ? await getAuthorBgColorFromStrapi(authorName) : undefined;
+
+// Get category data
+const categoryName = article.category?.name || '';
+const categorySlug = article.category?.slug || '';
+
+// Get all articles for navigation
+const allArticles: StrapiArticle[] = await fetchStrapiArticles();
+
+// Sort by publication date (newest first)
+allArticles.sort((a, b) => {
+  const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+  const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+  return dateB - dateA;
+});
+
+const currentIndex = allArticles.findIndex((a) => a.slug === article.slug);
+const previousArticle = currentIndex > 0 ? allArticles[currentIndex - 1] : undefined;
+const nextArticle =
+  currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 1] : undefined;
+
+// Create breadcrumbs
+const breadcrumbData = [
+  { text: 'Home', href: '/' },
+  { text: 'Blog', href: '/blog/' },
+];
+
+if (categorySlug) {
+  breadcrumbData.push({
+    text: categoryName,
+    href: `/blog/category/${categorySlug}/`,
+  });
+}
 
 breadcrumbData.push({
   text: truncateByWords(fm.title, 9),
-  href: `/blog/${entry.id}/`,
+  href: `/blog/${slug}/`,
 });
+
+// SEO: build meta from Strapi seo, same pattern as blog/[slug].astro
+const title = article.seo?.metaTitle ?? fm.title;
+const description = article.seo?.metaDescription ?? fm.description ?? '';
+
+const blogMeta = {
+  title: article.seo?.metaTitle ?? fm.title,
+  description: article.seo?.metaDescription ?? fm.description ?? '',
+  og: {
+    image: defaultOgImage,
+    title: article.seo?.ogTitle ?? fm.title,
+    description: article.seo?.ogDescription ?? fm.description ?? '',
+  },
+};
+
+if (article.seo?.shareImage?.url) {
+  const shareImageUrl = getStrapiMediaUrl(article.seo.shareImage.url);
+  if (shareImageUrl) {
+    blogMeta.og.image = { src: shareImageUrl } as import('astro').ImageMetadata;
+  }
+}
 ---
 
 <Layout
   title={title}
   description={description}
-  image={metaImage}
+  image={fm.featuredImage}
   article={true}
   publishDate={fm.date}
   author={fm.author}
-  bodyClass={`page-blog page-blog--${entry.id}`}
+  bodyClass={`page-blog page-blog--strapi-${slug}`}
   meta={blogMeta}
 >
   <section class="datum-container">
@@ -140,34 +144,30 @@ breadcrumbData.push({
 
             <!-- Author Information -->
             {
-              fm.author && authorData && (
+              authorName && (
                 <div class="blog-article-author">
                   <div class="blog-article-author-avatar">
-                    {authorData.data.avatar ? (
-                      <a href={`/authors/${authorData.id}/`}>
-                        <Image
-                          src={authorData.data.avatar}
-                          alt={authorData.data.name || fm.author}
-                          class="blog-article-author-image"
-                          width={52}
-                          height={52}
+                    {authorAvatar ? (
+                      <a href={authorHref ?? '#'} class="blog-article-author-image">
+                        <img
+                          src={authorAvatar}
+                          alt={authorName}
+                          class="h-full w-full object-cover"
                           style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                         />
                       </a>
                     ) : (
                       <a
-                        href={`/authors/${authorData.id}/`}
+                        href={authorHref ?? '#'}
                         class="blog-article-author-image"
                         style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                       >
-                        <span class="text-lg font-bold text-gray-600">
-                          {(authorData.data.name || fm.author).charAt(0)}
-                        </span>
+                        <span class="text-lg font-bold text-gray-600">{authorName.charAt(0)}</span>
                       </a>
                     )}
                   </div>
-                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
-                    {authorData.data.name || fm.author}
+                  <a href={authorHref ?? '#'} class="blog-article-author-name">
+                    {authorName}
                   </a>
                 </div>
               )
@@ -206,17 +206,12 @@ breadcrumbData.push({
         <article class="blog-article">
           <!-- Hidden meta tags for Pagefind -->
           <span class="hidden" style="display: none;">post</span>
-          <span class="hidden" style="display: none;">{authorData?.data.name || fm.author}</span>
-          <span class="hidden" style="display: none;">{processedAvatarUrl}</span>
-          <span class="hidden" style="display: none;">{formatISODate(fm.date)}</span>
-          <span class="hidden" style="display: none;"
-            >{categoryData.length > 0 ? categoryData[0].data.name : 'Blog'}</span
-          >
-          <span class="hidden" style="display: none;">{entry.data.draft ? 'true' : 'false'}</span>
+          <span class="hidden" style="display: none;">{authorName}</span>
+          <span class="hidden" style="display: none;">{categoryName}</span>
 
           <!-- Article Header -->
           <header class="blog-article-header">
-            <div class="blog-article-breadcrumbs mb-5.5">
+            <div class="blog-article-breadcrumbs">
               <Breadcrumbs
                 linkTextFormat="sentence"
                 mainBemClass="a-breadcrumbs"
@@ -244,19 +239,9 @@ breadcrumbData.push({
               {fm.title}
             </h1>
             <div class="datum-text-sm mt-4 flex gap-1 opacity-60 md:hidden">
-              <!-- Author Information -->
-              {
-                fm.author && authorData && (
-                  <a href={`/authors/${authorData.id}/`} class="blog-article-author-name">
-                    {authorData.data.name || fm.author},
-                  </a>
-                )
-              }
-
+              <a href={authorHref ?? '#'} class="blog-article-author-name">{authorName},</a>
               <span class="blog-article-meta-date">{readingTime.text}, </span>
-
               <span class="blog-article-meta-date">{formattedDate}, </span>
-
               <button
                 type="button"
                 class="blog-article-meta-share"
@@ -270,10 +255,9 @@ breadcrumbData.push({
           {
             fm.featuredImage && (
               <div class="blog-article-image">
-                <Image
+                <img
                   src={fm.featuredImage}
-                  alt={fm.title}
-                  layout="constrained"
+                  alt={article.cover?.alternativeText || fm.title}
                   class="fade-in--pure"
                   data-reveal="fade-in--pure--visible"
                   data-reveal-delay="100"
@@ -284,24 +268,44 @@ breadcrumbData.push({
 
           <!-- Article Content -->
           <div class="blog-article-content">
-            <Content />
+            {
+              article.blocks?.map((block: StrapiBlock) => {
+                if (block.__typename === 'ComponentSharedQuote' && block.title) {
+                  const bodyMarkdown = block.body ? resolveMarkdownStrapiUrls(block.body) : '';
+                  const bodyHtml = bodyMarkdown ? marked(bodyMarkdown) : '';
+                  return (
+                    <blockquote class="blog-article-quote">
+                      {block.title && <h3>{block.title}</h3>}
+                      {block.body && <p set:html={bodyHtml} />}
+                    </blockquote>
+                  );
+                }
+                if (block.__typename === 'ComponentSharedRichText' && block.body) {
+                  const bodyMarkdown = resolveMarkdownStrapiUrls(block.body);
+                  const bodyWithFigures = transformMarkdownFigures(bodyMarkdown);
+                  const bodyHtml = marked(bodyWithFigures);
+                  return <div set:html={bodyHtml} />;
+                }
+                return null;
+              })
+            }
           </div>
 
           <!-- Article Navigation -->
           <ArticleNavigation
             previousArticle={previousArticle
               ? {
-                  id: previousArticle.id,
-                  title: previousArticle.data.title,
-                  url: `/blog/${previousArticle.id}/`,
+                  id: previousArticle.slug,
+                  title: previousArticle.title,
+                  url: `/blog/${previousArticle.slug}/`,
                   navLabel: 'Next article',
                 }
               : undefined}
             nextArticle={nextArticle
               ? {
-                  id: nextArticle.id,
-                  title: nextArticle.data.title,
-                  url: `/blog/${nextArticle.id}/`,
+                  id: nextArticle.slug,
+                  title: nextArticle.title,
+                  url: `/blog/${nextArticle.slug}/`,
                   navLabel: 'Previous article',
                 }
               : undefined}

@@ -56,7 +56,7 @@ It's hard to translate high level company values directly into daily work, so we
 You can read more about our product values [on our blog](https://www.datum.net/blog/finding-our-footing-product-values/).
 
 ## Product rituals
-You can read more about our overall company rhythms [here](https://www.datum.net/handbook/operate/rhythms/), but when it comes to building products we focus on a monthly cycle.  
+You can read more about our overall company rhythms [in the operate rhythms section](https://www.datum.net/handbook/operate/rhythms/), but when it comes to building products we focus on a monthly cycle.  
 
 * [Monthly milestones](https://github.com/datum-cloud/enhancements/milestones) are the basis of our planning, as well as our marketing
 * We name our monthly milestones after little known innovators. Fun is encouraged! 

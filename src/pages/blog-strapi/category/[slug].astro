@@ -1,0 +1,143 @@
+---
+// src/pages/blog-strapi/category/[slug].astro
+export const prerender = false;
+
+import '@v1/styles/page-blog.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import { graphql, ARTICLES_BY_CATEGORY_QUERY, getStrapiMediaUrl } from '@libs/strapi';
+import type { StrapiArticlesResponse, StrapiArticle } from '@libs/strapi';
+import BlogItem from '@components/blog/BlogItem.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
+import config from '@data/siteConfig.json';
+
+interface PostData {
+  id: string;
+  data: {
+    title: string;
+    description?: string;
+    date: Date;
+    thumbnail?: string;
+    author?: string;
+  };
+}
+
+interface AuthorData {
+  id: string;
+  data: { name: string };
+}
+
+interface PostWithAuthor {
+  post: PostData;
+  authorData: AuthorData | null;
+}
+
+const { slug } = Astro.params;
+
+// Fetch articles for this category
+const response = await graphql<StrapiArticlesResponse>(ARTICLES_BY_CATEGORY_QUERY, {
+  categorySlug: slug,
+});
+
+// Extract and normalize articles
+const rawArticles: StrapiArticle[] = response?.articles || [];
+
+// Get category name from first article (all have same category)
+const categoryName = rawArticles[0]?.category?.name || (slug as string);
+
+if (rawArticles.length === 0) {
+  return Astro.redirect('/404');
+}
+
+// Sort by publication date (newest first)
+rawArticles.sort((a: StrapiArticle, b: StrapiArticle) => {
+  const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+  const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+  return dateB - dateA;
+});
+
+// Transform Strapi articles to match local blog structure
+const posts = rawArticles.map((article: StrapiArticle) => ({
+  id: article.slug,
+  data: {
+    title: article.title,
+    description: article.description,
+    date: article.originalPublishedAt ? new Date(article.originalPublishedAt) : new Date(),
+    thumbnail: getStrapiMediaUrl(article.cover?.url),
+    author: article.author?.name,
+  },
+}));
+
+// Set up pagination
+const pageSize = config.pageSize;
+const currentPage = 1;
+const totalItems = posts.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+const currentPageData = posts.slice(0, pageSize);
+
+// Pagination setup
+const baseUrl = `/blog-strapi/category/${slug}`;
+const prevUrl = undefined; // First page
+const nextUrl = totalPages > 1 ? `${baseUrl}/${currentPage + 1}` : undefined;
+
+// Transform posts to match BlogItem props (include author as separate object)
+const postsWithAuthors: PostWithAuthor[] = currentPageData.map((post: PostData) => ({
+  post,
+  authorData: post.data.author
+    ? {
+        id: post.data.author.toLowerCase().replace(/\s+/g, '-'),
+        data: { name: post.data.author },
+      }
+    : null,
+}));
+
+const icon = 'book-image';
+
+// SEO
+const title = categoryName;
+const description = `Articles about ${categoryName} from Datum Blog`;
+const subtitle = 'Blog';
+---
+
+<Layout
+  title={title}
+  description={description}
+  bodyClass={`page-blog page-blog--strapi-${slug}`}
+  meta={{}}
+>
+  <section class="datum-container">
+    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
+
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
+      <div class="max-width relative">
+        <!-- Hidden meta tag to identify this as a category page -->
+        <span data-pagefind-meta="page_type" style="display: none;">category</span>
+
+        <!-- Blog List -->
+        <div class="blog-list">
+          {
+            postsWithAuthors.map(({ post, authorData }: PostWithAuthor) => (
+              <BlogItem post={post} authorData={authorData} />
+            ))
+          }
+        </div>
+
+        <!-- Pagination -->
+        {
+          totalPages > 1 && (
+            <BlogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={baseUrl}
+              prevUrl={prevUrl}
+              nextUrl={nextUrl}
+            />
+          )
+        }
+      </div>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

@@ -1,0 +1,156 @@
+---
+// src/pages/authors-strapi/[slug].astro
+export const prerender = false;
+
+import '@v1/styles/page-blog.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import {
+  fetchStrapiAuthorBySlug,
+  fetchStrapiAuthorByDocumentId,
+  fetchStrapiArticles,
+  getStrapiMediaUrl,
+} from '@libs/strapi';
+import { normalizeArticle } from '@/src/types/strapi';
+import BlogItemStrapi from '@components/blog-strapi/BlogItemStrapi.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
+import config from '@data/siteConfig.json';
+
+const { slug } = Astro.params;
+
+// Fetch author by slug (per-author cache); fallback to documentId for backwards compat
+const author =
+  (await fetchStrapiAuthorBySlug(slug as string)) ??
+  (await fetchStrapiAuthorByDocumentId(slug as string));
+if (!author) {
+  return Astro.redirect('/404');
+}
+
+// Get all articles by this author
+const allArticles = await fetchStrapiArticles();
+const authorArticles = allArticles.filter((a) => a.author?.name === author.name);
+const sortedArticles = authorArticles.sort((a, b) => {
+  const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+  const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+  return dateB - dateA;
+});
+
+const normalizedPosts = sortedArticles.map(normalizeArticle);
+
+// Pagination
+const pageSize = config.pageSize;
+const currentPage = 1;
+const totalItems = normalizedPosts.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+const currentPageData = normalizedPosts.slice(0, pageSize);
+
+const subtitle = 'Author';
+const title = author.name;
+const icon = 'user';
+
+const avatarUrl = author.avatar ? getStrapiMediaUrl(author.avatar.url) : undefined;
+---
+
+<Layout
+  title={`${author.name} - Author`}
+  description={author.bio}
+  bodyClass={`page-author page-author--strapi-${slug}`}
+>
+  <section class="datum-container">
+    <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
+
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
+      <div class="max-width relative">
+        <!-- Author Info Header -->
+        <div class="mb-16">
+          <div class="mb-8 flex items-start gap-10">
+            {
+              avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={author.name}
+                  class="h-24 w-24 rounded-full object-cover ring-4 ring-white/80"
+                  width={96}
+                  height={96}
+                />
+              ) : (
+                <span class="font-alliance flex h-24 w-24 items-center justify-center rounded-full bg-white/10 text-3xl font-medium text-white ring-4 ring-white/80">
+                  {author.name.charAt(0)}
+                </span>
+              )
+            }
+            <div class="max-w-2xl">
+              <h2 class="font-alliance mb-2 text-2xl font-medium text-white">{author.name}</h2>
+              {
+                author.title && (
+                  <p class="font-alliance text-aurora-moss mb-3 text-lg">{author.title}</p>
+                )
+              }
+              <p class="font-alliance text-white/80">{author.bio}</p>
+              {
+                author.social && (
+                  <div class="mt-4 flex gap-4">
+                    {author.social.twitter && (
+                      <a
+                        href={author.social.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
+                      >
+                        Twitter
+                      </a>
+                    )}
+                    {author.social.github && (
+                      <a
+                        href={author.social.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
+                      >
+                        GitHub
+                      </a>
+                    )}
+                    {author.social.linkedin && (
+                      <a
+                        href={author.social.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
+                      >
+                        LinkedIn
+                      </a>
+                    )}
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Articles List -->
+        <div class="blog-list">
+          {currentPageData.map((post) => <BlogItemStrapi post={post} baseUrl="/blog-strapi" />)}
+        </div>
+
+        <!-- Pagination -->
+        {
+          totalPages > 1 && (
+            <BlogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={`/authors-strapi/${slug}`}
+              prevUrl={undefined}
+              nextUrl={currentPage < totalPages ? `/authors-strapi/${slug}/2` : undefined}
+            />
+          )
+        }
+      </div>
+    </div>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
+</Layout>

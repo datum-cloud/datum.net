@@ -76,3 +76,10 @@ export async function getAuthorBgColor(authorId: string): Promise<string | undef
 
   return undefined;
 }
+
+// Re-export Strapi author functions from strapi module (with caching)
+export {
+  getStrapiTeamMembers,
+  getAuthorBgColorFromStrapi,
+  fetchStrapiAuthors,
+} from '@libs/strapi/authors';

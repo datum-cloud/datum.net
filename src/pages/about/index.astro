@@ -1,4 +1,7 @@
 ---
+// src/pages/about/index.astro
+export const prerender = false;
+
 import '@v1/styles/page-about.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -6,7 +9,8 @@ import Footer from '@components/Footer.astro';
 import OurMission from '@components/about/OurMission.astro';
 import Companies from '@components/about/Companies.astro';
 import Investors from '@components/about/Investors.astro';
-import People from '@components/about/People.astro';
+import PeopleStrapi from '@components/about/PeopleStrapi.astro';
+import PeopleStrapiSkeleton from '@components/about/PeopleStrapiSkeleton.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
 
@@ -29,7 +33,9 @@ const description = fm.description ? fm.description : '';
 
     <Companies content={contentData[1]} />
 
-    <People />
+    <PeopleStrapi server:defer>
+      <PeopleStrapiSkeleton slot="fallback" />
+    </PeopleStrapi>
 
     <Investors content={contentData[2]} />
 

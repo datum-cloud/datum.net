@@ -1,4 +1,4 @@
-FROM node:24.12.0-alpine3.22 AS base
+FROM node:24.13.0-alpine3.22 AS base
 WORKDIR /app
 ENV ASTRO_TELEMETRY_DISABLED=true
 RUN apk update && \
@@ -21,7 +21,7 @@ COPY . .
 RUN chmod -R 755 src/pages
 CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]
 
-FROM node:24.12.0-alpine3.22 AS production
+FROM node:24.13.0-alpine3.22 AS production
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs

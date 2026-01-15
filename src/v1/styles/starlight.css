@@ -375,7 +375,7 @@
       > li + li {
         @apply mt-0 mb-4;
       }
-      li {
+      > li {
         @apply leading-[18px];
         summary {
           @apply p-0 hover:text-(--sl-color-text-accent);
@@ -385,7 +385,7 @@
         }
 
         ul {
-          @apply mt-[6px];
+          @apply mt-[6px] border-l border-[color:var(--color-borderpanel)] pl-3;
         }
 
         > a.large {
@@ -396,8 +396,17 @@
         }
 
         li {
-          @apply ml-0 border-l-0 pl-0;
+          @apply ml-0 pl-0;
           @apply mb-[5px];
+
+          summary {
+            @apply p-0 hover:text-(--sl-color-text-accent);
+            .large {
+              /* Nested groups (e.g. Runtime → Datum DNS) should look like sub-nav items */
+              @apply datum-docs-sidebar-links font-normal normal-case;
+              @apply text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
+            }
+          }
 
           a {
             @apply datum-docs-sidebar-links p-0 pr-5 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);

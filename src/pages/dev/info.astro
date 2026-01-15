@@ -15,9 +15,11 @@ if (mode == 'production') {
 let psqlInfo;
 try {
   const sql = await dbConnect();
-  psqlInfo = await sql`SELECT version()`;
-} catch {
-  psqlInfo = null;
+  const listTables = await sql`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+  const version = await sql`SELECT version()`;
+  psqlInfo = { version: version[0].version, tables: listTables.map((t) => t.tablename) };
+} catch (error) {
+  psqlInfo = { error };
 }
 
 type EnvValue = string | number | boolean | undefined;

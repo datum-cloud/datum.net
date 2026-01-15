@@ -4,10 +4,6 @@ This is the official website for Datum Inc., built with Astro.
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js (version specified in package.json)
-
 ### Installation
 
 1. Install dependencies:
@@ -36,10 +32,6 @@ npm run dev
 ```
 
 For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
-
-### Handbook
-
-Main file: src/content/handbook/index.md
 
 ### Image
 
@@ -150,7 +142,7 @@ src/content/blog/from-cage-nuts-to-kubernetes.mdx
 The setup uses a multi-stage Dockerfile:
 
 1. Base stage (`node:22-alpine`)
-   - Minimal Alpine Linux with Node.js 22
+   - Minimum requirement Alpine Linux with Node.js 22
    - Common workspace setup
 
 2. Development stage
@@ -174,36 +166,7 @@ The setup uses a multi-stage Dockerfile:
   - `.:/src`: Source code
   - `/app/node_modules`: Dependencies
 
-### Troubleshooting
-
-1. If the development server isn't accessible:
-
-   ```bash
-   # Rebuild the development image
-   docker compose up dev --build
-   ```
-
-2. To view logs:
-
-   ```bash
-   # Development logs
-   docker compose logs dev
-
-   # Production logs
-   docker compose logs prod
-   ```
-
-3. To clean up:
-
-   ```bash
-   # Stop and remove containers
-   docker compose down
-
-   # Remove volumes too
-   docker compose down -v
-   ```
-
-### Development with local kubernetes
+## Development with local kubernetes
 
 1. Install [Minikube](https://minikube.sigs.k8s.io/docs/) and start minikube
 
@@ -211,7 +174,19 @@ The setup uses a multi-stage Dockerfile:
 minikube start
 ```
 
-2. Create secret.yaml file separated with this source. Value:
+2. Install postgresql helm. example from bitnami source
+
+```bash
+helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://registry-1.docker.io/bitnamicharts/postgresql
+```
+
+3. Create namespace
+
+```
+kubectl create namespace datum-net
+```
+
+4. Create secret.yaml file separated with this source. Value:
 
 ```yaml
 apiVersion: v1
@@ -228,36 +203,28 @@ data:
   APP_PRIVATE_KEY:
 ```
 
-3. Then apply with command:
-
-Create namespace
-
-```
-kubectl create namespace datum-net
-```
-
-Apply secret
+Then apply with command:
 
 ```bash
-kubectl apply -f config/dev/secret.yaml
+kubectl apply -f ../secret.yaml
 ```
 
-Apply the kustomize config file
+5. Apply the kustomize config file
 
 ```bash
-kubectl apply -k config/base
+kubectl apply -k config/base -n datum-net
 ```
 
-Apply the kustomize postgres config file
+Postgres config file
 
 ```bash
 kubectl apply -k config/dev/postgres-config.yaml
 ```
 
-4. Install postgresql helm. example from bitnami source
+### Create port forwarder
 
 ```bash
-helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://registry-1.docker.io/bitnamicharts/postgresql
+kubectl port-forward pod_name -n datum-net 4321:4321
 ```
 
 ## Contributing
@@ -339,23 +306,6 @@ The linter will only check files in the `/src/content/` directory, including:
 - Guides
 - Changelog entries
 - Static pages
-
-### VS Code Setup
-
-For the best development experience, install the following VS Code extensions:
-
-1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-2. [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-3. [Markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
-4. [Front Matter CMS](https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter) - For content management
-
-The project includes VS Code settings (`.vscode/settings.json`) that enable:
-
-- Live linting and error detection
-- Format on save
-- Automatic ESLint fixes on save
-- Proper formatting for Astro, TypeScript, JavaScript, and Markdown files
-- TypeScript SDK integration
 
 ## Content Management with Front Matter CMS
 
@@ -499,6 +449,66 @@ The tests are configured to run in CI environments:
 - Generates HTML reports
 - Takes screenshots on failures
 - Supports parallel test execution
+
+### VS Code Setup
+
+For the best development experience, install the following VS Code extensions:
+
+1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+2. [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+3. [Markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+4. [Front Matter CMS](https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter) - For content management
+
+The project includes VS Code settings (`.vscode/settings.json`) that enable:
+
+- Live linting and error detection
+- Format on save
+- Automatic ESLint fixes on save
+- Proper formatting for Astro, TypeScript, JavaScript, and Markdown files
+- TypeScript SDK integration
+
+### Troubleshooting
+
+1. If the development server isn't accessible:
+
+   ```bash
+   # Rebuild the development image
+   docker compose up dev --build
+   ```
+
+2. To view logs:
+
+   ```bash
+   # Development logs
+   docker compose logs dev
+
+   # Production logs
+   docker compose logs prod
+   ```
+
+3. To clean up:
+
+   ```bash
+   # Stop and remove containers
+   docker compose down
+
+   # Remove volumes too
+   docker compose down -v
+   ```
+
+Error: Failed to pull image "ghcr.io/datum-cloud/datum-net:latest": no matching manifest for linux/arm64/v8 in the manifest list entries
+
+Build Local ARM64 Image (For Local Development)
+If you're running Kubernetes locally (Docker Desktop, Minikube, etc.), build the image locally:
+
+```
+# Build for ARM64
+docker build -t ghcr.io/datum-cloud/datum-net:latest .
+
+# If using Docker Desktop with Kubernetes, the image is already available
+# If using Minikube, load the image:
+minikube image load ghcr.io/datum-cloud/datum-net:latest
+```
 
 ### Resources
 

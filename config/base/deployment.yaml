@@ -30,7 +30,6 @@ spec:
       containers:
         - name: datum-net
           image: ghcr.io/datum-cloud/datum-net:latest
-
           imagePullPolicy: Always
           ports:
             - containerPort: 4321

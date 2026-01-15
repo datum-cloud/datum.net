@@ -22,6 +22,8 @@ In addition to understanding our small size and big ambitions, it’s important 
 
 * **Leadership L10** - A formal 90 minute “Level 10” meeting in which the leadership team works on the business. Same time and agenda each week. [Check out the agenda](https://www.eosworldwide.com/blog/the-level-10-meeting), it’s really useful.
 
+* **Status Updates** - We add a comment to any GitHub issues that are in-flight with two simple pieces of information to maximize async collaboration on a real business schedule: when are we planning to ship and what is standing in our way to make that date?
+
 <h3>Monthly</h3>
 
 * **Releases** - We ship software all the time, but we bundle everything up into monthly releases that culminate on the last Friday of each month. This rhythm helps us plan, drives clarity across the team and allows for non-code work like documentation, demos, Q/A, and communications that are dependent on how the product evolves. Expect changelogs around this time!

@@ -6,7 +6,7 @@
  * Downloads operator source repositories and generates MDX documentation from CRD definitions.
  */
 
-import { readFile, access, stat, mkdir, rm } from 'node:fs/promises';
+import { readFile, writeFile, access, stat, mkdir, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
@@ -147,6 +147,37 @@ async function generateDocs(): Promise<void> {
 
   if (stdout) console.log(stdout);
   if (stderr) console.error(stderr);
+
+  // Post-process to escape MDX special characters
+  let content = await readFile(OUTPUT_FILE, 'utf-8');
+
+  // Escape special characters that MDX interprets as JSX
+  content = content
+    .split('\n')
+    .map((line) => {
+      const trimmed = line.trim();
+
+      // In table rows, numbered lists, or bullet lists, escape everything
+      if (line.startsWith('|') || /^\d+\./.test(trimmed) || trimmed.startsWith('-')) {
+        // Replace multi-character operators first, then single characters
+        return line
+          .replace(/<=/g, '&lt;=')
+          .replace(/>=/g, '&gt;=')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      // Escape curly braces in links (they can appear anywhere)
+      // Pattern: {text} inside markdown links [...](...)
+      if (line.includes('](') && (line.includes('{') || line.includes('}'))) {
+        line = line.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+      }
+
+      return line;
+    })
+    .join('\n');
+
+  await writeFile(OUTPUT_FILE, content, 'utf-8');
 
   const stats = await stat(OUTPUT_FILE);
   const sizeKB = (stats.size / 1024).toFixed(1);

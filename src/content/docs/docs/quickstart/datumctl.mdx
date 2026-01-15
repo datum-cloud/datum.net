@@ -36,6 +36,21 @@ mkdir -p ~/.local/bin
 mv ./datumctl ~/.local/bin/datumctl
 ```
 
+### Mac or Linux with nix
+
+Standard nix flake setup:
+
+```
+# Pick latest from git
+nix run github:datum-cloud/datumctl
+
+# Specify version
+nix run github:datum-cloud/datumctl/<SHA or version>
+```
+
+You can also incorporate it into your home-manager build or other
+flake so that it's available in a custom environment.
+
 ### Go with Go [v1.XX](http://v1.xx)+
 
 You must have Go version [1.XX](http://1.xx) or better for this to work as expected.

@@ -12,6 +12,7 @@ import compressor from 'astro-compressor';
 
 import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
+import databaseMigration from './src/plugins/databaseMigration.ts';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 
@@ -192,6 +193,7 @@ export default defineConfig({
       gzip: true,
       brotli: true,
     }),
+    databaseMigration(),
   ],
   vite: {
     plugins: [tailwindcss()],

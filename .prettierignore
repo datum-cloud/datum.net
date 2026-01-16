@@ -5,6 +5,9 @@ dist/
 # Dependencies
 node_modules/
 
+# Temporary files
+.tmp/
+
 # Generated files
 *.generated.*
 *.min.*

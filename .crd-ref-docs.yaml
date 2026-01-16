@@ -1,0 +1,8 @@
+# crd-ref-docs configuration
+# This is a minimal config file for the crd-ref-docs tool
+# The tool looks for this by default, though we override most settings via CLI flags
+
+processor:
+  # Ignore certain fields
+  ignoreFields:
+    - TypeMeta

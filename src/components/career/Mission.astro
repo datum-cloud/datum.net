@@ -1,8 +1,9 @@
 ---
 // src/components/career/Mission.astro
-import illustration from '@content/about/images/about.png';
+import illustration from '@content/careers/images/careers.png';
 import { Image } from 'astro:assets';
 import { render, type CollectionEntry } from 'astro:content';
+import Button from '@components/Button.astro';
 
 const { content } = Astro.props as { content: CollectionEntry<'pages'> };
 const { Content } = await render(content);
@@ -32,6 +33,10 @@ const { Content } = await render(content);
         </h1>
         <div class="datum-text-xl">
           <Content />
+
+          <div class="mt-8 flex">
+            <Button href="#roles" class="btn btn--alpha" text="View open roles" />
+          </div>
         </div>
       </div>
     </div>

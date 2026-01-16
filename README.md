@@ -83,6 +83,61 @@ src/content/blog/from-cage-nuts-to-kubernetes.mdx
 ![Routing security dashboard UI](/src/content/blog/assets/images/from-cage-3.png#right)
 ```
 
+## API Documentation Generation
+
+The API reference documentation is auto-generated from the CRD (Custom Resource
+Definition) source code in the operator repositories.
+
+### Prerequisites
+
+- Go (version 1.20+)
+- Node.js (version 18+)
+- curl, unzip (for downloading source archives)
+
+### Generating API Documentation
+
+To regenerate the API reference documentation:
+
+```bash
+npm run generate:api-docs
+```
+
+This single command:
+
+1. Cleans any previous temporary files
+2. Installs the crd-ref-docs tool (if needed)
+3. Downloads the configured operator repositories
+4. Extracts CRD definitions from Go source code
+5. Generates MDX documentation using templates
+6. Outputs to `src/content/docs/docs/api/reference.mdx`
+
+Temporary files are automatically cleaned up at the start of each run.
+
+### Configuration
+
+API documentation generation is configured in:
+
+- `.api-docs-config.yaml` - Source repository versions and settings
+- `.crd-ref-docs.yaml` - CRD documentation tool configuration
+- `templates/api-docs/` - MDX templates for documentation rendering
+
+### Automated Version Updates
+
+Renovate automatically:
+
+1. Tracks operator releases
+2. Detects new versions from GitHub releases
+3. Creates a weekly PR (before 3am Monday) with:
+   - Updated versions in `.api-docs-config.yaml`
+   - All operators grouped in a single PR
+
+A GitHub Actions workflow automatically regenerates the API documentation when
+Renovate opens a PR that modifies `.api-docs-config.yaml`, committing the
+updated docs to the same PR.
+
+For manual updates, edit version numbers in `.api-docs-config.yaml` and run `npm
+run generate:api-docs`.
+
 ## Docker Setup
 
 ### Prerequisites

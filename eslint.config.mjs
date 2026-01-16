@@ -21,6 +21,7 @@ export default defineConfig([
     '**/dist/',
     '**/.astro/',
     '**/node_modules/',
+    '**/.tmp/',
     '**/*.generated.*',
     '**/*.min.*',
     '**/*.log',

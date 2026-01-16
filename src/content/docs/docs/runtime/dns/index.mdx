@@ -1,7 +1,7 @@
 ---
-title: "Datum DNS"
+title: "DNS Overview"
 sidebar:
-  order: 2
+  order: 1
 meta:
   title: "Datum Programmatic Authoritative DNS Management"
   description: "Manage authoritative DNS with Datum. Built on PowerDNS and HickoryDNS, our globally distributed service offers high-performance, programmable DNS records."
@@ -21,6 +21,12 @@ Fast, reliable authoritative DNS hosting for your domains. Manage DNS zones thro
 6. Audit Log – Track all zone and record changes with user attribution and timestamps
 7. Project Scoped – Manage zones within individual projects with role-based access control
 
+## DNS record types & behaviors
+
+Most record types are standardized (A, AAAA, CNAME, etc.), but some DNS “record-like” features are provider-specific behaviors (for example, “CNAME flattening”).
+
+See [ALIAS (“CNAME flattening”)](./alias/) for details.
+
 ## Concepts and Definitions
 
 1. **DNS Zone -** A DNS zone is a segment of the Domain Name System that contains the DNS records for one domain or subdomain, managed as a single administrative unit.
@@ -29,3 +35,4 @@ Fast, reliable authoritative DNS hosting for your domains. Manage DNS zones thro
 4. **DNS Record -** A DNS record is an individual entry within a DNS zone that maps a domain name to a specific resource, such as an IP address, mail server, or another domain.
 5. **BIND Format -** BIND format is a standardized text format used to represent DNS zone files, listing all the records and settings that define a domain’s configuration.
 6. **Domain Connect -** Domain Connect is an open standard that allows web services and domain registrars to automatically configure DNS settings for users with simple authorization.
+

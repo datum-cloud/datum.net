@@ -8,8 +8,7 @@ meta:
 ---
 
 ExportPolicies allow users to export telemetry data to the telemetry provider of their choice. Here use Grafana Cloud as a target for data export. We provide a nice user experience for users wanting to export telemetry data to Grafana Cloud.
-This tutorial shows you how to export metrics from your Datum platform to
-Grafana Cloud using an ExportPolicy and Secret.
+This tutorial shows you how to export metrics from your Datum project to Grafana Cloud using an ExportPolicy and Secret.
 
 ## Before you begin
 
@@ -46,10 +45,7 @@ remote_write:
       username: 123456
       password: glc_eyJvIjoiNzA2...
 ```
-7. Return to the Export to Grafana Cloud Configuration and Paste the prometheus.yaml into the Configure Prometheus remote_write field and **Submit**
-
-
-
+7. Return to the export policy configuration in the Datum portal and paste the yaml into the remote_write field before submitting
 
 ## Step 2: View metrics in Grafana Cloud
 

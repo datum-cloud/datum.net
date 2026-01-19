@@ -91,7 +91,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `startTime` &lt;br /&gt;_string_ | StartTime is the beginning of your search window (inclusive).&lt;br /&gt;Format Options:&lt;br /&gt;- Relative: "now-30d", "now-2h", "now-30m" (units: s, m, h, d, w)&lt;br /&gt;  Use for dashboards and recurring queries - they adjust automatically.&lt;br /&gt;- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)&lt;br /&gt;  Use for historical analysis of specific time periods.&lt;br /&gt;Examples:&lt;br /&gt;  "now-30d"                     → 30 days ago&lt;br /&gt;  "2024-06-15T14:30:00-05:00"   → specific time with timezone offset |  |  |
 | `endTime` &lt;br /&gt;_string_ | EndTime is the end of your search window (exclusive).&lt;br /&gt;Uses the same formats as StartTime. Commonly "now" for current moment.&lt;br /&gt;Must be greater than StartTime.&lt;br /&gt;Examples:&lt;br /&gt;  "now"                  → current time&lt;br /&gt;  "2024-01-02T00:00:00Z" → specific end point |  |  |
-| `filter` &lt;br /&gt;_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.&lt;br /&gt;Available Fields:&lt;br /&gt;  verb               - API action: get, list, create, update, patch, delete, watch&lt;br /&gt;  auditID            - unique event identifier&lt;br /&gt;  stageTimestamp     - when this stage occurred (RFC3339 timestamp)&lt;br /&gt;  user.username      - who made the request (user or service account)&lt;br /&gt;  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)&lt;br /&gt;  objectRef.namespace - target resource namespace&lt;br /&gt;  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)&lt;br /&gt;  objectRef.name     - specific resource name&lt;br /&gt;Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in&lt;br /&gt;String Functions: startsWith(), endsWith(), contains()&lt;br /&gt;Common Patterns:&lt;br /&gt;  "verb == 'delete'"                                    - All deletions&lt;br /&gt;  "objectRef.namespace == 'production'"                 - Activity in production namespace&lt;br /&gt;  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations&lt;br /&gt;  "responseStatus.code &gt;= 400"                          - Failed requests&lt;br /&gt;  "user.username.startsWith('system:serviceaccount:')"  - Service account activity&lt;br /&gt;  "objectRef.resource == 'secrets'"                     - Secret access&lt;br /&gt;  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions&lt;br /&gt;Note: Use single quotes for strings. Field names are case-sensitive.&lt;br /&gt;CEL reference: https://cel.dev |  |  |
+| `filter` &lt;br /&gt;_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.&lt;br /&gt;Available Fields:&lt;br /&gt;  verb               - API action: get, list, create, update, patch, delete, watch&lt;br /&gt;  auditID            - unique event identifier&lt;br /&gt;  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)&lt;br /&gt;  user.username      - who made the request (user or service account)&lt;br /&gt;  user.uid           - unique user identifier (stable across username changes)&lt;br /&gt;  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)&lt;br /&gt;  objectRef.namespace - target resource namespace&lt;br /&gt;  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)&lt;br /&gt;  objectRef.name     - specific resource name&lt;br /&gt;Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in&lt;br /&gt;String Functions: startsWith(), endsWith(), contains()&lt;br /&gt;Common Patterns:&lt;br /&gt;  "verb == 'delete'"                                    - All deletions&lt;br /&gt;  "objectRef.namespace == 'production'"                 - Activity in production namespace&lt;br /&gt;  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations&lt;br /&gt;  "responseStatus.code &gt;= 400"                          - Failed requests&lt;br /&gt;  "user.username.startsWith('system:serviceaccount:')"  - Service account activity&lt;br /&gt;  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID&lt;br /&gt;  "objectRef.resource == 'secrets'"                     - Secret access&lt;br /&gt;  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions&lt;br /&gt;Note: Use single quotes for strings. Field names are case-sensitive.&lt;br /&gt;CEL reference: https://cel.dev |  |  |
 | `limit` &lt;br /&gt;_integer_ | Limit sets the maximum number of results per page.&lt;br /&gt;Default: 100, Maximum: 1000.&lt;br /&gt;Use smaller values (10-50) for exploration, larger (500-1000) for data collection.&lt;br /&gt;Use continue to fetch additional pages. |  |  |
 | `continue` &lt;br /&gt;_string_ | Continue is the pagination cursor for fetching additional pages.&lt;br /&gt;Leave empty for the first page. If status.continue is non-empty after a query,&lt;br /&gt;copy that value here in a new query with identical parameters to get the next page.&lt;br /&gt;Repeat until status.continue is empty.&lt;br /&gt;Important: Keep all other parameters (startTime, endTime, filter, limit) identical&lt;br /&gt;across paginated requests. The cursor is opaque - copy it exactly without modification. |  |  |
 
@@ -109,7 +109,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `results` &lt;br /&gt;_Event array_ | Results contains matching audit events, sorted newest-first.&lt;br /&gt;Each event follows the Kubernetes audit.Event format with fields like:&lt;br /&gt;  verb, user.username, objectRef.\{namespace,resource,name\}, stageTimestamp,&lt;br /&gt;  responseStatus.code, requestObject, responseObject&lt;br /&gt;Empty results? Try broadening your filter or time range.&lt;br /&gt;Full documentation: https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/ |  |  |
+| `results` &lt;br /&gt;_Event array_ | Results contains matching audit events, sorted newest-first.&lt;br /&gt;Each event follows the Kubernetes audit.Event format with fields like:&lt;br /&gt;  verb, user.username, objectRef.\{namespace,resource,name\}, requestReceivedTimestamp,&lt;br /&gt;  stageTimestamp, responseStatus.code, requestObject, responseObject&lt;br /&gt;Empty results? Try broadening your filter or time range.&lt;br /&gt;Full documentation: https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/ |  |  |
 | `continue` &lt;br /&gt;_string_ | Continue is the pagination cursor.&lt;br /&gt;Non-empty means more results are available - copy this to spec.continue for the next page.&lt;br /&gt;Empty means you have all results. |  |  |
 | `effectiveStartTime` &lt;br /&gt;_string_ | EffectiveStartTime is the actual start time used for this query (RFC3339 format).&lt;br /&gt;When you use relative times like "now-7d", this shows the exact timestamp that was&lt;br /&gt;calculated. Useful for understanding exactly what time range was queried, especially&lt;br /&gt;for auditing, debugging, or recreating queries with absolute timestamps.&lt;br /&gt;Example: If you query with startTime="now-7d" at 2025-12-17T12:00:00Z,&lt;br /&gt;this will be "2025-12-10T12:00:00Z". |  |  |
 | `effectiveEndTime` &lt;br /&gt;_string_ | EffectiveEndTime is the actual end time used for this query (RFC3339 format).&lt;br /&gt;When you use relative times like "now", this shows the exact timestamp that was&lt;br /&gt;calculated. Useful for understanding exactly what time range was queried.&lt;br /&gt;Example: If you query with endTime="now" at 2025-12-17T12:00:00Z,&lt;br /&gt;this will be "2025-12-17T12:00:00Z". |  |  |
@@ -264,6 +264,23 @@ _Appears in:_
 | `content` &lt;br /&gt;_string_ |  |  | Format: ipv6 &lt;br /&gt; |
 
 
+#### ALIASRecordSpec
+
+
+
+ALIASRecordSpec is like CNAME but intended for providers that implement an ALIAS/ANAME-style record.
+The content is a hostname (FQDN or relative) with an optional trailing dot.
+
+
+
+_Appears in:_
+- [RecordEntry](#recordentry)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `content` &lt;br /&gt;_string_ |  |  | MaxLength: 253 &lt;br /&gt;MinLength: 1 &lt;br /&gt;Pattern: `^([A-Za-z0-9_](?:[-A-Za-z0-9_]\{0,61\}[A-Za-z0-9_])?)(?:\.([A-Za-z0-9_](?:[-A-Za-z0-9_]\{0,61\}[A-Za-z0-9_])?))*\.?$` &lt;br /&gt; |
+
+
 #### ARecordSpec
 
 
@@ -366,7 +383,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `dnsZoneRef` &lt;br /&gt;_[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#localobjectreference-v1-core)_ | DNSZoneRef references the DNSZone (same namespace) this recordset belongs to. |  | Required: \{\} &lt;br /&gt; |
-| `recordType` &lt;br /&gt;_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] &lt;br /&gt;Required: \{\} &lt;br /&gt; |
+| `recordType` &lt;br /&gt;_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] &lt;br /&gt;Required: \{\} &lt;br /&gt; |
 | `records` &lt;br /&gt;_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType. |  | MinItems: 1 &lt;br /&gt; |
 
 
@@ -617,7 +634,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `recordType` &lt;br /&gt;_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] &lt;br /&gt;Required: \{\} &lt;br /&gt; |
+| `recordType` &lt;br /&gt;_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] &lt;br /&gt;Required: \{\} &lt;br /&gt; |
 | `records` &lt;br /&gt;_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType.&lt;br /&gt;The RecordEntry schema is shared with DNSRecordSet for easy translation. |  |  |
 
 
@@ -761,7 +778,7 @@ _Underlying type:_ _string_
 
 
 _Validation:_
-- Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB]
+- Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB]
 
 _Appears in:_
 - [DNSRecordSetSpec](#dnsrecordsetspec)
@@ -770,6 +787,7 @@ _Appears in:_
 | Field | Description |
 | `A` |  |
 | `AAAA` |  |
+| `ALIAS` |  |
 | `CNAME` |  |
 | `TXT` |  |
 | `MX` |  |
@@ -802,6 +820,7 @@ _Appears in:_
 | `a` &lt;br /&gt;_[ARecordSpec](#arecordspec)_ | Exactly one of the following type-specific fields should be set matching RecordType. |  |  |
 | `aaaa` &lt;br /&gt;_[AAAARecordSpec](#aaaarecordspec)_ |  |  |  |
 | `cname` &lt;br /&gt;_[CNAMERecordSpec](#cnamerecordspec)_ |  |  |  |
+| `alias` &lt;br /&gt;_[ALIASRecordSpec](#aliasrecordspec)_ |  |  |  |
 | `ns` &lt;br /&gt;_[NSRecordSpec](#nsrecordspec)_ |  |  |  |
 | `txt` &lt;br /&gt;_[TXTRecordSpec](#txtrecordspec)_ |  |  |  |
 | `soa` &lt;br /&gt;_[SOARecordSpec](#soarecordspec)_ |  |  |  |

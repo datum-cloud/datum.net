@@ -14,6 +14,8 @@ meta:
 contents:
   - slug: about
     label: Company
+  - slug: eos
+    label: EOS Toolset
   - slug: product
     label: "What We’re Building"
   - slug: technical

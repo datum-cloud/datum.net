@@ -4,7 +4,6 @@
 import { Cache } from '@libs/cache';
 
 const cache = new Cache('.cache');
-
 export interface LumaGeoAddress {
   address?: string;
   city?: string;
@@ -89,6 +88,15 @@ function isValidCachedData(data: unknown): data is { upcoming: LumaEvent[]; past
 }
 
 /**
+ * Retrieves the current Luma API key from environment variables.
+ * Looks for `LUMA_API_KEY` in both Vite and Node.js process environments.
+ * @returns The API key as a string if found, otherwise null.
+ */
+function getApiKey(): string | null {
+  return import.meta.env.LUMA_API_KEY || process.env.LUMA_API_KEY || null;
+}
+
+/**
  * Fetch all events from Luma API
  * Uses the calendar/list-events endpoint as per Luma API documentation
  * @see https://docs.luma.com/reference/get_v1-calendar-list-events
@@ -109,17 +117,18 @@ export async function fetchLumaEvents(): Promise<{
     }
   }
 
-  const apiKey = import.meta.env.LUMA_API_KEY || process.env.LUMA_API_KEY;
+  const apiKey = getApiKey();
 
   if (!apiKey) {
-    throw new Error('LUMA_API_KEY is not configured');
+    console.warn('LUMA_API_KEY is not configured. Returning empty events list.');
+    return { upcoming: [], past: [] };
   }
 
   try {
     const response = await fetch(`${LUMA_API_BASE_URL}calendar/list-events`, {
       method: 'GET',
       headers: {
-        'x-luma-api-key': apiKey,
+        'x-luma-api-key': apiKey as string,
         'Content-Type': 'application/json',
       },
     });
@@ -150,6 +159,7 @@ export async function fetchLumaEvents(): Promise<{
     return result;
   } catch (error) {
     console.error('Error fetching Luma events:', error);
-    throw error;
+    // Return empty arrays instead of throwing to allow build to continue
+    return { upcoming: [], past: [] };
   }
 }

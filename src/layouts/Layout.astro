@@ -263,23 +263,6 @@ const twitterImage =
     </script>
 
     {/* Marker.io - Load on idle for feedback collection */}
-    <script is:inline data-production={isProduction ? 'true' : 'false'}>
-      (function () {
-        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
-        if (!isProduction) return;
-
-        function loadMarker() {
-          var script = document.createElement('script');
-          script.src = '/scripts/markerio.js';
-          script.defer = true;
-          document.body.appendChild(script);
-        }
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadMarker, { timeout: 4000 });
-        } else {
-          setTimeout(loadMarker, 3000);
-        }
-      })();
-    </script>
+    {import.meta.env.MODE === 'production' && <script src="/scripts/markerio.js" defer is:inline />}
   </body>
 </html>

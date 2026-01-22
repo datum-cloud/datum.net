@@ -32,17 +32,39 @@ export class Cache {
     const expiresPath = path.join(this.cacheDir, `${key}.expires`);
 
     if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf-8');
-      const expirationTime = fs.existsSync(expiresPath)
-        ? JSON.parse(fs.readFileSync(expiresPath, 'utf-8'))
-        : null;
+      try {
+        const data = fs.readFileSync(filePath, 'utf-8');
 
-      if (expirationTime && Date.now() > expirationTime) {
+        // Check if file is empty or whitespace only
+        if (!data.trim()) {
+          console.warn(`Cache file for key "${key}" is empty, clearing cache`);
+          this.clear(key);
+          return null;
+        }
+
+        let expirationTime: number | null = null;
+        if (fs.existsSync(expiresPath)) {
+          try {
+            const expiresData = fs.readFileSync(expiresPath, 'utf-8');
+            expirationTime = JSON.parse(expiresData);
+          } catch (error) {
+            console.warn(`Invalid expiration file for key "${key}", clearing cache:`, error);
+            this.clear(key);
+            return null;
+          }
+        }
+
+        if (expirationTime && Date.now() > expirationTime) {
+          this.clear(key);
+          return null;
+        }
+
+        return JSON.parse(data) as T;
+      } catch (error) {
+        console.warn(`Failed to parse cache file for key "${key}":`, error);
         this.clear(key);
         return null;
       }
-
-      return JSON.parse(data) as T;
     }
     return null;
   }
@@ -70,14 +92,33 @@ export class Cache {
     const expiresPath = path.join(this.cacheDir, `${key}.expires`);
 
     if (fs.existsSync(filePath)) {
-      if (fs.existsSync(expiresPath)) {
-        const expirationTime = JSON.parse(fs.readFileSync(expiresPath, 'utf-8'));
-        if (Date.now() > expirationTime) {
+      try {
+        // Check if file is empty
+        const data = fs.readFileSync(filePath, 'utf-8');
+        if (!data.trim()) {
           this.clear(key);
           return false;
         }
+
+        if (fs.existsSync(expiresPath)) {
+          try {
+            const expirationTime = JSON.parse(fs.readFileSync(expiresPath, 'utf-8'));
+            if (Date.now() > expirationTime) {
+              this.clear(key);
+              return false;
+            }
+          } catch (error) {
+            console.warn(`Invalid expiration file for key "${key}", clearing cache:`, error);
+            this.clear(key);
+            return false;
+          }
+        }
+        return true;
+      } catch (error) {
+        console.warn(`Error checking cache for key "${key}":`, error);
+        this.clear(key);
+        return false;
       }
-      return true;
     }
     return false;
   }

@@ -49,6 +49,46 @@ export interface LumaEventsResponse {
 const LUMA_API_BASE_URL = 'https://public-api.luma.com/v1/';
 
 /**
+ * Validates that an object is a valid LumaEvent
+ * @param obj - The object to validate
+ * @returns True if the object is a valid LumaEvent
+ */
+function isValidLumaEvent(obj: unknown): obj is LumaEvent {
+  if (!obj || typeof obj !== 'object') {
+    return false;
+  }
+
+  const event = obj as Record<string, unknown>;
+  return (
+    typeof event.id === 'string' &&
+    typeof event.api_id === 'string' &&
+    typeof event.name === 'string' &&
+    typeof event.start_at === 'string' &&
+    typeof event.end_at === 'string' &&
+    typeof event.timezone === 'string' &&
+    typeof event.url === 'string'
+  );
+}
+
+/**
+ * Validates that cached data has the correct structure with LumaEvent objects
+ * @param data - The cached data to validate
+ * @returns True if the data structure is valid
+ */
+function isValidCachedData(data: unknown): data is { upcoming: LumaEvent[]; past: LumaEvent[] } {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  const cached = data as Record<string, unknown>;
+  if (!Array.isArray(cached.upcoming) || !Array.isArray(cached.past)) {
+    return false;
+  }
+
+  return cached.upcoming.every(isValidLumaEvent) && cached.past.every(isValidLumaEvent);
+}
+
+/**
  * Fetch all events from Luma API
  * Uses the calendar/list-events endpoint as per Luma API documentation
  * @see https://docs.luma.com/reference/get_v1-calendar-list-events
@@ -61,8 +101,11 @@ export async function fetchLumaEvents(): Promise<{
 
   if (cache.has(cacheKey)) {
     const cached = cache.get<{ upcoming: LumaEvent[]; past: LumaEvent[] }>(cacheKey);
-    if (cached) {
+    if (cached && isValidCachedData(cached)) {
       return cached;
+    }
+    if (cached) {
+      console.warn('Invalid cached Luma events data detected, fetching fresh data from API');
     }
   }
 

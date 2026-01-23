@@ -89,11 +89,11 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `startTime` <br />_string_ | StartTime is the beginning of your search window (inclusive).<br />Format Options:<br />- Relative: "now-30d", "now-2h", "now-30m" (units: s, m, h, d, w)<br />  Use for dashboards and recurring queries - they adjust automatically.<br />- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)<br />  Use for historical analysis of specific time periods.<br />Examples:<br />  "now-30d"                     → 30 days ago<br />  "2024-06-15T14:30:00-05:00"   → specific time with timezone offset |  |  |
-| `endTime` <br />_string_ | EndTime is the end of your search window (exclusive).<br />Uses the same formats as StartTime. Commonly "now" for current moment.<br />Must be greater than StartTime.<br />Examples:<br />  "now"                  → current time<br />  "2024-01-02T00:00:00Z" → specific end point |  |  |
-| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br />CEL reference: https://cel.dev |  |  |
-| `limit` <br />_integer_ | Limit sets the maximum number of results per page.<br />Default: 100, Maximum: 1000.<br />Use smaller values (10-50) for exploration, larger (500-1000) for data collection.<br />Use continue to fetch additional pages. |  |  |
-| `continue` <br />_string_ | Continue is the pagination cursor for fetching additional pages.<br />Leave empty for the first page. If status.continue is non-empty after a query,<br />copy that value here in a new query with identical parameters to get the next page.<br />Repeat until status.continue is empty.<br />Important: Keep all other parameters (startTime, endTime, filter, limit) identical<br />across paginated requests. The cursor is opaque - copy it exactly without modification. |  |  |
+| `startTime` <br />_string_ | StartTime is the beginning of your search window (inclusive).<br /><br />Format Options:<br />- Relative: "now-30d", "now-2h", "now-30m" (units: s, m, h, d, w)<br />  Use for dashboards and recurring queries - they adjust automatically.<br />- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)<br />  Use for historical analysis of specific time periods.<br /><br />Examples:<br />  "now-30d"                     → 30 days ago<br />  "2024-06-15T14:30:00-05:00"   → specific time with timezone offset |  |  |
+| `endTime` <br />_string_ | EndTime is the end of your search window (exclusive).<br /><br />Uses the same formats as StartTime. Commonly "now" for current moment.<br /><br />Must be greater than StartTime.<br /><br />Examples:<br />  "now"                  → current time<br />  "2024-01-02T00:00:00Z" → specific end point |  |  |
+| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br /><br />CEL reference: https://cel.dev |  |  |
+| `limit` <br />_integer_ | Limit sets the maximum number of results per page.<br /><br />Default: 100, Maximum: 1000.<br /><br />Use smaller values (10-50) for exploration, larger (500-1000) for data collection.<br /><br />Use continue to fetch additional pages. |  |  |
+| `continue` <br />_string_ | Continue is the pagination cursor for fetching additional pages.<br /><br />Leave empty for the first page. If status.continue is non-empty after a query,<br />copy that value here in a new query with identical parameters to get the next page.<br /><br />Repeat until status.continue is empty.<br /><br />Important: Keep all other parameters (startTime, endTime, filter, limit) identical<br />across paginated requests. The cursor is opaque - copy it exactly without modification. |  |  |
 
 
 #### AuditLogQueryStatus
@@ -109,10 +109,10 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `results` <br />_Event array_ | Results contains matching audit events, sorted newest-first.<br />Each event follows the Kubernetes audit.Event format with fields like:<br />  verb, user.username, objectRef.\{namespace,resource,name\}, requestReceivedTimestamp,<br />  stageTimestamp, responseStatus.code, requestObject, responseObject<br />Empty results? Try broadening your filter or time range.<br />Full documentation: https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/ |  |  |
-| `continue` <br />_string_ | Continue is the pagination cursor.<br />Non-empty means more results are available - copy this to spec.continue for the next page.<br />Empty means you have all results. |  |  |
-| `effectiveStartTime` <br />_string_ | EffectiveStartTime is the actual start time used for this query (RFC3339 format).<br />When you use relative times like "now-7d", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried, especially<br />for auditing, debugging, or recreating queries with absolute timestamps.<br />Example: If you query with startTime="now-7d" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-10T12:00:00Z". |  |  |
-| `effectiveEndTime` <br />_string_ | EffectiveEndTime is the actual end time used for this query (RFC3339 format).<br />When you use relative times like "now", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried.<br />Example: If you query with endTime="now" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-17T12:00:00Z". |  |  |
+| `results` <br />_Event array_ | Results contains matching audit events, sorted newest-first.<br /><br />Each event follows the Kubernetes audit.Event format with fields like:<br />  verb, user.username, objectRef.\{namespace,resource,name\}, requestReceivedTimestamp,<br />  stageTimestamp, responseStatus.code, requestObject, responseObject<br />Empty results? Try broadening your filter or time range.<br /><br />Full documentation: https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/ |  |  |
+| `continue` <br />_string_ | Continue is the pagination cursor.<br /><br />Non-empty means more results are available - copy this to spec.continue for the next page.<br /><br />Empty means you have all results. |  |  |
+| `effectiveStartTime` <br />_string_ | EffectiveStartTime is the actual start time used for this query (RFC3339 format).<br /><br />When you use relative times like "now-7d", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried, especially<br />for auditing, debugging, or recreating queries with absolute timestamps.<br /><br />Example: If you query with startTime="now-7d" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-10T12:00:00Z". |  |  |
+| `effectiveEndTime` <br />_string_ | EffectiveEndTime is the actual end time used for this query (RFC3339 format).<br /><br />When you use relative times like "now", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried.<br /><br />Example: If you query with endTime="now" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-17T12:00:00Z". |  |  |
 
 
 
@@ -183,8 +183,8 @@ _Appears in:_
 | `interactionTime` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | InteractionTime is the timestamp of the interaction with the subject. |  | Optional: \{\} <br /> |
 | `nextAction` <br />_string_ | NextAction is an optional follow-up action. |  | Optional: \{\} <br /> |
 | `nextActionTime` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | NextActionTime is the timestamp for the follow-up action. |  | Optional: \{\} <br /> |
-| `followUp` <br />_boolean_ | FollowUp indicates whether this note requires follow-up.<br />When true, the note is being actively tracked for further action. | false | Optional: \{\} <br /> |
-| `creatorRef` <br />_[UserReference](#userreference)_ | CreatorRef is a reference to the user that created the note.<br />Defaults to the user that created the note. |  | Optional: \{\} <br /> |
+| `followUp` <br />_boolean_ | FollowUp indicates whether this note requires follow-up.<br /><br />When true, the note is being actively tracked for further action. | false | Optional: \{\} <br /> |
+| `creatorRef` <br />_[UserReference](#userreference)_ | CreatorRef is a reference to the user that created the note.<br /><br />Defaults to the user that created the note. |  | Optional: \{\} <br /> |
 
 
 #### NoteStatus
@@ -221,7 +221,7 @@ _Appears in:_
 | `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced. |  | Enum: [iam.miloapis.com notification.miloapis.com] <br />Required: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Enum: [User Contact] <br />Required: \{\} <br /> |
 | `name` <br />_string_ | Name is the name of resource being referenced. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br /><br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
 
 
 
@@ -618,7 +618,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `recordType` <br />_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] <br />Required: \{\} <br /> |
-| `records` <br />_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType.<br />The RecordEntry schema is shared with DNSRecordSet for easy translation. |  |  |
+| `records` <br />_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType.<br /><br />The RecordEntry schema is shared with DNSRecordSet for easy translation. |  |  |
 
 
 #### DomainRef
@@ -702,7 +702,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `content` <br />_string_ | Require a hostname (FQDN or relative), allow optional trailing dot, no underscores.<br />Labels: 1-63 chars, alphanum with interior hyphens, total length &lt;=253. |  | MaxLength: 253 <br />MinLength: 1 <br />Pattern: `^([A-Za-z0-9](?:[A-Za-z0-9-]\{0,61\}[A-Za-z0-9])?)(?:\.([A-Za-z0-9](?:[A-Za-z0-9-]\{0,61\}[A-Za-z0-9])?))*\.?$` <br /> |
+| `content` <br />_string_ | Require a hostname (FQDN or relative), allow optional trailing dot, no underscores.<br /><br />Labels: 1-63 chars, alphanum with interior hyphens, total length &lt;=253. |  | MaxLength: 253 <br />MinLength: 1 <br />Pattern: `^([A-Za-z0-9](?:[A-Za-z0-9-]\{0,61\}[A-Za-z0-9])?)(?:\.([A-Za-z0-9](?:[A-Za-z0-9-]\{0,61\}[A-Za-z0-9])?))*\.?$` <br /> |
 
 
 #### NameServerPolicy
@@ -1073,8 +1073,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User that is a member of the Group.<br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
-| `groupRef` <br />_[GroupReference](#groupreference)_ | GroupRef is a reference to the Group.<br />Group is a namespaced resource. |  | Required: \{\} <br /> |
+| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User that is a member of the Group.<br /><br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
+| `groupRef` <br />_[GroupReference](#groupreference)_ | GroupRef is a reference to the Group.<br /><br />Group is a namespaced resource. |  | Required: \{\} <br /> |
 
 
 #### GroupMembershipStatus
@@ -1199,8 +1199,8 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `machineAccountName` <br />_string_ | MachineAccountName is the name of the MachineAccount that owns this key. |  | Required: \{\} <br /> |
-| `expirationDate` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ExpirationDate is the date and time when the MachineAccountKey will expire.<br />If not specified, the MachineAccountKey will never expire. |  | Optional: \{\} <br /> |
-| `publicKey` <br />_string_ | PublicKey is the public key of the MachineAccountKey.<br />If not specified, the MachineAccountKey will be created with an auto-generated public key. |  | Optional: \{\} <br /> |
+| `expirationDate` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ExpirationDate is the date and time when the MachineAccountKey will expire.<br /><br />If not specified, the MachineAccountKey will never expire. |  | Optional: \{\} <br /> |
+| `publicKey` <br />_string_ | PublicKey is the public key of the MachineAccountKey.<br /><br />If not specified, the MachineAccountKey will be created with an auto-generated public key. |  | Optional: \{\} <br /> |
 
 
 #### MachineAccountKeyStatus
@@ -1216,7 +1216,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `authProviderKeyId` <br />_string_ | AuthProviderKeyID is the unique identifier for the key in the auth provider.<br />This field is populated by the controller after the key is created in the auth provider.<br />For example, when using Zitadel, a typical value might be: "326102453042806786" |  |  |
+| `authProviderKeyId` <br />_string_ | AuthProviderKeyID is the unique identifier for the key in the auth provider.<br /><br />This field is populated by the controller after the key is created in the auth provider.<br /><br />For example, when using Zitadel, a typical value might be: "326102453042806786" |  |  |
 | `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the MachineAccountKey. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
 
 
@@ -1251,7 +1251,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `state` <br />_string_ | The state of the machine account. This state can be safely changed as needed.<br />States:<br />  - Active: The machine account can be used to authenticate.<br />  - Inactive: The machine account is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br />Optional: \{\} <br /> |
+| `state` <br />_string_ | The state of the machine account. This state can be safely changed as needed.<br /><br />States:<br />  - Active: The machine account can be used to authenticate.<br />  - Inactive: The machine account is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br />Optional: \{\} <br /> |
 
 
 #### MachineAccountStatus
@@ -1268,7 +1268,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `email` <br />_string_ | The computed email of the machine account following the pattern:<br />\{metadata.name\}@\{metadata.namespace\}.\{project.metadata.name\}.\{global-suffix\} |  |  |
-| `state` <br />_string_ | State represents the current activation state of the machine account from the auth provider.<br />This field tracks the state from the previous generation and is updated when state changes<br />are successfully propagated to the auth provider. It helps optimize performance by only<br />updating the auth provider when a state change is detected. |  | Enum: [Active Inactive] <br /> |
+| `state` <br />_string_ | State represents the current activation state of the machine account from the auth provider.<br /><br />This field tracks the state from the previous generation and is updated when state changes<br />are successfully propagated to the auth provider. It helps optimize performance by only<br />updating the auth provider when a state change is detected. |  | Enum: [Active Inactive] <br /> |
 | `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the MachineAccount. |  |  |
 
 
@@ -1285,7 +1285,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br />If APIGroup is not specified, the specified Kind must be in the core API group.<br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br /><br />If APIGroup is not specified, the specified Kind must be in the core API group.<br /><br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Required: \{\} <br /> |
 
 
@@ -1342,7 +1342,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `subjectRef` <br />_[SubjectReference](#subjectreference)_ | SubjectRef is the reference to the subject being approved. |  | Required: \{\} <br /> |
-| `approverRef` <br />_[UserReference](#userreference)_ | ApproverRef is the reference to the approver being approved.<br />If not specified, the approval was made by the system. |  | Optional: \{\} <br /> |
+| `approverRef` <br />_[UserReference](#userreference)_ | ApproverRef is the reference to the approver being approved.<br /><br />If not specified, the approval was made by the system. |  | Optional: \{\} <br /> |
 
 
 #### PlatformAccessRejection
@@ -1399,7 +1399,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `subjectRef` <br />_[UserReference](#userreference)_ | UserRef is the reference to the user being rejected. |  | Required: \{\} <br /> |
 | `reason` <br />_string_ | Reason is the reason for the rejection. |  | Required: \{\} <br /> |
-| `rejecterRef` <br />_[UserReference](#userreference)_ | RejecterRef is the reference to the actor who issued the rejection.<br />If not specified, the rejection was made by the system. |  | Optional: \{\} <br /> |
+| `rejecterRef` <br />_[UserReference](#userreference)_ | RejecterRef is the reference to the actor who issued the rejection.<br /><br />If not specified, the rejection was made by the system. |  | Optional: \{\} <br /> |
 
 
 #### PlatformInvitation
@@ -1477,7 +1477,7 @@ _Appears in:_
 | `email` <br />_string_ | The email of the user being invited. |  | Required: \{\} <br /> |
 | `givenName` <br />_string_ | The given name of the user being invited. |  | Optional: \{\} <br /> |
 | `familyName` <br />_string_ | The family name of the user being invited. |  | Optional: \{\} <br /> |
-| `scheduleAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | The schedule at which the platform invitation will be sent.<br />It can only be updated before the platform invitation is sent. |  | Optional: \{\} <br /> |
+| `scheduleAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | The schedule at which the platform invitation will be sent.<br /><br />It can only be updated before the platform invitation is sent. |  | Optional: \{\} <br /> |
 | `invitedBy` <br />_[UserReference](#userreference)_ | The user who created the platform invitation. A mutation webhook will default this field to the user who made the request. |  |  |
 
 
@@ -1550,7 +1550,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `roleRef` <br />_[RoleReference](#rolereference)_ | RoleRef is a reference to the Role that is being bound.<br />This can be a reference to a Role custom resource. |  | Required: \{\} <br /> |
+| `roleRef` <br />_[RoleReference](#rolereference)_ | RoleRef is a reference to the Role that is being bound.<br /><br />This can be a reference to a Role custom resource. |  | Required: \{\} <br /> |
 | `subjects` <br />_[Subject](#subject) array_ | Subjects holds references to the objects the role applies to. |  | MinItems: 1 <br />Required: \{\} <br /> |
 | `resourceSelector` <br />_[ResourceSelector](#resourceselector)_ | ResourceSelector defines which resources the subjects in the policy binding<br />should have the role applied to. Options within this struct are mutually<br />exclusive. |  | Required: \{\} <br /> |
 
@@ -1606,7 +1606,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `serviceRef` <br />_[ServiceReference](#servicereference)_ | ServiceRef references the service definition this protected resource belongs to. |  | Required: \{\} <br /> |
-| `kind` <br />_string_ | The kind of the resource.<br />This will be in the format `Workload`. |  | Required: \{\} <br /> |
+| `kind` <br />_string_ | The kind of the resource.<br /><br />This will be in the format `Workload`. |  | Required: \{\} <br /> |
 | `singular` <br />_string_ | The singular form for the resource type, e.g. 'workload'. Must follow<br />camelCase format. |  | Required: \{\} <br /> |
 | `plural` <br />_string_ | The plural form for the resource type, e.g. 'workloads'. Must follow<br />camelCase format. |  | Required: \{\} <br /> |
 | `parentResources` <br />_[ParentResourceRef](#parentresourceref) array_ | A list of resources that are registered with the platform that may be a<br />parent to the resource. Permissions may be bound to a parent resource so<br />they can be inherited down the resource hierarchy. |  | Optional: \{\} <br /> |
@@ -1678,11 +1678,11 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br />If APIGroup is not specified, the specified Kind must be in the core API group.<br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced.<br /><br />If APIGroup is not specified, the specified Kind must be in the core API group.<br /><br />For any other third-party types, APIGroup is required. |  | Optional: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Required: \{\} <br /> |
 | `name` <br />_string_ | Name is the name of resource being referenced. |  | Required: \{\} <br /> |
 | `uid` <br />_string_ | UID is the unique identifier of the resource being referenced. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br /><br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
 
 
 #### ResourceSelector
@@ -1699,8 +1699,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `resourceRef` <br />_[ResourceReference](#resourcereference)_ | ResourceRef provides a reference to a specific resource instance.<br />Mutually exclusive with resourceKind. |  | Optional: \{\} <br /> |
-| `resourceKind` <br />_[ResourceKind](#resourcekind)_ | ResourceKind specifies that the policy binding should apply to all resources of a specific kind.<br />Mutually exclusive with resourceRef. |  | Optional: \{\} <br /> |
+| `resourceRef` <br />_[ResourceReference](#resourcereference)_ | ResourceRef provides a reference to a specific resource instance.<br /><br />Mutually exclusive with resourceKind. |  | Optional: \{\} <br /> |
+| `resourceKind` <br />_[ResourceKind](#resourcekind)_ | ResourceKind specifies that the policy binding should apply to all resources of a specific kind.<br /><br />Mutually exclusive with resourceRef. |  | Optional: \{\} <br /> |
 
 
 #### Role
@@ -1754,9 +1754,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `includedPermissions` <br />_string array_ | The names of the permissions this role grants when bound in an IAM policy.<br />All permissions must be in the format: `\{service\}.\{resource\}.\{action\}`<br />(e.g. compute.workloads.create). |  | Optional: \{\} <br /> |
+| `includedPermissions` <br />_string array_ | The names of the permissions this role grants when bound in an IAM policy.<br /><br />All permissions must be in the format: `\{service\}.\{resource\}.\{action\}`<br />(e.g. compute.workloads.create). |  | Optional: \{\} <br /> |
 | `launchStage` <br />_string_ | Defines the launch stage of the IAM Role. Must be one of: Early Access,<br />Alpha, Beta, Stable, Deprecated. |  | Required: \{\} <br /> |
-| `inheritedRoles` <br />_[ScopedRoleReference](#scopedrolereference) array_ | The list of roles from which this role inherits permissions.<br />Each entry must be a valid role resource name. |  | Optional: \{\} <br /> |
+| `inheritedRoles` <br />_[ScopedRoleReference](#scopedrolereference) array_ | The list of roles from which this role inherits permissions.<br /><br />Each entry must be a valid role resource name. |  | Optional: \{\} <br /> |
 
 
 #### RoleStatus
@@ -1794,7 +1794,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `name` <br />_string_ | Name of the referenced Role. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace of the referenced Role.<br />If not specified, it defaults to the namespace of the resource containing this reference. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced Role.<br /><br />If not specified, it defaults to the namespace of the resource containing this reference. |  | Optional: \{\} <br /> |
 
 
 #### ServiceReference
@@ -1829,7 +1829,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `kind` <br />_string_ | Kind of object being referenced. Values defined in Kind constants. |  | Enum: [User Group] <br />Required: \{\} <br /> |
 | `name` <br />_string_ | Name of the object being referenced. A special group name of<br />"system:authenticated-users" can be used to refer to all authenticated<br />users. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace of the referenced object. If DNE, then for an SA it refers to the PolicyBinding resource's namespace.<br />For a User or Group, it is ignored. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced object. If DNE, then for an SA it refers to the PolicyBinding resource's namespace.<br /><br />For a User or Group, it is ignored. |  | Optional: \{\} <br /> |
 | `uid` <br />_string_ | UID of the referenced object. Optional for system groups (groups with names starting with "system:"). |  | Optional: \{\} <br /> |
 
 
@@ -1846,8 +1846,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `email` <br />_string_ | Email is the email of the user being approved.<br />Use Email to approve an email address that is not associated with a created user. (e.g. when using PlatformInvitation)<br />UserRef and Email are mutually exclusive. Exactly one of them must be specified. |  | Optional: \{\} <br /> |
-| `userRef` <br />_[UserReference](#userreference)_ | UserRef is the reference to the user being approved.<br />UserRef and Email are mutually exclusive. Exactly one of them must be specified. |  | Optional: \{\} <br /> |
+| `email` <br />_string_ | Email is the email of the user being approved.<br /><br />Use Email to approve an email address that is not associated with a created user. (e.g. when using PlatformInvitation)<br />UserRef and Email are mutually exclusive. Exactly one of them must be specified. |  | Optional: \{\} <br /> |
+| `userRef` <br />_[UserReference](#userreference)_ | UserRef is the reference to the user being approved.<br /><br />UserRef and Email are mutually exclusive. Exactly one of them must be specified. |  | Optional: \{\} <br /> |
 
 
 #### User
@@ -1919,7 +1919,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User being deactivated.<br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
+| `userRef` <br />_[UserReference](#userreference)_ | UserRef is a reference to the User being deactivated.<br /><br />User is a cluster-scoped resource. |  | Required: \{\} <br /> |
 | `reason` <br />_string_ | Reason is the internal reason for deactivation. |  | Required: \{\} <br /> |
 | `description` <br />_string_ | Description provides detailed internal description for the deactivation. |  | Optional: \{\} <br /> |
 | `deactivatedBy` <br />_string_ | DeactivatedBy indicates who initiated the deactivation. |  | Required: \{\} <br /> |
@@ -1976,7 +1976,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name is the name of the invitee user in the invitation.<br />Name is a cluster-scoped resource, so Namespace is not needed. |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name is the name of the invitee user in the invitation.<br /><br />Name is a cluster-scoped resource, so Namespace is not needed. |  | Required: \{\} <br /> |
 
 
 #### UserInvitationList
@@ -2034,7 +2034,7 @@ _Appears in:_
 | `familyName` <br />_string_ | The last name of the user being invited. |  | Optional: \{\} <br /> |
 | `roles` <br />_[RoleReference](#rolereference) array_ | The roles that will be assigned to the user when they accept the invitation. |  | MaxItems: 100 <br />MinItems: 1 <br />Required: \{\} <br /> |
 | `invitedBy` <br />_[UserReference](#userreference)_ | InvitedBy is the user who invited the user. A mutation webhook will default this field to the user who made the request. |  | Optional: \{\} <br /> |
-| `expirationDate` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ExpirationDate is the date and time when the UserInvitation will expire.<br />If not specified, the UserInvitation will never expire. |  | Optional: \{\} <br /> |
+| `expirationDate` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ExpirationDate is the date and time when the UserInvitation will expire.<br /><br />If not specified, the UserInvitation will never expire. |  | Optional: \{\} <br /> |
 | `state` <br />_[UserInvitationStateType](#userinvitationstatetype)_ | State is the state of the UserInvitation. In order to accept the invitation, the invited user<br />must set the state to Accepted. |  | Enum: [Pending Accepted Declined] <br />Required: \{\} <br /> |
 
 
@@ -2071,7 +2071,7 @@ _Appears in:_
 | `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the UserInvitation. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Unknown]] | Optional: \{\} <br /> |
 | `organization` <br />_[UserInvitationOrganizationStatus](#userinvitationorganizationstatus)_ | Organization contains information about the organization in the invitation. |  | Optional: \{\} <br /> |
 | `inviterUser` <br />_[UserInvitationUserStatus](#userinvitationuserstatus)_ | InviterUser contains information about the user who invited the user in the invitation. |  | Optional: \{\} <br /> |
-| `inviteeUser` <br />_[UserInvitationInviteeUserStatus](#userinvitationinviteeuserstatus)_ | InviteeUser contains information about the invitee user in the invitation.<br />This value may be nil if the invitee user has not been created yet. |  | Optional: \{\} <br /> |
+| `inviteeUser` <br />_[UserInvitationInviteeUserStatus](#userinvitationinviteeuserstatus)_ | InviteeUser contains information about the invitee user in the invitation.<br /><br />This value may be nil if the invitee user has not been created yet. |  | Optional: \{\} <br /> |
 
 
 #### UserInvitationUserStatus
@@ -2219,8 +2219,8 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions provide conditions that represent the current status of the User. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `state` <br />_[UserState](#userstate)_ | State represents the current activation state of the user account from the<br />auth provider. This field is managed exclusively by the UserDeactivation CRD<br />and cannot be changed directly by the user. When a UserDeactivation resource<br />is created for the user, the user is deactivated in the auth provider; when<br />the UserDeactivation is deleted, the user is reactivated.<br />States:<br />  - Active: The user can be used to authenticate.<br />  - Inactive: The user is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br /> |
-| `registrationApproval` <br />_[RegistrationApprovalState](#registrationapprovalstate)_ | RegistrationApproval represents the administrator’s decision on the user’s registration request.<br />States:<br />  - Pending:  The user is awaiting review by an administrator.<br />  - Approved: The user registration has been approved.<br />  - Rejected: The user registration has been rejected.<br />The User resource is always created regardless of this value, but the<br />ability for the person to sign into the platform and access resources is<br />governed by this status: only *Approved* users are granted access, while<br />*Pending* and *Rejected* users are prevented for interacting with resources. |  | Enum: [Pending Approved Rejected] <br /> |
+| `state` <br />_[UserState](#userstate)_ | State represents the current activation state of the user account from the<br />auth provider. This field is managed exclusively by the UserDeactivation CRD<br />and cannot be changed directly by the user. When a UserDeactivation resource<br />is created for the user, the user is deactivated in the auth provider; when<br />the UserDeactivation is deleted, the user is reactivated.<br /><br />States:<br />  - Active: The user can be used to authenticate.<br />  - Inactive: The user is prohibited to be used to authenticate, and revokes all existing sessions. | Active | Enum: [Active Inactive] <br /> |
+| `registrationApproval` <br />_[RegistrationApprovalState](#registrationapprovalstate)_ | RegistrationApproval represents the administrator’s decision on the user’s registration request.<br /><br />States:<br />  - Pending:  The user is awaiting review by an administrator.<br />  - Approved: The user registration has been approved.<br />  - Rejected: The user registration has been rejected.<br /><br />The User resource is always created regardless of this value, but the<br />ability for the person to sign into the platform and access resources is<br />governed by this status: only *Approved* users are granted access, while<br />*Pending* and *Rejected* users are prevented for interacting with resources. |  | Enum: [Pending Approved Rejected] <br /> |
 | `lastLoginProvider` <br />_[AuthProvider](#authprovider)_ | LastLoginProvider records the identity provider that was most recently used by the<br />user to log in (e.g., "github" or "google"). This field is set by the auth provider<br />based on authentication events. |  | Enum: [github google] <br />Optional: \{\} <br /> |
 | `avatarUrl` <br />_string_ | AvatarURL points to the avatar image associated with the user. This value is<br />populated by the auth provider or any service that provides a user avatar URL. |  | Format: uri <br />Optional: \{\} <br /> |
 
@@ -2324,7 +2324,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Represents the observations of a project control plane's current state.<br />Known condition types are: "Ready" |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Represents the observations of a project control plane's current state.<br /><br />Known condition types are: "Ready" |  |  |
 
 
 
@@ -2629,9 +2629,9 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `name` <br />_[SectionName](#sectionname)_ | Name is the name of the route rule. This name MUST be unique within a Route<br />if it is set. |  |  |
-| `matches` <br />_HTTPRouteMatch array_ | Matches define conditions used for matching the rule against incoming<br />HTTP requests. Each match is independent, i.e. this rule will be matched<br />if **any** one of the matches is satisfied.<br />See documentation for the `matches` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule | [map[path:map[type:PathPrefix value:/]]] | MaxItems: 64 <br />MinItems: 1 <br /> |
-| `filters` <br />_HTTPRouteFilter array_ | Filters define the filters that are applied to requests that match<br />this rule.<br />See documentation for the `filters` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule |  | MaxItems: 16 <br /> |
-| `backends` <br />_[HTTPProxyRuleBackend](#httpproxyrulebackend) array_ | Backends defines the backend(s) where matching requests should be<br />sent.<br />Note: While this field is a list, only a single element is permitted at<br />this time due to underlying Gateway limitations. Once addressed, MaxItems<br />will be increased to allow for multiple backends on any given route. |  | MaxItems: 1 <br />MinItems: 0 <br /> |
+| `matches` <br />_HTTPRouteMatch array_ | Matches define conditions used for matching the rule against incoming<br />HTTP requests. Each match is independent, i.e. this rule will be matched<br />if **any** one of the matches is satisfied.<br /><br />See documentation for the `matches` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule | [map[path:map[type:PathPrefix value:/]]] | MaxItems: 64 <br />MinItems: 1 <br /> |
+| `filters` <br />_HTTPRouteFilter array_ | Filters define the filters that are applied to requests that match<br />this rule.<br /><br />See documentation for the `filters` field in the `HTTPRouteRule` type at<br />https://gateway-api.sigs.k8s.io/reference/spec/#httprouterule |  | MaxItems: 16 <br /> |
+| `backends` <br />_[HTTPProxyRuleBackend](#httpproxyrulebackend) array_ | Backends defines the backend(s) where matching requests should be<br />sent.<br /><br />Note: While this field is a list, only a single element is permitted at<br />this time due to underlying Gateway limitations. Once addressed, MaxItems<br />will be increased to allow for multiple backends on any given route. |  | MaxItems: 1 <br />MinItems: 0 <br /> |
 
 
 #### HTTPProxyRuleBackend
@@ -2647,7 +2647,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `endpoint` <br />_string_ | Endpoint for the backend. Must be a valid URL.<br />Supports http and https protocols, IPs or DNS addresses in the host, custom<br />ports, and paths. |  | Required: \{\} <br /> |
+| `endpoint` <br />_string_ | Endpoint for the backend. Must be a valid URL.<br /><br />Supports http and https protocols, IPs or DNS addresses in the host, custom<br />ports, and paths. |  | Required: \{\} <br /> |
 | `filters` <br />_HTTPRouteFilter array_ | Filters defined at this level should be executed if and only if the<br />request is being forwarded to the backend defined here. |  | MaxItems: 16 <br /> |
 
 
@@ -2664,7 +2664,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `hostnames` <br />_Hostname array_ | Hostnames defines a set of hostnames that should match against the HTTP<br />Host header to select a HTTPProxy used to process the request.<br />Valid values for Hostnames are determined by RFC 1123 definition of a<br />hostname with 1 notable exception:<br />1. IPs are not allowed.<br />Hostnames must be verified before being programmed. This is accomplished<br />via the use of `Domain` resources. A hostname is considered verified if any<br />verified `Domain` resource exists in the same namespace where the<br />`spec.domainName` of the resource either exactly matches the hostname, or<br />is a suffix match of the hostname. That means that a Domain with a<br />`spec.domainName` of `example.com` will match a hostname of<br />`test.example.com`, `foo.test.example.com`, and exactly `example.com`, but<br />not a hostname of `test-example.com`. If a `Domain` resource does not exist<br />that matches a hostname, one will automatically be created when the system<br />attempts to program the HTTPProxy.<br />In addition to verifying ownership, hostnames must be unique across the<br />platform. If a hostname is already programmed on another resource, a<br />conflict will be encountered and communicated in the `HostnamesVerified`<br />condition.<br />Hostnames which have been programmed will be listed in the<br />`status.hostnames` field. Any hostname which has not been programmed will<br />be listed in the `message` field of the `HostnamesVerified` condition with<br />an indication as to why it was not programmed.<br />The system may automatically generate and associate hostnames with the<br />HTTPProxy. In such cases, these will be listed in the `status.hostnames`<br />field and do not require additional configuration by the user.<br />Wildcard hostnames are not supported at this time. |  | MaxItems: 16 <br />Optional: \{\} <br /> |
+| `hostnames` <br />_Hostname array_ | Hostnames defines a set of hostnames that should match against the HTTP<br />Host header to select a HTTPProxy used to process the request.<br /><br />Valid values for Hostnames are determined by RFC 1123 definition of a<br />hostname with 1 notable exception:<br />1. IPs are not allowed.<br /><br />Hostnames must be verified before being programmed. This is accomplished<br />via the use of `Domain` resources. A hostname is considered verified if any<br />verified `Domain` resource exists in the same namespace where the<br />`spec.domainName` of the resource either exactly matches the hostname, or<br />is a suffix match of the hostname. That means that a Domain with a<br />`spec.domainName` of `example.com` will match a hostname of<br />`test.example.com`, `foo.test.example.com`, and exactly `example.com`, but<br />not a hostname of `test-example.com`. If a `Domain` resource does not exist<br />that matches a hostname, one will automatically be created when the system<br />attempts to program the HTTPProxy.<br /><br />In addition to verifying ownership, hostnames must be unique across the<br />platform. If a hostname is already programmed on another resource, a<br />conflict will be encountered and communicated in the `HostnamesVerified`<br />condition.<br /><br />Hostnames which have been programmed will be listed in the<br />`status.hostnames` field. Any hostname which has not been programmed will<br />be listed in the `message` field of the `HostnamesVerified` condition with<br />an indication as to why it was not programmed.<br /><br />The system may automatically generate and associate hostnames with the<br />HTTPProxy. In such cases, these will be listed in the `status.hostnames`<br />field and do not require additional configuration by the user.<br /><br />Wildcard hostnames are not supported at this time. |  | MaxItems: 16 <br />Optional: \{\} <br /> |
 | `rules` <br />_[HTTPProxyRule](#httpproxyrule) array_ | Rules are a list of HTTP matchers, filters and actions. |  | MaxItems: 16 <br />MinItems: 1 <br />Required: \{\} <br /> |
 
 
@@ -2681,8 +2681,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `addresses` <br />_GatewayStatusAddress array_ | Addresses lists the network addresses that have been bound to the<br />HTTPProxy.<br />This field will not contain custom hostnames defined in the HTTPProxy. See<br />the `hostnames` field |  | MaxItems: 16 <br /> |
-| `hostnames` <br />_Hostname array_ | Hostnames lists the hostnames that have been bound to the HTTPProxy.<br />If this list does not match that defined in the HTTPProxy, see the<br />`HostnamesVerified` condition message for details. |  |  |
+| `addresses` <br />_GatewayStatusAddress array_ | Addresses lists the network addresses that have been bound to the<br />HTTPProxy.<br /><br />This field will not contain custom hostnames defined in the HTTPProxy. See<br />the `hostnames` field |  | MaxItems: 16 <br /> |
+| `hostnames` <br />_Hostname array_ | Hostnames lists the hostnames that have been bound to the HTTPProxy.<br /><br />If this list does not match that defined in the HTTPProxy, see the<br />`HostnamesVerified` condition message for details. |  |  |
 | `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions describe the current conditions of the HTTPProxy. |  |  |
 
 
@@ -2877,7 +2877,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `locationClassName` <br />_string_ | The location class that indicates control plane behavior of entities<br />associated with the location.<br />Valid values are:<br />	- datum-managed<br />	- self-managed |  | Required: \{\} <br /> |
+| `locationClassName` <br />_string_ | The location class that indicates control plane behavior of entities<br />associated with the location.<br /><br />Valid values are:<br />	- datum-managed<br />	- self-managed |  | Required: \{\} <br /> |
 | `topology` <br />_object (keys:string, values:string)_ | The topology of the location<br />This may contain arbitrary topology keys. Some keys may be well known, such<br />as:<br />	- topology.datum.net/city-code |  | Required: \{\} <br /> |
 | `provider` <br />_[LocationProvider](#locationprovider)_ | The location provider |  | Required: \{\} <br /> |
 
@@ -3237,9 +3237,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `protocol` <br />_[Protocol](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#protocol-v1-core)_ | protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match.<br />If not specified, this field defaults to TCP. |  | Optional: \{\} <br /> |
-| `port` <br />_[IntOrString](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#intorstring-intstr-util)_ | port represents the port on the given protocol. This can either be a numerical or named<br />port on an instance. If this field is not provided, this matches all port names and<br />numbers.<br />If present, only traffic on the specified protocol AND port will be matched. |  | Optional: \{\} <br /> |
-| `endPort` <br />_integer_ | endPort indicates that the range of ports from port to endPort if set, inclusive,<br />should be allowed by the policy. This field cannot be defined if the port field<br />is not defined or if the port field is defined as a named (string) port.<br />The endPort must be equal or greater than port. |  | Optional: \{\} <br /> |
+| `protocol` <br />_[Protocol](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#protocol-v1-core)_ | protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match.<br /><br />If not specified, this field defaults to TCP. |  | Optional: \{\} <br /> |
+| `port` <br />_[IntOrString](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#intorstring-intstr-util)_ | port represents the port on the given protocol. This can either be a numerical or named<br />port on an instance. If this field is not provided, this matches all port names and<br />numbers.<br /><br />If present, only traffic on the specified protocol AND port will be matched. |  | Optional: \{\} <br /> |
+| `endPort` <br />_integer_ | endPort indicates that the range of ports from port to endPort if set, inclusive,<br />should be allowed by the policy. This field cannot be defined if the port field<br />is not defined or if the port field is defined as a named (string) port.<br /><br />The endPort must be equal or greater than port. |  | Optional: \{\} <br /> |
 
 
 #### NetworkPolicySpec
@@ -3281,7 +3281,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `namespace` <br />_string_ | The network namespace.<br />Defaults to the namespace for the type the reference is embedded in. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | The network namespace.<br /><br />Defaults to the namespace for the type the reference is embedded in. |  | Optional: \{\} <br /> |
 | `name` <br />_string_ | The network name |  | Required: \{\} <br /> |
 
 
@@ -3333,8 +3333,8 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `paranoiaLevels` <br />_[ParanoiaLevels](#paranoialevels)_ | ParanoiaLevels specifies the OWASP ModSecurity Core Rule Set (CRS)<br />paranoia levels to use. | \{  \} |  |
-| `scoreThresholds` <br />_[OWASPScoreThresholds](#owaspscorethresholds)_ | ScoreThresholds specifies the OWASP ModSecurity Core Rule Set (CRS)<br />score thresholds to block a request or response.<br />See: https://coreruleset.org/docs/2-how-crs-works/2-1-anomaly_scoring/ | \{  \} |  |
-| `ruleExclusions` <br />_[OWASPRuleExclusions](#owaspruleexclusions)_ | RuleExclusions can be used to disable specific OWASP ModSecurity Rules.<br />This allows operators to disable specific rules that may be causing false<br />positives. |  | Optional: \{\} <br /> |
+| `scoreThresholds` <br />_[OWASPScoreThresholds](#owaspscorethresholds)_ | ScoreThresholds specifies the OWASP ModSecurity Core Rule Set (CRS)<br />score thresholds to block a request or response.<br /><br />See: https://coreruleset.org/docs/2-how-crs-works/2-1-anomaly_scoring/ | \{  \} |  |
+| `ruleExclusions` <br />_[OWASPRuleExclusions](#owaspruleexclusions)_ | RuleExclusions can be used to disable specific OWASP ModSecurity Rules.<br /><br />This allows operators to disable specific rules that may be causing false<br />positives. |  | Optional: \{\} <br /> |
 
 
 #### OWASPIDRange
@@ -3740,7 +3740,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `targetRefs` <br />_LocalPolicyTargetReferenceWithSectionName array_ | TargetRefs are the names of the Gateway resources this policy<br />is being attached to. |  | MinItems: 1 <br />Required: \{\} <br /> |
-| `mode` <br />_[TrafficProtectionPolicyMode](#trafficprotectionpolicymode)_ | Mode specifies the mode of traffic protection to apply.<br />If not specified, defaults to "Observe". | Observe | Enum: [Observe Enforce Disabled] <br /> |
+| `mode` <br />_[TrafficProtectionPolicyMode](#trafficprotectionpolicymode)_ | Mode specifies the mode of traffic protection to apply.<br /><br />If not specified, defaults to "Observe". | Observe | Enum: [Observe Enforce Disabled] <br /> |
 | `samplingPercentage` <br />_integer_ | SamplingPercentage controls the percentage of traffic that will be processed<br />by the TrafficProtectionPolicy. | 100 | Maximum: 100 <br />Minimum: 1 <br /> |
 | `ruleSets` <br />_[TrafficProtectionPolicyRuleSet](#trafficprotectionpolicyruleset) array_ | RuleSets specifies the TrafficProtectionPolicy rulesets to apply. | [map[owaspCoreRuleSet:map[] type:OWASPCoreRuleSet]] | MaxItems: 16 <br />MinItems: 1 <br />Required: \{\} <br /> |
 
@@ -3758,7 +3758,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `ancestors` <br />_[PolicyAncestorStatus](#policyancestorstatus) array_ | Ancestors is a list of ancestor resources (usually Gateways) that are<br />associated with the policy, and the status of the policy with respect to<br />each ancestor. When this policy attaches to a parent, the controller that<br />manages the parent and the ancestors MUST add an entry to this list when<br />the controller first sees the policy and SHOULD update the entry as<br />appropriate when the relevant ancestor is modified.<br />Note that choosing the relevant ancestor is left to the Policy designers;<br />an important part of Policy design is designing the right object level at<br />which to namespace this status.<br />Note also that implementations MUST ONLY populate ancestor status for<br />the Ancestor resources they are responsible for. Implementations MUST<br />use the ControllerName field to uniquely identify the entries in this list<br />that they are responsible for.<br />Note that to achieve this, the list of PolicyAncestorStatus structs<br />MUST be treated as a map with a composite key, made up of the AncestorRef<br />and ControllerName fields combined.<br />A maximum of 16 ancestors will be represented in this list. An empty list<br />means the Policy is not relevant for any ancestors.<br />If this slice is full, implementations MUST NOT add further entries.<br />Instead they MUST consider the policy unimplementable and signal that<br />on any related resources such as the ancestor that would be referenced<br />here. For example, if this list was full on BackendTLSPolicy, no<br />additional Gateways would be able to reference the Service targeted by<br />the BackendTLSPolicy. |  | MaxItems: 16 <br /> |
+| `ancestors` <br />_[PolicyAncestorStatus](#policyancestorstatus) array_ | Ancestors is a list of ancestor resources (usually Gateways) that are<br />associated with the policy, and the status of the policy with respect to<br />each ancestor. When this policy attaches to a parent, the controller that<br />manages the parent and the ancestors MUST add an entry to this list when<br />the controller first sees the policy and SHOULD update the entry as<br />appropriate when the relevant ancestor is modified.<br /><br />Note that choosing the relevant ancestor is left to the Policy designers;<br />an important part of Policy design is designing the right object level at<br />which to namespace this status.<br /><br />Note also that implementations MUST ONLY populate ancestor status for<br />the Ancestor resources they are responsible for. Implementations MUST<br />use the ControllerName field to uniquely identify the entries in this list<br />that they are responsible for.<br /><br />Note that to achieve this, the list of PolicyAncestorStatus structs<br />MUST be treated as a map with a composite key, made up of the AncestorRef<br />and ControllerName fields combined.<br /><br />A maximum of 16 ancestors will be represented in this list. An empty list<br />means the Policy is not relevant for any ancestors.<br /><br />If this slice is full, implementations MUST NOT add further entries.<br /><br />Instead they MUST consider the policy unimplementable and signal that<br />on any related resources such as the ancestor that would be referenced<br />here. For example, if this list was full on BackendTLSPolicy, no<br />additional Gateways would be able to reference the Service targeted by<br />the BackendTLSPolicy. |  | MaxItems: 16 <br /> |
 
 
 
@@ -3954,8 +3954,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Ready" which tracks contact group membership removal creation status. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group membership removal to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `username` <br />_string_ | Username is the username of the user that owns the ContactGroupMembershipRemoval.<br />This is populated by the controller based on the referenced Contact's subject. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Ready" which tracks contact group membership removal creation status. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group membership removal to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `username` <br />_string_ | Username is the username of the user that owns the ContactGroupMembershipRemoval.<br /><br />This is populated by the controller based on the referenced Contact's subject. |  |  |
 
 
 #### ContactGroupMembershipSpec
@@ -3989,10 +3989,10 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Ready" which tracks contact group membership creation status and sync to the contact group membership provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group membership to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact group membership.<br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
-| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact provider<br />(e.g. Resend) when the membership is created in the associated audience. It is usually<br />used to track the contact-group membership creation status (e.g. provider webhooks).<br />Deprecated: Use Providers instead. |  |  |
-| `username` <br />_string_ | Username is the username of the user that owns the ContactGroupMembership.<br />This is populated by the controller based on the referenced Contact's subject. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Ready" which tracks contact group membership creation status and sync to the contact group membership provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group membership to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact group membership.<br /><br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
+| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact provider<br />(e.g. Resend) when the membership is created in the associated audience. It is usually<br />used to track the contact-group membership creation status (e.g. provider webhooks).<br /><br />Deprecated: Use Providers instead. |  |  |
+| `username` <br />_string_ | Username is the username of the user that owns the ContactGroupMembership.<br /><br />This is populated by the controller based on the referenced Contact's subject. |  |  |
 
 
 #### ContactGroupProviderSpec
@@ -4008,8 +4008,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name is the provider handling this contact group.<br />Allowed values is Loops. |  | Enum: [Loops] <br /> |
-| `id` <br />_string_ | ID is the identifier of the contact group in the external provider.<br />This field is used when a provider does not expose an API for creating mailing lists,<br />requiring an existing ContactList ID to be provided for synchronization purposes (e.g. Loops).<br />If not provided, a new group will be created if supported by the provider. |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name is the provider handling this contact group.<br /><br />Allowed values is Loops. |  | Enum: [Loops] <br /> |
+| `id` <br />_string_ | ID is the identifier of the contact group in the external provider.<br /><br />This field is used when a provider does not expose an API for creating mailing lists,<br />requiring an existing ContactList ID to be provided for synchronization purposes (e.g. Loops).<br /><br />If not provided, a new group will be created if supported by the provider. |  | Required: \{\} <br /> |
 
 
 #### ContactGroupReference
@@ -4063,9 +4063,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Ready" which tracks contact group creation status and sync to the contact group provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact group.<br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
-| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact groupprovider<br />(e.g. Resend) when the contact groupis created. It is usually<br />used to track the contact creation status (e.g. provider webhooks).<br />Deprecated: Use Providers instead. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Ready" which tracks contact group creation status and sync to the contact group provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact group to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact group.<br /><br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
+| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact groupprovider<br />(e.g. Resend) when the contact groupis created. It is usually<br />used to track the contact creation status (e.g. provider webhooks).<br /><br />Deprecated: Use Providers instead. |  |  |
 
 
 #### ContactGroupVisibility
@@ -4118,7 +4118,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name is the provider handling this contact.<br />Allowed values are Resend and Loops. |  | Enum: [Resend Loops] <br /> |
+| `name` <br />_string_ | Name is the provider handling this contact.<br /><br />Allowed values are Resend and Loops. |  | Enum: [Resend Loops] <br /> |
 | `id` <br />_string_ | ID is the identifier returned by the specific contact provider for this contact. |  | Required: \{\} <br /> |
 
 
@@ -4173,9 +4173,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Ready" which tracks contact creation status and sync to the contact provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact.<br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
-| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact provider<br />(e.g. Resend) when the contact is created. It is usually<br />used to track the contact creation status (e.g. provider webhooks).<br />Deprecated: Use Providers instead. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Ready" which tracks contact creation status and sync to the contact provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for contact to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `providers` <br />_[ContactProviderStatus](#contactproviderstatus) array_ | Providers contains the per-provider status for this contact.<br /><br />This enables tracking multiple provider backends simultaneously. |  | Optional: \{\} <br /> |
+| `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying contact provider<br />(e.g. Resend) when the contact is created. It is usually<br />used to track the contact creation status (e.g. provider webhooks).<br /><br />Deprecated: Use Providers instead. |  |  |
 
 
 #### Email
@@ -4257,8 +4257,8 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `displayName` <br />_string_ | DisplayName is the display name of the email broadcast. |  | Optional: \{\} <br /> |
 | `contactGroupRef` <br />_[ContactGroupReference](#contactgroupreference)_ | ContactGroupRef is a reference to the ContactGroup that the email broadcast is for. |  | Required: \{\} <br /> |
-| `templateRef` <br />_[TemplateReference](#templatereference)_ | TemplateRef references the EmailTemplate to render the broadcast message.<br />When using the Resend provider you can include the following placeholders<br />in HTMLBody or TextBody; they will be substituted by the provider at send time:<br />  \{\{\{FIRST_NAME\}\}\} \{\{\{LAST_NAME\}\}\} \{\{\{EMAIL\}\}\} |  | Required: \{\} <br />Type: object <br /> |
-| `scheduledAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ScheduledAt optionally specifies the time at which the broadcast should be executed.<br />If omitted, the message is sent as soon as the controller reconciles the resource.<br />Example: "2024-08-05T11:52:01.858Z" |  | Optional: \{\} <br /> |
+| `templateRef` <br />_[TemplateReference](#templatereference)_ | TemplateRef references the EmailTemplate to render the broadcast message.<br /><br />When using the Resend provider you can include the following placeholders<br />in HTMLBody or TextBody; they will be substituted by the provider at send time:<br />  \{\{\{FIRST_NAME\}\}\} \{\{\{LAST_NAME\}\}\} \{\{\{EMAIL\}\}\} |  | Required: \{\} <br />Type: object <br /> |
+| `scheduledAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | ScheduledAt optionally specifies the time at which the broadcast should be executed.<br /><br />If omitted, the message is sent as soon as the controller reconciles the resource.<br /><br />Example: "2024-08-05T11:52:01.858Z" |  | Optional: \{\} <br /> |
 
 
 #### EmailBroadcastStatus
@@ -4274,7 +4274,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Ready" which tracks email broadcast status and sync to the email broadcast provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for email broadcast to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Ready" which tracks email broadcast status and sync to the email broadcast provider. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for email broadcast to be created reason:CreatePending status:Unknown type:Ready]] | Optional: \{\} <br /> |
 | `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying email broadcast provider<br />(e.g. Resend) when the email broadcast is created. It is usually<br />used to track the email broadcast creation status (e.g. provider webhooks). |  |  |
 
 
@@ -4328,8 +4328,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `userRef` <br />_[EmailUserReference](#emailuserreference)_ | UserRef references the User resource that will receive the message.<br />It is mutually exclusive with EmailAddress: exactly one of them must be specified. |  | Optional: \{\} <br />Type: object <br /> |
-| `emailAddress` <br />_string_ | EmailAddress allows specifying a literal e-mail address for the recipient instead of referencing a User resource.<br />It is mutually exclusive with UserRef: exactly one of them must be specified. |  | Optional: \{\} <br /> |
+| `userRef` <br />_[EmailUserReference](#emailuserreference)_ | UserRef references the User resource that will receive the message.<br /><br />It is mutually exclusive with EmailAddress: exactly one of them must be specified. |  | Optional: \{\} <br />Type: object <br /> |
+| `emailAddress` <br />_string_ | EmailAddress allows specifying a literal e-mail address for the recipient instead of referencing a User resource.<br /><br />It is mutually exclusive with UserRef: exactly one of them must be specified. |  | Optional: \{\} <br /> |
 
 
 #### EmailSpec
@@ -4349,8 +4349,8 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `templateRef` <br />_[TemplateReference](#templatereference)_ | TemplateRef references the EmailTemplate that should be rendered. |  | Required: \{\} <br />Type: object <br /> |
 | `recipient` <br />_[EmailRecipient](#emailrecipient)_ | Recipient contain the recipient of the email. |  | Required: \{\} <br />Type: object <br /> |
-| `cc` <br />_string array_ | CC contains additional e-mail addresses that will receive a carbon copy of the message.<br />Maximum 10 addresses. |  | MaxItems: 10 <br />Optional: \{\} <br /> |
-| `bcc` <br />_string array_ | BCC contains e-mail addresses that will receive a blind-carbon copy of the message.<br />Maximum 10 addresses. |  | MaxItems: 10 <br />Optional: \{\} <br /> |
+| `cc` <br />_string array_ | CC contains additional e-mail addresses that will receive a carbon copy of the message.<br /><br />Maximum 10 addresses. |  | MaxItems: 10 <br />Optional: \{\} <br /> |
+| `bcc` <br />_string array_ | BCC contains e-mail addresses that will receive a blind-carbon copy of the message.<br /><br />Maximum 10 addresses. |  | MaxItems: 10 <br />Optional: \{\} <br /> |
 | `variables` <br />_[EmailVariable](#emailvariable) array_ | Variables supplies the values that will be substituted in the template. |  | Optional: \{\} <br />Type: object <br /> |
 | `priority` <br />_[EmailPriority](#emailpriority)_ | Priority influences the order in which pending e-mails are processed. | normal | Enum: [low normal high] <br />Optional: \{\} <br /> |
 
@@ -4370,7 +4370,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br />Standard condition is "Delivered" which tracks email delivery status. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for email delivery reason:DeliveryPending status:Unknown type:Delivered]] | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the latest available observations of an object's current state.<br /><br />Standard condition is "Delivered" which tracks email delivery status. | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for email delivery reason:DeliveryPending status:Unknown type:Delivered]] | Optional: \{\} <br /> |
 | `providerID` <br />_string_ | ProviderID is the identifier returned by the underlying email provider<br />(e.g. Resend) when the e-mail is accepted for delivery. It is usually<br />used to track the email delivery status (e.g. provider webhooks). |  |  |
 | `htmlBody` <br />_string_ | HTMLBody stores the rendered HTML content of the e-mail. |  |  |
 | `textBody` <br />_string_ | TextBody stores the rendered plain-text content of the e-mail. |  |  |
@@ -4526,7 +4526,7 @@ _Appears in:_
 | `apiGroup` <br />_string_ | APIGroup is the group for the resource being referenced. |  | Enum: [iam.miloapis.com] <br />Required: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the type of resource being referenced. |  | Enum: [User] <br />Required: \{\} <br /> |
 | `name` <br />_string_ | Name is the name of resource being referenced. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace is the namespace of resource being referenced.<br /><br />Required for namespace-scoped resources. Omitted for cluster-scoped resources. |  | Optional: \{\} <br /> |
 
 
 #### TemplateReference
@@ -4680,8 +4680,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `resourceType` <br />_string_ | ResourceType identifies the specific resource type receiving quota allocation.<br />Must exactly match a ResourceRegistration.spec.resourceType that is currently active.<br />The quota system validates this reference when processing the grant.<br />The identifier format is flexible, as defined by platform administrators<br />in their ResourceRegistrations.<br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | Required: \{\} <br /> |
-| `buckets` <br />_[Bucket](#bucket) array_ | Buckets contains the quota allocations for this resource type.<br />All bucket amounts are summed to determine the total allowance.<br />Minimum 1 bucket required per allowance.<br />Multiple buckets can be used for:<br />- Separating quota from different sources or tiers<br />- Managing incremental quota increases over time<br />- Tracking quota attribution for billing or reporting |  | MinItems: 1 <br />Required: \{\} <br /> |
+| `resourceType` <br />_string_ | ResourceType identifies the specific resource type receiving quota allocation.<br /><br />Must exactly match a ResourceRegistration.spec.resourceType that is currently active.<br /><br />The quota system validates this reference when processing the grant.<br /><br />The identifier format is flexible, as defined by platform administrators<br />in their ResourceRegistrations.<br /><br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | Required: \{\} <br /> |
+| `buckets` <br />_[Bucket](#bucket) array_ | Buckets contains the quota allocations for this resource type.<br /><br />All bucket amounts are summed to determine the total allowance.<br /><br />Minimum 1 bucket required per allowance.<br /><br />Multiple buckets can be used for:<br />- Separating quota from different sources or tiers<br />- Managing incremental quota increases over time<br />- Tracking quota attribution for billing or reporting |  | MinItems: 1 <br />Required: \{\} <br /> |
 
 
 #### AllowanceBucket
@@ -4844,8 +4844,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer tracked by this bucket.<br />Must match the ConsumerRef from ResourceGrants that contribute to this bucket.<br />Only one bucket exists per unique (ConsumerRef, ResourceType) combination.<br />Examples:<br />- Organization "acme-corp" consuming Project quota<br />- Project "web-app" consuming User quota<br />- Organization "enterprise-corp" consuming storage quota |  | Required: \{\} <br /> |
-| `resourceType` <br />_string_ | ResourceType specifies which resource type this bucket aggregates quota for.<br />Must exactly match a ResourceRegistration.spec.resourceType that is currently active.<br />The quota system validates this reference and only creates buckets for registered types.<br />The identifier format is flexible, as defined by platform administrators<br />in their ResourceRegistrations.<br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer tracked by this bucket.<br /><br />Must match the ConsumerRef from ResourceGrants that contribute to this bucket.<br /><br />Only one bucket exists per unique (ConsumerRef, ResourceType) combination.<br /><br />Examples:<br />- Organization "acme-corp" consuming Project quota<br />- Project "web-app" consuming User quota<br />- Organization "enterprise-corp" consuming storage quota |  | Required: \{\} <br /> |
+| `resourceType` <br />_string_ | ResourceType specifies which resource type this bucket aggregates quota for.<br /><br />Must exactly match a ResourceRegistration.spec.resourceType that is currently active.<br /><br />The quota system validates this reference and only creates buckets for registered types.<br /><br />The identifier format is flexible, as defined by platform administrators<br />in their ResourceRegistrations.<br /><br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
 
 
 #### AllowanceBucketStatus
@@ -4863,14 +4863,14 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation the quota system has processed.<br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br />When ObservedGeneration is lower, the quota system is still processing recent changes. |  | Optional: \{\} <br /> |
-| `limit` <br />_integer_ | Limit represents the total quota capacity available for this (consumer, resourceType) combination.<br />Calculated by summing all bucket amounts from active ResourceGrants that match the bucket's<br />spec.consumerRef and spec.resourceType. Measured in BaseUnit from the ResourceRegistration.<br />Aggregation logic:<br />- Only ResourceGrants with status.conditions[type=Active]=True contribute to the limit<br />- All allowances matching spec.resourceType are included from contributing grants<br />- All bucket amounts within matching allowances are summed |  | Minimum: 0 <br />Required: \{\} <br /> |
-| `allocated` <br />_integer_ | Allocated represents the total quota currently consumed by granted ResourceClaims.<br />Calculated by summing all allocation amounts from ResourceClaims with status.conditions[type=Granted]=True<br />that match the bucket's spec.consumerRef and have requests for spec.resourceType.<br />Aggregation logic:<br />- Only ResourceClaims with Granted=True contribute to allocated amount<br />- Only requests matching spec.resourceType are included<br />- All allocated amounts from matching requests are summed |  | Minimum: 0 <br />Required: \{\} <br /> |
-| `available` <br />_integer_ | Available represents the quota capacity remaining for new ResourceClaims.<br />Always calculated as: Available = Limit - Allocated (never negative).<br />The system uses this value to determine whether new ResourceClaims can be granted.<br />Decision logic:<br />- ResourceClaim is granted if requested amount &lt;= Available<br />- ResourceClaim is denied if requested amount &gt; Available<br />- Multiple concurrent claims may race; first to be processed wins |  | Minimum: 0 <br />Required: \{\} <br /> |
-| `claimCount` <br />_integer_ | ClaimCount indicates the total number of granted ResourceClaims consuming quota from this bucket.<br />Includes all ResourceClaims with status.conditions[type=Granted]=True that have requests<br />matching spec.resourceType and spec.consumerRef.<br />Used for monitoring quota usage patterns and identifying potential issues. |  | Minimum: 0 <br />Required: \{\} <br /> |
-| `grantCount` <br />_integer_ | GrantCount indicates the total number of active ResourceGrants contributing to this bucket's limit.<br />Includes all ResourceGrants with status.conditions[type=Active]=True that have allowances<br />matching spec.resourceType and spec.consumerRef.<br />Used for understanding quota source distribution and debugging capacity issues. |  | Minimum: 0 <br />Required: \{\} <br /> |
-| `contributingGrantRefs` <br />_[ContributingGrantRef](#contributinggrantref) array_ | ContributingGrantRefs provides detailed information about each ResourceGrant that contributes<br />to this bucket's limit. Includes grant names, amounts, and last observed generations for<br />tracking and debugging quota sources.<br />This field provides visibility into:<br />- Which grants are providing quota capacity<br />- How much each grant contributes<br />- Whether grants have been updated since last bucket calculation<br />Grants are tracked individually because they are typically few in number compared to claims. |  | Optional: \{\} <br /> |
-| `lastReconciliation` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | LastReconciliation records when the quota system last recalculated this status.<br />Used for monitoring quota system health and understanding how fresh the aggregated data is.<br />The quota system updates this timestamp every time it processes the bucket, regardless of<br />whether the aggregated values changed. |  | Optional: \{\} <br /> |
+| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation the quota system has processed.<br /><br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br /><br />When ObservedGeneration is lower, the quota system is still processing recent changes. |  | Optional: \{\} <br /> |
+| `limit` <br />_integer_ | Limit represents the total quota capacity available for this (consumer, resourceType) combination.<br /><br />Calculated by summing all bucket amounts from active ResourceGrants that match the bucket's<br />spec.consumerRef and spec.resourceType. Measured in BaseUnit from the ResourceRegistration.<br /><br />Aggregation logic:<br />- Only ResourceGrants with status.conditions[type=Active]=True contribute to the limit<br />- All allowances matching spec.resourceType are included from contributing grants<br />- All bucket amounts within matching allowances are summed |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `allocated` <br />_integer_ | Allocated represents the total quota currently consumed by granted ResourceClaims.<br /><br />Calculated by summing all allocation amounts from ResourceClaims with status.conditions[type=Granted]=True<br />that match the bucket's spec.consumerRef and have requests for spec.resourceType.<br /><br />Aggregation logic:<br />- Only ResourceClaims with Granted=True contribute to allocated amount<br />- Only requests matching spec.resourceType are included<br />- All allocated amounts from matching requests are summed |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `available` <br />_integer_ | Available represents the quota capacity remaining for new ResourceClaims.<br /><br />Always calculated as: Available = Limit - Allocated (never negative).<br /><br />The system uses this value to determine whether new ResourceClaims can be granted.<br /><br />Decision logic:<br />- ResourceClaim is granted if requested amount &lt;= Available<br />- ResourceClaim is denied if requested amount &gt; Available<br />- Multiple concurrent claims may race; first to be processed wins |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `claimCount` <br />_integer_ | ClaimCount indicates the total number of granted ResourceClaims consuming quota from this bucket.<br /><br />Includes all ResourceClaims with status.conditions[type=Granted]=True that have requests<br />matching spec.resourceType and spec.consumerRef.<br /><br />Used for monitoring quota usage patterns and identifying potential issues. |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `grantCount` <br />_integer_ | GrantCount indicates the total number of active ResourceGrants contributing to this bucket's limit.<br /><br />Includes all ResourceGrants with status.conditions[type=Active]=True that have allowances<br />matching spec.resourceType and spec.consumerRef.<br /><br />Used for understanding quota source distribution and debugging capacity issues. |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `contributingGrantRefs` <br />_[ContributingGrantRef](#contributinggrantref) array_ | ContributingGrantRefs provides detailed information about each ResourceGrant that contributes<br />to this bucket's limit. Includes grant names, amounts, and last observed generations for<br />tracking and debugging quota sources.<br /><br />This field provides visibility into:<br />- Which grants are providing quota capacity<br />- How much each grant contributes<br />- Whether grants have been updated since last bucket calculation<br />Grants are tracked individually because they are typically few in number compared to claims. |  | Optional: \{\} <br /> |
+| `lastReconciliation` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | LastReconciliation records when the quota system last recalculated this status.<br /><br />Used for monitoring quota system health and understanding how fresh the aggregated data is.<br /><br />The quota system updates this timestamp every time it processes the bucket, regardless of<br />whether the aggregated values changed. |  | Optional: \{\} <br /> |
 
 
 #### Bucket
@@ -4887,7 +4887,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `amount` <br />_integer_ | Amount specifies the quota capacity provided by this bucket.<br />Must be measured in the BaseUnit defined by the corresponding ResourceRegistration.<br />Must be a non-negative integer (0 is valid but provides no quota).<br />Examples:<br />- 100 (providing 100 projects)<br />- 2048000 (providing 2048000 bytes = 2GB)<br />- 5000 (providing 5000 CPU millicores = 5 cores) |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `amount` <br />_integer_ | Amount specifies the quota capacity provided by this bucket.<br /><br />Must be measured in the BaseUnit defined by the corresponding ResourceRegistration.<br /><br />Must be a non-negative integer (0 is valid but provides no quota).<br /><br />Examples:<br />- 100 (providing 100 projects)<br />- 2048000 (providing 2048000 bytes = 2GB)<br />- 5000 (providing 5000 CPU millicores = 5 cores) |  | Minimum: 0 <br />Required: \{\} <br /> |
 
 
 #### ClaimCreationPolicy
@@ -5094,7 +5094,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `trigger` <br />_[ClaimTriggerSpec](#claimtriggerspec)_ | Trigger defines what resource changes should trigger claim creation. |  | Required: \{\} <br /> |
 | `target` <br />_[ClaimTargetSpec](#claimtargetspec)_ | Target defines how and where **ResourceClaims** should be created. |  | Required: \{\} <br /> |
-| `disabled` <br />_boolean_ | Disabled determines if this policy is inactive.<br />If true, no **ResourceClaims** will be created for matching resources. | false |  |
+| `disabled` <br />_boolean_ | Disabled determines if this policy is inactive.<br /><br />If true, no **ResourceClaims** will be created for matching resources. | false |  |
 
 
 #### ClaimCreationPolicyStatus
@@ -5133,7 +5133,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `resourceClaimTemplate` <br />_[ResourceClaimTemplate](#resourceclaimtemplate)_ | ResourceClaimTemplate defines how to create **ResourceClaims**.<br />String fields support CEL expressions for dynamic content. |  | Required: \{\} <br /> |
+| `resourceClaimTemplate` <br />_[ResourceClaimTemplate](#resourceclaimtemplate)_ | ResourceClaimTemplate defines how to create **ResourceClaims**.<br /><br />String fields support CEL expressions for dynamic content. |  | Required: \{\} <br /> |
 
 
 #### ClaimTriggerResource
@@ -5149,7 +5149,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiVersion` <br />_string_ | APIVersion of the trigger resource in the format "group/version" or "version" for core resources.<br />Examples: "v1" for core resources like Secret, "resourcemanager.miloapis.com/v1alpha1" for custom resources. |  | Pattern: `^(v[0-9]+((alpha\|beta)[0-9]*)?\|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/v[0-9]+((alpha\|beta)[0-9]*)?)$` <br />Required: \{\} <br /> |
+| `apiVersion` <br />_string_ | APIVersion of the trigger resource in the format "group/version" or "version" for core resources.<br /><br />Examples: "v1" for core resources like Secret, "resourcemanager.miloapis.com/v1alpha1" for custom resources. |  | Pattern: `^(v[0-9]+((alpha\|beta)[0-9]*)?\|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/v[0-9]+((alpha\|beta)[0-9]*)?)$` <br />Required: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the kind of the trigger resource. |  | MinLength: 1 <br />Required: \{\} <br /> |
 
 
@@ -5167,7 +5167,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `resource` <br />_[ClaimTriggerResource](#claimtriggerresource)_ | Resource specifies which resource type triggers this policy. |  | Required: \{\} <br /> |
-| `constraints` <br />_[ConditionExpression](#conditionexpression) array_ | Constraints are CEL expressions that must evaluate to true for claim creation to occur.<br />These are pure CEL expressions WITHOUT \{\{ \}\} delimiters (unlike template fields).<br />Evaluated in the admission context. |  | MaxItems: 10 <br /> |
+| `constraints` <br />_[ConditionExpression](#conditionexpression) array_ | Constraints are CEL expressions that must evaluate to true for claim creation to occur.<br /><br />These are pure CEL expressions WITHOUT \{\{ \}\} delimiters (unlike template fields).<br /><br />Evaluated in the admission context. |  | MaxItems: 10 <br /> |
 
 
 #### ClaimingResource
@@ -5184,8 +5184,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup specifies the API group of the resource that can create claims.<br />Use empty string for Kubernetes core resources (**Secret**, **ConfigMap**, etc.).<br />Use full group name for custom resources.<br />Examples:<br />- `""` (core resources like **Secret**, **ConfigMap**)<br />- `resourcemanager.miloapis.com` (custom resource group)<br />- `iam.miloapis.com` (Milo IAM resources) |  | Optional: \{\} <br />Pattern: `^$\|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br /> |
-| `kind` <br />_string_ | Kind specifies the resource type that can create **ResourceClaims** for this registration.<br />Must match an existing resource type. Maximum 63 characters.<br />Examples:<br />- `Project` (**Project** resource creating claims for **Project** quota)<br />- `User` (**User** resource creating claims for **User** quota)<br />- `Organization` (**Organization** resource creating claims for **Organization** quota) |  | MaxLength: 63 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup specifies the API group of the resource that can create claims.<br /><br />Use empty string for Kubernetes core resources (**Secret**, **ConfigMap**, etc.).<br /><br />Use full group name for custom resources.<br /><br />Examples:<br />- `""` (core resources like **Secret**, **ConfigMap**)<br />- `resourcemanager.miloapis.com` (custom resource group)<br />- `iam.miloapis.com` (Milo IAM resources) |  | Optional: \{\} <br />Pattern: `^$\|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br /> |
+| `kind` <br />_string_ | Kind specifies the resource type that can create **ResourceClaims** for this registration.<br /><br />Must match an existing resource type. Maximum 63 characters.<br /><br />Examples:<br />- `Project` (**Project** resource creating claims for **Project** quota)<br />- `User` (**User** resource creating claims for **User** quota)<br />- `Organization` (**Organization** resource creating claims for **Organization** quota) |  | MaxLength: 63 <br />MinLength: 1 <br />Required: \{\} <br /> |
 
 
 #### ConditionExpression
@@ -5203,8 +5203,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `expression` <br />_string_ | Expression specifies the CEL expression to evaluate against the trigger resource.<br />This is a pure CEL expression WITHOUT \{\{ \}\} delimiters (unlike template fields).<br />Must return a boolean value (true to match, false to skip).<br />Maximum 1024 characters.<br />Available variables in GrantCreationPolicy context:<br />- trigger: The complete resource being watched (map[string]any)<br />  - trigger.metadata.name, trigger.spec.*, trigger.status.*, etc.<br />Common expression patterns:<br />- trigger.spec.tier == "premium" (check resource field)<br />- trigger.metadata.labels["environment"] == "prod" (check labels)<br />- trigger.status.phase == "Active" (check status)<br />- trigger.metadata.namespace == "production" (check namespace)<br />- has(trigger.spec.quotaProfile) (check field existence) |  | MaxLength: 1024 <br />MinLength: 1 <br />Required: \{\} <br /> |
-| `message` <br />_string_ | Message provides a human-readable description explaining when this condition applies.<br />Used for documentation and debugging. Maximum 256 characters.<br />Examples:<br />- "Applies only to premium tier organizations"<br />- "Matches organizations in production environment"<br />- "Triggers when quota profile is specified" |  | MaxLength: 256 <br /> |
+| `expression` <br />_string_ | Expression specifies the CEL expression to evaluate against the trigger resource.<br /><br />This is a pure CEL expression WITHOUT \{\{ \}\} delimiters (unlike template fields).<br /><br />Must return a boolean value (true to match, false to skip).<br /><br />Maximum 1024 characters.<br /><br />Available variables in GrantCreationPolicy context:<br />- trigger: The complete resource being watched (map[string]any)<br />  - trigger.metadata.name, trigger.spec.*, trigger.status.*, etc.<br /><br />Common expression patterns:<br />- trigger.spec.tier == "premium" (check resource field)<br />- trigger.metadata.labels["environment"] == "prod" (check labels)<br />- trigger.status.phase == "Active" (check status)<br />- trigger.metadata.namespace == "production" (check namespace)<br />- has(trigger.spec.quotaProfile) (check field existence) |  | MaxLength: 1024 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `message` <br />_string_ | Message provides a human-readable description explaining when this condition applies.<br /><br />Used for documentation and debugging. Maximum 256 characters.<br /><br />Examples:<br />- "Applies only to premium tier organizations"<br />- "Matches organizations in production environment"<br />- "Triggers when quota profile is specified" |  | MaxLength: 256 <br /> |
 
 
 #### ConsumerRef
@@ -5224,10 +5224,10 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup specifies the API group of the consumer resource.<br />Use full group name for Milo resources.<br />Examples:<br />- "resourcemanager.miloapis.com" (Organization/Project resources)<br />- "iam.miloapis.com" (User/Group resources)<br />- "infrastructure.miloapis.com" (infrastructure resources) |  | Optional: \{\} <br /> |
-| `kind` <br />_string_ | Kind specifies the type of consumer resource.<br />Must match an existing Kubernetes resource type that can receive quota grants.<br />Common consumer types:<br />- "Organization" (top-level quota consumer)<br />- "Project" (project-level quota consumer)<br />- "User" (user-level quota consumer) |  | Required: \{\} <br /> |
-| `name` <br />_string_ | Name identifies the specific consumer resource instance.<br />Must match the name of an existing consumer resource in the cluster.<br />Examples:<br />- "acme-corp" (Organization name)<br />- "web-application" (Project name)<br />- "john.doe" (User name) |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace identifies the namespace of the consumer resource.<br />Required for namespaced consumer resources (e.g., Projects).<br />Leave empty for cluster-scoped consumer resources (e.g., Organizations).<br />Examples:<br />- "" (empty for cluster-scoped Organizations)<br />- "organization-acme-corp" (namespace for Projects within an organization)<br />- "project-web-app" (namespace for resources within a project) |  | Optional: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup specifies the API group of the consumer resource.<br /><br />Use full group name for Milo resources.<br /><br />Examples:<br />- "resourcemanager.miloapis.com" (Organization/Project resources)<br />- "iam.miloapis.com" (User/Group resources)<br />- "infrastructure.miloapis.com" (infrastructure resources) |  | Optional: \{\} <br /> |
+| `kind` <br />_string_ | Kind specifies the type of consumer resource.<br /><br />Must match an existing Kubernetes resource type that can receive quota grants.<br /><br />Common consumer types:<br />- "Organization" (top-level quota consumer)<br />- "Project" (project-level quota consumer)<br />- "User" (user-level quota consumer) |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name identifies the specific consumer resource instance.<br /><br />Must match the name of an existing consumer resource in the cluster.<br /><br />Examples:<br />- "acme-corp" (Organization name)<br />- "web-application" (Project name)<br />- "john.doe" (User name) |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace identifies the namespace of the consumer resource.<br /><br />Required for namespaced consumer resources (e.g., Projects).<br /><br />Leave empty for cluster-scoped consumer resources (e.g., Organizations).<br /><br />Examples:<br />- "" (empty for cluster-scoped Organizations)<br />- "organization-acme-corp" (namespace for Projects within an organization)<br />- "project-web-app" (namespace for resources within a project) |  | Optional: \{\} <br /> |
 
 
 #### ConsumerType
@@ -5245,8 +5245,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup specifies the API group of the quota consumer resource type.<br />Use empty string for Kubernetes core resources (**Secret**, **ConfigMap**, etc.).<br />Use full group name for custom resources (for example, `resourcemanager.miloapis.com`).<br />Must follow DNS subdomain format with lowercase letters, numbers, and hyphens.<br />Examples:<br />- `resourcemanager.miloapis.com` (**Organizations**, **Projects**)<br />- `iam.miloapis.com` (**Users**, **Groups**)<br />- `infrastructure.miloapis.com` (custom infrastructure resources) |  | Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br />Required: \{\} <br /> |
-| `kind` <br />_string_ | Kind specifies the resource type that receives quota grants and creates quota claims.<br />Must match an existing Kubernetes resource type (core or custom).<br />Use the exact Kind name as defined in the resource's schema.<br />Examples:<br />- **Organization** (receives **Project** quotas)<br />- **Project** (receives **User** quotas)<br />- **User** (receives resource quotas within projects) |  | Required: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup specifies the API group of the quota consumer resource type.<br /><br />Use empty string for Kubernetes core resources (**Secret**, **ConfigMap**, etc.).<br /><br />Use full group name for custom resources (for example, `resourcemanager.miloapis.com`).<br /><br />Must follow DNS subdomain format with lowercase letters, numbers, and hyphens.<br /><br />Examples:<br />- `resourcemanager.miloapis.com` (**Organizations**, **Projects**)<br />- `iam.miloapis.com` (**Users**, **Groups**)<br />- `infrastructure.miloapis.com` (custom infrastructure resources) |  | Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br />Required: \{\} <br /> |
+| `kind` <br />_string_ | Kind specifies the resource type that receives quota grants and creates quota claims.<br /><br />Must match an existing Kubernetes resource type (core or custom).<br /><br />Use the exact Kind name as defined in the resource's schema.<br /><br />Examples:<br />- **Organization** (receives **Project** quotas)<br />- **Project** (receives **User** quotas)<br />- **User** (receives resource quotas within projects) |  | Required: \{\} <br /> |
 
 
 #### ContributingGrantRef
@@ -5264,9 +5264,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name identifies the ResourceGrant that contributes to this bucket's limit.<br />Used for tracking quota sources and debugging allocation issues. |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name identifies the ResourceGrant that contributes to this bucket's limit.<br /><br />Used for tracking quota sources and debugging allocation issues. |  | Required: \{\} <br /> |
 | `lastObservedGeneration` <br />_integer_ | LastObservedGeneration records the ResourceGrant's generation when the bucket<br />quota system last processed it. Used to detect when grants have been updated<br />and the bucket needs to recalculate its aggregated limit. |  | Required: \{\} <br /> |
-| `amount` <br />_integer_ | Amount specifies how much quota capacity this grant contributes to the bucket.<br />Represents the sum of all buckets within all allowances for the matching<br />resource type in the referenced grant. Measured in BaseUnit. |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `amount` <br />_integer_ | Amount specifies how much quota capacity this grant contributes to the bucket.<br /><br />Represents the sum of all buckets within all allowances for the matching<br />resource type in the referenced grant. Measured in BaseUnit. |  | Minimum: 0 <br />Required: \{\} <br /> |
 
 
 
@@ -5412,7 +5412,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `trigger` <br />_[GrantTriggerSpec](#granttriggerspec)_ | Trigger defines what resource changes should trigger grant creation. |  | Required: \{\} <br /> |
 | `target` <br />_[GrantTargetSpec](#granttargetspec)_ | Target defines where and how grants should be created. |  | Required: \{\} <br /> |
-| `disabled` <br />_boolean_ | Disabled determines if this policy is inactive.<br />If true, no **ResourceGrants** will be created for matching resources. | false |  |
+| `disabled` <br />_boolean_ | Disabled determines if this policy is inactive.<br /><br />If true, no **ResourceGrants** will be created for matching resources. | false |  |
 
 
 #### GrantCreationPolicyStatus
@@ -5455,9 +5455,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup specifies the API group of the parent context resource.<br />Must follow DNS subdomain format. Maximum 253 characters.<br />Examples:<br />- "resourcemanager.miloapis.com" (for Organization parent context)<br />- "infrastructure.miloapis.com" (for Cluster parent context) |  | MaxLength: 253 <br />Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br />Required: \{\} <br /> |
-| `kind` <br />_string_ | Kind specifies the resource type that represents the parent context.<br />Must be a valid Kubernetes resource Kind. Maximum 63 characters.<br />Examples:<br />- "Organization" (create grants in organization's parent control plane)<br />- "Cluster" (create grants in cluster's parent infrastructure) |  | MaxLength: 63 <br />MinLength: 1 <br />Pattern: `^[A-Z][a-zA-Z0-9]*$` <br />Required: \{\} <br /> |
-| `nameExpression` <br />_string_ | NameExpression is a CEL expression that resolves the name of the parent context resource.<br />Must return a string value that identifies the specific parent context instance.<br />Maximum 512 characters.<br />Available variables:<br />- object: The trigger resource being evaluated (complete object)<br />Common expression patterns:<br />- object.spec.organization (direct field reference)<br />- object.metadata.labels["parent-org"] (label-based resolution)<br />- object.metadata.namespace.split("-")[0] (derived from namespace naming)<br />Examples:<br />- "acme-corp" (literal parent name)<br />- object.spec.parentOrganization (field from trigger resource)<br />- object.metadata.labels["quota.miloapis.com/organization"] (label value) |  | MaxLength: 512 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup specifies the API group of the parent context resource.<br /><br />Must follow DNS subdomain format. Maximum 253 characters.<br /><br />Examples:<br />- "resourcemanager.miloapis.com" (for Organization parent context)<br />- "infrastructure.miloapis.com" (for Cluster parent context) |  | MaxLength: 253 <br />Pattern: `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` <br />Required: \{\} <br /> |
+| `kind` <br />_string_ | Kind specifies the resource type that represents the parent context.<br /><br />Must be a valid Kubernetes resource Kind. Maximum 63 characters.<br /><br />Examples:<br />- "Organization" (create grants in organization's parent control plane)<br />- "Cluster" (create grants in cluster's parent infrastructure) |  | MaxLength: 63 <br />MinLength: 1 <br />Pattern: `^[A-Z][a-zA-Z0-9]*$` <br />Required: \{\} <br /> |
+| `nameExpression` <br />_string_ | NameExpression is a CEL expression that resolves the name of the parent context resource.<br /><br />Must return a string value that identifies the specific parent context instance.<br /><br />Maximum 512 characters.<br /><br />Available variables:<br />- object: The trigger resource being evaluated (complete object)<br />Common expression patterns:<br />- object.spec.organization (direct field reference)<br />- object.metadata.labels["parent-org"] (label-based resolution)<br />- object.metadata.namespace.split("-")[0] (derived from namespace naming)<br />Examples:<br />- "acme-corp" (literal parent name)<br />- object.spec.parentOrganization (field from trigger resource)<br />- object.metadata.labels["quota.miloapis.com/organization"] (label value) |  | MaxLength: 512 <br />MinLength: 1 <br />Required: \{\} <br /> |
 
 
 #### GrantTargetSpec
@@ -5473,8 +5473,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `parentContext` <br />_[GrantParentContextSpec](#grantparentcontextspec)_ | ParentContext defines cross-control-plane targeting.<br />If specified, grants will be created in the target parent context<br />instead of the current control plane. |  |  |
-| `resourceGrantTemplate` <br />_[ResourceGrantTemplate](#resourcegranttemplate)_ | ResourceGrantTemplate defines how to create **ResourceGrants**.<br />String fields support CEL expressions wrapped in \{\{ \}\} delimiters for dynamic content.<br />Plain strings without \{\{ \}\} are treated as literal values. |  | Required: \{\} <br /> |
+| `parentContext` <br />_[GrantParentContextSpec](#grantparentcontextspec)_ | ParentContext defines cross-control-plane targeting.<br /><br />If specified, grants will be created in the target parent context<br />instead of the current control plane. |  |  |
+| `resourceGrantTemplate` <br />_[ResourceGrantTemplate](#resourcegranttemplate)_ | ResourceGrantTemplate defines how to create **ResourceGrants**.<br /><br />String fields support CEL expressions wrapped in \{\{ \}\} delimiters for dynamic content.<br /><br />Plain strings without \{\{ \}\} are treated as literal values. |  | Required: \{\} <br /> |
 
 
 #### GrantTriggerResource
@@ -5490,7 +5490,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiVersion` <br />_string_ | APIVersion of the trigger resource in the format "group/version".<br />For core resources, use "v1". |  | Pattern: `^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/)?v[0-9]+((alpha\|beta)[0-9]*)?$` <br />Required: \{\} <br /> |
+| `apiVersion` <br />_string_ | APIVersion of the trigger resource in the format "group/version".<br /><br />For core resources, use "v1". |  | Pattern: `^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/)?v[0-9]+((alpha\|beta)[0-9]*)?$` <br />Required: \{\} <br /> |
 | `kind` <br />_string_ | Kind is the kind of the trigger resource. |  | MaxLength: 63 <br />MinLength: 1 <br />Pattern: `^[A-Z][a-zA-Z0-9]*$` <br />Required: \{\} <br /> |
 
 
@@ -5508,7 +5508,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `resource` <br />_[GrantTriggerResource](#granttriggerresource)_ | Resource specifies which resource type triggers this policy. |  | Required: \{\} <br /> |
-| `constraints` <br />_[ConditionExpression](#conditionexpression) array_ | Constraints are CEL expressions that must evaluate to true for grant creation.<br />These are pure CEL expressions WITHOUT \{\{ \}\} delimiters (unlike template fields).<br />All constraints must pass for the policy to trigger.<br />The 'object' variable contains the trigger resource being evaluated. |  | MaxItems: 10 <br /> |
+| `constraints` <br />_[ConditionExpression](#conditionexpression) array_ | Constraints are CEL expressions that must evaluate to true for grant creation.<br /><br />These are pure CEL expressions WITHOUT \{\{ \}\} delimiters (unlike template fields).<br /><br />All constraints must pass for the policy to trigger.<br /><br />The 'object' variable contains the trigger resource being evaluated. |  | MaxItems: 10 <br /> |
 
 
 #### ObjectMetaTemplate
@@ -5526,11 +5526,11 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name specifies the exact name for the created ResourceClaim.<br />Supports CEL expressions wrapped in \{\{ \}\} delimiters with access to template variables.<br />Leave empty to use GenerateName for auto-generated names.<br />CEL Expression Syntax: CEL expressions must be enclosed in double curly braces \{\{ \}\}.<br />Plain strings without \{\{ \}\} are treated as literal values.<br />Template variables available:<br />- trigger: The resource triggering claim creation<br />- requestInfo: Request details (verb, resource, name, etc.)<br />- user: User information (name, uid, groups, extra)<br />Examples:<br />- "\{\{trigger.metadata.name + '-quota-claim'\}\}" (CEL expression)<br />- "\{\{trigger.metadata.name\}\}-claim" (CEL + literal)<br />- "fixed-claim-name" (literal string) |  |  |
-| `generateName` <br />_string_ | GenerateName specifies a prefix for auto-generated names when Name is empty.<br />Kubernetes appends random characters to create unique names.<br />Supports CEL expressions wrapped in \{\{ \}\} delimiters.<br />Examples:<br />- "\{\{trigger.spec.type + '-claim-'\}\}" (CEL expression)<br />- "\{\{trigger.spec.type\}\}-claim-" (CEL + literal)<br />- "quota-claim-" (literal string) |  |  |
-| `namespace` <br />_string_ | Namespace specifies where the ResourceClaim will be created.<br />Supports CEL expressions wrapped in \{\{ \}\} delimiters to derive namespace from trigger resource.<br />Leave empty to create in the same namespace as the trigger resource.<br />Examples:<br />- "\{\{trigger.metadata.namespace\}\}" (CEL: same namespace as trigger)<br />- "milo-system" (literal: fixed system namespace)<br />- "\{\{trigger.spec.organization + '-claims'\}\}" (CEL: derived namespace) |  |  |
-| `labels` <br />_object (keys:string, values:string)_ | Labels specifies static labels to apply to the created ResourceClaim.<br />Values are literal strings (no template processing).<br />The system automatically adds standard labels for policy tracking.<br />Useful for:<br />- Organizing claims by policy or resource type<br />- Adding environment or tier indicators<br />- Enabling label-based queries and monitoring |  |  |
-| `annotations` <br />_object (keys:string, values:string)_ | Annotations specifies annotations to apply to the created ResourceClaim.<br />Values support CEL expressions wrapped in \{\{ \}\} delimiters for dynamic content.<br />The system automatically adds standard annotations for tracking.<br />Template variables available:<br />- trigger: The resource triggering claim creation<br />- requestInfo: Request details<br />- user: User information<br />Examples:<br />- created-for: "\{\{trigger.metadata.name\}\}" (CEL expression)<br />- requested-by: "\{\{user.name\}\}" (CEL expression)<br />- environment: "production" (literal string) |  |  |
+| `name` <br />_string_ | Name specifies the exact name for the created ResourceClaim.<br /><br />Supports CEL expressions wrapped in \{\{ \}\} delimiters with access to template variables.<br /><br />Leave empty to use GenerateName for auto-generated names.<br /><br />CEL Expression Syntax: CEL expressions must be enclosed in double curly braces \{\{ \}\}.<br /><br />Plain strings without \{\{ \}\} are treated as literal values.<br /><br />Template variables available:<br />- trigger: The resource triggering claim creation<br />- requestInfo: Request details (verb, resource, name, etc.)<br />- user: User information (name, uid, groups, extra)<br />Examples:<br />- "\{\{trigger.metadata.name + '-quota-claim'\}\}" (CEL expression)<br />- "\{\{trigger.metadata.name\}\}-claim" (CEL + literal)<br />- "fixed-claim-name" (literal string) |  |  |
+| `generateName` <br />_string_ | GenerateName specifies a prefix for auto-generated names when Name is empty.<br /><br />Kubernetes appends random characters to create unique names.<br /><br />Supports CEL expressions wrapped in \{\{ \}\} delimiters.<br /><br />Examples:<br />- "\{\{trigger.spec.type + '-claim-'\}\}" (CEL expression)<br />- "\{\{trigger.spec.type\}\}-claim-" (CEL + literal)<br />- "quota-claim-" (literal string) |  |  |
+| `namespace` <br />_string_ | Namespace specifies where the ResourceClaim will be created.<br /><br />Supports CEL expressions wrapped in \{\{ \}\} delimiters to derive namespace from trigger resource.<br /><br />Leave empty to create in the same namespace as the trigger resource.<br /><br />Examples:<br />- "\{\{trigger.metadata.namespace\}\}" (CEL: same namespace as trigger)<br />- "milo-system" (literal: fixed system namespace)<br />- "\{\{trigger.spec.organization + '-claims'\}\}" (CEL: derived namespace) |  |  |
+| `labels` <br />_object (keys:string, values:string)_ | Labels specifies static labels to apply to the created ResourceClaim.<br /><br />Values are literal strings (no template processing).<br /><br />The system automatically adds standard labels for policy tracking.<br /><br />Useful for:<br />- Organizing claims by policy or resource type<br />- Adding environment or tier indicators<br />- Enabling label-based queries and monitoring |  |  |
+| `annotations` <br />_object (keys:string, values:string)_ | Annotations specifies annotations to apply to the created ResourceClaim.<br /><br />Values support CEL expressions wrapped in \{\{ \}\} delimiters for dynamic content.<br /><br />The system automatically adds standard annotations for tracking.<br /><br />Template variables available:<br />- trigger: The resource triggering claim creation<br />- requestInfo: Request details<br />- user: User information<br />Examples:<br />- created-for: "\{\{trigger.metadata.name\}\}" (CEL expression)<br />- requested-by: "\{\{user.name\}\}" (CEL expression)<br />- environment: "production" (literal string) |  |  |
 
 
 #### ResourceClaim
@@ -5666,12 +5666,12 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `resourceType` <br />_string_ | ResourceType identifies which resource request this allocation status<br />describes. Must exactly match one of the resourceType values in<br />spec.requests. |  | MinLength: 1 <br />Required: \{\} <br /> |
-| `status` <br />_string_ | Status indicates the allocation result for this specific resource request.<br />Valid values:<br />  - "Granted": Quota was available and the request was approved<br />  - "Denied": Insufficient quota or validation failure prevented allocation<br />  - "Pending": Request is being evaluated (initial state) |  | Enum: [Granted Denied Pending] <br />Required: \{\} <br /> |
-| `reason` <br />_string_ | Reason provides a machine-readable explanation for the current status.<br />Standard reasons include "QuotaAvailable", "QuotaExceeded",<br />"ValidationFailed". |  | Optional: \{\} <br /> |
-| `message` <br />_string_ | Message provides a human-readable explanation of the allocation result.<br />Includes specific details about quota availability or validation errors.<br />Examples:<br />  - "Allocated 1 project from bucket organization-acme-projects"<br />  - "Insufficient quota: need 2048 bytes, only 1024 available"<br />  - "ResourceRegistration not found for resourceType" |  | Optional: \{\} <br /> |
-| `allocatedAmount` <br />_integer_ | AllocatedAmount specifies how much quota was actually allocated for this<br />request. Measured in the BaseUnit defined by the ResourceRegistration.<br />Currently always equals the requested amount or 0 (partial allocations not<br />supported).<br />Set to the requested amount when Status=Granted, 0 when Status=Denied or<br />Pending. |  | Minimum: 0 <br />Optional: \{\} <br /> |
-| `allocatingBucket` <br />_string_ | AllocatingBucket identifies the AllowanceBucket that provided the quota for<br />this request. Set only when Status=Granted. Used for tracking and debugging<br />quota consumption.<br />Format: bucket name (generated as:<br />consumer-kind-consumer-name-resource-type-hash) |  | Optional: \{\} <br /> |
-| `lastTransitionTime` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | LastTransitionTime records when this allocation status last changed.<br />Updates whenever Status, Reason, or Message changes. |  | Required: \{\} <br /> |
+| `status` <br />_string_ | Status indicates the allocation result for this specific resource request.<br /><br />Valid values:<br />  - "Granted": Quota was available and the request was approved<br />  - "Denied": Insufficient quota or validation failure prevented allocation<br />  - "Pending": Request is being evaluated (initial state) |  | Enum: [Granted Denied Pending] <br />Required: \{\} <br /> |
+| `reason` <br />_string_ | Reason provides a machine-readable explanation for the current status.<br /><br />Standard reasons include "QuotaAvailable", "QuotaExceeded",<br />"ValidationFailed". |  | Optional: \{\} <br /> |
+| `message` <br />_string_ | Message provides a human-readable explanation of the allocation result.<br /><br />Includes specific details about quota availability or validation errors.<br /><br />Examples:<br />  - "Allocated 1 project from bucket organization-acme-projects"<br />  - "Insufficient quota: need 2048 bytes, only 1024 available"<br />  - "ResourceRegistration not found for resourceType" |  | Optional: \{\} <br /> |
+| `allocatedAmount` <br />_integer_ | AllocatedAmount specifies how much quota was actually allocated for this<br />request. Measured in the BaseUnit defined by the ResourceRegistration.<br /><br />Currently always equals the requested amount or 0 (partial allocations not<br />supported).<br /><br />Set to the requested amount when Status=Granted, 0 when Status=Denied or<br />Pending. |  | Minimum: 0 <br />Optional: \{\} <br /> |
+| `allocatingBucket` <br />_string_ | AllocatingBucket identifies the AllowanceBucket that provided the quota for<br />this request. Set only when Status=Granted. Used for tracking and debugging<br />quota consumption.<br /><br />Format: bucket name (generated as:<br />consumer-kind-consumer-name-resource-type-hash) |  | Optional: \{\} <br /> |
+| `lastTransitionTime` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | LastTransitionTime records when this allocation status last changed.<br /><br />Updates whenever Status, Reason, or Message changes. |  | Required: \{\} <br /> |
 
 
 #### ResourceClaimList
@@ -5706,9 +5706,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer making this claim. The consumer<br />must match the ConsumerType defined in the ResourceRegistration for each<br />requested resource type. The system validates this relationship during<br />claim processing.<br />When creating ResourceClaims via ClaimCreationPolicy, this field can be<br />omitted and the admission plugin will automatically fill it based on the<br />authenticated user's context (organization or project).<br />Examples:<br />  - Organization consuming Project quota<br />  - Project consuming User quota<br />  - Organization consuming storage quota |  | Optional: \{\} <br /> |
-| `requests` <br />_[ResourceRequest](#resourcerequest) array_ | Requests specifies the resource types and amounts being claimed from quota.<br />Each resource type can appear only once in the requests array. Minimum 1<br />request, maximum 20 requests per claim.<br />The system processes all requests as a single atomic operation: either all<br />requests are granted or all are denied. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
-| `resourceRef` <br />_[UnversionedObjectReference](#unversionedobjectreference)_ | ResourceRef identifies the actual Kubernetes resource that triggered this<br />claim. ClaimCreationPolicy automatically populates this field during<br />admission. Uses unversioned reference (apiGroup + kind + name + namespace)<br />to remain valid across API version changes.<br />The referenced resource's kind must be listed in the ResourceRegistration's<br />spec.claimingResources for the claim to be valid.<br />Examples:<br />  - Project resource triggering Project quota claim<br />  - User resource triggering User quota claim<br />  - Organization resource triggering storage quota claim |  |  |
+| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer making this claim. The consumer<br />must match the ConsumerType defined in the ResourceRegistration for each<br />requested resource type. The system validates this relationship during<br />claim processing.<br /><br />When creating ResourceClaims via ClaimCreationPolicy, this field can be<br />omitted and the admission plugin will automatically fill it based on the<br />authenticated user's context (organization or project).<br /><br />Examples:<br />  - Organization consuming Project quota<br />  - Project consuming User quota<br />  - Organization consuming storage quota |  | Optional: \{\} <br /> |
+| `requests` <br />_[ResourceRequest](#resourcerequest) array_ | Requests specifies the resource types and amounts being claimed from quota.<br /><br />Each resource type can appear only once in the requests array. Minimum 1<br />request, maximum 20 requests per claim.<br /><br />The system processes all requests as a single atomic operation: either all<br />requests are granted or all are denied. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
+| `resourceRef` <br />_[UnversionedObjectReference](#unversionedobjectreference)_ | ResourceRef identifies the actual Kubernetes resource that triggered this<br />claim. ClaimCreationPolicy automatically populates this field during<br />admission. Uses unversioned reference (apiGroup + kind + name + namespace)<br />to remain valid across API version changes.<br /><br />The referenced resource's kind must be listed in the ResourceRegistration's<br />spec.claimingResources for the claim to be valid.<br /><br />Examples:<br />  - Project resource triggering Project quota claim<br />  - User resource triggering User quota claim<br />  - Organization resource triggering storage quota claim |  |  |
 
 
 #### ResourceClaimStatus
@@ -5728,8 +5728,8 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation the system has<br />processed. When ObservedGeneration matches metadata.generation, the status<br />reflects the current spec. When ObservedGeneration is lower, the system is<br />still processing recent changes. |  | Optional: \{\} <br /> |
-| `allocations` <br />_[ResourceClaimAllocationStatus](#resourceclaimallocationstatus) array_ | Allocations provides detailed status for each resource request in the<br />claim. The system creates one allocation entry for each request in<br />spec.requests. Use this field to understand which specific requests were<br />granted or denied.<br />List is indexed by ResourceType for efficient lookups. |  | Optional: \{\} <br /> |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the overall status of the claim evaluation.<br />Controllers set these conditions to provide a high-level view of claim<br />processing.<br />Standard condition types:<br />  - "Granted": Indicates whether the claim was approved and quota allocated<br />Standard condition reasons for "Granted":<br />  - "QuotaAvailable": All requested quota was available and allocated<br />  - "QuotaExceeded": Insufficient quota prevented allocation (claim denied)<br />  - "ValidationFailed": Configuration errors prevented evaluation (claim denied)<br />  - "PendingEvaluation": Claim is still being processed (initial state)<br />Claim Lifecycle:<br />  1. Created: Granted=False, reason=PendingEvaluation<br />  2. Processed: Granted=True/False based on quota availability and validation<br />  3. Updated: Granted condition changes only when allocation results change |  |  |
+| `allocations` <br />_[ResourceClaimAllocationStatus](#resourceclaimallocationstatus) array_ | Allocations provides detailed status for each resource request in the<br />claim. The system creates one allocation entry for each request in<br />spec.requests. Use this field to understand which specific requests were<br />granted or denied.<br /><br />List is indexed by ResourceType for efficient lookups. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the overall status of the claim evaluation.<br /><br />Controllers set these conditions to provide a high-level view of claim<br />processing.<br /><br />Standard condition types:<br />  - "Granted": Indicates whether the claim was approved and quota allocated<br />Standard condition reasons for "Granted":<br />  - "QuotaAvailable": All requested quota was available and allocated<br />  - "QuotaExceeded": Insufficient quota prevented allocation (claim denied)<br />  - "ValidationFailed": Configuration errors prevented evaluation (claim denied)<br />  - "PendingEvaluation": Claim is still being processed (initial state)<br />Claim Lifecycle:<br />  1. Created: Granted=False, reason=PendingEvaluation<br />  2. Processed: Granted=True/False based on quota availability and validation<br />  3. Updated: Granted condition changes only when allocation results change |  |  |
 
 
 #### ResourceClaimTemplate
@@ -5746,7 +5746,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `metadata` <br />_[ObjectMetaTemplate](#objectmetatemplate)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  | Required: \{\} <br /> |
-| `spec` <br />_[ResourceClaimSpec](#resourceclaimspec)_ | Spec for the created ResourceClaim.<br />String fields support CEL expressions. |  | Required: \{\} <br /> |
+| `spec` <br />_[ResourceClaimSpec](#resourceclaimspec)_ | Spec for the created ResourceClaim.<br /><br />String fields support CEL expressions. |  | Required: \{\} <br /> |
 
 
 #### ResourceGrant
@@ -5904,8 +5904,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer that receives these allowances.<br />The consumer type must match the ConsumerType defined in the ResourceRegistration<br />for each allowance resource type. The system validates this relationship.<br />Examples:<br />- Organization receiving Project quota allowances<br />- Project receiving User quota allowances<br />- Organization receiving storage quota allowances |  | Required: \{\} <br /> |
-| `allowances` <br />_[Allowance](#allowance) array_ | Allowances specifies the quota allocations provided by this grant.<br />Each allowance grants capacity for a specific resource type.<br />Minimum 1 allowance required, maximum 20 allowances per grant.<br />All allowances in a single grant:<br />- Apply to the same consumer (spec.consumerRef)<br />- Contribute to the same AllowanceBucket for each resource type<br />- Activate and deactivate together based on the grant's status |  | MinItems: 1 <br />Required: \{\} <br /> |
+| `consumerRef` <br />_[ConsumerRef](#consumerref)_ | ConsumerRef identifies the quota consumer that receives these allowances.<br /><br />The consumer type must match the ConsumerType defined in the ResourceRegistration<br />for each allowance resource type. The system validates this relationship.<br /><br />Examples:<br />- Organization receiving Project quota allowances<br />- Project receiving User quota allowances<br />- Organization receiving storage quota allowances |  | Required: \{\} <br /> |
+| `allowances` <br />_[Allowance](#allowance) array_ | Allowances specifies the quota allocations provided by this grant.<br /><br />Each allowance grants capacity for a specific resource type.<br /><br />Minimum 1 allowance required, maximum 20 allowances per grant.<br /><br />All allowances in a single grant:<br />- Apply to the same consumer (spec.consumerRef)<br />- Contribute to the same AllowanceBucket for each resource type<br />- Activate and deactivate together based on the grant's status |  | MinItems: 1 <br />Required: \{\} <br /> |
 
 
 #### ResourceGrantStatus
@@ -5923,8 +5923,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation the quota system has processed.<br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br />When ObservedGeneration is lower, the quota system is still processing recent changes. |  | Optional: \{\} <br /> |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the latest available observations of the grant's state.<br />Controllers set these conditions to communicate operational status.<br />Standard condition types:<br />- "Active": Indicates whether the grant is operational and contributing to quota buckets.<br />  When True, allowances are aggregated into AllowanceBuckets and available for claims.<br />  When False, allowances do not contribute to quota decisions.<br />Standard condition reasons for "Active":<br />- "GrantActive": Grant is validated and contributing to quota buckets<br />- "ValidationFailed": Specification contains errors preventing activation (see message)<br />- "GrantPending": Grant is being processed by the quota system<br />Grant Lifecycle:<br />1. Created: Active=Unknown, reason=GrantPending<br />2. Validated: Active=True, reason=GrantActive OR Active=False, reason=ValidationFailed<br />3. Updated: Active condition changes only when validation results change |  |  |
+| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation the quota system has processed.<br /><br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br /><br />When ObservedGeneration is lower, the quota system is still processing recent changes. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the latest available observations of the grant's state.<br /><br />Controllers set these conditions to communicate operational status.<br /><br />Standard condition types:<br />- "Active": Indicates whether the grant is operational and contributing to quota buckets.<br /><br />When True, allowances are aggregated into AllowanceBuckets and available for claims.<br /><br />When False, allowances do not contribute to quota decisions.<br /><br />Standard condition reasons for "Active":<br />- "GrantActive": Grant is validated and contributing to quota buckets<br />- "ValidationFailed": Specification contains errors preventing activation (see message)<br />- "GrantPending": Grant is being processed by the quota system<br />Grant Lifecycle:<br />1. Created: Active=Unknown, reason=GrantPending<br />2. Validated: Active=True, reason=GrantActive OR Active=False, reason=ValidationFailed<br />3. Updated: Active condition changes only when validation results change |  |  |
 
 
 #### ResourceGrantTemplate
@@ -5941,7 +5941,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `metadata` <br />_[ObjectMetaTemplate](#objectmetatemplate)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  | Required: \{\} <br /> |
-| `spec` <br />_[ResourceGrantSpec](#resourcegrantspec)_ | Spec for the created ResourceGrant.<br />String fields support CEL expressions wrapped in \{\{ \}\} delimiters. |  | Required: \{\} <br /> |
+| `spec` <br />_[ResourceGrantSpec](#resourcegrantspec)_ | Spec for the created ResourceGrant.<br /><br />String fields support CEL expressions wrapped in \{\{ \}\} delimiters. |  | Required: \{\} <br /> |
 
 
 #### ResourceRegistration
@@ -6044,14 +6044,14 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `consumerType` <br />_[ConsumerType](#consumertype)_ | ConsumerType specifies which resource type receives grants and creates claims for this registration.<br />The consumer type must exist in the cluster before creating the registration.<br />Example: When registering "Projects per Organization", set `ConsumerType` to **Organization**<br />(apiGroup: `resourcemanager.miloapis.com`, kind: `Organization`). **Organizations** then<br />receive **ResourceGrants** allocating **Project** quota and create **ResourceClaims** when **Projects** are created. |  | Required: \{\} <br /> |
-| `type` <br />_string_ | Type specifies the measurement method for quota tracking.<br />This field is immutable after creation.<br />Valid values:<br />- `Entity`: Counts discrete resource instances. Use for resources where each instance<br />  consumes exactly 1 quota unit (for example, **Projects**, **Users**, **Databases**).<br />  Claims always request integer quantities.<br />- `Allocation`: Measures numeric capacity or resource amounts. Use for resources<br />  with variable consumption (for example, CPU millicores, memory bytes, storage capacity).<br />  Claims can request fractional amounts based on resource specifications. |  | Enum: [Entity Allocation] <br />Required: \{\} <br /> |
-| `resourceType` <br />_string_ | ResourceType identifies the resource to track with quota.<br />Platform administrators define resource type identifiers that make sense for their<br />quota system usage. This field is immutable after creation.<br />The identifier format is flexible to accommodate various naming conventions<br />and organizational needs. Service providers can use any meaningful identifier.<br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "iam.miloapis.com/users"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
-| `description` <br />_string_ | Description provides human-readable context about what this registration tracks.<br />Use clear, specific language that explains the resource type and measurement approach.<br />Maximum 500 characters.<br />Examples:<br />- "Projects created within Organizations"<br />- "CPU millicores allocated to workloads"<br />- "Storage bytes claimed by volume requests" |  | MaxLength: 500 <br />MinLength: 1 <br />Optional: \{\} <br /> |
-| `baseUnit` <br />_string_ | BaseUnit defines the internal measurement unit for all quota calculations.<br />The system stores and processes all quota amounts using this unit.<br />Use singular form with lowercase letters. Maximum 50 characters.<br />Examples:<br />- "project" (for Entity type tracking Projects)<br />- "millicore" (for CPU allocation)<br />- "byte" (for storage or memory)<br />- "user" (for Entity type tracking Users) |  | MaxLength: 50 <br />MinLength: 1 <br />Required: \{\} <br /> |
-| `displayUnit` <br />_string_ | DisplayUnit defines the unit shown in user interfaces and API responses.<br />Should be more human-readable than BaseUnit. Use singular form. Maximum 50 characters.<br />Examples:<br />- "project" (same as BaseUnit when no conversion needed)<br />- "core" (for displaying CPU instead of millicores)<br />- "GiB" (for displaying memory/storage instead of bytes)<br />- "TB" (for large storage volumes) |  | MaxLength: 50 <br />MinLength: 1 <br />Required: \{\} <br /> |
-| `unitConversionFactor` <br />_integer_ | UnitConversionFactor converts BaseUnit values to DisplayUnit values for presentation.<br />Must be a positive integer. Minimum value is 1 (no conversion).<br />Formula: displayValue = baseValue / unitConversionFactor<br />Examples:<br />- 1 (no conversion: "project" to "project")<br />- 1000 (millicores to cores: 2000 millicores displays as 2 cores)<br />- 1073741824 (bytes to GiB: 2147483648 bytes displays as 2 GiB)<br />- 1000000000000 (bytes to TB: 2000000000000 bytes displays as 2 TB) |  | Minimum: 1 <br />Required: \{\} <br /> |
-| `claimingResources` <br />_[ClaimingResource](#claimingresource) array_ | ClaimingResources specifies which resource types can create ResourceClaims for this registration.<br />Only resources listed here can trigger quota consumption for this resource type.<br />At least one claiming resource must be specified.<br />Maximum 20 entries. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
+| `consumerType` <br />_[ConsumerType](#consumertype)_ | ConsumerType specifies which resource type receives grants and creates claims for this registration.<br /><br />The consumer type must exist in the cluster before creating the registration.<br /><br />Example: When registering "Projects per Organization", set `ConsumerType` to **Organization**<br />(apiGroup: `resourcemanager.miloapis.com`, kind: `Organization`). **Organizations** then<br />receive **ResourceGrants** allocating **Project** quota and create **ResourceClaims** when **Projects** are created. |  | Required: \{\} <br /> |
+| `type` <br />_string_ | Type specifies the measurement method for quota tracking.<br /><br />This field is immutable after creation.<br /><br />Valid values:<br />- `Entity`: Counts discrete resource instances. Use for resources where each instance<br />  consumes exactly 1 quota unit (for example, **Projects**, **Users**, **Databases**).<br /><br />Claims always request integer quantities.<br />- `Allocation`: Measures numeric capacity or resource amounts. Use for resources<br />  with variable consumption (for example, CPU millicores, memory bytes, storage capacity).<br /><br />Claims can request fractional amounts based on resource specifications. |  | Enum: [Entity Allocation] <br />Required: \{\} <br /> |
+| `resourceType` <br />_string_ | ResourceType identifies the resource to track with quota.<br /><br />Platform administrators define resource type identifiers that make sense for their<br />quota system usage. This field is immutable after creation.<br /><br />The identifier format is flexible to accommodate various naming conventions<br />and organizational needs. Service providers can use any meaningful identifier.<br /><br />Examples:<br />- "resourcemanager.miloapis.com/projects"<br />- "iam.miloapis.com/users"<br />- "compute_cpu"<br />- "storage.volumes"<br />- "custom-service-quota" |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `description` <br />_string_ | Description provides human-readable context about what this registration tracks.<br /><br />Use clear, specific language that explains the resource type and measurement approach.<br /><br />Maximum 500 characters.<br /><br />Examples:<br />- "Projects created within Organizations"<br />- "CPU millicores allocated to workloads"<br />- "Storage bytes claimed by volume requests" |  | MaxLength: 500 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `baseUnit` <br />_string_ | BaseUnit defines the internal measurement unit for all quota calculations.<br /><br />The system stores and processes all quota amounts using this unit.<br /><br />Use singular form with lowercase letters. Maximum 50 characters.<br /><br />Examples:<br />- "project" (for Entity type tracking Projects)<br />- "millicore" (for CPU allocation)<br />- "byte" (for storage or memory)<br />- "user" (for Entity type tracking Users) |  | MaxLength: 50 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `displayUnit` <br />_string_ | DisplayUnit defines the unit shown in user interfaces and API responses.<br /><br />Should be more human-readable than BaseUnit. Use singular form. Maximum 50 characters.<br /><br />Examples:<br />- "project" (same as BaseUnit when no conversion needed)<br />- "core" (for displaying CPU instead of millicores)<br />- "GiB" (for displaying memory/storage instead of bytes)<br />- "TB" (for large storage volumes) |  | MaxLength: 50 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `unitConversionFactor` <br />_integer_ | UnitConversionFactor converts BaseUnit values to DisplayUnit values for presentation.<br /><br />Must be a positive integer. Minimum value is 1 (no conversion).<br /><br />Formula: displayValue = baseValue / unitConversionFactor<br />Examples:<br />- 1 (no conversion: "project" to "project")<br />- 1000 (millicores to cores: 2000 millicores displays as 2 cores)<br />- 1073741824 (bytes to GiB: 2147483648 bytes displays as 2 GiB)<br />- 1000000000000 (bytes to TB: 2000000000000 bytes displays as 2 TB) |  | Minimum: 1 <br />Required: \{\} <br /> |
+| `claimingResources` <br />_[ClaimingResource](#claimingresource) array_ | ClaimingResources specifies which resource types can create ResourceClaims for this registration.<br /><br />Only resources listed here can trigger quota consumption for this resource type.<br /><br />At least one claiming resource must be specified.<br /><br />Maximum 20 entries. |  | MaxItems: 20 <br />MinItems: 1 <br />Required: \{\} <br /> |
 
 
 #### ResourceRegistrationStatus
@@ -6069,8 +6069,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation that the system has processed.<br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br />When ObservedGeneration is lower, the system is still processing recent changes. |  | Optional: \{\} <br /> |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the latest available observations of the registration's state.<br />The system sets these conditions to communicate operational status.<br />Standard condition types:<br />- "Active": Indicates whether the registration is operational. When True, ResourceGrants<br />  and ResourceClaims can reference this registration. When False, quota operations are blocked.<br />Standard condition reasons for "Active":<br />- "RegistrationActive": Registration is validated and operational<br />- "ValidationFailed": Specification contains errors (see message for details)<br />- "RegistrationPending": Registration is being processed |  |  |
+| `observedGeneration` <br />_integer_ | ObservedGeneration indicates the most recent spec generation that the system has processed.<br /><br />When ObservedGeneration matches metadata.generation, the status reflects the current spec.<br /><br />When ObservedGeneration is lower, the system is still processing recent changes. |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the latest available observations of the registration's state.<br /><br />The system sets these conditions to communicate operational status.<br /><br />Standard condition types:<br />- "Active": Indicates whether the registration is operational. When True, ResourceGrants<br />  and ResourceClaims can reference this registration. When False, quota operations are blocked.<br /><br />Standard condition reasons for "Active":<br />- "RegistrationActive": Registration is validated and operational<br />- "ValidationFailed": Specification contains errors (see message for details)<br />- "RegistrationPending": Registration is being processed |  |  |
 
 
 #### ResourceRequest
@@ -6087,8 +6087,8 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `resourceType` <br />_string_ | ResourceType identifies the specific resource type being claimed. Must<br />exactly match a ResourceRegistration.spec.resourceType that is currently<br />active. The quota system validates this reference during claim processing.<br />The format is defined by platform administrators when creating ResourceRegistrations.<br />Service providers can use any identifier that makes sense for their quota system usage.<br />Examples:<br />  - "resourcemanager.miloapis.com/projects"<br />  - "compute_cpu"<br />  - "storage.volumes"<br />  - "custom-service-quota" |  | Required: \{\} <br /> |
-| `amount` <br />_integer_ | Amount specifies how much quota to claim for this resource type. Must be<br />measured in the BaseUnit defined by the corresponding ResourceRegistration.<br />Must be a positive integer (minimum value is 0, but 0 means no quota<br />requested).<br />For Entity registrations: Use 1 for single resource instances (1 Project, 1<br />User) For Allocation registrations: Use actual capacity amounts (2048 for<br />2048 MB, 1000 for 1000 millicores)<br />Examples:<br />  - 1 (claiming 1 Project)<br />  - 2048 (claiming 2048 bytes of storage)<br />  - 1000 (claiming 1000 CPU millicores) |  | Minimum: 0 <br />Required: \{\} <br /> |
+| `resourceType` <br />_string_ | ResourceType identifies the specific resource type being claimed. Must<br />exactly match a ResourceRegistration.spec.resourceType that is currently<br />active. The quota system validates this reference during claim processing.<br /><br />The format is defined by platform administrators when creating ResourceRegistrations.<br /><br />Service providers can use any identifier that makes sense for their quota system usage.<br /><br />Examples:<br />  - "resourcemanager.miloapis.com/projects"<br />  - "compute_cpu"<br />  - "storage.volumes"<br />  - "custom-service-quota" |  | Required: \{\} <br /> |
+| `amount` <br />_integer_ | Amount specifies how much quota to claim for this resource type. Must be<br />measured in the BaseUnit defined by the corresponding ResourceRegistration.<br /><br />Must be a positive integer (minimum value is 0, but 0 means no quota<br />requested).<br /><br />For Entity registrations: Use 1 for single resource instances (1 Project, 1<br />User) For Allocation registrations: Use actual capacity amounts (2048 for<br />2048 MB, 1000 for 1000 millicores)<br />Examples:<br />  - 1 (claiming 1 Project)<br />  - 2048 (claiming 2048 bytes of storage)<br />  - 1000 (claiming 1000 CPU millicores) |  | Minimum: 0 <br />Required: \{\} <br /> |
 
 
 #### UnversionedObjectReference
@@ -6106,10 +6106,10 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `apiGroup` <br />_string_ | APIGroup specifies the API group of the referenced resource.<br />Use full group name for Milo resources.<br />Examples:<br />- "resourcemanager.miloapis.com" (Project, Organization)<br />- "iam.miloapis.com" (User, Group)<br />- "infrastructure.miloapis.com" (infrastructure resources) |  | Optional: \{\} <br /> |
-| `kind` <br />_string_ | Kind specifies the type of the referenced resource.<br />Must match an existing Kubernetes resource type.<br />Examples:<br />- "Project" (Project resource that triggered quota claim)<br />- "User" (User resource that triggered quota claim)<br />- "Organization" (Organization resource that triggered quota claim) |  | Required: \{\} <br /> |
-| `name` <br />_string_ | Name identifies the specific resource instance that triggered the quota claim.<br />Used for linking claims back to their triggering resources.<br />Examples:<br />- "web-app-project" (Project that triggered Project quota claim)<br />- "john.doe" (User that triggered User quota claim) |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace specifies the namespace containing the referenced resource.<br />Required for namespaced resources, omitted for cluster-scoped resources.<br />Examples:<br />- "acme-corp" (organization namespace containing Project)<br />- "team-alpha" (project namespace containing User)<br />- "" or omitted (for cluster-scoped resources like Organization) |  | Optional: \{\} <br /> |
+| `apiGroup` <br />_string_ | APIGroup specifies the API group of the referenced resource.<br /><br />Use full group name for Milo resources.<br /><br />Examples:<br />- "resourcemanager.miloapis.com" (Project, Organization)<br />- "iam.miloapis.com" (User, Group)<br />- "infrastructure.miloapis.com" (infrastructure resources) |  | Optional: \{\} <br /> |
+| `kind` <br />_string_ | Kind specifies the type of the referenced resource.<br /><br />Must match an existing Kubernetes resource type.<br /><br />Examples:<br />- "Project" (Project resource that triggered quota claim)<br />- "User" (User resource that triggered quota claim)<br />- "Organization" (Organization resource that triggered quota claim) |  | Required: \{\} <br /> |
+| `name` <br />_string_ | Name identifies the specific resource instance that triggered the quota claim.<br /><br />Used for linking claims back to their triggering resources.<br /><br />Examples:<br />- "web-app-project" (Project that triggered Project quota claim)<br />- "john.doe" (User that triggered User quota claim) |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace specifies the namespace containing the referenced resource.<br /><br />Required for namespaced resources, omitted for cluster-scoped resources.<br /><br />Examples:<br />- "acme-corp" (organization namespace containing Project)<br />- "team-alpha" (project namespace containing User)<br />- "" or omitted (for cluster-scoped resources like Organization) |  | Optional: \{\} <br /> |
 
 
 
@@ -6142,12 +6142,12 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` <br />_string_ | Name identifies the Role resource.<br />Required field. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace identifies the namespace containing the Role resource.<br />Empty when the role is in the membership's namespace. |  | Optional: \{\} <br /> |
-| `status` <br />_string_ | Status indicates the current state of this role assignment.<br />Valid values:<br />  - "Applied": PolicyBinding successfully created and role is active<br />  - "Pending": Role is being reconciled (transitional state)<br />  - "Failed": PolicyBinding could not be created (see Message for details)<br />Required field. |  | Enum: [Applied Pending Failed] <br />Required: \{\} <br /> |
-| `message` <br />_string_ | Message provides additional context about the role status.<br />Contains error details when Status is "Failed", explaining why the<br />PolicyBinding could not be created.<br />Common failure messages:<br />  - "role 'role-name' not found in namespace 'namespace'"<br />  - "Failed to create PolicyBinding: &lt;error details&gt;"<br />Empty when Status is "Applied" or "Pending". |  | Optional: \{\} <br /> |
-| `policyBindingRef` <br />_[PolicyBindingReference](#policybindingreference)_ | PolicyBindingRef references the PolicyBinding resource that was<br />automatically created for this role.<br />Only populated when Status is "Applied". Use this reference to<br />inspect or troubleshoot the underlying PolicyBinding. |  | Optional: \{\} <br /> |
-| `appliedAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | AppliedAt records when this role was successfully applied.<br />Corresponds to the PolicyBinding creation time.<br />Only populated when Status is "Applied". |  | Optional: \{\} <br /> |
+| `name` <br />_string_ | Name identifies the Role resource.<br /><br />Required field. |  | Required: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace identifies the namespace containing the Role resource.<br /><br />Empty when the role is in the membership's namespace. |  | Optional: \{\} <br /> |
+| `status` <br />_string_ | Status indicates the current state of this role assignment.<br /><br />Valid values:<br />  - "Applied": PolicyBinding successfully created and role is active<br />  - "Pending": Role is being reconciled (transitional state)<br />  - "Failed": PolicyBinding could not be created (see Message for details)<br />Required field. |  | Enum: [Applied Pending Failed] <br />Required: \{\} <br /> |
+| `message` <br />_string_ | Message provides additional context about the role status.<br /><br />Contains error details when Status is "Failed", explaining why the<br />PolicyBinding could not be created.<br /><br />Common failure messages:<br />  - "role 'role-name' not found in namespace 'namespace'"<br />  - "Failed to create PolicyBinding: &lt;error details&gt;"<br />Empty when Status is "Applied" or "Pending". |  | Optional: \{\} <br /> |
+| `policyBindingRef` <br />_[PolicyBindingReference](#policybindingreference)_ | PolicyBindingRef references the PolicyBinding resource that was<br />automatically created for this role.<br /><br />Only populated when Status is "Applied". Use this reference to<br />inspect or troubleshoot the underlying PolicyBinding. |  | Optional: \{\} <br /> |
+| `appliedAt` <br />_[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#time-v1-meta)_ | AppliedAt records when this role was successfully applied.<br /><br />Corresponds to the PolicyBinding creation time.<br /><br />Only populated when Status is "Applied". |  | Optional: \{\} <br /> |
 
 
 #### MemberReference
@@ -6312,9 +6312,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `organizationRef` <br />_[OrganizationReference](#organizationreference)_ | OrganizationRef identifies the organization to grant membership in.<br />The organization must exist before creating the membership.<br />Required field. |  | Required: \{\} <br /> |
-| `userRef` <br />_[MemberReference](#memberreference)_ | UserRef identifies the user to grant organization membership.<br />The user must exist before creating the membership.<br />Required field. |  | Required: \{\} <br /> |
-| `roles` <br />_[RoleReference](#rolereference) array_ | Roles specifies a list of roles to assign to the user within the organization.<br />The controller automatically creates and manages PolicyBinding resources for<br />each role. Roles can be added or removed after the membership is created.<br />Optional field. When omitted or empty, the membership is established without<br />any role assignments. Roles can be added later via update operations.<br />Each role reference must specify:<br />  - name: The role name (required)<br />  - namespace: The role namespace (optional, defaults to membership namespace)<br />Duplicate roles are prevented by admission webhook validation.<br />Example:<br />  roles:<br />  - name: organization-admin<br />    namespace: organization-acme-corp<br />  - name: billing-manager<br />    namespace: organization-acme-corp<br />  - name: shared-developer<br />    namespace: milo-system |  | Optional: \{\} <br /> |
+| `organizationRef` <br />_[OrganizationReference](#organizationreference)_ | OrganizationRef identifies the organization to grant membership in.<br /><br />The organization must exist before creating the membership.<br /><br />Required field. |  | Required: \{\} <br /> |
+| `userRef` <br />_[MemberReference](#memberreference)_ | UserRef identifies the user to grant organization membership.<br /><br />The user must exist before creating the membership.<br /><br />Required field. |  | Required: \{\} <br /> |
+| `roles` <br />_[RoleReference](#rolereference) array_ | Roles specifies a list of roles to assign to the user within the organization.<br /><br />The controller automatically creates and manages PolicyBinding resources for<br />each role. Roles can be added or removed after the membership is created.<br /><br />Optional field. When omitted or empty, the membership is established without<br />any role assignments. Roles can be added later via update operations.<br /><br />Each role reference must specify:<br />  - name: The role name (required)<br />  - namespace: The role namespace (optional, defaults to membership namespace)<br />Duplicate roles are prevented by admission webhook validation.<br /><br />Example:<br />  roles:<br />  - name: organization-admin<br />    namespace: organization-acme-corp<br />  - name: billing-manager<br />    namespace: organization-acme-corp<br />  - name: shared-developer<br />    namespace: milo-system |  | Optional: \{\} <br /> |
 
 
 #### OrganizationMembershipStatus
@@ -6333,10 +6333,10 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `observedGeneration` <br />_integer_ | ObservedGeneration tracks the most recent membership spec that the<br />controller has processed. Use this to determine if status reflects<br />the latest changes. |  | Optional: \{\} <br /> |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the current status of the membership.<br />Standard conditions:<br />  - Ready: Indicates membership has been established (user and org exist)<br />  - RolesApplied: Indicates whether all roles have been successfully applied<br />Check the RolesApplied condition to determine overall role assignment status:<br />  - True with reason "AllRolesApplied": All roles successfully applied<br />  - True with reason "NoRolesSpecified": No roles in spec, membership only<br />  - False with reason "PartialRolesApplied": Some roles failed (check appliedRoles for details) | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
-| `user` <br />_[OrganizationMembershipUserStatus](#organizationmembershipuserstatus)_ | User contains cached information about the user in this membership.<br />This information is populated by the controller from the referenced user. |  | Optional: \{\} <br /> |
-| `organization` <br />_[OrganizationMembershipOrganizationStatus](#organizationmembershiporganizationstatus)_ | Organization contains cached information about the organization in this membership.<br />This information is populated by the controller from the referenced organization. |  | Optional: \{\} <br /> |
-| `appliedRoles` <br />_[AppliedRole](#appliedrole) array_ | AppliedRoles tracks the reconciliation state of each role in spec.roles.<br />This array provides per-role status, making it easy to identify which<br />roles are applied and which failed.<br />Each entry includes:<br />  - name and namespace: Identifies the role<br />  - status: "Applied", "Pending", or "Failed"<br />  - policyBindingRef: Reference to the created PolicyBinding (when Applied)<br />  - appliedAt: Timestamp when role was applied (when Applied)<br />  - message: Error details (when Failed)<br />Use this to troubleshoot role assignment issues. Roles marked as "Failed"<br />include a message explaining why the PolicyBinding could not be created.<br />Example:<br />  appliedRoles:<br />  - name: org-admin<br />    namespace: organization-acme-corp<br />    status: Applied<br />    appliedAt: "2025-10-28T10:00:00Z"<br />    policyBindingRef:<br />      name: jane-acme-membership-a1b2c3d4<br />      namespace: organization-acme-corp<br />  - name: invalid-role<br />    namespace: organization-acme-corp<br />    status: Failed<br />    message: "role 'invalid-role' not found in namespace 'organization-acme-corp'" |  | Optional: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the current status of the membership.<br /><br />Standard conditions:<br />  - Ready: Indicates membership has been established (user and org exist)<br />  - RolesApplied: Indicates whether all roles have been successfully applied<br />Check the RolesApplied condition to determine overall role assignment status:<br />  - True with reason "AllRolesApplied": All roles successfully applied<br />  - True with reason "NoRolesSpecified": No roles in spec, membership only<br />  - False with reason "PartialRolesApplied": Some roles failed (check appliedRoles for details) | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] | Optional: \{\} <br /> |
+| `user` <br />_[OrganizationMembershipUserStatus](#organizationmembershipuserstatus)_ | User contains cached information about the user in this membership.<br /><br />This information is populated by the controller from the referenced user. |  | Optional: \{\} <br /> |
+| `organization` <br />_[OrganizationMembershipOrganizationStatus](#organizationmembershiporganizationstatus)_ | Organization contains cached information about the organization in this membership.<br /><br />This information is populated by the controller from the referenced organization. |  | Optional: \{\} <br /> |
+| `appliedRoles` <br />_[AppliedRole](#appliedrole) array_ | AppliedRoles tracks the reconciliation state of each role in spec.roles.<br /><br />This array provides per-role status, making it easy to identify which<br />roles are applied and which failed.<br /><br />Each entry includes:<br />  - name and namespace: Identifies the role<br />  - status: "Applied", "Pending", or "Failed"<br />  - policyBindingRef: Reference to the created PolicyBinding (when Applied)<br />  - appliedAt: Timestamp when role was applied (when Applied)<br />  - message: Error details (when Failed)<br />Use this to troubleshoot role assignment issues. Roles marked as "Failed"<br />include a message explaining why the PolicyBinding could not be created.<br /><br />Example:<br />  appliedRoles:<br />  - name: org-admin<br />    namespace: organization-acme-corp<br />    status: Applied<br />    appliedAt: "2025-10-28T10:00:00Z"<br />    policyBindingRef:<br />      name: jane-acme-membership-a1b2c3d4<br />      namespace: organization-acme-corp<br />  - name: invalid-role<br />    namespace: organization-acme-corp<br />    status: Failed<br />    message: "role 'invalid-role' not found in namespace 'organization-acme-corp'" |  | Optional: \{\} <br /> |
 
 
 #### OrganizationMembershipUserStatus
@@ -6405,7 +6405,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `observedGeneration` <br />_integer_ | ObservedGeneration is the most recent generation observed for this Organization by the controller. |  |  |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the observations of an organization's current state.<br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represents the observations of an organization's current state.<br /><br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
 
 
 #### OwnerReference
@@ -6509,7 +6509,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Represents the observations of a project's current state.<br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Represents the observations of a project's current state.<br /><br />Known condition types are: "Ready" | [map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for control plane to reconcile reason:Unknown status:Unknown type:Ready]] |  |
 
 
 #### RoleReference
@@ -6526,7 +6526,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `name` <br />_string_ | Name of the referenced Role. |  | Required: \{\} <br /> |
-| `namespace` <br />_string_ | Namespace of the referenced Role.<br />If not specified, it defaults to the organization membership's namespace. |  | Optional: \{\} <br /> |
+| `namespace` <br />_string_ | Namespace of the referenced Role.<br /><br />If not specified, it defaults to the organization membership's namespace. |  | Optional: \{\} <br /> |
 
 
 
@@ -6657,7 +6657,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Provides summary status information on the export policy as a whole. Review<br />the sink status information for detailed information on each sink.<br />Known condition types are: "Ready" |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Provides summary status information on the export policy as a whole. Review<br />the sink status information for detailed information on each sink.<br /><br />Known condition types are: "Ready" |  |  |
 | `sinks` <br />_[SinkStatus](#sinkstatus) array_ | Provides status information on each sink that's configured. |  |  |
 
 
@@ -6677,7 +6677,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `metricsql` <br />_string_ | The MetricSQL option allows to user to provide a metricsql query that can<br />be used to select and filter metric data that should be published by the<br />export policy.<br />Here's an example of a metricsql query that will publish gateway metrics:<br />``` \{service_name=“networking.miloapis.com”, resource_kind="Gateway"\} ```<br />See: https://docs.victoriametrics.com/metricsql/ |  |  |
+| `metricsql` <br />_string_ | The MetricSQL option allows to user to provide a metricsql query that can<br />be used to select and filter metric data that should be published by the<br />export policy.<br /><br />Here's an example of a metricsql query that will publish gateway metrics:<br />``` \{service_name=“networking.miloapis.com”, resource_kind="Gateway"\} ```<br />See: https://docs.victoriametrics.com/metricsql/ |  |  |
 
 
 #### PrometheusRemoteWriteSink
@@ -6695,7 +6695,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `authentication` <br />_[Authentication](#authentication)_ | Configures how the sink should authenticate with the HTTP endpoint. |  |  |
 | `endpoint` <br />_string_ | Configure an HTTP endpoint to use for publishing telemetry data. |  | Required: \{\} <br /> |
-| `batch` <br />_[Batch](#batch)_ | Configures how telemetry data should be batched before sending to the sink.<br />By default, the sink will batch telemetry data every 5 seconds or when<br />the batch size reaches 500 entries, whichever comes first. | \{ maxSize:500 timeout:5s \} |  |
+| `batch` <br />_[Batch](#batch)_ | Configures how telemetry data should be batched before sending to the sink.<br /><br />By default, the sink will batch telemetry data every 5 seconds or when<br />the batch size reaches 500 entries, whichever comes first. | \{ maxSize:500 timeout:5s \} |  |
 | `retry` <br />_[Retry](#retry)_ | Configures the export policies' retry behavior when it fails to send<br />requests to the sink's endpoint. There's no guarantees that the export<br />policy will retry until success if the endpoint is not available or<br />configured incorrectly. | \{ backoffDuration:5s maxAttempts:3 \} |  |
 
 
@@ -6733,7 +6733,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `name` <br />_string_ | The name of the corresponding sink configuration in the spec of the export<br />policy. |  |  |
-| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Provides status information on the current status of the sink. This can be<br />used to determine whether a sink is configured correctly and is exporting<br />telemetry data.<br />Known condition types are: "Ready" |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Provides status information on the current status of the sink. This can be<br />used to determine whether a sink is configured correctly and is exporting<br />telemetry data.<br /><br />Known condition types are: "Ready" |  |  |
 
 
 #### SinkTarget

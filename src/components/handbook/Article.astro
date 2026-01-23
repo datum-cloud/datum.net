@@ -79,9 +79,14 @@ if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
     // Skip the last segment as it will be the current page title
     if (i < pathSegments.length - 1) {
       // Format the segment title (capitalize words, replace dashes with spaces)
-      const segmentTitle = segment
+      let segmentTitle = segment
         .replace(/-/g, ' ')
         .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+      // Convert "eos" to "EOS"
+      if (segmentTitle.toLowerCase() === 'eos') {
+        segmentTitle = 'EOS';
+      }
 
       breadcrumbData.push({
         text: segmentTitle,

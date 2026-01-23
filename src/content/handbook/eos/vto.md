@@ -15,29 +15,23 @@ The “Vision / Traction Organizer” captures the core DNA of our business: our
 
 ## Core Values
 
-**Who we are:**
+### Who we are
 
 - We are connectors - of people, businesses, apps and networks. ABCD!
-
 - We are operators at heart 
-
 - We are passionate about working in the open
 
-**How we act:**
+### How we act
 
 - We find creative answers to hard problems
-
 - We prioritize outcomes for users, customers, and partners
-
 - We write our own words
 
 
 ## Core Focus (Hedgehog Concept)
 
 - **Purpose/Cause/Passion** - Helping 1k new clouds thrive in the AI era
-
 - **Niche** - We unlock internet superpowers for builders
-
 - **Economic Engine** - We are the best way for “alt cloud” providers to interact
 
 

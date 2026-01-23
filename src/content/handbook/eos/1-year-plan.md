@@ -17,22 +17,15 @@ Our current goals we set in December of 2025. As such, by December 2026 we aim t
 ## Measurables
 
 - Revenue: $50k MRR, growing fast
-
 - 250 total quality organizations on the platform
-
 - 5000 builders on the platform
-
 - 1000 active ecosystem connections
 
 ## Goals for the year
+
 _(S.M.A.R.T.) Specific, Measurable, Achievable, Relevant, Time-bound_
-
 - Partnership with meaningful AI leader activated
-
 - 3 magnetic alt cloud providers activated
-
 - Established with builder community (thousands of daily touchpoints)
-
 - Differentiated connectivity assets in place
-
 - Milo in use by 1 contributing organization

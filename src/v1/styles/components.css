@@ -406,7 +406,7 @@
   }
 
   .toc-item {
-    @apply list-none;
+    @apply datum-docs-sidebar-links list-none;
   }
 
   .toc-item--level-1 {
@@ -434,7 +434,7 @@
   }
 
   .toc-link {
-    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord my-1 inline-block transition-colors duration-200 ease-out;
   }
 
   .toc-empty {

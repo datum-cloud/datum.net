@@ -396,7 +396,7 @@
         }
 
         li {
-          @apply ml-0 pl-0;
+          @apply ml-0 border-l-0 pl-0;
           @apply mb-[5px];
 
           summary {
@@ -496,7 +496,7 @@
       }
 
       nav {
-        @apply h-dvh overflow-scroll pb-10;
+        @apply h-dvh overflow-y-auto pb-10;
       }
 
       ul {
@@ -504,6 +504,9 @@
           @apply mb-[5px];
           a {
             @apply datum-docs-sidebar-links p-0 text-(--sl-color-text)/80 hover:text-(--sl-color-text-accent);
+            span {
+              @apply wrap-break-word;
+            }
           }
         }
         ul {

@@ -26,7 +26,6 @@ src/content/
 │   └── we-value.mdx
 │
 ├── authors/
-│   ├── alex.mdx
 │   ├── assets/
 │   │   └── images/
 │   │       ├── alex.png
@@ -39,11 +38,15 @@ src/content/
 │   │       ├── steve.webp
 │   │       ├── yahya.png
 │   │       └── zac.png
+│   ├── alex.mdx
+│   ├── brian-toresdahl.mdx
 │   ├── chris.mdx
+│   ├── dodik-gaghan.mdx
 │   ├── fwidjaja.mdx
 │   ├── groupTeam.json
 │   ├── jacob-smith.mdx
 │   ├── jose.mdx
+│   ├── scot-wells.mdx
 │   ├── scot.mdx
 │   ├── steve.mdx
 │   ├── yahya.mdx
@@ -58,16 +61,26 @@ src/content/
 │   │       ├── blog-2.png
 │   │       ├── blog-3-thumb.png
 │   │       └── blog-3.png
+│   ├── claude-meet-cross-connects.mdx
+│   ├── fine-tuning-our-marketing-mix.mdx
+│   ├── from-cage-nuts-to-kubernetes.mdx
 │   ├── learning-from-dying-networks.mdx
+│   ├── meet-olli.mdx
+│   ├── open-sourcing-domain-validation.mdx
 │   ├── open-source-strategy.mdx
 │   └── the-network-stupid.mdx
+│
+├── careers/
+│   └── assets/
+│       └── image.png
 │
 ├── categories/
 │   ├── business-strategy.mdx
 │   ├── cloud-infrastructure.mdx
 │   ├── network-architecture.mdx
 │   ├── network-security.mdx
-│   └── open-source.mdx
+│   ├── open-source.mdx
+│   └── under-the-hood.mdx
 │
 ├── changelog/ (/resources/changelog)
 │   ├── 0.0.1.md
@@ -93,21 +106,27 @@ src/content/
 │       │   ├── domains.mdx
 │       │   ├── index.mdx
 │       │   └── secrets.mdx
+│       ├── connections/
+│       │   ├── connections.mdx
+│       │   ├── galactic-vpc.mdx
+│       │   └── index.mdx
 │       ├── developer-guide.mdx
 │       ├── galactic-vpc/
 │       │   ├── index.mdx
 │       │   ├── installation.mdx
 │       │   └── naming-numbering.mdx
 │       ├── glossary.mdx
-│       ├── guides/
-│       │   ├── contribution-guidelines.mdx
-│       │   ├── index.mdx
-│       │   ├── using-byoc.mdx
-│       │   └── using-claude-code.mdx
 │       ├── guides.mdx
-│       ├── index.mdx
+│       ├── infrastructure/
+│       │   ├── index.mdx
+│       │   ├── network.mdx
+│       │   └── zones-regions.mdx
+│       ├── metrics/
+│       │   ├── grafana-cloud.mdx
+│       │   └── index.mdx
 │       ├── overview/
 │       │   ├── pricing.mdx
+│       │   ├── products.mdx
 │       │   ├── support.mdx
 │       │   └── why-datum.mdx
 │       ├── platform/
@@ -122,7 +141,8 @@ src/content/
 │       │   ├── datum-concepts.mdx
 │       │   ├── datum-mcp.mdx
 │       │   ├── datumctl.mdx
-│       │   └── index.mdx
+│       │   ├── index.mdx
+│       │   └── open-source.mdx
 │       ├── runtime/
 │       │   ├── ai-gateway.mdx
 │       │   ├── dns.mdx
@@ -136,7 +156,7 @@ src/content/
 │       └── workflows/
 │           ├── 1-click-waf.mdx
 │           ├── grafana-cloud.mdx
-│           ├── index.mdx
+│           └── index.mdx
 │
 ├── faq/
 │   ├── builder-tier-free.mdx
@@ -164,50 +184,63 @@ src/content/
 │   └── sso-support.md
 │
 ├── handbook/ (/about/handbook)
+│   ├── about/
+│   │   ├── index.md
+│   │   ├── model.md
+│   │   ├── purpose.md
+│   │   ├── strategy.md
+│   │   └── trends.md
 │   ├── assets/
 │   │   └── sample.png
-│   ├── company/
-│   │   ├── deciding-what-products-to-build.md
-│   │   ├── how-we-got-here.md
-│   │   ├── how-we-make-money.md
-│   │   ├── how-we-talk-to-each-other.md
-│   │   ├── how-you-can-help.md
-│   │   ├── our-ai-strategy.md
-│   │   ├── our-neutral-strategy.md
-│   │   ├── our-open-source-strategy.md
-│   │   ├── our-values.md
-│   │   ├── what-are-our-rituals.md
-│   │   ├── what-inspires-us.md
-│   │   ├── what-we-believe.md
-│   │   ├── where-are-we-now.md
-│   │   ├── who-are-we-building-for.md
-│   │   └── why-we-exist.md
-│   ├── engineering/
-│   │   ├── ci-cd.md
-│   │   ├── plan-cycles.md
-│   │   ├── review-pull-requests.md
-│   │   ├── rfc.md
-│   │   ├── ship-new-features.md
-│   │   └── tech-stack.md
-│   ├── go-to-market/
-│   │   ├── approach-gtm.md
-│   │   ├── brand-voice-tone.md
-│   │   ├── common-use-cases.md
-│   │   ├── design-language.md
-│   │   ├── design-principles.md
-│   │   ├── keep-momentum.md
-│   │   ├── our-website.md
-│   │   └── swag.md
+│   ├── culture/
+│   │   ├── build-or-buy.md
+│   │   ├── index.md
+│   │   ├── open-by-default.md
+│   │   ├── purchasing.md
+│   │   ├── rhythms.md
+│   │   ├── tooling.md
+│   │   └── using-github.md
+│   ├── eos/
+│   │   ├── marketing-strategy.md
+│   │   ├── product-strategy.md
+│   │   ├── revenue-model.md
+│   │   ├── sales-strategy.md
+│   │   ├── target-customers.md
+│   │   ├── our-competitive-advantage.md
+│   │   └── brand-identity.md
+│   ├── images/
+│   │   └── handbook.webp
 │   ├── index.md (main page)
-│   └── people/
-│       ├── benefits.md
-│       ├── give-feedback.md
-│       ├── how-we-work.md
-│       ├── recognize-peers.md
-│       ├── remote-work.md
-│       ├── spend-money.md
-│       ├── titles.md
-│       └── travel-policy.md
+│   ├── policy/
+│   │   ├── access-control.md
+│   │   ├── anti-harassment.md
+│   │   ├── change-management.md
+│   │   ├── code-of-conduct.md
+│   │   ├── data-retention.md
+│   │   ├── disaster-recovery.md
+│   │   ├── incident-disclosure.md
+│   │   ├── incident-response.md
+│   │   ├── index.md
+│   │   ├── information-classification.md
+│   │   ├── passwords.md
+│   │   ├── patch-management.md
+│   │   ├── personnel.md
+│   │   ├── risk-assessment.md
+│   │   ├── testing.md
+│   │   └── vendors.md
+│   ├── product/
+│   │   ├── index.md
+│   │   ├── pricing.md
+│   │   ├── roadmap.md
+│   │   ├── strategy.md
+│   │   └── vision.md
+│   └── technical/
+│       ├── change.md
+│       ├── components.md
+│       ├── incidents.md
+│       ├── index.md
+│       ├── Infrastructure.md
+│       └── milo.md
 │
 ├── huddles/
 │   ├── 2024-12-04.mdx
@@ -222,7 +255,23 @@ src/content/
 │   ├── 2025-09-10.mdx
 │   ├── 2025-10-08.mdx
 │   ├── 2025-11-12.mdx
-│   └── 2025-12-11.mdx
+│   ├── 2025-12-10.mdx
+│   ├── 2026-01-14.mdx
+│   └── 2026-02-11.mdx
+│
+├── images/
+│   └── og/
+│       ├── about.png
+│       ├── blog.png
+│       ├── brand.png
+│       ├── community.png
+│       ├── contact.png
+│       ├── default.png
+│       ├── docs.png
+│       ├── handbook.png
+│       ├── home.png
+│       ├── pricing.png
+│       └── product.png
 │
 ├── legal/
 │   ├── privacy.mdx
@@ -383,6 +432,12 @@ Blog posts and related assets:
 - Blog post MDX files
 - Blog images in `assets/images/`
 
+### Careers (`careers/`)
+
+Career and job posting content:
+
+- Career-related images
+
 ### Categories (`categories/`)
 
 Blog post category definitions:
@@ -392,6 +447,7 @@ Blog post category definitions:
 - Network architecture
 - Network security
 - Open source
+- Under the hood
 
 ### Changelog (`changelog/`)
 
@@ -407,8 +463,11 @@ Starlight-based documentation organized by topic:
 - **alt-cloud/** - Alternative cloud configurations
 - **api/** - API documentation
 - **assets/** - Asset management (domains, secrets)
+- **connections/** - Connection management and Galactic VPC
 - **galactic-vpc/** - Galactic VPC documentation
-- **guides/** - User guides and tutorials
+- **guides.mdx** - User guides (single file)
+- **infrastructure/** - Infrastructure documentation
+- **metrics/** - Metrics and monitoring
 - **overview/** - Platform overview and pricing
 - **platform/** - Platform features (auth, organizations, projects)
 - **quickstart/** - Getting started guides
@@ -437,16 +496,24 @@ Feature descriptions and documentation:
 
 Company handbook organized by department:
 
-- **company/** - Company culture, values, and strategy
-- **engineering/** - Engineering practices and processes
-- **go-to-market/** - GTM strategy and brand guidelines
-- **people/** - HR policies and benefits
+- **about/** - About the company
+- **culture/** - Company culture and working practices
+- **eos/** - Engineering, operations, and systems
+- **policy/** - HR policies and security policies
+- **product/** - Product strategy and vision
+- **technical/** - Engineering practices and infrastructure
 
 ### Huddles (`huddles/`)
 
 Community huddle content:
 
 - Date-based huddle files (YYYY-MM-DD.mdx format)
+
+### Images (`images/`)
+
+Shared image assets:
+
+- **og/** - Open Graph images for social media sharing
 
 ### Legal (`legal/`)
 

@@ -53,6 +53,7 @@ const REDIRECTS = {
   '/product/overview/overview': { destination: '/features/', status: 301 },
   '/team': { destination: '/about/', status: 302 },
   '/jobs/': { destination: '/careers/', status: 302 },
+  '/community-huddle/': { destination: '/events/', status: 302 },
   '/docs/overview/': { destination: '/docs/', status: 302 },
   '/docs/roadmap': { destination: '/resources/roadmap/', status: 302 },
   '/docs/tutorials/gateway': { destination: '/docs/tutorials/httpproxy/', status: 302 },

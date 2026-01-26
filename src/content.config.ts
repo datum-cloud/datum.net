@@ -159,6 +159,7 @@ const authors = defineCollection({
       tick: z.string().optional(),
       surprising: z.string().optional(),
       weekends: z.string().optional(),
+      bgColor: z.string().optional(),
     }),
 });
 

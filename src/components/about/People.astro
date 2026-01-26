@@ -18,6 +18,7 @@ const teamMembersData = teamMembers.map((member) => ({
     bio: member.data.bio,
     title: member.data.title,
     avatar: member.data.avatar ? { src: member.data.avatar.src } : undefined,
+    bgColor: member.data.bgColor,
     tick: member.data.tick,
     surprising: member.data.surprising,
     weekends: member.data.weekends,
@@ -61,6 +62,9 @@ const teamMembersData = teamMembers.map((member) => ({
                     src={member.data.avatar}
                     alt={member.data.name}
                     class="size-auto w-full bg-cover"
+                    style={
+                      member.data.bgColor ? `background-color: ${member.data.bgColor}` : undefined
+                    }
                   />
                   {/* Check if member.data.title contains "Co-Founder" and show Founder label */}
                   {member.data.title && member.data.title.includes('Co-Founder') && (

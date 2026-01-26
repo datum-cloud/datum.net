@@ -34,6 +34,7 @@ const { class: className } = Astro.props as { class?: string };
       bio?: string;
       title?: string;
       avatar?: { src: string };
+      bgColor?: string;
       tick?: string;
       surprising?: string;
       weekends?: string;
@@ -146,7 +147,7 @@ const { class: className } = Astro.props as { class?: string };
 
       // Build avatar HTML
       const avatarHTML = data.avatar
-        ? `<div class="profile-modal--avatar">
+        ? `<div class="profile-modal--avatar"${data.bgColor ? ` style="background-color: ${data.bgColor}"` : ''}>
              <img src="${data.avatar.src}" alt="${data.name}" />
            </div>`
         : '';

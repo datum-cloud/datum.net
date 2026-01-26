@@ -418,19 +418,19 @@
   }
 
   .toc-item--level-3 {
-    @apply pl-1;
-  }
-
-  .toc-item--level-4 {
     @apply pl-2;
   }
 
-  .toc-item--level-5 {
+  .toc-item--level-4 {
     @apply pl-3;
   }
 
-  .toc-item--level-6 {
+  .toc-item--level-5 {
     @apply pl-4;
+  }
+
+  .toc-item--level-6 {
+    @apply pl-5;
   }
 
   .toc-link {

@@ -29,12 +29,12 @@ const { class: className } = Astro.props as { class?: string };
   const PROFILE_MODAL_CLOSE_EVENT = 'profile-modal-close';
 
   interface MemberData {
+    index?: number;
     data: {
       name: string;
       bio?: string;
       title?: string;
       avatar?: { src: string };
-      bgColor?: string;
       tick?: string;
       surprising?: string;
       weekends?: string;
@@ -145,9 +145,16 @@ const { class: className } = Astro.props as { class?: string };
     populateContent(member: MemberData) {
       const { data } = member;
 
+      // Color palette that cycles through (matches @utils/authorUtils.ts)
+      const bgColors = ['#5F735E', '#BF9595', '#D1CDC0'];
+      const getBgColor = (index: number): string => {
+        return bgColors[index % bgColors.length];
+      };
+      const bgColor = member.index !== undefined ? getBgColor(member.index) : bgColors[0];
+
       // Build avatar HTML
       const avatarHTML = data.avatar
-        ? `<div class="profile-modal--avatar"${data.bgColor ? ` style="background-color: ${data.bgColor}"` : ''}>
+        ? `<div class="profile-modal--avatar" style="background-color: ${bgColor}">
              <img src="${data.avatar.src}" alt="${data.name}" />
            </div>`
         : '';

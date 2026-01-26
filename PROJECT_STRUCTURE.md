@@ -1,6 +1,6 @@
 # Project Structure
 
-This document provides a comprehensive overview of the Datum Inc. website project structure.
+This document provides a comprehensive overview of Datum Inc. website project structure.
 
 ## Root Directory Structure
 
@@ -48,12 +48,23 @@ Reusable UI components organized by feature:
 - `Icon.astro` - Icon component
 - `Pagination.astro` - Pagination component
 - `TableOfContents.astro` - Table of contents component
+- `Figure.astro` - Figure component
+- `Favicons.astro` - Favicons component
+- `Announcement.astro` - Announcement component
+- `ArticleNavigation.astro` - Article navigation
+- `Aside.astro` - Aside component
+- `FAQ.astro` - FAQ component
+- `GithubStargazerValue.astro` - GitHub stargazer counter
+- `GrafanaResourceGenerator.astro` - Grafana resource generator
+- `GrafanaUrlGenerator.astro` - Grafana URL generator
+- `GlobalSection.astro` - Global section wrapper
+- `TeamMemberCard.astro` - Team member card
+- `PricingCard.astro` - Pricing card component
 
 #### Layout Components
 
 - `Header.astro` - Site header
 - `Footer.astro` - Site footer
-- `FooterDocs.astro` - Documentation footer
 - `Nav.astro` - Navigation component
 - `NavMenu.astro` - Navigation menu
 - `MobileMenu.astro` - Mobile navigation menu
@@ -64,9 +75,14 @@ Reusable UI components organized by feature:
 
 **About** (`about/`)
 
-- `OurPurpose.astro`
-- `Team.astro`
-- `WeValue.astro`
+- `Companies.astro` - Companies/investors component
+- `Investors.astro` - Investors component
+- `OurMission.astro` - Our mission component
+- `OurPurpose.astro` - Our purpose component
+- `People.astro` - People component
+- `ProfileModal.astro` - Profile modal component
+- `Team.astro` - Team component
+- `WeValue.astro` - Values component
 
 **Blog** (`blog/`)
 
@@ -75,6 +91,7 @@ Reusable UI components organized by feature:
 - `BlogItem.astro` - Individual blog post card
 - `BlogPagination.astro` - Blog pagination
 - `FeaturedPost.astro` - Featured blog post
+- `Latest.astro` - Latest posts component
 
 **Brand** (`brand/`)
 
@@ -84,9 +101,23 @@ Reusable UI components organized by feature:
 - `ColorPalette.astro` - Color palette display
 - `NavBrand.astro` - Brand navigation
 
+**Career** (`career/`)
+
+- `Benefits.astro` - Career benefits component
+- `Culture.astro` - Company culture component
+- `JobList.astro` - Job listing component
+- `Mission.astro` - Company mission component
+
 **Changelog** (`changelog/`)
 
 - `Card.astro` - Changelog card
+- `Skeleton.astro` - Loading skeleton
+
+**Events** (`events/`)
+
+- `Card.astro` - Event card component
+- `EventListItem.astro` - Event list item component
+- `FeaturedEvent.astro` - Featured event component
 - `Skeleton.astro` - Loading skeleton
 
 **Features** (`features/`)
@@ -103,6 +134,8 @@ Reusable UI components organized by feature:
 **Handbook** (`handbook/`)
 
 - `Article.astro` - Handbook article layout
+- `EditPage.astro` - Edit page component
+- `LastUpdated.astro` - Last updated component
 - `PageNav.astro` - Page navigation
 - `Sidebar.astro` - Handbook sidebar
 
@@ -111,6 +144,8 @@ Reusable UI components organized by feature:
 - `Hero.astro` - Homepage hero section
 - `FirstSection.astro` - First section component
 - `SecondSection.astro` - Second section component
+- `Video.astro` - Video component
+- `VideoModal.astro` - Video modal component
 
 **Huddles** (`huddles/`)
 
@@ -125,30 +160,24 @@ Reusable UI components organized by feature:
 **Starlight** (`starlight/`)
 
 - Custom Starlight theme components for documentation
-- `Footer.astro`, `Header.astro`, `Sidebar.astro`, etc.
+- `Footer.astro`, `Head.astro`, `Header.astro`, `MobileMenuToggle.astro`, `PageFrame.astro`, `PageSidebar.astro`, `Search.astro`, `SearchButton.astro`, `SearchModal.astro`, `SearchTrigger.astro`, `Sidebar.astro`, `SiteTitle.astro`, `TwoColumnContent.astro`
 
-**Other Components**
+### Config (`src/config/`)
 
-- `ArticleNavigation.astro` - Article navigation
-- `Aside.astro` - Aside component
-- `FAQ.astro` - FAQ component
-- `GlobalSection.astro` - Global section wrapper
-- `GrafanaResourceGenerator.astro` - Grafana resource generator
-- `GrafanaUrlGenerator.astro` - Grafana URL generator
-- `GithubStargazerValue.astro` - GitHub stargazer counter
-- `Hero.astro` - Hero component
-- `PricingCard.astro` - Pricing card component
-- `TeamMemberCard.astro` - Team member card
+Configuration files:
+
+- `announcement.ts` - Announcement configuration
 
 ### Content (`src/content/`)
 
-Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_STUCTURE.md) for detailed content organization.
+Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_STRUCTURE.md) for detailed content organization.
 
 #### Main Content Directories
 
 - `about/` - About page content and images
 - `authors/` - Author profiles and assets
 - `blog/` - Blog posts and assets
+- `careers/` - Career content and assets
 - `categories/` - Blog post categories
 - `changelog/` - Changelog entries
 - `docs/` - Documentation (Starlight)
@@ -156,6 +185,7 @@ Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_ST
 - `features/` - Feature descriptions
 - `handbook/` - Company handbook
 - `huddles/` - Community huddle content
+- `images/` - Shared images (OG, etc.)
 - `legal/` - Legal documents
 - `pages/` - Static page content
 - `pricing/` - Pricing configuration (JSON)
@@ -173,28 +203,25 @@ Static data files:
 Page layout templates:
 
 - `Layout.astro` - Default layout
-- `LayoutMd.astro` - Markdown content layout
 - `LayoutSimple.astro` - Simple layout
-- `Handbook.astro` - Handbook layout
 - `NotFound.astro` - 404 page layout
 
 ### Libraries (`src/libs/`)
 
 Reusable utility libraries:
 
+- `ashby.ts` - Ashby API client
 - `cache.ts` - Caching utilities
 - `cookie.ts` - Cookie handling
 - `datum.ts` - Datum API client
 - `file.ts` - File utilities
 - `github.ts` - GitHub API client
 - `k8s-client.ts` - Kubernetes client
+- `luma/index.ts` - Luma integration
 - `miloapi.ts` - Milo API client
 - `oidc.ts` - OpenID Connect client
 - `postgres.ts` - PostgreSQL client
 - `string.ts` - String utilities
-- `server/` - Server-side utilities
-  - `glossary.ts` - Glossary utilities
-  - `sitemap.ts` - Sitemap generation
 
 ### Pages (`src/pages/`)
 
@@ -204,23 +231,57 @@ Page components and routing (file-based routing):
 - `404.astro` - 404 error page
 - `_[...slug].astro` - Catch-all route for dynamic pages
 - `about/` - About pages
-- `api/` - API endpoints
+- `about/index.astro` - Main about page
 - `auth/` - Authentication pages
+- `auth/callback.astro` - OAuth callback
+- `auth/login.astro` - Login page
 - `authors/` - Author pages
+- `authors/[slug]/[page].astro` - Author posts with pagination
+- `authors/[slug].astro` - Author profile page
 - `blog/` - Blog pages
+- `blog/[page].astro` - Blog listing with pagination
+- `blog/[slug]/[page].astro` - Blog post series pages
+- `blog/[slug]/index.astro` - Blog post main page
+- `blog/[slug].astro` - Blog post page
 - `blog.astro` - Blog listing
 - `brand/` - Brand pages
+- `brand/[...slug].astro` - Dynamic brand pages
+- `brand/index.astro` - Main brand page
+- `careers.astro` - Careers page
 - `community-huddle.astro` - Community huddle page
 - `contact.astro` - Contact page
+- `dev/` - Developer tools
+- `dev/build.astro` - Build status page
+- `dev/build/info.astro` - Build info page
+- `dev/build/rebuild-glossary.astro` - Rebuild glossary page
+- `docs/` - Documentation pages
+- `docs/llms.txt.ts` - LLMs.txt endpoint
+- `events.astro` - Events page
 - `features/` - Feature pages
+- `features/index.astro` - Features listing page
 - `handbook/` - Handbook pages
+- `handbook/[...slug].astro` - Dynamic handbook pages
 - `handbook.astro` - Handbook listing
 - `legal/` - Legal pages
+- `legal/[slug].astro` - Dynamic legal pages
+- `llms.txt.ts` - LLMs.txt endpoint
 - `pricing.astro` - Pricing page
 - `request-access.astro` - Request access page
 - `resources/` - Resource pages
+- `resources/changelog.astro` - Changelog page
+- `resources/open-source.astro` - Open source page
+- `resources/roadmap.astro` - Roadmap page
+- `rss.xml.js` - RSS feed
 - `waitlist.astro` - Waitlist page
-- `llms.txt.ts` - LLMs.txt endpoint
+
+### Plugins (`src/plugins/`)
+
+Astro plugins:
+
+- `announcement.ts` - Announcement plugin
+- `glossary.ts` - Glossary plugin
+- `remarkModifiedTime.mjs` - Modified time remark plugin
+- `sitemap.ts` - Sitemap plugin
 
 ### Types (`src/types/`)
 
@@ -247,7 +308,9 @@ Utility functions:
 - `github.ts` - GitHub utilities
 - `iconMap.ts` - Icon mapping
 - `imageUtils.ts` - Image utilities
+- `llmsUtils.ts` - LLMs utilities
 - `roadmap.ts` - Roadmap utilities
+- `string.ts` - String utilities
 
 ### Legacy (`src/v1/`)
 
@@ -262,6 +325,7 @@ Legacy v1 assets and styles:
 - `content.config.ts` - Content collection configuration
 - `entrypoint.ts` - Application entry point
 - `env.d.ts` - Environment type definitions
+- `global.d.ts` - Global type definitions
 - `middleware.ts` - Astro middleware
 
 ## Public Assets (`public/`)
@@ -313,7 +377,7 @@ Generated build artifacts (not committed):
 
 ## Content Structure
 
-For detailed content organization, see [CONTENT_STRUCTURE.md](./CONTENT_STUCTURE.md).
+For detailed content organization, see [CONTENT_STRUCTURE.md](./CONTENT_STRUCTURE.md).
 
 ## File Naming Conventions
 

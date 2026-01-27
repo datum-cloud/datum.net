@@ -254,7 +254,6 @@ This project uses [Front Matter CMS](https://frontmatter.codes/) - a powerful he
 | `handbook`   | Company handbook                | `src/content/handbook/`   |
 | `changelog`  | Version changelogs              | `src/content/changelog/`  |
 | `features`   | Product features                | `src/content/features/`   |
-| `huddles`    | Community events                | `src/content/huddles/`    |
 | `faq`        | FAQ entries                     | `src/content/faq/`        |
 | `categories` | Blog categories                 | `src/content/categories/` |
 | `pages`      | Marketing pages                 | `src/content/pages/`      |

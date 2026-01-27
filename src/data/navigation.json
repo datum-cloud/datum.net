@@ -67,7 +67,6 @@
         { "text": "Events", "href": "/events/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
         { "text": "Changelog", "href": "/resources/changelog/" },
-        { "text": "Community Huddle", "href": "/community-huddle/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },

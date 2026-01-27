@@ -1,18 +1,17 @@
 ---
 // src/components/about/People.astro
-import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import ProfileModal from './ProfileModal.astro';
+import { getTeamMembers, getTeamBgColor } from '@utils/authorUtils';
 import '@v1/styles/page-about.css';
 
 // Fetch all authors where isTeam is true and sort by order
-const teamMembers = (await getCollection('authors', ({ data }) => data.isTeam === true)).sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
-);
+const teamMembers = await getTeamMembers();
 
 // Prepare team member data for client-side modal (serialize data)
-const teamMembersData = teamMembers.map((member) => ({
+const teamMembersData = teamMembers.map((member, index) => ({
   id: member.id,
+  index,
   data: {
     name: member.data.name,
     bio: member.data.bio,
@@ -61,6 +60,7 @@ const teamMembersData = teamMembers.map((member) => ({
                     src={member.data.avatar}
                     alt={member.data.name}
                     class="size-auto w-full bg-cover"
+                    style={`background-color: ${getTeamBgColor(index)}`}
                   />
                   {/* Check if member.data.title contains "Co-Founder" and show Founder label */}
                   {member.data.title && member.data.title.includes('Co-Founder') && (

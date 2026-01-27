@@ -147,11 +147,6 @@ Reusable UI components organized by feature:
 - `Video.astro` - Video component
 - `VideoModal.astro` - Video modal component
 
-**Huddles** (`huddles/`)
-
-- `PreviousHuddle.astro` - Previous huddle display
-- `UpcomingHuddle.astro` - Upcoming huddle display
-
 **Roadmap** (`roadmap/`)
 
 - `Card.astro` - Roadmap card
@@ -184,7 +179,6 @@ Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_ST
 - `faq/` - Frequently asked questions
 - `features/` - Feature descriptions
 - `handbook/` - Company handbook
-- `huddles/` - Community huddle content
 - `images/` - Shared images (OG, etc.)
 - `legal/` - Legal documents
 - `pages/` - Static page content
@@ -248,7 +242,6 @@ Page components and routing (file-based routing):
 - `brand/[...slug].astro` - Dynamic brand pages
 - `brand/index.astro` - Main brand page
 - `careers.astro` - Careers page
-- `community-huddle.astro` - Community huddle page
 - `contact.astro` - Contact page
 - `dev/` - Developer tools
 - `dev/build.astro` - Build status page

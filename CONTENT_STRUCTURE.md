@@ -242,23 +242,6 @@ src/content/
 │       ├── Infrastructure.md
 │       └── milo.md
 │
-├── huddles/
-│   ├── 2024-12-04.mdx
-│   ├── 2025-01-15.mdx
-│   ├── 2025-02-12.mdx
-│   ├── 2025-03-12.mdx
-│   ├── 2025-04-09.mdx
-│   ├── 2025-05-14.mdx
-│   ├── 2025-06-11.mdx
-│   ├── 2025-07-09.mdx
-│   ├── 2025-08-13.mdx
-│   ├── 2025-09-10.mdx
-│   ├── 2025-10-08.mdx
-│   ├── 2025-11-12.mdx
-│   ├── 2025-12-10.mdx
-│   ├── 2026-01-14.mdx
-│   └── 2026-02-11.mdx
-│
 ├── images/
 │   └── og/
 │       ├── about.png
@@ -340,7 +323,6 @@ src/content/
 │   │   ├── principles.mdx
 │   │   ├── social.mdx
 │   │   └── typography.mdx
-│   ├── community-huddle.mdx
 │   ├── contact.mdx
 │   ├── docs.mdx
 │   ├── global-section.md
@@ -502,12 +484,6 @@ Company handbook organized by department:
 - **policy/** - HR policies and security policies
 - **product/** - Product strategy and vision
 - **technical/** - Engineering practices and infrastructure
-
-### Huddles (`huddles/`)
-
-Community huddle content:
-
-- Date-based huddle files (YYYY-MM-DD.mdx format)
 
 ### Images (`images/`)
 

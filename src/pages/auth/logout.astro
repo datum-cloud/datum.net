@@ -1,0 +1,13 @@
+---
+const cookieOptions = {
+  path: '/',
+  sameSite: 'lax' as 'none' | 'strict' | 'lax',
+  secure: true,
+};
+
+Astro.cookies.delete('codeVerifier', cookieOptions);
+Astro.cookies.delete('accessToken', cookieOptions);
+Astro.cookies.delete('userInfo', cookieOptions);
+
+return Astro.redirect('/');
+---

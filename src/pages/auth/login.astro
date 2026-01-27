@@ -14,12 +14,9 @@ const cookieOptions = {
   expires: expired,
 };
 
-if (!Astro.cookies.get('auth_redirect')?.value) {
-  // Capture the redirect URL from the query parameters and store it in a cookie
-  const auth_redirect = Astro.url.searchParams.get('url');
-  if (auth_redirect) {
-    Astro.cookies.set('auth_redirect', auth_redirect, cookieOptions);
-  }
+if (Astro.url.searchParams.has('auth_redirect')) {
+  const auth_redirect = Astro.url.searchParams.get('auth_redirect')?.toString() || '/';
+  Astro.cookies.set('auth_redirect', auth_redirect, cookieOptions);
 }
 
 const authUrl = await oidcClientReturn.then(

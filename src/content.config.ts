@@ -148,7 +148,6 @@ const authors = defineCollection({
       isTeam: z.boolean().optional().default(false),
       team: z.enum(['founders', 'team']).optional(),
       position: z.string().optional(),
-      order: z.number().optional().default(999),
       social: z
         .object({
           twitter: z.string().optional(),

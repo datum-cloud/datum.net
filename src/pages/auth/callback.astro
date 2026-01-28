@@ -14,6 +14,8 @@ const redirectUrl = Astro.cookies.has('auth_redirect')
   ? Astro.cookies.get('auth_redirect')?.value
   : '/';
 
+Astro.cookies.delete('auth_redirect');
+
 const cookieOptions = {
   path: '/',
   sameSite: 'lax' as 'none' | 'strict' | 'lax',

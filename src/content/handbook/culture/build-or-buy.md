@@ -2,7 +2,7 @@
 title: "Build or buy"
 sidebar:
   label: Build or buy
-  order: 6
+  order: 7
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:

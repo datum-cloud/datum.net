@@ -34,7 +34,7 @@ _Datum acts as the data processor for this information pursuant to our DPA. In a
 Where not specified, customer data will be retained no longer than is needed to provide the service, and anonymized or deleted afterwards.
 
 ## Privacy Policy
-Datum will delete personal data pursuant to individual data subject requests in accordance with applicable data privacy laws as set forth in our [Privacy Policy](https://www.datum.net/legal/privacy/).
+Datum will delete personal data pursuant to individual data subject requests in accordance with applicable data privacy laws as set forth in our [Privacy Policy](/legal/privacy/).
 
 ## Suspension
 Datum may suspend routine deletion of customer data if required for security forensic analysis purposes or a legal hold involving such data. Legal holds may be issued, for example, in connection with an active, imminent, threatened or reasonably anticipated investigation, litigation, arbitration, subpoena, financial transaction, or other legal matter.

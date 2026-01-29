@@ -18,8 +18,6 @@ If it's a small expense, just buy it using the Ramp card we issue to each employ
 
 For larger expenses that don't fit into the categories below, please suggest amending this policy with a pull request on this page. This avoids lots of one-off exceptions and helps us operate better over time.
 
- 
-
 ## Small expenses
 
 Just do it. This means expenses that are under $75 one off or under $20/month recurring that we can cancel easily.
@@ -120,12 +118,9 @@ Folks outside of Engineering should use their individual software budget for AI 
 
 ## Optional software
 
-There are other tools some team members choose to use individually. In those cases, as they become more widely adopted in the company, it makes sense to have a company account.
-
-Ask for access in [#tools-onboarding-requests](https://datum.slack.com).
+There are other tools some team members choose to use individually. In those cases, as they become more widely adopted in the company, it makes sense to have a company account. Ask for access in [#onboarding-tool-requests](https://datum-inc.slack.com/archives/C084NHC417T).
 
 - [Zoom Pro](https://www.zoom.us/)
-
 - Cap
 
 IDEs
@@ -144,7 +139,7 @@ You can spend up to $200/month to work in cafés or coworking spaces. You must p
 
 ## Travel
 
-If you need to travel on Datum’s behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](https://www.datum.net/handbook/culture/traveling/).
+If you need to travel on Datum’s behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](/handbook/culture/purchasing/).
 
 ## Budget for working together/socializing
 

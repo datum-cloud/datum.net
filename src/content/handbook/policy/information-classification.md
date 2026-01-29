@@ -21,7 +21,7 @@ Datum catalogues assets with several pieces of information, to help identify the
 * **Location**, i.e. where is it stored, used, and backed up?
 * **Sharing**, i.e. is it shared with any third parties, such as vendors? Which specific third parties?
 
-If new data is catalogued, or data use changes, it should be specifically reviewed to verify that its collection and use is in line with [Datum's Privacy Policy](https://www.datum.net/legal/privacy/).
+If new data is catalogued, or data use changes, it should be specifically reviewed to verify that its collection and use is in line with [Datum's Privacy Policy](/legal/privacy/).
 
 ## Asset risk classification
 Datum classifies assets into three risk categories: Low Risk, Medium Risk, and High Risk. The definitions are as follows:

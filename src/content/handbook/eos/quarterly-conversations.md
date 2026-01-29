@@ -67,7 +67,7 @@ How can we work together more effectively?
 
 ## 5. Values & Culture
 
-What Datum [core values](https://www.datum.net/handbook/about/purpose/) do you embody?
+What Datum [core values](/handbook/about/purpose/) do you embody?
 
 What values are you working to strengthen?
 

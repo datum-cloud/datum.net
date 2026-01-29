@@ -12,7 +12,7 @@ meta:
 
 Datum is an early stage startup, working to find its way to users, customers, and world-changing outcomes. While some people absolutely love the iterative nature of “zero to one” companies, we recognize that it isn’t for everyone. This is an especially tricky balance in the infrastructure and network layers, where stability is core to the product promise.
 
-In addition to understanding our small size and big ambitions, it’s important that everyone working at Datum understands our [core values](https://www.datum.net/handbook/about/purpose/), goals, and [strategy](https://www.datum.net/handbook/about/strategy/). This is the “why” that not only gets us out of bed on a rainy day, but helps us keep our compass pointed in the right direction when things get tough. Here are some of our key rhythms that keep us grounded:
+In addition to understanding our small size and big ambitions, it’s important that everyone working at Datum understands our [core values](/handbook/about/purpose/), goals, and [strategy](/handbook/about/strategy/). This is the “why” that not only gets us out of bed on a rainy day, but helps us keep our compass pointed in the right direction when things get tough. Here are some of our key rhythms that keep us grounded:
 
 <h3>Weekly</h3>
 

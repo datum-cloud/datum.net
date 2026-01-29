@@ -10,7 +10,7 @@ meta:
   description: "Read Datum's Incident Response Policy. Our framework for detecting, containing, and recovering from security incidents to maintain platform resilience."
 ---
 
-Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](../../technical/incidents/).
+Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](/handbook/technical/incidents/).
 
 The following minimum standards apply to Datum’s assets as managed by employees, contractors and vendors. These recommendations represent the recommended minimum efforts necessary for incident detection and response.
 
@@ -41,4 +41,4 @@ Datum regularly reviews logs to detect and track attempted intrusions and other 
 ## Incident Response
 Datum’s Security Team reviews and responds to potential third-party reports of security issues sent to security@datum.net promptly. If a suspected incident is detected, it should be reported immediately. We respond to reported incidents, and resolve and determine impact as soon as possible. We aim to remediate incidents as soon as possible.
 
-Confirmed incidents may be disclosed publicly per our [disclosure policy](../incident-disclosure/).
+Confirmed incidents may be disclosed publicly per our [disclosure policy](/handbook/policy/incident-disclosure/).

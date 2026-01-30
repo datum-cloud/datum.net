@@ -139,7 +139,7 @@ You can spend up to $200/month to work in cafés or coworking spaces. You must p
 
 ## Travel
 
-If you need to travel on Datum’s behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](/handbook/culture/purchasing/).
+If you need to travel on Datum’s behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](/handbook/culture/traveling/).
 
 ## Budget for working together/socializing
 

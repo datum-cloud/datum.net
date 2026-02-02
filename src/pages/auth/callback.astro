@@ -2,59 +2,103 @@
 export const prerender = false;
 
 import { OIDCClient } from '@libs/oidc';
-import type { callbackResult } from '@libs/oidc';
-import type { UserInfoResponse, IDToken } from 'openid-client';
-// import { sha256 } from '@/src/libs/file';
+import type { CallbackResult } from '@libs/oidc';
+
+const cookieOptions = {
+  path: '/',
+  sameSite: 'lax' as 'none' | 'strict' | 'lax',
+  secure: process.env.MODE === 'production', // Only secure in production
+  httpOnly: true,
+  maxAge: 60 * 60 * 24 * 7, // 7 days
+};
 
 const oidcClient = new OIDCClient();
 const currentUrl = Astro.url.toString();
 const nonce = Astro.cookies.get('nonce')?.value;
 const codeVerifier = Astro.cookies.get('codeVerifier')?.value;
-const redirectUrl = Astro.cookies.has('auth_redirect')
-  ? Astro.cookies.get('auth_redirect')?.value
+const redirectUrl = Astro.cookies.has('redirect_uri')
+  ? Astro.cookies.get('redirect_uri')?.value
   : '/';
 
-Astro.cookies.delete('auth_redirect');
-
-const cookieOptions = {
-  path: '/',
-  sameSite: 'lax' as 'none' | 'strict' | 'lax',
-  secure: true,
-};
+Astro.cookies.delete('redirect_uri', cookieOptions);
 
 try {
   if (!codeVerifier || codeVerifier === '') {
-    return Astro.redirect(redirectUrl);
+    console.error('No code verifier found in cookies');
+    return Astro.redirect(redirectUrl || '/?error=missing_verifier');
   }
 
-  // user already logged in, skip handleCallback
-  if (Astro.cookies.get('userInfo')?.value) {
-    return Astro.redirect(redirectUrl);
-  } else {
-    let result: callbackResult = await oidcClient.handleCallback(currentUrl, codeVerifier, nonce);
-
-    if (!result.error) {
-      const userInfo: UserInfoResponse = result.userInfo;
-      const claims: IDToken | undefined = result.claims;
-      const expired = new Date(claims?.exp ? claims.exp * 1000 : Date.now() + 3600 * 1000);
-
-      Astro.cookies.set('accessToken', result.accessToken || '', {
-        expires: expired,
-        ...cookieOptions,
-      });
-
-      Astro.cookies.set('userInfo', userInfo, {
-        expires: expired,
-        ...cookieOptions,
-      });
-    }
-
-    return Astro.redirect(redirectUrl);
+  // Check if user is already logged in
+  if (Astro.cookies.get('_session')?.value) {
+    return Astro.redirect(redirectUrl || '/');
   }
+
+  // Handle the OAuth callback
+  const result: CallbackResult = await oidcClient.handleCallback(currentUrl, codeVerifier, nonce);
+
+  console.log('[CALLBACK] OAuth callback successful, storing tokens');
+  // console.log(result);
+
+  // Extract user ID (sub) from claims
+  const userId = result.claims?.sub || result.userInfo?.sub;
+  if (!userId) {
+    throw new Error('No user ID (sub) found in token claims');
+  }
+
+  // Store tokens and session (similar to cloud-portal)
+  if (result.tokens.access_token) {
+    Astro.cookies.set('_access_token', result.tokens.access_token, cookieOptions);
+  }
+
+  if (result.tokens.refresh_token) {
+    Astro.cookies.set('_refresh_token', result.tokens.refresh_token, {
+      ...cookieOptions,
+      maxAge: 60 * 60 * 24 * 30, // 30 days for refresh token
+    });
+  }
+
+  if (result.tokens.id_token) {
+    Astro.cookies.set('_id_token', result.tokens.id_token, cookieOptions);
+  }
+
+  // Store only user ID in session (not full userInfo)
+  // Full user details will be fetched from backend API when needed
+  Astro.cookies.set(
+    '_session',
+    JSON.stringify({
+      sub: userId,
+      accessToken: result.tokens.access_token,
+      expiredAt: result.tokens.expires_at || new Date(Date.now() + 3600 * 1000).toISOString(),
+    }),
+    cookieOptions
+  );
+
+  // Clear PKCE cookies
+  Astro.cookies.delete('nonce', cookieOptions);
+  Astro.cookies.delete('codeVerifier', cookieOptions);
+
+  console.log('Auth complete, redirecting to:', redirectUrl || '/');
+
+  // Redirect to intended destination
+  return Astro.redirect(redirectUrl || '/');
 } catch (error) {
-  console.error('HandleCallback error: ', error);
-  return Astro.redirect(redirectUrl);
+  console.error('Auth callback error:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+  Astro.cookies.delete('nonce');
+  Astro.cookies.delete('codeVerifier');
+  return Astro.redirect(
+    `/?error=${encodeURIComponent(error instanceof Error ? error.message : 'auth_failed')}`
+  );
 }
 ---
 
-Redirecting to: {{ redirectUrl }}
+<!doctype html>
+<html>
+  <head>
+    <title>Authenticating...</title>
+  </head>
+  <body>
+    <p>Authenticating, please wait...</p>
+  </body>
+</html>

@@ -55,6 +55,7 @@ Reusable UI components organized by feature:
 - `Aside.astro` - Aside component
 - `FAQ.astro` - FAQ component
 - `GithubStargazerValue.astro` - GitHub stargazer counter
+- `Hero.astro` - Hero component
 - `GrafanaResourceGenerator.astro` - Grafana resource generator
 - `GrafanaUrlGenerator.astro` - Grafana URL generator
 - `GlobalSection.astro` - Global section wrapper
@@ -141,7 +142,6 @@ Reusable UI components organized by feature:
 
 **Home** (`home/`)
 
-- `Hero.astro` - Homepage hero section
 - `FirstSection.astro` - First section component
 - `SecondSection.astro` - Second section component
 - `Video.astro` - Video component
@@ -205,6 +205,7 @@ Page layout templates:
 Reusable utility libraries:
 
 - `ashby.ts` - Ashby API client
+- `auth.ts` - Authentication utilities
 - `cache.ts` - Caching utilities
 - `cookie.ts` - Cookie handling
 - `datum.ts` - Datum API client
@@ -226,9 +227,13 @@ Page components and routing (file-based routing):
 - `_[...slug].astro` - Catch-all route for dynamic pages
 - `about/` - About pages
 - `about/index.astro` - Main about page
+- `api/` - API routes
+- `api/auth/login.ts` - Login API endpoint
+- `api/user.ts` - User API endpoint
 - `auth/` - Authentication pages
 - `auth/callback.astro` - OAuth callback
 - `auth/login.astro` - Login page
+- `auth/logout.astro` - Logout page
 - `authors/` - Author pages
 - `authors/[slug]/[page].astro` - Author posts with pagination
 - `authors/[slug].astro` - Author profile page
@@ -245,8 +250,8 @@ Page components and routing (file-based routing):
 - `contact.astro` - Contact page
 - `dev/` - Developer tools
 - `dev/build.astro` - Build status page
-- `dev/build/info.astro` - Build info page
-- `dev/build/rebuild-glossary.astro` - Rebuild glossary page
+- `dev/info.astro` - Build info page
+- `dev/rebuild-glossary.astro` - Rebuild glossary page
 - `docs/` - Documentation pages
 - `docs/llms.txt.ts` - LLMs.txt endpoint
 - `events.astro` - Events page
@@ -265,6 +270,8 @@ Page components and routing (file-based routing):
 - `resources/open-source.astro` - Open source page
 - `resources/roadmap.astro` - Roadmap page
 - `rss.xml.js` - RSS feed
+- `shop/` - Shop pages
+- `shop/index.astro` - Shop page
 - `waitlist.astro` - Waitlist page
 
 ### Plugins (`src/plugins/`)
@@ -294,10 +301,10 @@ TypeScript type definitions:
 
 Utility functions:
 
+- `authorUtils.ts` - Author utilities
 - `collectionUtils.ts` - Collection utilities
 - `dateUtils.ts` - Date utilities
 - `envLogger.ts` - Environment logger
-- `file.ts` - File utilities
 - `github.ts` - GitHub utilities
 - `iconMap.ts` - Icon mapping
 - `imageUtils.ts` - Image utilities
@@ -329,7 +336,10 @@ Static files served as-is:
 - `images/` - Static images
 - `scripts/` - Client-side scripts
 - `download/` - Downloadable assets
-- `favicon.ico`, `favicon.png`, `favicon.svg` - Favicons
+- `pagefind/` - Main site search index (generated)
+- `pagefind-blog/` - Blog-specific search index (generated)
+- `favicons/` - Favicon files
+- `favicon.ico`, `favicon.png`, `favicon.svg` - Root favicons
 - `site.webmanifest` - Web app manifest
 - `apple-touch-icon.png` - Apple touch icon
 - Brand logos (SVG files)

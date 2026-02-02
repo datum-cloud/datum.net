@@ -102,7 +102,22 @@ if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
     });
   }
 } else {
-  breadcrumbData = [];
+  // Show "Home > Handbook" for the landing page (index)
+  breadcrumbData = [
+    {
+      text: 'Home',
+      href: '/',
+    },
+    {
+      text: 'Handbook',
+      class: 'handbook-menu-toggle',
+      href: '/handbook/',
+    },
+    {
+      text: 'Handbook',
+      href: '/handbook/',
+    },
+  ];
 }
 
 /**

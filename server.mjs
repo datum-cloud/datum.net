@@ -107,8 +107,13 @@ const REDIRECTS = {
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
   '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
   '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
-  '/handbook/culture/rythms/': { destination: '/handbook/operate/rhythms/', status: 301 },
 };
+
+// Prefix-based redirects: source prefix → destination prefix (preserves the rest of the path)
+const PREFIX_REDIRECTS = [
+  { from: '/handbook/technical/', to: '/handbook/build/', status: 302 },
+  { from: '/handbook/culture/', to: '/handbook/operate/', status: 302 },
+];
 
 // Static file server for pre-rendered pages and assets
 const staticServer = sirv(CLIENT_DIR, {
@@ -220,7 +225,7 @@ const server = createServer((req, res) => {
     return;
   }
 
-  // Handle redirects with Cache-Control: no-cache
+  // Handle exact redirects with Cache-Control: no-cache
   const redirect = REDIRECTS[url];
   if (redirect) {
     res.writeHead(redirect.status, {
@@ -229,6 +234,19 @@ const server = createServer((req, res) => {
     });
     res.end();
     return;
+  }
+
+  // Handle prefix-based redirects (wildcard)
+  for (const prefixRedirect of PREFIX_REDIRECTS) {
+    if (url.startsWith(prefixRedirect.from)) {
+      const newPath = prefixRedirect.to + url.slice(prefixRedirect.from.length);
+      res.writeHead(prefixRedirect.status, {
+        Location: newPath,
+        'Cache-Control': 'no-cache',
+      });
+      res.end();
+      return;
+    }
   }
 
   // Middleware order: compressed files → static files → Astro handler

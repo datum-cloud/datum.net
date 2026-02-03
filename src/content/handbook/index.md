@@ -18,9 +18,9 @@ contents:
     label: EOS Toolset
   - slug: product
     label: "What We’re Building"
-  - slug: technical
+  - slug: build
     label: How We Build and Run
-  - slug: culture
+  - slug: operate
     label: How We Operate
   - slug: "how-to-help"
     label: How You Can Help

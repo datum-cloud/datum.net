@@ -71,7 +71,7 @@ const REDIRECTS = {
   '/docs/guides/using-byoc/': { destination: '/docs/', status: 301 },
   '/docs/workflows/': { destination: '/docs/', status: 302 },
   '/docs/workflows/1-click-waf/': { destination: '/docs/runtime/proxy/', status: 302 },
-  '/handbook/engineering/rfc/': { destination: '/handbook/technical/', status: 301 },
+  '/handbook/engineering/rfc/': { destination: '/handbook/build/', status: 301 },
   '/handbook/company/what-we-believe/': { destination: '/handbook/about/purpose/', status: 302 },
   '/handbook/culture/anti-harassment-and-discrimination-policy/': {
     destination: '/handbook/policy/anti-harassment/',
@@ -81,7 +81,7 @@ const REDIRECTS = {
     destination: '/handbook/product/customers/',
     status: 302,
   },
-  '/handbook/people/travel-policy/': { destination: '/handbook/culture/traveling/', status: 302 },
+  '/handbook/people/travel-policy/': { destination: '/handbook/operate/traveling/', status: 302 },
   '/handbook/company/where-are-we-now/': { destination: '/handbook/about/strategy/', status: 302 },
   '/handbook/go-to-market/keep-momentum/': {
     destination: '/handbook/about/strategy/',
@@ -105,9 +105,9 @@ const REDIRECTS = {
   '/logon.html': { destination: 'https://auth.datum.net/ui/v2/login/loginname', status: 302 },
   '/public-slack/': { destination: 'https://link.datum.net/discord', status: 302 },
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
-  '/handbook/engineering/': { destination: '/handbook/technical/', status: 302 },
+  '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
   '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
-  '/handbook/culture/rythms/': { destination: '/handbook/culture/rhythms/', status: 301 },
+  '/handbook/culture/rythms/': { destination: '/handbook/operate/rhythms/', status: 301 },
 };
 
 // Static file server for pre-rendered pages and assets

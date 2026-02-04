@@ -4,8 +4,6 @@ sidebar:
   order: 3
 ---
 
-# Activity
-
 The `datumctl activity` command is available for interacting with the [activity
 service] we've made available to Datum Cloud consumers. The activity service
 allows users to query for audit logs that are collected for all interactions

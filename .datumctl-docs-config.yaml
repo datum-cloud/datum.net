@@ -1,0 +1,8 @@
+# Datumctl Documentation Generation Configuration Define the source for the
+# datumctl command documentation and for the project documentation straight
+# from the release page for datumctl
+
+source:
+  org: datum-cloud
+  repo: datumctl
+  version: v0.9.0

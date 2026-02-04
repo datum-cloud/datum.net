@@ -5,4 +5,4 @@
 source:
   org: datum-cloud
   repo: datumctl
-  version: v0.9.0
+  version: v0.10.1

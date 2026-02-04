@@ -24,9 +24,8 @@ const CONFIG_FILE = join(PROJECT_ROOT, '.datumctl-docs-config.yaml');
 const TMP_DIR = join(PROJECT_ROOT, '.tmp', 'datumctl-docs');
 const DOWNLOAD_DIR = join(TMP_DIR, 'downloads');
 
-// TODO: swap these to real destinations once integration is ready.
-const OUTPUT_DOCS_DIR = join(TMP_DIR, 'mock-output', 'docs');
-const OUTPUT_CLI_DOCS_DIR = join(TMP_DIR, 'mock-output', 'cli-docs');
+const OUTPUT_DOCS_DIR = join('src/content/docs/docs/datumctl');
+const OUTPUT_CLI_DOCS_DIR = join('src/content/docs/docs/datumctl/command');
 
 interface SourceConfig {
   org: string;
@@ -93,8 +92,8 @@ async function downloadAndExtract(): Promise<void> {
   const { org, repo, version, projectName } = await loadConfig();
   const resolvedProjectName = projectName ?? repo;
 
-  const docsArchive = `${resolvedProjectName}-docs_${version}.tar.gz`;
-  const cliArchive = `${resolvedProjectName}-cli-docs_${version}.tar.gz`;
+  const docsArchive = `${resolvedProjectName}-docs_${version.substring(1)}.tar.gz`;
+  const cliArchive = `${resolvedProjectName}-cli-docs_${version.substring(1)}.tar.gz`;
 
   const docsUrl = buildReleaseUrl(org, repo, version, docsArchive);
   const cliUrl = buildReleaseUrl(org, repo, version, cliArchive);

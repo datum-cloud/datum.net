@@ -122,7 +122,7 @@ import Icon from '@components/Icon.astro';
               Subscribe for monthly updates
             </h3>
             <p class="datum-text-base text-midnight-fjord/80 mb-0">
-              No spam, no marketing fluff, we promise
+              No spam, <span class="whitespace-nowrap">no marketing fluff</span>, we promise
             </p>
           </div>
 
@@ -136,6 +136,7 @@ import Icon from '@components/Icon.astro';
                   placeholder="e.g. Jane"
                   class="newsletter-modal-input"
                   autocomplete="given-name"
+                  required
                 />
               </label>
               <label class="newsletter-modal-field">
@@ -146,6 +147,7 @@ import Icon from '@components/Icon.astro';
                   placeholder="e.g. Smith"
                   class="newsletter-modal-input"
                   autocomplete="family-name"
+                  required
                 />
               </label>
               <label class="newsletter-modal-field">

@@ -1,0 +1,197 @@
+---
+// src/components/forms/NewsletterModal.astro
+// Popup modal for newsletter signup — form layout from Figma (node 9185-41852).
+import Icon from '@components/Icon.astro';
+---
+
+<newsletter-modal>
+  <dialog aria-label="Subscribe for monthly updates">
+    <div class="modal-frame newsletter-modal-frame">
+      <button data-close-modal class="modal-close" aria-label="Close" type="button">
+        <Icon name="close" size="sm" class="modal-close-icon" />
+      </button>
+      <div class="newsletter-modal-content">
+        <div class="newsletter-modal-success hidden items-center gap-3 text-nowrap">
+          <Icon name="circle-check" size="xl" class="stroke-[1.25]" />
+          <span class="datum-text-lg">You're on the list</span>
+        </div>
+
+        <div class="newsletter-modal-form-container">
+          <div class="flex flex-col gap-6 text-center">
+            <h3 class="datum-text-7xl font-canela text-midnight-fjord mb-0 text-center font-normal">
+              Subscribe for monthly updates
+            </h3>
+            <p class="datum-text-base text-midnight-fjord/80 mb-0">
+              No spam, no marketing fluff, we promise
+            </p>
+          </div>
+
+          <form class="newsletter-modal-form" onsubmit="return false;">
+            <div class="newsletter-modal-fields">
+              <label class="newsletter-modal-field">
+                <span class="newsletter-modal-label">First Name</span>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="Zac"
+                  class="newsletter-modal-input"
+                  autocomplete="given-name"
+                />
+              </label>
+              <label class="newsletter-modal-field">
+                <span class="newsletter-modal-label">Last name</span>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Smith"
+                  class="newsletter-modal-input"
+                  autocomplete="family-name"
+                />
+              </label>
+              <label class="newsletter-modal-field">
+                <span class="newsletter-modal-label">Email address</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="zsmith@datum.net"
+                  class="newsletter-modal-input"
+                  autocomplete="email"
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="newsletter-modal-consent">
+              <input
+                type="checkbox"
+                name="consent"
+                id="newsletter-modal-consent"
+                class="newsletter-modal-checkbox"
+                required
+              />
+              <label
+                for="newsletter-modal-consent"
+                class="datum-app-body text-midnight-fjord/80 cursor-pointer"
+              >
+                I agree to receive updates and news from Datum. See our
+                <a
+                  href="/legal/privacy/"
+                  class="text-canyon-clay---links underline hover:no-underline"
+                  tabindex="0">Privacy Policy</a
+                >
+              </label>
+            </div>
+
+            <div class="newsletter-modal-actions">
+              <button type="submit" class="btn btn--pine-forge" aria-label="Subscribe">
+                <span>Subscribe</span>
+                <Icon name="arrow-right" size="sm" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</newsletter-modal>
+
+<script>
+  const NEWSLETTER_MODAL_OPEN_EVENT = 'newsletter-modal-open';
+  const NEWSLETTER_MODAL_CLOSE_EVENT = 'newsletter-modal-close';
+
+  declare global {
+    interface Window {
+      NEWSLETTER_MODAL_OPEN_EVENT: string;
+      NEWSLETTER_MODAL_CLOSE_EVENT: string;
+    }
+    interface CustomEventMap {
+      'newsletter-modal-open': CustomEvent;
+      'newsletter-modal-close': CustomEvent;
+    }
+  }
+
+  const NEWSLETTER_MODAL_HASH = '#newsletter-modal';
+
+  class NewsletterModal extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    form: HTMLFormElement;
+    dialogOpenedAt = 0;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.modal-frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.form = this.querySelector('.newsletter-modal-form')!;
+      this.setupEventListeners();
+    }
+
+    connectedCallback() {
+      if (window.location.hash === NEWSLETTER_MODAL_HASH) {
+        requestAnimationFrame(() => this.openModal());
+      }
+    }
+
+    setupEventListeners() {
+      document.addEventListener(NEWSLETTER_MODAL_OPEN_EVENT, () => this.openModal());
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+      window.addEventListener('popstate', () => {
+        if (this.dialog.open && window.location.hash !== NEWSLETTER_MODAL_HASH) this.closeModal();
+      });
+
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-newsletter-modal-open', false);
+        window.removeEventListener('click', this.onClick);
+        if (window.location.hash === NEWSLETTER_MODAL_HASH) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+        document.dispatchEvent(new CustomEvent(NEWSLETTER_MODAL_CLOSE_EVENT));
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+
+      this.form.addEventListener('submit', (e) => e.preventDefault());
+    }
+
+    onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isInDialog = target.closest('dialog') !== null;
+      const isInDialogFrame = target.closest('.modal-frame') !== null;
+      const isDialogBackdropClick = isInDialog && !isInDialogFrame;
+      const timeSinceOpen = Date.now() - this.dialogOpenedAt;
+      if (isDialogBackdropClick || (timeSinceOpen >= 300 && !this.dialogFrame.contains(target))) {
+        this.closeModal();
+      }
+    };
+
+    openModal() {
+      this.form.reset();
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-newsletter-modal-open', true);
+      this.dialogOpenedAt = Date.now();
+      if (window.location.hash !== NEWSLETTER_MODAL_HASH) {
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search + NEWSLETTER_MODAL_HASH
+        );
+      }
+      setTimeout(() => window.addEventListener('click', this.onClick), 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+  }
+
+  customElements.define('newsletter-modal', NewsletterModal);
+  window.NEWSLETTER_MODAL_OPEN_EVENT = NEWSLETTER_MODAL_OPEN_EVENT;
+  window.NEWSLETTER_MODAL_CLOSE_EVENT = NEWSLETTER_MODAL_CLOSE_EVENT;
+</script>

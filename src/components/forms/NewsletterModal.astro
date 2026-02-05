@@ -4,6 +4,58 @@
 import Icon from '@components/Icon.astro';
 ---
 
+<style>
+  .animated-check,
+  .animated-error {
+    animation: scale-in 0.3s ease-out;
+  }
+
+  .check-circle,
+  .error-circle {
+    stroke-dasharray: 138;
+    stroke-dashoffset: 138;
+    animation: draw-circle 0.6s ease-out forwards;
+  }
+
+  .check-mark {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: draw-check 0.4s ease-out 0.3s forwards;
+  }
+
+  .error-x {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw-check 0.4s ease-out 0.3s forwards;
+  }
+
+  @keyframes scale-in {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes draw-circle {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes draw-check {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
 <newsletter-modal>
   <dialog aria-label="Subscribe for monthly updates">
     <div class="modal-frame newsletter-modal-frame">
@@ -12,8 +64,56 @@ import Icon from '@components/Icon.astro';
       </button>
       <div class="newsletter-modal-content">
         <div class="newsletter-modal-success hidden items-center gap-3 text-nowrap">
-          <Icon name="circle-check" size="xl" class="stroke-[1.25]" />
-          <span class="datum-text-lg">You're on the list</span>
+          <svg
+            class="animated-check text-green-600"
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              class="check-circle"
+              cx="24"
+              cy="24"
+              r="22"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"></circle>
+            <path
+              class="check-mark"
+              d="M14 24l8 8 16-16"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"></path>
+          </svg>
+          <svg
+            class="animated-error hidden text-red-600"
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              class="error-circle"
+              cx="24"
+              cy="24"
+              r="22"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"></circle>
+            <path
+              class="error-x"
+              d="M16 16l16 16M32 16l-16 16"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              fill="none"></path>
+          </svg>
+          <span id="message" class="datum-text-lg">You're on the list</span>
         </div>
 
         <div class="newsletter-modal-form-container">
@@ -32,7 +132,7 @@ import Icon from '@components/Icon.astro';
                 <span class="newsletter-modal-label">First Name</span>
                 <input
                   type="text"
-                  name="firstName"
+                  name="givenName"
                   placeholder="Zac"
                   class="newsletter-modal-input"
                   autocomplete="given-name"
@@ -42,7 +142,7 @@ import Icon from '@components/Icon.astro';
                 <span class="newsletter-modal-label">Last name</span>
                 <input
                   type="text"
-                  name="lastName"
+                  name="familyName"
                   placeholder="Smith"
                   class="newsletter-modal-input"
                   autocomplete="family-name"
@@ -83,8 +183,13 @@ import Icon from '@components/Icon.astro';
             </div>
 
             <div class="newsletter-modal-actions">
-              <button type="submit" class="btn btn--pine-forge" aria-label="Subscribe">
-                <span>Subscribe</span>
+              <button
+                type="submit"
+                class="btn btn--pine-forge disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label="Subscribe"
+                disabled
+              >
+                <span id="submit-btn-text">Subscribe</span>
                 <Icon name="arrow-right" size="sm" />
               </button>
             </div>
@@ -96,6 +201,7 @@ import Icon from '@components/Icon.astro';
 </newsletter-modal>
 
 <script>
+  import { actions } from 'astro:actions';
   const NEWSLETTER_MODAL_OPEN_EVENT = 'newsletter-modal-open';
   const NEWSLETTER_MODAL_CLOSE_EVENT = 'newsletter-modal-close';
 
@@ -117,7 +223,13 @@ import Icon from '@components/Icon.astro';
     dialogFrame: HTMLElement;
     closeBtn: HTMLButtonElement;
     form: HTMLFormElement;
+    consentCheckbox: HTMLInputElement;
+    submitBtn: HTMLButtonElement;
+    submitBtnText: HTMLElement;
+    successMessage: HTMLElement;
+    formContainer: HTMLElement;
     dialogOpenedAt = 0;
+    isSubmitting = false;
 
     constructor() {
       super();
@@ -125,6 +237,11 @@ import Icon from '@components/Icon.astro';
       this.dialogFrame = this.querySelector('.modal-frame')!;
       this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
       this.form = this.querySelector('.newsletter-modal-form')!;
+      this.consentCheckbox = this.querySelector<HTMLInputElement>('#newsletter-modal-consent')!;
+      this.submitBtn = this.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      this.submitBtnText = this.querySelector<HTMLElement>('#submit-btn-text')!;
+      this.successMessage = this.querySelector('.newsletter-modal-success')!;
+      this.formContainer = this.querySelector('.newsletter-modal-form-container')!;
       this.setupEventListeners();
     }
 
@@ -157,7 +274,89 @@ import Icon from '@components/Icon.astro';
         }
       });
 
-      this.form.addEventListener('submit', (e) => e.preventDefault());
+      this.consentCheckbox.addEventListener('change', () => {
+        this.submitBtn.disabled = !this.consentCheckbox.checked;
+      });
+
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!this.isSubmitting) {
+          this.submitForm();
+        }
+      });
+    }
+
+    submitForm() {
+      // Set loading state
+      this.isSubmitting = true;
+      this.submitBtn.disabled = true;
+      this.submitBtnText.textContent = 'Please wait';
+
+      actions
+        .NewsletterSignup({
+          email: this.form.email.value,
+          givenName: this.form.givenName.value,
+          familyName: this.form.familyName.value,
+        })
+        .then((result) => {
+          if (!result.data || result.data != 200) {
+            if (result.data == 422) {
+              this.showSuccessMessage("Looks like you're already subscribed!", false);
+            } else {
+              this.showSuccessMessage(
+                'Something went wrong. Please try again in a minute or two.',
+                false
+              );
+            }
+          } else {
+            this.showSuccessMessage("You're on the list");
+          }
+        })
+        .catch(() => {
+          this.showSuccessMessage(
+            'Something went wrong. Please try again in a minute or two.',
+            false
+          );
+        })
+        .finally(() => {
+          // Reset loading state
+          this.isSubmitting = false;
+          this.submitBtnText.textContent = 'Subscribe';
+          this.submitBtn.disabled = !this.consentCheckbox.checked;
+        });
+    }
+
+    showSuccessMessage(message: string, success: boolean = true) {
+      this.formContainer.classList.add('hidden');
+      this.successMessage.querySelector('#message')!.textContent = message;
+      this.successMessage.classList.remove('hidden');
+      this.successMessage.classList.add('flex');
+
+      // Show/hide appropriate icon
+      const checkSvg = this.successMessage.querySelector('.animated-check');
+      const errorSvg = this.successMessage.querySelector('.animated-error');
+
+      if (success) {
+        errorSvg?.classList.add('hidden');
+        checkSvg?.classList.remove('hidden');
+        // Restart animation by cloning the SVG
+        if (checkSvg) {
+          const clone = checkSvg.cloneNode(true);
+          checkSvg.parentNode?.replaceChild(clone, checkSvg);
+        }
+      } else {
+        checkSvg?.classList.add('hidden');
+        errorSvg?.classList.remove('hidden');
+        // Restart animation by cloning the SVG
+        if (errorSvg) {
+          const clone = errorSvg.cloneNode(true);
+          errorSvg.parentNode?.replaceChild(clone, errorSvg);
+        }
+      }
+
+      setTimeout(() => {
+        this.closeModal();
+      }, 3000);
     }
 
     onClick = (event: MouseEvent) => {
@@ -173,6 +372,9 @@ import Icon from '@components/Icon.astro';
 
     openModal() {
       this.form.reset();
+      this.formContainer.classList.remove('hidden');
+      this.successMessage.classList.add('hidden');
+      this.successMessage.classList.remove('flex');
       this.dialog.showModal();
       document.body.toggleAttribute('data-newsletter-modal-open', true);
       this.dialogOpenedAt = Date.now();

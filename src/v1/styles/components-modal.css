@@ -63,14 +63,16 @@
   }
 
   newsletter-modal dialog {
-    @apply m-0 h-full max-h-full w-full border-0 p-0;
-    @apply mx-auto my-auto h-max min-h-80 w-full md:w-[90%];
+    @apply h-full max-h-full border-0 p-0;
+    @apply mx-auto mt-auto h-max min-h-80 w-full max-w-full md:my-auto;
     @apply max-h-[calc(100vh-8rem)];
-    @apply bg-transparent;
+    @apply mr-0 ml-0 bg-transparent;
+
+    @apply mr-0 ml-0 md:mr-0 md:ml-0;
   }
 
   newsletter-modal dialog[open] {
-    @apply flex items-center justify-center;
+    @apply flex items-end justify-end-safe md:items-center md:justify-center;
   }
 
   newsletter-modal dialog::backdrop {
@@ -79,7 +81,7 @@
 
   /* Newsletter modal — Figma Card (node 9185-41852): 360px, 40px pad, 9px radius */
   .newsletter-modal-frame {
-    @apply w-full max-w-none rounded-[9px] p-10 md:max-w-[360px];
+    @apply w-full max-w-none rounded-[9px] rounded-b-none p-10 md:max-w-[360px] md:rounded-b-[9px];
   }
 
   .newsletter-modal-content {

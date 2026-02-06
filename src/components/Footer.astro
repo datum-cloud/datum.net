@@ -6,15 +6,14 @@ import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@v1/assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
 import ImageTwoMen from '@v1/assets/images/two-person-talking.png';
-import Signup from '@components/forms/Signup.astro';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
+import NewsletterModal from '@components/forms/NewsletterModal.astro';
 
 // Get props with default values
 const {
   showCTA = true,
   showBackground = true,
   showIllustration = false,
-  showSignup = true,
 } = Astro.props as FooterProps;
 
 // Type-safe navigation data
@@ -173,5 +172,43 @@ const navData = navigation as NavData;
     </div>
   </div>
 
-  {showSignup && <Signup server:defer />}
+  <div
+    id="footer-signup"
+    class="bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20"
+  >
+    <div
+      class="max-width flex w-full max-w-190 grow flex-col items-center gap-4 md:w-auto md:max-w-none md:gap-11 lg:gap-13.5"
+    >
+      <h4 class="datum-text-7xl mb-0">Let's stay connected, shall we?</h4>
+
+      <div data-newsletter-trigger>
+        <Button
+          class="btn btn--alpha"
+          text="Get our monthly email"
+          icon={{ name: 'arrow-right', size: 'md' }}
+          iconPosition="right"
+          iconClass="stroke-1.5"
+          href="#"
+        />
+      </div>
+    </div>
+  </div>
+
+  <NewsletterModal />
 </footer>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.querySelector('[data-newsletter-trigger]');
+    if (!trigger) return;
+    const openNewsletterModal = () => {
+      if (window.NEWSLETTER_MODAL_OPEN_EVENT) {
+        document.dispatchEvent(new CustomEvent(window.NEWSLETTER_MODAL_OPEN_EVENT));
+      }
+    };
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openNewsletterModal();
+    });
+  });
+</script>

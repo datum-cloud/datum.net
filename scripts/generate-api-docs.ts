@@ -148,6 +148,11 @@ async function generateDocs(): Promise<void> {
   if (stdout) console.log(stdout);
   if (stderr) console.error(stderr);
 
+  // Save raw output from crd-ref-docs before post-processing
+  const rawOutputFile = join(PROJECT_ROOT, '.tmp', 'reference.raw.mdx');
+  await execAsync(`cp "${OUTPUT_FILE}" "${rawOutputFile}"`);
+  console.log(`✓ Raw output saved to: ${rawOutputFile}\n`);
+
   // Post-process to escape MDX special characters
   let content = await readFile(OUTPUT_FILE, 'utf-8');
 
@@ -157,15 +162,38 @@ async function generateDocs(): Promise<void> {
     .map((line) => {
       const trimmed = line.trim();
 
-      // In table rows, numbered lists, or bullet lists, escape everything
+      // In table rows, numbered lists, or bullet lists, escape < and > characters
+      // but preserve intentional <br /> tags used for formatting
       if (line.startsWith('|') || /^\d+\./.test(trimmed) || trimmed.startsWith('-')) {
-        // Replace multi-character operators first, then single characters
-        return line
+        // Temporarily replace <br /> and <br/> tags with placeholders
+        const BR_PLACEHOLDER = '___BR_TAG___';
+        let processedLine = line
+          .replace(/<br\s*\/>/gi, BR_PLACEHOLDER)
           .replace(/<=/g, '&lt;=')
           .replace(/>=/g, '&gt;=')
           .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+          .replace(/>/g, '&gt;')
+          .replace(new RegExp(BR_PLACEHOLDER, 'g'), '<br />');
+
+        // Detect end of sentence followed by <br> and capitalize word
+        // Pattern: word. <br />Word or word.<br />Word or word. <br /> Word
+        // Replace single <br/> with double <br/><br/> for better paragraph spacing
+        processedLine = processedLine.replace(
+          /([^.<]+)\.\s*<br\s*\/>\s*([A-Z])/gi,
+          (match, beforeDot, nextWord) => {
+            return `${beforeDot}.<br /><br />${nextWord}`;
+          }
+        );
+
+        return processedLine;
       }
+
+      // Detect end of sentence followed by <br> and capitalize word
+      // Pattern: word. <br />Word or word.<br />Word or word. <br /> Word
+      // Replace single <br/> with double <br/><br/> for better paragraph spacing
+      line = line.replace(/([^.<]+)\.\s*<br\s*\/>\s*([A-Z])/gi, (match, beforeDot, nextWord) => {
+        return `${beforeDot}.<br /><br />${nextWord}`;
+      });
 
       // Escape curly braces in links (they can appear anywhere)
       // Pattern: {text} inside markdown links [...](...)

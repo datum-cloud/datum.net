@@ -52,7 +52,83 @@
   }
 
   /* Prevent page scroll when modal is open */
-  body[data-video-modal-open] {
+  body[data-video-modal-open],
+  body[data-newsletter-modal-open] {
     @apply overflow-clip;
+  }
+
+  /* Newsletter Modal (same dialog pattern as video-modal) */
+  newsletter-modal {
+    @apply contents;
+  }
+
+  newsletter-modal dialog {
+    @apply h-full max-h-full border-0 p-0;
+    @apply mx-auto mt-auto h-max min-h-80 w-full max-w-full md:my-auto;
+    @apply max-h-[calc(100vh-8rem)];
+    @apply mr-0 ml-0 bg-transparent;
+
+    @apply mr-0 ml-0 md:mr-0 md:ml-0;
+  }
+
+  newsletter-modal dialog[open] {
+    @apply flex items-end justify-end-safe md:items-center md:justify-center;
+  }
+
+  newsletter-modal dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  /* Newsletter modal — Figma Card (node 9185-41852): 360px, 40px pad, 9px radius */
+  .newsletter-modal-frame {
+    @apply w-full max-w-none rounded-[9px] rounded-b-none p-10 md:max-w-[360px] md:rounded-b-[9px];
+  }
+
+  .newsletter-modal-content {
+    @apply text-midnight-fjord flex flex-col gap-10;
+  }
+
+  .newsletter-modal-form-container {
+    @apply flex w-full flex-col gap-10;
+  }
+
+  .newsletter-modal-form {
+    @apply flex w-full flex-col gap-10;
+  }
+
+  .newsletter-modal-fields {
+    @apply flex flex-col gap-4;
+  }
+
+  .newsletter-modal-field {
+    @apply flex cursor-text flex-col gap-2;
+  }
+
+  .newsletter-modal-label {
+    @apply datum-text-xs text-midnight-fjord/80;
+  }
+
+  .newsletter-modal-input {
+    @apply datum-app-body text-midnight-fjord bg-glacier-mist-700/50 border-app---dark---utility-5 placeholder:text-midnight-fjord/60 rounded-md border px-3 py-2.25 outline-none;
+  }
+
+  .newsletter-modal-consent {
+    @apply flex items-center gap-3.5;
+  }
+
+  .newsletter-modal-checkbox {
+    @apply border-app---dark---utility-5 h-4 w-4 shrink-0 cursor-pointer rounded border bg-white;
+  }
+
+  .newsletter-modal-actions {
+    @apply flex justify-center;
+  }
+
+  .newsletter-modal-message {
+    @apply datum-text-sm text-canyon-clay---links;
+  }
+
+  .newsletter-modal-message--error {
+    @apply text-canyon-clay---links;
   }
 }

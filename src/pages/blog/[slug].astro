@@ -11,6 +11,7 @@ import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
 import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/dateUtils';
 import { getCollectionEntry } from '@utils/collectionUtils';
+import { getAuthorBgColor } from '@utils/authorUtils';
 import Icon from '@components/Icon.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import defaultOgImage from '@content/images/og/blog.png';
@@ -36,6 +37,9 @@ const { entry, authorData } = Astro.props;
 const { Content } = await render(entry);
 const formattedDate = formatShortDate(entry.data.date);
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
+
+// Get author background color for consistent styling with team section
+const authorBgColor = authorData ? await getAuthorBgColor(authorData.id) : undefined;
 
 // Calculate reading time from content
 const readingTime = estimateReadingTime(entry.body || '');
@@ -146,10 +150,15 @@ breadcrumbData.push({
                           class="blog-article-author-image"
                           width={52}
                           height={52}
+                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                         />
                       </a>
                     ) : (
-                      <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
+                      <a
+                        href={`/authors/${authorData.id}/`}
+                        class="blog-article-author-image"
+                        style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+                      >
                         <span class="text-lg font-bold text-gray-600">
                           {(authorData.data.name || fm.author).charAt(0)}
                         </span>

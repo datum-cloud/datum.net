@@ -18,4 +18,4 @@ While it’s somewhat of a new practice, we try to ideate around potential featu
 
 Once ideas are formalized we create [detailed enhancements](https://github.com/orgs/datum-cloud/projects/22) that prepare the work. Since this is where all active work on our various open source projects are tracked and progressed, this is how we generate our public roadmap for [datum.net](http://datum.net) and milo-os.com. 
 
-As the work on enhancements are completed, we publish notices to [GitHub Discussions](http://datum.net) and include a summary in our monthly newsletter.
+As the work on enhancements are completed, we publish notices to [GitHub Discussions](https://github.com/orgs/datum-cloud/discussions) and include a summary in our monthly newsletter.

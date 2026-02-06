@@ -1,0 +1,46 @@
+---
+// src/pages/events.astro
+// Events page displaying all Luma events
+
+import '@v1/styles/page-events.css';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Card from '@components/events/Card.astro';
+import GlobalSection from '@components/GlobalSection.astro';
+import Skeleton from '@components/events/Skeleton.astro';
+
+const page = await getCollectionEntry('pages', 'events');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Events';
+const description = fm.description;
+---
+
+<Layout title={title} description={description} bodyClass="page-events" meta={meta}>
+  <section class="datum-container">
+    <Hero
+      class="light pb-30"
+      iconName={fm.iconName}
+      title={title}
+      description={page.body}
+      subtitle={fm.subtitle}
+    />
+
+    <div class="section--block section--block--pad bg-midnight-fjord dark">
+      <div class="max-width">
+        <Card server:defer>
+          <Skeleton slot="fallback" />
+        </Card>
+      </div>
+    </div>
+
+    <GlobalSection />
+
+    <Footer />
+  </section>
+</Layout>

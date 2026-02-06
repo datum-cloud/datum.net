@@ -1,4 +1,6 @@
 ---
+// src/components/Figure.astro
+
 /**
  * Figure Component
  *
@@ -14,23 +16,41 @@
  * </Figure>
  * ```
  *
+ * URLs in the title are automatically converted to links:
+ * ```mdx
+ * <Figure title="Source: https://example.com">
+ *   ![Alt text](./path/to/image.jpg)
+ * </Figure>
+ * ```
+ *
  * @props
- * - `title` (string, optional): The caption text displayed below the image
+ * - `title` (string, optional): The caption text displayed below the image. URLs are automatically converted to links.
  * - `align` ('left' | 'center' | 'right', default: 'center'): Image alignment
  * - `class` (string, optional): Additional CSS classes
  *
  */
-
 import type { FigureProps } from '@/src/types/common';
-
+import { convertUrlsToLinks } from '@utils/string';
 const { title, align = 'center', class: className } = Astro.props as FigureProps;
-
 const alignClass = `figure--${align}`;
+const titleParts = title ? convertUrlsToLinks(title) : [];
 ---
 
 <figure class:list={[alignClass, className]}>
   <div class="figure-image-wrapper">
     <slot />
   </div>
-  {title && <figcaption>{title}</figcaption>}
+  {
+    title && (
+      <figcaption>
+        {titleParts.map((part) =>
+          part.type === 'link' ? (
+            <a href={part.href} target="_blank" rel="noopener noreferrer" set:html={part.content} />
+          ) : (
+            part.content
+          )
+        )}
+      </figcaption>
+    )
+  }
 </figure>

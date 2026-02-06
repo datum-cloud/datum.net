@@ -7,11 +7,15 @@ import { generateRandomString } from '@libs/string';
 
 interface SignupInput {
   email: string;
+  givenName: string;
+  familyName: string;
 }
 
-const signUp = defineAction({
+const NewsletterSignup = defineAction({
   input: z.object({
     email: z.string(),
+    givenName: z.string(),
+    familyName: z.string(),
   }),
   handler: async (input: SignupInput): Promise<number> => {
     const emailName = input.email.split('@')[0].toLowerCase().replace(/\./g, '-');
@@ -25,6 +29,8 @@ const signUp = defineAction({
 
       const contactResource = createContact(uniqueId, {
         email: input.email,
+        givenName: input.givenName,
+        familyName: input.familyName,
       });
 
       try {
@@ -57,4 +63,4 @@ const signUp = defineAction({
   },
 });
 
-export { signUp };
+export { NewsletterSignup };

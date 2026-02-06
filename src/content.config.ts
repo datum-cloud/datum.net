@@ -148,7 +148,6 @@ const authors = defineCollection({
       isTeam: z.boolean().optional().default(false),
       team: z.enum(['founders', 'team']).optional(),
       position: z.string().optional(),
-      order: z.number().optional().default(999),
       social: z
         .object({
           twitter: z.string().optional(),
@@ -159,6 +158,7 @@ const authors = defineCollection({
       tick: z.string().optional(),
       surprising: z.string().optional(),
       weekends: z.string().optional(),
+      bgColor: z.string().optional(),
     }),
 });
 
@@ -316,26 +316,6 @@ const pricing = defineCollection({
     }),
 });
 
-// Define huddles collections
-const huddles = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/huddles' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      subtitle: z.string().optional(),
-      description: z.string().optional(),
-      date: z.date(),
-      time: z.string().optional(),
-      youtubeLink: z.string().url().optional(),
-      eventLink: z.string().url().optional(),
-      zoomLink: z.string().url().optional(),
-      zoomPass: z.string().optional(),
-      slidesUrl: z.string().url().optional(),
-      draft: z.boolean().optional().default(false),
-      meta: metaSchema(image),
-    }),
-});
-
 // Define FAQ collections
 const faq = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/faq' }),
@@ -359,7 +339,6 @@ export const collections = {
   changelog,
   features,
   pricing,
-  huddles,
   faq,
   docs: defineCollection({
     loader: docsLoader(),

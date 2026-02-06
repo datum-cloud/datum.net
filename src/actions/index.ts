@@ -1,10 +1,10 @@
 import { vote, unvote, getUserVoted, loginWithDatum } from './roadmap';
-import { signUp } from './newsletter';
+import { NewsletterSignup } from './newsletter';
 
 export const server = {
   vote,
   unvote,
   getUserVoted,
   loginWithDatum,
-  signUp,
+  NewsletterSignup,
 };

@@ -7,6 +7,7 @@
  * @param date - The date to format (Date object or ISO string)
  * @param locale - The locale to use for formatting (defaults to 'en-US')
  * @param options - Intl.DateTimeFormat options
+ * @param timezone - Optional IANA timezone identifier (e.g., 'America/New_York')
  * @returns Formatted date string
  */
 export const formatDate = (
@@ -16,10 +17,17 @@ export const formatDate = (
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  }
+  },
+  timezone?: string
 ): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  return dateObj.toLocaleDateString(locale, options);
+  const formatOptions: Intl.DateTimeFormatOptions = {
+    ...options,
+  };
+  if (timezone) {
+    formatOptions.timeZone = timezone;
+  }
+  return dateObj.toLocaleDateString(locale, formatOptions);
 };
 
 /**
@@ -48,6 +56,40 @@ export const formatLongDate = (date: Date | string, locale: string = 'en-US'): s
     month: 'long',
     day: 'numeric',
   });
+};
+
+/**
+ * Formats time only
+ * @param date - The date to format (Date object or ISO string)
+ * @param locale - The locale to use for formatting (defaults to 'en-US')
+ * @param options - Intl.DateTimeFormat options for time
+ * @param timezone - Optional IANA timezone identifier (e.g., 'America/New_York')
+ * @returns Formatted time string
+ */
+export const formatTime = (
+  date: Date | string,
+  locale: string = 'en-US',
+  options: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+  },
+  timezone?: string
+): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const formatOptions: Intl.DateTimeFormatOptions = {
+    ...options,
+  };
+  // Only add timeZoneName if not explicitly set in options (default to 'short')
+  if (!('timeZoneName' in formatOptions)) {
+    formatOptions.timeZoneName = 'short';
+  } else if (formatOptions.timeZoneName === undefined) {
+    // Remove timeZoneName if explicitly set to undefined
+    delete formatOptions.timeZoneName;
+  }
+  if (timezone) {
+    formatOptions.timeZone = timezone;
+  }
+  return dateObj.toLocaleTimeString(locale, formatOptions);
 };
 
 /**

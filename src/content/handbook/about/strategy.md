@@ -27,7 +27,7 @@ To update the concept in an age of AI and complex digital ecosystems, we are bui
 Our open source commitment:
 * Core Datum Cloud functionality is fully open source
 * [Community contributions](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests) are welcomed and celebrated 
-* [Documentation](https://www.datum.net/docs/) and examples are extensive and maintained
+* [Documentation](/docs/) and examples are extensive and maintained
 * We provide paths for both self-hosted and managed data planes deployments
 
 We’re building Datum to be genuinely neutral because providers need a place to collaborate without competitive dynamics. We believe we succeed when our ecosystem partners succeed, so that means:

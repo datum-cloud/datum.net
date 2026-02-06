@@ -1,0 +1,131 @@
+---
+// src/components/events/FeaturedEvent.astro
+// Featured event card component
+
+import type { LumaEvent } from '@libs/luma';
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import { formatDate, formatTime } from '@utils/dateUtils';
+
+interface Props {
+  event: LumaEvent;
+}
+
+const { event } = Astro.props as Props;
+
+// Determine if event is online
+const isOnline = !event.geo_address_json?.city_state || event.meeting_url;
+const locationText = event.geo_address_json?.city_state || 'Online';
+
+// Format timezone for display
+const timezoneDisplay = event.timezone ? ` ${event.timezone}` : '';
+
+// Extract first paragraph from description
+const getFirstParagraph = (description: string): string => {
+  if (!description) return '';
+
+  // Split by double newlines or single newlines to get paragraphs
+  const paragraphs = description.split(/\n\n+|\n/).filter((p) => p.trim());
+
+  return paragraphs.length > 0 ? paragraphs[0].trim() : description.trim();
+};
+
+const firstParagraph = event.description ? getFirstParagraph(event.description) : '';
+---
+
+<div
+  class="relative flex max-w-249.75 flex-col gap-12 self-center overflow-hidden rounded-xl border bg-white p-6 shadow-md md:flex-row"
+  id={event.id}
+>
+  <div class="flex overflow-hidden rounded-md">
+    {
+      event.cover_url && (
+        <a
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={event.name}
+          class="block overflow-clip transition-all duration-300 ease-in-out hover:opacity-90"
+        >
+          <img
+            src={event.cover_url}
+            alt={event.name}
+            loading="lazy"
+            class="aspect-4/3 size-auto w-full object-cover md:w-[455px]"
+          />
+        </a>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col justify-center gap-11 pr-6">
+    <div class="flex flex-col gap-4">
+      <h3 class="datum-text-2xl font-medium">
+        <a
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-midnight-fjord hover:text-midnight-fjord/70 transition-all duration-200 ease-linear"
+        >
+          {event.name}
+        </a>
+      </h3>
+
+      {
+        firstParagraph && (
+          <p class="datum-text-base text-midnight-fjord/80 text-pretty">{firstParagraph}</p>
+        )
+      }
+    </div>
+
+    <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+      <div class="datum-text-sm text-midnight-fjord/60 flex flex-col gap-4">
+        <span class="flex items-center gap-3">
+          <Icon
+            name={isOnline ? 'globe' : 'map-pin'}
+            size="md"
+            class="text-canyon-clay-links shrink-0"
+          />
+          <span class="text-app---dark---utility-2">{locationText}</span>
+        </span>
+
+        <time class="flex items-center gap-3" datetime={event.start_at}>
+          <Icon name="calendar-fold" size="md" class="text-canyon-clay-links shrink-0" />
+          <span class="text-app---dark---utility-2">
+            {
+              formatDate(
+                event.start_at,
+                'en-GB',
+                {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                },
+                event.timezone
+              )
+            }
+          </span>
+        </time>
+
+        <span class="flex items-center gap-3">
+          <Icon name="clock" size="md" class="text-canyon-clay-links shrink-0" />
+          <span class="text-app---dark---utility-2">
+            {
+              formatTime(
+                event.start_at,
+                'en-US',
+                { hour: '2-digit', minute: '2-digit', hour12: true },
+                event.timezone
+              )
+            }
+            {timezoneDisplay && <span class="sr-only">{timezoneDisplay}</span>}
+          </span>
+        </span>
+      </div>
+
+      <div class="shrink-0 md:self-end">
+        <Button href={event.url} target="_blank" text="View event info" class="btn btn--alpha" />
+      </div>
+    </div>
+  </div>
+</div>

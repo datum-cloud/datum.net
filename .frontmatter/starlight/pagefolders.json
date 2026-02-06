@@ -31,12 +31,6 @@
       "contentTypes": ["handbookPost"]
     },
     {
-      "title": "Huddle",
-      "path": "[[workspace]]/src/content/huddles",
-      "previewPath": "community-huddle",
-      "contentTypes": ["huddlePost"]
-    },
-    {
       "title": "Faq",
       "path": "[[workspace]]/src/content/faq",
       "contentTypes": ["faqPost"]

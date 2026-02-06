@@ -34,6 +34,8 @@ const { class: className } = Astro.props as { class?: string };
     }
   }
 
+  const VIDEO_MODAL_HASH = '#video-modal';
+
   class VideoModal extends HTMLElement {
     dialog: HTMLDialogElement;
     dialogFrame: HTMLElement;
@@ -51,20 +53,26 @@ const { class: className } = Astro.props as { class?: string };
       this.setupEventListeners();
     }
 
+    connectedCallback() {
+      if (window.location.hash === VIDEO_MODAL_HASH) {
+        requestAnimationFrame(() => this.openModal());
+      }
+    }
+
     setupEventListeners() {
-      // Listen for the custom event to open the modal
-      document.addEventListener(VIDEO_MODAL_OPEN_EVENT, () => {
-        this.openModal();
+      document.addEventListener(VIDEO_MODAL_OPEN_EVENT, () => this.openModal());
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+      window.addEventListener('popstate', () => {
+        if (this.dialog.open && window.location.hash !== VIDEO_MODAL_HASH) this.closeModal();
       });
 
-      // Close button event listener
-      this.closeBtn.addEventListener('click', () => this.closeModal());
-
-      // Dialog close event
       this.dialog.addEventListener('close', () => {
         document.body.toggleAttribute('data-video-modal-open', false);
         window.removeEventListener('click', this.onClick);
         this.clearContent();
+        if (window.location.hash === VIDEO_MODAL_HASH) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
         document.dispatchEvent(new CustomEvent(VIDEO_MODAL_CLOSE_EVENT));
       });
 
@@ -103,19 +111,18 @@ const { class: className } = Astro.props as { class?: string };
     };
 
     openModal() {
-      // Populate the modal with the video iframe
       this.populateContent();
-
       this.dialog.showModal();
       document.body.toggleAttribute('data-video-modal-open', true);
-
-      // Record when the dialog was opened
       this.dialogOpenedAt = Date.now();
-
-      // Add a small delay before adding the click listener to prevent immediate closing
-      setTimeout(() => {
-        window.addEventListener('click', this.onClick);
-      }, 100);
+      if (window.location.hash !== VIDEO_MODAL_HASH) {
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search + VIDEO_MODAL_HASH
+        );
+      }
+      setTimeout(() => window.addEventListener('click', this.onClick), 100);
     }
 
     closeModal() {

@@ -18,22 +18,18 @@ GitHub is a critical piece of infrastructure and a daily working environment for
 
 - To drive content on our website, including docs, handbook, changelog, roadmap, etc.
 
-- To power our internal wiki
-
 - To organize our work within and across teams
 
 - To solicit new ideas and debate the options, via GitHub Discussions
 
-As a central tool for our team, every team member at Datum is expected to embrace a solid dash of markdown. Of course, GitHub is confusing as heck sometimes, so we’re happy to help everyone get up to speed with its inner workings as part of onboarding.
+As a central tool for our team, every team member at Datum is expected to embrace a solid dose of markdown. Of course, GitHub can also be pretty confusing, so we’re happy to help you get up to speed as part of onboarding.
 
 Here are a few useful tips:
 
-1. If you want to suggest a new feature
+1. If you want to suggest a new feature - Start a discussion or review [enhancements](https://github.com/orgs/datum-cloud/projects/22/views/1)
 
-2. If you want to report a bug
+2. If you want to know what’s being worked on - Check out the latest Milestone
 
-3. If you want to know what’s being worked on
+3. If you want to review recent activity - See the [#github-updates](https://datum-inc.slack.com/archives/C07UMLMJHGC).
 
-4. If you want to review recent changes
-
-We ask our Engineering team to curate the Enhancements and Release aspects. 
+We ask our Engineering team to curate the Enhancements and Release aspects of GitHub, but active commenting is always appreciated.

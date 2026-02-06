@@ -109,7 +109,8 @@
         { "text": "Logos", "href": "/brand/logos/" },
         { "text": "Iconography", "href": "/brand/iconography/" },
         { "text": "Illustration Suite", "href": "/brand/imagery/" },
-        { "text": "Social", "href": "/brand/social/" }
+        { "text": "Social", "href": "/brand/social/" },
+        { "text": "Templates", "href": "/brand/templates/" }
       ]
     }
   ],

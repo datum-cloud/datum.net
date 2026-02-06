@@ -73,6 +73,8 @@ const REDIRECTS = {
   '/docs/tutorials/grafana/': { destination: '/docs/workflows/grafana-cloud/', status: 301 },
   '/docs/tutorials/httpproxy/': { destination: '/docs/runtime/proxy/', status: 301 },
   '/docs/get-started/': { destination: '/docs/quickstart/', status: 302 },
+  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 301 },
+  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 301 },
   '/docs/contribution-guidelines/': { destination: '/docs/', status: 301 },
   '/docs/guides/using-byoc/': { destination: '/docs/', status: 301 },
   '/docs/workflows/': { destination: '/docs/', status: 302 },

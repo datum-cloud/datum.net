@@ -49,12 +49,12 @@ const NewsletterSignup = defineAction({
         }
       } catch (error) {
         const errorCode = error && typeof error === 'object' && 'code' in error && error.code;
-        console.log('Error creating contact resource:', errorCode);
+        console.log('Error creating contact resource: ', error);
         return errorCode as number;
       }
     } catch (error) {
       const errorCode = error && typeof error === 'object' && 'code' in error && error.code;
-      console.log('Error signing up for newsletter:', errorCode);
+      console.log('Error signing up for newsletter: ', error);
       return errorCode as number;
     }
 

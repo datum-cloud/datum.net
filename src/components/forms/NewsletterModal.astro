@@ -356,10 +356,6 @@ import Icon from '@components/Icon.astro';
           errorSvg.parentNode?.replaceChild(clone, errorSvg);
         }
       }
-
-      setTimeout(() => {
-        this.closeModal();
-      }, 3000);
     }
 
     onClick = (event: MouseEvent) => {
@@ -388,7 +384,6 @@ import Icon from '@components/Icon.astro';
           window.location.pathname + window.location.search + NEWSLETTER_MODAL_HASH
         );
       }
-      setTimeout(() => window.addEventListener('click', this.onClick), 100);
     }
 
     closeModal() {

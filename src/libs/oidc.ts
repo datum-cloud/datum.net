@@ -91,7 +91,7 @@ export class OIDCClient {
     }
 
     // Build options object conditionally
-    const grantOptions: Record<string, any> = {
+    const grantOptions: Record<string, string | boolean | undefined> = {
       pkceCodeVerifier: codeVerifier,
       expectedNonce: nonce,
       idTokenExpected: true,

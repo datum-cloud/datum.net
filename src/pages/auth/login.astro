@@ -9,13 +9,12 @@ const { session } = await validateAndRefreshSession(Astro.cookies);
 
 if (session) {
   // User is already logged in, redirect to intended destination or home
-  const redirectTo = Astro.url.searchParams.get('redirect_uri') || '/';
-  return Astro.redirect(redirectTo);
+  return Astro.redirect(Astro.url.searchParams.get('redirect_uri') || '/');
 }
 
 // Generate authorization URL with PKCE
 const oidcClient = new OIDCClient();
-const { authUrl, codeVerifier, nonce } = await oidcClient.getAuthorizationUrl('login');
+const authResponse = await oidcClient.getAuthorizationUrl('login');
 
 // Store PKCE parameters in cookies
 const cookieOptions = {
@@ -26,10 +25,10 @@ const cookieOptions = {
   maxAge: 600, // 10 minutes - enough time to complete auth flow
 };
 
-Astro.cookies.set('codeVerifier', codeVerifier, cookieOptions);
+Astro.cookies.set('codeVerifier', authResponse.codeVerifier, cookieOptions);
 
-if (nonce) {
-  Astro.cookies.set('nonce', nonce, cookieOptions);
+if (authResponse.nonce) {
+  Astro.cookies.set('nonce', authResponse.nonce, cookieOptions);
 }
 
 // Store the redirect destination
@@ -39,5 +38,5 @@ if (authRedirect) {
 }
 
 // Redirect to authorization server
-return Astro.redirect(authUrl);
+return Astro.redirect(authResponse.authUrl);
 ---

@@ -105,16 +105,14 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
-      "npm run typecheck",
-      "npm run lint",
-      "npm run format"
+      "eslint --fix",
+      "prettier --write"
     ],
     "*.{md,mdx}": [
-      "npm run lint:md",
-      "npm run lint:md:fix"
+      "markdownlint-cli --fix"
     ],
     "*.{json,css,scss}": [
-      "npm run format"
+      "prettier --write"
     ]
   }
 }

@@ -31,6 +31,44 @@ Package v1alpha1 contains API Schema definitions for the activity v1alpha1 API g
 
 
 
+
+
+
+
+#### AuditLogFacetsQuerySpec
+
+
+
+AuditLogFacetsQuerySpec defines which facets to retrieve from audit logs.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuery](#auditlogfacetsquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `timeRange` <br />_[FacetTimeRange](#facettimerange)_ | TimeRange limits the time window for facet aggregation.<br /><br />If not specified, defaults to the last 7 days. |  |  |
+| `filter` <br />_string_ | Filter narrows the audit logs before computing facets using CEL.<br /><br />This allows you to get facet values for a subset of audit logs.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.apiGroup  - API group of the resource<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, !, in<br />String Functions: startsWith(), endsWith(), contains()<br />Examples:<br />  "verb in ['create', 'update', 'delete']"        - Facets for write operations only<br />  "!(verb in ['get', 'list', 'watch'])"           - Exclude read-only operations<br />  "!user.username.startsWith('system:')"          - Exclude system users<br />  "objectRef.namespace == 'production'"           - Facets for production namespace |  |  |
+| `facets` <br />_[FacetSpec](#facetspec) array_ | Facets specifies which fields to get distinct values for.<br /><br />Each facet returns the top N values with counts.<br /><br />Supported fields:<br />  - verb: API action (get, list, create, update, patch, delete, watch)<br />  - user.username: Actor display names<br />  - user.uid: Unique user identifiers<br />  - responseStatus.code: HTTP response codes<br />  - objectRef.namespace: Namespaces<br />  - objectRef.resource: Resource types<br />  - objectRef.apiGroup: API groups |  |  |
+
+
+#### AuditLogFacetsQueryStatus
+
+
+
+AuditLogFacetsQueryStatus contains the facet results.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuery](#auditlogfacetsquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `facets` <br />_[FacetResult](#facetresult) array_ | Facets contains the results for each requested facet. |  |  |
+
+
 #### AuditLogQuery
 
 
@@ -92,7 +130,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `startTime` <br />_string_ | StartTime is the beginning of your search window (inclusive).<br /><br />Format Options:<br />- Relative: "now-30d", "now-2h", "now-30m" (units: s, m, h, d, w)<br />  Use for dashboards and recurring queries - they adjust automatically.<br />- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)<br />  Use for historical analysis of specific time periods.<br /><br />Examples:<br />  "now-30d"                     → 30 days ago<br />  "2024-06-15T14:30:00-05:00"   → specific time with timezone offset |  |  |
 | `endTime` <br />_string_ | EndTime is the end of your search window (exclusive).<br /><br />Uses the same formats as StartTime. Commonly "now" for current moment.<br /><br />Must be greater than StartTime.<br /><br />Examples:<br />  "now"                  → current time<br />  "2024-01-02T00:00:00Z" → specific end point |  |  |
-| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br /><br />CEL reference: https://cel.dev |  |  |
+| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, !, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "!(verb in ['get', 'list', 'watch'])"                 - Exclude read-only operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "!user.username.startsWith('system:')"                - Exclude system users<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br /><br />CEL reference: https://cel.dev |  |  |
 | `limit` <br />_integer_ | Limit sets the maximum number of results per page.<br /><br />Default: 100, Maximum: 1000.<br /><br />Use smaller values (10-50) for exploration, larger (500-1000) for data collection.<br /><br />Use continue to fetch additional pages. |  |  |
 | `continue` <br />_string_ | Continue is the pagination cursor for fetching additional pages.<br /><br />Leave empty for the first page. If status.continue is non-empty after a query,<br />copy that value here in a new query with identical parameters to get the next page.<br /><br />Repeat until status.continue is empty.<br /><br />Important: Keep all other parameters (startTime, endTime, filter, limit) identical<br />across paginated requests. The cursor is opaque - copy it exactly without modification. |  |  |
 
@@ -114,6 +152,74 @@ _Appears in:_
 | `continue` <br />_string_ | Continue is the pagination cursor.<br /><br />Non-empty means more results are available - copy this to spec.continue for the next page.<br /><br />Empty means you have all results. |  |  |
 | `effectiveStartTime` <br />_string_ | EffectiveStartTime is the actual start time used for this query (RFC3339 format).<br /><br />When you use relative times like "now-7d", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried, especially<br />for auditing, debugging, or recreating queries with absolute timestamps.<br /><br />Example: If you query with startTime="now-7d" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-10T12:00:00Z". |  |  |
 | `effectiveEndTime` <br />_string_ | EffectiveEndTime is the actual end time used for this query (RFC3339 format).<br /><br />When you use relative times like "now", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried.<br /><br />Example: If you query with endTime="now" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-17T12:00:00Z". |  |  |
+
+
+#### FacetResult
+
+
+
+FacetResult contains the distinct values for a single facet.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQueryStatus](#auditlogfacetsquerystatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `field` <br />_string_ | Field is the field path that was queried. |  |  |
+| `values` <br />_[FacetValue](#facetvalue) array_ | Values contains the distinct values and their counts. |  |  |
+
+
+#### FacetSpec
+
+
+
+FacetSpec defines a single facet to retrieve.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `field` <br />_string_ | Field is the activity field path to get distinct values for.<br /><br />Supported fields:<br />  - spec.actor.name: Actor display names<br />  - spec.actor.type: Actor types (user, serviceaccount, controller)<br />  - spec.resource.apiGroup: API groups<br />  - spec.resource.kind: Resource kinds<br />  - spec.resource.namespace: Namespaces<br />  - spec.changeSource: Change sources (human, system) |  |  |
+| `limit` <br />_integer_ | Limit is the maximum number of distinct values to return.<br /><br />Default: 20, Maximum: 100. |  |  |
+
+
+#### FacetTimeRange
+
+
+
+FacetTimeRange specifies the time window for facet queries.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `start` <br />_string_ | Start is the beginning of the time window (inclusive).<br /><br />Supports RFC3339 timestamps and relative times (e.g., "now-7d"). |  |  |
+| `end` <br />_string_ | End is the end of the time window (exclusive).<br /><br />Supports RFC3339 timestamps and relative times. Defaults to "now". |  |  |
+
+
+#### FacetValue
+
+
+
+FacetValue represents a single distinct value with its occurrence count.
+
+
+
+_Appears in:_
+- [FacetResult](#facetresult)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `value` <br />_string_ | Value is the distinct field value. |  |  |
+| `count` <br />_integer_ | Count is the number of activities with this value. |  |  |
 
 
 

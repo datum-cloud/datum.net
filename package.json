@@ -17,8 +17,8 @@
     "astro": "astro",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro,.md,.mdx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro,.md,.mdx --fix",
-    "lint:md": "npx markdownlint \"src/content/**/*.{md,mdx}\"",
-    "lint:md:fix": "npx markdownlint \"src/content/**/*.{md,mdx}\" --fix",
+    "lint:md": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\"",
+    "lint:md:fix": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\" --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "prepare": "husky",
@@ -91,7 +91,7 @@
     "globals": "^17.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "markdownlint": "^0.47.0",
+    "markdownlint-cli": "^0.47.0",
     "pagefind": "^1.4.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
@@ -109,7 +109,7 @@
       "prettier --write"
     ],
     "*.{md,mdx}": [
-      "markdownlint --fix"
+      "markdownlint-cli --fix"
     ],
     "*.{json,css,scss}": [
       "prettier --write"

@@ -60,7 +60,7 @@ export default defineConfig({
     alpinejs({ entrypoint: '/src/entrypoint' }),
     mermaid({
       theme: 'forest',
-      autoTheme: true
+      autoTheme: true,
     }),
     starlight({
       title: 'Datum',

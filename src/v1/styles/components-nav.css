@@ -17,7 +17,10 @@
       }
 
       .btn.gh-button {
-        @apply border-0 md:border-1;
+        /* @apply border-0 md:border; */
+        span {
+          @apply hidden md:inline-block;
+        }
       }
     }
 

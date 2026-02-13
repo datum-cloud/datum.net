@@ -93,4 +93,6 @@
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+
+  --color-borderpanel: var(--color-glacier-mist-900);
 }

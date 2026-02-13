@@ -9,7 +9,7 @@ interface Session {
 }
 
 // Helper to decode JWT without verification (for debugging)
-function decodeJWT(token: string): any {
+function decodeJWT(token: string): unknown {
   try {
     const parts = token.split('.');
     if (parts.length !== 3) return null;

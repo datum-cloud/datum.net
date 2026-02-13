@@ -10,9 +10,6 @@ const oidcClient = new OIDCClient();
 const logoutUrl = oidcClient.getLogoutUrl(idToken, `/auth/login/?redirect_uri=/`);
 */
 
-const redirect_uri = Astro.url.searchParams.has('redirect_uri')
-  ? Astro.url.searchParams.get('redirect_uri')
-  : '/';
 const cookieOptions = {
   path: '/',
   sameSite: 'lax' as 'none' | 'strict' | 'lax',
@@ -25,5 +22,5 @@ Astro.cookies.delete('_id_token', cookieOptions);
 Astro.cookies.delete('_session', cookieOptions);
 Astro.cookies.delete('nonce', cookieOptions);
 
-return Astro.redirect(redirect_uri);
+return Astro.redirect(Astro.url.searchParams.get('redirect_uri') || '/');
 ---

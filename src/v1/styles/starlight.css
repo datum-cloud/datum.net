@@ -175,8 +175,6 @@
 
     /* Light mode Starlight theme variables. */
     &[data-theme='light'] {
-      --tw-prose-bullets: var(--color-midnight-fjord);
-
       --sl-color-dialog: var(--color-glacier-mist-800);
       --sl-color-dialog-border: var(--color-glacier-mist-900);
 
@@ -229,7 +227,7 @@
     }
 
     .footer {
-      @apply border-t-1 border-[color:var(--color-borderpanel)];
+      @apply border-t border-(--color-borderpanel);
     }
   }
 
@@ -241,9 +239,7 @@
 
     .expressive-code {
       @apply max-w-full lg:max-w-150 xl:max-w-190;
-      pre {
-        @apply border-(--color-glacier-mist-900);
-      }
+
       pre > code {
         @apply text-(length:--text-sm-font-size);
       }
@@ -546,8 +542,6 @@
 
 @layer starlight.content {
   .sl-markdown-content {
-    --tw-prose-bullets: var(--sl-color-text);
-
     .sl-heading-wrapper {
       @apply mb-3 md:mb-3.5 lg:mb-4 xl:mb-5;
 

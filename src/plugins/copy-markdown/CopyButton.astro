@@ -1,0 +1,180 @@
+---
+// src/plugins/copy-markdown/CopyButton.astro
+import './styles.css';
+import { getCopyMarkdownConfig } from './config';
+
+export interface CopyButtonProps {
+  markdown: string;
+  includeFrontmatter?: boolean;
+  showToast?: boolean;
+  sourcePath?: string;
+  fileExtension?: string;
+}
+
+const {
+  markdown,
+  includeFrontmatter = false,
+  showToast,
+  sourcePath,
+  fileExtension = 'mdx',
+} = Astro.props as CopyButtonProps;
+
+const config = getCopyMarkdownConfig();
+const _showToast = showToast ?? config.showToast;
+const _copyText = config.copyText;
+const _copiedText = config.copiedText;
+const _showViewMarkdown = config.showViewMarkdown;
+const _githubRawBaseUrl = config.githubRawBaseUrl;
+const _contentPath = config.contentPath;
+
+// Construct GitHub raw URL: {baseUrl}/{contentPath}/{sourcePath}.{extension}
+const githubRawUrl =
+  _showViewMarkdown && _githubRawBaseUrl && sourcePath
+    ? `${_githubRawBaseUrl}/${_contentPath}/${sourcePath}.${fileExtension}`
+    : null;
+---
+
+<div class="copy-markdown-buttons">
+  <button
+    type="button"
+    class="copy-markdown-btn"
+    data-markdown={markdown}
+    data-include-frontmatter={includeFrontmatter ? 'true' : 'false'}
+    data-show-toast={_showToast ? 'true' : 'false'}
+    data-copy-text={_copyText}
+    data-copied-text={_copiedText}
+    title="Copy page as Markdown"
+    aria-label="Copy page content as Markdown"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="copy-icon"
+    >
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+    </svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="check-icon"
+      style="display: none;"
+    >
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span class="copy-text">{_copyText}</span>
+  </button>
+
+  {
+    githubRawUrl && (
+      <a
+        href={githubRawUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="copy-markdown-btn view-markdown-btn"
+        title="View raw Markdown on GitHub"
+        aria-label="View raw Markdown source on GitHub"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+        <span class="copy-text">View as Markdown</span>
+      </a>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll('.copy-markdown-btn:not(.view-markdown-btn)').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const button = btn as HTMLButtonElement;
+      const markdown = button.dataset.markdown || '';
+      const showToast = button.dataset.showToast !== 'false';
+      const copyText = button.dataset.copyText || 'Copy';
+      const copiedText = button.dataset.copiedText || 'Copied!';
+
+      try {
+        await navigator.clipboard.writeText(markdown);
+
+        // Visual feedback
+        const copyIcon = button.querySelector('.copy-icon') as SVGElement;
+        const checkIcon = button.querySelector('.check-icon') as SVGElement;
+        const textSpan = button.querySelector('.copy-text') as HTMLSpanElement;
+
+        if (copyIcon && checkIcon && textSpan) {
+          copyIcon.style.display = 'none';
+          checkIcon.style.display = 'inline-block';
+          textSpan.textContent = copiedText;
+          button.classList.add('copied');
+
+          // Reset after 2 seconds
+          setTimeout(() => {
+            copyIcon.style.display = 'inline-block';
+            checkIcon.style.display = 'none';
+            textSpan.textContent = copyText;
+            button.classList.remove('copied');
+          }, 2000);
+        }
+
+        // Show toast notification if enabled
+        if (showToast) {
+          showToastNotification('Markdown copied to clipboard!');
+        }
+      } catch (err) {
+        console.error('Failed to copy markdown:', err);
+        if (showToast) {
+          showToastNotification('Failed to copy markdown', 'error');
+        }
+      }
+    });
+  });
+
+  function showToastNotification(message: string, type: 'success' | 'error' = 'success') {
+    // Remove existing toast
+    const existingToast = document.querySelector('.copy-toast');
+    if (existingToast) {
+      existingToast.remove();
+    }
+
+    // Create new toast
+    const toast = document.createElement('div');
+    toast.className = `copy-toast copy-toast--${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Animate in
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+</script>

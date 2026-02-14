@@ -15,6 +15,7 @@ import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
+import copyMarkdown from './src/plugins/copy-markdown/index.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -63,6 +64,18 @@ export default defineConfig({
       autoTheme: true,
     }),
     starlight({
+      plugins: [
+        copyMarkdown({
+          includeFrontmatter: false,
+          showToast: true,
+          copyText: 'Copy for LLM',
+          copiedText: 'Copied!',
+          showViewMarkdown: true,
+          githubRawBaseUrl:
+            'https://raw.githubusercontent.com/datum-cloud/datum.net/refs/heads/main',
+          contentPath: 'src/content/docs',
+        }),
+      ],
       title: 'Datum',
       disable404Route: true,
       credits: false,
@@ -96,6 +109,7 @@ export default defineConfig({
         MobileMenuToggle: '@components/starlight/MobileMenuToggle.astro',
         Sidebar: '@components/starlight/Sidebar.astro',
         Search: '@components/starlight/Search.astro',
+        PageTitle: '@components/starlight/PageTitle.astro',
       },
       head: [
         {

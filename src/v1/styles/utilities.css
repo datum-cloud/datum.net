@@ -322,6 +322,8 @@
   @apply **:text-inherit;
 
   --tw-prose-body: var(--color-midnight-fjord);
+  --tw-prose-bullets: var(--prose-bullets);
+  --tw-prose-counters: var(--prose-counters);
 }
 
 @utility datum-prose-article {

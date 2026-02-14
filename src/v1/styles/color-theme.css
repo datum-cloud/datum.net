@@ -1,9 +1,22 @@
 @layer base {
+  :root {
+    --color-borderpanel: var(--color-glacier-mist-900);
+
+    --ec-code-background: var(--color-white);
+    --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 40%, transparent);
+
+    --prose-bullets: var(--shark-gray);
+    --prose-counters: var(--shark-gray);
+  }
+
   [data-theme='light'] {
     --color-borderpanel: var(--color-glacier-mist-900);
 
     --ec-code-background: var(--color-white);
     --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 40%, transparent);
+
+    --prose-bullets: var(--shark-gray);
+    --prose-counters: var(--shark-gray);
   }
 
   [data-theme='dark'] {
@@ -11,11 +24,8 @@
 
     --ec-code-background: color-mix(in srgb, var(--color-glacier-mist-700) 7%, transparent);
     --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 3%, transparent);
-  }
-}
 
-@layer utilities {
-  /* Prose */
-  .prose {
+    --prose-bullets: var(--color-glacier-mist-700);
+    --prose-counters: var(--color-glacier-mist-700);
   }
 }

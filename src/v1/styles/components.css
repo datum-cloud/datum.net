@@ -515,6 +515,7 @@
 
       pre {
         @apply bg-(--ec-code-background);
+        @apply border-(--color-borderpanel);
       }
 
       .header {

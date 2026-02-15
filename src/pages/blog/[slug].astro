@@ -13,6 +13,7 @@ import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/date
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getAuthorBgColor } from '@utils/authorUtils';
 import Icon from '@components/Icon.astro';
+import { truncateByWords } from '@libs/string';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import defaultOgImage from '@content/images/og/blog.png';
 
@@ -106,7 +107,7 @@ const blogMeta = {
 };
 
 breadcrumbData.push({
-  text: fm.title,
+  text: truncateByWords(fm.title, 9),
   href: `/blog/${entry.id}/`,
 });
 ---
@@ -215,7 +216,7 @@ breadcrumbData.push({
 
           <!-- Article Header -->
           <header class="blog-article-header">
-            <div class="blog-article-breadcrumbs">
+            <div class="blog-article-breadcrumbs mb-5.5">
               <Breadcrumbs
                 linkTextFormat="sentence"
                 mainBemClass="a-breadcrumbs"

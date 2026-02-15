@@ -45,7 +45,7 @@
     }
 
     .brand-nav-item {
-      @apply list-none;
+      @apply list-none px-3 py-1;
     }
 
     .brand-nav-link {

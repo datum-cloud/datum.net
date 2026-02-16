@@ -172,8 +172,12 @@ const description = fm.description;
             </Table>
           </div>
 
-          <div class="absolute bottom-1/2 -left-30 z-20 block w-auto max-w-2/3 translate-y-1/2">
-            <Image src={ImageLight} alt="Light Trail" class="relative h-auto w-[650px]" />
+          <div class="absolute bottom-1/2 -left-30 z-20 hidden w-auto max-w-2/3 translate-y-1/2 md:block">
+            <Image
+              src={ImageLight}
+              alt="Light Trail"
+              class="relative h-auto w-full max-w-[650px]"
+            />
           </div>
         </div>
       )

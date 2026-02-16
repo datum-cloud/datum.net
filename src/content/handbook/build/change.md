@@ -1,12 +1,12 @@
 ---
-title: "Change Management"
+title: "Change management"
 sidebar:
-  label: Change Management
+  label: Change management
   order: 3
 updatedDate: Jan 5, 2026
 authors: drew
 meta:
-  title: "Scheduling Change at Datum"
+  title: "How We Plan and Execute on Changes at Datum"
   description: "Systems, and their operators, exist in time and space. Production changes are calendar events, not chat messages."
 ---
 

@@ -300,7 +300,6 @@ src/content/
 │   │   └── why-evolve.md
 │   ├── home.mdx (main page)
 │   ├── pricing.mdx
-│   ├── request-access.mdx
 │   ├── resources/
 │   │   ├── images/ (open source project logos)
 │   │   └── open-source.mdx
@@ -445,7 +444,6 @@ Static page content:
   - `events.mdx` - Events page
   - `home.mdx` - Main homepage
   - `pricing.mdx` - Pricing page
-  - `request-access.mdx` - Access request page
   - `roadmap.mdx` - Product roadmap
   - `global-section.md` - Global section content
 - UI assets in `assets/` (chat and home directories, plus UI graphics)

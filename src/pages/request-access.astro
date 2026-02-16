@@ -25,8 +25,8 @@ const description = fm.description;
   <section class="datum-container">
     <Hero class="light" iconName={fm.iconName} title={title} subtitle={fm.subtitle} />
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark">
-      <div class="absolute right-0 bottom-0 z-0 flex">
+    <div class="section--block section--block--pad bg-midnight-fjord dark overflow-clip">
+      <div class="absolute right-0 bottom-0 z-0 hidden md:flex">
         <Image
           src={SceneTree}
           alt="Scene tree "
@@ -34,7 +34,7 @@ const description = fm.description;
         />
       </div>
       <div class="relative m-auto max-w-391">
-        <div class="grid grid-cols-12 gap-12">
+        <div class="grid grid-cols-12 gap-6 md:gap-12">
           <div class="col-span-12 md:col-span-6 lg:col-span-4">
             <div class="prose prose-xl prose-dark max-w-none leading-[1.4]">
               <Content />

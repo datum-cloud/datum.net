@@ -13,7 +13,7 @@ sources:
   - name: network-services-operator
     org: datum-cloud
     repo: network-services-operator
-    version: v0.14.4
+    version: v0.14.5
 
   # Telemetry Services Operator - Observability APIs (ExportPolicy)
   - name: telemetry-services-operator

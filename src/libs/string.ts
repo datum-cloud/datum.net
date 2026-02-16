@@ -12,6 +12,19 @@ function truncate(str = '', maxChar = 100, suffix = '...'): string {
 }
 
 /**
+ * Truncate a string to a maximum number of words
+ * @param str - The input string
+ * @param maxWords - Maximum number of words to keep
+ * @param suffix - Suffix to append if truncated (default '...')
+ * @returns Truncated string
+ */
+function truncateByWords(str = '', maxWords = 10, suffix = '...'): string {
+  const words = str.trim().split(/\s+/);
+  if (words.length <= maxWords) return str;
+  return words.slice(0, maxWords).join(' ') + suffix;
+}
+
+/**
  * Remove all header tags (h1 to h6) from the given HTML content
  * @param html - The HTML content
  * @returns HTML content without header tags
@@ -66,4 +79,4 @@ const generateRandomString = (length: number): string => {
   ).join('');
 };
 
-export { truncate, removeHeaderTags, stripTags, generateRandomString };
+export { truncate, truncateByWords, removeHeaderTags, stripTags, generateRandomString };

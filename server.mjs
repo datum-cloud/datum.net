@@ -36,6 +36,12 @@ const CONTENT_TYPES = {
   '.otf': 'font/otf',
   '.pdf': 'application/pdf',
   '.zip': 'application/zip',
+  '.doc': 'application/msword',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.xls': 'application/vnd.ms-excel',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.ppt': 'application/vnd.ms-powerpoint',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   '.webmanifest': 'application/manifest+json',
   '.map': 'application/json',
   '.pf_fragment': 'application/octet-stream',
@@ -67,6 +73,8 @@ const REDIRECTS = {
   '/docs/tutorials/grafana/': { destination: '/docs/workflows/grafana-cloud/', status: 301 },
   '/docs/tutorials/httpproxy/': { destination: '/docs/runtime/proxy/', status: 301 },
   '/docs/get-started/': { destination: '/docs/quickstart/', status: 302 },
+  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 301 },
+  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 301 },
   '/docs/contribution-guidelines/': { destination: '/docs/', status: 301 },
   '/docs/guides/using-byoc/': { destination: '/docs/', status: 301 },
   '/docs/workflows/': { destination: '/docs/', status: 302 },
@@ -115,6 +123,9 @@ const PREFIX_REDIRECTS = [
   { from: '/handbook/culture/', to: '/handbook/operate/', status: 302 },
 ];
 
+// File extensions that should trigger download instead of display
+const DOWNLOAD_EXTENSIONS = /\.(docx?|xlsx?|pptx?|zip)$/i;
+
 // Static file server for pre-rendered pages and assets
 const staticServer = sirv(CLIENT_DIR, {
   maxAge: 31536000,
@@ -130,6 +141,11 @@ const staticServer = sirv(CLIENT_DIR, {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     } else if (pathname.match(/\.(html)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    }
+    // Force download for Office documents and archives
+    if (DOWNLOAD_EXTENSIONS.test(pathname)) {
+      const filename = pathname.split('/').pop();
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     }
   },
 });

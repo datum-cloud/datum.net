@@ -30,9 +30,6 @@ COPY --from=build /app/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --ignore-scripts
 COPY --from=build /app/src/pages ./src/pages
 RUN chmod -R 755 src/pages
-RUN chown -R node:node /app
-
-USER node
 
 ENV HOST=0.0.0.0
 ENV PORT=4321

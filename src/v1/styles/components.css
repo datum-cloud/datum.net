@@ -68,18 +68,6 @@
     }
   }
 
-  .footer-signup {
-    @apply bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20;
-  }
-
-  .footer-signup-container {
-    @apply max-width flex max-w-190 flex-col items-center gap-4 md:flex-row md:gap-11 lg:gap-14 xl:gap-16;
-  }
-
-  .footer-signup-form-container {
-    @apply w-full max-w-[317px] grow md:w-auto md:max-w-none;
-  }
-
   .footer-signup-form {
     @apply border-midnight-fjord flex items-center border-b pb-2;
   }
@@ -341,7 +329,7 @@
 
   nav.c-breadcrumbs,
   nav.a-breadcrumbs {
-    @apply datum-docs-sidebar-links mt-0 mb-5 block items-center overflow-x-hidden px-0 opacity-80 md:px-0;
+    @apply datum-docs-sidebar-links mt-0 block items-center overflow-x-hidden px-0 opacity-80 md:px-0;
 
     ol {
       @apply flex h-6 w-full items-center;
@@ -520,13 +508,14 @@
 
   /* expressive code */
   .expressive-code {
-    @apply my-4!;
+    @apply my-(--text-longform-body-paragraph-spacing);
 
     .frame {
       @apply shadow-none!;
 
       pre {
-        @apply bg-white;
+        @apply bg-(--ec-code-background);
+        @apply border-(--color-borderpanel);
       }
 
       .header {

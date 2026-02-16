@@ -180,7 +180,7 @@ async function generateDocs(): Promise<void> {
         // Replace single <br/> with double <br/><br/> for better paragraph spacing
         processedLine = processedLine.replace(
           /([^.<]+)\.\s*<br\s*\/>\s*([A-Z])/gi,
-          (match, beforeDot, nextWord) => {
+          (_match, beforeDot, nextWord) => {
             return `${beforeDot}.<br /><br />${nextWord}`;
           }
         );
@@ -191,7 +191,7 @@ async function generateDocs(): Promise<void> {
       // Detect end of sentence followed by <br> and capitalize word
       // Pattern: word. <br />Word or word.<br />Word or word. <br /> Word
       // Replace single <br/> with double <br/><br/> for better paragraph spacing
-      line = line.replace(/([^.<]+)\.\s*<br\s*\/>\s*([A-Z])/gi, (match, beforeDot, nextWord) => {
+      line = line.replace(/([^.<]+)\.\s*<br\s*\/>\s*([A-Z])/gi, (_match, beforeDot, nextWord) => {
         return `${beforeDot}.<br /><br />${nextWord}`;
       });
 

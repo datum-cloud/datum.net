@@ -17,6 +17,7 @@ sidebar:
 - [identity.miloapis.com/v1alpha1](#identitymiloapiscomv1alpha1)
 - [infrastructure.miloapis.com/v1alpha1](#infrastructuremiloapiscomv1alpha1)
 - [networking.datumapis.com/v1alpha](#networkingdatumapiscomv1alpha)
+- [networking.datumapis.com/v1alpha1](#networkingdatumapiscomv1alpha1)
 - [notification.miloapis.com/v1alpha1](#notificationmiloapiscomv1alpha1)
 - [quota.miloapis.com/v1alpha1](#quotamiloapiscomv1alpha1)
 - [resourcemanager.miloapis.com/v1alpha1](#resourcemanagermiloapiscomv1alpha1)
@@ -28,6 +29,44 @@ sidebar:
 Package v1alpha1 contains API Schema definitions for the activity v1alpha1 API group
 
 
+
+
+
+
+
+
+#### AuditLogFacetsQuerySpec
+
+
+
+AuditLogFacetsQuerySpec defines which facets to retrieve from audit logs.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuery](#auditlogfacetsquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `timeRange` <br />_[FacetTimeRange](#facettimerange)_ | TimeRange limits the time window for facet aggregation.<br /><br />If not specified, defaults to the last 7 days. |  |  |
+| `filter` <br />_string_ | Filter narrows the audit logs before computing facets using CEL.<br /><br />This allows you to get facet values for a subset of audit logs.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.apiGroup  - API group of the resource<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, !, in<br />String Functions: startsWith(), endsWith(), contains()<br />Examples:<br />  "verb in ['create', 'update', 'delete']"        - Facets for write operations only<br />  "!(verb in ['get', 'list', 'watch'])"           - Exclude read-only operations<br />  "!user.username.startsWith('system:')"          - Exclude system users<br />  "objectRef.namespace == 'production'"           - Facets for production namespace |  |  |
+| `facets` <br />_[FacetSpec](#facetspec) array_ | Facets specifies which fields to get distinct values for.<br /><br />Each facet returns the top N values with counts.<br /><br />Supported fields:<br />  - verb: API action (get, list, create, update, patch, delete, watch)<br />  - user.username: Actor display names<br />  - user.uid: Unique user identifiers<br />  - responseStatus.code: HTTP response codes<br />  - objectRef.namespace: Namespaces<br />  - objectRef.resource: Resource types<br />  - objectRef.apiGroup: API groups |  |  |
+
+
+#### AuditLogFacetsQueryStatus
+
+
+
+AuditLogFacetsQueryStatus contains the facet results.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuery](#auditlogfacetsquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `facets` <br />_[FacetResult](#facetresult) array_ | Facets contains the results for each requested facet. |  |  |
 
 
 #### AuditLogQuery
@@ -91,7 +130,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `startTime` <br />_string_ | StartTime is the beginning of your search window (inclusive).<br /><br />Format Options:<br />- Relative: "now-30d", "now-2h", "now-30m" (units: s, m, h, d, w)<br />  Use for dashboards and recurring queries - they adjust automatically.<br />- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)<br />  Use for historical analysis of specific time periods.<br /><br />Examples:<br />  "now-30d"                     → 30 days ago<br />  "2024-06-15T14:30:00-05:00"   → specific time with timezone offset |  |  |
 | `endTime` <br />_string_ | EndTime is the end of your search window (exclusive).<br /><br />Uses the same formats as StartTime. Commonly "now" for current moment.<br /><br />Must be greater than StartTime.<br /><br />Examples:<br />  "now"                  → current time<br />  "2024-01-02T00:00:00Z" → specific end point |  |  |
-| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br /><br />CEL reference: https://cel.dev |  |  |
+| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language). Leave empty to get all events.<br /><br />Available Fields:<br />  verb               - API action: get, list, create, update, patch, delete, watch<br />  auditID            - unique event identifier<br />  requestReceivedTimestamp - when the API server received the request (RFC3339 timestamp)<br />  user.username      - who made the request (user or service account)<br />  user.uid           - unique user identifier (stable across username changes)<br />  responseStatus.code - HTTP response code (200, 201, 404, 500, etc.)<br />  objectRef.namespace - target resource namespace<br />  objectRef.resource  - resource type (pods, deployments, secrets, configmaps, etc.)<br />  objectRef.name     - specific resource name<br />Operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, &&, \|\|, !, in<br />String Functions: startsWith(), endsWith(), contains()<br />Common Patterns:<br />  "verb == 'delete'"                                    - All deletions<br />  "objectRef.namespace == 'production'"                 - Activity in production namespace<br />  "verb in ['create', 'update', 'delete', 'patch']"     - All write operations<br />  "!(verb in ['get', 'list', 'watch'])"                 - Exclude read-only operations<br />  "responseStatus.code &gt;= 400"                          - Failed requests<br />  "user.username.startsWith('system:serviceaccount:')"  - Service account activity<br />  "!user.username.startsWith('system:')"                - Exclude system users<br />  "user.uid == '550e8400-e29b-41d4-a716-446655440000'"  - Specific user by UID<br />  "objectRef.resource == 'secrets'"                     - Secret access<br />  "verb == 'delete' && objectRef.namespace == 'production'" - Production deletions<br />Note: Use single quotes for strings. Field names are case-sensitive.<br /><br />CEL reference: https://cel.dev |  |  |
 | `limit` <br />_integer_ | Limit sets the maximum number of results per page.<br /><br />Default: 100, Maximum: 1000.<br /><br />Use smaller values (10-50) for exploration, larger (500-1000) for data collection.<br /><br />Use continue to fetch additional pages. |  |  |
 | `continue` <br />_string_ | Continue is the pagination cursor for fetching additional pages.<br /><br />Leave empty for the first page. If status.continue is non-empty after a query,<br />copy that value here in a new query with identical parameters to get the next page.<br /><br />Repeat until status.continue is empty.<br /><br />Important: Keep all other parameters (startTime, endTime, filter, limit) identical<br />across paginated requests. The cursor is opaque - copy it exactly without modification. |  |  |
 
@@ -113,6 +152,74 @@ _Appears in:_
 | `continue` <br />_string_ | Continue is the pagination cursor.<br /><br />Non-empty means more results are available - copy this to spec.continue for the next page.<br /><br />Empty means you have all results. |  |  |
 | `effectiveStartTime` <br />_string_ | EffectiveStartTime is the actual start time used for this query (RFC3339 format).<br /><br />When you use relative times like "now-7d", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried, especially<br />for auditing, debugging, or recreating queries with absolute timestamps.<br /><br />Example: If you query with startTime="now-7d" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-10T12:00:00Z". |  |  |
 | `effectiveEndTime` <br />_string_ | EffectiveEndTime is the actual end time used for this query (RFC3339 format).<br /><br />When you use relative times like "now", this shows the exact timestamp that was<br />calculated. Useful for understanding exactly what time range was queried.<br /><br />Example: If you query with endTime="now" at 2025-12-17T12:00:00Z,<br />this will be "2025-12-17T12:00:00Z". |  |  |
+
+
+#### FacetResult
+
+
+
+FacetResult contains the distinct values for a single facet.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQueryStatus](#auditlogfacetsquerystatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `field` <br />_string_ | Field is the field path that was queried. |  |  |
+| `values` <br />_[FacetValue](#facetvalue) array_ | Values contains the distinct values and their counts. |  |  |
+
+
+#### FacetSpec
+
+
+
+FacetSpec defines a single facet to retrieve.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `field` <br />_string_ | Field is the activity field path to get distinct values for.<br /><br />Supported fields:<br />  - spec.actor.name: Actor display names<br />  - spec.actor.type: Actor types (user, serviceaccount, controller)<br />  - spec.resource.apiGroup: API groups<br />  - spec.resource.kind: Resource kinds<br />  - spec.resource.namespace: Namespaces<br />  - spec.changeSource: Change sources (human, system) |  |  |
+| `limit` <br />_integer_ | Limit is the maximum number of distinct values to return.<br /><br />Default: 20, Maximum: 100. |  |  |
+
+
+#### FacetTimeRange
+
+
+
+FacetTimeRange specifies the time window for facet queries.
+
+
+
+_Appears in:_
+- [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `start` <br />_string_ | Start is the beginning of the time window (inclusive).<br /><br />Supports RFC3339 timestamps and relative times (e.g., "now-7d"). |  |  |
+| `end` <br />_string_ | End is the end of the time window (exclusive).<br /><br />Supports RFC3339 timestamps and relative times. Defaults to "now". |  |  |
+
+
+#### FacetValue
+
+
+
+FacetValue represents a single distinct value with its occurrence count.
+
+
+
+_Appears in:_
+- [FacetResult](#facetresult)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `value` <br />_string_ | Value is the distinct field value. |  |  |
+| `count` <br />_integer_ | Count is the number of activities with this value. |  |  |
 
 
 
@@ -264,6 +371,23 @@ _Appears in:_
 | `content` <br />_string_ |  |  | Format: ipv6 <br /> |
 
 
+#### ALIASRecordSpec
+
+
+
+ALIASRecordSpec is like CNAME but intended for providers that implement an ALIAS/ANAME-style record.
+The content is a hostname (FQDN or relative) with an optional trailing dot.
+
+
+
+_Appears in:_
+- [RecordEntry](#recordentry)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `content` <br />_string_ |  |  | MaxLength: 253 <br />MinLength: 1 <br />Pattern: `^([A-Za-z0-9_](?:[-A-Za-z0-9_]\{0,61\}[A-Za-z0-9_])?)(?:\.([A-Za-z0-9_](?:[-A-Za-z0-9_]\{0,61\}[A-Za-z0-9_])?))*\.?$` <br /> |
+
+
 #### ARecordSpec
 
 
@@ -366,7 +490,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `dnsZoneRef` <br />_[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#localobjectreference-v1-core)_ | DNSZoneRef references the DNSZone (same namespace) this recordset belongs to. |  | Required: \{\} <br /> |
-| `recordType` <br />_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] <br />Required: \{\} <br /> |
+| `recordType` <br />_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] <br />Required: \{\} <br /> |
 | `records` <br />_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType. |  | MinItems: 1 <br /> |
 
 
@@ -617,7 +741,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `recordType` <br />_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] <br />Required: \{\} <br /> |
+| `recordType` <br />_[RRType](#rrtype)_ | RecordType is the DNS RR type for this recordset. |  | Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB] <br />Required: \{\} <br /> |
 | `records` <br />_[RecordEntry](#recordentry) array_ | Records contains one or more owner names with values appropriate for the RecordType.<br /><br />The RecordEntry schema is shared with DNSRecordSet for easy translation. |  |  |
 
 
@@ -761,7 +885,7 @@ _Underlying type:_ _string_
 
 
 _Validation:_
-- Enum: [A AAAA CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB]
+- Enum: [A AAAA ALIAS CNAME TXT MX SRV CAA NS SOA PTR TLSA HTTPS SVCB]
 
 _Appears in:_
 - [DNSRecordSetSpec](#dnsrecordsetspec)
@@ -770,6 +894,7 @@ _Appears in:_
 | Field | Description |
 | `A` |  |
 | `AAAA` |  |
+| `ALIAS` |  |
 | `CNAME` |  |
 | `TXT` |  |
 | `MX` |  |
@@ -802,6 +927,7 @@ _Appears in:_
 | `a` <br />_[ARecordSpec](#arecordspec)_ | Exactly one of the following type-specific fields should be set matching RecordType. |  |  |
 | `aaaa` <br />_[AAAARecordSpec](#aaaarecordspec)_ |  |  |  |
 | `cname` <br />_[CNAMERecordSpec](#cnamerecordspec)_ |  |  |  |
+| `alias` <br />_[ALIASRecordSpec](#aliasrecordspec)_ |  |  |  |
 | `ns` <br />_[NSRecordSpec](#nsrecordspec)_ |  |  |  |
 | `txt` <br />_[TXTRecordSpec](#txtrecordspec)_ |  |  |  |
 | `soa` <br />_[SOARecordSpec](#soarecordspec)_ |  |  |  |
@@ -2373,6 +2499,22 @@ _Appears in:_
 | `phone` <br />_string_ |  |  |  |
 
 
+#### ConnectorReference
+
+
+
+ConnectorReference references a Connector by name.
+
+
+
+_Appears in:_
+- [HTTPProxyRuleBackend](#httpproxyrulebackend)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name of the referenced Connector. |  | Required: \{\} <br /> |
+
+
 #### Contact
 
 
@@ -2595,6 +2737,22 @@ _Appears in:_
 | `status` <br />_[HTTPProxyStatus](#httpproxystatus)_ | Status defines the current state of an HTTPProxy. | \{ conditions:[map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Accepted] map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Programmed]] \} |  |
 
 
+#### HTTPProxyBackendTLS
+
+
+
+HTTPProxyBackendTLS contains TLS configuration for a backend.
+
+
+
+_Appears in:_
+- [HTTPProxyRuleBackend](#httpproxyrulebackend)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `hostname` <br />_string_ | Hostname is used for TLS certificate validation when connecting to an<br />HTTPS backend. This hostname is used for:<br />1. SNI (Server Name Indication) during the TLS handshake<br />2. Certificate validation - the certificate must be valid for this hostname<br />This field is required when the backend endpoint uses HTTPS with an IP<br />address, as there is no hostname to extract from the endpoint URL.<br /><br />When the backend endpoint uses HTTPS with a DNS hostname, this field is<br />optional and defaults to the hostname from the endpoint URL. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+
+
 #### HTTPProxyList
 
 
@@ -2648,6 +2806,8 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `endpoint` <br />_string_ | Endpoint for the backend. Must be a valid URL.<br /><br />Supports http and https protocols, IPs or DNS addresses in the host, custom<br />ports, and paths. |  | Required: \{\} <br /> |
+| `connector` <br />_[ConnectorReference](#connectorreference)_ | Connector references the Connector that should be used for this backend.<br /><br />For now, only a name reference is supported. In the future this can be<br />extended to selector-based matching to allow multiple connectors. |  | Optional: \{\} <br /> |
+| `tls` <br />_[HTTPProxyBackendTLS](#httpproxybackendtls)_ | TLS contains backend TLS configuration.<br /><br />When the backend endpoint uses HTTPS with an IP address, the Hostname field<br />must be specified for TLS certificate validation. |  | Optional: \{\} <br /> |
 | `filters` <br />_HTTPRouteFilter array_ | Filters defined at this level should be executed if and only if the<br />request is being forwarded to the backend defined here. |  | MaxItems: 16 <br /> |
 
 
@@ -3762,6 +3922,500 @@ _Appears in:_
 
 
 
+## networking.datumapis.com/v1alpha1
+
+Package v1alpha1 contains API Schema definitions for the networking v1alpha1 API group.
+
+### Resource Types
+- [Connector](#connector)
+- [ConnectorAdvertisement](#connectoradvertisement)
+- [ConnectorAdvertisementList](#connectoradvertisementlist)
+- [ConnectorClass](#connectorclass)
+- [ConnectorClassList](#connectorclasslist)
+- [ConnectorList](#connectorlist)
+
+
+
+#### Connector
+
+
+
+Connector is the Schema for the connectors API.
+
+
+
+_Appears in:_
+- [ConnectorList](#connectorlist)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `Connector` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ConnectorSpec](#connectorspec)_ | Spec defines the desired state of a Connector |  | Required: \{\} <br /> |
+| `status` <br />_[ConnectorStatus](#connectorstatus)_ | Status defines the observed state of a Connector | \{ conditions:[map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Accepted]] \} |  |
+
+
+#### ConnectorAdvertisement
+
+
+
+ConnectorAdvertisement is the Schema for the connectoradvertisements API.
+
+
+
+_Appears in:_
+- [ConnectorAdvertisementList](#connectoradvertisementlist)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ConnectorAdvertisement` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ConnectorAdvertisementSpec](#connectoradvertisementspec)_ | Spec defines the desired state of a ConnectorAdvertisement |  | Required: \{\} <br /> |
+| `status` <br />_[ConnectorAdvertisementStatus](#connectoradvertisementstatus)_ | Status defines the observed state of a ConnectorAdvertisement | \{ conditions:[map[lastTransitionTime:1970-01-01T00:00:00Z message:Waiting for controller reason:Pending status:Unknown type:Accepted]] \} |  |
+
+
+#### ConnectorAdvertisementLayer4
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorAdvertisementSpec](#connectoradvertisementspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name of the advertisement. |  | Required: \{\} <br /> |
+| `services` <br />_[ConnectorAdvertisementLayer4Service](#connectoradvertisementlayer4service) array_ | Layer 4 services being advertised. |  | MaxItems: 16 <br />MinItems: 1 <br />Required: \{\} <br /> |
+
+
+#### ConnectorAdvertisementLayer4Service
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorAdvertisementLayer4](#connectoradvertisementlayer4)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `address` <br />_[Layer4ServiceAddress](#layer4serviceaddress)_ | Address of the service.<br /><br />Can be an IPv4, IPv6, or a DNS address. A DNS address may contain<br />wildcards. A DNS address acts as an allow list for what addresses the<br />connector will allow to be requested through it.<br /><br />DNS resolution is the responsibility of the connector. |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `ports` <br />_[Layer4ServicePort](#layer4serviceport) array_ | Ports of the service. |  | MaxItems: 16 <br />MinItems: 1 <br />Required: \{\} <br /> |
+
+
+#### ConnectorAdvertisementList
+
+
+
+ConnectorAdvertisementList contains a list of ConnectorAdvertisement.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ConnectorAdvertisementList` | | |
+| `metadata` <br />_[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `items` <br />_[ConnectorAdvertisement](#connectoradvertisement) array_ |  |  |  |
+
+
+#### ConnectorAdvertisementSpec
+
+
+
+ConnectorAdvertisementSpec defines the desired state of ConnectorAdvertisement.
+
+
+
+_Appears in:_
+- [ConnectorAdvertisement](#connectoradvertisement)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `connectorRef` <br />_[LocalConnectorReference](#localconnectorreference)_ | ConnectorRef references the Connector being advertised. |  | Required: \{\} <br /> |
+| `layer4` <br />_[ConnectorAdvertisementLayer4](#connectoradvertisementlayer4) array_ | Layer 4 services being advertised. |  | MaxItems: 16 <br />Optional: \{\} <br /> |
+
+
+#### ConnectorAdvertisementStatus
+
+
+
+ConnectorAdvertisementStatus defines the observed state of ConnectorAdvertisement.
+
+
+
+_Appears in:_
+- [ConnectorAdvertisement](#connectoradvertisement)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions describe the current conditions of the ConnectorAdvertisement.<br /><br />Known conditions:<br />- Accepted: indicates whether the referenced Connector has been resolved.<br /><br />When Accepted is False, the reason will explain why the reference<br />  could not be resolved (for example, ConnectorNotFound). |  |  |
+
+
+#### ConnectorCapability
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorSpec](#connectorspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_[ConnectorCapabilityType](#connectorcapabilitytype)_ | Type of capability |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `connectTCP` <br />_[ConnectorCapabilityConnectTCP](#connectorcapabilityconnecttcp)_ |  |  |  |
+
+
+#### ConnectorCapabilityCommon
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorCapabilityConnectTCP](#connectorcapabilityconnecttcp)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `disabled` <br />_boolean_ |  |  |  |
+
+
+#### ConnectorCapabilityConnectTCP
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorCapability](#connectorcapability)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `disabled` <br />_boolean_ |  |  |  |
+
+
+#### ConnectorCapabilityStatus
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorStatus](#connectorstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_[ConnectorCapabilityType](#connectorcapabilitytype)_ | Type of capability |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions describe the current conditions of the capability. |  |  |
+
+
+#### ConnectorCapabilityType
+
+_Underlying type:_ _string_
+
+
+
+_Validation:_
+- MaxLength: 253
+- MinLength: 1
+
+_Appears in:_
+- [ConnectorCapability](#connectorcapability)
+- [ConnectorCapabilityStatus](#connectorcapabilitystatus)
+
+| Field | Description |
+| `ConnectTCP` |  |
+
+
+#### ConnectorClass
+
+
+
+ConnectorClass is the Schema for the connectorclasses API.
+
+
+
+_Appears in:_
+- [ConnectorClassList](#connectorclasslist)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ConnectorClass` | | |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ConnectorClassSpec](#connectorclassspec)_ | Spec defines the desired state of a ConnectorClass |  | Required: \{\} <br /> |
+| `status` <br />_[ConnectorClassStatus](#connectorclassstatus)_ | Status defines the observed state of a ConnectorClass |  |  |
+
+
+#### ConnectorClassList
+
+
+
+ConnectorClassList contains a list of ConnectorClass.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ConnectorClassList` | | |
+| `metadata` <br />_[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `items` <br />_[ConnectorClass](#connectorclass) array_ |  |  |  |
+
+
+#### ConnectorClassSpec
+
+
+
+ConnectorClassSpec defines the desired state of ConnectorClass.
+
+
+
+_Appears in:_
+- [ConnectorClass](#connectorclass)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `controllerName` <br />_string_ | ControllerName is the name of the controller responsible for this ConnectorClass. | networking.datumapis.com/datum-connect | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+
+
+#### ConnectorClassStatus
+
+
+
+ConnectorClassStatus defines the observed state of ConnectorClass.
+
+
+
+_Appears in:_
+- [ConnectorClass](#connectorclass)
+
+
+
+#### ConnectorConnectionDetails
+
+
+
+ConnectorConnectionDetails provides details on how to connect to the connector.
+
+
+
+_Appears in:_
+- [ConnectorStatus](#connectorstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_[ConnectorConnectionType](#connectorconnectiontype)_ | Type of connection details provided. |  | Enum: [PublicKey] <br />Required: \{\} <br /> |
+| `publicKey` <br />_[ConnectorConnectionDetailsPublicKey](#connectorconnectiondetailspublickey)_ | PublicKey connection details |  |  |
+
+
+#### ConnectorConnectionDetailsPublicKey
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorConnectionDetails](#connectorconnectiondetails)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `id` <br />_string_ | The public key to dial and connect to |  |  |
+| `discoveryMode` <br />_[PublicKeyDiscoveryMode](#publickeydiscoverymode)_ | The mode used to discover the public key | DNS | Enum: [DNS] <br /> |
+| `homeRelay` <br />_string_ | Home Relay server of the connector<br />Must be a valid URL |  | Required: \{\} <br /> |
+| `addresses` <br />_[PublicKeyConnectorAddress](#publickeyconnectoraddress) array_ | Addresses where the connector can be reached |  | MaxItems: 16 <br />Required: \{\} <br /> |
+
+
+#### ConnectorConnectionType
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [ConnectorConnectionDetails](#connectorconnectiondetails)
+
+| Field | Description |
+| `PublicKey` |  |
+
+
+#### ConnectorList
+
+
+
+ConnectorList contains a list of Connector.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` <br />_string_ | `networking.datumapis.com/v1alpha1` | | |
+| `kind` <br />_string_ | `ConnectorList` | | |
+| `metadata` <br />_[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `items` <br />_[Connector](#connector) array_ |  |  |  |
+
+
+#### ConnectorSpec
+
+
+
+ConnectorSpec defines the desired state of Connector.
+
+
+
+_Appears in:_
+- [Connector](#connector)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `connectorClassName` <br />_string_ |  |  | MinLength: 1 <br />Required: \{\} <br /> |
+| `capabilities` <br />_[ConnectorCapability](#connectorcapability) array_ | Capabilities desired to be supported by the connector.<br /><br />A connector may choose to not support all requested capabilities, and may<br />also choose to support additional capabilities not requested here. The<br />condition of each capability will reflect whether the capability is supported<br />or not in the ConnectorStatus. |  | MaxItems: 16 <br /> |
+
+
+#### ConnectorStatus
+
+
+
+ConnectorStatus defines the observed state of Connector.
+
+
+
+_Appears in:_
+- [Connector](#connector)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `capabilities` <br />_[ConnectorCapabilityStatus](#connectorcapabilitystatus) array_ | Capabilities describe the status of each capability of the connector. |  |  |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions describe the current conditions of the HTTPProxy. |  |  |
+| `connectionDetails` <br />_[ConnectorConnectionDetails](#connectorconnectiondetails)_ | ConnectionDetails provide details on how to connect to the connector. |  | Optional: \{\} <br /> |
+| `leaseRef` <br />_[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#localobjectreference-v1-core)_ | LeaseRef references the Lease used to report connector liveness.<br /><br />The connector controller creates the Lease when a Connector is created<br />and records it here. Connector implementations (agents) are expected to<br />periodically renew the Lease to indicate liveness. |  | Optional: \{\} <br /> |
+
+
+#### Layer4ServiceAddress
+
+_Underlying type:_ _string_
+
+Layer4ServiceAddress defines an address for a Layer 4 service.
+
+
+_Validation:_
+- MaxLength: 253
+- MinLength: 1
+
+_Appears in:_
+- [ConnectorAdvertisementLayer4Service](#connectoradvertisementlayer4service)
+
+
+
+#### Layer4ServicePort
+
+
+
+Layer4ServicePort represents a port for a Layer 4 service.
+
+
+
+_Appears in:_
+- [ConnectorAdvertisementLayer4Service](#connectoradvertisementlayer4service)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Named port for the service. |  | Required: \{\} <br /> |
+| `port` <br />_integer_ | Port number for the service. |  | Maximum: 65535 <br />Minimum: 1 <br />Required: \{\} <br /> |
+| `protocol` <br />_[Protocol](#protocol)_ | Protocol for port. Must be TCP or UDP, defaults to "TCP". | TCP | Required: \{\} <br /> |
+
+
+#### LocalConnectorReference
+
+
+
+
+
+
+
+_Appears in:_
+- [ConnectorAdvertisementSpec](#connectoradvertisementspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` <br />_string_ | Name of the referenced Connector. |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+
+
+#### Protocol
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [Layer4ServicePort](#layer4serviceport)
+
+| Field | Description |
+| `TCP` | ProtocolTCP is the TCP protocol.<br /> |
+| `UDP` | ProtocolUDP is the UDP protocol.<br /> |
+
+
+#### PublicKeyConnectorAddress
+
+
+
+PublicKeyConnectorAddress defines an address and port for a connector.
+
+
+
+_Appears in:_
+- [ConnectorConnectionDetailsPublicKey](#connectorconnectiondetailspublickey)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `address` <br />_string_ | IPv4 or IPv6 address. |  | MaxLength: 39 <br />Required: \{\} <br /> |
+| `port` <br />_integer_ | Port where the connector can be reached. |  | Maximum: 65535 <br />Minimum: 1 <br />Required: \{\} <br /> |
+
+
+#### PublicKeyDiscoveryMode
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [ConnectorConnectionDetailsPublicKey](#connectorconnectiondetailspublickey)
+
+| Field | Description |
+| `DNS` |  |
+
+
+
 ## notification.miloapis.com/v1alpha1
 
 Package v1alpha1 contains API Schema definitions for the email v1alpha1 API group
@@ -4047,6 +4701,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `displayName` <br />_string_ | DisplayName is the display name of the contact group. |  | Required: \{\} <br /> |
 | `visibility` <br />_[ContactGroupVisibility](#contactgroupvisibility)_ | Visibility determines whether members are allowed opt-in or opt-out of the contactgroup.<br />  • "public"  – members may leave via ContactGroupMembershipRemoval.<br />  • "private" – membership is enforced; opt-out requests are rejected. |  | Enum: [public private] <br />Required: \{\} <br /> |
+| `description` <br />_string_ | Description is the description of the contact group.<br /><br />Email providers (e.g. Loops) also have a description field for the contact group.<br /><br />This value should be the same, as the provider will use it for showing the description on the opt-in/opt-out page<br />generated by themselves. Note that synchronization of this field is not supported. |  |  |
 | `providers` <br />_[ContactGroupProviderSpec](#contactgroupproviderspec) array_ | Providers defines the providers this group should be synced to. |  | MaxItems: 1 <br /> |
 
 

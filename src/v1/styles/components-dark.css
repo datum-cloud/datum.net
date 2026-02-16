@@ -5,7 +5,7 @@
       @apply text-aurora-moss!;
     }
     .footer-docs {
-      @apply border-t-1 border-[color:var(--color-borderpanel)];
+      @apply border-t border-(--color-borderpanel);
     }
 
     html,

@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
+import mermaid from 'astro-mermaid';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
@@ -57,6 +58,10 @@ export default defineConfig({
       ],
     }),
     alpinejs({ entrypoint: '/src/entrypoint' }),
+    mermaid({
+      theme: 'forest',
+      autoTheme: true,
+    }),
     starlight({
       title: 'Datum',
       disable404Route: true,
@@ -128,6 +133,11 @@ export default defineConfig({
           label: 'API',
           autogenerate: { directory: 'docs/api' },
           collapsed: true,
+        },
+        {
+          label: 'Command line',
+          autogenerate: { directory: 'docs/datumctl' },
+          collapsed: true, // First group is expanded by default
         },
         {
           label: 'Our Infrastructure',

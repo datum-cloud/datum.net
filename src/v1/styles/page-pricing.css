@@ -4,7 +4,7 @@
 
 /* Pricing Card Grid */
 .pricing-card-wrapper {
-  @apply col-span-3 md:col-span-1;
+  @apply col-span-1;
 }
 
 /* Pricing Card Container */
@@ -57,11 +57,11 @@
 }
 
 .pricing-card--price-amount {
-  @apply datum-text-4xl font-medium text-nowrap;
+  @apply datum-text-4xl font-medium md:text-nowrap;
 }
 
 .pricing-card--price-suffix {
-  @apply datum-app-body -translate-y-[7px] text-nowrap;
+  @apply datum-app-body -translate-y-[7px] md:text-nowrap;
 }
 
 /* CTA Section */

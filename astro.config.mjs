@@ -191,7 +191,6 @@ export default defineConfig({
         'auth/login',
         'api/info',
         'waitlist',
-        'request-access',
         'authors/jacob-smith/1',
         'authors/zac-smith/1',
       ],

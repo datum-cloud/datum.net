@@ -264,7 +264,6 @@ Page components and routing (file-based routing):
 - `legal/[slug].astro` - Dynamic legal pages
 - `llms.txt.ts` - LLMs.txt endpoint
 - `pricing.astro` - Pricing page
-- `request-access.astro` - Request access page
 - `resources/` - Resource pages
 - `resources/changelog.astro` - Changelog page
 - `resources/open-source.astro` - Open source page

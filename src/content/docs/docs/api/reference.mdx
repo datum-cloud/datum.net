@@ -35,6 +35,389 @@ Package v1alpha1 contains API Schema definitions for the activity v1alpha1 API g
 
 
 
+
+
+
+#### Activity
+
+
+
+Activity is a human-readable summary of something that happened in your cluster.
+Think of it as the "what changed and who did it" record that powers activity feeds,
+audit trails, and change history views.
+
+Activities are created automatically from audit logs and Kubernetes events based on
+your ActivityPolicy rules. They're read-only - you query them, not create them.
+
+# Accessing Activities
+
+There are three ways to get activity data, depending on what you need:
+
+| What you need | API to use | Notes |
+| --- | --- | --- |
+| Live feed | GET /activities?watch=true | Streams new activities as they happen. List only returns the last hour. |
+| Search history | POST /activityqueries | Query any time range with filters, search, and pagination. |
+| Filter options | POST /activityfacetqueries | Get values for dropdowns (e.g., "which actors have activities?"). |
+
+# Quick Examples
+
+Watch for new activities:
+
+	kubectl get activities --watch
+
+List recent human-initiated changes:
+
+	kubectl get activities --field-selector spec.changeSource=human
+
+For historical queries or advanced filtering, use ActivityQuery instead.
+
+
+
+_Appears in:_
+- [ActivityList](#activitylist)
+- [ActivityQueryStatus](#activityquerystatus)
+- [PolicyPreviewStatus](#policypreviewstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ActivitySpec](#activityspec)_ |  |  |  |
+
+
+#### ActivityActor
+
+
+
+ActivityActor identifies who performed an action.
+
+
+
+_Appears in:_
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | Type indicates the actor category.<br /><br />Values: "user", "serviceaccount", "controller" |  |  |
+| `name` <br />_string_ | Name is the display name for the actor.<br /><br />For users, this is typically the email address.<br /><br />For service accounts, this is the full name (e.g., "system:serviceaccount:default:my-sa").<br /><br />For controllers, this is the controller name. |  |  |
+| `uid` <br />_string_ | UID is the unique identifier for the actor.<br /><br />Stable across username changes. |  |  |
+| `email` <br />_string_ | Email is the actor's email address.<br /><br />Only populated for user actors when available. |  |  |
+
+
+#### ActivityChange
+
+
+
+ActivityChange represents a field-level change in an update/patch operation.
+
+
+
+_Appears in:_
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `field` <br />_string_ | Field is the path to the changed field (e.g., "spec.virtualhost.fqdn"). |  |  |
+| `old` <br />_string_ | Old is the previous value. May be empty for new fields. |  |  |
+| `new` <br />_string_ | New is the new value. May be empty for deleted fields. |  |  |
+
+
+
+
+#### ActivityFacetQuerySpec
+
+
+
+ActivityFacetQuerySpec defines what you want facet data for.
+
+
+
+_Appears in:_
+- [ActivityFacetQuery](#activityfacetquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `timeRange` <br />_[FacetTimeRange](#facettimerange)_ | TimeRange sets how far back to look. Defaults to the last 7 days if not set.<br /><br />Use relative times like "now-7d" or absolute timestamps. |  |  |
+| `filter` <br />_string_ | Filter lets you narrow down which activities to include before computing facets.<br /><br />Uses CEL (Common Expression Language) syntax.<br /><br />This is useful when you want facet values for a specific subset - for example,<br />"show me actors, but only for human-initiated changes."<br />Fields you can filter on:<br />  spec.changeSource       - "human" or "system"<br />  spec.actor.name         - who did it (e.g., "alice@example.com")<br />  spec.actor.type         - user, serviceaccount, or controller<br />  spec.resource.kind      - what type of resource (Deployment, Pod, etc.)<br />  spec.resource.namespace - which namespace<br />  spec.resource.name      - resource name<br />  spec.resource.apiGroup  - API group (empty string for core resources)<br />Example filters:<br />  "spec.changeSource == 'human'"              - Only human actions<br />  "spec.resource.kind == 'Deployment'"        - Only Deployment changes<br />  "!spec.actor.name.startsWith('system:')"    - Exclude system accounts |  |  |
+| `facets` <br />_[FacetSpec](#facetspec) array_ | Facets specifies which fields to get distinct values for.<br /><br />Each facet returns the top N values with counts. |  |  |
+
+
+#### ActivityFacetQueryStatus
+
+
+
+ActivityFacetQueryStatus contains the facet results.
+
+
+
+_Appears in:_
+- [ActivityFacetQuery](#activityfacetquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `facets` <br />_[FacetResult](#facetresult) array_ | Facets contains the results for each requested facet. |  |  |
+
+
+#### ActivityLink
+
+
+
+ActivityLink represents a clickable reference in an activity summary.
+
+
+
+_Appears in:_
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `marker` <br />_string_ | Marker is the text substring in the summary that should be linked.<br /><br />The portal scans the summary for this marker and makes it clickable.<br /><br />Example: "HTTP proxy api-gateway" |  |  |
+| `resource` <br />_[ActivityResource](#activityresource)_ | Resource identifies what the marker links to. |  |  |
+
+
+
+
+#### ActivityOrigin
+
+
+
+ActivityOrigin identifies the source record for an activity.
+
+
+
+_Appears in:_
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | Type indicates the source type.<br /><br />Values: "audit" (from audit logs), "event" (from Kubernetes events) |  |  |
+| `id` <br />_string_ | ID is the correlation ID to the source record.<br /><br />For audit: the auditID from the audit log entry.<br /><br />For event: the metadata.uid of the Kubernetes Event. |  |  |
+
+
+#### ActivityPolicy
+
+
+
+ActivityPolicy defines translation rules for a specific resource type. Service providers
+create one ActivityPolicy per resource kind to customize activity descriptions without
+modifying the Activity Processor.
+
+Example:
+
+	apiVersion: activity.miloapis.com/v1alpha1
+	kind: ActivityPolicy
+	metadata:
+	  name: networking-httpproxy
+	spec:
+	  resource:
+	    apiGroup: networking.datumapis.com
+	    kind: HTTPProxy
+	  auditRules:
+	    - match: "audit.verb == 'create'"
+	      summary: "{{ actor }} created {{ link(kind + ' ' + audit.objectRef.name, audit.responseObject) }}"
+	  eventRules:
+	    - match: "event.reason == 'Programmed'"
+	      summary: "{{ link(kind + ' ' + event.regarding.name, event.regarding) }} is now programmed"
+
+
+
+_Appears in:_
+- [ActivityPolicyList](#activitypolicylist)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `spec` <br />_[ActivityPolicySpec](#activitypolicyspec)_ |  |  |  |
+| `status` <br />_[ActivityPolicyStatus](#activitypolicystatus)_ |  |  |  |
+
+
+
+
+#### ActivityPolicyResource
+
+
+
+ActivityPolicyResource identifies the target Kubernetes resource for a policy.
+
+
+
+_Appears in:_
+- [ActivityPolicySpec](#activitypolicyspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiGroup` <br />_string_ | APIGroup is the API group of the target resource (e.g., "networking.datumapis.com").<br /><br />Use an empty string for core API group resources. |  |  |
+| `kind` <br />_string_ | Kind is the kind of the target resource (e.g., "HTTPProxy", "Network"). |  |  |
+
+
+#### ActivityPolicyRule
+
+
+
+ActivityPolicyRule defines a single translation rule that matches input events
+and generates human-readable activity summaries.
+
+
+
+_Appears in:_
+- [ActivityPolicySpec](#activitypolicyspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `match` <br />_string_ | Match is a CEL expression that determines if this rule applies to the input.<br /><br />For audit rules, use the `audit` variable (e.g., "audit.verb == 'create'").<br /><br />For event rules, use the `event` variable (e.g., "event.reason == 'Programmed'").<br /><br />Examples:<br />  "audit.verb == 'create'"<br />  "audit.verb in ['update', 'patch']"<br />  "event.reason.startsWith('Failed')"<br />  "true"  (fallback rule that always matches) |  |  |
+| `summary` <br />_string_ | Summary is a CEL template for generating the activity summary.<br /><br />Use \{\{ \}\} delimiters to embed CEL expressions within strings.<br /><br />Available variables:<br />  - audit/event: The full input object<br />  - actor: Resolved display name for the actor<br />Available functions:<br />  - link(displayText, resourceRef): Creates a clickable reference<br />Examples:<br />  "\{\{ actor \}\} created \{\{ link(kind + ' ' + audit.objectRef.name, audit.responseObject) \}\}"<br />  "\{\{ link(kind + ' ' + event.regarding.name, event.regarding) \}\} is now programmed" |  |  |
+
+
+#### ActivityPolicySpec
+
+
+
+ActivityPolicySpec defines the translation rules for a resource type.
+
+
+
+_Appears in:_
+- [ActivityPolicy](#activitypolicy)
+- [PolicyPreviewSpec](#policypreviewspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `resource` <br />_[ActivityPolicyResource](#activitypolicyresource)_ | Resource identifies the Kubernetes resource this policy applies to.<br /><br />One ActivityPolicy should exist per resource kind. |  |  |
+| `auditRules` <br />_[ActivityPolicyRule](#activitypolicyrule) array_ | AuditRules define how to translate audit log entries into activity summaries.<br /><br />Rules are evaluated in order; the first matching rule wins.<br /><br />The `audit` variable contains the full Kubernetes audit event structure.<br /><br />Convenience variables available: actor |  |  |
+| `eventRules` <br />_[ActivityPolicyRule](#activitypolicyrule) array_ | EventRules define how to translate Kubernetes events into activity summaries.<br /><br />Rules are evaluated in order; the first matching rule wins.<br /><br />The `event` variable contains the full Kubernetes Event structure.<br /><br />Convenience variables available: actor |  |  |
+
+
+#### ActivityPolicyStatus
+
+
+
+ActivityPolicyStatus represents the current state of an ActivityPolicy.
+
+
+
+_Appears in:_
+- [ActivityPolicy](#activitypolicy)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` <br />_[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#condition-v1-meta) array_ | Conditions represent the current state of the policy.<br /><br />The "Ready" condition indicates whether all rules compile successfully. |  |  |
+| `observedGeneration` <br />_integer_ | ObservedGeneration is the generation last processed by the controller. |  |  |
+
+
+
+
+#### ActivityQuerySpec
+
+
+
+ActivityQuerySpec defines the search parameters for activities.
+
+Required: startTime and endTime define your search window.
+Optional: filter (CEL expression), namespace, changeSource, search, limit, continue.
+
+
+
+_Appears in:_
+- [ActivityQuery](#activityquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `startTime` <br />_string_ | StartTime is the beginning of your search window (inclusive).<br /><br />Format Options:<br />- Relative: "now-7d", "now-2h", "now-30m" (units: s, m, h, d, w)<br />- Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone) |  |  |
+| `endTime` <br />_string_ | EndTime is the end of your search window (exclusive).<br /><br />Uses the same formats as StartTime. Commonly "now" for current moment.<br /><br />Must be greater than StartTime. |  |  |
+| `namespace` <br />_string_ | Namespace filters activities to a specific namespace.<br /><br />Leave empty for cluster-wide results. |  |  |
+| `changeSource` <br />_string_ | ChangeSource filters by who initiated the change.<br /><br />Values:<br />  - "human": User actions via kubectl, API, or UI<br />  - "system": Controller reconciliation, operator actions<br />Leave empty for both. |  |  |
+| `search` <br />_string_ | Search performs full-text search on activity summaries.<br /><br />Example: "created deployment" matches activities with those words in the summary. |  |  |
+| `filter` <br />_string_ | Filter narrows results using CEL (Common Expression Language).<br /><br />Available Fields:<br />  spec.changeSource      - "human" or "system"<br />  spec.actor.name        - who performed the action<br />  spec.actor.type        - "user", "serviceaccount", "controller"<br />  spec.actor.uid         - actor's unique identifier<br />  spec.resource.apiGroup - resource API group (empty for core)<br />  spec.resource.kind     - resource kind (Deployment, Pod, etc.)<br />  spec.resource.name     - resource name<br />  spec.resource.namespace - resource namespace<br />  spec.resource.uid      - resource UID<br />  spec.summary           - activity summary text<br />  spec.origin.type       - "audit" or "event"<br />  metadata.namespace     - activity namespace<br />Operators: ==, !=, &&, \|\|, !, in<br />String Functions: startsWith(), endsWith(), contains()<br />Examples:<br />  "spec.changeSource == 'human'"<br />  "spec.resource.kind == 'Deployment'"<br />  "spec.actor.name.contains('admin')"<br />  "spec.resource.kind in ['Deployment', 'StatefulSet']" |  |  |
+| `resourceKind` <br />_string_ | ResourceKind filters by the kind of resource affected.<br /><br />Examples: "Deployment", "Pod", "ConfigMap", "HTTPProxy" |  |  |
+| `resourceUID` <br />_string_ | ResourceUID filters activities for a specific resource by UID.<br /><br />Use this to get the full history of changes to a single resource. |  |  |
+| `apiGroup` <br />_string_ | APIGroup filters by the API group of affected resources.<br /><br />Examples: "apps", "projectcontour.io", "" (empty for core API) |  |  |
+| `actorName` <br />_string_ | ActorName filters by who performed the action.<br /><br />Examples: "alice@example.com", "system:serviceaccount:default:my-sa" |  |  |
+| `limit` <br />_integer_ | Limit sets the maximum number of results per page.<br /><br />Default: 100, Maximum: 1000. |  |  |
+| `continue` <br />_string_ | Continue is the pagination cursor for fetching additional pages.<br /><br />Leave empty for the first page. Copy status.continue here to get the next page.<br /><br />Keep all other parameters identical across paginated requests. |  |  |
+
+
+#### ActivityQueryStatus
+
+
+
+ActivityQueryStatus contains the query results and pagination state.
+
+
+
+_Appears in:_
+- [ActivityQuery](#activityquery)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `results` <br />_[Activity](#activity) array_ | Results contains matching activities, sorted newest-first. |  |  |
+| `continue` <br />_string_ | Continue is the pagination cursor.<br /><br />Non-empty means more results are available. |  |  |
+| `effectiveStartTime` <br />_string_ | EffectiveStartTime is the actual start time used (RFC3339 format).<br /><br />Shows the resolved timestamp when relative times are used. |  |  |
+| `effectiveEndTime` <br />_string_ | EffectiveEndTime is the actual end time used (RFC3339 format).<br /><br />Shows the resolved timestamp when relative times are used. |  |  |
+
+
+#### ActivityResource
+
+
+
+ActivityResource identifies the Kubernetes resource affected by an activity.
+
+
+
+_Appears in:_
+- [ActivityLink](#activitylink)
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiGroup` <br />_string_ | APIGroup is the API group of the resource.<br /><br />Empty string for core API group. |  |  |
+| `apiVersion` <br />_string_ | APIVersion is the API version of the resource. |  |  |
+| `kind` <br />_string_ | Kind is the kind of the resource. |  |  |
+| `name` <br />_string_ | Name is the name of the resource. |  |  |
+| `namespace` <br />_string_ | Namespace is the namespace of the resource.<br /><br />Empty for cluster-scoped resources. |  |  |
+| `uid` <br />_string_ | UID is the unique identifier of the resource. |  |  |
+
+
+#### ActivitySpec
+
+
+
+ActivitySpec contains the translated activity details.
+
+
+
+_Appears in:_
+- [Activity](#activity)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `summary` <br />_string_ | Summary is the human-readable description of what happened.<br /><br />Generated from ActivityPolicy templates.<br /><br />Example: "alice created HTTP proxy api-gateway" |  |  |
+| `changeSource` <br />_string_ | ChangeSource indicates who initiated the change.<br /><br />Used to filter human actions from system reconciliation noise.<br /><br />Values:<br />  - "human": User action via kubectl, API, or UI<br />  - "system": Controller reconciliation, operator actions, scheduled jobs |  |  |
+| `actor` <br />_[ActivityActor](#activityactor)_ | Actor identifies who performed the action. |  |  |
+| `resource` <br />_[ActivityResource](#activityresource)_ | Resource identifies the Kubernetes resource that was affected. |  |  |
+| `links` <br />_[ActivityLink](#activitylink) array_ | Links contains clickable references found in the summary.<br /><br />The portal uses these to make resource names in the summary clickable. |  |  |
+| `tenant` <br />_[ActivityTenant](#activitytenant)_ | Tenant identifies the scope for multi-tenant isolation. |  |  |
+| `changes` <br />_[ActivityChange](#activitychange) array_ | Changes contains field-level changes for update/patch operations.<br /><br />Shows old and new values for modified fields.<br /><br />NOTE: This field may be empty in the initial implementation.<br /><br />Populating old values requires resource history lookups. |  |  |
+| `origin` <br />_[ActivityOrigin](#activityorigin)_ | Origin identifies the source record for correlation. |  |  |
+
+
+#### ActivityTenant
+
+
+
+ActivityTenant identifies the scope for multi-tenant isolation.
+
+
+
+_Appears in:_
+- [ActivitySpec](#activityspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | Type is the scope level.<br /><br />Values: "global", "organization", "project", "user" |  |  |
+| `name` <br />_string_ | Name is the tenant identifier within the scope type. |  |  |
+
+
+
+
 #### AuditLogFacetsQuerySpec
 
 
@@ -67,43 +450,6 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `facets` <br />_[FacetResult](#facetresult) array_ | Facets contains the results for each requested facet. |  |  |
-
-
-#### AuditLogQuery
-
-
-
-AuditLogQuery searches your control plane's audit logs.
-
-Use this to investigate incidents, track resource changes, generate compliance reports,
-or analyze user activity. Results are returned in the Status field, ordered newest-first.
-
-Quick Start:
-
-	apiVersion: activity.miloapis.com/v1alpha1
-	kind: AuditLogQuery
-	metadata:
-	  name: recent-deletions
-	spec:
-	  startTime: "now-30d"       # last 30 days
-	  endTime: "now"
-	  filter: "verb == 'delete'" # optional: narrow your search
-	  limit: 100
-
-Time Formats:
-- Relative: "now-30d" (great for dashboards and recurring queries)
-- Absolute: "2024-01-01T00:00:00Z" (great for historical analysis)
-
-
-
-_Appears in:_
-- [AuditLogQueryList](#auditlogquerylist)
-
-| Field | Description | Default | Validation |
-| --- | --- | --- | --- |
-| `metadata` <br />_[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-| `spec` <br />_[AuditLogQuerySpec](#auditlogqueryspec)_ |  |  |  |
-| `status` <br />_[AuditLogQueryStatus](#auditlogquerystatus)_ |  |  |  |
 
 
 
@@ -163,6 +509,7 @@ FacetResult contains the distinct values for a single facet.
 
 
 _Appears in:_
+- [ActivityFacetQueryStatus](#activityfacetquerystatus)
 - [AuditLogFacetsQueryStatus](#auditlogfacetsquerystatus)
 
 | Field | Description | Default | Validation |
@@ -180,6 +527,7 @@ FacetSpec defines a single facet to retrieve.
 
 
 _Appears in:_
+- [ActivityFacetQuerySpec](#activityfacetqueryspec)
 - [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
 
 | Field | Description | Default | Validation |
@@ -197,6 +545,7 @@ FacetTimeRange specifies the time window for facet queries.
 
 
 _Appears in:_
+- [ActivityFacetQuerySpec](#activityfacetqueryspec)
 - [AuditLogFacetsQuerySpec](#auditlogfacetsqueryspec)
 
 | Field | Description | Default | Validation |
@@ -220,6 +569,81 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `value` <br />_string_ | Value is the distinct field value. |  |  |
 | `count` <br />_integer_ | Count is the number of activities with this value. |  |  |
+
+
+
+
+#### PolicyPreviewInput
+
+
+
+PolicyPreviewInput contains the sample input for policy testing.
+
+
+
+_Appears in:_
+- [PolicyPreviewSpec](#policypreviewspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `type` <br />_string_ | Type indicates whether this is an audit log or event input.<br /><br />Values: "audit", "event" |  |  |
+| `audit` <br />_[Event](#event)_ | Audit contains a sample audit log entry.<br /><br />Required when Type is "audit". |  |  |
+| `event` <br />_[RawExtension](https://kubernetes.io/docs/reference/generated/kubernetes-api/v/#rawextension-runtime-pkg)_ | Event contains a sample Kubernetes event.<br /><br />Required when Type is "event".<br /><br />Uses RawExtension to allow flexible event structure. |  |  |
+
+
+#### PolicyPreviewInputResult
+
+
+
+PolicyPreviewInputResult contains the result for a single input.
+
+
+
+_Appears in:_
+- [PolicyPreviewStatus](#policypreviewstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `inputIndex` <br />_integer_ | InputIndex is the index of this input in spec.inputs (0-based). |  |  |
+| `matched` <br />_boolean_ | Matched indicates whether any rule matched this input. |  |  |
+| `matchedRuleIndex` <br />_integer_ | MatchedRuleIndex is the index of the rule that matched (0-based).<br />-1 if no rule matched. |  |  |
+| `matchedRuleType` <br />_string_ | MatchedRuleType indicates whether the matched rule was an audit or event rule.<br /><br />Empty if no rule matched. |  |  |
+| `error` <br />_string_ | Error contains any error message if evaluating this input failed.<br /><br />This could be a CEL compilation error or evaluation error. |  |  |
+
+
+#### PolicyPreviewSpec
+
+
+
+PolicyPreviewSpec defines the policy and inputs to test.
+
+
+
+_Appears in:_
+- [PolicyPreview](#policypreview)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `policy` <br />_[ActivityPolicySpec](#activitypolicyspec)_ | Policy is the ActivityPolicy spec to test.<br /><br />You can use the full spec from an existing policy or create a new one. |  |  |
+| `inputs` <br />_[PolicyPreviewInput](#policypreviewinput) array_ | Inputs contains sample audit logs and/or events to test against the policy.<br /><br />Each input is evaluated independently and produces an Activity if a rule matches.<br /><br />You can mix audit logs and events in the same request. |  |  |
+
+
+#### PolicyPreviewStatus
+
+
+
+PolicyPreviewStatus contains the preview results.
+
+
+
+_Appears in:_
+- [PolicyPreview](#policypreview)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `activities` <br />_[Activity](#activity) array_ | Activities contains the rendered Activity objects for inputs that matched a rule.<br /><br />The order corresponds to the order of matched inputs (not necessarily the input order).<br /><br />Inputs that don't match any rule are not included here. |  |  |
+| `results` <br />_[PolicyPreviewInputResult](#policypreviewinputresult) array_ | Results contains detailed results for each input, in the same order as spec.inputs.<br /><br />Use this to see which inputs matched and any errors that occurred. |  |  |
+| `error` <br />_string_ | Error contains a general error message if the preview failed entirely.<br /><br />Individual input errors are reported in results[].error. |  |  |
 
 
 

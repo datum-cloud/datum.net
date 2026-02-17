@@ -65,14 +65,14 @@
   newsletter-modal dialog {
     @apply h-full max-h-full border-0 p-0;
     @apply mx-auto mt-auto h-max min-h-80 w-full max-w-full md:my-auto;
-    @apply max-h-[calc(100vh-8rem)];
+    @apply max-h-[calc(100vh-4rem)];
     @apply mr-0 ml-0 bg-transparent;
 
     @apply mr-0 ml-0 md:mr-0 md:ml-0;
   }
 
   newsletter-modal dialog[open] {
-    @apply flex items-end justify-end-safe md:items-center md:justify-center;
+    @apply flex items-start justify-end-safe md:justify-center;
   }
 
   newsletter-modal dialog::backdrop {

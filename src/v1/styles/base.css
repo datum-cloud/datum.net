@@ -7,6 +7,8 @@
 
 @import './theme.css';
 
+@import './color-theme.css';
+
 @import './variables-breakpoints.css';
 
 @layer base {
@@ -67,3 +69,5 @@
 @import './components-buttons.css';
 
 @import './components-dark.css';
+
+@import './components-modal.css';

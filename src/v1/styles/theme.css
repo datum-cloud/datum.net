@@ -41,6 +41,7 @@
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
   --color-app---dark---utility-4: #90969c;
+  --color-app---dark---utility-5: #e3e2df;
 
   /* Font Sizes */
   --text-xsm: 13px;
@@ -92,4 +93,6 @@
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+
+  --color-borderpanel: var(--color-glacier-mist-900);
 }

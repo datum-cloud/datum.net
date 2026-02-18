@@ -1,0 +1,18 @@
+# Auto-generated API reference documentation
+src/content/docs/docs/api/reference.mdx
+
+# lint will come from the datumctl repo
+src/content/docs/docs/datumctl
+
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Temporary files
+.tmp/
+
+# Logs
+*.log

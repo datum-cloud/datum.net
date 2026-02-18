@@ -1,0 +1,26 @@
+---
+export const prerender = false;
+
+/*
+import { OIDCClient } from '@libs/oidc';
+const idToken = Astro.cookies.get('_id_token')?.value;
+
+// Get logout URL
+const oidcClient = new OIDCClient();
+const logoutUrl = oidcClient.getLogoutUrl(idToken, `/auth/login/?redirect_uri=/`);
+*/
+
+const cookieOptions = {
+  path: '/',
+  sameSite: 'lax' as 'none' | 'strict' | 'lax',
+  secure: process.env.MODE === 'production', // Only secure in production
+};
+
+Astro.cookies.delete('_access_token', cookieOptions);
+Astro.cookies.delete('_refresh_token', cookieOptions);
+Astro.cookies.delete('_id_token', cookieOptions);
+Astro.cookies.delete('_session', cookieOptions);
+Astro.cookies.delete('nonce', cookieOptions);
+
+return Astro.redirect(Astro.url.searchParams.get('redirect_uri') || '/');
+---

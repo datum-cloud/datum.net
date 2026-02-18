@@ -26,6 +26,9 @@
   --pine-forge: #4d6356;
   --potted-olive: #adbab0;
   --white: #ffffff;
+  --alert-red-light: #d25b5b;
+  --alert-red-dark: #f08c8c;
+  --shark-gray: #6a7282;
 
   /* number */
   --xxs: -0.0938rem;
@@ -101,4 +104,8 @@
   --radius-sm: 3px;
   --radius-md: 6px;
   --radius-lg: 9px;
+
+  /* 3. MODE */
+  /* --base-foreground-light: var(--colors-foreground-light); */
+  /* --base-foreground-dark: var(--colors-foreground-dark); */
 }

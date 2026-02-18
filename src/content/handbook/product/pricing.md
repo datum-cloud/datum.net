@@ -10,7 +10,7 @@ meta:
   description: "Understanding our billing model. A guide to Datum's pricing tiers, from the free Builder plan to Enterprise interconnection, and the logic behind our rate limits."
 ---
 
-We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](https://www.datum.net/pricing/) for the latest official details. 
+We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](/pricing/) for the latest official details. 
 
 ## Datum for Builders (Forever free)
 Our initial focus is to help a new class of builders get access to the core ‘internet superpowers’ for learning, integration, testing, and exploring new use cases. We also want to make their lives easier when it comes to troublesome bits like domains, certificates, and DNS. 

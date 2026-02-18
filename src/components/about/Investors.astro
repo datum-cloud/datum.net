@@ -18,7 +18,9 @@ const investors = content.data.investors || [];
       {content.data.title}
     </h3>
 
-    <div class="flex flex-wrap justify-center-safe gap-4 md:gap-6 xl:gap-9 [&>div]:w-[279px]">
+    <div
+      class="flex flex-wrap justify-center-safe gap-4 md:gap-6 xl:gap-9 [&>div]:w-full [&>div]:sm:w-[279px]"
+    >
       {
         investors.length > 0 &&
           investors.map(

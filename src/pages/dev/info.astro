@@ -101,6 +101,11 @@ const response = JSON.stringify(
       release: process.release,
       uptime: process.uptime(),
     },
+    cookies: {
+      _session: JSON.parse(Astro.cookies.get('_session')?.value || 'null'),
+      _refresh_token: Astro.cookies.get('_refresh_token')?.value,
+      _id_token: Astro.cookies.get('_id_token')?.value,
+    },
     database: {
       info: psqlInfo || null,
     },

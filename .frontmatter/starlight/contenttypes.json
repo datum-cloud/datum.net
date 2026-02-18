@@ -103,11 +103,9 @@
             "database",
             "file-text",
             "git-branch",
-            "git-commit",
             "git-compare",
             "git-merge",
             "git-pull-request",
-            "github",
             "globe",
             "goal",
             "handshake",
@@ -120,7 +118,6 @@
             "key",
             "key-round",
             "link",
-            "linkedin",
             "list-restart",
             "lock",
             "lock-open",
@@ -143,12 +140,10 @@
             "shield",
             "shield-plus",
             "shirt",
-            "slack",
             "star",
             "sun",
             "terminal",
             "triangle-alert",
-            "twitter",
             "user",
             "user-lock",
             "users",
@@ -976,11 +971,9 @@
             "database",
             "file-text",
             "git-branch",
-            "git-commit",
             "git-compare",
             "git-merge",
             "git-pull-request",
-            "github",
             "globe",
             "goal",
             "handshake",
@@ -993,7 +986,6 @@
             "key",
             "key-round",
             "link",
-            "linkedin",
             "list-restart",
             "lock",
             "lock-open",
@@ -1016,12 +1008,10 @@
             "shield",
             "shield-plus",
             "shirt",
-            "slack",
             "star",
             "sun",
             "terminal",
             "triangle-alert",
-            "twitter",
             "user",
             "user-lock",
             "users",
@@ -1033,132 +1023,6 @@
             "x",
             "zap"
           ]
-        },
-        {
-          "title": "Draft",
-          "name": "draft",
-          "type": "boolean"
-        },
-        {
-          "title": "Meta (SEO)",
-          "name": "meta",
-          "type": "fields",
-          "fields": [
-            {
-              "title": "Title",
-              "name": "title",
-              "type": "string"
-            },
-            {
-              "title": "Description",
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "title": "Image",
-              "name": "image",
-              "type": "image",
-              "isPreviewImage": false
-            },
-            {
-              "title": "Keywords",
-              "name": "metaKeywords",
-              "type": "string"
-            },
-            {
-              "title": "OG (Open graph)",
-              "name": "og",
-              "type": "fields",
-              "fields": [
-                {
-                  "title": "OG Title",
-                  "name": "title",
-                  "type": "string"
-                },
-                {
-                  "title": "OG Description",
-                  "name": "description",
-                  "type": "string"
-                },
-                {
-                  "title": "OG Image",
-                  "name": "image",
-                  "type": "image",
-                  "isPreviewImage": false
-                },
-                {
-                  "title": "OG URL",
-                  "name": "url",
-                  "type": "string"
-                },
-                {
-                  "title": "OG Article",
-                  "name": "article",
-                  "type": "boolean"
-                },
-                {
-                  "title": "OG Publish at",
-                  "name": "published",
-                  "type": "datetime"
-                },
-                {
-                  "title": "OG Author",
-                  "name": "author",
-                  "type": "string"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "huddlePost",
-      "pageBundle": false,
-      "previewPath": "community-huddle",
-      "filePrefix": null,
-      "clearEmpty": true,
-      "fields": [
-        {
-          "title": "Title",
-          "name": "title",
-          "type": "string"
-        },
-        {
-          "title": "Subtitle",
-          "name": "subtitle",
-          "type": "string"
-        },
-        {
-          "title": "Description",
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "title": "Date",
-          "name": "date",
-          "type": "datetime",
-          "default": "{{now}}"
-        },
-        {
-          "title": "Time",
-          "name": "time",
-          "type": "string"
-        },
-        {
-          "title": "Zoom Link",
-          "name": "zoomLink",
-          "type": "string"
-        },
-        {
-          "title": "Zoom Password",
-          "name": "zoomPass",
-          "type": "string"
-        },
-        {
-          "title": "Slides URL",
-          "name": "slidesUrl",
-          "type": "string"
         },
         {
           "title": "Draft",
@@ -1429,11 +1293,9 @@
             "database",
             "file-text",
             "git-branch",
-            "git-commit",
             "git-compare",
             "git-merge",
             "git-pull-request",
-            "github",
             "globe",
             "goal",
             "handshake",
@@ -1446,7 +1308,6 @@
             "key",
             "key-round",
             "link",
-            "linkedin",
             "list-restart",
             "lock",
             "lock-open",
@@ -1469,12 +1330,10 @@
             "shield",
             "shield-plus",
             "shirt",
-            "slack",
             "star",
             "sun",
             "terminal",
             "triangle-alert",
-            "twitter",
             "user",
             "user-lock",
             "users",
@@ -1654,11 +1513,9 @@
             "database",
             "file-text",
             "git-branch",
-            "git-commit",
             "git-compare",
             "git-merge",
             "git-pull-request",
-            "github",
             "globe",
             "goal",
             "handshake",
@@ -1671,7 +1528,6 @@
             "key",
             "key-round",
             "link",
-            "linkedin",
             "list-restart",
             "lock",
             "lock-open",
@@ -1694,12 +1550,10 @@
             "shield",
             "shield-plus",
             "shirt",
-            "slack",
             "star",
             "sun",
             "terminal",
             "triangle-alert",
-            "twitter",
             "user",
             "user-lock",
             "users",

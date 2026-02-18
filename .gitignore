@@ -52,3 +52,6 @@ Dockerfile.bak
 
 # others
 bunfig.toml
+
+# API documentation generation artifacts
+.tmp/

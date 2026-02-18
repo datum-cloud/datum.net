@@ -12,7 +12,7 @@ This is the official Datum Inc. marketing website - an Astro-based static site w
 
 The site uses Astro's Content Collections extensively (`src/content.config.ts`). All content is type-safe with Zod schemas:
 
-- **Collections:** `pages`, `about`, `blog`, `authors`, `categories`, `handbooks`, `changelog`, `features`, `huddles`, `docs`
+- **Collections:** `pages`, `about`, `blog`, `authors`, `categories`, `handbooks`, `changelog`, `features`, `docs`
 - **Pattern:** Use `getCollectionEntry()` helper from `@utils/collectionUtils` instead of raw `getEntry()` - it provides better error handling
 - **Loaders:** Content uses `glob` loaders, docs use `docsLoader()` from Starlight
 - **References:** Collections can reference each other via `reference('collectionName')`
@@ -21,7 +21,7 @@ Example:
 
 ```typescript
 const page = await getCollectionEntry('pages', 'pricing');
-const huddles = await getCollection('huddles');
+const features = await getCollection('features');
 ```
 
 ### Import Path Aliases (tsconfig.json)

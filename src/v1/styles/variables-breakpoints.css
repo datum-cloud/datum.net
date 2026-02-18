@@ -3,202 +3,269 @@
     --breakpoint---internal: 21rem;
     --breakpoint---full: 22.5rem;
 
+    --app-body-font-family: var(--alliance);
+    --app-body-font-size: var(--13px);
+    --app-body-line-height: var(--18px);
     --app-body-letter-spacing: var(--xl);
     --app-body-paragraph-spacing: var(--4px);
     --app-body-list-spacing: var(--6px);
-    --app-body-font-size: var(--13px);
-    --app-body-line-height: var(--18px);
+
+    --docs-article-body-font-family: var(--alliance);
+    --docs-article-body-font-size: var(--14px);
+    --docs-article-body-line-height: var(--21px);
     --docs-article-body-letter-spacing: var(--xl);
     --docs-article-body-paragraph-spacing: var(--4px);
     --docs-article-body-list-spacing: var(--6px);
-    --docs-article-body-font-size: var(--14px);
-    --docs-article-body-line-height: var(--21px);
-    --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+    --docs-sidebar-headings-font-family: var(--alliance);
     --docs-sidebar-headings-font-size: 0.6875rem;
     --docs-sidebar-headings-line-height: 1rem;
-    --docs-sidebar-links-letter-spacing: var(--xl);
+    --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+    --docs-sidebar-links-font-family: var(--alliance);
     --docs-sidebar-links-font-size: var(--12px);
     --docs-sidebar-links-line-height: var(--14px);
-    --text-10xl-canela-letter-spacing: var(--xs);
-    --text-10xl-canela-font-size: var(--36px);
-    --text-10xl-canela-line-height: var(--42px);
-    --text-11xl-canela-letter-spacing: var(--xxs);
-    --text-11xl-canela-font-size: var(--72px);
-    --text-11xl-canela-line-height: var(--80px);
-    --text-2xl-letter-spacing: var(--xl);
-    --text-2xl-font-size: var(--16px);
-    --text-2xl-line-height: var(--21px);
-    --text-3xl-letter-spacing: var(--xl);
-    --text-3xl-font-size: var(--18px);
-    --text-3xl-line-height: var(--26px);
-    --text-4xl-letter-spacing: var(--l);
-    --text-4xl-font-size: var(--36px);
-    --text-4xl-line-height: var(--44px);
-    --text-5xl-letter-spacing: var(--m);
-    --text-5xl-font-size: var(--48px);
-    --text-5xl-line-height: var(--58px);
-    --text-6xl-letter-spacing: var(--m);
-    --text-6xl-font-size: var(--60px);
-    --text-6xl-line-height: var(--68px);
-    --text-7xl-canela-letter-spacing: var(--s);
-    --text-7xl-canela-font-size: var(--24px);
-    --text-7xl-canela-line-height: 1.875rem;
-    --text-8xl-canela-letter-spacing: var(--s);
-    --text-8xl-canela-font-size: var(--30px);
-    --text-8xl-canela-line-height: var(--34px);
-    --text-9xl-canela-letter-spacing: var(--xxs);
-    --text-9xl-canela-font-size: var(--48px);
-    --text-9xl-canela-line-height: var(--58px);
-    --text-article-body-letter-spacing: var(--xl);
-    --text-article-body-list-spacing: var(--8px);
-    --text-article-body-paragraph-spacing: var(--8px);
-    --text-article-body-font-size: var(--14px);
-    --text-article-body-line-height: var(--21px);
+    --docs-sidebar-links-letter-spacing: var(--xl);
+
+    --text-xs-font-family: var(--alliance);
+    --text-xs-font-size: var(--10px);
+    --text-xs-line-height: var(--14px);
+    --text-xs-letter-spacing: var(--xl);
+
+    --text-sm-font-family: var(--alliance);
+    --text-sm-font-size: var(--10px);
+    --text-sm-line-height: var(--14px);
+    --text-sm-letter-spacing: var(--xl);
+
+    --text-smallcaps-font-family: var(--alliance);
+    --text-smallcaps-font-size: var(--12px);
+    --text-smallcaps-line-height: var(--18px);
+    --text-smallcaps-letter-spacing: var(--smallcaps);
+
+    --text-base-font-family: var(--alliance);
+    --text-base-font-size: var(--14px);
+    --text-base-line-height: var(--21px);
     --text-base-letter-spacing: var(--xl);
     --text-base-paragraph-spacing: var(--4px);
     --text-base-list-spacing: var(--6px);
-    --text-base-font-size: var(--14px);
-    --text-base-line-height: var(--21px);
+
+    --text-lg-font-family: var(--alliance);
+    --text-lg-font-size: var(--14px);
+    --text-lg-line-height: var(--21px);
     --text-lg-letter-spacing: var(--xl);
     --text-lg-paragraph-spacing: var(--4px);
     --text-lg-list-spacing: var(--6px);
-    --text-lg-font-size: var(--14px);
-    --text-lg-line-height: var(--21px);
-    --text-sm-letter-spacing: var(--xl);
-    --text-sm-font-size: var(--10px);
-    --text-sm-line-height: var(--14px);
-    --text-smallcaps-letter-spacing: var(--smallcaps);
-    --text-smallcaps-font-size: var(--12px);
-    --text-smallcaps-line-height: var(--18px);
-    --text-xl-letter-spacing: var(--xl);
+
+    --text-xl-font-family: var(--alliance);
     --text-xl-font-size: var(--14px);
     --text-xl-line-height: 1.125rem;
-    --text-xs-letter-spacing: var(--xl);
-    --text-xs-font-size: var(--10px);
-    --text-xs-line-height: var(--14px);
+    --text-xl-letter-spacing: var(--xl);
 
-    --app-body-font-family: var(--alliance);
-    --docs-article-body-font-family: var(--alliance);
-    --docs-sidebar-headings-font-family: var(--alliance);
-    --docs-sidebar-links-font-family: var(--alliance);
-    --text-10xl-canela-font-family: var(--canela);
-    --text-11xl-canela-font-family: var(--canela);
     --text-2xl-font-family: var(--alliance);
+    --text-2xl-font-size: var(--16px);
+    --text-2xl-line-height: var(--21px);
+    --text-2xl-letter-spacing: var(--xl);
+
     --text-3xl-font-family: var(--alliance);
+    --text-3xl-font-size: var(--18px);
+    --text-3xl-line-height: var(--26px);
+    --text-3xl-letter-spacing: var(--xl);
+
     --text-4xl-font-family: var(--alliance);
+    --text-4xl-font-size: var(--20px);
+    --text-4xl-line-height: var(--28px);
+    --text-4xl-letter-spacing: var(--l);
+
     --text-5xl-font-family: var(--alliance);
+    --text-5xl-font-size: var(--48px);
+    --text-5xl-line-height: var(--58px);
+    --text-5xl-letter-spacing: var(--m);
+
     --text-6xl-font-family: var(--alliance);
+    --text-6xl-font-size: var(--60px);
+    --text-6xl-line-height: var(--68px);
+    --text-6xl-letter-spacing: var(--m);
+
     --text-7xl-canela-font-family: var(--canela);
+    --text-7xl-canela-font-size: var(--24px);
+    --text-7xl-canela-line-height: 1.875rem;
+    --text-7xl-canela-letter-spacing: var(--s);
+
     --text-8xl-canela-font-family: var(--canela);
+    --text-8xl-canela-font-size: var(--30px);
+    --text-8xl-canela-line-height: var(--34px);
+    --text-8xl-canela-letter-spacing: var(--s);
+
     --text-9xl-canela-font-family: var(--canela);
+    --text-9xl-canela-font-size: var(--48px);
+    --text-9xl-canela-line-height: var(--58px);
+    --text-9xl-canela-letter-spacing: var(--xxs);
+
+    --text-10xl-canela-font-family: var(--canela);
+    --text-10xl-canela-font-size: var(--36px);
+    --text-10xl-canela-line-height: var(--42px);
+    --text-10xl-canela-letter-spacing: var(--xs);
+
+    --text-11xl-canela-font-family: var(--canela);
+    --text-11xl-canela-font-size: var(--72px);
+    --text-11xl-canela-line-height: var(--80px);
+    --text-11xl-canela-letter-spacing: var(--xxs);
+
     --text-article-body-font-family: var(--alliance);
-    --text-base-font-family: var(--alliance);
-    --text-lg-font-family: var(--alliance);
-    --text-sm-font-family: var(--alliance);
-    --text-smallcaps-font-family: var(--alliance);
-    --text-xl-font-family: var(--alliance);
-    --text-xs-font-family: var(--alliance);
+    --text-article-body-font-size: var(--14px);
+    --text-article-body-line-height: var(--21px);
+    --text-article-body-letter-spacing: var(--xl);
+    --text-article-body-paragraph-spacing: var(--8px);
+    --text-article-body-list-spacing: var(--8px);
+
+    --text-longform-body-font-family: var(--alliance);
+    --text-longform-body-font-size: var(--14px);
+    --text-longform-body-line-height: var(--21px);
+    --text-longform-body-letter-spacing: var(--xl);
+    --text-longform-body-paragraph-spacing: var(--14px);
+    --text-longform-body-list-spacing: var(--8px);
+
+    --text-longform-intro-font-family: var(--alliance);
+    --text-longform-intro-font-size: var(--16px);
+    --text-longform-intro-line-height: var(--26px);
+    --text-longform-intro-letter-spacing: var(--xl);
+    --text-longform-intro-paragraph-spacing: var(--16px);
+    --text-longform-intro-list-spacing: var(--10px);
   }
+
   @media (width >= 40rem) {
     :root {
       --breakpoint---internal: 21rem;
       --breakpoint---full: 22.5rem;
 
+      --app-body-font-family: var(--alliance);
+      --app-body-font-size: var(--13px);
+      --app-body-line-height: var(--18px);
       --app-body-letter-spacing: var(--xl);
       --app-body-paragraph-spacing: var(--4px);
       --app-body-list-spacing: var(--6px);
-      --app-body-font-size: var(--13px);
-      --app-body-line-height: var(--18px);
+
+      --docs-article-body-font-family: var(--alliance);
+      --docs-article-body-font-size: var(--14px);
+      --docs-article-body-line-height: var(--21px);
       --docs-article-body-letter-spacing: var(--xl);
       --docs-article-body-paragraph-spacing: var(--4px);
       --docs-article-body-list-spacing: var(--6px);
-      --docs-article-body-font-size: var(--14px);
-      --docs-article-body-line-height: var(--21px);
-      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-headings-font-family: var(--alliance);
       --docs-sidebar-headings-font-size: 0.6875rem;
       --docs-sidebar-headings-line-height: 1rem;
-      --docs-sidebar-links-letter-spacing: var(--xl);
+      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-links-font-family: var(--alliance);
       --docs-sidebar-links-font-size: var(--12px);
       --docs-sidebar-links-line-height: var(--14px);
-      --text-10xl-canela-letter-spacing: var(--xs);
-      --text-10xl-canela-font-size: var(--36px);
-      --text-10xl-canela-line-height: var(--42px);
-      --text-11xl-canela-letter-spacing: var(--xxs);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
-      --text-2xl-letter-spacing: var(--xl);
-      --text-2xl-font-size: var(--16px);
-      --text-2xl-line-height: var(--21px);
-      --text-3xl-letter-spacing: var(--xl);
-      --text-3xl-font-size: var(--18px);
-      --text-3xl-line-height: var(--26px);
-      --text-4xl-letter-spacing: var(--l);
-      --text-4xl-font-size: var(--36px);
-      --text-4xl-line-height: var(--44px);
-      --text-5xl-letter-spacing: var(--m);
-      --text-5xl-font-size: var(--48px);
-      --text-5xl-line-height: var(--58px);
-      --text-6xl-letter-spacing: var(--m);
-      --text-6xl-font-size: var(--60px);
-      --text-6xl-line-height: var(--68px);
-      --text-7xl-canela-letter-spacing: var(--s);
-      --text-7xl-canela-font-size: var(--24px);
-      --text-7xl-canela-line-height: 1.875rem;
-      --text-8xl-canela-letter-spacing: var(--s);
-      --text-8xl-canela-font-size: var(--30px);
-      --text-8xl-canela-line-height: var(--34px);
-      --text-9xl-canela-letter-spacing: var(--xxs);
-      --text-9xl-canela-font-size: var(--48px);
-      --text-9xl-canela-line-height: var(--58px);
-      --text-article-body-letter-spacing: var(--xl);
-      --text-article-body-list-spacing: var(--8px);
-      --text-article-body-paragraph-spacing: var(--8px);
-      --text-article-body-font-size: var(--14px);
-      --text-article-body-line-height: var(--21px);
+      --docs-sidebar-links-letter-spacing: var(--xl);
+
+      --text-xs-font-family: var(--alliance);
+      --text-xs-font-size: var(--10px);
+      --text-xs-line-height: var(--14px);
+      --text-xs-letter-spacing: var(--xl);
+
+      --text-sm-font-family: var(--alliance);
+      --text-sm-font-size: var(--10px);
+      --text-sm-line-height: var(--14px);
+      --text-sm-letter-spacing: var(--xl);
+
+      --text-smallcaps-font-family: var(--alliance);
+      --text-smallcaps-font-size: var(--12px);
+      --text-smallcaps-line-height: var(--18px);
+      --text-smallcaps-letter-spacing: var(--smallcaps);
+
+      --text-base-font-family: var(--alliance);
+      --text-base-font-size: var(--14px);
+      --text-base-line-height: var(--21px);
       --text-base-letter-spacing: var(--xl);
       --text-base-paragraph-spacing: var(--4px);
       --text-base-list-spacing: var(--6px);
-      --text-base-font-size: var(--14px);
-      --text-base-line-height: var(--21px);
+
+      --text-lg-font-family: var(--alliance);
+      --text-lg-font-size: var(--14px);
+      --text-lg-line-height: var(--21px);
       --text-lg-letter-spacing: var(--xl);
       --text-lg-paragraph-spacing: var(--4px);
       --text-lg-list-spacing: var(--6px);
-      --text-lg-font-size: var(--14px);
-      --text-lg-line-height: var(--21px);
-      --text-sm-letter-spacing: var(--xl);
-      --text-sm-font-size: var(--10px);
-      --text-sm-line-height: var(--14px);
-      --text-smallcaps-letter-spacing: var(--smallcaps);
-      --text-smallcaps-font-size: var(--12px);
-      --text-smallcaps-line-height: var(--18px);
-      --text-xl-letter-spacing: var(--xl);
+
+      --text-xl-font-family: var(--alliance);
       --text-xl-font-size: var(--14px);
       --text-xl-line-height: 1.125rem;
-      --text-xs-letter-spacing: var(--xl);
-      --text-xs-font-size: var(--10px);
-      --text-xs-line-height: var(--14px);
+      --text-xl-letter-spacing: var(--xl);
 
-      --app-body-font-family: var(--alliance);
-      --docs-article-body-font-family: var(--alliance);
-      --docs-sidebar-headings-font-family: var(--alliance);
-      --docs-sidebar-links-font-family: var(--alliance);
-      --text-10xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-family: var(--canela);
       --text-2xl-font-family: var(--alliance);
+      --text-2xl-font-size: var(--16px);
+      --text-2xl-line-height: var(--21px);
+      --text-2xl-letter-spacing: var(--xl);
+
       --text-3xl-font-family: var(--alliance);
+      --text-3xl-font-size: var(--18px);
+      --text-3xl-line-height: var(--26px);
+      --text-3xl-letter-spacing: var(--xl);
+
       --text-4xl-font-family: var(--alliance);
+      --text-4xl-font-size: var(--20px);
+      --text-4xl-line-height: var(--28px);
+      --text-4xl-letter-spacing: var(--l);
+
       --text-5xl-font-family: var(--alliance);
+      --text-5xl-font-size: var(--48px);
+      --text-5xl-line-height: var(--58px);
+      --text-5xl-letter-spacing: var(--m);
+
       --text-6xl-font-family: var(--alliance);
+      --text-6xl-font-size: var(--60px);
+      --text-6xl-line-height: var(--68px);
+      --text-6xl-letter-spacing: var(--m);
+
       --text-7xl-canela-font-family: var(--canela);
+      --text-7xl-canela-font-size: var(--24px);
+      --text-7xl-canela-line-height: 1.875rem;
+      --text-7xl-canela-letter-spacing: var(--s);
+
       --text-8xl-canela-font-family: var(--canela);
+      --text-8xl-canela-font-size: var(--30px);
+      --text-8xl-canela-line-height: var(--34px);
+      --text-8xl-canela-letter-spacing: var(--s);
+
       --text-9xl-canela-font-family: var(--canela);
+      --text-9xl-canela-font-size: var(--48px);
+      --text-9xl-canela-line-height: var(--58px);
+      --text-9xl-canela-letter-spacing: var(--xxs);
+
+      --text-10xl-canela-font-family: var(--canela);
+      --text-10xl-canela-font-size: var(--36px);
+      --text-10xl-canela-line-height: var(--42px);
+      --text-10xl-canela-letter-spacing: var(--xs);
+
+      --text-11xl-canela-font-family: var(--canela);
+      --text-11xl-canela-font-size: var(--72px);
+      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-letter-spacing: var(--xxs);
+
       --text-article-body-font-family: var(--alliance);
-      --text-base-font-family: var(--alliance);
-      --text-lg-font-family: var(--alliance);
-      --text-sm-font-family: var(--alliance);
-      --text-smallcaps-font-family: var(--alliance);
-      --text-xl-font-family: var(--alliance);
-      --text-xs-font-family: var(--alliance);
+      --text-article-body-font-size: var(--14px);
+      --text-article-body-line-height: var(--21px);
+      --text-article-body-letter-spacing: var(--xl);
+      --text-article-body-paragraph-spacing: var(--8px);
+      --text-article-body-list-spacing: var(--8px);
+
+      --text-longform-body-font-family: var(--alliance);
+      --text-longform-body-font-size: var(--14px);
+      --text-longform-body-line-height: var(--21px);
+      --text-longform-body-letter-spacing: var(--xl);
+      --text-longform-body-paragraph-spacing: var(--14px);
+      --text-longform-body-list-spacing: var(--8px);
+
+      --text-longform-intro-font-family: var(--alliance);
+      --text-longform-intro-font-size: var(--16px);
+      --text-longform-intro-line-height: var(--26px);
+      --text-longform-intro-letter-spacing: var(--xl);
+      --text-longform-intro-paragraph-spacing: var(--16px);
+      --text-longform-intro-list-spacing: var(--10px);
     }
   }
 
@@ -207,101 +274,134 @@
       --breakpoint---internal: 45.25rem;
       --breakpoint---full: 48rem;
 
+      --app-body-font-family: var(--alliance);
+      --app-body-font-size: var(--13px);
+      --app-body-line-height: var(--18px);
       --app-body-letter-spacing: var(--xl);
       --app-body-paragraph-spacing: var(--6px);
       --app-body-list-spacing: var(--8px);
-      --app-body-font-size: var(--13px);
-      --app-body-line-height: var(--18px);
+
+      --docs-article-body-font-family: var(--alliance);
+      --docs-article-body-font-size: var(--14px);
+      --docs-article-body-line-height: var(--21px);
       --docs-article-body-letter-spacing: var(--xl);
       --docs-article-body-paragraph-spacing: var(--6px);
       --docs-article-body-list-spacing: var(--8px);
-      --docs-article-body-font-size: var(--14px);
-      --docs-article-body-line-height: var(--21px);
-      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-headings-font-family: var(--alliance);
       --docs-sidebar-headings-font-size: 0.6875rem;
       --docs-sidebar-headings-line-height: 1rem;
-      --docs-sidebar-links-letter-spacing: var(--xl);
+      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-links-font-family: var(--alliance);
       --docs-sidebar-links-font-size: var(--12px);
       --docs-sidebar-links-line-height: var(--14px);
-      --text-10xl-canela-letter-spacing: var(--xxs);
-      --text-10xl-canela-font-size: var(--48px);
-      --text-10xl-canela-line-height: var(--58px);
-      --text-11xl-canela-letter-spacing: var(--xxs);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
-      --text-2xl-letter-spacing: var(--xl);
-      --text-2xl-font-size: var(--18px);
-      --text-2xl-line-height: var(--26px);
-      --text-3xl-letter-spacing: var(--xl);
-      --text-3xl-font-size: var(--20px);
-      --text-3xl-line-height: var(--28px);
-      --text-4xl-letter-spacing: var(--l);
-      --text-4xl-font-size: var(--36px);
-      --text-4xl-line-height: var(--44px);
-      --text-5xl-letter-spacing: var(--m);
-      --text-5xl-font-size: var(--48px);
-      --text-5xl-line-height: var(--58px);
-      --text-6xl-letter-spacing: var(--m);
-      --text-6xl-font-size: var(--60px);
-      --text-6xl-line-height: var(--68px);
-      --text-7xl-canela-letter-spacing: var(--s);
-      --text-7xl-canela-font-size: var(--24px);
-      --text-7xl-canela-line-height: var(--28px);
-      --text-8xl-canela-letter-spacing: var(--xs);
-      --text-8xl-canela-font-size: var(--36px);
-      --text-8xl-canela-line-height: var(--44px);
-      --text-9xl-canela-letter-spacing: var(--xxs);
-      --text-9xl-canela-font-size: var(--48px);
-      --text-9xl-canela-line-height: var(--58px);
-      --text-article-body-letter-spacing: var(--xl);
-      --text-article-body-paragraph-spacing: var(--6px);
-      --text-article-body-list-spacing: var(--8px);
-      --text-article-body-font-size: var(--14px);
-      --text-article-body-line-height: var(--21px);
+      --docs-sidebar-links-letter-spacing: var(--xl);
+
+      --text-xs-font-family: var(--alliance);
+      --text-xs-font-size: var(--10px);
+      --text-xs-line-height: var(--14px);
+      --text-xs-letter-spacing: var(--xl);
+
+      --text-sm-font-family: var(--alliance);
+      --text-sm-font-size: var(--10px);
+      --text-sm-line-height: var(--14px);
+      --text-sm-letter-spacing: var(--xl);
+
+      --text-smallcaps-font-family: var(--alliance);
+      --text-smallcaps-font-size: var(--12px);
+      --text-smallcaps-line-height: var(--18px);
+      --text-smallcaps-letter-spacing: var(--smallcaps);
+
+      --text-base-font-family: var(--alliance);
+      --text-base-font-size: var(--14px);
+      --text-base-line-height: var(--21px);
       --text-base-letter-spacing: var(--xl);
       --text-base-paragraph-spacing: var(--6px);
       --text-base-list-spacing: var(--8px);
-      --text-base-font-size: var(--14px);
-      --text-base-line-height: var(--21px);
+
+      --text-lg-font-family: var(--alliance);
+      --text-lg-font-size: var(--14px);
+      --text-lg-line-height: var(--21px);
       --text-lg-letter-spacing: var(--xl);
       --text-lg-paragraph-spacing: var(--6px);
       --text-lg-list-spacing: var(--8px);
-      --text-lg-font-size: var(--14px);
-      --text-lg-line-height: var(--21px);
-      --text-sm-letter-spacing: var(--xl);
-      --text-sm-font-size: var(--10px);
-      --text-sm-line-height: var(--14px);
-      --text-smallcaps-letter-spacing: var(--smallcaps);
-      --text-smallcaps-font-size: var(--12px);
-      --text-smallcaps-line-height: var(--18px);
-      --text-xl-letter-spacing: var(--xl);
+
+      --text-xl-font-family: var(--alliance);
       --text-xl-font-size: var(--16px);
       --text-xl-line-height: var(--24px);
-      --text-xs-letter-spacing: var(--xl);
-      --text-xs-font-size: var(--10px);
-      --text-xs-line-height: var(--14px);
+      --text-xl-letter-spacing: var(--xl);
 
-      --app-body-font-family: var(--alliance);
-      --docs-article-body-font-family: var(--alliance);
-      --docs-sidebar-headings-font-family: var(--alliance);
-      --docs-sidebar-links-font-family: var(--alliance);
-      --text-10xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-family: var(--canela);
       --text-2xl-font-family: var(--alliance);
+      --text-2xl-font-size: var(--18px);
+      --text-2xl-line-height: var(--26px);
+      --text-2xl-letter-spacing: var(--xl);
+
       --text-3xl-font-family: var(--alliance);
+      --text-3xl-font-size: var(--20px);
+      --text-3xl-line-height: var(--28px);
+      --text-3xl-letter-spacing: var(--xl);
+
       --text-4xl-font-family: var(--alliance);
+      --text-4xl-font-size: var(--24px);
+      --text-4xl-line-height: var(--34px);
+      --text-4xl-letter-spacing: var(--l);
+
       --text-5xl-font-family: var(--alliance);
+      --text-5xl-font-size: var(--48px);
+      --text-5xl-line-height: var(--58px);
+      --text-5xl-letter-spacing: var(--m);
+
       --text-6xl-font-family: var(--alliance);
+      --text-6xl-font-size: var(--60px);
+      --text-6xl-line-height: var(--68px);
+      --text-6xl-letter-spacing: var(--m);
+
       --text-7xl-canela-font-family: var(--canela);
+      --text-7xl-canela-font-size: var(--24px);
+      --text-7xl-canela-line-height: var(--28px);
+      --text-7xl-canela-letter-spacing: var(--s);
+
       --text-8xl-canela-font-family: var(--canela);
+      --text-8xl-canela-font-size: var(--36px);
+      --text-8xl-canela-line-height: var(--44px);
+      --text-8xl-canela-letter-spacing: var(--xs);
+
       --text-9xl-canela-font-family: var(--canela);
+      --text-9xl-canela-font-size: var(--48px);
+      --text-9xl-canela-line-height: var(--58px);
+      --text-9xl-canela-letter-spacing: var(--xxs);
+
+      --text-10xl-canela-font-family: var(--canela);
+      --text-10xl-canela-font-size: var(--48px);
+      --text-10xl-canela-line-height: var(--58px);
+      --text-10xl-canela-letter-spacing: var(--xxs);
+
+      --text-11xl-canela-font-family: var(--canela);
+      --text-11xl-canela-font-size: var(--72px);
+      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-letter-spacing: var(--xxs);
+
       --text-article-body-font-family: var(--alliance);
-      --text-base-font-family: var(--alliance);
-      --text-lg-font-family: var(--alliance);
-      --text-sm-font-family: var(--alliance);
-      --text-smallcaps-font-family: var(--alliance);
-      --text-xl-font-family: var(--alliance);
-      --text-xs-font-family: var(--alliance);
+      --text-article-body-font-size: var(--14px);
+      --text-article-body-line-height: var(--21px);
+      --text-article-body-letter-spacing: var(--xl);
+      --text-article-body-paragraph-spacing: var(--6px);
+      --text-article-body-list-spacing: var(--8px);
+
+      --text-longform-body-font-family: var(--alliance);
+      --text-longform-body-font-size: var(--14px);
+      --text-longform-body-line-height: var(--21px);
+      --text-longform-body-letter-spacing: var(--xl);
+      --text-longform-body-paragraph-spacing: var(--14px);
+      --text-longform-body-list-spacing: var(--8px);
+
+      --text-longform-intro-font-family: var(--alliance);
+      --text-longform-intro-font-size: var(--16px);
+      --text-longform-intro-line-height: var(--26px);
+      --text-longform-intro-letter-spacing: var(--xl);
+      --text-longform-intro-paragraph-spacing: var(--16px);
+      --text-longform-intro-list-spacing: var(--10px);
     }
   }
 
@@ -310,101 +410,134 @@
       --breakpoint---internal: 61rem;
       --breakpoint---full: 64rem;
 
+      --app-body-font-family: var(--alliance);
+      --app-body-font-size: var(--13px);
+      --app-body-line-height: var(--18px);
       --app-body-letter-spacing: var(--xl);
       --app-body-paragraph-spacing: var(--8px);
       --app-body-list-spacing: var(--10px);
-      --app-body-font-size: var(--13px);
-      --app-body-line-height: var(--18px);
+
+      --docs-article-body-font-family: var(--alliance);
+      --docs-article-body-font-size: var(--14px);
+      --docs-article-body-line-height: var(--21px);
       --docs-article-body-letter-spacing: var(--xl);
       --docs-article-body-paragraph-spacing: var(--8px);
       --docs-article-body-list-spacing: var(--10px);
-      --docs-article-body-font-size: var(--14px);
-      --docs-article-body-line-height: var(--21px);
-      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-headings-font-family: var(--alliance);
       --docs-sidebar-headings-font-size: 0.625rem;
       --docs-sidebar-headings-line-height: 1rem;
-      --docs-sidebar-links-letter-spacing: var(--xl);
+      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-links-font-family: var(--alliance);
       --docs-sidebar-links-font-size: var(--12px);
       --docs-sidebar-links-line-height: var(--16px);
-      --text-10xl-canela-letter-spacing: var(--xxs);
-      --text-10xl-canela-font-size: var(--54px);
-      --text-10xl-canela-line-height: var(--64px);
-      --text-11xl-canela-letter-spacing: var(--xxs);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
-      --text-2xl-letter-spacing: var(--xl);
-      --text-2xl-font-size: var(--20px);
-      --text-2xl-line-height: var(--28px);
-      --text-3xl-letter-spacing: var(--xl);
-      --text-3xl-font-size: var(--24px);
-      --text-3xl-line-height: var(--34px);
-      --text-4xl-letter-spacing: var(--l);
-      --text-4xl-font-size: var(--36px);
-      --text-4xl-line-height: var(--44px);
-      --text-5xl-letter-spacing: var(--m);
-      --text-5xl-font-size: var(--48px);
-      --text-5xl-line-height: var(--58px);
-      --text-6xl-letter-spacing: var(--m);
-      --text-6xl-font-size: var(--60px);
-      --text-6xl-line-height: var(--68px);
-      --text-7xl-canela-letter-spacing: var(--s);
-      --text-7xl-canela-font-size: var(--30px);
-      --text-7xl-canela-line-height: var(--42px);
-      --text-8xl-canela-letter-spacing: var(--xs);
-      --text-8xl-canela-font-size: var(--38px);
-      --text-8xl-canela-line-height: var(--48px);
-      --text-9xl-canela-letter-spacing: var(--xxs);
-      --text-9xl-canela-font-size: var(--48px);
-      --text-9xl-canela-line-height: var(--58px);
-      --text-article-body-letter-spacing: var(--xl);
-      --text-article-body-paragraph-spacing: var(--8px);
-      --text-article-body-list-spacing: var(--10px);
-      --text-article-body-font-size: var(--16px);
-      --text-article-body-line-height: var(--24px);
+      --docs-sidebar-links-letter-spacing: var(--xl);
+
+      --text-xs-font-family: var(--alliance);
+      --text-xs-font-size: var(--10px);
+      --text-xs-line-height: var(--14px);
+      --text-xs-letter-spacing: var(--xl);
+
+      --text-sm-font-family: var(--alliance);
+      --text-sm-font-size: var(--12px);
+      --text-sm-line-height: var(--18px);
+      --text-sm-letter-spacing: var(--xl);
+
+      --text-smallcaps-font-family: var(--alliance);
+      --text-smallcaps-font-size: var(--12px);
+      --text-smallcaps-line-height: var(--18px);
+      --text-smallcaps-letter-spacing: var(--smallcaps);
+
+      --text-base-font-family: var(--alliance);
+      --text-base-font-size: var(--14px);
+      --text-base-line-height: var(--21px);
       --text-base-letter-spacing: var(--xl);
       --text-base-paragraph-spacing: var(--8px);
       --text-base-list-spacing: var(--10px);
-      --text-base-font-size: var(--14px);
-      --text-base-line-height: var(--21px);
+
+      --text-lg-font-family: var(--alliance);
+      --text-lg-font-size: var(--16px);
+      --text-lg-line-height: var(--24px);
       --text-lg-letter-spacing: var(--xl);
       --text-lg-paragraph-spacing: var(--8px);
       --text-lg-list-spacing: var(--10px);
-      --text-lg-font-size: var(--16px);
-      --text-lg-line-height: var(--24px);
-      --text-sm-letter-spacing: var(--xl);
-      --text-sm-font-size: var(--12px);
-      --text-sm-line-height: var(--18px);
-      --text-smallcaps-letter-spacing: var(--smallcaps);
-      --text-smallcaps-font-size: var(--12px);
-      --text-smallcaps-line-height: var(--18px);
-      --text-xl-letter-spacing: var(--xl);
+
+      --text-xl-font-family: var(--alliance);
       --text-xl-font-size: var(--18px);
       --text-xl-line-height: var(--26px);
-      --text-xs-letter-spacing: var(--xl);
-      --text-xs-font-size: var(--10px);
-      --text-xs-line-height: var(--14px);
+      --text-xl-letter-spacing: var(--xl);
 
-      --app-body-font-family: var(--alliance);
-      --docs-article-body-font-family: var(--alliance);
-      --docs-sidebar-headings-font-family: var(--alliance);
-      --docs-sidebar-links-font-family: var(--alliance);
-      --text-10xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-family: var(--canela);
       --text-2xl-font-family: var(--alliance);
+      --text-2xl-font-size: var(--20px);
+      --text-2xl-line-height: var(--28px);
+      --text-2xl-letter-spacing: var(--xl);
+
       --text-3xl-font-family: var(--alliance);
+      --text-3xl-font-size: var(--24px);
+      --text-3xl-line-height: var(--34px);
+      --text-3xl-letter-spacing: var(--xl);
+
       --text-4xl-font-family: var(--alliance);
+      --text-4xl-font-size: var(--30px);
+      --text-4xl-line-height: var(--42px);
+      --text-4xl-letter-spacing: var(--l);
+
       --text-5xl-font-family: var(--alliance);
+      --text-5xl-font-size: var(--48px);
+      --text-5xl-line-height: var(--58px);
+      --text-5xl-letter-spacing: var(--m);
+
       --text-6xl-font-family: var(--alliance);
+      --text-6xl-font-size: var(--60px);
+      --text-6xl-line-height: var(--68px);
+      --text-6xl-letter-spacing: var(--m);
+
       --text-7xl-canela-font-family: var(--canela);
+      --text-7xl-canela-font-size: var(--30px);
+      --text-7xl-canela-line-height: var(--42px);
+      --text-7xl-canela-letter-spacing: var(--s);
+
       --text-8xl-canela-font-family: var(--canela);
+      --text-8xl-canela-font-size: var(--38px);
+      --text-8xl-canela-line-height: var(--48px);
+      --text-8xl-canela-letter-spacing: var(--xs);
+
       --text-9xl-canela-font-family: var(--canela);
+      --text-9xl-canela-font-size: var(--48px);
+      --text-9xl-canela-line-height: var(--58px);
+      --text-9xl-canela-letter-spacing: var(--xxs);
+
+      --text-10xl-canela-font-family: var(--canela);
+      --text-10xl-canela-font-size: var(--54px);
+      --text-10xl-canela-line-height: var(--64px);
+      --text-10xl-canela-letter-spacing: var(--xxs);
+
+      --text-11xl-canela-font-family: var(--canela);
+      --text-11xl-canela-font-size: var(--72px);
+      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-letter-spacing: var(--xxs);
+
       --text-article-body-font-family: var(--alliance);
-      --text-base-font-family: var(--alliance);
-      --text-lg-font-family: var(--alliance);
-      --text-sm-font-family: var(--alliance);
-      --text-smallcaps-font-family: var(--alliance);
-      --text-xl-font-family: var(--alliance);
-      --text-xs-font-family: var(--alliance);
+      --text-article-body-font-size: var(--16px);
+      --text-article-body-line-height: var(--24px);
+      --text-article-body-letter-spacing: var(--xl);
+      --text-article-body-paragraph-spacing: var(--8px);
+      --text-article-body-list-spacing: var(--10px);
+
+      --text-longform-body-font-family: var(--alliance);
+      --text-longform-body-font-size: var(--16px);
+      --text-longform-body-line-height: var(--24px);
+      --text-longform-body-letter-spacing: var(--xl);
+      --text-longform-body-paragraph-spacing: var(--16px);
+      --text-longform-body-list-spacing: var(--10px);
+
+      --text-longform-intro-font-family: var(--alliance);
+      --text-longform-intro-font-size: var(--18px);
+      --text-longform-intro-line-height: var(--28px);
+      --text-longform-intro-letter-spacing: var(--xl);
+      --text-longform-intro-paragraph-spacing: var(--20px);
+      --text-longform-intro-list-spacing: var(--12px);
     }
   }
 
@@ -413,101 +546,134 @@
       --breakpoint---internal: 76.5rem;
       --breakpoint---full: 80rem;
 
+      --app-body-font-family: var(--alliance);
+      --app-body-font-size: var(--13px);
+      --app-body-line-height: var(--18px);
       --app-body-letter-spacing: var(--xl);
       --app-body-paragraph-spacing: var(--10px);
       --app-body-list-spacing: var(--12px);
-      --app-body-font-size: var(--13px);
-      --app-body-line-height: var(--18px);
+
+      --docs-article-body-font-family: var(--alliance);
+      --docs-article-body-font-size: var(--16px);
+      --docs-article-body-line-height: var(--24px);
       --docs-article-body-letter-spacing: var(--xl);
       --docs-article-body-paragraph-spacing: var(--10px);
       --docs-article-body-list-spacing: var(--12px);
-      --docs-article-body-font-size: var(--16px);
-      --docs-article-body-line-height: var(--24px);
-      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-headings-font-family: var(--alliance);
       --docs-sidebar-headings-font-size: 0.6875rem;
       --docs-sidebar-headings-line-height: 1rem;
-      --docs-sidebar-links-letter-spacing: var(--xl);
+      --docs-sidebar-headings-letter-spacing: 0.0312rem;
+
+      --docs-sidebar-links-font-family: var(--alliance);
       --docs-sidebar-links-font-size: var(--13px);
       --docs-sidebar-links-line-height: var(--18px);
-      --text-10xl-canela-letter-spacing: var(--xxs);
-      --text-10xl-canela-font-size: var(--60px);
-      --text-10xl-canela-line-height: var(--70px);
-      --text-11xl-canela-letter-spacing: var(--xxs);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
-      --text-2xl-letter-spacing: var(--xl);
-      --text-2xl-font-size: var(--24px);
-      --text-2xl-line-height: 1.875rem;
-      --text-3xl-letter-spacing: var(--xl);
-      --text-3xl-font-size: var(--30px);
-      --text-3xl-line-height: var(--42px);
-      --text-4xl-letter-spacing: var(--l);
-      --text-4xl-font-size: var(--36px);
-      --text-4xl-line-height: var(--44px);
-      --text-5xl-letter-spacing: var(--m);
-      --text-5xl-font-size: var(--48px);
-      --text-5xl-line-height: var(--58px);
-      --text-6xl-letter-spacing: var(--m);
-      --text-6xl-font-size: var(--60px);
-      --text-6xl-line-height: var(--68px);
-      --text-7xl-canela-letter-spacing: var(--xs);
-      --text-7xl-canela-font-size: var(--38px);
-      --text-7xl-canela-line-height: var(--44px);
-      --text-8xl-canela-letter-spacing: var(--xxs);
-      --text-8xl-canela-font-size: var(--48px);
-      --text-8xl-canela-line-height: var(--58px);
-      --text-9xl-canela-letter-spacing: var(--xxs);
-      --text-9xl-canela-font-size: var(--54px);
-      --text-9xl-canela-line-height: var(--64px);
-      --text-article-body-letter-spacing: var(--xl);
-      --text-article-body-list-spacing: var(--10px);
-      --text-article-body-paragraph-spacing: var(--10px);
-      --text-article-body-font-size: var(--18px);
-      --text-article-body-line-height: var(--28px);
+      --docs-sidebar-links-letter-spacing: var(--xl);
+
+      --text-xs-font-family: var(--alliance);
+      --text-xs-font-size: var(--12px);
+      --text-xs-line-height: var(--16px);
+      --text-xs-letter-spacing: var(--xl);
+
+      --text-sm-font-family: var(--alliance);
+      --text-sm-font-size: var(--14px);
+      --text-sm-line-height: var(--21px);
+      --text-sm-letter-spacing: var(--xl);
+
+      --text-smallcaps-font-family: var(--alliance);
+      --text-smallcaps-font-size: var(--12px);
+      --text-smallcaps-line-height: var(--18px);
+      --text-smallcaps-letter-spacing: var(--smallcaps);
+
+      --text-base-font-family: var(--alliance);
+      --text-base-font-size: var(--16px);
+      --text-base-line-height: var(--24px);
       --text-base-letter-spacing: var(--xl);
       --text-base-paragraph-spacing: var(--10px);
       --text-base-list-spacing: var(--12px);
-      --text-base-font-size: var(--16px);
-      --text-base-line-height: var(--24px);
+
+      --text-lg-font-family: var(--alliance);
+      --text-lg-font-size: var(--18px);
+      --text-lg-line-height: var(--26px);
       --text-lg-letter-spacing: var(--xl);
       --text-lg-paragraph-spacing: var(--10px);
       --text-lg-list-spacing: var(--12px);
-      --text-lg-font-size: var(--18px);
-      --text-lg-line-height: var(--26px);
-      --text-sm-letter-spacing: var(--xl);
-      --text-sm-font-size: var(--14px);
-      --text-sm-line-height: var(--21px);
-      --text-smallcaps-letter-spacing: var(--smallcaps);
-      --text-smallcaps-font-size: var(--12px);
-      --text-smallcaps-line-height: var(--18px);
-      --text-xl-letter-spacing: var(--xl);
+
+      --text-xl-font-family: var(--alliance);
       --text-xl-font-size: var(--20px);
       --text-xl-line-height: var(--28px);
-      --text-xs-letter-spacing: var(--xl);
-      --text-xs-font-size: var(--12px);
-      --text-xs-line-height: var(--16px);
+      --text-xl-letter-spacing: var(--xl);
 
-      --app-body-font-family: var(--alliance);
-      --docs-article-body-font-family: var(--alliance);
-      --docs-sidebar-headings-font-family: var(--alliance);
-      --docs-sidebar-links-font-family: var(--alliance);
-      --text-10xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-family: var(--canela);
       --text-2xl-font-family: var(--alliance);
+      --text-2xl-font-size: var(--24px);
+      --text-2xl-line-height: 1.875rem;
+      --text-2xl-letter-spacing: var(--xl);
+
       --text-3xl-font-family: var(--alliance);
+      --text-3xl-font-size: var(--30px);
+      --text-3xl-line-height: var(--42px);
+      --text-3xl-letter-spacing: var(--xl);
+
       --text-4xl-font-family: var(--alliance);
+      --text-4xl-font-size: var(--36px);
+      --text-4xl-line-height: var(--44px);
+      --text-4xl-letter-spacing: var(--l);
+
       --text-5xl-font-family: var(--alliance);
+      --text-5xl-font-size: var(--48px);
+      --text-5xl-line-height: var(--58px);
+      --text-5xl-letter-spacing: var(--m);
+
       --text-6xl-font-family: var(--alliance);
+      --text-6xl-font-size: var(--60px);
+      --text-6xl-line-height: var(--68px);
+      --text-6xl-letter-spacing: var(--m);
+
       --text-7xl-canela-font-family: var(--canela);
+      --text-7xl-canela-font-size: var(--38px);
+      --text-7xl-canela-line-height: var(--44px);
+      --text-7xl-canela-letter-spacing: var(--xs);
+
       --text-8xl-canela-font-family: var(--canela);
+      --text-8xl-canela-font-size: var(--48px);
+      --text-8xl-canela-line-height: var(--58px);
+      --text-8xl-canela-letter-spacing: var(--xxs);
+
       --text-9xl-canela-font-family: var(--canela);
+      --text-9xl-canela-font-size: var(--54px);
+      --text-9xl-canela-line-height: var(--64px);
+      --text-9xl-canela-letter-spacing: var(--xxs);
+
+      --text-10xl-canela-font-family: var(--canela);
+      --text-10xl-canela-font-size: var(--60px);
+      --text-10xl-canela-line-height: var(--70px);
+      --text-10xl-canela-letter-spacing: var(--xxs);
+
+      --text-11xl-canela-font-family: var(--canela);
+      --text-11xl-canela-font-size: var(--72px);
+      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-letter-spacing: var(--xxs);
+
       --text-article-body-font-family: var(--alliance);
-      --text-base-font-family: var(--alliance);
-      --text-lg-font-family: var(--alliance);
-      --text-sm-font-family: var(--alliance);
-      --text-smallcaps-font-family: var(--alliance);
-      --text-xl-font-family: var(--alliance);
-      --text-xs-font-family: var(--alliance);
+      --text-article-body-font-size: var(--18px);
+      --text-article-body-line-height: var(--28px);
+      --text-article-body-letter-spacing: var(--xl);
+      --text-article-body-paragraph-spacing: var(--10px);
+      --text-article-body-list-spacing: var(--10px);
+
+      --text-longform-body-font-family: var(--alliance);
+      --text-longform-body-font-size: var(--18px);
+      --text-longform-body-line-height: var(--28px);
+      --text-longform-body-letter-spacing: var(--xl);
+      --text-longform-body-paragraph-spacing: var(--20px);
+      --text-longform-body-list-spacing: var(--12px);
+
+      --text-longform-intro-font-family: var(--alliance);
+      --text-longform-intro-font-size: var(--20px);
+      --text-longform-intro-line-height: var(--34px);
+      --text-longform-intro-letter-spacing: var(--xl);
+      --text-longform-intro-paragraph-spacing: var(--20px);
+      --text-longform-intro-list-spacing: var(--14px);
     }
   }
 }

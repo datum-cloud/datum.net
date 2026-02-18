@@ -19,7 +19,7 @@
       "children": [
         {
           "items": [
-            { "icon": "heart-handshake", "text": "Huddle", "href": "/community-huddle/" },
+            { "icon": "calendar", "text": "Events", "href": "/events/" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
             { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
             { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
@@ -64,9 +64,9 @@
     {
       "title": "Community",
       "items": [
+        { "text": "Events", "href": "/events/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
         { "text": "Changelog", "href": "/resources/changelog/" },
-        { "text": "Community Huddle", "href": "/community-huddle/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },
@@ -109,7 +109,8 @@
         { "text": "Logos", "href": "/brand/logos/" },
         { "text": "Iconography", "href": "/brand/iconography/" },
         { "text": "Illustration Suite", "href": "/brand/imagery/" },
-        { "text": "Social", "href": "/brand/social/" }
+        { "text": "Social", "href": "/brand/social/" },
+        { "text": "Templates", "href": "/brand/templates/" }
       ]
     }
   ],

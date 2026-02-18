@@ -9,7 +9,7 @@
     }
 
     &.btn--sm {
-      @apply px-5 py-2.5 md:px-5.5 md:py-3 lg:px-6 lg:py-3.5;
+      @apply px-3 py-2.5 md:px-5.5 md:py-3 lg:px-6 lg:py-3.5;
       @apply datum-text-sm max-h-[48px];
 
       svg {

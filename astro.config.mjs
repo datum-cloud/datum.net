@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
+import mermaid from 'astro-mermaid';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
@@ -58,6 +59,10 @@ export default defineConfig({
       ],
     }),
     alpinejs({ entrypoint: '/src/entrypoint' }),
+    mermaid({
+      theme: 'forest',
+      autoTheme: true,
+    }),
     starlight({
       title: 'Datum',
       disable404Route: true,
@@ -131,6 +136,11 @@ export default defineConfig({
           collapsed: true,
         },
         {
+          label: 'Command line',
+          autogenerate: { directory: 'docs/datumctl' },
+          collapsed: true, // First group is expanded by default
+        },
+        {
           label: 'Our Infrastructure',
           autogenerate: { directory: 'docs/infrastructure' },
           collapsed: true,
@@ -142,7 +152,12 @@ export default defineConfig({
         },
         {
           label: 'Runtime',
-          autogenerate: { directory: 'docs/runtime' },
+          items: [
+            { label: 'Runtime Overview', link: 'docs/runtime/' },
+            { label: 'Datum DNS', autogenerate: { directory: 'docs/runtime/dns' } },
+            { label: 'Datum Proxy', link: 'docs/runtime/proxy/' },
+            { label: 'AI Gateway', link: 'docs/runtime/ai-gateway/' },
+          ],
           collapsed: true,
         },
         {
@@ -177,7 +192,6 @@ export default defineConfig({
         'auth/login',
         'api/info',
         'waitlist',
-        'request-access',
         'authors/jacob-smith/1',
         'authors/zac-smith/1',
       ],

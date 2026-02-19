@@ -85,6 +85,7 @@ export interface StrapiArticle {
   author?: StrapiAuthor;
   category?: StrapiCategory;
   seo?: StrapiSeo;
+  readingTimeMinutes?: number;
 }
 
 export interface StrapiArticlesResponse {
@@ -107,6 +108,7 @@ export interface NormalizedStrapiArticle {
     date: Date;
     thumbnail?: string;
     author?: string;
+    readingTimeMinutes?: number;
   };
   body?: string;
 }
@@ -158,6 +160,23 @@ export function normalizeArticle(article: StrapiArticle): NormalizedStrapiArticl
   // Use originalPublishedAt, fallback to current date if not available
   const publishedDate = article.originalPublishedAt || new Date().toISOString();
 
+  // Calculate reading time from blocks if available, otherwise use pre-calculated value
+  let readingTimeMinutes = article.readingTimeMinutes;
+  if (!readingTimeMinutes && article.blocks) {
+    const bodyContent = extractBodyFromBlocks(article.blocks);
+    const wordCount = bodyContent
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`[^`]*`/g, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[#*_~`]/g, '')
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+    readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+  }
+
   return {
     id: article.slug,
     slug: article.slug,
@@ -169,6 +188,7 @@ export function normalizeArticle(article: StrapiArticle): NormalizedStrapiArticl
         getStrapiMediaUrl(article.cover?.formats?.thumbnail?.url) ||
         getStrapiMediaUrl(article.cover?.url),
       author: article.author?.name,
+      readingTimeMinutes,
     },
     body: extractBodyFromBlocks(article.blocks),
   };

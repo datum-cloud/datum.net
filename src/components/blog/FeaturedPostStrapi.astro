@@ -1,6 +1,6 @@
 ---
 // src/components/blog/FeaturedPostStrapi.astro
-import { formatISODate, estimateReadingTime } from '@utils/dateUtils';
+import { formatISODate } from '@utils/dateUtils';
 import type { NormalizedStrapiArticle } from '@/src/types/strapi';
 
 const { post, baseUrl = '/blog' } = Astro.props as {
@@ -8,8 +8,9 @@ const { post, baseUrl = '/blog' } = Astro.props as {
   baseUrl?: string;
 };
 
-// Calculate reading time
-const readingTime = estimateReadingTime(post.body || '');
+// Use pre-calculated reading time from normalized article
+const readingTimeMinutes = post.data.readingTimeMinutes || 1;
+const readingTimeText = `${readingTimeMinutes} minute read`;
 ---
 
 <div class="blog-featured">
@@ -47,7 +48,7 @@ const readingTime = estimateReadingTime(post.body || '');
             month: 'long',
             year: 'numeric',
           })
-        } | {readingTime.text}
+        } | {readingTimeText}
       </time>
     </div>
   </div>

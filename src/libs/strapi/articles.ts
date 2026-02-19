@@ -260,12 +260,32 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
     return [];
   }
 
-  // For list cache we intentionally drop rich-text blocks to keep cache small.
+  // For list cache we drop rich-text blocks to keep cache small, but preserve reading time.
   // Detail pages should use fetchStrapiArticleBySlug to get full content including blocks.
   const articles = response.articles.map((article) => {
+    // Calculate reading time from blocks before removing them
+    let readingTimeMinutes = 1;
+    if (article.blocks && article.blocks.length > 0) {
+      const bodyContent = article.blocks
+        .map((block) => block.body || '')
+        .filter(Boolean)
+        .join('\n\n');
+      const wordCount = bodyContent
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/`[^`]*`/g, '')
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+        .replace(/[#*_~`]/g, '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0).length;
+      readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { blocks, ...rest } = article;
-    return rest as StrapiArticle;
+    return { ...rest, readingTimeMinutes } as StrapiArticle;
   });
 
   if (CACHE_ENABLED) {

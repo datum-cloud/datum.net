@@ -47,11 +47,11 @@ Finally, we're investing ahead of our own needs [with Milo](https://www.datum.ne
 ## Product values
 It's hard to translate high level company values directly into daily work, so we've created a short list of product values to primarily help engineers move faster and with more confidence:
 
-- AX, then DX, then UX
-- Build for 1M backbones, 1B tunnels
-- Make it fast, sturdy, and ergonomic (function over fancy)
-- Be humble, curious, and helpful (we’re operators at heart)
-- No weird sales gates, lock-in, or marketing crap
+* AX, then DX, then UX
+* Build for 1M backbones, 1B tunnels
+* Make it fast, sturdy, and ergonomic (function over fancy)
+* Be humble, curious, and helpful (we're operators at heart)
+* No weird sales gates, lock-in, or marketing crap
 
 You can read more about our product values [on our blog](https://www.datum.net/blog/finding-our-footing-product-values/).
 

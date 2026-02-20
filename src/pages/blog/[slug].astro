@@ -22,6 +22,7 @@ import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
 import { marked } from 'marked';
 import { truncateByWords } from '@libs/string';
+import { transformMarkdownFigures } from '@utils/markdownFigure';
 
 const { slug } = Astro.params;
 
@@ -281,7 +282,8 @@ if (article.seo?.shareImage?.url) {
                 }
                 if (block.__typename === 'ComponentSharedRichText' && block.body) {
                   const bodyMarkdown = resolveMarkdownStrapiUrls(block.body);
-                  const bodyHtml = marked(bodyMarkdown);
+                  const bodyWithFigures = transformMarkdownFigures(bodyMarkdown);
+                  const bodyHtml = marked(bodyWithFigures);
                   return <div set:html={bodyHtml} />;
                 }
                 return null;

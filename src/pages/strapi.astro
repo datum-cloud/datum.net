@@ -1,5 +1,7 @@
 ---
 // src/pages/strapi.astro
+export const prerender = false;
+
 import { Cache } from '@libs/cache';
 
 const STRAPI_URL = import.meta.env.STRAPI_URL || process.env.STRAPI_URL;

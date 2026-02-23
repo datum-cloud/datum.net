@@ -61,7 +61,8 @@ async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
   });
 
   if (!response.ok) {
-    throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    const body = await response.text();
+    throw new Error(`Strapi API error: ${response.status} ${response.statusText} — ${body}`);
   }
 
   const result: StrapiResponse = await response.json();
@@ -88,6 +89,11 @@ try {
 }
 
 const output = {
+  config: {
+    url: STRAPI_URL,
+    hasToken: !!STRAPI_TOKEN,
+    cacheEnabled: STRAPI_CACHE_ENABLED,
+  },
   success: !error,
   cached: cache.has(CACHE_KEY),
   timestamp: new Date().toISOString(),

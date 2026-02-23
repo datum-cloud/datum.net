@@ -17,7 +17,10 @@
       }
 
       .btn.gh-button {
-        @apply border-0 md:border-1;
+        /* @apply border-0 md:border; */
+        span {
+          @apply hidden md:inline-block;
+        }
       }
     }
 
@@ -51,7 +54,8 @@
     @apply transition-transform duration-200 ease-in-out;
   }
 
-  .nav-dropdown:hover .nav-dropdown-arrow {
+  .nav-dropdown:hover .nav-dropdown-arrow,
+  .nav-dropdown:focus-within .nav-dropdown-arrow {
     @apply rotate-180;
   }
 
@@ -59,7 +63,8 @@
     @apply pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
-  .nav-dropdown:hover .nav-dropdown-menu {
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
     @apply pointer-events-auto visible opacity-100;
   }
 
@@ -240,7 +245,11 @@
     @apply datum-text-base text-white opacity-80;
 
     li {
-      @apply mb-1.5;
+      @apply mb-1.5 flex gap-2;
+    }
+
+    .nav-label {
+      @apply text-glacier-mist-700 bg-logo-object/15 datum-docs-sidebar-headings rounded-md px-2 py-1 normal-case;
     }
   }
 

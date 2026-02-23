@@ -1,0 +1,14 @@
+---
+title: "Galactic VPC"
+sidebar:
+  order: 2
+meta:
+  title: "Configure Galactic VPCs - Datum Network Cloud"
+  description: "Build a private internet backbone with Datum Galactic VPC. Spans clouds and providers with secure, policy-controlled cross cloud interconnects."
+---
+
+## Datum’s Virtual Backbone Service
+
+Datum is working to provide a global, virtual backbone service we call “Galactic VPC”. Soon, customers using Datum cloud will be able to create their own Galactic VPC and start to leverage it for traffic routing and connections.
+
+Galactic is built using Segment Routing over IPv6 (SRv6), which allows us to employ advanced policy and traffic control to packets that travel through Galactic. Network devices process these instructions to forward the packet along a specific path, and each instruction is represented by an IPv6 address called a Segment Identifier (SID). Using this capability, Datum can program traffic paths using the native IPv6 data plane built into all modern routers and kernels, without the need for things like MPLS.  You can read more about SRv6 in ([RFC 8986](https://www.rfc-editor.org/rfc/rfc8986.html)).

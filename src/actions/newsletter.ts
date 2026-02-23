@@ -7,11 +7,15 @@ import { generateRandomString } from '@libs/string';
 
 interface SignupInput {
   email: string;
+  givenName: string;
+  familyName: string;
 }
 
-const signUp = defineAction({
+const NewsletterSignup = defineAction({
   input: z.object({
     email: z.string(),
+    givenName: z.string(),
+    familyName: z.string(),
   }),
   handler: async (input: SignupInput): Promise<number> => {
     const emailName = input.email.split('@')[0].toLowerCase().replace(/\./g, '-');
@@ -25,6 +29,8 @@ const signUp = defineAction({
 
       const contactResource = createContact(uniqueId, {
         email: input.email,
+        givenName: input.givenName,
+        familyName: input.familyName,
       });
 
       try {
@@ -43,12 +49,12 @@ const signUp = defineAction({
         }
       } catch (error) {
         const errorCode = error && typeof error === 'object' && 'code' in error && error.code;
-        console.log('Error creating contact resource:', errorCode);
+        console.log('Error creating contact resource: ', error);
         return errorCode as number;
       }
     } catch (error) {
       const errorCode = error && typeof error === 'object' && 'code' in error && error.code;
-      console.log('Error signing up for newsletter:', errorCode);
+      console.log('Error signing up for newsletter: ', error);
       return errorCode as number;
     }
 
@@ -57,4 +63,4 @@ const signUp = defineAction({
   },
 });
 
-export { signUp };
+export { NewsletterSignup };

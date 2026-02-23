@@ -1,0 +1,74 @@
+---
+title: "Why we're open sourcing domain validation"
+date: 2025-11-25 01:00:00
+slug: "open-sourcing-domain-validation"
+description: "Datum has acquired CloudValid to reduce onboarding friction for SaaS platforms and Alt Clouds."
+thumbnail: assets/images/blog-7.png
+featuredImage: assets/images/blog-7.png
+author: brian-toresdahl
+categories: ["business-strategy", "under-the-hood"]
+draft: false
+meta:
+  title: "Datum to open source domain verification with CloudValid acquisition - Datum Blog"
+  description: "We're helping SaaS platforms and modern Alt Cloud providers eliminate onboarding friction and reduce vendor lock-in with domain verification and DNS automation."
+  og:
+    title: Datum extends its open network cloud with CloudValid
+    description: The acquisition brings automated domain verification, DNS guidance, and improved onboarding flows to SaaS providers, backed by open source.
+---
+
+import Figure from '@components/Figure.astro';
+
+I’m excited to announce that Datum has acquired [CloudValid](https://cloudvalid.com/). Alongside the acquisition, Datum will open source CloudValid’s technology.
+
+I started CloudValid to solve a problem so many SaaS companies know well: it’s a pain to get users to successfully connect or validate ownership of their domains. It's a mundane requirement that creates outsized friction and leads to abandoned onboarding flows, frustrated users, lingering support tickets, and poorly executed features.
+
+Whether you're building a help desk, website builder, AI coding tool or adding enterprise features like single sign on (SSO) or organizational controls, domain verification shouldn't be a barrier to activation. With the coming wave of “SSL for everything” ([Chrome & HTTPS by default](https://security.googleblog.com/2025/10/https-by-default.html)) this is even more critical, as thousands of new platforms will need to implement custom SSL certificates based on customer domain names. 
+
+Happily, CloudValid's technology removes this toil. As part of Datum, we’re thrilled to build upon our existing solution and help every builder be able to incorporate seamless domain validation into their apps.
+
+
+## It’s true, domain setup breaks onboarding
+
+Custom domain support is table-stakes for modern SaaS applications. Users expect to white-label their experience, send emails from their own domains, and host content under their brand with confidence. But the technical reality that end users go through is anything but simple: DNS record configuration, verification workflows, provider detection, and SSL certificate management.
+
+With this complexity, end users often fail to properly validate their domains. The result? Support tickets pile up, users get stuck, and activation rates suffer. If that wasn’t enough, let’s not forget about the engineering teams that spend valuable cycles building and maintaining domain verification infrastructure instead of focusing on their core product.
+
+Some proprietary solutions do exist for domain validation, but we believe an open approach is better suited for what’s ahead: billions of autonomous agents, a massive increase in SSL / TLS connections, and enterprise features that combine DNS, domains and certificates together. 
+
+Domains and DNS are foundational building blocks of the internet. We think that for the internet to thrive in this next wave, every builder should have programmatic access to these building blocks. It makes sense for today, but also for the fast-paced agentic world of tomorrow. 
+
+It’s why we’ve decided to open source CloudValid under an AGPL v3 licensing model.  Here’s what we’re aiming to unlock to the developer and builder community:
+
+- **Freedom from vendor lock-in:** Build domain verification into your product without expensive lock-in through licensing fees or SaaS dependencies
+
+- **Transparency and trust:** Audit the code, understand exactly how domain verification works, and customize and contribute enhancements you want to see
+
+- **Community-driven innovation:** Contribute ideas, improvements, add support for new DNS providers, and solve edge cases together
+
+This isn't about cost, it's about philosophy. Datum’s goal as a company is to help 1,000 clouds thrive in the AI era – and to do so, we believe that essential internet infrastructure should be open, accessible, and community-governed. 
+
+
+### What CloudValid brings to Datum
+
+Over the next few months, CloudValid's technology will be integrated into Datum's open source project and become available via Datum Cloud. We're integrating across multiple areas:
+
+- **Authoritative DNS:** Streamlined zone management and record automation that reduces manual configuration and human error.
+
+- **Automated Domain Registration:** End-to-end workflows that guide users from domain search to successful connection, with built-in verification at every step.
+
+- **Integrated Domain + Proxy Workflows:** Seamless connection between domain configuration and traffic routing, essential for modern application delivery.
+
+- **SSL for SaaS:** Integrated global Proxy and domain + certificate management built specifically for SaaS and other multi-tenant providers.
+
+- **Email Authentication:** The major email inbox providers, Microsoft, Yahoo, and Google, are now jointly requiring senders to pass DMARC checks, which is email authentication that relies on certain DNS records to exist.
+
+For Datum Cloud users (especially SaaS platforms and alternative cloud providers) this means faster user activation, reduced support burden, and a more professional onboarding experience out of the box. And for next-wave builders, it means they can start to imagine new ways of building services that include custom domains as a default part of their experiences.
+
+
+### Getting involved
+
+Every internet application begins the same way: with a domain name and DNS configuration. With CloudValid joining Datum, we're making that first step radically simpler—and radically more open.
+
+Whether you're a solo developer launching your first SaaS product or an enterprise team serving millions of users, you'll have access to the same battle-tested domain verification tools that power leading platforms.
+
+**Want to get involved?** [Reach out to me on Discord](https://link.datum.net/discord) and let’s chat about your pain points,  desires or rants on Domains and DNS. We’re working closely with customers as we launch our [Provider tier](/pricing/) and I’d love to get your ideas!

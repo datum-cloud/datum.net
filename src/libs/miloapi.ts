@@ -18,7 +18,6 @@ async function createNewsletterContact(
         givenName,
       },
     });
-    console.log('Request body for creating newsletter contact:', body);
 
     const host =
       process.env.MODE === 'development'
@@ -42,8 +41,6 @@ async function createNewsletterContact(
       console.log('Failed to create newsletter contact:', response);
       return false;
     }
-    const jsonResponse = await response.json();
-    console.log('Newsletter contact created:', jsonResponse);
 
     return true;
   } catch (error) {

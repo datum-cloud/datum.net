@@ -69,14 +69,14 @@ const issues = await roadmaps();
           const data = result.data as { authUrl: string; codeVerifier: string; nonce: string };
           const authUrl = new URL(data.authUrl);
           const codeVerifier = data.codeVerifier;
-          const nonce = data.nonce;
+          // const nonce = data.nonce;
 
           if (!authUrl) {
             window.location.href = '/resources/roadmap';
           } else {
             setCookie('codeVerifier', codeVerifier ?? '', 60 * 24);
-            setCookie('nonce', nonce ?? '', 60 * 24);
-            setCookie('auth_redirect', window.location.href, 60 * 24);
+            // setCookie('nonce', nonce ?? '', 60 * 24);
+            // setCookie('return_url', window.location.href, 60 * 24);
 
             window.location.href = authUrl.toString();
           }

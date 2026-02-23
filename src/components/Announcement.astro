@@ -1,0 +1,60 @@
+---
+// src/components/Announcement.astro
+// Announcement banner component for the hero section
+
+import Icon from '@components/Icon.astro';
+import type { AnnouncementProps } from '@/src/types/common';
+import { announcementConfig } from '@/src/config/announcement';
+
+// Use props if provided, otherwise fall back to config
+const {
+  show = announcementConfig.show !== undefined ? announcementConfig.show : true,
+  label = announcementConfig.label,
+  text = announcementConfig.text,
+  href = announcementConfig.href,
+  icon = announcementConfig.icon,
+} = Astro.props as AnnouncementProps;
+
+const announcementId = 'announcement';
+
+// Don't render if show is false
+if (!show) {
+  return null;
+}
+---
+
+<aside
+  id={announcementId}
+  class="announcement"
+  x-data={`{
+    announcementId: '${announcementId}',
+    isHidden: false,
+    init() {
+      // Check localStorage and set initial state
+      if (typeof window !== 'undefined') {
+        this.isHidden = localStorage.getItem('announcement-hidden-' + this.announcementId) === 'true';
+      }
+    },
+    closeAnnouncement() {
+      this.isHidden = true;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('announcement-hidden-' + this.announcementId, 'true');
+      }
+    }
+  }`}
+  x-cloak
+  x-show="!isHidden"
+  x-init="init()"
+  style="display: none;"
+>
+  <label>{label}</label>
+  <p class="pr-3 md:pr-0">
+    <a href={href}
+      >{text}
+      {icon && <Icon name={icon.name} size={icon.size || 'sm'} class="hidden md:inline-flex" />}</a
+    >
+  </p>
+  <button class="announcement-close" @click="closeAnnouncement()" aria-label="Close announcement">
+    <Icon name="close" size="md" />
+  </button>
+</aside>

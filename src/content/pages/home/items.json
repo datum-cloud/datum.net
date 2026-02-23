@@ -1,0 +1,23 @@
+[
+  {
+    "image": "pages/home/images/hood/runtime.png",
+    "text": "Runtime:DNS, Proxies, Gateways"
+  },
+  {
+    "image": "pages/home/images/hood/connections.png",
+    "text": "Connections:Galactic VPCs, Tunnels"
+  },
+  {
+    "image": "pages/home/images/hood/workflows.png",
+    "text": "Metrics:Real-time observability"
+  },
+  {
+    "image": "pages/home/images/hood/assets.png",
+    "text": "Assets:Domains, Secrets, Certs"
+  },
+  {
+    "image": "pages/home/images/hood/experience.png",
+    "text": "Experience:Datum MCP, datumctl"
+  }
+]
+

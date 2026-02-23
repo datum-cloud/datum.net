@@ -1,0 +1,59 @@
+---
+// src/components/events/EventListItem.astro
+// Event list item component for displaying events in a list format
+
+import type { LumaEvent } from '@libs/luma';
+import Icon from '@components/Icon.astro';
+import { formatDate } from '@utils/dateUtils';
+
+interface Props {
+  event: LumaEvent;
+}
+
+const { event } = Astro.props as Props;
+
+// Get location for filtering
+const eventLocation = event.geo_address_json?.city || (event.meeting_url ? 'Online' : '');
+---
+
+<div class="entry-list-item" id={event.id} data-location={eventLocation}>
+  <a
+    href={event.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    title={event.name}
+    class="entry-list-item--wrapper"
+  >
+    <p class="entry-list-item--title">{event.name}</p>
+
+    <div class="entry-list-item--meta">
+      {
+        event.geo_address_json?.city_state && (
+          <div class="entry-list-item--meta-text flex gap-2">
+            <Icon name="map-pin" size="md" class="text-app---dark---utility-4 shrink-0" />
+            {event.geo_address_json.city_state}
+          </div>
+        )
+      }
+
+      <time datetime={event.start_at}>
+        <span class="entry-list-item--meta-text flex gap-2">
+          <Icon name="calendar-fold" size="md" class="text-app---dark---utility-4 shrink-0" />
+
+          {
+            formatDate(
+              event.start_at,
+              'en-GB',
+              {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              },
+              event.timezone
+            )
+          }
+        </span>
+      </time>
+    </div>
+  </a>
+</div>

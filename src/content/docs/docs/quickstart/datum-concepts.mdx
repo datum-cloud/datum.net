@@ -1,69 +1,32 @@
 ---
-title: Key Concepts
+title: "Key Concepts"
 sidebar:
   order: 3
 meta:
-  title: "Datum Key Concepts: Control Plane, Operator & Tools"
+  title: "Datum Cloud Concepts - Workloads, Networks & Locations"
   description: "Understand key Datum concepts including the Kubernetes CRD-based Control Plane, the Datum Operator for state orchestration, the CLI (datumctl), and the Datum Portal."
 ---
 
-## The Datum Control Plane
+As you begin working with Datum, it’s helpful to understand some key decisions we’ve made.
 
-The Datum Operator is implemented upon Kubernetes Custom Resource Definitions
-(CRDs) to provide abstracted, yet orchestrated, functionality across Hyperscale
-Cloud Providers, Network as a Service Operators, Edge Clouds (including our
-own), and infrastructure under your management and control.
+**Kubernetes CRDs** - Datum’s control plane is built on Kubernetes Custom Resource Definitions (CRDs). While you don’t have to use k8s to use Datum Cloud, it helps to understand what’s under the hood.
 
-By implementing an operator based on top of Kubernetes CRDs, we leverage common
-patterns familiar to developers, SREs, and Platform Engineers. Using the Datum
-Operator, you describe your desired system state through manifests, and the
-Datum Operator will deploy and continuously validate global operational state
-against that manifest.
+- Ecosystem - We’ve invested in this approach to align with the largest ecosystem for cloud operators. If you’re a cloud native SRE or platform engineer, working with Datum capabilities exposed as resources should feel super comfy.
+- LLMs - Because Kubernetes patterns are so well established, LLMs are able to more easily and accurately interact with Datum’s platform.
 
-Datum (will) supports bi-directional control plane federation, from the Datum
-Cloud to 1st or 3rd party compute platforms so that you can bring Datum anywhere
-you need it. At this point in time, Datum supports compute resources backed by
-GCP and network resources from our own Edge Cloud.
+**Locations** - We deploy infrastructure in the top internet aggregation points globally. To learn more about how we translate that infrastructure into customer-facing regions and zones, check out the [Infrastructure](../../infrastructure/) section later in these docs.
 
-## Helpful Tools
-
-### Datum Portal - cloud.datum.net
-
-The [Datum Portal](https://cloud.datum.net) provides real-time insights on the
-state of your Datum Control Plane resources.
-
-### Datum's Command Line Tool - datumctl
-
-[datumctl](https://docs.datum.net/docs/tasks/tools/#datumctl) is our CLI for
-managing the Datum Control Plane via the command line. datumctl provides
-authorization, API management, and has the ability to manage .kubeconfig files
-so that one can leverage kubectl for day to day interaction with Datum Cloud.
-
-{/* ## Key Components
-
-### Datum Workloads
-
-Datum Workloads are where the magic of Datum happens. Workloads are defined
-using Kubernetes Manifests. Workloads can be Virtual Machines or Containers,
-that are deployed as collections of instances across the Locations you define
-with "Superpowers" delivered through Datum Cloud Networks (more on both topics
-below). The Datum Operator is responsible for taking your workload manifest
-definition, and ensuring its running state across Locations and Networks.
-
-### Datum Locations
-
-Datum Locations are used to define available resources from Hyperscale Cloud
-Providers, Network as a Service Operators, Edge Clouds (including our own), and
-infrastructure under your management and control. Use locations to define
-available infrastructure for consumption by workloads.
-
-### Datum Networks
-
-Datum Networks are "galactic VPCs" that can span among Hyperscale Cloud
-Providers, Network as a Service Operators, Edge Clouds (including our own), and
-infrastructure under your management and control. Datum Cloud networks are
-virtualized and can be created for your simple convenience, logical organization
-needs, and operational security / segmentation concerns. Datum Cloud Networks
-are programatically organized and applied throughout the system to reduce
-operator cognitive load. Datum Networks are designed to provide rich
-observability and telemetry capabilities. */}
+**Customer Portal** - Our portal is organized into three main areas: account settings, organization settings, and project settings. Aside from team management, which takes place at the Org level, most resources are managed at the Project level:
+- Runtime Core network services delivered on Datum’s global edge, including:
+  - DNS - An authoritative DNS service backed by PowerDNS & Hickory DNS
+  - Proxy - An Envoy-based proxy to secure and accelerate apps and services
+  - AI Gateway - A globally distributed gateway for interacting with GenAI services
+- Connections - Securely interact with infra, providers, partners and customers
+  - Galactic VPC -  Private Internet backbones that span clouds with policy controls
+  - Tunnel - Access to any system. No dynamic DNS, no port forwarding, no VPNs.
+- Workflows - Automations to improve reliability and customize behavior
+  - 1-Click WAF - Standard OWASP rules through your proxy. Powered by Coraza.
+  - Grafana Cloud - Send OTel telemetry to Grafana Cloud using an export policy.
+- Assets - Programmatic resources to support your deployments
+  - Domains - A programmatic resource for organizing and managing domains
+  - Secrets - Credential management service for sensitive data

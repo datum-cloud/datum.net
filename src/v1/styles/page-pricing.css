@@ -4,7 +4,7 @@
 
 /* Pricing Card Grid */
 .pricing-card-wrapper {
-  @apply col-span-3 md:col-span-1;
+  @apply col-span-1;
 }
 
 /* Pricing Card Container */
@@ -53,15 +53,15 @@
 }
 
 .pricing-card--price-amount-row {
-  @apply flex flex-row items-center gap-1 md:flex-col md:items-start lg:flex-row lg:items-center;
+  @apply flex flex-row items-end-safe gap-1 md:flex-col md:items-start lg:flex-row lg:items-end-safe;
 }
 
 .pricing-card--price-amount {
-  @apply datum-text-4xl font-medium;
+  @apply datum-text-4xl font-medium md:text-nowrap;
 }
 
 .pricing-card--price-suffix {
-  @apply datum-app-body;
+  @apply datum-app-body -translate-y-[7px] md:text-nowrap;
 }
 
 /* CTA Section */
@@ -87,7 +87,7 @@
 }
 
 .pricing-card--feature-list {
-  @apply space-y-1;
+  @apply space-y-1.5;
 }
 
 .pricing-card--feature-item {

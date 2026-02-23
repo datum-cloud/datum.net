@@ -1,23 +1,25 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import Illustration from '@v1/assets/images/home-illustration.png';
+import Illustration from '@v1/assets/images/home-illustration.webp';
 import Nav from '@components/Nav.astro';
 import Button from '@components/Button.astro';
+import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
 ---
 
-<section class:list={['hero--main z-11', className]}>
-  <div class="bg-midnight-fjord aspect-auto h-auto w-full md:aspect-19/9">
+<header class:list={['hero--main z-11', className]}>
+  <Announcement />
+  <div class="bg-midnight-fjord aspect-auto h-auto w-full">
     <Nav />
     {/* Hero Main Content */}
     <div
       class="fade-in--small max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-20 xl:pb-44"
       data-reveal="fade-in--small--visible"
       data-reveal-immediate="true"
-      data-reveal-delay="200"
+      role="banner"
     >
       <h1
         class="datum-text-10xl m-auto max-w-140 text-white"
@@ -55,11 +57,8 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         loading="eager"
         fetchpriority="high"
         alt="Hero Illustration"
-        class="fade-in--pure h-auto w-full translate-y-[3%] object-cover md:object-contain"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-delay="300"
-        data-reveal-immediate="true"
+        class="h-auto w-full translate-y-[7%] object-cover md:object-contain"
       />
     </div>
   </div>
-</section>
+</header>

@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 export interface LayoutProps {
   title: string;
   description?: string;
-  image?: string;
+  image?: ImageMetadata;
   article?: boolean;
   publishDate?: Date;
   author?: string;
@@ -20,7 +20,7 @@ export interface LayoutProps {
     og?: {
       title?: string;
       description?: string;
-      image?: string;
+      image?: ImageMetadata;
       url?: string;
     };
   };
@@ -55,10 +55,15 @@ export interface ArticleProps {
   class?: string;
 }
 
+export interface SidebarItems {
+  slug: string;
+  label: string;
+  childs?: { slug: string; label: string; title?: string; order: number }[];
+}
+
 export interface SidebarProps {
-  currentArticleId?: string;
-  class?: string;
-  categories: string[];
+  selectedId: string;
+  items: SidebarItems[];
 }
 
 export interface ContentProps {
@@ -146,6 +151,23 @@ export interface AsideProps {
   icon?: string;
   title: string;
   class?: string;
+}
+
+export interface FigureProps {
+  title?: string;
+  align?: 'left' | 'center' | 'right';
+  class?: string;
+}
+
+export interface AnnouncementProps {
+  show?: boolean;
+  label?: string;
+  text?: string;
+  href?: string;
+  icon?: {
+    name: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+  };
 }
 
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

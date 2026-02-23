@@ -1,18 +1,20 @@
 ---
-title: Our visual identitiy
+title: "Our visual identity"
 subtitle: Design Assets
 icon: image
 description: "Resources rooted in our brand foundation that reflect and amplify our purpose, people, and product."
 slug: "brand"
 meta:
-  title: "Datum Brand Identity & Design Assets"
-  description: "Explore the Datum brand ecosystem, including design principles, typography, color palettes, logos, and illustration suite, built for a hyperscale-ready framework."
+  title: "Datum Brand Assets: Logos, Guidelines & Identity"
+  description: "Explore the Datum brand design system, including design principles, typography, color palettes, logos, and illustration suite, built for a hyperscale-ready framework."
+  og:
+    title: Our visual identity
+    description: Explore the Datum brand design system
+    image: "../../images/og/brand.png"
 ---
 
 import Container from '@components/Container.astro';
 import BrandCard from '@components/brand/BrandCard.astro';
-
-
 
 <Container tag="section" class="grid gap-6 xl:gap-9 md:grid-cols-2 lg:grid-cols-3 max-w-none content-stretch">
 <BrandCard
@@ -76,6 +78,15 @@ import BrandCard from '@components/brand/BrandCard.astro';
 >
   <Fragment slot="image">
     ![Social](./assets/social.png)
+  </Fragment>
+</BrandCard>
+
+<BrandCard
+  title="Templates"
+  url="/brand/templates/"
+>
+  <Fragment slot="image">
+    ![Social](./assets/resources.png)
   </Fragment>
 </BrandCard>
 

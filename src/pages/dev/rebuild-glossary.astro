@@ -1,0 +1,26 @@
+---
+export const prerender = false;
+
+import { buildGlossary } from '@plugins/glossary';
+import { validateAndRefreshSession } from '@libs/auth';
+
+const { session } = await validateAndRefreshSession(Astro.cookies);
+
+if (!session) {
+  // Redirect to login with return URL
+  return Astro.redirect(
+    `/auth/login/?redirect_uri=${encodeURIComponent(Astro.url.pathname + Astro.url.search)}`
+  );
+}
+
+buildGlossary({
+  source: 'docs/docs/glossary.mdx',
+  contentDir: 'docs',
+})
+  .then(() => {
+    console.log('Glossary rebuilt successfully.');
+  })
+  .catch((error) => {
+    console.error('Error rebuilding glossary:', error);
+  });
+---

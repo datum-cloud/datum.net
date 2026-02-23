@@ -2,45 +2,41 @@
 export const prerender = false;
 
 import { OIDCClient } from '@libs/oidc';
+import { validateAndRefreshSession } from '@libs/auth';
 
+// Check if user is already authenticated
+const { session } = await validateAndRefreshSession(Astro.cookies);
+
+if (session) {
+  // User is already logged in, redirect to intended destination or home
+  return Astro.redirect(Astro.url.searchParams.get('redirect_uri') || '/');
+}
+
+// Generate authorization URL with PKCE
 const oidcClient = new OIDCClient();
-const oidcClientReturn = oidcClient.getAuthorizationUrl('login');
-const expired = new Date(Date.now() + 3600 * 1000); // 1 hour
+const authResponse = await oidcClient.getAuthorizationUrl('login');
 
+// Store PKCE parameters in cookies
 const cookieOptions = {
   path: '/',
-  sameSite: 'lax' as 'none' | 'strict' | 'lax',
-  secure: true,
-  expires: expired,
+  sameSite: 'lax' as const,
+  secure: process.env.MODE === 'production',
+  httpOnly: true,
+  maxAge: 600, // 10 minutes - enough time to complete auth flow
 };
 
-if (!Astro.cookies.get('auth_redirect')?.value) {
-  // Capture the redirect URL from the query parameters and store it in a cookie
-  const auth_redirect = Astro.url.searchParams.get('url');
-  if (auth_redirect) {
-    Astro.cookies.set('auth_redirect', auth_redirect, cookieOptions);
-  }
+Astro.cookies.set('codeVerifier', authResponse.codeVerifier, cookieOptions);
+
+if (authResponse.nonce) {
+  Astro.cookies.set('nonce', authResponse.nonce, cookieOptions);
 }
 
-const authUrl = await oidcClientReturn.then(
-  (result: { authUrl?: string; codeVerifier?: string; nonce?: string }) => {
-    if (!result.authUrl) {
-      return '/';
-    }
-
-    const authUrl = new URL(result.authUrl);
-    const codeVerifier = result.codeVerifier;
-
-    if (authUrl && codeVerifier) {
-      Astro.cookies.set('codeVerifier', codeVerifier, cookieOptions);
-      return authUrl.toString();
-    }
-  }
-);
-
-if (authUrl) {
-  return Astro.redirect(authUrl);
-} else {
-  console.error('Redirect result is undefined.');
+// Store the redirect destination
+const authRedirect = Astro.url.searchParams.get('redirect_uri');
+if (authRedirect) {
+  Astro.cookies.set('redirect_uri', authRedirect, cookieOptions);
 }
+
+// Redirect to authorization server
+return Astro.redirect(authResponse.authUrl);
 ---

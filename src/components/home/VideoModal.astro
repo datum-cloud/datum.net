@@ -1,0 +1,159 @@
+---
+import Icon from '@components/Icon.astro';
+
+const { class: className } = Astro.props as { class?: string };
+---
+
+<video-modal class={className}>
+  <dialog aria-label="Video player">
+    <div class="modal-frame">
+      <button data-close-modal class="modal-close" aria-label="Close video" type="button">
+        <Icon name="close" size="sm" class="modal-close-icon" />
+      </button>
+      <div class="modal-content" id="video-modal-content">
+        <!-- Video content will be injected when opened -->
+      </div>
+    </div>
+  </dialog>
+</video-modal>
+
+<script>
+  const VIDEO_MODAL_OPEN_EVENT = 'video-modal-open';
+  const VIDEO_MODAL_CLOSE_EVENT = 'video-modal-close';
+
+  // Add event names to window object
+  declare global {
+    interface Window {
+      VIDEO_MODAL_OPEN_EVENT: string;
+      VIDEO_MODAL_CLOSE_EVENT: string;
+    }
+
+    interface CustomEventMap {
+      'video-modal-open': CustomEvent;
+      'video-modal-close': CustomEvent;
+    }
+  }
+
+  const VIDEO_MODAL_HASH = '#video-modal';
+
+  class VideoModal extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    contentContainer: HTMLElement;
+    dialogOpenedAt: number = 0;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.modal-frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.contentContainer = this.querySelector<HTMLElement>('#video-modal-content')!;
+
+      this.setupEventListeners();
+    }
+
+    connectedCallback() {
+      if (window.location.hash === VIDEO_MODAL_HASH) {
+        requestAnimationFrame(() => this.openModal());
+      }
+    }
+
+    setupEventListeners() {
+      document.addEventListener(VIDEO_MODAL_OPEN_EVENT, () => this.openModal());
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+      window.addEventListener('popstate', () => {
+        if (this.dialog.open && window.location.hash !== VIDEO_MODAL_HASH) this.closeModal();
+      });
+
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-video-modal-open', false);
+        window.removeEventListener('click', this.onClick);
+        this.clearContent();
+        if (window.location.hash === VIDEO_MODAL_HASH) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+        document.dispatchEvent(new CustomEvent(VIDEO_MODAL_CLOSE_EVENT));
+      });
+
+      // Listen for ESC key
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isLink = 'href' in (target || {});
+      const isOutsideDialog = document.body.contains(target) && !this.dialogFrame.contains(target);
+
+      // Check if click is inside a dialog but outside dialog-frame
+      const isInDialog = target.closest('dialog') !== null;
+      const isInDialogFrame = target.closest('.modal-frame') !== null;
+      const isDialogBackdropClick = isInDialog && !isInDialogFrame;
+
+      // Prevent closing if click happens too soon after opening (within 300ms)
+      const clickTime = Date.now();
+      const timeSinceOpen = clickTime - this.dialogOpenedAt;
+      const isTooSoon = timeSinceOpen < 300;
+
+      // Handle different click scenarios
+      if (isDialogBackdropClick) {
+        // This is a click on the dialog backdrop
+        this.closeModal();
+      } else if ((isLink || isOutsideDialog) && !isTooSoon) {
+        // This is a click outside the dialog or on a link
+        this.closeModal();
+      }
+    };
+
+    openModal() {
+      this.populateContent();
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-video-modal-open', true);
+      this.dialogOpenedAt = Date.now();
+      if (window.location.hash !== VIDEO_MODAL_HASH) {
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search + VIDEO_MODAL_HASH
+        );
+      }
+      setTimeout(() => window.addEventListener('click', this.onClick), 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+
+    populateContent() {
+      this.contentContainer.innerHTML = `
+        <div class="modal-embed-wrapper">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/AJpcgirSndk?si=iSh6tmAyFphBgQsd&autoplay=1&mute=1"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      `;
+    }
+
+    clearContent() {
+      this.contentContainer.innerHTML = '';
+    }
+  }
+
+  customElements.define('video-modal', VideoModal);
+
+  // Export the event names for other components to use
+  window.VIDEO_MODAL_OPEN_EVENT = VIDEO_MODAL_OPEN_EVENT;
+  window.VIDEO_MODAL_CLOSE_EVENT = VIDEO_MODAL_CLOSE_EVENT;
+</script>

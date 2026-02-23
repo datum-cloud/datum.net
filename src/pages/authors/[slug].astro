@@ -15,7 +15,7 @@ import { Image } from 'astro:assets';
 export async function getStaticPaths() {
   const authors = await getCollection('authors');
   const blogPosts = await getCollection('blog', ({ data }) => {
-    return !data.draft && new Date(data.date) <= new Date();
+    return !data.draft;
   });
 
   // Only generate pages for authors who have published blog posts
@@ -34,7 +34,7 @@ const { slug } = Astro.params;
 
 // Get all blog posts by this author
 const allPosts = await getCollection('blog', ({ data }) => {
-  return !data.draft && data.author === slug && new Date(data.date) <= new Date();
+  return !data.draft && data.author === slug;
 });
 
 const sortedPosts = allPosts.sort((a, b) => {
@@ -74,7 +74,7 @@ const icon = 'user';
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
-      <div class="relative m-auto md:max-w-391">
+      <div class="max-width relative">
         <!-- Author Info Header -->
         <div class="mb-16">
           <div class="mb-8 flex items-start gap-10">

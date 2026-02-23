@@ -1,0 +1,87 @@
+---
+// src/pages/careers.astro
+import '@v1/styles/page-careers.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Mission from '@components/career/Mission.astro';
+import Culture from '@components/career/Culture.astro';
+import Benefits from '@components/career/Benefits.astro';
+import JobList from '@components/career/JobList.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+// Get career landing page from pages/career.mdx
+const page = await getCollectionEntry('pages', 'career');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title || 'Careers';
+const description = fm.description || '';
+---
+
+<Layout title={title} description={description} bodyClass="page-careers" meta={meta}>
+  <section
+    class="datum-container"
+    x-data="{
+      hasAshbyJobId: false,
+      init() {
+        const urlParams = new URLSearchParams(window.location.search);
+        this.hasAshbyJobId = urlParams.has('ashby_jid');
+      }
+    }"
+  >
+    <Hero class="light bg-white" />
+
+    <div x-show="!hasAshbyJobId" x-cloak>
+      <Mission content={page} />
+
+      <Culture />
+
+      <Benefits />
+    </div>
+
+    <section
+      id="roles"
+      class="section--block section--block--pad fade-in--pure bg-white"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+    >
+      <div class="max-width">
+        <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
+
+        <!-- Job List (shown when no ashby_jid) -->
+        <div x-show="!hasAshbyJobId" x-cloak>
+          <JobList server:defer>
+            <div slot="fallback" class="mx-auto max-w-4xl py-12 text-center">
+              <div
+                class="border-glacier-mist-800 border-t-canyon-clay mx-auto mb-4 size-8 animate-spin rounded-full border-3"
+              >
+              </div>
+              <p class="text-midnight-fjord/60 text-sm">Loading open positions...</p>
+            </div>
+          </JobList>
+        </div>
+
+        <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
+        <div x-show="hasAshbyJobId" x-cloak>
+          <div id="ashby_embed"></div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // @ts-expect-error - Ashby is a global variable
+      window.__Ashby = {
+        settings: {
+          ashbyBaseJobBoardUrl: 'https://jobs.ashbyhq.com/datum',
+          autoLoad: true,
+          autoScroll: false,
+        },
+      };
+    </script>
+    <script src="https://jobs.ashbyhq.com/datum/embed?version=2" is:inline defer></script>
+
+    <Footer />
+  </section>
+</Layout>

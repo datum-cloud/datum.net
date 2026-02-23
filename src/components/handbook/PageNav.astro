@@ -1,60 +1,64 @@
 ---
-import { getCollection } from 'astro:content';
+// src/components/handbook/PageNav.astro
 import ArticleNavigation from '@components/ArticleNavigation.astro';
+import LastUpdated from '@components/handbook/LastUpdated.astro';
+import EditPage from '@components/handbook/EditPage.astro';
+import type { SidebarItems } from '@/src/types/common';
 
 const {
-  currentArticleId,
-  categories,
+  currentArticle,
+  items,
+  lastUpdated,
   class: className,
 } = Astro.props as {
-  currentArticleId: string;
+  currentArticle: { id: string; path: string };
   class?: string;
-  categories: string[];
+  items: SidebarItems[];
+  lastUpdated?: Date;
 };
 
-const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+const handbookItems: Array<{ id: string; data: { title: string } }> = [];
 
-// Sort handbooks by category and order for navigation
-const sortedHandbooks = handbooks
-  .filter((h) => !h.data.draft)
-  .sort((a, b) => {
-    const categoryA = a.id.split('/')[0];
-    const categoryB = b.id.split('/')[0];
-
-    // First sort by category
-    if (categoryA !== categoryB) {
-      const indexA = categories.indexOf(categoryA);
-      const indexB = categories.indexOf(categoryB);
-      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-    }
-
-    // Then sort by order within category
-    const orderA = a.data.sidebar?.order || 0;
-    const orderB = b.data.sidebar?.order || 0;
-    return orderA - orderB;
+Object.values(items).forEach((item: SidebarItems) => {
+  item.childs?.forEach((child: { slug: string; label: string; title?: string }) => {
+    handbookItems.push({
+      id: child.slug,
+      data: {
+        title: child.title || child.label,
+      },
+    });
   });
+});
 
 // Find current article index for navigation
-const currentIndex = sortedHandbooks.findIndex((h) => h.id === currentArticleId);
-const previousArticle = currentIndex > 0 ? sortedHandbooks[currentIndex - 1] : undefined;
+const currentIndex = handbookItems.findIndex((h) => h.id === currentArticle.id);
+const previousArticle = currentIndex > 0 ? handbookItems[currentIndex - 1] : undefined;
 const nextArticle =
-  currentIndex < sortedHandbooks.length - 1 ? sortedHandbooks[currentIndex + 1] : undefined;
+  currentIndex < handbookItems.length - 1 ? handbookItems[currentIndex + 1] : undefined;
 ---
 
-<ArticleNavigation
-  previousArticle={previousArticle
-    ? {
-        id: previousArticle.id,
-        title: previousArticle.data.title,
-        url: `/handbook/${previousArticle.id}/`,
-      }
-    : undefined}
-  nextArticle={nextArticle
-    ? {
-        id: nextArticle.id,
-        title: nextArticle.data.title,
-        url: `/handbook/${nextArticle.id}/`,
-      }
-    : undefined}
-  class={className}
-/>
+{/* Last Updated */}
+<footer id="footer-article" class="article-footer">
+  <div class="flex flex-wrap justify-between">
+    {currentArticle && <EditPage filePath={currentArticle.path} />}
+    {lastUpdated && <LastUpdated date={lastUpdated} />}
+  </div>
+
+  <ArticleNavigation
+    previousArticle={previousArticle
+      ? {
+          id: previousArticle.id,
+          title: previousArticle.data.title,
+          url: `/handbook/${previousArticle.id}/`,
+        }
+      : undefined}
+    nextArticle={nextArticle
+      ? {
+          id: nextArticle.id,
+          title: nextArticle.data.title,
+          url: `/handbook/${nextArticle.id}/`,
+        }
+      : undefined}
+    class={className}
+  />
+</footer>

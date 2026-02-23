@@ -7,10 +7,10 @@ sidebar:
 
 ## Summary
 
-Galactic consists of several [components](../../galactic-vpc/#components) that work together to provide its 
+Galactic consists of several [components](../../galactic-vpc/#components) that work together to provide its
 full functionality.
 
-In addition, each host that terminates Galactic VPCs must meet certain configuration requirements 
+In addition, each host that terminates Galactic VPCs must meet certain configuration requirements
 for the low-level Linux networking stack to perform the necessary work.
 
 
@@ -18,7 +18,7 @@ for the low-level Linux networking stack to perform the necessary work.
 
 #### Routing
 
-We assume that you have created the necessary IPv6 underlay according to the requirements 
+We assume that you have created the necessary IPv6 underlay according to the requirements
 described in our [naming and numbering section](../naming-numbering/#srv6-addressing).
 
 For the installation, you will require the relevant node prefixes in the steps described below.
@@ -26,16 +26,16 @@ For the installation, you will require the relevant node prefixes in the steps d
 
 #### SRv6 Loopback
 
-Each node requires an SRv6 loopback address that can be used as the originating address for outgoing 
-packets.  
-We recommend using the highest VPC Identifier and Function values for this.  
-For example, if your node subnet is `2001:db8:ff01:0100::/56`, you might use `2001:db8:ff01:0100:ffff:ffff:ffff:ffff`.  
+Each node requires an SRv6 loopback address that can be used as the originating address for outgoing
+packets.
+We recommend using the highest VPC Identifier and Function values for this.
+For example, if your node subnet is `2001:db8:ff01:0100::/56`, you might use `2001:db8:ff01:0100:ffff:ffff:ffff:ffff`.
 To facilitate this, the Galactic codebase prevents assigning the first and last addresses in the given segment otherwise.
 
 
 #### VRF Kernel Module
 
-Our CNI plugin makes use of Linux kernel network VRF (Virtual Routing and Forwarding) to fully isolate containers and provide 
+Our CNI plugin makes use of Linux kernel network VRF (Virtual Routing and Forwarding) to fully isolate containers and provide
 access to all packets entering and exiting a given container.
 
 For this, your host system *must* have the VRF kernel module loaded and strict mode enabled using `sysctl`:
@@ -66,22 +66,22 @@ net.ipv6.conf.{iface}.seg6_enabled: 1
 
 #### Firewall
 
-The CNI plugin will insert and remove the necessary forwarding rules into the `iptables` 
+The CNI plugin will insert and remove the necessary forwarding rules into the `iptables`
 `FORWARD` chain to allow traffic to pass in and out of the container workload.
 
-You must ensure that traffic to *and* from your node subnet can be both received 
+You must ensure that traffic to *and* from your node subnet can be both received
 and sent.
 
-You should also be aware that SRv6 traffic may pass through your node 
-as a transit-only segment. You must therefore ensure that traffic can be forwarded 
-into and out of your node for the entirety of the IPv6 space you have allocated to your 
+You should also be aware that SRv6 traffic may pass through your node
+as a transit-only segment. You must therefore ensure that traffic can be forwarded
+into and out of your node for the entirety of the IPv6 space you have allocated to your
 SRv6 nodes.
 
 
 ### MQTT
 
-You must provide an MQTT broker to which the `galactic-router` and all instances of 
-`galactic-agent` nodes can connect. You can use a simple instance of [Eclipse Mosquitto](https://mosquitto.org/) 
+You must provide an MQTT broker to which the `galactic-router` and all instances of
+`galactic-agent` nodes can connect. You can use a simple instance of [Eclipse Mosquitto](https://mosquitto.org/)
 or a hosted MQTT broker such as [HiveMQ](https://www.hivemq.com/).
 
 
@@ -91,22 +91,22 @@ Galactic CNI requires some additional components to function.
 
 #### Community Plugins
 
-Install the [CNI community plugins](https://github.com/containernetworking/plugins/) according to 
+Install the [CNI community plugins](https://github.com/containernetworking/plugins/) according to
 their instructions.
 
 
 #### Multus
 
-[Multus](https://github.com/k8snetworkplumbingwg/multus-cni) is used to allow a container to have multiple 
+[Multus](https://github.com/k8snetworkplumbingwg/multus-cni) is used to allow a container to have multiple
 network interfaces. Install and test it according to their instructions.
 
-A note of caution: depending on your Kubernetes cluster network (Cilium, etc.), you may need to adjust the configuration to allow 
-the use of third-party plugins, as some of them prevent such use by default. The Multus documentation contains 
+A note of caution: depending on your Kubernetes cluster network (Cilium, etc.), you may need to adjust the configuration to allow
+the use of third-party plugins, as some of them prevent such use by default. The Multus documentation contains
 details on this.
 
 #### Galactic CNI
 
-As with the community plugins, you can retrieve the 
+As with the community plugins, you can retrieve the
 [Galactic CNI binary](https://github.com/datum-cloud/galactic-cni/releases) (named `galactic`) and install it in your cluster.
 
 
@@ -116,10 +116,10 @@ As with the community plugins, you can retrieve the
 Galactic Operator can be installed with our `dist` manifest package directly:
 
 ```sh
-kubectl apply -f 'https://github.com/datum-cloud/galactic-operator/blob/main/dist/install.yaml'
+kubectl apply -f 'https://raw.githubusercontent.com/datum-cloud/galactic-operator/refs/heads/main/dist/install.yaml'
 ```
 
-You may wish to adjust the `image` reference from the default `:latest` to a 
+You may wish to adjust the `image` reference from the default `:latest` to a
 [release version](https://github.com/datum-cloud/galactic-operator/pkgs/container/galactic-operator).
 
 
@@ -128,18 +128,18 @@ You may wish to adjust the `image` reference from the default `:latest` to a
 The Galactic Agent must be installed so that it runs on each node hosting Galactic-terminated workloads.
 A `DaemonSet` is the preferred way to achieve this.
 
-You must provide the [necessary configuration](https://github.com/datum-cloud/galactic-agent/blob/main/main.go#L27) 
-for each node to operate properly. In our production environment, we run an `initContainer` as part of the `DaemonSet` that 
-retrieves the relevant runtime configuration from our configuration management system and provides it to the `galactic-agent` 
+You must provide the [necessary configuration](https://github.com/datum-cloud/galactic-agent/blob/main/main.go#L27)
+for each node to operate properly. In our production environment, we run an `initContainer` as part of the `DaemonSet` that
+retrieves the relevant runtime configuration from our configuration management system and provides it to the `galactic-agent`
 in a configuration file.
 
-[Here is an example](https://github.com/datum-cloud/galactic-agent/blob/main/config/base/daemonset.yaml) Kubernetes 
+[Here is an example](https://github.com/datum-cloud/galactic-agent/blob/main/config/base/daemonset.yaml) Kubernetes
 manifest you can use.
 
 The `/var/run/galactic` host mount is where the `galactic-agent` and the `galactic` CNI plugin by default
 connect to exchange register/deregister information. You may change it, but you must adjust it in both components.
 
-`NET_ADMIN` is a mandatory capability for the `galactic-agent` to add, modify, and delete the necessary SRv6 
+`NET_ADMIN` is a mandatory capability for the `galactic-agent` to add, modify, and delete the necessary SRv6
 routes in the host system. For this to work, the `galactic-agent` must also operate in the `hostNetwork`.
 
 
@@ -148,7 +148,7 @@ routes in the host system. For this to work, the `galactic-agent` must also oper
 The Galactic Router can be installed anywhere as long as it can access the MQTT broker.
 There is no requirement for it to operate inside the Kubernetes cluster hosting the workloads.
 
-[Here is an example](https://github.com/datum-cloud/galactic-router/blob/main/config/base/deployment.yaml) `Deployment` 
-manifest you can use. To make this work, you must provide 
-[configuration](https://github.com/datum-cloud/galactic-router/blob/main/galactic_router/__init__.py#L19) for the 
+[Here is an example](https://github.com/datum-cloud/galactic-router/blob/main/config/base/deployment.yaml) `Deployment`
+manifest you can use. To make this work, you must provide
+[configuration](https://github.com/datum-cloud/galactic-router/blob/main/galactic_router/__init__.py#L19) for the
 database and MQTT connection. You can provide this configuration as command arguments or environment variables.

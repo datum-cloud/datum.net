@@ -7,6 +7,7 @@ export interface NavItem {
   href: string;
   icon?: string;
   isExternal?: boolean;
+  label?: string;
 }
 
 export interface NavSection {

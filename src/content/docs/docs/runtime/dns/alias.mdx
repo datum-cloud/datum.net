@@ -1,0 +1,54 @@
+---
+title: "ALIAS (CNAME flattening)"
+sidebar:
+  order: 2
+meta:
+  title: "ALIAS records and CNAME flattening"
+  description: "How ALIAS works, how it differs from CNAME, what to put in the Name/Value fields, and how providers like Cloudflare describe it as CNAME flattening."
+---
+
+## What an ALIAS record is
+
+An **ALIAS** record is a provider-side feature that lets you point a hostname (including the **zone apex**, like `example.com`) at another hostname the way a CNAME does, while still returning **A/AAAA answers** to clients.
+
+Different providers use different names for the same idea:
+
+- **Cloudflare** commonly describes this as **“CNAME flattening”**
+- Other DNS providers may call it **ALIAS**, **ANAME**, or **flattened CNAME**
+
+## When you should use ALIAS
+
+Use ALIAS when you want “point this name at that hostname” behavior but **you can’t (or shouldn’t) use CNAME**, most commonly:
+
+- At the **zone apex** (`example.com`) where CNAME is not allowed by standard DNS rules.
+- When you want the convenience of targeting a hostname that may change IPs (CDNs, hosted services), but still need clients to receive A/AAAA records.
+
+## Expected Name and Value
+
+- **Name**: the hostname inside the zone you’re creating the record for.
+  - For the zone apex, many DNS tools use `@` (BIND/zone-file notation) to mean “the zone root”.
+  - For a subdomain, use the label (for example `www` for `www.example.com`).
+- **Value**: a **target hostname (FQDN)**, like `myapp.hosting-provider.com`.
+  - ALIAS values should be **hostnames**, not IP addresses.
+  - The target hostname should ultimately resolve to **A and/or AAAA** records (directly or through other DNS indirection).
+
+## How it works (what it does)
+
+ALIAS does **not** exist as a standardized DNS RRType that recursive resolvers understand everywhere. Instead, the DNS provider’s authoritative system does the work:
+
+1. A client’s recursive resolver asks for `A` and/or `AAAA` for the ALIAS name (for example `example.com`).
+2. Datum resolves the ALIAS target hostname (for example `myapp.hosting-provider.com`) to its current `A`/`AAAA` records.
+3. Datum returns the resulting `A`/`AAAA` answers **as if they were directly configured on the ALIAS name**.
+
+Important consequence: clients typically **do not** see a CNAME in the response. They see `A`/`AAAA` records for the name they queried.
+
+## What to expect compared to CNAME
+
+- **CNAME**: returns a CNAME response and relies on the resolver to chase it.
+- **ALIAS / “CNAME flattening”**: returns `A`/`AAAA` directly (synthesized by the DNS provider).
+
+## Notes and limitations
+
+- **Portability**: ALIAS/flattening is not uniform across providers. If you move DNS providers, you may need to translate this into whatever equivalent that provider supports.
+- **Answer types**: ALIAS is primarily about synthesizing `A`/`AAAA` answers. It is not a general replacement for other record types.
+

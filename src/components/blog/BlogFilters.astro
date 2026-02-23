@@ -7,7 +7,7 @@ const { currentCategory } = Astro.props;
 const categories = await getCollection('categories');
 
 // Sort categories by name
-const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.data.name));
+categories.sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 
 <div
@@ -21,7 +21,7 @@ const sortedCategories = categories.sort((a, b) => a.data.name.localeCompare(b.d
       All
     </a>
     {
-      sortedCategories.slice(0, 5).map((category) => (
+      categories.slice(0, 5).map((category) => (
         <a
           href={`/blog/${category.id}/`}
           class={`blog-filter ${currentCategory === category.id ? 'blog-filter--active' : ''}`}

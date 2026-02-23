@@ -1,0 +1,39 @@
+{
+  "$schema": "https://beta.frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Docs",
+      "path": "[[workspace]]/src/content/docs/docs",
+      "previewPath": "docs",
+      "contentTypes": ["docs"]
+    },
+    {
+      "title": "About",
+      "path": "[[workspace]]/src/content/about",
+      "previewPath": "about"
+    },
+    {
+      "title": "Blog",
+      "path": "[[workspace]]/src/content/blog",
+      "previewPath": "blog",
+      "contentTypes": ["blogPost"]
+    },
+    {
+      "title": "Changelog",
+      "path": "[[workspace]]/src/content/changelog",
+      "previewPath": "changelog",
+      "contentTypes": ["changelog"]
+    },
+    {
+      "title": "Handbook",
+      "path": "[[workspace]]/src/content/handbook",
+      "previewPath": "handbook",
+      "contentTypes": ["handbookPost"]
+    },
+    {
+      "title": "Faq",
+      "path": "[[workspace]]/src/content/faq",
+      "contentTypes": ["faqPost"]
+    }
+  ]
+}

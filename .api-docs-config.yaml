@@ -1,0 +1,34 @@
+# API Documentation Generation Configuration
+# Defines the source repositories for auto-generating API reference docs
+# Only operator versions are configured here - all other settings are in scripts/generate-api-docs.ts
+
+sources:
+  # Milo - Core platform APIs (IAM, Resource Manager)
+  - name: milo
+    org: datum-cloud
+    repo: milo
+    version: v0.18.0
+
+  # Network Services Operator - Networking APIs (Domains, HTTPProxy)
+  - name: network-services-operator
+    org: datum-cloud
+    repo: network-services-operator
+    version: v0.14.4
+
+  # Telemetry Services Operator - Observability APIs (ExportPolicy)
+  - name: telemetry-services-operator
+    org: datum-cloud
+    repo: telemetry-services-operator
+    version: v0.2.1
+
+  # DNS Service
+  - name: dns
+    org: datum-cloud
+    repo: dns-operator
+    version: v0.5.1
+
+  # Activity Tracking
+  - name: activity
+    org: datum-cloud
+    repo: activity
+    version: main  # TODO: point to tagged release

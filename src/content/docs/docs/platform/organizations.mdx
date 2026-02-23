@@ -1,15 +1,20 @@
 ---
-title: Organizations
+title: "Organizations"
 sidebar:
   order: 4
+meta:
+  title: "Datum Project Organization - Personal and Team Management"
+  description: "Learn to create and manage Organizations in Datum. The top-level container for your projects, teams, billing, and cloud network resources."
 ---
 
-## The Two Types of Datum Organizations
-Orgs sound boring, but they really are quite important. There are two types of orgs at Datum:
-- Personal Orgs - After signup, a personal org is automatically created on your behalf. Personal orgs are great for solo experimentation, and play a role in our data model.
-- Standard Orgs - You can create additional orgs, to which you can invite members, leverage role-based access controls, etc.
+The organization resource is the root node in Datum Cloud’s resource hierarchy. We support two types of organizations:
 
-We recommend that you think about your Personal Org as a sandbox. While there is nothing to stop you from running “production” workloads in your personal org
+**Personal Organization** - Designed for personal projects and experimentation.
+- Access to most platform features.
+- Cannot have additional team members
+- Restricted to free “Builder” tier. No ability to upgrade to a higher level of service.
 
-## Why Your Personal Org is Created Automatically
-Essentially, this is tied to our data model, where for each user we need an organizational entity that is uniquely tied to a user. This allows you to participate in (and then be removed from) any Standard organization without losing access to Datum Cloud. While we could hide this org entity from you, we prefer to give you a personal playground. Enjoy!
+**Standard Organization** - Designed for team collaboration and production use cases.
+- Access to all platform features
+- Ability to add/manage team members with Owner, Editor or Viewer roles
+- Ability to upgrade to paid tiers when available.

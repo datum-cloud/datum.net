@@ -19,7 +19,7 @@
       "children": [
         {
           "items": [
-            { "icon": "heart-handshake", "text": "Huddle", "href": "/community-huddle/" },
+            { "icon": "calendar", "text": "Events", "href": "/events/" },
             { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
             { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
             { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
@@ -36,6 +36,7 @@
             { "icon": "default", "text": "About", "href": "/about/" },
             { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
             { "icon": "book-image", "text": "Blog", "href": "/blog/" },
+            { "icon": "backpack", "text": "Careers", "href": "/careers/" },
             { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" }
           ]
         }
@@ -56,15 +57,16 @@
         { "text": "Home", "href": "/" },
         { "text": "Product", "href": "/features/" },
         { "text": "Pricing", "href": "/pricing/" },
-        { "text": "Docs", "href": "/docs/" }
+        { "text": "Docs", "href": "/docs/" },
+        { "text": "Status", "href": "https://www.datumstatus.net/", "isExternal": true }
       ]
     },
     {
       "title": "Community",
       "items": [
+        { "text": "Events", "href": "/events/" },
         { "text": "Roadmap", "href": "/resources/roadmap/" },
         { "text": "Changelog", "href": "/resources/changelog/" },
-        { "text": "Community Huddle", "href": "/community-huddle/" },
         { "text": "Open Source", "href": "/resources/open-source/" }
       ]
     },
@@ -74,6 +76,7 @@
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
         { "text": "Blog", "href": "/blog/" },
+        { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Get In Touch", "href": "/contact/" },
         { "text": "Design Assets", "href": "/brand/" }
       ]
@@ -106,7 +109,8 @@
         { "text": "Logos", "href": "/brand/logos/" },
         { "text": "Iconography", "href": "/brand/iconography/" },
         { "text": "Illustration Suite", "href": "/brand/imagery/" },
-        { "text": "Social", "href": "/brand/social/" }
+        { "text": "Social", "href": "/brand/social/" },
+        { "text": "Templates", "href": "/brand/templates/" }
       ]
     }
   ],
@@ -132,6 +136,7 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
+        { "text": "Careers", "href": "/careers/" },
         { "text": "Blog", "href": "/blog/" },
         { "text": "Design Assets", "href": "/brand/" }
       ]

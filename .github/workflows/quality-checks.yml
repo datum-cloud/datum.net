@@ -5,11 +5,11 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - 'README.md'
-      - 'env.example'
-      - '.vscode/**'
-      - 'public/pagefind/**'
-      - '**/pagefind/**'
+      - "README.md"
+      - "env.example"
+      - ".vscode/**"
+      - "public/pagefind/**"
+      - "**/pagefind/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,13 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
@@ -42,13 +42,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
@@ -69,16 +69,15 @@ jobs:
     needs: quality
     name: Build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
@@ -87,35 +86,6 @@ jobs:
         run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
-
-  e2e:
-    needs: build
-    name: End-to-End Tests
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install chromium
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
 
   status-check:
     needs: [install, quality, build]

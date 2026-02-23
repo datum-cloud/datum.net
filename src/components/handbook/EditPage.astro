@@ -1,0 +1,28 @@
+---
+import Icon from '@components/Icon.astro';
+
+const baseProjectURL =
+  process.env.GITHUB_PROJECT_URL ||
+  import.meta.env.GITHUB_PROJECT_URL ||
+  'http://github.com/datum-cloud/datum.net';
+
+interface EditPageProps {
+  filePath?: string;
+}
+
+const { filePath } = Astro.props as EditPageProps;
+
+if (!filePath) {
+  return null;
+}
+
+const fileUrl = new URL(baseProjectURL + '/edit/main/' + filePath).toString();
+---
+
+{
+  filePath && (
+    <a href={fileUrl} class="edit-page" target="_blank">
+      <Icon name="pencil-line" size="sm" class="mr-1" /> Edit page
+    </a>
+  )
+}

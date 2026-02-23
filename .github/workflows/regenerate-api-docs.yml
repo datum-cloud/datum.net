@@ -1,0 +1,58 @@
+# Automatically regenerate API reference documentation when Renovate updates operator versions
+# This workflow runs when Renovate creates/updates a PR that modifies .api-docs-config.yaml
+# It regenerates the docs and commits them back to the same PR branch
+
+name: Regenerate API Documentation
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".api-docs-config.yaml"
+
+jobs:
+  regenerate-docs:
+    # Only run on Renovate PRs
+    if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.26"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate API documentation
+        run: npm run generate:api-docs
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code src/content/docs/docs/api/reference.mdx || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated docs
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/docs/docs/api/reference.mdx
+          git commit -m "docs: regenerate API reference from updated operators"
+          git push

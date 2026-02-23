@@ -1,49 +1,38 @@
 ---
-title: Authenticating
+title: "Authenticating"
 sidebar:
   order: 3
 meta:
-  title: "API Auth Guide - Datum Docs for Bearer Token Exchange & Error Handling"
-  description: "Learn how to authenticate with Datum Cloud API using short-lived bearer tokens. Follow instructions for generating personal access tokens, exchanging for API tokens, refreshing hourly, and handling authentication errors like 403 Forbidden."
+  title: "Datum Cloud platform API Authentication Guide"
+  description: "Learn how to authenticate requests to the Datum Cloud API."
 ---
 
-The Datum Cloud platform supports users authenticating with the API with
-short-lived Bearer tokens. Bearer tokens can be created by creating a Personal
-Access Token in the Datum Cloud Portal and using the
-`https://api.datum.net/datum-os/oauth/token/exchange` API endpoint to exchange
-the Personal Access Token for a short-lived bearer token.
+The Datum Cloud platform uses short-lived Bearer tokens for API authentication.
+These tokens are managed automatically by the `datumctl` CLI, which handles login,
+credential storage, and token refresh.
+
+## Log In
+Authenticate with Datum Cloud:
 
 ```shell
-▶ curl https://api.datum.net/datum-os/oauth/token/exchange \
-   -H "Authorization: Bearer $PAT" -sS | jq
-{
-  "access_token": "[[redacted]]",
-  "token_type": "Bearer"
-}
+▶ datumctl auth login
 ```
+This command will open your default browser, prompt to log you in, and store your credentials in the system’s keyring.
+Note: If your browser doesn't open automatically, the command will display a URL that you can copy and paste into your browser manually.
 
-Use the returned API token to authenticate with the [Datum Cloud control
-planes](/docs/api/connecting-to-the-api#control-planes/). The token should be refreshed every hour.
+## List Your Organizations
+Once authenticated, view the organizations you have access to:
 
-:::tip[Tip]
-Use `datumctl auth get-token` command to quickly grab a short-lived
-access token that can be used to authenticate with the Datum Cloud API.
-:::
-
-## Authentication Errors
-
-Invalid authentication tokens or unauthorized requests will result in the same
-**403 Forbidden** error.
-
+```shell
+▶ datumctl get organizations
 ```
-{
-  "kind": "Status",
-  "apiVersion": "v1",
-  "metadata": {},
-  "status": "Failure",
-  "message": "forbidden: User \"system:anonymous\" cannot get path \"/openapi/v3\"",
-  "reason": "Forbidden",
-  "details": {},
-  "code": 403
-}
+## Configure Kubernetes Access 
+To use kubectl with your Datum Cloud resources:
+```shell
+▶ # Using an organization ID
+datumctl auth update-kubeconfig --organization <org-id>
+
+# Or using a project ID
+datumctl auth update-kubeconfig --project <project-id>
 ```
+Now you can use standard kubectl commands to interact with your Datum Cloud control plane.

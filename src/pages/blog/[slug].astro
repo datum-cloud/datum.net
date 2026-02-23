@@ -11,8 +11,11 @@ import { Image, getImage } from 'astro:assets';
 import { getMetaImageUrl } from '@utils/imageUtils';
 import { formatShortDate, formatISODate, estimateReadingTime } from '@utils/dateUtils';
 import { getCollectionEntry } from '@utils/collectionUtils';
+import { getAuthorBgColor } from '@utils/authorUtils';
 import Icon from '@components/Icon.astro';
+import { truncateByWords } from '@libs/string';
 import { Breadcrumbs } from 'astro-breadcrumbs';
+import defaultOgImage from '@content/images/og/blog.png';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -36,6 +39,9 @@ const { Content } = await render(entry);
 const formattedDate = formatShortDate(entry.data.date);
 const metaImage = getMetaImageUrl(entry.data.featuredImage, entry.data.thumbnail, Astro.url.origin);
 
+// Get author background color for consistent styling with team section
+const authorBgColor = authorData ? await getAuthorBgColor(authorData.id) : undefined;
+
 // Calculate reading time from content
 const readingTime = estimateReadingTime(entry.body || '');
 
@@ -47,21 +53,14 @@ const categoryData = await Promise.all(
 );
 
 // Get all blog entries for navigation
-const allBlogEntries = await getCollection('blog');
+const blogs = await getCollection('blog', ({ data }) => !data.draft);
 
 // Get navigation articles (sorted by date, newest first)
-const sortedBlogs = allBlogEntries
-  .filter((b) => !b.data.draft)
-  .sort((a, b) => {
-    const dateA = new Date(a.data.date || 0);
-    const dateB = new Date(b.data.date || 0);
-    return dateB.getTime() - dateA.getTime(); // Newest first
-  });
+blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-const currentIndex = sortedBlogs.findIndex((b) => b.id === entry.id);
-const previousArticle = currentIndex > 0 ? sortedBlogs[currentIndex - 1] : undefined;
-const nextArticle =
-  currentIndex < sortedBlogs.length - 1 ? sortedBlogs[currentIndex + 1] : undefined;
+const currentIndex = blogs.findIndex((b) => b.id === entry.id);
+const previousArticle = currentIndex > 0 ? blogs[currentIndex - 1] : undefined;
+const nextArticle = currentIndex < blogs.length - 1 ? blogs[currentIndex + 1] : undefined;
 
 // Get processed avatar URL
 let processedAvatarUrl = '';
@@ -98,8 +97,17 @@ const meta = fm.meta || {};
 const title = fm.title;
 const description = fm.description ? fm.description : '';
 
+// Set default blog OG image - always use blog.png unless explicitly overridden
+const blogMeta = {
+  ...meta,
+  og: {
+    image: defaultOgImage,
+    ...meta?.og,
+  },
+};
+
 breadcrumbData.push({
-  text: fm.title,
+  text: truncateByWords(fm.title, 9),
   href: `/blog/${entry.id}/`,
 });
 ---
@@ -112,7 +120,7 @@ breadcrumbData.push({
   publishDate={fm.date}
   author={fm.author}
   bodyClass={`page-blog page-blog--${entry.id}`}
-  meta={meta}
+  meta={blogMeta}
 >
   <section class="datum-container">
     <Hero class="light" hideContent={true} />
@@ -143,10 +151,15 @@ breadcrumbData.push({
                           class="blog-article-author-image"
                           width={52}
                           height={52}
+                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                         />
                       </a>
                     ) : (
-                      <a href={`/authors/${authorData.id}/`} class="blog-article-author-image">
+                      <a
+                        href={`/authors/${authorData.id}/`}
+                        class="blog-article-author-image"
+                        style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+                      >
                         <span class="text-lg font-bold text-gray-600">
                           {(authorData.data.name || fm.author).charAt(0)}
                         </span>
@@ -181,7 +194,7 @@ breadcrumbData.push({
               <span class="icon-label-text">
                 <button
                   type="button"
-                  class="border-b-1 hover:cursor-pointer"
+                  class="border-b hover:cursor-pointer"
                   x-data="{ copied: false }"
                   @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
                   x-text="copied ? 'Copied!' : 'Copy URL'"></button>
@@ -203,7 +216,7 @@ breadcrumbData.push({
 
           <!-- Article Header -->
           <header class="blog-article-header">
-            <div class="blog-article-breadcrumbs">
+            <div class="blog-article-breadcrumbs mb-5.5">
               <Breadcrumbs
                 linkTextFormat="sentence"
                 mainBemClass="a-breadcrumbs"
@@ -281,6 +294,7 @@ breadcrumbData.push({
                   id: previousArticle.id,
                   title: previousArticle.data.title,
                   url: `/blog/${previousArticle.id}/`,
+                  navLabel: 'Next article',
                 }
               : undefined}
             nextArticle={nextArticle
@@ -288,6 +302,7 @@ breadcrumbData.push({
                   id: nextArticle.id,
                   title: nextArticle.data.title,
                   url: `/blog/${nextArticle.id}/`,
+                  navLabel: 'Previous article',
                 }
               : undefined}
           />

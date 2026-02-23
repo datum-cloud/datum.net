@@ -1,0 +1,107 @@
+---
+title: "Building a distributed control plane for modern Service Providers"
+date: 2025-12-17 01:00:00
+slug: "control-plane-for-modern-service-providers"
+description: "Why we're building on Kubernetes as a generic control plane for multi-tenant service platforms."
+thumbnail: assets/images/blog-9.png
+featuredImage: assets/images/blog-9.png
+author: scot-wells
+categories: ["business-strategy", "under-the-hood"]
+draft: false
+meta:
+  title: Building a distributed control plane for Alt Clouds with Kubernetes - Datum Blog
+  description: Learn how Datum is leveraging Kubernetes as a generic control plane to build provider-grade, multi-tenant platforms. It sure beats rebuilding back office infrastructure from scratch!
+  og:
+    title: Why we're building our control plane on Kubernetes
+    description: To move beyond a bespoke back offices, we’re leaning into Kubernetes to create a scalable, multi-tenant control plane for modern service providers.
+---
+
+import Figure from '@components/Figure.astro';
+
+Over the last few years, a new wave of digital service providers (we like to call them alt clouds) have emerged. Think Supabase, Vercel, Resend, Loveable and many others. These specialized clouds abstract gnarly infra and provide clean, productized APIs. 
+
+Most startups still reach for a familiar web stack—Laravel/Gin/Django plus an Object Relational Mapping (ORM)—and then bolt on billing, auth, notifications, support tooling, and sales ops. It ships, but it quietly becomes a bespoke back office that no one really budgeted to maintain. 
+
+Fast forward a few million users and entropy can take place: features slow down, integration glue ages badly, and engineers spend cycles keeping the administrative plumbing alive instead of evolving the product customers love. 
+
+We think there is a better way.
+
+
+## A control plane mindset
+
+I’ve been deep in Kubernetes since 2016 (yes, “Kubernetes the Hard Way” deep!), working to really understand how all the parts fit together. Early on, I developed an appreciation for the Kubernetes approach that introduced a modular infrastructure management platform for running containers and making API integrations easy.
+
+By 2018 at StackPath (my previous company) we leaned into Operators back when the Operator SDK still had that new-car smell. We discovered how the control loop model could turn intent into reliable state. By treating APIs as resources and letting controllers reconcile, we increased our velocity and shipped sturdier software.
+
+_What clicked_: Kubernetes isn’t just a container scheduler. Its _true_ superpower is the control plane—an API server, a rich discovery surface, and a reconciliation engine that can be extended. Build your “platform APIs” as first-class resources and you inherit years of hard-won machinery.
+
+
+## Creature comforts you get “for free”
+
+When you model your platform as Kubernetes-style APIs, you pick up:
+
+- **API discovery & schemas** via the Discovery API and OpenAPI v3—clients know what exists and how to talk to it.  
+
+- **Declarative validation & policy** with CEL-powered ValidatingAdmissionPolicy (no external webhooks required if you don’t want them).  
+
+- **Event-driven reconciliation** (watches and controllers) instead of cron-polling spaghetti.  
+
+- **Extensibility** two ways: **CRDs** for simple schema-backed types and **API Aggregation** when you need full custom server behavior.  
+
+- **Authn/Authz that’s fully customizable** (OIDC, RBAC, Webhooks) with policy in the API.
+
+- **Audit logs** out of the box for who did what, when.  
+
+Add controllers, define resources, and suddenly your “back office” looks like a platform.
+
+
+## The new frontier: Kubernetes as a generic control plane
+
+In the last few years, the Kubernetes community made running a custom Kubernetes-style control plane far more approachable. A highlight is [KEP-4080](https://github.com/kubernetes/enhancements/blob/2a881c600fa7d135726d66a7ce54178819a102f7/keps/sig-api-machinery/4080-generic-controlplane/README.md), which proposes factoring out generic parts of kube-apiserver/kube-controller-manager into a reusable generic control plane library and sample binary. 
+
+The goal: keep the good stuff (RBAC, admission, CRDs, garbage collection, namespaces) without bundling the container-orchestration bits you may not need. That’s a big deal for service providers who want Kubernetes-grade APIs without carrying Kubelet/POD semantics.
+
+Practically, this means you can:
+
+- Stand up a Kubernetes-like API surface for your domain (quotas, organizations, projects, invoices, policies, workflows) using CRDs and/or aggregated APIs.
+
+- Keep using the ecosystem—kubectl, watches, admission, RBAC, audit, OpenAPI discovery—so platform engineers grok it immediately.
+
+- Compose controllers as reconcile loops, rather than bespoke daemons and cron pipelines.
+
+This progress has led to a reusable, modular control plane for “Kubernetes-style” APIs that isn’t tied to scheduling containers.
+
+
+## The spicy bits: real-world challenges
+
+There is no free lunch in life, remember? A provider-grade control plane still faces hard problems and trade-offs:
+
+- **Multi-tenancy & hierarchy.** You’ll want Organizations → Projects (maybe Folders) with inherited policy, identity, and quotas.
+
+- **Storage pressure on etcd.** etcd loves small keys and predictable churn; watch your object counts, sizes, and compaction. The practical database ceiling: \~8 GiB unless you like pain.
+
+- **Search/filter/sort UX.** The API gives you label/field selectors and efficient watches; heavy ad-hoc queries want secondary indexes or a sidecar indexer (ClickHouse/Elastic/etc.) so you don’t turn the API server into a search engine.  
+
+These are solvable, with clear limits and dedicated services where the core API shouldn’t bend.
+
+Even with these caveats, we think it’s better to augment the Kubernetes apiserver rather than rebuild your own control plane from scratch. In addition to the benefits mentioned above, you get a foundation that’s familiar to the engineers you want to hire and inherit a thriving ecosystem: Argo and Flux for GitOps, k9s for operator ergonomics, policies you can test, and tools that already “speak kube.”
+
+
+## So…what are we building at Datum?
+
+With [our Milo project](https://github.com/datum-cloud/milo), we’re investing in a distributed, multi-tenant control plane that is designed specifically _for service providers_. By riding on Kubernetes DNA, we’re betting on the value of:
+
+- **APIs first**: Everything is a resource. “Organizations,” “Projects,” “Quotas,” “Entitlements,” “Workflows,” “Invoices,” “SupportCases”—each a typed object with OpenAPI, RBAC, and admission policies. Discovery and docs are automatic.
+
+- **Controllers over scripts**: Reconciliation loops watch desired state and nudge reality into place—across clouds, regions, and edges. When something drifts, your controller notices and corrects it.
+
+- **Audit as a first-class citizen**: Actions become durable, queryable events. Compliance and support stop being a scavenger hunt.
+
+- **Extension-ready**: Need a new subsystem? Add a CRD, wire an admission policy, ship a controller. Need a non-CRD API? Register an aggregated apiserver and keep the uniform surface. 
+
+Even after plenty of scrapes and bruises over the last few months, we believe that extending Kubernetes as a generic control plane is superior to rolling our own. The momentum behind making the Kubernetes apiserver into reusable libraries to build generic control planes makes this path real, not hypothetical.
+
+So if you’re tired of rebuilding the same back office at every startup, come build **platforms** instead—APIs with a spine, not duct tape. There will be a few dragons along the way (and maybe a quota misfire or two), but we expect the destination is worth it: a provider-grade, multi-tenant control plane that feels native, scales with your customers, and lets your team spend more time shipping features than babysitting glue code.
+
+[See you on GItHub](https://github.com/datum-cloud/)!
+

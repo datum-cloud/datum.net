@@ -1,0 +1,58 @@
+---
+// src/components/career/JobList.astro
+import {
+  fetchJobPostings,
+  groupJobsByDepartment,
+  formatJobLocation,
+  getWorkType,
+  type AshbyJob,
+} from '@libs/ashby';
+
+// Fetch jobs from Ashby API
+const jobs = await fetchJobPostings();
+const groupedJobs = groupJobsByDepartment(jobs);
+const totalJobs = jobs.length;
+---
+
+<div class="mx-auto max-w-4xl">
+  <div class="mb-6">
+    <h3 class="datum-text-2xl text-midnight-fjord font-semibold">Open Positions ({totalJobs})</h3>
+  </div>
+
+  <div class="space-y-6">
+    {
+      Object.entries(groupedJobs).map(([department, deptJobs]) => (
+        <div class="border-midnight-fjord/10 border-b pb-6 last:border-b-0 last:pb-0">
+          <h4 class="datum-text-lg text-midnight-fjord mb-4 font-semibold">{department}</h4>
+          <div class="space-y-4">
+            {(deptJobs as AshbyJob[]).map((job) => (
+              <a
+                href={`/careers/?ashby_jid=${job.id}`}
+                class="group block transition-colors"
+                target="_blank"
+              >
+                <h5 class="datum-text-base text-canyon-clay mb-1 font-medium transition-colors group-hover:underline">
+                  {job.title}
+                </h5>
+                <p class="text-midnight-fjord/70 text-sm">
+                  {job.department} • {formatJobLocation(job)} • {job.employmentType} •{' '}
+                  {getWorkType(job)}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    totalJobs === 0 && (
+      <div class="py-12 text-center">
+        <p class="text-midnight-fjord/70 mb-4">
+          No open positions at the moment. Check back later!
+        </p>
+      </div>
+    )
+  }
+</div>

@@ -1,47 +1,58 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
-import Aside from '@components/Aside.astro';
 import TableOfContents from '@components/TableOfContents.astro';
-import type { ArticleProps } from '@/src/types/common';
+
 import type { MarkdownHeading } from 'astro';
-import { getEntry } from 'astro:content';
-import { Breadcrumbs } from 'astro-breadcrumbs';
+import type { SidebarItems } from '@/src/types/common';
 
-interface Props extends ArticleProps {
-  headings?: MarkdownHeading[];
-}
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
-const {
-  articleId: propArticleId,
-  showSidebar = true,
-  class: className,
-  headings = [],
-} = Astro.props as Props;
+dayjs.extend(utc);
+
+const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+const handbookIndex = await getEntry('handbooks', 'index');
+
+const { articleId: propArticleId, showSidebar = true, class: className } = Astro.props;
 
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
-const articleId = propArticleId || urlParam || 'company/why-we-exist';
+const articleId = propArticleId || urlParam || 'index';
 
-// ordering categories
-const handbookIndex = await getEntry('handbooks', 'index');
-const orderedCategories = handbookIndex?.data.contents;
-
-const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
+let mainArticleEntry;
 
 // Get the specified article for main content display
-const mainArticleEntry =
-  handbooks.find((h) => h.id === articleId) ||
-  handbooks.find((h) => h.id === 'company/why-we-exist');
-
+if (articleId === 'index') {
+  mainArticleEntry = handbookIndex;
+} else {
+  mainArticleEntry = handbooks.find((h) => h.id === articleId);
+}
 // Render the article content
 const mainArticle = mainArticleEntry ? await render(mainArticleEntry) : null;
 
-// Create breadcrumbs manually based on article ID
-let breadcrumbData = [];
+/**
+ * Format last modified date from frontmatter
+ */
+const lastModified =
+  mainArticle && mainArticle?.remarkPluginFrontmatter.updatedDate
+    ? mainArticle?.remarkPluginFrontmatter.updatedDate
+    : mainArticle?.remarkPluginFrontmatter.lastModified
+      ? dayjs(mainArticle.remarkPluginFrontmatter.lastModified).utc().format('MMM DD, YYYY')
+      : null;
 
-// Add home/handbook as first items
+/**
+ * Headings extraction for the main article
+ */
+const headings: MarkdownHeading[] = mainArticle ? mainArticle.headings : [];
+
+/**
+ * Create breadcrumbs manually based on article ID
+ * since Astro-Breadcrumbs doesn't support dynamic routes well.
+ */
+let breadcrumbData = [];
 breadcrumbData.push(
   {
     text: 'Home',
@@ -61,17 +72,25 @@ breadcrumbData.push(
 // Extract path segments from article ID
 const pathSegments = articleId.split('/').filter(Boolean);
 
-if (pathSegments.length > 0) {
+if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
   for (let i = 0; i < pathSegments.length; i++) {
     const segment = pathSegments[i];
 
     // Skip the last segment as it will be the current page title
     if (i < pathSegments.length - 1) {
       // Format the segment title (capitalize words, replace dashes with spaces)
-      const segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      let segmentTitle = segment
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+      // Convert "eos" to "EOS"
+      if (segmentTitle.toLowerCase() === 'eos') {
+        segmentTitle = 'EOS';
+      }
 
       breadcrumbData.push({
         text: segmentTitle,
+        href: '/handbook/' + segment + '/',
       });
     }
   }
@@ -80,30 +99,103 @@ if (pathSegments.length > 0) {
   if (mainArticleEntry?.data.title) {
     breadcrumbData.push({
       text: mainArticleEntry.data.title,
-      href: '/handbook/' + articleId,
     });
   }
+} else {
+  // Show "Home > Handbook" for the landing page (index)
+  breadcrumbData = [
+    {
+      text: 'Home',
+      href: '/',
+    },
+    {
+      text: 'Handbook',
+      class: 'handbook-menu-toggle',
+      href: '/handbook/',
+    },
+    {
+      text: 'Handbook',
+      href: '/handbook/',
+    },
+  ];
 }
+
+/**
+ * Build items structure from categories and handbooks data
+ * to pass to Sidebar component
+ */
+const categories = handbookIndex?.data.contents;
+let items: {
+  [key: string]: SidebarItems;
+} = {};
+
+const getCategory = (url: string) => {
+  let urlSplit = url.split('/');
+  return urlSplit[0];
+};
+
+handbooks.forEach((collection) => {
+  if (!collection.data.draft) {
+    let categorySlug = getCategory(collection.id);
+
+    if (categories) {
+      const indexBySlug = categories?.findIndex((cat) => cat.slug === categorySlug);
+      if (indexBySlug === -1 || indexBySlug === undefined) {
+        console.log(
+          'Category:%s not found in list. Available categories:%O',
+          categorySlug,
+          categories
+        );
+        return;
+      }
+      if (items[indexBySlug] && items[indexBySlug].childs) {
+        items[indexBySlug].childs.push({
+          slug: collection.id,
+          label: collection.data.sidebar.label || collection.data.title,
+          title: collection.data.title,
+          order: collection.data.sidebar.order || 0,
+        });
+        items[indexBySlug].childs.sort(function (a, b) {
+          return a.order - b.order;
+        });
+      } else {
+        try {
+          items[indexBySlug] = {
+            slug: categories[indexBySlug].slug,
+            label: categories[indexBySlug].label,
+            childs: [
+              {
+                slug: collection.id,
+                label: collection.data.sidebar.label || collection.data.title,
+                title: collection.data.title,
+                order: collection.data.sidebar.order || 0,
+              },
+            ],
+          };
+        } catch (error) {
+          console.log(
+            'Error creating category for slug:%s with index:%d',
+            categorySlug,
+            indexBySlug,
+            error
+          );
+        }
+      }
+    }
+  }
+});
 ---
 
 <section
   class:list={[
-    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 z-70 overflow-visible border-b-1',
+    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 z-70 overflow-visible border-b',
     className,
   ]}
   id="handbook-article-container"
 >
   <div class="max-width">
     <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
-      {
-        showSidebar && (
-          <Sidebar
-            currentArticleId={articleId}
-            handbooks={handbooks}
-            categories={orderedCategories}
-          />
-        )
-      }
+      {showSidebar && <Sidebar selectedId={articleId} items={items} />}
 
       {/* Main Content Area */}
       <article
@@ -112,33 +204,39 @@ if (pathSegments.length > 0) {
         data-reveal-immediate="true"
         data-reveal-delay="100"
       >
-        <header class="article-header">
-          <div>
-            <Breadcrumbs
-              mainBemClass="c-breadcrumbs"
-              linkTextFormat="sentence"
-              crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-            >
-              <svg
-                slot="index"
-                aria-label="Home Page"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+        {
+          breadcrumbData.length > 0 && (
+            <div>
+              <Breadcrumbs
+                mainBemClass="c-breadcrumbs"
+                linkTextFormat="sentence"
+                crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                customizeLinks={[{ index: 'last', 'aria-disabled': true }]}
               >
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-            </Breadcrumbs>
-          </div>
+                <svg
+                  slot="index"
+                  aria-label="Home Page"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </Breadcrumbs>
+            </div>
+          )
+        }
+
+        <header class="article-header">
           <h1 class="article-title">
-            {mainArticleEntry?.data.title || 'Why does Datum exist?'}
+            {mainArticleEntry?.data.title}
           </h1>
         </header>
 
@@ -155,8 +253,13 @@ if (pathSegments.length > 0) {
                   <p>Article entry found but content failed to render.</p>
                 ) : (
                   <p>
-                    Article entry not found. Available articles:{' '}
-                    {handbooks.map((h) => h.id).join(', ')}
+                    Available articles:
+                    {Object.values(handbooks).map((handbook) => (
+                      <div>
+                        <strong>{handbook.data.title}:</strong>{' '}
+                        <a href={`/handbook/${handbook.id}`}>{handbook.id}</a>
+                      </div>
+                    ))}
                   </p>
                 )}
               </div>
@@ -165,16 +268,15 @@ if (pathSegments.length > 0) {
         </div>
 
         {/* Navigation */}
-        <PageNav currentArticleId={articleId} categories={orderedCategories} />
+        <PageNav
+          currentArticle={{ id: articleId, path: mainArticleEntry?.filePath }}
+          categories={categories}
+          items={items}
+          lastUpdated={lastModified}
+        />
       </article>
 
       <aside class="handbook-toc">
-        <Aside title="About the Handbooks" class="small">
-          <p>
-            This is our guide to understanding our company foundations: our values, beliefs, and
-            goals. Feel free to reach out if there is something we've missed!.
-          </p>
-        </Aside>
         <TableOfContents headings={headings} title="On This Page" showTitle={true} sticky={true} />
       </aside>
     </div>
@@ -221,6 +323,34 @@ if (pathSegments.length > 0) {
           document.body.classList.remove('handbook-menu-open');
           document.body.style.overflow = '';
         }
+      });
+    }
+
+    // Add anchor links to headings in article body
+    const articleBody = document.querySelector('.article-body');
+    if (articleBody) {
+      const headings = articleBody.querySelectorAll('h2[id], h3[id], h4[id], h5[id], h6[id]');
+
+      headings.forEach((heading) => {
+        // Skip if anchor link already exists
+        if (heading.querySelector('.anchor-link')) return;
+
+        const id = heading.getAttribute('id');
+        if (!id) return;
+
+        // Create anchor link with SVG icon
+        const anchorLink = document.createElement('a');
+        anchorLink.className = 'anchor-link';
+        anchorLink.href = `#${id}`;
+        anchorLink.setAttribute('aria-label', 'Link to this section');
+
+        anchorLink.innerHTML = `
+          <span class="anchor-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentcolor" d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z"></path></svg>
+          </span>
+        `;
+
+        heading.appendChild(anchorLink);
       });
     }
   });

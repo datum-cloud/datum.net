@@ -21,8 +21,6 @@ services:
     build:
       context: .
       target: production
-      args:
-        SITE_URL: ${SITE_URL}
     ports:
       - '4321:4321'
     volumes:

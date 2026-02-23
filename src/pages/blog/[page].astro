@@ -10,6 +10,7 @@ import { getCollectionEntry } from '@utils/collectionUtils';
 import BlogItem from '@components/blog/BlogItem.astro';
 import BlogFilters from '@components/blog/BlogFilters.astro';
 import BlogPagination from '@components/blog/BlogPagination.astro';
+import defaultOgImage from '@content/images/og/blog.png';
 
 // Get blog landing page from blog/index.mdx
 const page = await getCollectionEntry('pages', 'blog');
@@ -17,16 +18,14 @@ const page = await getCollectionEntry('pages', 'blog');
 export async function getStaticPaths() {
   // Constants
   const BASE_URL = '/blog';
-  const allPosts = await getCollection('blog', ({ data }) => {
-    return !data.draft && new Date(data.date) <= new Date();
+  const blogs = await getCollection('blog', ({ data }) => {
+    return !data.draft;
   });
 
-  const sortedPosts = allPosts.sort((a, b) => {
-    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-  });
+  blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
   const pageSize = config.pageSize;
-  const totalPages = Math.ceil(sortedPosts.length / pageSize);
+  const totalPages = Math.ceil(blogs.length / pageSize);
 
   return Array.from({ length: totalPages - 1 }, (_, i) => {
     const pageNum = i + 2; // Start from page 2
@@ -36,7 +35,7 @@ export async function getStaticPaths() {
     return {
       params: { page: pageNum.toString() },
       props: {
-        posts: sortedPosts.slice(start, end),
+        posts: blogs.slice(start, end),
         currentPage: pageNum,
         totalPages: totalPages,
         baseUrl: BASE_URL,
@@ -67,6 +66,15 @@ const title = fm.title;
 const description = fm.description ? fm.description : '';
 const subtitle = fm.subtitle ? fm.subtitle : 'Blog';
 
+// Set default blog OG image - always use blog.png
+const blogMeta = {
+  ...meta,
+  og: {
+    image: defaultOgImage,
+    ...meta?.og,
+  },
+};
+
 const icon = 'book-image';
 ---
 
@@ -74,13 +82,13 @@ const icon = 'book-image';
   title={title}
   description={description}
   bodyClass={`page-blog page-blog--${currentPage}`}
-  meta={meta}
+  meta={blogMeta}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
-      <div class="relative m-auto md:max-w-391">
+      <div class="max-width relative">
         <!-- Category Filters and Search -->
         <BlogFilters />
 

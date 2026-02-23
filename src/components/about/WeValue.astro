@@ -1,15 +1,18 @@
 ---
-import type { ContentProps } from '@/src/types/common';
+import { type CollectionEntry } from 'astro:content';
 import Button from '@/src/components/Button.astro';
 import { Image } from 'astro:assets';
 import Illustration from '@content/about/images/rock.png';
 
-const { content } = Astro.props as ContentProps;
+const { content } = Astro.props as { content: CollectionEntry<'about'> };
 const items = content.data.items || [];
 const link = content.data.link;
 ---
 
-<section id="we-value" class="bg-glacier-mist-800 section--block section--block--pad relative">
+<section
+  id="we-value"
+  class="bg-glacier-mist-800 section--block section--block--pad relative overflow-clip"
+>
   <div
     class="max-width fade-in--pure relative z-10 text-center"
     data-reveal="fade-in--pure--visible"
@@ -17,7 +20,7 @@ const link = content.data.link;
   >
     <h3 class="datum-text-8xl mx-auto max-w-xl text-center">{content.data.title}</h3>
     <div
-      class="flex flex-wrap justify-center-safe gap-4 py-6 md:gap-6 md:py-14 xl:gap-9 xl:py-21 [&>div]:w-[279px]"
+      class="flex flex-wrap justify-center-safe gap-4 py-6 md:gap-6 md:py-14 xl:gap-9 xl:py-21 [&>div]:w-full [&>div]:sm:w-[279px]"
     >
       {
         items.length > 0 &&

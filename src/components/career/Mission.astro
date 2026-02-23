@@ -1,0 +1,44 @@
+---
+// src/components/career/Mission.astro
+import illustration from '@content/careers/images/careers.png';
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import Button from '@components/Button.astro';
+
+const { content } = Astro.props as { content: CollectionEntry<'pages'> };
+const { Content } = await render(content);
+---
+
+<section
+  id="mission"
+  class="section--block overflow-clip bg-white pt-8 pb-14 md:pt-10 md:pb-16 xl:pt-16 xl:pb-24"
+>
+  <div class="max-width">
+    <div
+      class="fade-in--pure flex flex-col items-center justify-center gap-8 md:flex-row md:gap-12 lg:gap-16 xl:gap-31"
+      data-reveal="fade-in--pure--visible"
+      data-reveal-delay="100"
+      data-reveal-immediate="true"
+    >
+      <div class="grow">
+        <Image
+          src={illustration}
+          alt="About"
+          class="size-auto w-full md:w-auto md:max-w-92 lg:max-w-128.5"
+        />
+      </div>
+      <div class="grow">
+        <h1 class="datum-text-8xl mb-8.75">
+          {content.data.title}
+        </h1>
+        <div class="datum-text-xl">
+          <Content />
+
+          <div class="mt-8 flex">
+            <Button href="#roles" class="btn btn--alpha" text="View open roles" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -23,8 +23,8 @@ const {
 <nav
   class="nav--main fade-in--pure"
   data-reveal="fade-in--pure--visible"
-  data-reveal-delay="100"
   data-reveal-immediate="true"
+  role="navigation"
 >
   {/* Logo */}
 
@@ -47,7 +47,7 @@ const {
     {
       showGithubButton && (
         <Button
-          class="btn gh-button btn--sm hidden md:inline-flex"
+          class="btn gh-button btn--sm"
           icon={{ name: 'github', size: 'md' }}
           iconPosition="left"
           iconClass="stroke-1.5"

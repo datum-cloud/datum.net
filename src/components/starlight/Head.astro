@@ -1,5 +1,10 @@
 ---
 // Overwrite @astrojs/starlight/components/Head.astro
+import fontsCss from '@v1/styles/fonts.css?raw';
+
+import Favicons from '@components/Favicons.astro';
+import defaultOgImage from '@content/images/og/default.png';
+
 const { head } = Astro.locals.starlightRoute;
 const { entry } = Astro.locals.starlightRoute;
 
@@ -8,6 +13,17 @@ const fm = entry.data;
 const meta = fm.meta || {};
 const title = meta.title ?? fm.title;
 const description = meta.description ?? fm.description;
+
+// Default OG image for docs
+const ogImage = meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage;
+
+// Check if og:image and twitter:image exist in head
+const hasOgImage = head.some(
+  ({ tag, attrs }) => tag === 'meta' && attrs && attrs.property === 'og:image'
+);
+const hasTwitterImage = head.some(
+  ({ tag, attrs }) => tag === 'meta' && attrs && attrs.name === 'twitter:image'
+);
 ---
 
 {
@@ -34,8 +50,12 @@ const description = meta.description ?? fm.description;
       return <Tag {...attrs} content={meta.og.description} />;
     }
 
-    if (meta.og && meta.og.image && Tag === 'meta' && attrs && attrs.property === 'og:image') {
-      return <Tag {...attrs} content={meta.og.image} />;
+    if (Tag === 'meta' && attrs && attrs.property === 'og:image') {
+      return <Tag {...attrs} content={ogImage} />;
+    }
+
+    if (Tag === 'meta' && attrs && attrs.name === 'twitter:image') {
+      return <Tag {...attrs} content={ogImage} />;
     }
 
     if (meta.og && meta.og.url && Tag === 'meta' && attrs && attrs.property === 'og:url') {
@@ -50,6 +70,68 @@ const description = meta.description ?? fm.description;
       return <Tag {...attrs} content={meta.og.url} />;
     }
 
+    // Filter out Starlight's default favicon links - we handle favicons in Favicons.astro
+    if (Tag === 'link' && attrs && attrs.rel) {
+      const relValue = attrs.rel;
+      if (
+        relValue === 'icon' ||
+        relValue === 'shortcut icon' ||
+        relValue === 'mask-icon' ||
+        relValue === 'apple-touch-icon'
+      ) {
+        return null;
+      }
+    }
+
     return <Tag {...attrs} set:html={content} />;
   })
 }
+
+<!-- Favicons -->
+<Favicons />
+
+<!-- DNS Prefetch for external domains (low priority hints) -->
+<link rel="dns-prefetch" href="https://api.github.com" />
+<link rel="dns-prefetch" href="https://hyperping.com" />
+<link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
+
+<!-- Preconnect to critical external domains (loads within ~5s) -->
+<link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+<link rel="preconnect" href="https://edge.marker.io" crossorigin />
+
+<!-- Preload critical fonts (used above the fold) -->
+<link
+  rel="preload"
+  href="/fonts/datum/allianceno1-regular-webfont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/datum/allianceno1-medium-webfont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/datum/allianceno1-semibold-webfont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/datum/canelatextlcweb-regular-webfont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<style is:inline set:html={fontsCss}></style>
+
+<!-- Add og:logo, og:image and twitter:image if not present in Starlight's head -->
+<meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
+{!hasOgImage && <meta property="og:image" content={ogImage.src} />}
+{!hasTwitterImage && <meta name="twitter:image" content={ogImage.src} />}

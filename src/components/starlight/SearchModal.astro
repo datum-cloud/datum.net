@@ -17,7 +17,7 @@ if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash
 
 <site-search-modal class={Astro.props.class} {...dataAttributes}>
   <dialog style="padding:0" aria-label={Astro.locals.t('search.label')}>
-    <div class="dialog-frame sl-flex" data-lenis-prevent>
+    <div class="dialog-frame sl-flex">
       <button data-close-modal class="sl-flex" aria-label={Astro.locals.t('search.cancelLabel')}>
         <span>Close</span>
         <Icon name="x" size="sm" class="close-icon" />

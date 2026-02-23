@@ -1,25 +1,32 @@
 ---
-title: Galactic VPC
+title: "Galactic VPC"
 description: This guide helps you understand the concepts and requirements of Galactic VPC.
 sidebar:
   order: 1
 meta:
-  title: "Galactic VPC Installation Guide - Datum Kubernetes Overlay Setup"
-  description: "Step-by-step instructions for installing Galactic VPC on Kubernetes - covering host and network requirements, VRF modules, SRv6 loopback, CNI and Multus plugins, agent configuration, MQTT setup, and firewall rules for overlay networking."
+  title: "Datum Virtual Private Cloud - Galactic VPC"
+  description: "Build a global, private backbone in minutes. Galactic VPC provides secure cloud interconnect and policy-controlled routing across all your providers."
 ---
 
 ## Summary
 
-This guide provides background on the architecture, design decisions, and installation of the 
+This guide provides background on the architecture, design decisions, and installation of the
 components that make up Galactic VPC.
 
 
 ### What it is
 
-Galactic VPC is a Kubernetes-native overlay that enables the creation of Virtual Private Cloud (VPC) networks 
-between containers. It allows termination of directly attached interfaces as well as routed network 
-prefixes across a given VPC. This is achieved using an SRv6 (Segment Routing IPv6)-enabled underlay 
+Galactic VPC is a Kubernetes-native overlay that enables the creation of Virtual Private Cloud (VPC) networks
+between containers. It allows termination of directly attached interfaces as well as routed network
+prefixes across a given VPC. This is achieved using an SRv6 (Segment Routing IPv6)-enabled underlay
 network through which the necessary encapsulated packets are routed.
+
+
+### Developing and Testing it
+
+Our [galactic-lab](https://github.com/datum-cloud/galactic-lab) is a one-stop-shop to
+set up, test and develop the Galactic components. Check out the documentation there
+for step-by-step instructions on how to get started.
 
 
 ## Components
@@ -33,11 +40,11 @@ network through which the necessary encapsulated packets are routed.
 Our [galactic-operator](https://github.com/datum-cloud/galactic-operator) is responsible for two major tasks.
 
 It translates our CRDs into the necessary native or downstream manifests to provide the required functionality.
-Primarily, this means creating Multus `NetworkAttachmentDefinition` manifests that configure the 
+Primarily, this means creating Multus `NetworkAttachmentDefinition` manifests that configure the
 relevant CNI plugins.
 
-Additionally, the operator assigns unique identifiers for `VPC` and `VPCAttachment` objects. These 
-identifiers are important, as they are used to encode all the relevant endpoint information for the SRv6 
+Additionally, the operator assigns unique identifiers for `VPC` and `VPCAttachment` objects. These
+identifiers are important, as they are used to encode all the relevant endpoint information for the SRv6
 targets.
 
 [DeepWiki](https://deepwiki.com/datum-cloud/galactic-operator).
@@ -45,8 +52,8 @@ targets.
 
 ### galactic-cni
 
-[galactic-cni](https://github.com/datum-cloud/galactic-cni) is our Kubernetes CNI plugin. It is responsible for creating 
-the necessary low-level Linux kernel resources that tie the container into the relevant SRv6 endpoint. The CNI 
+[galactic-cni](https://github.com/datum-cloud/galactic-cni) is our Kubernetes CNI plugin. It is responsible for creating
+the necessary low-level Linux kernel resources that tie the container into the relevant SRv6 endpoint. The CNI
 plugin also assigns a unique local VRF on each host where termination is performed.
 
 [DeepWiki](https://deepwiki.com/datum-cloud/galactic-cni).
@@ -54,16 +61,16 @@ plugin also assigns a unique local VRF on each host where termination is perform
 
 ### galactic-agent
 
-[galactic-agent](https://github.com/datum-cloud/galactic-agent) runs on each Kubernetes node that hosts containers 
-with terminated endpoints. It does not need to run on `control-plane`-only nodes if they do not 
+[galactic-agent](https://github.com/datum-cloud/galactic-agent) runs on each Kubernetes node that hosts containers
+with terminated endpoints. It does not need to run on `control-plane`-only nodes if they do not
 host such workloads. It is usually deployed as a `DaemonSet` to ensure this.
 
-The primary purpose of the `galactic-agent` is to receive and configure routing instructions from the 
-central routing control plane (aka `galactic-router`). It connects to an [MQTT](https://mqtt.org/) broker, 
+The primary purpose of the `galactic-agent` is to receive and configure routing instructions from the
+central routing control plane (aka `galactic-router`). It connects to an [MQTT](https://mqtt.org/) broker,
 through which the necessary messages are passed using [Protobuf-encoded messages](https://github.com/datum-cloud/galactic-agent/blob/main/api/remote/remote.proto).
 
-In addition, the `galactic-agent` listens on a host-local Unix socket for [gRPC messages](https://github.com/datum-cloud/galactic-agent/blob/main/api/local/local.proto) 
-from containers created by the `galactic-cni` plugin. These messages register and deregister network 
+In addition, the `galactic-agent` listens on a host-local Unix socket for [gRPC messages](https://github.com/datum-cloud/galactic-agent/blob/main/api/local/local.proto)
+from containers created by the `galactic-cni` plugin. These messages register and deregister network
 segments and terminations with the central control plane.
 
 [DeepWiki](https://deepwiki.com/datum-cloud/galactic-agent).
@@ -71,16 +78,16 @@ segments and terminations with the central control plane.
 
 ### galactic-router
 
-[galactic-router](https://github.com/datum-cloud/galactic-router) is abstracted behind an MQTT-based 
-pub-sub queue, where it can receive register and deregister events for workloads. Based on 
+[galactic-router](https://github.com/datum-cloud/galactic-router) is abstracted behind an MQTT-based
+pub-sub queue, where it can receive register and deregister events for workloads. Based on
 these events, the `galactic-router` builds knowledge of the VPCs and their attached workloads.
 From this, it creates the necessary routing instructions for each Kubernetes node and dispatches them accordingly.
 
-It is written in Python to allow for higher-level interaction with the Galactic infrastructure. 
-We believe Python is a better match for this component, as its ecosystem for data processing 
-tasks is very rich. That said, there is no fundamental requirement for it to be written in Python. Any 
-language could connect to the MQTT broker and perform the necessary computations. It is also possible 
-to remove the MQTT abstraction entirely and listen for manifest changes inside the cluster to 
+It is written in Python to allow for higher-level interaction with the Galactic infrastructure.
+We believe Python is a better match for this component, as its ecosystem for data processing
+tasks is very rich. That said, there is no fundamental requirement for it to be written in Python. Any
+language could connect to the MQTT broker and perform the necessary computations. It is also possible
+to remove the MQTT abstraction entirely and listen for manifest changes inside the cluster to
 issue the relevant routing instructions. This side of the system is intentionally kept flexible,
 as we expect to innovate around how routing is performed.
 
@@ -89,8 +96,8 @@ as we expect to innovate around how routing is performed.
 
 ## CRDs
 
-Galactic Custom Resource Definitions are [specified](https://github.com/datum-cloud/galactic-operator/tree/main/config/crd/bases) 
-in the `galactic-operator` repository. The repository also contains [samples](https://github.com/datum-cloud/galactic-operator/tree/main/config/samples) 
+Galactic Custom Resource Definitions are [specified](https://github.com/datum-cloud/galactic-operator/tree/main/config/crd/bases)
+in the `galactic-operator` repository. The repository also contains [samples](https://github.com/datum-cloud/galactic-operator/tree/main/config/samples)
 for all the resources the operator works with.
 
 ### Example
@@ -99,11 +106,11 @@ In the following example, we showcase a VPC scenario where we connect workloads 
 
 Each of the three workloads directly connects to the VPC within the subnets defined for the VPC using both IPv4 and IPv6.
 
-In addition, the workloads in SJC (San Jose) and AMS (Amsterdam) route their own prefixes across this VPC to each 
-other. This is a scenario often encountered in more complex network setups and is often not supported by other overlay 
+In addition, the workloads in SJC (San Jose) and AMS (Amsterdam) route their own prefixes across this VPC to each
+other. This is a scenario often encountered in more complex network setups and is often not supported by other overlay
 technologies.
 
-For those prefixes to work, the container must set up the relevant interface and addresses inside itself. This is similar to what 
+For those prefixes to work, the container must set up the relevant interface and addresses inside itself. This is similar to what
 might be done by something like WireGuard.
 
 If you just want to test the basic function, you can simply set them up manually:

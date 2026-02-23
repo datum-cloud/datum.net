@@ -1,0 +1,38 @@
+---
+title: "DNS Overview"
+sidebar:
+  order: 1
+meta:
+  title: "Datum Programmatic Authoritative DNS Management"
+  description: "Manage authoritative DNS with Datum. Built on PowerDNS and HickoryDNS, our globally distributed service offers high-performance, programmable DNS records."
+---
+
+Fast, reliable authoritative DNS hosting for your domains. Manage DNS zones through the portal as well as API’s. Current features focus on DNS record management, zone file operations, and integration with other Datum services (such as Proxies). When a DNS zone is created, Datum will automatically create and ensure a corresponding Domain resource if one does not already exist.
+
+1. Zone Management – Add DNS zones for any domain and subdomain, whether they are hosted by Datum or externally, for broad visibility across all of your DNS zones.
+2. Global Authoritative DNS – Datum serves authoritative DNS via a globally distributed anycast system for performance and redundancy. Any domain or subdomain can use Datum’s authoritative DNS by setting up the domain in Datum Cloud ([cloud.datum.net](http://cloud.datum.net) or via _datumctl_) and then adjusting your domain to point to Datum’s nameservers:
+   - [ns1.datumdomains.net](http://ns1.datumdomains.net)
+   - [ns2.datumdomains.net](http://ns1.datumdomains.net)
+   - [ns3.datumdomains.net](http://ns1.datumdomains.net)
+   - [ns4.datumdomains.net](http://ns1.datumdomains.net)
+3. Bulk Import/Export – Import existing zone files (BIND format, screenshot from DNS provider, sync by querying for DNS records) or export current configurations
+4. Record Operations – Add, edit, and delete modern DNS records: A, AAAA, CAA, NS, SRV, TXT, CNAME, MX, SOA, TLSA, SVCB, HTTPS.
+5. View zone details - Active nameserver assignments; Record count and zone size; Last modified timestamp.
+6. Audit Log – Track all zone and record changes with user attribution and timestamps
+7. Project Scoped – Manage zones within individual projects with role-based access control
+
+## DNS record types & behaviors
+
+Most record types are standardized (A, AAAA, CNAME, etc.), but some DNS “record-like” features are provider-specific behaviors (for example, “CNAME flattening”).
+
+See [ALIAS (“CNAME flattening”)](./alias/) for details.
+
+## Concepts and Definitions
+
+1. **DNS Zone -** A DNS zone is a segment of the Domain Name System that contains the DNS records for one domain or subdomain, managed as a single administrative unit.
+2. **DNS Host -** A DNS host is the provider or server that stores and serves the DNS records for your domain, responding to queries from the internet. Some examples of DNS are Datum, Cloudflare, Amazon Route 53, and Godaddy.
+3. **Nameserver -** A nameserver is a specialized DNS server that tells the internet where to find a domain’s DNS Zone with the records it contains, routes queries to the correct host.
+4. **DNS Record -** A DNS record is an individual entry within a DNS zone that maps a domain name to a specific resource, such as an IP address, mail server, or another domain.
+5. **BIND Format -** BIND format is a standardized text format used to represent DNS zone files, listing all the records and settings that define a domain’s configuration.
+6. **Domain Connect -** Domain Connect is an open standard that allows web services and domain registrars to automatically configure DNS settings for users with simple authorization.
+

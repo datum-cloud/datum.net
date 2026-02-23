@@ -1,0 +1,118 @@
+---
+export const prerender = false;
+import { dbConnect } from '@libs/postgres';
+
+const mode = process.env.MODE || import.meta.env.MODE;
+
+// only for development mode, to ease testing
+if (mode == 'production') {
+  return Astro.redirect('/');
+}
+
+/**
+ * Database testing
+ */
+let psqlInfo;
+try {
+  const sql = await dbConnect();
+  psqlInfo = await sql`SELECT version()`;
+} catch {
+  psqlInfo = null;
+}
+
+type EnvValue = string | number | boolean | undefined;
+type EnvRecord = Record<string, EnvValue>;
+
+/**
+ * Filters out sensitive environment variables by masking their values.
+ * Sensitive variables are identified by common keywords in their names
+ * or if their values contain user-specific file paths.
+ */
+const filterSensitiveVars = (envVars: EnvRecord): EnvRecord => {
+  return Object.fromEntries(
+    Object.entries(envVars).map(([key, value]) => {
+      if (key === '_') return [key, undefined];
+      const lowerKey = key.toLowerCase();
+      // Check for common sensitive variable patterns in keys
+      const sensitiveKeyPatterns = [
+        'key',
+        'secret',
+        'password',
+        'token',
+        'auth',
+        'credential',
+        'private',
+        'user',
+        'home',
+        'dir',
+        'path',
+        'id',
+        'login',
+        'pwd',
+        'logname',
+        'shell',
+        'pass',
+        'cwd',
+        'npm',
+      ];
+
+      // Check if any sensitive pattern exists in the key
+      const hasSensitivePattern = sensitiveKeyPatterns.some((pattern) =>
+        lowerKey.includes(pattern)
+      );
+
+      // Check if value contains file paths with usernames
+      const isValueWithUserPath =
+        typeof value === 'string' &&
+        (value.includes('/Users/') || value.includes('/home/') || value.includes('\\Users\\'));
+
+      // If sensitive, return the key with masked value
+      if (hasSensitivePattern || isValueWithUserPath) {
+        return [key, value ? '***' : ''];
+      }
+
+      // If not sensitive, return as is
+      return [key, value];
+    })
+  );
+};
+
+const metaEnv = filterSensitiveVars(import.meta.env);
+const sortedMeta = Object.keys(metaEnv)
+  .sort()
+  .reduce((acc, key) => ({ ...acc, [key]: metaEnv[key] }), {});
+const processEnv = filterSensitiveVars(process.env);
+const response = JSON.stringify(
+  {
+    meta: {
+      env: sortedMeta,
+    },
+    process: {
+      env: Object.keys(processEnv)
+        .sort()
+        .reduce((acc, key) => ({ ...acc, [key]: processEnv[key] }), {}),
+    },
+    nodeVersion: process.version,
+    platform: {
+      arch: process.arch,
+      platform: process.platform,
+      release: process.release,
+      uptime: process.uptime(),
+    },
+    cookies: {
+      _session: JSON.parse(Astro.cookies.get('_session')?.value || 'null'),
+      _refresh_token: Astro.cookies.get('_refresh_token')?.value,
+      _id_token: Astro.cookies.get('_id_token')?.value,
+    },
+    database: {
+      info: psqlInfo || null,
+    },
+  },
+  null,
+  2
+);
+---
+
+<pre><code>
+  {response}
+</code></pre>

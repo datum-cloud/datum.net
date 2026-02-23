@@ -5,13 +5,30 @@
       @apply text-aurora-moss!;
     }
     .footer-docs {
-      @apply border-t-1 border-[color:var(--color-borderpanel)];
+      @apply border-t border-(--color-borderpanel);
     }
 
     html,
     body,
     .datum-container {
       @apply bg-midnight-fjord;
+    }
+  }
+
+  .hero--main.dark {
+    .announcement {
+      @apply border-b border-(--app---dark---utility-1);
+      @apply bg-(--app---dark---utility-1)/50;
+
+      label {
+        @apply bg-blush-quartz text-midnight-fjord;
+      }
+
+      a {
+        svg {
+          @apply text-glacier-mist-900;
+        }
+      }
     }
   }
 }

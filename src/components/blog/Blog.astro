@@ -8,21 +8,21 @@ import BlogPagination from './BlogPagination.astro';
 import config from '@data/siteConfig.json';
 
 // Get all published blog posts and sort them by date (newest first)
-const allPosts = await getCollection('blog', ({ data }) => {
-  return !data.draft && new Date(data.date) <= new Date();
+const blogs = await getCollection('blog', ({ data }) => {
+  return !data.draft;
 });
 
-const sortedPosts = allPosts.sort((a, b) => {
+blogs.sort((a, b) => {
   return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
 });
 
 // Set up pagination variables for the first page
 const pageSize = config.pageSize;
 const currentPage = 1;
-const totalItems = sortedPosts.length;
+const totalItems = blogs.length;
 const totalPages = Math.ceil(totalItems / pageSize);
 // Get featured posts (first 3 newest posts)
-const featuredPosts = sortedPosts.slice(0, 3);
+const featuredPosts = blogs.slice(0, 3);
 
 // Get author data for featured posts
 const featuredPostsWithAuthors = await Promise.all(
@@ -36,7 +36,7 @@ const featuredPostsWithAuthors = await Promise.all(
 );
 
 // Get author data for current page posts (excluding featured posts)
-const remainingPosts = sortedPosts.slice(3);
+const remainingPosts = blogs.slice(3);
 const currentPageRemainingData = remainingPosts.slice(0, pageSize - 3);
 const postsWithAuthors = await Promise.all(
   currentPageRemainingData.map(async (post) => {

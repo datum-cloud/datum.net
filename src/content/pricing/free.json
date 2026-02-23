@@ -19,7 +19,7 @@
       "items": [
         "Runtime: DNS, Proxy, AI Gateway",
         "Connections: Tunnels, VPNs",
-        "Workflows: 1-Click WAF, Metrics Export",
+        "Metrics Export",
         "Assets: Domains, Secrets",
         "Teams, RBAC, & Machine Accounts"
       ]

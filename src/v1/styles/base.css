@@ -1,4 +1,4 @@
-@import './fonts.css';
+/* @import './fonts.css'; */
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/aspect-ratio';
@@ -6,6 +6,8 @@
 @import './variables.css';
 
 @import './theme.css';
+
+@import './color-theme.css';
 
 @import './variables-breakpoints.css';
 
@@ -67,3 +69,5 @@
 @import './components-buttons.css';
 
 @import './components-dark.css';
+
+@import './components-modal.css';

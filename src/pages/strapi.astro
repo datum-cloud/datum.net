@@ -1,0 +1,104 @@
+---
+// src/pages/strapi.astro
+export const prerender = false;
+
+import { Cache } from '@libs/cache';
+
+const STRAPI_URL = import.meta.env.STRAPI_URL || process.env.STRAPI_URL;
+const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || process.env.STRAPI_TOKEN;
+const STRAPI_CACHE_ENABLED =
+  import.meta.env.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
+const STRAPI_CACHE_TTL = parseInt(
+  import.meta.env.STRAPI_CACHE_TTL || process.env.STRAPI_CACHE_TTL || '0',
+  10
+);
+
+const cache = new Cache('.cache');
+const CACHE_KEY = 'strapi-articles';
+
+interface StrapiArticle {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface StrapiResponse {
+  data: {
+    articles: {
+      data: StrapiArticle[];
+    };
+  };
+}
+
+async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
+  const query = `
+    query {
+      articles {
+        data {
+          id
+          documentId
+          title
+          slug
+          description
+          content
+          createdAt
+          updatedAt
+          publishedAt
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(`${STRAPI_URL}/graphql`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${STRAPI_TOKEN}`,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+  }
+
+  const result: StrapiResponse = await response.json();
+  return result.data.articles.data;
+}
+
+let articles: StrapiArticle[] = [];
+let error: string | null = null;
+
+try {
+  const isCacheEnabled = STRAPI_CACHE_ENABLED === 'true' || STRAPI_CACHE_ENABLED === true;
+
+  if (isCacheEnabled && cache.has(CACHE_KEY)) {
+    articles = cache.get<StrapiArticle[]>(CACHE_KEY) || [];
+  } else {
+    articles = await fetchArticlesFromStrapi();
+
+    if (isCacheEnabled && articles.length > 0) {
+      cache.set(CACHE_KEY, articles, STRAPI_CACHE_TTL > 0 ? STRAPI_CACHE_TTL * 1000 : undefined);
+    }
+  }
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Unknown error occurred';
+}
+
+const output = {
+  success: !error,
+  cached: cache.has(CACHE_KEY),
+  timestamp: new Date().toISOString(),
+  count: articles.length,
+  error,
+  data: articles,
+};
+---
+
+<pre>{JSON.stringify(output, null, 2)}</pre>

@@ -1,52 +1,109 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { marked } from 'marked';
 
 import ImageLeft from '@v1/assets/images/good-look-section/left-stone.png';
-import ImageRight from '@v1/assets/images/good-look-section/right-stone.png';
+import ImageHalfSphere from '@v1/assets/images/good-look-section/half-sphere.png';
+import ImageGrid from '@v1/assets/images/good-look-section/grid.svg';
 import type { ContentProps } from '@/src/types/common';
+import itemsData from '@content/pages/home/items.json';
+
+// Dynamically import all images from the hood directory
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '@content/pages/home/images/hood/*.png',
+  { eager: true }
+);
+
+// Create a map from JSON paths to imported images
+const imageMap: Record<string, ImageMetadata> = {};
+for (const [modulePath, module] of Object.entries(imageModules)) {
+  const filename = modulePath.split('/').pop() || '';
+  const jsonPath = `pages/home/images/hood/${filename}`;
+  imageMap[jsonPath] = module.default;
+}
 
 const { content } = Astro.props as ContentProps;
 ---
 
 <section
-  class="bg-glacier-mist-800 section--block overflow-clip pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-28 lg:pb-36 xl:pt-40 xl:pb-40"
+  id="under-the-hood"
+  class="bg-glacier-mist-800 section--block section--block--pad relative overflow-hidden"
 >
-  <div class="max-width flex max-w-243 align-middle">
+  <div
+    class="absolute top-0 left-0 z-0 max-w-50.25 md:left-5 md:max-w-75.25 lg:left-10 lg:max-w-80.25"
+  >
+    <Image
+      src={ImageHalfSphere}
+      layout="constrained"
+      alt="Half Sphere illustration"
+      class="size-auto w-full"
+      data-scroll-effect="parallax"
+      data-scroll-speed="0.1"
+      data-scroll-direction="up"
+      data-viewport-offset="-200"
+      data-max-movement="50"
+    />
+  </div>
+
+  <div class="max-width">
     <!-- Main content container -->
     <div
-      class="fade-in--pure relative z-10 m-auto mb-20 grid max-w-full grid-cols-1 justify-between gap-10 md:grid-cols-2 md:gap-30 xl:gap-26"
+      class="fade-in--pure md::gap-8.25 relative z-10 m-auto flex w-full flex-col items-center gap-8"
       data-reveal="fade-in--pure--visible"
       data-reveal-delay="100"
     >
       <!-- Left content: What does good look like? -->
-      <div class="space-y-10 text-center md:text-left">
+      <div class="max-w-full space-y-10 text-center md:max-w-95 lg:max-w-110 xl:max-w-120">
         <h2 class="datum-text-8xl">{content.data.title}</h2>
-        <span class="datum-text-lg">
-          <p>{content.body}</p>
-        </span>
+        <span class="datum-text-lg text-pretty" set:html={marked.parse(content.body)} />
       </div>
 
-      <!-- Right content: Numbered list -->
-      <div>
+      <div class="relative w-full px-0 py-0 lg:px-10.5 lg:py-11.5">
         {
-          content.data.items ? (
-            <ol class="ordered-list">
-              {content.data.items.map((item) => (
-                <li set:html={item} />
-              ))}
+          itemsData && itemsData.length > 0 ? (
+            <ol class="relative z-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
+              {itemsData.map((item) => {
+                const parts = item.text.split(':');
+                const title = parts[0]?.trim() || '';
+                const description = parts.slice(1).join(':').trim();
+                const image = item.image ? imageMap[item.image] : null;
+                return (
+                  <div class="bg-glacier-mist-700 rounded-lg px-5 py-7.5 shadow-sm">
+                    <div class="flex w-full flex-col items-center gap-1.5">
+                      {image && (
+                        <div class="mb-4.5 w-20.75">
+                          <Image src={image} alt={title} class="size-auto w-full" loading="lazy" />
+                        </div>
+                      )}
+                      <div class="datum-text-xl font-semibold">{title}</div>
+                      {description && <div class="datum-text-sm md:text-nowrap">{description}</div>}
+                    </div>
+                  </div>
+                );
+              })}
             </ol>
           ) : (
             ''
           )
         }
+
+        <Image
+          src={ImageGrid}
+          layout="constrained"
+          alt="Grid"
+          class="absolute top-0 left-0 z-5 hidden size-auto w-full lg:block"
+        />
       </div>
     </div>
   </div>
 
-  <div class="absolute bottom-0 left-0 z-0 max-w-234">
-    <Image src={ImageLeft} layout="constrained" alt="Scene left illustration" class="size-auto" />
-  </div>
-  <div class="absolute right-0 bottom-0 z-0 hidden max-w-116 md:block">
-    <Image src={ImageRight} layout="constrained" alt="Scene right illustration" class="size-auto" />
+  <div class="absolute right-0 bottom-0 z-0 max-w-126">
+    <Image
+      src={ImageLeft}
+      layout="constrained"
+      alt="Scene left illustration"
+      class="size-auto w-full -scale-x-100 transform"
+    />
   </div>
 </section>

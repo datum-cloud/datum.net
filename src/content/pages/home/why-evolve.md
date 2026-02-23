@@ -39,4 +39,4 @@ images:
     alt: Databricks
 ---
 
-Datum exists to upgrade the internet for a world accelerated by AI. In the future we're building, any company, app or agent can interact privately and deterministically with whatever it needs.
+**Datum** exists to upgrade the internet for a world accelerated by AI. In the future we're building, any company, app or agent can interact privately and deterministically with whatever it needs.

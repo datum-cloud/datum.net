@@ -9,12 +9,17 @@
     }
 
     &.btn--sm {
-      @apply px-5 py-2.5 md:px-5.5 md:py-3 lg:px-6 lg:py-3.5;
+      @apply px-3 py-2.5 md:px-5.5 md:py-3 lg:px-6 lg:py-3.5;
       @apply datum-text-sm max-h-[48px];
 
       svg {
         @apply h-3.25! w-3.25! md:h-3.5! md:w-3.5! lg:h-5! lg:w-5!;
       }
+    }
+
+    &.btn--xs {
+      @apply p-2.5;
+      @apply datum-text-xs;
     }
   }
 
@@ -43,6 +48,10 @@
 
   .btn--pine-forge {
     @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white;
+  }
+
+  .btn--app-dark-utility-2 {
+    @apply bg-app---dark---utility-2 hover:bg-app---dark---utility-2/80 border-none text-white;
   }
 
   .btn--canyon-clay {

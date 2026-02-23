@@ -1,13 +1,18 @@
 ---
-title: Domains
+title: "Domains"
 sidebar:
   order: 2
 meta:
-  title: "Datum Domains Tutorial - Ownership Verification, Subdomain Management & Compliance"
-  description: "Learn how to verify, manage, and monitor domains in Datum. This tutorial covers ownership verification via DNS or HTTP, domain resource setup, team-based subdomain management, future capabilities, troubleshooting, and compliance reporting."
+  title: "Datum Authoritative DNS, Domains & Domain Verification"
+  description: "Guide to managing Domains in Datum. Learn to verify ownership, configure authoritative DNS services, and link domains to your cloud network infrastructure."
 ---
 
-## We're exploring unchartered territory
-Every great mission starts with preparation. We're currently fine-tuning the navigation systems and getting everything ready for the journey ahead. Stay tuned for what's next.
+Users gain visibility to all of their domains when added to Datum, regardless of where they are registered or where DNS is hosted. In addition, domains that are also verified become available as “domain resources” which can be enabled with Datum services such as Proxy and DNS Hosting. Domains can be managed via the customer portal as well as our programmatic interfaces (MCP and datumctl). In some cases, such as when creating DNS zones, Datum will automatically create and continuously ensure a corresponding Domain resource if one does not already exist, since Domains are a dependency for certain platform services.
 
-![Team of four with light beam, moon in the background ](/images/beam.webp)
+1. Add Single Domain - Add a domain and optionally a useful description.
+2. Bulk Add – Add domains in bulk via the portal (copy/paste list) or API.
+3. Clear UI – Provide fast search, filter, and sort features including pagination (\~50 per)
+4. Verification – Verify a domain or subdomain with either a DNS record or HTTP token
+5. Registration details – View registrar, registration status, expiration date, and DNS Host
+6. Domain resource details – View services that are enabled within Datum
+7. Activity Log – Track and expose events (add/remove, DNS status linked/unlinked, etc).

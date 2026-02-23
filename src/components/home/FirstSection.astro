@@ -1,26 +1,40 @@
 ---
 import { Image } from 'astro:assets';
-import sceneTree from '@v1/assets/images/scene-tree.png';
+import { marked } from 'marked';
+import Video from '@components/home/Video.astro';
 import asideNote from '@v1/assets/images/aside-note.png';
 import type { ContentProps } from '@/src/types/common';
 
 const { content } = Astro.props as ContentProps;
 
-// Create 6 columns, each with 3 specific logos
+// Create 7 columns and distribute logos as evenly as possible across them
 const logoColumns = [];
 if (content.data.images) {
-  for (let i = 0; i < 6; i++) {
+  const images = content.data.images;
+  const totalLogos = images.length;
+  const columnsCount = 7;
+
+  const minPerColumn = Math.floor(totalLogos / columnsCount);
+  const extra = totalLogos % columnsCount;
+
+  let currentIndex = 0;
+
+  for (let i = 0; i < columnsCount; i++) {
+    const columnSize = minPerColumn + (i < extra ? 1 : 0);
     const columnLogos = [];
-    for (let j = 0; j < 3; j++) {
-      const logoIndex = i * 3 + j;
-      if (logoIndex < content.data.images.length) {
-        columnLogos.push({
-          src: content.data.images[logoIndex].img,
-          alt: content.data.images[logoIndex].alt || `Partner logo ${logoIndex + 1}`,
-          index: logoIndex,
-        });
-      }
+
+    for (let j = 0; j < columnSize; j++) {
+      const logoIndex = currentIndex++;
+      const logo = images[logoIndex];
+      if (!logo) break;
+
+      columnLogos.push({
+        src: logo.img,
+        alt: logo.alt || `Partner logo ${logoIndex + 1}`,
+        index: logoIndex,
+      });
     }
+
     logoColumns.push({
       logos: columnLogos,
       delay: i * 1, // Stagger each column
@@ -29,70 +43,58 @@ if (content.data.images) {
 }
 ---
 
-<section class="bg-glacier-mist-700 section--block section--block--pad overflow-clip">
-  <div class="absolute right-0 bottom-0 z-0 flex w-[663px]">
-    <Image
-      src={sceneTree}
-      layout="constrained"
-      alt="Scene tree illustration"
-      class="ml-10 size-auto w-full max-w-3xl -scale-x-100 self-end"
-    />
-  </div>
-  <div class="max-width">
-    <div class="border-midnight-fjord bg-glacier-mist-700 relative z-10 m-auto border">
-      <Image
-        src={asideNote}
-        layout="constrained"
-        alt="Scene tree illustration"
-        class="absolute -bottom-17 left-5 z-15 size-auto w-full max-w-67.25 md:-bottom-12 md:left-5 lg:-bottom-18 lg:-left-5 xl:-bottom-16 xl:-left-10"
-      />
-      <!-- Scene Tree Image -->
+<section
+  id="why-evolve"
+  class="bg-glacier-mist-700 section--block section--block--pad fade-in--pure overflow-clip"
+  data-reveal="fade-in--pure--visible"
+  data-reveal-immediate="true"
+>
+  <div class="max-width relative">
+    <div class="relative z-10 flex flex-col">
       <div
-        class="fade-in--pure relative z-10 flex flex-col px-6 pt-8 pb-6 md:px-11 md:pt-11 lg:px-16 lg:pt-16 xl:px-20 xl:pt-20"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-delay="100"
+        class="mb-10 grid grid-cols-1 items-center gap-10 md:mb-14 md:grid-cols-2 md:gap-20 lg:mb-18 lg:gap-35 xl:mb-22.5"
       >
-        <div
-          class="mx-auto mb-10 flex w-full flex-col justify-between gap-9 text-center md:mb-20 md:flex-row md:text-left lg:mb-20 xl:mb-24"
-        >
-          <!-- Left: Heading -->
-          <div class="w-full max-w-none self-center md:max-w-55 lg:max-w-xs">
-            <h2 class="datum-text-8xl">{content.data.title}</h2>
-          </div>
-          <!-- Right: Body Text -->
-          <div class="max-w-115 flex-grow self-center">
-            <span class="datum-text-lg">
-              <p>{content.body}</p>
-            </span>
-          </div>
+        <div class="w-full max-w-146.75 text-center md:text-left">
+          <div
+            class="text-(length:--text-2xl-font-size) text-balance [&>p]:leading-[142%] [&>p]:tracking-normal"
+            set:html={marked.parse(content.body)}
+          />
         </div>
 
-        <div class="mb-2.5 block w-full py-2.5">
-          <span
-            class="after:bg-midnight-fjord datum-docs-sidebar-headings flex flex-col items-center justify-center gap-7.5 align-middle uppercase after:block after:h-[1px] after:w-full after:content-[''] md:flex-row"
-          >
-            <p class="mb-0 text-balance md:whitespace-nowrap">
-              We're on a mission to help 1k new clouds, like these
-            </p>
-          </span>
+        <div class="w-full grow">
+          <Video />
         </div>
+      </div>
+
+      <div class="datum-text-sm mb-5.5 block w-full text-balance md:whitespace-nowrap">
+        We're on a mission to help 1k new clouds, like these
+      </div>
+
+      <div class="relative">
+        <Image
+          src={asideNote}
+          layout="constrained"
+          alt="Not actual clients yet"
+          class="absolute -top-5 -right-3 z-15 size-auto w-full max-w-35.5 md:-right-5 md:max-w-45.5 lg:-top-8 lg:max-w-55.5"
+        />
 
         <!-- Logos Row -->
         {
           content.data.images ? (
-            <div>
-              <div class="grid grid-cols-3 overflow-x-auto md:grid-cols-6">
+            <div class="rounded-md border border-(--app---dark---utility-5)">
+              <div class="grid grid-cols-4 overflow-x-auto md:grid-cols-7">
                 {logoColumns.map((column, columnIndex) => (
-                  <div class="flex aspect-29/21 items-center justify-center">
+                  <div class="flex aspect-4/3 items-center justify-center">
                     <div
-                      class="logo-cycling-container relative flex h-full w-full items-center justify-center"
+                      class="logo-cycling-container relative flex h-full w-full items-center justify-center px-5"
                       data-column-index={columnIndex}
                     >
                       {column.logos.map((logo, logoIndex) => (
                         <Image
                           src={logo.src}
                           alt={logo.alt}
-                          class={`logo-cycle absolute mx-10 max-h-15 w-4/5 max-w-18 object-contain md:max-w-28 lg:max-w-40 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
+                          loading="lazy"
+                          class={`logo-cycle absolute max-h-9 w-full max-w-18 object-contain md:max-w-22 lg:max-w-27 ${logoIndex === 0 ? 'opacity-100' : 'opacity-0'}`}
                           data-logo-index={logo.index}
                           data-column-logo-index={logoIndex}
                         />

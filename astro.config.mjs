@@ -1,17 +1,20 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
+import mermaid from 'astro-mermaid';
 
 import { loadEnv } from 'vite';
 import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
+import compressor from 'astro-compressor';
 
-import glossary from './src/libs/server/glossary.ts';
-import sitemap from './src/libs/server/sitemap.ts';
+import glossary from './src/plugins/glossary.js';
+import sitemap from './src/plugins/sitemap.js';
+import announcement from './src/plugins/announcement.ts';
+import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -24,12 +27,25 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'static',
   adapter: node({
-    mode: 'standalone',
+    mode: 'middleware',
   }),
+  markdown: {
+    remarkPlugins: [remarkModifiedTime],
+  },
   image: {
     layout: 'constrained',
   },
   integrations: [
+    announcement({
+      show: true,
+      label: "We're hiring!",
+      text: "We're actively building our team, join us",
+      href: '/careers/',
+      icon: {
+        name: 'arrow-right',
+        size: 'sm',
+      },
+    }),
     robotsTxt({
       sitemap: false,
       policy: [
@@ -42,10 +58,15 @@ export default defineConfig({
       ],
     }),
     alpinejs({ entrypoint: '/src/entrypoint' }),
+    mermaid({
+      theme: 'forest',
+      autoTheme: true,
+    }),
     starlight({
       title: 'Datum',
       disable404Route: true,
       credits: false,
+      lastUpdated: true,
       editLink: {
         baseUrl: 'https://github.com/datum-cloud/datum.net/edit/main/',
       },
@@ -89,10 +110,6 @@ export default defineConfig({
             'data-site': 'PXKRQKIZ',
           },
         },
-        {
-          tag: 'script',
-          content: `document.documentElement.setAttribute('data-smooth-scroll', 'false');`,
-        },
       ],
       expressiveCode: {
         themes: ['github-light', 'github-dark'],
@@ -113,23 +130,38 @@ export default defineConfig({
           collapsed: true, // All other groups are collapsed by default
         },
         {
-          label: 'Platform',
-          autogenerate: { directory: 'docs/platform' },
-          collapsed: true,
-        },
-        {
           label: 'API',
           autogenerate: { directory: 'docs/api' },
           collapsed: true,
         },
         {
-          label: 'Runtime',
-          autogenerate: { directory: 'docs/runtime' },
+          label: 'Command line',
+          autogenerate: { directory: 'docs/datumctl' },
+          collapsed: true, // First group is expanded by default
+        },
+        {
+          label: 'Our Infrastructure',
+          autogenerate: { directory: 'docs/infrastructure' },
           collapsed: true,
         },
         {
-          label: 'Workflows',
-          autogenerate: { directory: 'docs/workflows' },
+          label: 'Platform',
+          autogenerate: { directory: 'docs/platform' },
+          collapsed: true,
+        },
+        {
+          label: 'Runtime',
+          items: [
+            { label: 'Runtime Overview', link: 'docs/runtime/' },
+            { label: 'Datum DNS', autogenerate: { directory: 'docs/runtime/dns' } },
+            { label: 'Datum Proxy', link: 'docs/runtime/proxy/' },
+            { label: 'AI Gateway', link: 'docs/runtime/ai-gateway/' },
+          ],
+          collapsed: true,
+        },
+        {
+          label: 'Connections',
+          autogenerate: { directory: 'docs/connections' },
           collapsed: true,
         },
         {
@@ -138,13 +170,8 @@ export default defineConfig({
           collapsed: true,
         },
         {
-          label: 'For Alt Clouds',
-          autogenerate: { directory: 'docs/alt-cloud' },
-          collapsed: true,
-        },
-        {
-          label: 'Guides',
-          autogenerate: { directory: 'docs/guides' },
+          label: 'Metrics',
+          autogenerate: { directory: 'docs/metrics' },
           collapsed: true,
         },
         {
@@ -164,7 +191,6 @@ export default defineConfig({
         'auth/login',
         'api/info',
         'waitlist',
-        'request-access',
         'authors/jacob-smith/1',
         'authors/zac-smith/1',
       ],
@@ -176,10 +202,12 @@ export default defineConfig({
       Image: true,
       SVG: true,
     }),
+    compressor({
+      gzip: true,
+      brotli: true,
+    }),
   ],
-
   vite: {
-    // @ts-expect-error - Tailwind Vite plugin type mismatch with Vite's expected plugin types
     plugins: [tailwindcss()],
     css: {
       devSourcemap: true,
@@ -188,18 +216,6 @@ export default defineConfig({
       noExternal: ['zod'],
     },
   },
-
   experimental: {},
   prefetch: true,
-
-  redirects: {
-    '/docs/roadmap': '/resources/roadmap/',
-    '/product': '/features/',
-    '/team': '/about/',
-    '/docs/tutorials/gateway': '/docs/tutorials/httpproxy/',
-    '/docs/tasks/developer-guide': '/docs/developer-guide/',
-    '/product/overview/overview': '/features/',
-    '/netzero/overview/overview': '/',
-    '/api-reference/invite/deletes-a-invite-by-id': '/docs/api/reference/',
-  },
 });

@@ -4,28 +4,33 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { render } from 'astro:content';
 
 const page = await getCollectionEntry('handbooks', 'index');
-const mainArticle = await getCollectionEntry('handbooks', 'company/why-we-exist');
-
-// Extract headings for the main article
-const rendered = await render(mainArticle);
-const headings = rendered.headings;
 
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'The Datum Handbook';
 const description = fm.description;
+
+// Set default handbook OG image if not specified in frontmatter
+const handbookMeta = {
+  ...meta,
+  og: {
+    image: defaultOgImage,
+    ...meta?.og,
+  },
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-handbook" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-handbook" meta={handbookMeta}>
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
-    <Article articleId="company/why-we-exist" headings={headings} />
+
+    <Article articleId="index" />
 
     <Footer />
   </section>

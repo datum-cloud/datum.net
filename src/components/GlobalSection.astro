@@ -1,27 +1,32 @@
 ---
 import { getEntry } from 'astro:content';
-import UIConsole from '@v1/assets/svgs/ui.svg';
+import UIConsole from '@content/pages/assets/ui.svg';
 const content = await getEntry('pages', 'global-section');
 ---
 
-<section class="bg-aurora-moss section--block flex pt-16 align-middle lg:pt-20 xl:pt-28">
-  <div class="flex w-full flex-col items-center gap-12 align-middle md:gap-6">
-    <div class="max-width flex flex-col align-middle">
+<section
+  id="tomorrow-clouds"
+  class="bg-aurora-moss section--block section--block--pad --pad-mobile flex overflow-clip align-middle"
+>
+  <div class="flex w-full flex-col items-start gap-12 md:flex-row md:gap-6">
+    <div class="max-width flex flex-row items-start align-middle">
       <div
-        class="fade-in--pure z-50 mx-auto flex flex-col items-center space-y-6 pb-9 text-center md:max-w-124 md:pb-12 lg:space-y-10 lg:pb-10 xl:pb-20"
+        class="fade-in--pure z-50 mx-auto flex flex-col items-center space-y-6 text-center md:mx-0 md:max-w-115 md:items-start md:text-left lg:space-y-10"
         data-reveal="fade-in--pure--visible"
         data-reveal-delay="100"
       >
-        <h2 class="datum-text-8xl max-w-xs md:max-w-sm">{content?.data.title}</h2>
+        <h2 class="datum-text-8xl max-w-xs md:max-w-md">{content?.data.title}</h2>
         <div class="datum-text-lg">
           <p>{content?.body}</p>
         </div>
       </div>
+    </div>
 
-      <div class="z-0 flex w-full items-end mix-blend-multiply">
-        <div class="relative mr-auto">
-          <UIConsole class="relative h-auto w-full" />
-        </div>
+    <div
+      class="relative right-auto bottom-0 z-0 mx-auto flex h-auto max-w-none items-end px-8 mix-blend-multiply md:absolute md:right-0 md:h-full md:max-w-[53%] md:px-0"
+    >
+      <div class="relative flex aspect-1143/391 size-auto h-full self-end md:h-[76%]">
+        <UIConsole class="size-auto max-w-full" />
       </div>
     </div>
   </div>

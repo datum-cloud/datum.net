@@ -4,9 +4,9 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollection, render } from 'astro:content';
-import { getCollectionEntry } from '@utils/collectionUtils';
 
 // const currentPostIndex = handbooks.findIndex((post) => post.id == Astro.params.slug);
 export async function getStaticPaths() {
@@ -39,31 +39,35 @@ export async function getStaticPaths() {
       params: {
         slug: entry.id,
       },
-      props: { entry: rendered, handbooks, headings },
+      props: { entry, rendered, handbooks, headings },
     };
   });
 }
 
-const page = await getCollectionEntry('handbooks', 'index');
-const fm = page.data;
-
 const { slug } = Astro.params;
-const { entry, headings } = Astro.props;
-const { title, description, meta } = entry.remarkPluginFrontmatter;
+const { entry } = Astro.props;
+const { title, description, meta } = entry.data;
 
-const pageTitle = title ? fm.title + ' - ' + title : fm.title;
-const pageDescription = description ? description : 'The Datum Handbook';
+// Set default handbook OG image if not specified in frontmatter
+const handbookMeta = {
+  ...meta,
+  og: {
+    image: defaultOgImage,
+    ...meta?.og,
+  },
+};
 ---
 
 <Layout
-  title={pageTitle}
-  description={pageDescription}
+  title={title}
+  description={description}
   bodyClass={`page-handbook page-handbook--${slug}`}
-  meta={meta}
+  meta={handbookMeta}
 >
   <section class="datum-container">
     <Hero class="light bg-glacier-mist-700 border-glacier-mist-900 border-b" hideContent={true} />
-    <Article articleId={slug} headings={headings} />
+
+    <Article articleId={slug} />
 
     <Footer />
   </section>

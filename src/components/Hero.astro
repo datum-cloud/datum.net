@@ -4,6 +4,8 @@ import { marked } from 'marked';
 
 import Nav from '@components/Nav.astro';
 import Icon from '@components/Icon.astro';
+import Announcement from '@components/Announcement.astro';
+
 import type { HeroProps } from '@/src/types/common';
 
 const {
@@ -18,6 +20,7 @@ const {
 ---
 
 <header class:list={['hero--main', className]}>
+  <Announcement />
   <Nav />
   {
     !hideContent && (
@@ -25,26 +28,30 @@ const {
         class="hero--main-content fade-in--small"
         data-reveal="fade-in--small--visible"
         data-reveal-immediate="true"
-        data-reveal-delay="100"
       >
         {/* Hero Main Content */}
-        <div class="hero--main-content-inner">
-          {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
-            <div class="hero--main-content-icon">
-              {iconName && iconName !== '' && (
-                <div class="hero--main-content-icon-inner">
-                  <Icon name={iconName} size="md" />
-                </div>
-              )}
-              {subtitle && subtitle !== '' && <span set:html={subtitle} />}
-            </div>
-          ) : null}
+        {(title || description) && (
+          <div class="hero--main-content-inner" role="banner">
+            {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
+              <div class="hero--main-content-icon">
+                {iconName && iconName !== '' && (
+                  <div class="hero--main-content-icon-inner">
+                    <Icon name={iconName} size="md" />
+                  </div>
+                )}
+                {subtitle && subtitle !== '' && <span set:html={subtitle} />}
+              </div>
+            ) : null}
 
-          <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />
-          {description && (
-            <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
-          )}
-        </div>
+            {title && <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />}
+            {description && (
+              <p
+                class="hero--main-content-description"
+                set:html={marked.parseInline(description)}
+              />
+            )}
+          </div>
+        )}
         {imagePath && (
           <div class="hero--main-content-image">
             <Image

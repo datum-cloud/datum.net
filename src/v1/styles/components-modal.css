@@ -1,0 +1,134 @@
+@layer components {
+  /* Video Modal Styles */
+  video-modal {
+    @apply contents;
+  }
+
+  video-modal dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply max-width mx-auto my-auto h-max min-h-80 w-[90%] max-w-246.5;
+    @apply max-h-[calc(100vh-8rem)];
+    @apply bg-transparent;
+  }
+
+  video-modal dialog[open] {
+    @apply flex;
+  }
+
+  video-modal dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  .modal-frame {
+    @apply shadow-modal relative flex w-full grow flex-col overflow-hidden rounded-lg bg-white p-10;
+  }
+
+  .modal-close {
+    @apply absolute top-3 right-3 z-10;
+    @apply cursor-pointer border p-0 outline-0;
+    @apply transition-all duration-200 ease-in-out;
+    @apply border-0 bg-transparent;
+    @apply text-midnight-fjord opacity-20;
+    @apply transition-opacity duration-200 ease-in-out;
+    @apply hover:opacity-50;
+  }
+
+  .modal-close-icon {
+    @apply h-[17px]! w-[17px]!;
+  }
+
+  .modal-content {
+    @apply text-midnight-fjord mx-auto flex w-full flex-col bg-white;
+  }
+
+  .modal-embed-wrapper {
+    @apply bg-black;
+    @apply relative w-full overflow-hidden;
+    @apply aspect-16/9;
+  }
+
+  .modal-embed-wrapper iframe {
+    @apply absolute inset-0 h-full w-full border-0;
+  }
+
+  /* Prevent page scroll when modal is open */
+  body[data-video-modal-open],
+  body[data-newsletter-modal-open] {
+    @apply overflow-clip;
+  }
+
+  /* Newsletter Modal (same dialog pattern as video-modal) */
+  newsletter-modal {
+    @apply contents;
+  }
+
+  newsletter-modal dialog {
+    @apply h-full max-h-full border-0 p-0;
+    @apply mx-auto mt-auto h-max min-h-80 w-full max-w-full md:my-auto;
+    @apply max-h-[calc(100vh-4rem)];
+    @apply mr-0 ml-0 bg-transparent;
+
+    @apply mr-0 ml-0 md:mr-0 md:ml-0;
+  }
+
+  newsletter-modal dialog[open] {
+    @apply flex items-start justify-end-safe md:justify-center;
+  }
+
+  newsletter-modal dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  /* Newsletter modal — Figma Card (node 9185-41852): 360px, 40px pad, 9px radius */
+  .newsletter-modal-frame {
+    @apply w-full max-w-none rounded-[9px] rounded-b-none p-10 md:max-w-[360px] md:rounded-b-[9px];
+  }
+
+  .newsletter-modal-content {
+    @apply text-midnight-fjord flex flex-col gap-10;
+  }
+
+  .newsletter-modal-form-container {
+    @apply flex w-full flex-col gap-10;
+  }
+
+  .newsletter-modal-form {
+    @apply flex w-full flex-col gap-10;
+  }
+
+  .newsletter-modal-fields {
+    @apply flex flex-col gap-4;
+  }
+
+  .newsletter-modal-field {
+    @apply flex cursor-text flex-col gap-2;
+  }
+
+  .newsletter-modal-label {
+    @apply datum-text-xs text-midnight-fjord/80;
+  }
+
+  .newsletter-modal-input {
+    @apply datum-app-body text-midnight-fjord bg-glacier-mist-700/50 border-app---dark---utility-5 placeholder:text-midnight-fjord/60 rounded-md border px-3 py-2.25 outline-none;
+  }
+
+  .newsletter-modal-consent {
+    @apply flex items-center gap-3.5;
+  }
+
+  .newsletter-modal-checkbox {
+    @apply border-app---dark---utility-5 h-4 w-4 shrink-0 cursor-pointer rounded border bg-white;
+  }
+
+  .newsletter-modal-actions {
+    @apply flex justify-center;
+  }
+
+  .newsletter-modal-message {
+    @apply datum-text-sm text-canyon-clay---links;
+  }
+
+  .newsletter-modal-message--error {
+    @apply text-canyon-clay---links;
+  }
+}

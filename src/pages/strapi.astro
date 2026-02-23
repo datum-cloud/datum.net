@@ -30,9 +30,7 @@ interface StrapiArticle {
 
 interface StrapiResponse {
   data: {
-    articles: {
-      data: StrapiArticle[];
-    };
+    articles: StrapiArticle[];
   };
 }
 
@@ -40,7 +38,6 @@ async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
   const query = `
     query {
       articles {
-        data {
           id
           documentId
           title
@@ -50,7 +47,6 @@ async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
           createdAt
           updatedAt
           publishedAt
-        }
       }
     }
   `;
@@ -69,7 +65,7 @@ async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
   }
 
   const result: StrapiResponse = await response.json();
-  return result.data.articles.data;
+  return result.data.articles;
 }
 
 let articles: StrapiArticle[] = [];

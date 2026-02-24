@@ -457,9 +457,6 @@
       @apply border-t-0;
     }
 
-    @apply [&_.content-panel:first-child]:pb-3.5 md:[&_.content-panel:first-child]:pb-4 lg:[&_.content-panel:first-child]:pb-5 xl:[&_.content-panel:first-child]:pb-6;
-    @apply [&_.content-panel:first-child_h1]:datum-text-4xl [&_.content-panel:first-child_h1]:mt-0 [&_.content-panel:first-child_h1]:font-semibold;
-
     .sl-container {
       @apply max-w-none;
     }

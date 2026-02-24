@@ -1,0 +1,81 @@
+---
+// src/components/starlight/PageTitle.astro
+import { type CollectionEntry, getCollection } from 'astro:content';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import CopyButton from '@plugins/copy-markdown/CopyButton.astro';
+import { prepareMarkdownForCopy } from '@plugins/copy-markdown/utils/markdown';
+import { getCopyMarkdownConfig } from '@plugins/copy-markdown/config';
+
+// Get Starlight route data
+const starlightRoute = Astro.locals.starlightRoute;
+const entry = starlightRoute.entry as CollectionEntry<'docs'> | undefined;
+
+// Get config for content path
+const config = getCopyMarkdownConfig();
+
+// Fetch the raw markdown content
+let markdownContent = '';
+let sourcePath = '';
+let fileExtension = 'mdx'; // default to mdx
+
+if (entry?.id) {
+  try {
+    const allDocs = await getCollection('docs');
+    const docEntry = allDocs.find((doc) => doc.id === entry.id);
+
+    if (docEntry?.body) {
+      // Config (includeFrontmatter) is read automatically from plugin
+      // Pass frontmatterData so it can be included if configured
+      markdownContent = prepareMarkdownForCopy(docEntry.body, {
+        baseUrl: Astro.site?.toString() || '',
+        frontmatterData: docEntry.data as Record<string, unknown>,
+      });
+    }
+
+    sourcePath = entry.id;
+
+    // Auto-detect file path and extension by checking if file exists on disk
+    const baseDir = join(process.cwd(), config.contentPath);
+
+    // Check possible file locations in order:
+    // 1. {sourcePath}.mdx (e.g., docs/quickstart.mdx)
+    // 2. {sourcePath}.md
+    // 3. {sourcePath}/index.mdx (e.g., docs/quickstart/index.mdx for directory index)
+    // 4. {sourcePath}/index.md
+    const pathsToCheck = [
+      { path: join(baseDir, `${sourcePath}.mdx`), ext: 'mdx', isIndex: false },
+      { path: join(baseDir, `${sourcePath}.md`), ext: 'md', isIndex: false },
+      { path: join(baseDir, sourcePath, 'index.mdx'), ext: 'mdx', isIndex: true },
+      { path: join(baseDir, sourcePath, 'index.md'), ext: 'md', isIndex: true },
+    ];
+
+    for (const check of pathsToCheck) {
+      if (existsSync(check.path)) {
+        fileExtension = check.ext;
+        if (check.isIndex) {
+          sourcePath = `${sourcePath}/index`;
+        }
+        break;
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching markdown content:', error);
+  }
+}
+---
+
+<div class="flex flex-col gap-4 pb-4 lg:pb-5 xl:pb-6">
+  <h1 id="_top" class="datum-text-4xl mt-0 font-semibold">
+    {entry?.data?.title || 'Documentation'}
+  </h1>
+  {
+    markdownContent && (
+      <CopyButton
+        markdown={markdownContent}
+        sourcePath={sourcePath}
+        fileExtension={fileExtension}
+      />
+    )
+  }
+</div>

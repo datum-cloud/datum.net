@@ -185,6 +185,9 @@ export function normalizeArticle(article: StrapiArticle): NormalizedStrapiArticl
       description: article.description,
       date: new Date(publishedDate),
       thumbnail:
+        getStrapiMediaUrl(article.cover?.formats?.large?.url) ||
+        getStrapiMediaUrl(article.cover?.formats?.medium?.url) ||
+        getStrapiMediaUrl(article.cover?.formats?.small?.url) ||
         getStrapiMediaUrl(article.cover?.formats?.thumbnail?.url) ||
         getStrapiMediaUrl(article.cover?.url),
       author: article.author?.name,

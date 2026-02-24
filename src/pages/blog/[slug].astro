@@ -59,7 +59,7 @@ const authorBgColor = authorName ? await getAuthorBgColorFromStrapi(authorName) 
 
 // Get category data
 const categoryName = article.category?.name || '';
-const categorySlug = article.category?.slug || '';
+// const categorySlug = article.category?.slug || '';
 
 // Get all articles for navigation
 const allArticles: StrapiArticle[] = await fetchStrapiArticles();
@@ -82,12 +82,12 @@ const breadcrumbData = [
   { text: 'Blog', href: '/blog/' },
 ];
 
-if (categorySlug) {
-  breadcrumbData.push({
-    text: categoryName,
-    href: `/blog/category/${categorySlug}/`,
-  });
-}
+// if (categorySlug) {
+//   breadcrumbData.push({
+//     text: categoryName,
+//     href: `/blog/category/${categorySlug}/`,
+//   });
+// }
 
 breadcrumbData.push({
   text: truncateByWords(fm.title, 9),

@@ -11,7 +11,7 @@ Let's start installing the binary itself, but if you want to get deeper, make a
 contribution or you are a curious developer nativate to the [documentation we
 wrote specifically for you.](developer/overview)
 
-## Homebrew (macOS)
+## Homebrew (macOS) (recommended)
 
 If you are using macOS and have [Homebrew](https://brew.sh/) installed, you can
 install `datumctl` via our official tap:
@@ -27,35 +27,7 @@ brew install datumctl
 brew upgrade datumctl
 ```
 
-## nix (Linux and macOS)
-
-datumctl ships with a `flake.nix` so you don't have to install anything:
-
-```
-# Pick latest from git
-nix run github:datum-cloud/datumctl
-
-# Specify version
-nix run github:datum-cloud/datumctl/b044455d877b800812e4fd78e42429c1617c011b
-
-# Run from local git clone
-nix run
-
-# Start shell with all dependencies available
-nix develop --command zsh
-
-# Build locally
-nix build
-
-# ...or for specific platform
-nix build .#packages.x86_64-linux.default
-nix build .#packages.aarch64-linux.default
-```
-
-You can, however, incorporate it into your home-manager build or other
-flake so that it's always available in your profile.
-
-## Pre-built binaries (recommended)
+## Pre-built binaries
 
 The easiest way to install `datumctl` is by downloading the pre-built binary
 for your operating system and architecture from the
@@ -93,6 +65,35 @@ sudo mv datumctl /usr/local/bin/
 > [!NOTE]
 > The `sudo mv` command might require administrator privileges. Adjust the
 > destination path `/usr/local/bin/` if needed for your system.
+
+## nix (Linux and macOS)
+
+datumctl ships with a `flake.nix` so you don't have to install anything:
+
+```
+# Pick latest from git
+nix run github:datum-cloud/datumctl
+
+# Specify version
+nix run github:datum-cloud/datumctl/b044455d877b800812e4fd78e42429c1617c011b
+
+# Run from local git clone
+nix run
+
+# Start shell with all dependencies available
+nix develop --command zsh
+
+# Build locally
+nix build
+
+# ...or for specific platform
+nix build .#packages.x86_64-linux.default
+nix build .#packages.aarch64-linux.default
+```
+
+You can, however, incorporate it into your home-manager build or other
+flake so that it's always available in your profile.
+
 
 ## Building from source
 

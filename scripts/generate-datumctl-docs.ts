@@ -7,8 +7,8 @@
  * into destination folders. Output directories are mocked for now.
  */
 
-import { access, mkdir, rm, readFile } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
+import { access, mkdir, rm, readFile, rename } from 'node:fs/promises';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -36,6 +36,11 @@ interface SourceConfig {
 
 interface Config {
   source: SourceConfig;
+}
+
+interface CliArgs {
+  docsArchivePath?: string;
+  cliArchivePath?: string;
 }
 
 async function fileExists(path: string): Promise<boolean> {
@@ -76,6 +81,27 @@ function buildReleaseUrl(org: string, repo: string, version: string, archiveName
   return `https://github.com/${org}/${repo}/releases/download/${version}/${archiveName}`;
 }
 
+function parseArgs(): CliArgs {
+  const args = process.argv.slice(2);
+  const parsed: CliArgs = {};
+
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    if (arg === '--docs-archive') {
+      parsed.docsArchivePath = args[i + 1];
+      i += 1;
+      continue;
+    }
+    if (arg === '--cli-archive') {
+      parsed.cliArchivePath = args[i + 1];
+      i += 1;
+      continue;
+    }
+  }
+
+  return parsed;
+}
+
 async function downloadArchive(url: string, destination: string): Promise<void> {
   await mkdir(dirname(destination), { recursive: true });
   await execAsync(`curl -fsSL -o "${destination}" "${url}"`);
@@ -91,6 +117,7 @@ async function downloadAndExtract(): Promise<void> {
 
   const { org, repo, version, projectName } = await loadConfig();
   const resolvedProjectName = projectName ?? repo;
+  const { docsArchivePath, cliArchivePath } = parseArgs();
 
   const docsArchive = `${resolvedProjectName}-docs_${version.substring(1)}.tar.gz`;
   const cliArchive = `${resolvedProjectName}-cli-docs_${version.substring(1)}.tar.gz`;
@@ -101,18 +128,43 @@ async function downloadAndExtract(): Promise<void> {
   const docsDownloadPath = join(DOWNLOAD_DIR, docsArchive);
   const cliDownloadPath = join(DOWNLOAD_DIR, cliArchive);
 
-  await downloadArchive(docsUrl, docsDownloadPath);
-  console.log(`  ✓ ${docsArchive}`);
+  const resolvedDocsArchivePath = docsArchivePath ? resolve(docsArchivePath) : docsDownloadPath;
+  const resolvedCliArchivePath = cliArchivePath ? resolve(cliArchivePath) : cliDownloadPath;
 
-  await downloadArchive(cliUrl, cliDownloadPath);
-  console.log(`  ✓ ${cliArchive}`);
+  if (docsArchivePath) {
+    if (!(await fileExists(resolvedDocsArchivePath))) {
+      throw new Error(`Docs archive not found: ${resolvedDocsArchivePath}`);
+    }
+    console.log(`  ✓ using ${resolvedDocsArchivePath}`);
+  } else {
+    await downloadArchive(docsUrl, resolvedDocsArchivePath);
+    console.log(`  ✓ ${docsArchive}`);
+  }
+
+  if (cliArchivePath) {
+    if (!(await fileExists(resolvedCliArchivePath))) {
+      throw new Error(`CLI archive not found: ${resolvedCliArchivePath}`);
+    }
+    console.log(`  ✓ using ${resolvedCliArchivePath}`);
+  } else {
+    await downloadArchive(cliUrl, resolvedCliArchivePath);
+    console.log(`  ✓ ${cliArchive}`);
+  }
 
   console.log('\nExtracting archives...');
-  await extractArchive(docsDownloadPath, OUTPUT_DOCS_DIR);
+  await extractArchive(resolvedDocsArchivePath, OUTPUT_DOCS_DIR);
   console.log(`  ✓ ${OUTPUT_DOCS_DIR}`);
 
-  await extractArchive(cliDownloadPath, OUTPUT_CLI_DOCS_DIR);
+  await extractArchive(resolvedCliArchivePath, OUTPUT_CLI_DOCS_DIR);
   console.log(`  ✓ ${OUTPUT_CLI_DOCS_DIR}`);
+
+  const cliSourcePath = join(OUTPUT_CLI_DOCS_DIR, 'datumctl.md');
+  const cliDestinationPath = join(dirname(OUTPUT_CLI_DOCS_DIR), 'cli-reference.md');
+  if (await fileExists(cliSourcePath)) {
+    await rm(cliDestinationPath, { force: true });
+    await rename(cliSourcePath, cliDestinationPath);
+    console.log(`  ✓ moved datumctl.md → ${cliDestinationPath}`);
+  }
 
   console.log('✓ Done\n');
 }

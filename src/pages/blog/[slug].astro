@@ -94,6 +94,9 @@ breadcrumbData.push({
   href: `/blog/${slug}/`,
 });
 
+// Canonical page URL from config (SITE_URL) so copy/share works behind reverse proxy
+const pageCanonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
+
 // SEO: build meta from Strapi seo, same pattern as blog/[slug].astro
 const title = article.seo?.metaTitle ?? fm.title;
 const description = article.seo?.metaDescription ?? fm.description ?? '';
@@ -196,7 +199,7 @@ if (article.seo?.shareImage?.url) {
                   type="button"
                   class="border-b hover:cursor-pointer"
                   x-data="{ copied: false }"
-                  @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                  @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
                   x-text="copied ? 'Copied!' : 'Copy URL'"></button>
               </span>
             </span>
@@ -246,7 +249,7 @@ if (article.seo?.shareImage?.url) {
                 type="button"
                 class="blog-article-meta-share"
                 x-data="{ copied: false }"
-                @click={`navigator.clipboard.writeText('${Astro.url.href}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
                 x-text="copied ? 'Copied!' : 'Copy URL'"></button>
             </div>
           </header>

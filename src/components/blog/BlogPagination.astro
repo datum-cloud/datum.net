@@ -1,37 +1,65 @@
 ---
-import type { PaginationProps } from '@/src/types/common';
-import Icon from '@components/Icon.astro';
+// src/components/blog/BlogPagination.astro
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  prevUrl?: string;
+  nextUrl?: string;
+}
 
-const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as PaginationProps;
+const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as Props;
+
+function getPageUrl(page: number): string {
+  if (page === 1) {
+    return `${baseUrl}/`;
+  }
+  return `${baseUrl}/${page}`;
+}
 ---
 
-<div class="blog-pagination">
-  {
-    prevUrl && (
-      <a href={prevUrl} aria-label="Previous page">
-        <Icon name="chevron-left" size="md" />
-      </a>
-    )
-  }
+<nav class="blog-pagination" aria-label="Pagination">
+  <div class="blog-pagination--inner">
+    {
+      prevUrl ? (
+        <a href={prevUrl} class="blog-pagination--prev" aria-label="Previous page">
+          <span aria-hidden="true">&larr;</span> Previous
+        </a>
+      ) : (
+        <span class="blog-pagination--prev blog-pagination--disabled" aria-disabled="true">
+          <span aria-hidden="true">&larr;</span> Previous
+        </span>
+      )
+    }
 
-  {
-    Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-      <a
-        href={pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`}
-        class={`${pageNum === currentPage ? 'blog-pagination--active' : ''}`}
-        aria-label={`Page ${pageNum}`}
-        aria-current={pageNum === currentPage ? 'page' : undefined}
-      >
-        {pageNum}
-      </a>
-    ))
-  }
+    <div class="blog-pagination--pages">
+      {
+        Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <a
+            href={getPageUrl(page)}
+            class:list={[
+              'blog-pagination--page',
+              { 'blog-pagination--page--active': page === currentPage },
+            ]}
+            aria-label={`Page ${page}`}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            {page}
+          </a>
+        ))
+      }
+    </div>
 
-  {
-    nextUrl && (
-      <a href={nextUrl} aria-label="Next page">
-        <Icon name="chevron-right" size="md" />
-      </a>
-    )
-  }
-</div>
+    {
+      nextUrl ? (
+        <a href={nextUrl} class="blog-pagination--next" aria-label="Next page">
+          Next <span aria-hidden="true">&rarr;</span>
+        </a>
+      ) : (
+        <span class="blog-pagination--next blog-pagination--disabled" aria-disabled="true">
+          Next <span aria-hidden="true">&rarr;</span>
+        </span>
+      )
+    }
+  </div>
+</nav>

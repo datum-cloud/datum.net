@@ -1,0 +1,73 @@
+---
+// src/components/blog/BlogStrapi.astro
+import { fetchStrapiArticles } from '@libs/strapi';
+import { normalizeArticle } from '@/src/types/strapi';
+import type { StrapiArticle, NormalizedStrapiArticle } from '@libs/strapi';
+import FeaturedPostStrapi from './FeaturedPostStrapi.astro';
+import BlogItemStrapi from './BlogItemStrapi.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
+import config from '@data/siteConfig.json';
+
+// Fetch articles from Strapi (cached list, without rich-text blocks)
+const rawArticles: StrapiArticle[] = await fetchStrapiArticles();
+
+// Normalize and sort articles
+let articles: NormalizedStrapiArticle[] = [];
+if (rawArticles.length > 0) {
+  articles = rawArticles.map(normalizeArticle);
+  // Sort by date (newest first) - should already be sorted but ensure consistency
+  articles.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+}
+
+// Set up pagination variables for the first page
+const pageSize = config.pageSize;
+const currentPage = 1;
+const totalItems = articles.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+
+// Get featured posts (first 3 newest posts)
+const featuredPosts = articles.slice(0, 3);
+
+// Get remaining posts for current page (excluding featured posts)
+const remainingPosts = articles.slice(3);
+const currentPageRemainingData = remainingPosts.slice(0, pageSize - 3);
+
+// Pagination setup
+const baseUrl = '/blog';
+const prevUrl = currentPage > 1 ? `${baseUrl}/${currentPage - 1}` : undefined;
+const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : undefined;
+---
+
+{
+  articles.length === 0 ? (
+    <div class="py-12 text-center">
+      <p class="text-gray-500">No articles found. Please check your Strapi connection.</p>
+    </div>
+  ) : (
+    <>
+      <div class="featured-posts-section">
+        {featuredPosts.map((post) => (
+          <FeaturedPostStrapi post={post} baseUrl={baseUrl} />
+        ))}
+      </div>
+
+      <div class="blog-list">
+        {currentPageRemainingData.map((post) => (
+          <BlogItemStrapi post={post} baseUrl={baseUrl} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <BlogPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl={baseUrl}
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
+        />
+      )}
+    </>
+  )
+}

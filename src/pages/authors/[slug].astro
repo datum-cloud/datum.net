@@ -1,74 +1,62 @@
 ---
 // src/pages/authors/[slug].astro
+export const prerender = false;
+
 import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import GlobalSection from '@components/GlobalSection.astro';
-import { getCollection } from 'astro:content';
-import config from '@data/siteConfig.json';
-import { getCollectionEntry } from '@utils/collectionUtils';
-import BlogItem from '@components/blog/BlogItem.astro';
+import {
+  fetchStrapiAuthorBySlug,
+  fetchStrapiAuthorByDocumentId,
+  fetchStrapiArticles,
+  getStrapiMediaUrl,
+} from '@libs/strapi';
+import { normalizeArticle } from '@/src/types/strapi';
+import BlogItemStrapi from '@components/blog/BlogItemStrapi.astro';
 import BlogPagination from '@components/blog/BlogPagination.astro';
-import { Image } from 'astro:assets';
+import config from '@data/siteConfig.json';
 
-export async function getStaticPaths() {
-  const authors = await getCollection('authors');
-  const blogPosts = await getCollection('blog', ({ data }) => {
-    return !data.draft;
-  });
-
-  // Only generate pages for authors who have published blog posts
-  const authorsWithPosts = authors.filter((author) => {
-    return blogPosts.some((post) => post.data.author === author.id);
-  });
-
-  return authorsWithPosts.map((author) => ({
-    params: { slug: author.id },
-    props: { author },
-  }));
-}
-
-const { author } = Astro.props;
 const { slug } = Astro.params;
 
-// Get all blog posts by this author
-const allPosts = await getCollection('blog', ({ data }) => {
-  return !data.draft && data.author === slug;
+// Fetch author by slug (per-author cache); fallback to documentId for backwards compat
+const author =
+  (await fetchStrapiAuthorBySlug(slug as string)) ??
+  (await fetchStrapiAuthorByDocumentId(slug as string));
+if (!author) {
+  return Astro.redirect('/404');
+}
+
+// Get all articles by this author
+const allArticles = await fetchStrapiArticles();
+const authorArticles = allArticles.filter((a) => a.author?.name === author.name);
+const sortedArticles = authorArticles.sort((a, b) => {
+  const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+  const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+  return dateB - dateA;
 });
 
-const sortedPosts = allPosts.sort((a, b) => {
-  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-});
+const normalizedPosts = sortedArticles.map(normalizeArticle);
 
-// Set up pagination
+// Pagination
 const pageSize = config.pageSize;
 const currentPage = 1;
-const totalItems = sortedPosts.length;
+const totalItems = normalizedPosts.length;
 const totalPages = Math.ceil(totalItems / pageSize);
-const currentPageData = sortedPosts.slice(0, pageSize);
+const currentPageData = normalizedPosts.slice(0, pageSize);
 
-// Get author data for current page posts with author info
-const postsWithAuthors = await Promise.all(
-  currentPageData.map(async (post) => {
-    let authorData = null;
-    if (post.data.author) {
-      authorData = await getCollectionEntry('authors', post.data.author);
-    }
-    return { post, authorData };
-  })
-);
-
-// Setup for Hero component
 const subtitle = 'Author';
-const title = author.data.name;
+const title = author.name;
 const icon = 'user';
+
+const avatarUrl = author.avatar ? getStrapiMediaUrl(author.avatar.url) : undefined;
 ---
 
 <Layout
-  title={`${author.data.name} - Author`}
-  description={author.data.bio}
-  bodyClass={`page-author page-author--${slug}`}
+  title={`${author.name} - Author`}
+  description={author.bio}
+  bodyClass={`page-author page-author--strapi-${slug}`}
 >
   <section class="datum-container">
     <Hero class="light" iconName={icon} title={title} subtitle={subtitle} />
@@ -79,30 +67,34 @@ const icon = 'user';
         <div class="mb-16">
           <div class="mb-8 flex items-start gap-10">
             {
-              author.data.avatar && (
-                <Image
-                  src={author.data.avatar}
-                  alt={author.data.name}
+              avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={author.name}
                   class="h-24 w-24 rounded-full object-cover ring-4 ring-white/80"
                   width={96}
                   height={96}
                 />
+              ) : (
+                <span class="font-alliance flex h-24 w-24 items-center justify-center rounded-full bg-white/10 text-3xl font-medium text-white ring-4 ring-white/80">
+                  {author.name.charAt(0)}
+                </span>
               )
             }
             <div class="max-w-2xl">
-              <h2 class="font-alliance mb-2 text-2xl font-medium text-white">{author.data.name}</h2>
+              <h2 class="font-alliance mb-2 text-2xl font-medium text-white">{author.name}</h2>
               {
-                author.data.title && (
-                  <p class="font-alliance text-aurora-moss mb-3 text-lg">{author.data.title}</p>
+                author.title && (
+                  <p class="font-alliance text-aurora-moss mb-3 text-lg">{author.title}</p>
                 )
               }
-              <p class="font-alliance text-white/80">{author.data.bio}</p>
+              <p class="font-alliance text-white/80">{author.bio}</p>
               {
-                author.data.social && (
+                author.social && (
                   <div class="mt-4 flex gap-4">
-                    {author.data.social.twitter && (
+                    {author.social.twitter && (
                       <a
-                        href={author.data.social.twitter}
+                        href={author.social.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
@@ -110,9 +102,9 @@ const icon = 'user';
                         Twitter
                       </a>
                     )}
-                    {author.data.social.github && (
+                    {author.social.github && (
                       <a
-                        href={author.data.social.github}
+                        href={author.social.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
@@ -120,9 +112,9 @@ const icon = 'user';
                         GitHub
                       </a>
                     )}
-                    {author.data.social.linkedin && (
+                    {author.social.linkedin && (
                       <a
-                        href={author.data.social.linkedin}
+                        href={author.social.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="font-alliance text-aurora-moss text-sm transition-colors hover:text-white"
@@ -139,11 +131,7 @@ const icon = 'user';
 
         <!-- Articles List -->
         <div class="blog-list">
-          {
-            postsWithAuthors.map(({ post, authorData }) => (
-              <BlogItem post={post} authorData={authorData} />
-            ))
-          }
+          {currentPageData.map((post) => <BlogItemStrapi post={post} baseUrl="/blog" />)}
         </div>
 
         <!-- Pagination -->

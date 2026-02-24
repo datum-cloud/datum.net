@@ -1,0 +1,116 @@
+---
+// src/components/about/PeopleStrapi.astro
+import { getStrapiTeamMembers, getTeamBgColor } from '@libs/strapi';
+import { getStrapiMediaUrl } from '@/src/types/strapi';
+import type { StrapiAuthorFull } from '@libs/strapi';
+import ProfileModal from './ProfileModal.astro';
+import '@v1/styles/page-about.css';
+
+// Fetch all team members from Strapi (authors where isTeam is true)
+// This uses caching - team members are cached for 5 minutes by default
+const teamMembers: StrapiAuthorFull[] = await getStrapiTeamMembers();
+
+// Prepare team member data for client-side modal (serialize data)
+const teamMembersData = teamMembers.map((member, index) => ({
+  id: member.documentId,
+  index,
+  data: {
+    name: member.name,
+    bio: member.bio,
+    title: member.title,
+    avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
+    tick: member.tick,
+    surprising: member.surprising,
+    weekends: member.weekends,
+  },
+}));
+---
+
+<section class="bg-glacier-mist-700 section--block section--block--pad">
+  <div class="max-width">
+    <div class="relative z-10">
+      <h3 class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:max-w-md lg:mb-10">
+        Meet the people behind Datum
+      </h3>
+
+      <p
+        class="datum-text-lg mx-auto mb-8 max-w-sm text-center md:mb-12 lg:mb-16 lg:max-w-lg xl:mb-21"
+      >
+        We are infrastructure, open source software, and design nerds who love building for the
+        future.
+      </p>
+
+      {
+        teamMembers.length === 0 ? (
+          <div class="py-12 text-center">
+            <p class="text-gray-500">No team members found. Please check your Strapi connection.</p>
+          </div>
+        ) : (
+          <div class="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-5">
+            {teamMembers.map((member, index) => (
+              <button
+                class="people--card"
+                data-member-trigger
+                data-member-index={index}
+                type="button"
+                tabindex={index + 1}
+                aria-label={`View ${member.name}'s profile`}
+              >
+                {member.avatar && (
+                  <div class="people--card-avatar">
+                    <img
+                      src={getStrapiMediaUrl(member.avatar.url)}
+                      alt={member.name}
+                      class="size-auto w-full bg-cover"
+                      style={`background-color: ${getTeamBgColor(index)}`}
+                    />
+                    {/* Check if member.title contains "Co-Founder" and show Founder label */}
+                    {member.title && member.title.includes('Co-Founder') && (
+                      <label class="people--card-founder-label">Founder</label>
+                    )}
+                  </div>
+                )}
+
+                <h4 class="people--card-name">{member.name}</h4>
+
+                <div class="people--card-title">{member.title && <p>{member.title}</p>}</div>
+              </button>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  <ProfileModal />
+</section>
+
+<script is:inline define:vars={{ teamMembersData }}>
+  // Store team members data for the modal
+  const teamData = teamMembersData;
+
+  // Initialize event listeners - runs immediately since deferred content is already in DOM
+  (function initPeopleStrapi() {
+    const triggers = document.querySelectorAll('[data-member-trigger]');
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        if (!target) return;
+
+        const memberIndex = target.getAttribute('data-member-index');
+        const index = parseInt(memberIndex || '0', 10);
+        const member = teamData[index];
+
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
+          // Dispatch event with member data
+          document.dispatchEvent(
+            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
+              detail: { member },
+            })
+          );
+        }
+      });
+    });
+  })();
+</script>

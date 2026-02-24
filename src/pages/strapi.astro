@@ -17,16 +17,29 @@ const cache = new Cache('.cache');
 const CACHE_KEY = 'strapi-articles';
 
 interface StrapiArticle {
-  id: number;
   documentId: string;
   title: string;
   slug: string;
   description: string;
-  content: string;
+  originalPublishedAt: string | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  blocks: StrapiBlock[];
 }
+
+type StrapiBlock =
+  | { __typename: 'ComponentSharedRichText'; body: string }
+  | { __typename: 'ComponentSharedQuote'; title: string; body: string }
+  | {
+      __typename: 'ComponentSharedMedia';
+      file: { url: string; name: string; alternativeText: string | null };
+    }
+  | {
+      __typename: 'ComponentSharedSlider';
+      files: { url: string; name: string; alternativeText: string | null }[];
+    }
+  | { __typename: 'Error'; code: string; message: string | null };
 
 interface StrapiResponse {
   data: {
@@ -38,15 +51,38 @@ async function fetchArticlesFromStrapi(): Promise<StrapiArticle[]> {
   const query = `
     query {
       articles {
-          id
           documentId
           title
           slug
           description
-          content
+          originalPublishedAt
           createdAt
           updatedAt
           publishedAt
+          blocks {
+            __typename
+            ... on ComponentSharedRichText {
+              body
+            }
+            ... on ComponentSharedQuote {
+              title
+              body
+            }
+            ... on ComponentSharedMedia {
+              file {
+                url
+                name
+                alternativeText
+              }
+            }
+            ... on ComponentSharedSlider {
+              files {
+                url
+                name
+                alternativeText
+              }
+            }
+          }
       }
     }
   `;

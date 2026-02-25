@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.39.3",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@types/alpinejs__collapse": "^3.13.4",
     "@types/hast": "^3.0.4",
@@ -89,7 +89,7 @@
     "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
-    "eslint": "^9.39.3",
+    "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",

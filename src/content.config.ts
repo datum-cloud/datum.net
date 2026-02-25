@@ -256,6 +256,7 @@ const pricing = defineCollection({
           href: z.string().optional(),
           class: z.string().optional(),
           isExternal: z.boolean().optional(),
+          fathomEvent: z.string().optional(),
         })
         .optional(),
       featureGroups: z

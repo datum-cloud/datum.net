@@ -147,6 +147,16 @@ const twitterImage =
       import '/src/v1/scripts/scroll-effects.js';
     </script>
 
+    {/* Fathom event tracking - fires on any element with data-fathom-event */}
+    <script is:inline>
+      document.addEventListener('click', function (e) {
+        var el = e.target.closest('[data-fathom-event]');
+        if (el && window.fathom) {
+          window.fathom.trackEvent(el.getAttribute('data-fathom-event'));
+        }
+      });
+    </script>
+
     {/* HelpScout Beacon open trigger handler */}
     <script>
       document.addEventListener('DOMContentLoaded', function () {

@@ -45,7 +45,7 @@ const blogMeta = {
 
     <div class="section--block section--block--pad bg-midnight-fjord dark">
       <div class="max-width">
-        <BlogStrapiIndex server:defer>
+        <BlogStrapiIndex page={1} server:defer>
           <BlogStrapiSkeleton slot="fallback" />
         </BlogStrapiIndex>
       </div>

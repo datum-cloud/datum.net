@@ -20,49 +20,79 @@ import type { StrapiArticle, StrapiBlock } from '@libs/strapi';
 import { formatShortDate, estimateReadingTime } from '@utils/dateUtils';
 import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
-import { marked } from 'marked';
 import { truncateByWords } from '@libs/string';
-import { transformMarkdownFigures } from '@utils/markdownFigure';
+import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
+
+// Additional imports for paginated blog listing
+import GlobalSection from '@components/GlobalSection.astro';
+import BlogStrapiPage from '@components/blog/BlogStrapi.astro';
+import BlogStrapiSkeleton from '@components/blog/BlogStrapiSkeleton.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import config from '@data/siteConfig.json';
 
 const { slug } = Astro.params;
 
-// Fetch article detail (per-slug cache)
-const article = await fetchStrapiArticleBySlug(slug as string);
-if (!article) {
+// Detect pagination: numeric slugs (≥ 2) are page numbers, not article slugs
+const parsedPage = parseInt(slug as string, 10);
+const isPageNumber = !isNaN(parsedPage) && String(parsedPage) === slug && parsedPage >= 1;
+
+// Redirect /blog/1 to canonical /blog/
+if (isPageNumber && parsedPage === 1) {
+  return Astro.redirect('/blog/', 301);
+}
+
+// Render paginated blog listing for pages ≥ 2
+let blogPage: Awaited<ReturnType<typeof getCollectionEntry>> | null = null;
+if (isPageNumber) {
+  // Validate the page number against available articles
+  const allArticles = await fetchStrapiArticles();
+  const totalPages = Math.ceil(allArticles.length / config.pageSize);
+  if (parsedPage > totalPages || parsedPage < 1) {
+    return Astro.redirect('/404');
+  }
+  blogPage = await getCollectionEntry('pages', 'blog');
+}
+
+// Article rendering (only when not a pagination page)
+const article = !isPageNumber ? await fetchStrapiArticleBySlug(slug as string) : null;
+if (!isPageNumber && !article) {
   return Astro.redirect('/404');
 }
 
-// Extract article data
-const fm = {
-  title: article.title,
-  description: article.description,
-  date: article.originalPublishedAt,
-  featuredImage: article.cover
-    ? getStrapiMediaUrl(article.cover.formats?.large?.url) || getStrapiMediaUrl(article.cover.url)
-    : undefined,
-  author: article.author?.name,
-};
+// Article-specific data — all guarded so they're safe when article is null (pagination pages)
+const fm = article
+  ? {
+      title: article.title,
+      description: article.description,
+      date: article.originalPublishedAt,
+      featuredImage: article.cover
+        ? getStrapiMediaUrl(article.cover.formats?.large?.url) ||
+          getStrapiMediaUrl(article.cover.url)
+        : undefined,
+      author: article.author?.name,
+    }
+  : null;
 
-const formattedDate = fm.date ? formatShortDate(fm.date) : '';
+const formattedDate = fm?.date ? formatShortDate(fm.date) : '';
 const readingTime = estimateReadingTime(
-  article.blocks?.map((b: StrapiBlock) => b.body).join('\n') || ''
+  article?.blocks?.map((b: StrapiBlock) => b.body).join('\n') || ''
 );
 
 // Get author data
-const authorName = article.author?.name || '';
-const authorSlug = article.author?.slug ?? article.author?.documentId;
+const authorName = article?.author?.name || '';
+const authorSlug = article?.author?.slug ?? article?.author?.documentId;
 const authorHref = authorSlug ? `/authors/${authorSlug}/` : undefined;
-const authorAvatar = article.author?.avatar
+const authorAvatar = article?.author?.avatar
   ? getStrapiMediaUrl(article.author.avatar.url)
   : undefined;
 const authorBgColor = authorName ? await getAuthorBgColorFromStrapi(authorName) : undefined;
 
 // Get category data
-const categoryName = article.category?.name || '';
-// const categorySlug = article.category?.slug || '';
+const categoryName = article?.category?.name || '';
+// const categorySlug = article?.category?.slug || '';
 
-// Get all articles for navigation
-const allArticles: StrapiArticle[] = await fetchStrapiArticles();
+// Get all articles for navigation (only needed for article pages)
+const allArticles: StrapiArticle[] = isPageNumber ? [] : await fetchStrapiArticles();
 
 // Sort by publication date (newest first)
 allArticles.sort((a, b) => {
@@ -71,10 +101,12 @@ allArticles.sort((a, b) => {
   return dateB - dateA;
 });
 
-const currentIndex = allArticles.findIndex((a) => a.slug === article.slug);
+const currentIndex = article ? allArticles.findIndex((a) => a.slug === article.slug) : -1;
 const previousArticle = currentIndex > 0 ? allArticles[currentIndex - 1] : undefined;
 const nextArticle =
-  currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 1] : undefined;
+  currentIndex >= 0 && currentIndex < allArticles.length - 1
+    ? allArticles[currentIndex + 1]
+    : undefined;
 
 // Create breadcrumbs
 const breadcrumbData = [
@@ -89,234 +121,328 @@ const breadcrumbData = [
 //   });
 // }
 
-breadcrumbData.push({
-  text: truncateByWords(fm.title, 9),
-  href: `/blog/${slug}/`,
-});
+if (fm?.title) {
+  breadcrumbData.push({
+    text: truncateByWords(fm.title, 9),
+    href: `/blog/${slug}/`,
+  });
+}
 
 // Canonical page URL from config (SITE_URL) so copy/share works behind reverse proxy
 const pageCanonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 
 // SEO: build meta from Strapi seo, same pattern as blog/[slug].astro
-const title = article.seo?.metaTitle ?? fm.title;
-const description = article.seo?.metaDescription ?? fm.description ?? '';
+const title = article?.seo?.metaTitle ?? fm?.title;
+const description = article?.seo?.metaDescription ?? fm?.description ?? '';
 
-const blogMeta = {
-  title: article.seo?.metaTitle ?? fm.title,
-  description: article.seo?.metaDescription ?? fm.description ?? '',
+const articleMeta = {
+  title: article?.seo?.metaTitle ?? fm?.title,
+  description: article?.seo?.metaDescription ?? fm?.description ?? '',
   og: {
     image: defaultOgImage,
-    title: article.seo?.ogTitle ?? fm.title,
-    description: article.seo?.ogDescription ?? fm.description ?? '',
+    title: article?.seo?.ogTitle ?? fm?.title,
+    description: article?.seo?.ogDescription ?? fm?.description ?? '',
   },
 };
 
-if (article.seo?.shareImage?.url) {
+if (article?.seo?.shareImage?.url) {
   const shareImageUrl = getStrapiMediaUrl(article.seo.shareImage.url);
   if (shareImageUrl) {
-    blogMeta.og.image = { src: shareImageUrl } as import('astro').ImageMetadata;
+    articleMeta.og.image = { src: shareImageUrl } as import('astro').ImageMetadata;
   }
 }
+
+type ProcessedBlock =
+  | {
+      kind: 'quote';
+      title: string;
+      html: string;
+    }
+  | {
+      kind: 'rich';
+      html: string;
+    };
+
+const processedBlocks: ProcessedBlock[] =
+  article && Array.isArray(article.blocks)
+    ? (
+        await Promise.all(
+          article.blocks.map(async (block: StrapiBlock | null) => {
+            if (!block) return null;
+
+            if (block.__typename === 'ComponentSharedQuote' && block.title) {
+              const bodyMarkdown = block.body ? resolveMarkdownStrapiUrls(block.body) : '';
+              const bodyHtml = bodyMarkdown
+                ? await renderMarkdownWithExpressiveCode(bodyMarkdown)
+                : '';
+
+              return {
+                kind: 'quote' as const,
+                title: block.title,
+                html: bodyHtml,
+              };
+            }
+
+            if (block.__typename === 'ComponentSharedRichText' && block.body) {
+              const bodyMarkdown = resolveMarkdownStrapiUrls(block.body);
+              const bodyHtml = await renderMarkdownWithExpressiveCode(bodyMarkdown);
+
+              return {
+                kind: 'rich' as const,
+                html: bodyHtml,
+              };
+            }
+
+            return null;
+          })
+        )
+      ).filter((block): block is ProcessedBlock => block !== null)
+    : [];
+
+// Blog listing meta (used when rendering a paginated blog page)
+const blogListingMeta = {
+  og: { image: defaultOgImage },
+};
 ---
 
-<Layout
-  title={title}
-  description={description}
-  image={fm.featuredImage}
-  article={true}
-  publishDate={fm.date}
-  author={fm.author}
-  bodyClass={`page-blog page-blog--strapi-${slug}`}
-  meta={blogMeta}
->
-  <section class="datum-container">
-    <Hero class="light" hideContent={true} />
+{
+  isPageNumber ? (
+    /* ── Paginated blog listing (e.g. /blog/2, /blog/3) ── */
+    <Layout
+      title={`Blog — Page ${parsedPage}`}
+      description={blogPage?.data?.description ?? ''}
+      bodyClass="page-blog"
+      meta={blogListingMeta}
+    >
+      <section class="datum-container">
+        <Hero
+          class="light"
+          iconName="book-image"
+          title={blogPage?.data?.title}
+          subtitle={blogPage?.data?.subtitle ?? 'Blog'}
+          description={blogPage?.data?.description ?? ''}
+        />
 
-    <section class="bg-glacier-mist-700 section--block pt-6 md:pt-10 xl:pt-16">
-      <div class="max-width blog-detail max-w-256.5">
-        <aside class="blog-aside">
-          <div class="blog-aside-content sticky top-0">
-            <Button
-              class="btn btn--alpha btn--fluid mb-11"
-              text="Back to Blog"
-              icon={{ name: 'arrow-left', size: 'md' }}
-              iconPosition="left"
-              iconClass="stroke-1.5"
-              href="/blog/"
-            />
-
-            <!-- Author Information -->
-            {
-              authorName && (
-                <div class="blog-article-author">
-                  <div class="blog-article-author-avatar">
-                    {authorAvatar ? (
-                      <a href={authorHref ?? '#'} class="blog-article-author-image">
-                        <img
-                          src={authorAvatar}
-                          alt={authorName}
-                          class="h-full w-full object-cover"
-                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
-                        />
-                      </a>
-                    ) : (
-                      <a
-                        href={authorHref ?? '#'}
-                        class="blog-article-author-image"
-                        style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
-                      >
-                        <span class="text-lg font-bold text-gray-600">{authorName.charAt(0)}</span>
-                      </a>
-                    )}
-                  </div>
-                  <a href={authorHref ?? '#'} class="blog-article-author-name">
-                    {authorName}
-                  </a>
-                </div>
-              )
-            }
-
-            <span class="icon-label">
-              <div class="icon-bg">
-                <Icon name="clock" size="sm" />
-              </div>
-              <span class="icon-label-text">{readingTime.text}</span>
-            </span>
-
-            <span class="icon-label">
-              <div class="icon-bg">
-                <Icon name="calendar" size="sm" />
-              </div>
-              <span class="icon-label-text">{formattedDate}</span>
-            </span>
-
-            <span class="icon-label">
-              <div class="icon-bg">
-                <Icon name="copy" size="sm" />
-              </div>
-              <span class="icon-label-text">
-                <button
-                  type="button"
-                  class="border-b hover:cursor-pointer"
-                  x-data="{ copied: false }"
-                  @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                  x-text="copied ? 'Copied!' : 'Copy URL'"></button>
-              </span>
-            </span>
+        <div class="section--block section--block--pad bg-midnight-fjord dark">
+          <div class="max-width">
+            <BlogStrapiPage page={parsedPage} server:defer>
+              <BlogStrapiSkeleton slot="fallback" />
+            </BlogStrapiPage>
           </div>
-        </aside>
+        </div>
 
-        <article class="blog-article">
-          <!-- Hidden meta tags for Pagefind -->
-          <span class="hidden" style="display: none;">post</span>
-          <span class="hidden" style="display: none;">{authorName}</span>
-          <span class="hidden" style="display: none;">{categoryName}</span>
+        <GlobalSection />
 
-          <!-- Article Header -->
-          <header class="blog-article-header">
-            <div class="blog-article-breadcrumbs">
-              <Breadcrumbs
-                linkTextFormat="sentence"
-                mainBemClass="a-breadcrumbs"
-                crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-              >
-                <svg
-                  slot="index"
-                  aria-label="Home Page"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-              </Breadcrumbs>
-            </div>
-            <h1 class="blog-article-title">
-              {fm.title}
-            </h1>
-            <div class="datum-text-sm mt-4 flex gap-1 opacity-60 md:hidden">
-              <a href={authorHref ?? '#'} class="blog-article-author-name">{authorName},</a>
-              <span class="blog-article-meta-date">{readingTime.text}, </span>
-              <span class="blog-article-meta-date">{formattedDate}, </span>
-              <button
-                type="button"
-                class="blog-article-meta-share"
-                x-data="{ copied: false }"
-                @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                x-text="copied ? 'Copied!' : 'Copy URL'"></button>
-            </div>
-          </header>
+        <Footer />
+      </section>
+    </Layout>
+  ) : (
+    /* ── Article detail ── */
+    <Layout
+      title={title}
+      description={description}
+      image={fm?.featuredImage}
+      article={true}
+      publishDate={fm?.date}
+      author={fm?.author}
+      bodyClass={`page-blog page-blog--strapi-${slug}`}
+      meta={articleMeta}
+    >
+      <section class="datum-container">
+        <Hero class="light" hideContent={true} />
 
-          <!-- Featured Image -->
-          {
-            fm.featuredImage && (
-              <div class="blog-article-image">
-                <img
-                  src={fm.featuredImage}
-                  alt={article.cover?.alternativeText || fm.title}
-                  class="fade-in--pure"
-                  data-reveal="fade-in--pure--visible"
-                  data-reveal-delay="100"
+        <section class="bg-glacier-mist-700 section--block pt-6 md:pt-10 xl:pt-16">
+          <div class="max-width blog-detail max-w-256.5">
+            <aside class="blog-aside">
+              <div class="blog-aside-content sticky top-0">
+                <Button
+                  class="btn btn--alpha btn--fluid mb-11"
+                  text="Back to Blog"
+                  icon={{ name: 'arrow-left', size: 'md' }}
+                  iconPosition="left"
+                  iconClass="stroke-1.5"
+                  href="/blog/"
                 />
-              </div>
-            )
-          }
 
-          <!-- Article Content -->
-          <div class="blog-article-content">
-            {
-              article.blocks?.map((block: StrapiBlock) => {
-                if (block.__typename === 'ComponentSharedQuote' && block.title) {
-                  const bodyMarkdown = block.body ? resolveMarkdownStrapiUrls(block.body) : '';
-                  const bodyHtml = bodyMarkdown ? marked(bodyMarkdown) : '';
-                  return (
-                    <blockquote class="blog-article-quote">
-                      {block.title && <h3>{block.title}</h3>}
-                      {block.body && <p set:html={bodyHtml} />}
-                    </blockquote>
-                  );
+                {/* Author Information */}
+                {authorName && (
+                  <div class="blog-article-author">
+                    <div class="blog-article-author-avatar">
+                      {authorAvatar ? (
+                        <a href={authorHref ?? '#'} class="blog-article-author-image">
+                          <img
+                            src={authorAvatar}
+                            alt={authorName}
+                            class="h-full w-full object-cover"
+                            style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+                          />
+                        </a>
+                      ) : (
+                        <a
+                          href={authorHref ?? '#'}
+                          class="blog-article-author-image"
+                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+                        >
+                          <span class="text-lg font-bold text-gray-600">
+                            {authorName.charAt(0)}
+                          </span>
+                        </a>
+                      )}
+                    </div>
+                    <a href={authorHref ?? '#'} class="blog-article-author-name">
+                      {authorName}
+                    </a>
+                  </div>
+                )}
+
+                <span class="icon-label">
+                  <div class="icon-bg">
+                    <Icon name="clock" size="sm" />
+                  </div>
+                  <span class="icon-label-text">{readingTime.text}</span>
+                </span>
+
+                <span class="icon-label">
+                  <div class="icon-bg">
+                    <Icon name="calendar" size="sm" />
+                  </div>
+                  <span class="icon-label-text">{formattedDate}</span>
+                </span>
+
+                <span class="icon-label">
+                  <div class="icon-bg">
+                    <Icon name="copy" size="sm" />
+                  </div>
+                  <span class="icon-label-text">
+                    <button
+                      type="button"
+                      class="border-b hover:cursor-pointer"
+                      x-data="{ copied: false }"
+                      @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                      x-text="copied ? 'Copied!' : 'Copy URL'"
+                    />
+                  </span>
+                </span>
+              </div>
+            </aside>
+
+            <article class="blog-article">
+              {/* Hidden meta tags for Pagefind */}
+              <span class="hidden" style="display: none;">
+                post
+              </span>
+              <span class="hidden" style="display: none;">
+                {authorName}
+              </span>
+              <span class="hidden" style="display: none;">
+                {categoryName}
+              </span>
+
+              {/* Article Header */}
+              <header class="blog-article-header">
+                <div class="blog-article-breadcrumbs">
+                  <Breadcrumbs
+                    linkTextFormat="sentence"
+                    mainBemClass="a-breadcrumbs"
+                    crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                  >
+                    <svg
+                      slot="index"
+                      aria-label="Home Page"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                      <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                  </Breadcrumbs>
+                </div>
+                <h1 class="blog-article-title">{fm?.title}</h1>
+                <div class="datum-text-sm mt-4 flex gap-1 opacity-60 md:hidden">
+                  <a href={authorHref ?? '#'} class="blog-article-author-name">
+                    {authorName},
+                  </a>
+                  <span class="blog-article-meta-date">{readingTime.text}, </span>
+                  <span class="blog-article-meta-date">{formattedDate}, </span>
+                  <button
+                    type="button"
+                    class="blog-article-meta-share"
+                    x-data="{ copied: false }"
+                    @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                    x-text="copied ? 'Copied!' : 'Copy URL'"
+                  />
+                </div>
+              </header>
+
+              {/* Featured Image */}
+              {fm?.featuredImage && (
+                <div class="blog-article-image">
+                  <img
+                    src={fm.featuredImage}
+                    alt={article?.cover?.alternativeText || fm?.title}
+                    class="fade-in--pure"
+                    data-reveal="fade-in--pure--visible"
+                    data-reveal-delay="100"
+                  />
+                </div>
+              )}
+
+              {/* Article Content */}
+              <div class="blog-article-content">
+                {processedBlocks.map((block) => {
+                  if (block.kind === 'quote') {
+                    return (
+                      <blockquote class="blog-article-quote">
+                        <h3>{block.title}</h3>
+                        <p set:html={block.html} />
+                      </blockquote>
+                    );
+                  }
+
+                  if (block.kind === 'rich') {
+                    return <div set:html={block.html} />;
+                  }
+
+                  return null;
+                })}
+              </div>
+
+              {/* Article Navigation */}
+              <ArticleNavigation
+                previousArticle={
+                  previousArticle
+                    ? {
+                        id: previousArticle.slug,
+                        title: previousArticle.title,
+                        url: `/blog/${previousArticle.slug}/`,
+                        navLabel: 'Next article',
+                      }
+                    : undefined
                 }
-                if (block.__typename === 'ComponentSharedRichText' && block.body) {
-                  const bodyMarkdown = resolveMarkdownStrapiUrls(block.body);
-                  const bodyWithFigures = transformMarkdownFigures(bodyMarkdown);
-                  const bodyHtml = marked(bodyWithFigures);
-                  return <div set:html={bodyHtml} />;
+                nextArticle={
+                  nextArticle
+                    ? {
+                        id: nextArticle.slug,
+                        title: nextArticle.title,
+                        url: `/blog/${nextArticle.slug}/`,
+                        navLabel: 'Previous article',
+                      }
+                    : undefined
                 }
-                return null;
-              })
-            }
+              />
+            </article>
           </div>
 
-          <!-- Article Navigation -->
-          <ArticleNavigation
-            previousArticle={previousArticle
-              ? {
-                  id: previousArticle.slug,
-                  title: previousArticle.title,
-                  url: `/blog/${previousArticle.slug}/`,
-                  navLabel: 'Next article',
-                }
-              : undefined}
-            nextArticle={nextArticle
-              ? {
-                  id: nextArticle.slug,
-                  title: nextArticle.title,
-                  url: `/blog/${nextArticle.slug}/`,
-                  navLabel: 'Previous article',
-                }
-              : undefined}
-          />
-        </article>
-      </div>
-
-      <Footer />
-    </section>
-  </section>
-</Layout>
+          <Footer />
+        </section>
+      </section>
+    </Layout>
+  )
+}

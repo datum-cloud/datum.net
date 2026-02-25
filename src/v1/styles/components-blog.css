@@ -150,6 +150,7 @@
   /* Pagination */
   .blog-pagination {
     @apply flex items-center justify-center gap-4;
+    @apply mt-12;
 
     a {
       @apply font-alliance rounded-lg border border-white/25 px-4 py-2 text-center text-sm font-semibold tracking-[-0.0025em] text-white transition-all duration-200 hover:bg-white/10;
@@ -158,6 +159,14 @@
 
   .blog-pagination--active {
     @apply border-white/50 bg-white/10;
+  }
+
+  .blog-pagination--inner {
+    @apply flex items-center justify-center gap-2;
+  }
+
+  .blog-pagination--pages {
+    @apply flex items-center justify-center gap-1;
   }
 
   /* Blog Detail Styles */

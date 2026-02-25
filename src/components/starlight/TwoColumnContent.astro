@@ -93,6 +93,8 @@ if (pathSegments.length > 0) {
     }
 
     let segmentTitle;
+    let breadcrumbHref;
+
     if (docEntry && docEntry.data.title) {
       segmentTitle =
         docEntry.data.title === 'Overview'
@@ -102,9 +104,17 @@ if (pathSegments.length > 0) {
       segmentTitle = segment.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
     }
 
+    breadcrumbHref = lastSegment != segment ? '/docs' + currentPath + '/' : null;
+
+    // Override segment title with "Overview" if it matches the last path segment
+    if (segmentTitle == 'Command' && currentPath.endsWith('/datumctl/command')) {
+      segmentTitle = 'CLI command reference';
+      breadcrumbHref = '/docs' + '/datumctl/cli-reference/';
+    }
+
     breadcrumbData.push({
       text: segmentTitle,
-      href: lastSegment != segment ? '/docs' + currentPath + '/' : null,
+      href: breadcrumbHref,
     });
   }
 

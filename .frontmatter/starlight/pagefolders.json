@@ -13,12 +13,6 @@
       "previewPath": "about"
     },
     {
-      "title": "Blog",
-      "path": "[[workspace]]/src/content/blog",
-      "previewPath": "blog",
-      "contentTypes": ["blogPost"]
-    },
-    {
       "title": "Changelog",
       "path": "[[workspace]]/src/content/changelog",
       "previewPath": "changelog",

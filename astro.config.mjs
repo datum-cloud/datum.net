@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
+import astroExpressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
 import mermaid from 'astro-mermaid';
@@ -19,6 +20,13 @@ import copyMarkdown from './src/plugins/copy-markdown/index.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
+const expressiveCodeConfig = {
+  themes: ['github-light', 'github-dark'],
+  styleOverrides: {
+    borderRadius: '0.5rem',
+  },
+};
+
 // Also check process.env for environment variables
 const siteUrl = process.env.SITE_URL || import.meta.env.SITE_URL || 'https://www.datum.net';
 const port = parseInt(process.env.PORT || env.PORT || '4321');
@@ -37,6 +45,7 @@ export default defineConfig({
     layout: 'constrained',
   },
   integrations: [
+    astroExpressiveCode(expressiveCodeConfig),
     announcement({
       show: true,
       label: "We're hiring!",
@@ -125,12 +134,7 @@ export default defineConfig({
           },
         },
       ],
-      expressiveCode: {
-        themes: ['github-light', 'github-dark'],
-        styleOverrides: {
-          borderRadius: '0.5rem',
-        },
-      },
+      expressiveCode: expressiveCodeConfig,
 
       sidebar: [
         {

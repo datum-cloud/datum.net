@@ -11,7 +11,8 @@
     "label": "Join the waitlist",
     "class": "btn btn--pine-forge",
     "href": "https://auth.datum.net/ui/v2/login/register",
-    "isExternal": true
+    "isExternal": true,
+    "fathomEvent": "Pricing-Waitlist-Subscribe"
   },
   "featureGroups": [
     {

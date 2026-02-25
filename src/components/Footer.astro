@@ -45,6 +45,7 @@ const navData = navigation as NavData;
               iconClass="stroke-1.5"
               target="_blank"
               href="https://auth.datum.net/ui/v2/login/register"
+              data-fathom-event="Pre-footer: Join the waitlist"
             />
           </div>
         </div>
@@ -208,6 +209,7 @@ const navData = navigation as NavData;
     };
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
+      if (window.fathom) window.fathom.trackEvent('Footer: Newsletter Signup');
       openNewsletterModal();
     });
   });

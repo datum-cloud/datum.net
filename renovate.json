@@ -32,6 +32,12 @@
       "groupName": "npm dependencies"
     },
     {
+      "description": "Block eslint major upgrades until eslint-plugin-jsx-a11y supports eslint v10",
+      "matchPackageNames": ["eslint", "@eslint/js"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "description": "Group API documentation operator updates together",
       "matchManagers": ["regex"],
       "matchFileNames": [".api-docs-config.yaml"],

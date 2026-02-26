@@ -283,6 +283,21 @@ const faq = defineCollection({
     }),
 });
 
+// Define download collections
+const download = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/download' }),
+  schema: ({ image }) =>
+    z.object({
+      slug: z.string(),
+      title: z.string(),
+      description: z.string().optional(),
+      icon: z.string().optional(),
+      order: z.number().optional().default(0),
+      draft: z.boolean().optional().default(false),
+      meta: metaSchema(image),
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -293,6 +308,7 @@ export const collections = {
   features,
   pricing,
   faq,
+  download,
   docs: defineCollection({
     loader: docsLoader(),
     schema: docsSchema({

@@ -47,7 +47,7 @@
   }
 
   .btn--pine-forge {
-    @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white;
+    @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white!;
   }
 
   .btn--app-dark-utility-2 {

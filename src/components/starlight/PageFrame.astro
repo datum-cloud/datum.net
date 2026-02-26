@@ -6,6 +6,7 @@ import SearchModal from './SearchModal.astro';
 // import CustomSidebar from './CustomSidebar.astro';
 
 import Footer from '@components/Footer.astro';
+import DocsSectionNav from './DocsSectionNav.astro';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 
@@ -22,6 +23,7 @@ const shouldRenderSearch =
   </header>
   <div class="datum-container flex items-center justify-center">
     <div class="max-width">
+      {hasSidebar && <DocsSectionNav />}
       <div class="main-frame">
         {
           hasSidebar && (

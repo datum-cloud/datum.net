@@ -432,6 +432,45 @@
     @apply relative flex w-full;
   }
 
+  /* DocsSectionNav.astro — horizontal top-level section tabs */
+  .docs-section-nav {
+    @apply flex overflow-x-auto overflow-y-clip;
+    @apply -mx-7 w-[calc(100%+3.5rem)] px-7;
+    @apply border-b border-[color:var(--color-borderpanel)];
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .docs-section-nav__tab {
+    @apply datum-docs-sidebar-links;
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-3 whitespace-nowrap;
+    @apply -mb-px border-b-2 border-transparent;
+    @apply text-(--sl-color-text)/40;
+    @apply transition-colors duration-150;
+
+    &:hover {
+      @apply text-(--sl-color-text)/80;
+    }
+  }
+
+  .docs-section-nav__icon {
+    @apply shrink-0 opacity-70;
+  }
+
+  .docs-section-nav__tab--active {
+    @apply border-[color:var(--sl-color-text-accent)];
+    @apply text-[color:var(--sl-color-text-accent)];
+    @apply font-semibold;
+
+    .docs-section-nav__icon {
+      @apply opacity-100;
+    }
+  }
+
   /* End of PageFrame.astro */
 
   /* Header.astro */

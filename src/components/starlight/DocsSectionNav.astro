@@ -1,0 +1,59 @@
+---
+// src/components/starlight/DocsSectionNav.astro
+// Horizontal sub-navigation for top-level documentation sections.
+// Add / rename entries below — `matches` determines the active tab from the URL.
+
+import { BookOpen, Code, Waypoints, Terminal } from '@lucide/astro';
+
+const pathname = Astro.url.pathname;
+
+const sections = [
+  {
+    label: 'Docs',
+    href: '/docs/',
+    icon: BookOpen,
+    matches: (p: string) =>
+      p === '/docs/' ||
+      (p.startsWith('/docs/') &&
+        !p.startsWith('/docs/api') &&
+        !p.startsWith('/docs/quickstart') &&
+        !p.startsWith('/docs/datumctl')),
+  },
+  {
+    label: 'API Reference',
+    href: '/docs/api/reference/',
+    icon: Code,
+    matches: (p: string) => p.startsWith('/docs/api'),
+  },
+  {
+    label: 'MCP',
+    href: '/docs/quickstart/datum-mcp/',
+    icon: Waypoints,
+    matches: (p: string) => p.startsWith('/docs/quickstart'),
+  },
+  {
+    label: 'datumctl',
+    href: '/docs/datumctl/cli-reference/',
+    icon: Terminal,
+    matches: (p: string) => p.startsWith('/docs/datumctl'),
+  },
+];
+---
+
+<nav class="docs-section-nav print:hidden" aria-label="Documentation sections">
+  {
+    sections.map(({ label, href, icon: Icon, matches }) => {
+      const isActive = matches(pathname);
+      return (
+        <a
+          href={href}
+          class:list={['docs-section-nav__tab', { 'docs-section-nav__tab--active': isActive }]}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          <Icon class="docs-section-nav__icon" size={16} />
+          <span>{label}</span>
+        </a>
+      );
+    })
+  }
+</nav>

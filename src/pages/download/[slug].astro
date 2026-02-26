@@ -1,0 +1,76 @@
+---
+// src/pages/download/[slug].astro
+import '@v1/styles/page-download.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Download from '@components/download/Download.astro';
+import Icon from '@components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'download');
+
+export async function getStaticPaths() {
+  const downloadEntries = await getCollection('download', ({ data }) => {
+    return !data.draft;
+  });
+
+  return downloadEntries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const pageFm = page.data;
+
+// SEO
+const fm = entry.data;
+const meta = fm.meta || {};
+const title =
+  `${pageFm.title || ''}${pageFm.title && fm.title ? ' | ' : ''}${fm.title || ''}`.trim() ||
+  'Download';
+const description = fm.description || 'Download Datum';
+---
+
+<Layout title={title} description={description} bodyClass="page-download" meta={meta}>
+  <section
+    class="datum-container fade-in--pure"
+    data-reveal="fade-in--pure--visible"
+    data-reveal-delay="100"
+    data-reveal-immediate="true"
+  >
+    <Hero
+      class="light pb-0"
+      title={pageFm.title}
+      description={pageFm.description}
+      bodyClass={`page-brand page-brand--${page.id}`}
+      meta={meta}
+    />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0 pb-0">
+      <div class="max-width">
+        <Download activeId={entry.data.slug}>
+          <div class="download-content-frame">
+            <div class="download-content-header">
+              <div class="download-content-title">
+                <div>
+                  {fm.icon && <Icon name={fm.icon} size="xl" class="download-content-title-icon" />}
+                </div>
+                <h1 class="download-content-title-text">{fm.title}</h1>
+              </div>
+            </div>
+
+            <div class="download-section">
+              <Content />
+            </div>
+          </div>
+        </Download>
+      </div>
+    </div>
+    <Footer />
+  </section>
+</Layout>

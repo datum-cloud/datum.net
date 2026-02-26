@@ -1,0 +1,70 @@
+{
+  "sections": [
+    {
+      "title": "Native apps",
+      "items": [
+        {
+          "id": "mac-os",
+          "label": "mac",
+          "href": "/download/mac-os/",
+          "icon": "apple"
+        },
+        {
+          "id": "windows",
+          "label": "Windows",
+          "href": "/download/windows/",
+          "icon": "windows",
+          "badge": "Coming"
+        },
+        {
+          "id": "linux",
+          "label": "Linux",
+          "href": "/download/linux/",
+          "icon": "linux",
+          "badge": "Coming"
+        }
+      ]
+    },
+    {
+      "title": "Dev tools",
+      "items": [
+        {
+          "id": "datumctl",
+          "label": "datumctl",
+          "href": "/download/datumctl/",
+          "icon": "terminal"
+        },
+        {
+          "id": "datum-mcp",
+          "label": "Datum MCP",
+          "href": "/download/datum-mcp/",
+          "icon": "workflow"
+        }
+      ]
+    },
+    {
+      "title": "SDKs",
+      "items": [
+        {
+          "id": "go",
+          "label": "Go",
+          "href": "/download/go/",
+          "icon": "go",
+          "badge": "Coming"
+        },
+        {
+          "id": "typescript",
+          "label": "TypeScript",
+          "href": "/download/typescript/",
+          "icon": "ts"
+        },
+        {
+          "id": "rust",
+          "label": "Rust",
+          "href": "/download/rust/",
+          "icon": "rust"
+        }
+      ]
+    }
+  ]
+}

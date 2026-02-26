@@ -1,0 +1,272 @@
+/* Download Components */
+@layer components {
+  /* Download Container - Two Column Layout */
+  .download-container {
+    @apply grid gap-0;
+    @apply border-midnight-fjord border;
+    @apply grid-cols-1 md:grid-cols-[256px_1fr];
+  }
+
+  /* Download Sidebar */
+  .download-sidebar {
+    @apply border-midnight-fjord;
+    @apply border-b md:border-r md:border-b-0;
+  }
+
+  /* Download Navigation */
+  .download-nav {
+    @apply hidden;
+    @apply md:flex md:h-full md:flex-col;
+  }
+
+  .download-nav-section {
+    @apply flex flex-col;
+    @apply py-4;
+  }
+
+  .download-nav-section-title {
+    @apply px-3 pt-1.75 pb-1.75;
+    @apply datum-docs-sidebar-headings;
+    @apply text-app---dark---utility-4;
+  }
+
+  .download-nav-list {
+    @apply flex flex-col;
+  }
+
+  .download-nav-item {
+    @apply border-0;
+  }
+
+  .download-nav-link {
+    @apply flex items-center gap-2;
+    @apply px-3 py-3.5;
+    @apply datum-text-base;
+    @apply text-midnight-fjord/80;
+    @apply transition-colors duration-200;
+    @apply hover:text-midnight-fjord;
+  }
+
+  .download-nav-link--active {
+    @apply bg-midnight-fjord text-white;
+    @apply hover:text-white;
+
+    .download-nav-icon {
+      @apply text-white;
+    }
+  }
+
+  .download-nav-icon {
+    @apply flex h-5 w-5 items-center justify-center;
+    @apply text-app---dark---utility-3 shrink-0;
+  }
+
+  .download-nav-label {
+    @apply flex-1;
+  }
+
+  .download-nav-badge {
+    @apply rounded-[3px];
+    @apply bg-glacier-mist-800;
+    @apply px-1.25 py-0.25;
+    @apply datum-docs-sidebar-headings text-[9px];
+    @apply text-canyon-clay---links;
+  }
+
+  .download-nav-divider {
+    @apply border-midnight-fjord mx-0 my-0 border-0 border-t;
+  }
+
+  .download-nav-divider:last-child {
+    @apply hidden;
+  }
+
+  /* Download Content Area */
+  .download-content {
+    @apply bg-white;
+    @apply overflow-y-auto;
+  }
+
+  /* Download Content Frame */
+  .download-content-frame {
+    @apply flex flex-col gap-4;
+    @apply bg-white;
+    @apply px-4 py-8 md:p-12 lg:p-16;
+  }
+
+  .download-content-header {
+    @apply flex flex-col justify-center gap-4;
+  }
+
+  .download-content-title {
+    @apply flex flex-col items-start gap-2.5;
+  }
+
+  .download-content-title-icon {
+    @apply h-10 w-10;
+  }
+
+  .download-content-title-text {
+    @apply font-alliance text-4xl leading-[1.22] font-semibold tracking-[-0.008em];
+    @apply text-midnight-fjord;
+  }
+
+  .download-content-info {
+    @apply flex items-center gap-3;
+    @apply border-pale-yellow rounded border-l-4;
+    @apply bg-pale-yellow/30;
+    @apply p-5;
+  }
+
+  .download-content-info-icon {
+    @apply h-5 w-5 flex-shrink-0;
+    @apply text-pine-forge;
+  }
+
+  .download-content-info-text {
+    @apply text-sm leading-6;
+    @apply text-pine-forge;
+  }
+
+  /* Download Section */
+  .download-section {
+    @apply flow-root;
+    @apply datum-prose-docs-article-alt;
+
+    /* Starlight aside variables (only defined in starlight.css otherwise) */
+    --color-tip: var(--glacier-mist-800);
+    --color-note: var(--aurora-moss);
+    --color-caution: #e2e9e3;
+
+    .starlight-aside--note {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
+      @apply bg-(--color-note)/60;
+    }
+
+    .starlight-aside--caution {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
+      @apply bg-(--color-caution);
+    }
+
+    .starlight-aside--tip {
+      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
+      @apply bg-(--color-tip);
+    }
+
+    .starlight-aside__title {
+      @apply text-midnight-fjord text-lg font-semibold;
+      @apply flex items-center gap-2;
+    }
+
+    .starlight-aside {
+      @apply inline-block w-full;
+      @apply mb-6 px-8 py-6;
+      @apply border-l-5 border-(--sl-color-asides-border);
+
+      a {
+        @apply text-(--color-canyon-clay---links);
+        @apply hover:text-(--color-canyon-clay---links)/80;
+      }
+    }
+  }
+
+  /* Mobile Navigation Dropdown */
+  .download-nav-mobile {
+    @apply relative block md:hidden;
+  }
+
+  .download-nav-mobile-trigger {
+    @apply flex w-full items-center gap-3 p-4;
+    @apply bg-midnight-fjord;
+    @apply cursor-pointer text-left;
+  }
+
+  .download-nav-mobile-label {
+    @apply flex-1;
+    @apply datum-text-base;
+    @apply text-app---dark---utility-5;
+  }
+
+  .download-nav-mobile-selected {
+    @apply shrink-0;
+    @apply datum-text-base font-semibold;
+    @apply text-white;
+  }
+
+  .download-nav-mobile-chevron {
+    @apply flex h-2.5 w-2.5 shrink-0 items-center justify-center;
+    @apply text-white;
+    @apply transition-transform duration-200;
+
+    &--open {
+      @apply rotate-180;
+    }
+  }
+
+  .download-nav-mobile-dropdown {
+    @apply absolute top-full right-0 left-0 z-50;
+    @apply bg-white;
+    @apply border-midnight-fjord border border-t-0;
+    @apply pb-2 shadow-lg;
+  }
+
+  .download-nav-mobile-section-title {
+    @apply px-3 pt-4 pb-1;
+    @apply datum-docs-sidebar-headings;
+    @apply text-app---dark---utility-4;
+  }
+
+  .download-nav-mobile-list {
+    @apply flex flex-col;
+
+    .download-nav-mobile-link--active {
+      @apply bg-midnight-fjord text-white;
+      @apply hover:text-white;
+
+      .download-nav-mobile-icon {
+        @apply text-white;
+      }
+    }
+  }
+
+  .download-nav-mobile-link {
+    @apply flex items-center gap-2;
+    @apply px-3 py-3.5;
+    @apply datum-text-base;
+    @apply text-midnight-fjord/80;
+    @apply transition-colors duration-200;
+    @apply hover:text-midnight-fjord;
+
+    &--active {
+      @apply bg-midnight-fjord text-white;
+      @apply hover:text-white;
+
+      .download-nav-mobile-icon {
+        @apply text-white;
+      }
+    }
+  }
+
+  .download-nav-mobile-icon {
+    @apply text-app---dark---utility-3 h-4 w-4 shrink-0;
+  }
+}
+
+@layer starlight.components {
+  starlight-tabs {
+    .tablist-wrapper {
+      ul.astro-esqgolmp {
+        @apply mt-0;
+        @apply relative;
+        @apply border-glacier-mist-900 border-b-2;
+
+        .tab {
+          @apply mr-6 mb-0 pl-0;
+          a {
+            @apply mb-0 px-0;
+          }
+        }
+      }
+    }
+  }
+}

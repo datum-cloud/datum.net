@@ -308,6 +308,19 @@
   @apply **:text-inherit;
 }
 
+@utility datum-prose-docs-article-alt {
+  @apply prose max-w-none;
+  @apply datum-docs-article-body;
+
+  @apply prose-p:mt-0 prose-p:mb-(--docs-article-body-paragraph-spacing);
+  @apply prose-li:mt-0 prose-li:mb-(--docs-article-body-list-spacing);
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
+  @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-base;
+  @apply prose-headings:mt-4 prose-headings:mb-8 prose-headings:font-bold;
+  @apply prose-headings:pt-px prose-headings:inline-block;
+  @apply **:text-inherit;
+}
+
 @utility datum-prose-longform {
   @apply prose max-w-none;
   @apply datum-text-longform-body;

@@ -51,6 +51,8 @@ export default defineConfig([
     '**/pagefind-blog/**',
   ]),
   {
+    files: ['**/*.{js,jsx,ts,tsx,astro,md,mdx}'],
+
     extends: compat.extends(
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',

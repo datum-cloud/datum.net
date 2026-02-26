@@ -17,6 +17,11 @@ const envTtlSec = parseInt(import.meta.env.STRAPI_CACHE_TTL ?? '300', 10);
 const ARTICLES_CACHE_TTL =
   Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
 
+// Request timeout — fail fast so the fallback cache can kick in
+const envTimeoutSec = parseInt(import.meta.env.STRAPI_TIMEOUT ?? '10', 10);
+const FETCH_TIMEOUT_MS =
+  Number.isNaN(envTimeoutSec) || envTimeoutSec <= 0 ? 10_000 : envTimeoutSec * 1000;
+
 interface GraphQLResponse<T> {
   data: T;
   errors?: Array<{ message: string }>;
@@ -38,6 +43,8 @@ async function graphqlQuery<T>(
   }
 
   const url = `${STRAPI_URL}/graphql`;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
   try {
     const response = await fetch(url, {
@@ -47,6 +54,7 @@ async function graphqlQuery<T>(
         query,
         variables,
       }),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -64,14 +72,27 @@ async function graphqlQuery<T>(
 
     return result.data;
   } catch (error) {
-    console.error('Error fetching from Strapi:', error);
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error(`Strapi request timed out after ${FETCH_TIMEOUT_MS}ms`);
+    } else {
+      console.error('Error fetching from Strapi:', error);
+    }
     return null;
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
+// Short-lived TTL cache (respects STRAPI_CACHE_ENABLED / STRAPI_CACHE_TTL)
 const cache = new Cache('.cache');
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+
+// Persistent fallback cache — always written on success, never expires.
+// Serves stale data when Strapi is unreachable.
+const fallbackCache = new Cache('.cache/strapi-fallback');
+const FALLBACK_ARTICLES_KEY = 'articles';
+const FALLBACK_ARTICLE_PREFIX = 'article-';
 
 /**
  * GraphQL query to fetch all articles (Strapi v5 format, with high limit)
@@ -237,11 +258,12 @@ function isValidCachedArticles(data: unknown): data is StrapiArticle[] {
 }
 
 /**
- * Fetch all articles from Strapi with caching (for listing & navigation)
+ * Fetch all articles from Strapi with caching (for listing & navigation).
+ * Falls back to a persistent stale cache when Strapi is unreachable.
  * @returns Array of all Strapi articles
  */
 export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
-  // Check cache first (when enabled)
+  // Check short-lived TTL cache first (when enabled)
   if (CACHE_ENABLED && cache.has(ARTICLES_CACHE_KEY)) {
     const cached = cache.get<StrapiArticle[]>(ARTICLES_CACHE_KEY);
     if (cached && isValidCachedArticles(cached)) {
@@ -256,7 +278,13 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
   const response = await graphqlQuery<StrapiArticlesResponse>(ARTICLES_QUERY);
 
   if (!response?.articles) {
-    console.warn('No articles returned from Strapi API');
+    console.warn('Strapi unavailable — checking persistent fallback cache for articles');
+    const fallback = fallbackCache.get<StrapiArticle[]>(FALLBACK_ARTICLES_KEY);
+    if (fallback && isValidCachedArticles(fallback)) {
+      console.warn(`Serving ${fallback.length} articles from stale fallback cache`);
+      return fallback;
+    }
+    console.warn('No articles returned from Strapi API and no fallback cache available');
     return [];
   }
 
@@ -292,12 +320,16 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
     cache.set(ARTICLES_CACHE_KEY, articles, ARTICLES_CACHE_TTL);
   }
 
+  // Always persist a fallback snapshot — no TTL so it survives Strapi outages
+  fallbackCache.set(FALLBACK_ARTICLES_KEY, articles);
+
   return articles;
 }
 
 /**
- * Fetch single article by slug
- * Caches each article separately by slug
+ * Fetch single article by slug.
+ * Caches each article separately by slug.
+ * Falls back to a persistent stale cache when Strapi is unreachable.
  * @param slug - Article slug
  * @returns The article or null if not found
  */
@@ -317,7 +349,15 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
   }
 
   const response = await graphqlQuery<StrapiArticlesResponse>(ARTICLE_BY_SLUG_QUERY, { slug });
+
   if (!response?.articles || response.articles.length === 0) {
+    console.warn(`Strapi unavailable — checking persistent fallback cache for article "${slug}"`);
+    const fallbackKey = `${FALLBACK_ARTICLE_PREFIX}${slug}`;
+    const fallback = fallbackCache.get<StrapiArticle>(fallbackKey);
+    if (fallback && isValidStrapiArticle(fallback)) {
+      console.warn(`Serving article "${slug}" from stale fallback cache`);
+      return fallback;
+    }
     return null;
   }
 
@@ -326,6 +366,10 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
   if (CACHE_ENABLED) {
     cache.set(cacheKey, article, ARTICLES_CACHE_TTL);
   }
+
+  // Always persist a fallback snapshot — no TTL so it survives Strapi outages
+  const fallbackKey = `${FALLBACK_ARTICLE_PREFIX}${slug}`;
+  fallbackCache.set(fallbackKey, article);
 
   return article;
 }

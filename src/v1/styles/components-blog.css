@@ -179,7 +179,7 @@
   }
 
   .blog-article {
-    @apply max-w-179 flex-grow;
+    @apply max-w-179 min-w-0 flex-grow;
   }
 
   .blog-article-container {

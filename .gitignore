@@ -55,3 +55,6 @@ bunfig.toml
 
 # API documentation generation artifacts
 .tmp/
+
+# ignore local claude settings
+.claude/settings.local.json

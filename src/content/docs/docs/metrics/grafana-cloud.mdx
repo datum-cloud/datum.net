@@ -8,21 +8,14 @@ meta:
 ---
 
 ExportPolicies allow users to export telemetry data to the telemetry provider of their choice. Here use Grafana Cloud as a target for data export. We provide a nice user experience for users wanting to export telemetry data to Grafana Cloud.
-
-import GrafanaUrlGenerator from '@components/GrafanaUrlGenerator.astro';
-import GrafanaResourceGenerator from '@components/GrafanaResourceGenerator.astro';
-
-This tutorial shows you how to export metrics from your Datum platform to
-Grafana Cloud using an ExportPolicy and Secret.
+This tutorial shows you how to export metrics from your Datum project to Grafana Cloud using an ExportPolicy and Secret.
 
 ## Before you begin
 
 This tutorial assumes you have already:
 
 - [Registered a Datum account](/docs/quickstart/account-setup/)
-- [Installed and configured the necessary tools](/docs/quickstart/datumctl/)
 - [Created a Datum project](/docs/platform/projects/)
-- [Configured a kubeconfig context for your project](/docs/quickstart/datumctl/#add-a-kubeconfig-context-for-your-organization)
 - A Grafana Cloud account with an active instance
 
 ## Overview
@@ -36,29 +29,14 @@ You will configure metric export by:
 The process extracts connection details from Grafana Cloud's generated
 configuration and creates the necessary Datum resources automatically.
 
-## Step 1: Access your Grafana Cloud instance
-
-If you don't have a Grafana Cloud account,
-<a href="https://grafana.com/" target="_blank">create one at grafana.com</a>.
-
-1. Sign in to <a href="https://grafana.com/auth/sign-up/" target="_blank">Grafana Cloud</a>
-2. Navigate to your desired instance
-3. Copy your instance URL (for example: `https://play.grafana.net`)
-
-## Step 2: Generate connection URL
-
-Use this form to generate the Grafana Cloud connection URL:
-
-<GrafanaUrlGenerator />
-
-## Step 3: Get Prometheus configuration
-
-1. Click the generated connection URL above
-2. Choose whether to create a new API token or use an existing one
-3. Complete the form and submit it
-4. Copy the generated Prometheus configuration YAML
-
-The configuration looks similar to this:
+## Step 1: Setup your Grafana Cloud export
+1. From the left-hand navigation in cloud.datum.net, choose Metrics
+2. Click **+ Create an export policy**
+3. For Export to Grafana Cloud, click **Create the Export Policy**
+4. Enter your Grafana instance URL and select **Continue**
+5. Get your Promethius remote_write YAML from Grafana by selecting  the **Open link** button . 
+6. Complete the Grafana Hosted Prometheus metrics form, then copy the prometheus.yaml file using the **copy to clipboard** button.   
+The prometheus.yaml looks similar to this:
 
 ```yaml
 remote_write:
@@ -67,49 +45,33 @@ remote_write:
       username: 123456
       password: glc_eyJvIjoiNzA2...
 ```
+7. Return to the export policy configuration in the Datum portal and paste the yaml into the remote_write field before submitting
 
-## Step 4: Generate and apply Datum resources
-
-Paste your Prometheus configuration below to generate the Secret and
-ExportPolicy. Use the tabs to choose between applying from stdin or saving to
-files:
-
-<GrafanaResourceGenerator />
-
-## Step 5: Verify the configuration
-
-Check that your resources were created successfully using the names you specified:
-
-**Verify the Secret:**
-
-```shell
-kubectl get secret grafana-cloud-credentials
-```
-
-**Verify the ExportPolicy:**
-
-```shell
-kubectl get exportpolicy export-datum-telemetry
-```
-
-## Step 6: View metrics in Grafana Cloud
+## Step 2: View metrics in Grafana Cloud
 
 1. Return to your Grafana Cloud instance
 2. Navigate to **Explore** in the left sidebar
 3. Select your Prometheus data source
 4. Run a query like `{service_name="telemetry.miloapis.com"}` to see your metrics
 
-## Troubleshooting
+## Step 3: Datum Dashboards in Grafana Cloud
+To add prebuilt Datum dashboards in Grafana Cloud, go to **Dashboards**, select **New dashboard**, then choose **Import dashboard**.
+The Datum dashboards can be loaded using the following Grafana IDs.
+### Datum Overview
+Grafana ID: **23939**
 
-If you encounter issues:
+Provides real-time visibility into Datum Proxy infrastructure, including:
+- Total HTTP proxies, hostnames, and domains
+- Upstream requests per second (RPS) by region
+- Global response codes and latency percentiles
+- Domain and proxy health status
+### Datum Proxy
+Grafana ID: **24261**
 
-1. **Check Secret encoding**: Ensure username and password are correctly base64
-   encoded
-2. **Verify endpoint URL**: Confirm the Prometheus remote write endpoint is
-   accessible
-3. **Review ExportPolicy**: Check that the `metricsql` selector matches your
-   services
-4. **Check authentication**: Verify your API token has write permissions for
-   Prometheus
+Offers a real-time view of HTTP proxy hostnames and regional upstream traffic, including:
+- Regional RPS and upstream response codes
+- Latency percentiles (p90, p99)
+- Domain and proxy status
+
 
 For additional help, consult the [Grafana Cloud documentation](https://grafana.com/docs/grafana-cloud/).

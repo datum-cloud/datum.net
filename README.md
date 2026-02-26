@@ -37,10 +37,6 @@ This is the official website for Datum Inc., built with Astro.
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js (version specified in package.json)
-
 ### Installation
 
 1. Install dependencies:
@@ -70,8 +66,17 @@ npm run dev
 
 For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
 
-### Commands
+### Image
 
+Import component
+
+```
+import Figure from '@components/Figure.astro';
+```
+
+Example in real use:
+
+### Commands
 All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                                 |
@@ -138,7 +143,7 @@ All commands are run from the root of the project, from a terminal:
 minikube start
 ```
 
-2. Create secret.yaml file separated with this source. Value:
+4. Create secret.yaml file separated with this source. Value:
 
 ```yaml
 apiVersion: v1
@@ -166,13 +171,13 @@ kubectl create namespace datum-net
 Apply secret:
 
 ```bash
-kubectl apply -f config/dev/secret.yaml
+kubectl apply -f ../secret.yaml
 ```
 
 Apply the kustomize config file:
 
 ```bash
-kubectl apply -k config/base
+kubectl apply -k config/base -n datum-net
 ```
 
 Apply the kustomize postgres config file:
@@ -184,7 +189,7 @@ kubectl apply -k config/dev/postgres-config.yaml
 4. Install postgresql helm (example from bitnami source):
 
 ```bash
-helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://registry-1.docker.io/bitnamicharts/postgresql
+kubectl port-forward pod_name -n datum-net 4321:4321
 ```
 
 ---

@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["WebFetch(domain:www.figma.com)", "mcp__claude_ai_Figma__get_design_context"]
+  }
+}

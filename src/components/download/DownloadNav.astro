@@ -1,0 +1,114 @@
+---
+// src/components/download/DownloadNav.astro
+import Icon from '@components/Icon.astro';
+import downloadsData from '@data/downloads.json';
+
+type DownloadNavProps = {
+  activeId?: string;
+  class?: string;
+};
+
+const { activeId, class: className = '' } = Astro.props as DownloadNavProps;
+
+// Get current URL path for fallback active state detection
+const currentPath = Astro.url.pathname;
+
+// Helper to check if item is active
+function isActive(itemId: string, itemHref: string): boolean {
+  if (activeId) return activeId === itemId;
+  return currentPath === itemHref || currentPath.startsWith(itemHref);
+}
+
+// Find the active item label for mobile dropdown display
+const allItems = downloadsData.sections.flatMap((s) => s.items);
+const activeItem = allItems.find((item) => isActive(item.id, item.href));
+const activeLabel = activeItem?.label ?? 'Select a platform';
+---
+
+<!-- Mobile dropdown (visible only on mobile) -->
+<div class="download-nav-mobile" x-data="{ open: false }">
+  <button
+    class="download-nav-mobile-trigger"
+    @click="open = !open"
+    :aria-expanded="open.toString()"
+    aria-haspopup="listbox"
+    type="button"
+  >
+    <span class="download-nav-mobile-label">Select a platform:</span>
+    <span class="download-nav-mobile-selected">{activeLabel}</span>
+    <span
+      class="download-nav-mobile-chevron"
+      :class="{ 'download-nav-mobile-chevron--open': open }"
+    >
+      <Icon name="chevron-down" size="sm" />
+    </span>
+  </button>
+  <div class="download-nav-mobile-dropdown" x-show="open" @click.outside="open = false" x-cloak>
+    {
+      downloadsData.sections.map((section) => (
+        <>
+          <p class="download-nav-mobile-section-title">{section.title}</p>
+          <ul class="download-nav-mobile-list">
+            {section.items.map((item) => {
+              const active = isActive(item.id, item.href);
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    class:list={[
+                      'download-nav-mobile-link',
+                      { 'download-nav-mobile-link--active': active },
+                    ]}
+                    data-astro-prefetch="hover"
+                  >
+                    {item.icon && (
+                      <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
+                    )}
+                    <span>{item.label}</span>
+                    {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<!-- Desktop nav (visible only on desktop) -->
+<nav class={`download-nav ${className}`}>
+  {
+    downloadsData.sections.map((section) => (
+      <>
+        <div class="download-nav-section">
+          <h3 class="download-nav-section-title">{section.title}</h3>
+          <ul class="download-nav-list">
+            {section.items.map((item) => {
+              const active = isActive(item.id, item.href);
+              return (
+                <li class="download-nav-item">
+                  <a
+                    href={item.href}
+                    class:list={['download-nav-link', { 'download-nav-link--active': active }]}
+                    data-astro-prefetch="hover"
+                  >
+                    {item.icon && (
+                      <div class="download-nav-icon">
+                        <Icon name={item.icon} size="md" />
+                      </div>
+                    )}
+                    <span class="download-nav-label">{item.label}</span>
+                    {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <hr class="download-nav-divider" />
+      </>
+    ))
+  }
+</nav>

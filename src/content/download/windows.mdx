@@ -1,0 +1,50 @@
+---
+slug: "windows"
+title: "Windows"
+description: "Quickly and safely expose local environments to the internet, for free."
+icon: "windows"
+order: 1
+meta:
+  title: "Download MacOS"
+  description: ""
+---
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="caution">
+  Quickly and safely expose local environments to the internet, for free.
+</Aside>
+
+## Installation
+
+<Tabs>
+  <TabItem label="Homebrew">
+  Install Datum via Homebrew with the following command:
+
+  ```bash
+  brew install datum-net/tap/galactic-vpc
+  ```
+
+  You can also download the latest version directly from our releases page.
+
+## Configure and run
+
+  1. Authenticate with your API token:
+  ```bash
+  galactic-vpc auth login --token <YOUR_API_TOKEN>
+  ```
+
+  2. Start a QUIC tunnel:
+  ```bash
+  galactic-vpc tunnel start --port 8080
+  ```
+
+  3. Your service is now reachable on the global edge.
+  [Run as a background service on macOS](#)
+
+  </TabItem>
+  <TabItem label="Direct download">
+  How to direct download datum in macos
+  </TabItem>
+</Tabs>
+

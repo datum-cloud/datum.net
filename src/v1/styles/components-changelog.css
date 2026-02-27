@@ -1,80 +1,150 @@
 @layer components {
   .changelog-container {
-    @apply max-width max-w-236.25;
+    @apply max-width max-w-320;
   }
 
-  .changelog-item {
-    @apply relative flex gap-6 last:mb-0 md:gap-16 last:[&>.changelog-item--content]:pb-10;
+  .changelog-list {
+    @apply flex flex-col;
   }
 
-  .changelog-item--timeline {
-    @apply relative flex flex-shrink-0 flex-col items-center;
+  .changelog-entry {
+    @apply relative mb-14 flex flex-col gap-0 md:mb-20 md:flex-row md:gap-12 lg:mb-24 xl:mb-28 xl:gap-16;
   }
 
-  .changelog-item--timeline-dot {
-    @apply z-10 h-[19px] w-[19px] overflow-hidden rounded-full;
+  .changelog-entry-sidebar {
+    @apply mb-6 w-full shrink-0 gap-4 md:mb-0 md:flex md:w-50 lg:w-60 xl:w-80;
   }
 
-  .changelog-item--timeline-line {
-    @apply w-px flex-1 bg-white/10;
+  .changelog-entry-timeline {
+    @apply relative hidden shrink-0 flex-col items-center py-2 lg:flex;
   }
 
-  .changelog-item:last-child .changelog-item--timeline-line {
-    @apply hidden;
+  .changelog-entry-dot {
+    @apply bg-midnight-fjord text-aurora-moss relative z-10 rounded-full p-1;
   }
 
-  .changelog-item--content {
-    @apply min-w-0 flex-1 pb-20;
+  .changelog-entry-line {
+    @apply bg-midnight-fjord w-px flex-1;
   }
 
-  .changelog-item--date {
-    @apply datum-text-smallcaps text-aurora-moss mb-4 uppercase;
+  .changelog-entry--last {
+    .changelog-entry-line {
+      @apply hidden;
+    }
   }
 
-  .changelog-item--main {
-    @apply space-y-4;
+  .changelog-entry-nav {
+    @apply flex min-w-0 flex-1 flex-col gap-4;
   }
 
-  .changelog-item--title {
-    @apply datum-text-2xl font-medium;
+  .changelog-entry-nav-title {
+    @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
-  .changelog-item--description {
-    @apply datum-prose opacity-80;
+  .changelog-entry-nav-date {
+    @apply datum-text-smallcaps text-app---dark---utility-3 uppercase;
   }
 
-  .changelog-item--tags {
+  .changelog-entry-card {
+    @apply flex min-w-0 flex-1 flex-col gap-5 bg-white p-6 md:p-12 lg:p-16;
+  }
+
+  .changelog-entry--last {
+    .changelog-entry-card {
+      @apply mb-0;
+    }
+  }
+
+  .changelog-entry-card-header {
+    @apply flex flex-wrap items-center justify-between gap-5;
+  }
+
+  .changelog-entry-card-title {
+    @apply datum-text-2xl text-midnight-fjord m-0 font-semibold;
+  }
+
+  .changelog-entry-card-link {
+    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 no-underline hover:underline;
+  }
+
+  .changelog-entry-card-body {
+    @apply datum-prose-longform text-midnight-fjord min-w-0;
+
+    h2 {
+      @apply datum-text-2xl mt-8 mb-5 font-semibold;
+
+      &:first-child {
+        @apply mt-0;
+      }
+    }
+
+    h3 {
+      @apply datum-text-xl mt-6 mb-4 font-semibold;
+    }
+
+    p {
+      @apply datum-text-longform-body mb-5 opacity-80;
+    }
+
+    a {
+      @apply text-canyon-clay---links underline hover:no-underline;
+    }
+
+    img {
+      @apply border-app---dark---utility-4 mb-3 max-w-full border shadow-sm;
+    }
+
+    pre {
+      @apply bg-glacier-mist-700 border-glacier-mist-900 mb-5 max-w-full overflow-auto rounded-lg border p-4;
+
+      code {
+        @apply font-mono text-sm leading-6;
+      }
+    }
+
+    code {
+      @apply text-pine-forge break-words;
+    }
+
+    ul,
+    ol {
+      @apply mb-5 space-y-2 pl-6;
+    }
+
+    li {
+      @apply datum-text-longform-body opacity-80;
+
+      img {
+        @apply mt-0;
+      }
+    }
+  }
+
+  .changelog-entry-card-tags {
     @apply flex flex-col gap-4;
   }
 
-  .changelog-item--tag-group {
+  .changelog-entry-card-tag-row {
     @apply flex items-center gap-6;
   }
 
-  .changelog-item--tag {
-    @apply datum-text-sm rounded-lg border px-3.5 py-2 font-semibold;
+  .changelog-entry-card-tag {
+    @apply datum-text-sm text-midnight-fjord w-23 shrink-0 rounded-sm border-l-3 px-3.5 py-2 text-center font-semibold;
   }
 
-  .changelog-item--tag-description {
-    @apply datum-text-base opacity-80;
+  .changelog-entry-card-tag--changed {
+    @apply border-canyon-clay bg-blush-quartz;
   }
 
-  .changelog-item--tag--fixed {
-    @apply border-blush-quartz text-blush-quartz;
+  .changelog-entry-card-tag--new {
+    @apply border-potted-olive bg-potted-olive/60;
   }
 
-  .changelog-item--tag--new {
-    @apply border-aurora-moss text-aurora-moss;
+  .changelog-entry-card-tag--fixed {
+    @apply border-pine-forge/20 bg-aurora-moss;
   }
 
-  .changelog-item--tag--changed {
-    @apply border-glacier-mist-900 text-glacier-mist-900;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .changelog-item {
-      @apply gap-4;
-    }
+  .changelog-entry-card-tag-description {
+    @apply datum-text-longform-body text-midnight-fjord min-w-0 flex-1 opacity-80;
   }
 }

@@ -1,6 +1,5 @@
 ---
 import '@v1/styles/page-changelog.css';
-import { Image } from 'astro:assets';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -8,7 +7,6 @@ import Footer from '@components/Footer.astro';
 import Card from '@components/changelog/Card.astro';
 import OpenNetwork from '@components/GlobalSection.astro';
 import Skeleton from '@components/changelog/Skeleton.astro';
-import ImageTwoPerson from '@v1/assets/images/one-person.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -34,24 +32,11 @@ const icon = 'list-restart';
       subtitle={subtitle}
     />
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark overflow-clip">
+    <div class="section--block section--block--pad bg-glacier-mist-700 light overflow-clip pt-0">
       <div class="changelog-container">
         <Card server:defer>
           <Skeleton slot="fallback" />
         </Card>
-      </div>
-
-      <div class="absolute right-20 bottom-0 z-40 inline-block">
-        <Image
-          src={ImageTwoPerson}
-          alt="One Person Illustration"
-          class="relative hidden size-auto w-[54px] translate-y-7 md:block"
-          data-scroll-effect="parallax"
-          data-scroll-speed="0.1"
-          data-scroll-direction="down"
-          data-viewport-offset="-300"
-          data-max-movement="50"
-        />
       </div>
     </div>
 

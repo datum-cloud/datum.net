@@ -1,5 +1,5 @@
 ---
-title: Product Improvements and Updates
+title: Changelog
 description: Stay up to date with new feature releases & fixes. Want to know what we're building next? [Check out our roadmap](/resources/roadmap/)
 meta:
   title: "Datum Changelog: Feature Releases and Product Updates"

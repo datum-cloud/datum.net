@@ -312,7 +312,7 @@
   @apply prose max-w-none;
   @apply datum-text-longform-body;
 
-  @apply prose-p:mt-0 prose-p:mb-(--text-longform-body-paragraph-spacing);
+  @apply prose-p:mt-0 prose-p:mb-(--text-longform-body-paragraph-spacing) prose-p:last:mb-0;
   @apply prose-li:mt-0 prose-li:mb-(--text-longform-body-list-spacing);
   @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-3xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-base;

@@ -24,30 +24,28 @@ const entries = await changelogs();
           </div>
           <div class="changelog-entry-nav">
             <h3 class="changelog-entry-nav-title">{entry.title}</h3>
-            <time class="changelog-entry-nav-date">
-              {new Date(entry.createdAt).toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
-            </time>
+            <div class="changelog-entry-nav-date-row">
+              <time class="changelog-entry-nav-date">
+                {new Date(entry.createdAt).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </time>
+              <a
+                href={entry.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="changelog-entry-card-link"
+              >
+                <span>View on GitHub</span>
+                <Icon name="external-link" size="md" />
+              </a>
+            </div>
           </div>
         </div>
 
         <article class="changelog-entry-card">
-          <header class="changelog-entry-card-header">
-            <h2 class="changelog-entry-card-title">Summary</h2>
-            <a
-              href={entry.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="changelog-entry-card-link"
-            >
-              <span>View on GitHub</span>
-              <Icon name="external-link" size="md" />
-            </a>
-          </header>
-
           <div class="changelog-entry-card-body" set:html={marked.parse(entry.body)} />
 
           {entry.labels && entry.labels.nodes.length > 0 && (

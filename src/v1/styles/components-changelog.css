@@ -41,6 +41,10 @@
     @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
+  .changelog-entry-nav-date-row {
+    @apply flex flex-col gap-2;
+  }
+
   .changelog-entry-nav-date {
     @apply datum-text-smallcaps text-app---dark---utility-3 uppercase;
   }

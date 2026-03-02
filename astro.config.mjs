@@ -172,7 +172,7 @@ export default defineConfig({
           items: [
             { label: 'Runtime Overview', link: 'docs/runtime/' },
             { label: 'Datum DNS', autogenerate: { directory: 'docs/runtime/dns' } },
-            { label: 'Datum Proxy', link: 'docs/runtime/proxy/' },
+            { label: 'AI Edge', link: 'docs/runtime/ai-edge/' },
             { label: 'AI Gateway', link: 'docs/runtime/ai-gateway/' },
           ],
           collapsed: true,

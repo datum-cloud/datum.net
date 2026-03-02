@@ -10,8 +10,8 @@ benefits:
 readTheDocs:
   - label: DNS
     url: "https://www.datum.net/docs/runtime/dns/"
-  - label: Proxy
-    url: "https://www.datum.net/docs/runtime/proxy/"
+  - label: AI Edge
+    url: "https://www.datum.net/docs/runtime/ai-edge/"
   - label: AI Gateway
     url: "https://www.datum.net/docs/runtime/ai-gateway/"
 ---

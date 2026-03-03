@@ -12,7 +12,7 @@
   }
 
   .changelog-entry-sidebar {
-    @apply mb-6 w-full shrink-0 gap-4 md:mb-0 md:flex md:w-50 lg:w-60 xl:w-80;
+    @apply mb-6 w-full shrink-0 gap-4 md:sticky md:top-6 md:mb-0 md:flex md:w-50 md:self-start lg:w-60 xl:w-80;
   }
 
   .changelog-entry-timeline {

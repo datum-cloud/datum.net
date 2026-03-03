@@ -54,26 +54,20 @@ const {
       )
     }
 
+    {
+      showLoginButton && (
+        <Button class="btn btn--sm" text="Sign in" href="https://cloud.datum.net/" />
+      )
+    }
+
     <Button
       class="btn btn--sm"
       target="_blank"
       href="https://auth.datum.net/ui/v2/login/register"
       data-fathom-event="Nav: Request Access"
     >
-      Request Access
+      Start for free
     </Button>
-    {
-      showLoginButton && (
-        <Button
-          class="btn btn--sm"
-          text="Log In"
-          icon={{ name: 'user', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
-          href="https://cloud.datum.net/"
-        />
-      )
-    }
   </div>
 
   {/* Mobile Menu Component */}

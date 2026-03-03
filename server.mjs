@@ -123,6 +123,9 @@ const REDIRECTS = {
   '/downloads/linux/': { destination: '/download/linux/', status: 302 },
   '/downloads/datumctl/': { destination: '/download/datumctl/', status: 302 },
   '/downloads/datum-mcp/': { destination: '/download/datum-mcp/', status: 302 },
+  '/resources/changelog/': { destination: '/changelog/', status: 302 },
+  '/resources/roadmap/': { destination: '/roadmap/', status: 302 },
+  '/resources/open-source/': { destination: '/open-source/', status: 302 },
 
   // No-trailing-slash variants
   '/docs/get-started': { destination: '/docs/quickstart/', status: 302 },

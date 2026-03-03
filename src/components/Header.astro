@@ -6,5 +6,5 @@ const { class: className } = Astro.props as HeroProps;
 ---
 
 <section class:list={['hero--main', className]}>
-  <Nav />
+  <Nav showLoginButton={true} showGithubButton={false} />
 </section>

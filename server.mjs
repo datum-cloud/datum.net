@@ -117,10 +117,16 @@ const REDIRECTS = {
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
   '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
   '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
+  '/resources/changelog/': { destination: '/changelog/', status: 302 },
+  '/resources/roadmap/': { destination: '/roadmap/', status: 302 },
+  '/resources/open-source/': { destination: '/open-source/', status: 302 },
 
   // No-trailing-slash variants
   '/docs/get-started': { destination: '/docs/quickstart/', status: 302 },
-  '/docs/get-started/datum-concepts': { destination: '/docs/quickstart/datum-concepts/', status: 302 },
+  '/docs/get-started/datum-concepts': {
+    destination: '/docs/quickstart/datum-concepts/',
+    status: 302,
+  },
   '/docs/tasks/create-project': { destination: '/docs/platform/projects/', status: 302 },
   '/docs/tutorials/gateway/': { destination: '/docs/tutorials/httpproxy/', status: 302 },
   '/docs/tutorials/httpproxy': { destination: '/docs/runtime/ai-edge/', status: 302 },

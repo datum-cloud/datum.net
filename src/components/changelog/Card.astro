@@ -15,14 +15,13 @@ const entries = await changelogs();
         id={`changelog-${entry.id}`}
         class:list={['changelog-entry', { 'changelog-entry--last': index === entries.length - 1 }]}
       >
+        <div class="changelog-entry-line" />
+
         <div class="changelog-entry-sidebar">
-          <div class="changelog-entry-timeline">
-            <div class="changelog-entry-dot">
-              <Icon name="radar" size="lg" />
-            </div>
-            <div class="changelog-entry-line" />
+          <div class="changelog-entry-dot">
+            <Icon name="radar" size="lg" />
           </div>
-          <div class="changelog-entry-nav">
+          <div class="changelog-entry-nav-content">
             <h3 class="changelog-entry-nav-title">{entry.title}</h3>
             <div class="changelog-entry-nav-date-row">
               <time class="changelog-entry-nav-date">

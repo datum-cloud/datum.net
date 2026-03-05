@@ -2,6 +2,8 @@
 // src/pages/downloads/index.astro
 export const prerender = false;
 
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('Vary', 'User-Agent');
 return Astro.redirect(
   (() => {
     const ua = Astro.request.headers.get('user-agent') ?? '';

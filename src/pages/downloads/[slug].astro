@@ -1,15 +1,18 @@
 ---
 // src/pages/downloads/[slug].astro
-export const prerender = false;
-
 import '@v1/styles/page-download.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Download from '@components/download/Download.astro';
 import Icon from '@components/Icon.astro';
-import { getEntry, render } from 'astro:content';
+import { getEntry, getCollection, render } from 'astro:content';
 import { getCollectionEntry } from '@utils/collectionUtils';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('download');
+  return entries.filter((e) => !e.data.draft).map((e) => ({ params: { slug: e.id } }));
+}
 
 const page = await getCollectionEntry('pages', 'download');
 

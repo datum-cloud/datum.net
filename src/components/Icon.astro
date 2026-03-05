@@ -7,6 +7,14 @@ import LinkedinIcon from '@v1/assets/icons/linkedin.svg';
 import CloseIcon from '@v1/assets/icons/close.svg';
 import PlayIcon from '@v1/assets/icons/play.svg';
 import GithubIcon from '@v1/assets/icons/github.svg';
+import AppleIcon from '@v1/assets/icons/apple.svg';
+import WindowsIcon from '@v1/assets/icons/windows.svg';
+import LinuxIcon from '@v1/assets/icons/linux.svg';
+import GoIcon from '@v1/assets/icons/go.svg';
+import TsIcon from '@v1/assets/icons/ts.svg';
+import RustIcon from '@v1/assets/icons/rust.svg';
+import TerminaIcon from '@v1/assets/icons/terminal.svg';
+import WorkflowIcon from '@v1/assets/icons/workflow.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -42,6 +50,22 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <PlayIcon class={`${sizeClass} ${className}`} />
   ) : name === 'github' ? (
     <GithubIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'apple' ? (
+    <AppleIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'windows' ? (
+    <WindowsIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'linux' ? (
+    <LinuxIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'go' ? (
+    <GoIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'ts' ? (
+    <TsIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'rust' ? (
+    <RustIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'terminal' ? (
+    <TerminaIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'workflow' ? (
+    <WorkflowIcon class={`${sizeClass} ${className}`} />
   ) : IconComponent ? (
     <IconComponent class={`${sizeClass} ${className}`} />
   ) : (

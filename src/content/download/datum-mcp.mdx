@@ -1,0 +1,43 @@
+---
+slug: "datum-mcp"
+title: "Datum MCP"
+description: "Quickly and safely expose local environments to the internet, for free."
+icon: "workflow"
+meta:
+  title: "Datum MCP"
+  description: "Datum’s official MCP server"
+---
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+Datum’s official [MCP server](https://github.com/datum-cloud/datum-mcp) helps builders connect AI tools to their Datum projects with a rapidly evolving open standard. Datum MCP gives AI tools secure access to your Datum resources so you can understand their current state, suggest and implement changes, and diagnose common configuration issues.
+
+<Tabs>
+  <TabItem label="Quick Install">
+  From the command line, this will install Datum MCP on your system:
+
+  ```
+  curl -fsSL https://github.com/datum-cloud/datum-mcp/releases/latest/download/install.sh | sh
+  ```
+  </TabItem>
+
+  <TabItem label="Manual download">
+  The [latest release](https://github.com/datum-cloud/datum-mcp/releases/latest) is available at [GitHub](https://github.com/datum-cloud/datum-mcp/releases/latest). Binaries are available for Linux, MacOS and Windows on x86 and arm64 versions.
+
+  Add this to your AI client config to run the server via stdio.
+
+  ```
+  {
+    "datum-mcp": {
+      "command": "datum-mcp",
+      "args": []
+    }
+  }
+  ```
+  </TabItem>
+
+  <TabItem label="Add to Cursor Locally">
+  To add the Datum MCP to Cursor, this one-click command will suffice:  [Add to Cursor](https://cursor.com/en-US/install-mcp?name=datum-mcp&config=eyJ0eXBlIjoic3RkaW8iLCJlbnYiOnt9LCJjb21tYW5kIjoiL3Vzci9sb2NhbC9iaW4vZGF0dW0tbWNwICJ9)
+  </TabItem>
+</Tabs>
+

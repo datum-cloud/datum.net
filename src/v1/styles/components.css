@@ -508,18 +508,55 @@
 
   /* expressive code */
   .expressive-code {
-    @apply my-(--text-longform-body-paragraph-spacing);
+    @apply my-[12px];
 
     .frame {
       @apply shadow-none!;
 
+      --code-background: var(--ec-code-background);
+
       pre {
-        @apply bg-(--ec-code-background);
-        @apply border-(--color-borderpanel);
+        @apply bg-(--ec-code-background)!;
+        @apply border-(--color-borderpanel)!;
       }
 
       .header {
         @apply bg-[color-mix(in_srgb,var(--color-glacier-mist-800)_40%,transparent)];
+      }
+    }
+
+    .copy {
+      button {
+        @apply bg-transparent! before:border-0!;
+        @apply after:bg-(--ec-frm-inlBtnFg);
+        @apply hover:[&>div]:bg-white hover:[&>div]:opacity-100!;
+
+        div {
+          @apply bg-white!;
+        }
+      }
+    }
+  }
+}
+
+@layer starlight.components {
+  starlight-tabs {
+    .tablist-wrapper {
+      ul.astro-esqgolmp {
+        @apply mt-4;
+        @apply relative;
+        @apply border-glacier-mist-900 border-b-2;
+
+        .tab {
+          @apply mr-6 mb-0 pl-0;
+          a {
+            @apply mb-0 px-0;
+          }
+        }
+
+        .tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role='tab'][aria-selected='true'] {
+          --sl-tab-color-border: var(--color-midnight-fjord);
+        }
       }
     }
   }

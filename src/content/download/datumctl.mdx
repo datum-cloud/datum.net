@@ -1,0 +1,123 @@
+---
+slug: "datumctl"
+title: "Datumctl"
+description: "Quickly and safely expose local environments to the internet, for free."
+icon: "terminal"
+order: 1
+meta:
+  title: "Download MacOS"
+  description: ""
+---
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+## Installation
+
+<Tabs>
+  <TabItem label="Homebrew">
+  Install Datum via Homebrew with the following command:
+
+  ```
+  # Tap the Datum Cloud formula repository (only needs to be done once)
+  brew tap datum-cloud/homebrew-tap
+
+  # Install datumctl
+  brew install datumctl
+
+  # Upgrade datumctl
+  brew upgrade datumctl
+  ```
+  </TabItem>
+
+  <TabItem label="Pre-built binaries">
+  The easiest way to install `datumctl` is by downloading the pre-built binary for your operating system and architecture from the [GitHub Releases page](https://github.com/datum-cloud/datumctl/releases).
+
+### Manual Download:
+
+  1. Go to the [Latest Release](https://github.com/datum-cloud/datumctl/releases/latest).
+  2. Find the appropriate archive (.tar.gz or .zip) for your system (e.g., datumctl\_Linux\_x86\_64.tar.gz, datumctl\_Windows\_amd64.zip, datumctl\_Darwin\_arm64.tar.gz).
+  3. Download and extract the archive.
+  4. Move the datumctl (or datumctl.exe) binary to a directory in your system’s PATH (e.g., /usr/local/bin on Linux/macOS, or a custom directory you’ve added to the PATH on Windows).
+  5. Ensure the binary is executable (chmod \+x /path/to/datumctl on Linux/macOS).
+
+### Using curl (Example for Linux/macOS):
+
+  This example shows how to download and install a specific version. You must:
+
+  1. Replace **\<version\> with the desired release tag (e.g., v0.1.0).**
+  2. **Replace \<archive\_filename\> with the exact filename for your OS and architecture found on the releases page (e.g., datumctl\_Darwin\_arm64.tar.gz).**
+
+  ```
+  VERSION="<version>"
+  ARCHIVE="<archive_filename>"
+  curl -sSL "https://github.com/datum-cloud/datumctl/releases/download/${VERSION}/${ARCHIVE}" | tar xz
+  sudo mv datumctl /usr/local/bin/
+  ```
+
+<Aside type="note" title="note">
+  The sudo mv command might require administrator privileges. Adjust the destination path /usr/local/bin/ if needed for your system.*
+</Aside>
+
+### nix (Linux and macOS)
+
+  **datumctl ships with a flake.nix so you don’t have to install anything:**
+
+  ```
+  # Pick latest from git
+  nix run github:datum-cloud/datumctl
+
+  # Specify version
+  nix run github:datum-cloud/datumctl/b044455d877b800812e4fd78e42429c1617c011b
+
+  # Run from local git clone
+  nix run
+
+  # Start shell with all dependencies available
+  nix develop --command zsh
+
+  # Build locally
+  nix build
+
+  # ...or for specific platform
+  nix build .#packages.x86_64-linux.default
+  nix build .#packages.aarch64-linux.default
+  ```
+
+  You can, however, incorporate it into your home-manager build or other flake so that it’s always available in your profile.
+  </TabItem>
+
+  <TabItem label="Build from source">
+  If you prefer, you can build datumctl from source:
+
+  1\. Prerequisites:
+
+  - Go (Version 1.21 or later)
+  - Git
+
+  2\. Clone the repository:
+
+  ```
+  git clone https://github.com/datum-cloud/datumctl.git
+  cd datumctl
+  ```
+
+  1. Build the binary:
+
+  ```
+  go build -o datumctl .
+  ```
+
+  2. Install: Move the resulting datumctl binary to a directory in your PATH as described in the pre-built binaries section
+  3. Verification
+
+    To verify the installation, run:
+
+
+  ```
+  datumctl version
+  ```
+
+  This should output the installed version of datumctl.
+  </TabItem>
+</Tabs>
+

@@ -3,6 +3,7 @@
 ## TypeScript Conventions
 
 ### Type Safety
+
 - Use `strict` TypeScript config (extends `astro/tsconfigs/strict`)
 - Prefer `@ts-expect-error` over `@ts-ignore`
 - Prefix unused variables with `_` (e.g., `_unusedParam`)
@@ -10,6 +11,7 @@
 - Explicit return types for public functions
 
 ### JSDoc Pattern
+
 ```typescript
 /**
  * Brief description of function purpose
@@ -22,34 +24,38 @@ export const functionName = (paramName: Type): ReturnType => {
 ```
 
 ### Path Aliases
-| Alias | Path |
-|-------|------|
-| `@/*` | root |
+
+| Alias           | Path                 |
+| --------------- | -------------------- |
+| `@/*`           | root                 |
 | `@components/*` | `./src/components/*` |
-| `@utils/*` | `./src/utils/*` |
-| `@libs/*` | `./src/libs/*` |
-| `@types/*` | `./src/types/*` |
-| `@layouts/*` | `./src/layouts/*` |
-| `@v1/*` | `./src/v1/*` |
-| `@content/*` | `./src/content/*` |
-| `@data/*` | `./src/data/*` |
-| `@styles/*` | `./src/styles/*` |
-| `@assets/*` | `./src/assets/*` |
+| `@utils/*`      | `./src/utils/*`      |
+| `@libs/*`       | `./src/libs/*`       |
+| `@types/*`      | `./src/types/*`      |
+| `@layouts/*`    | `./src/layouts/*`    |
+| `@v1/*`         | `./src/v1/*`         |
+| `@content/*`    | `./src/content/*`    |
+| `@data/*`       | `./src/data/*`       |
+| `@styles/*`     | `./src/styles/*`     |
+| `@assets/*`     | `./src/assets/*`     |
 
 ## TailwindCSS v4 Rules
 
 ### DO
+
 - Use `@layer components` for component styles
 - Use `@apply` directive for Tailwind utilities
 - Use nested SCSS format
 - Check `@theme` for existing variables before adding custom values
 
 ### DON'T
+
 - No arbitrary values like `w-[123px]`
 - No inline Tailwind classes in components
 - No `<style>` tags in components
 
 ### CSS File Pattern
+
 ```css
 @layer components {
   .component-name {
@@ -69,12 +75,14 @@ export const functionName = (paramName: Type): ReturnType => {
 ## Astro Component Rules
 
 ### Required Structure
+
 1. Start with path comment
 2. Imports in frontmatter
 3. Props interface with destructuring
 4. Clean template with `class:list`
 
 ### Props Pattern
+
 ```astro
 ---
 // src/components/ComponentName.astro
@@ -95,6 +103,7 @@ const {
 ```
 
 ### Conditional Rendering
+
 ```astro
 {condition && <Component />}
 {condition ? <ComponentA /> : <ComponentB />}
@@ -121,6 +130,7 @@ const {
 - Do NOT create placeholders if localhost source provided
 
 ## Project Structure
+
 ```
 src/
   components/      # PascalCase, grouped by feature
@@ -140,6 +150,7 @@ src/
 ```
 
 ## Code Quality Checklist
+
 - [ ] Comments describe purpose, not effect
 - [ ] No commented-out code
 - [ ] Type safety maintained

@@ -30,6 +30,9 @@ import BlogStrapiSkeleton from '@components/blog/BlogStrapiSkeleton.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import config from '@data/siteConfig.json';
 
+// Strapi content — cache with stale-while-revalidate; webhook invalidates when content changes
+Astro.response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+
 const { slug } = Astro.params;
 
 // Detect pagination: numeric slugs (≥ 2) are page numbers, not article slugs

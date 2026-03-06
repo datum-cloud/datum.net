@@ -513,19 +513,20 @@
     .frame {
       @apply shadow-none!;
 
-      --code-background: var(--ec-code-background);
+      --code-background: var(--ec-frm-edBg);
 
       pre {
-        @apply bg-(--ec-code-background)!;
+        @apply bg-(--code-background);
         @apply border-(--color-borderpanel)!;
       }
 
-      .header {
-        @apply bg-[color-mix(in_srgb,var(--color-glacier-mist-800)_40%,transparent)];
+      pre > code {
+        @apply text-(length:--text-sm-font-size)!;
       }
     }
 
     .copy {
+      /* @apply top-3!; */
       button {
         @apply bg-transparent! before:border-0!;
         @apply after:bg-(--ec-frm-inlBtnFg);

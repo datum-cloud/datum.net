@@ -117,10 +117,19 @@ const REDIRECTS = {
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
   '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
   '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
+  '/downloads/': { destination: '/download/', status: 302 },
+  '/downloads/mac-os/': { destination: '/download/mac-os/', status: 302 },
+  '/downloads/windows/': { destination: '/download/windows/', status: 302 },
+  '/downloads/linux/': { destination: '/download/linux/', status: 302 },
+  '/downloads/datumctl/': { destination: '/download/datumctl/', status: 302 },
+  '/downloads/datum-mcp/': { destination: '/download/datum-mcp/', status: 302 },
 
   // No-trailing-slash variants
   '/docs/get-started': { destination: '/docs/quickstart/', status: 302 },
-  '/docs/get-started/datum-concepts': { destination: '/docs/quickstart/datum-concepts/', status: 302 },
+  '/docs/get-started/datum-concepts': {
+    destination: '/docs/quickstart/datum-concepts/',
+    status: 302,
+  },
   '/docs/tasks/create-project': { destination: '/docs/platform/projects/', status: 302 },
   '/docs/tutorials/gateway/': { destination: '/docs/tutorials/httpproxy/', status: 302 },
   '/docs/tutorials/httpproxy': { destination: '/docs/runtime/ai-edge/', status: 302 },

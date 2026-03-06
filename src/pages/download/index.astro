@@ -1,13 +1,13 @@
 ---
-// src/pages/downloads/index.astro
+// src/pages/download/index.astro
 export const prerender = false;
 
 return Astro.redirect(
   (() => {
     const ua = Astro.request.headers.get('user-agent') ?? '';
     if (/Windows/i.test(ua)) return '/downloads/windows/';
-    if (/Linux/i.test(ua) && !/Android/i.test(ua)) return '/downloads/linux/';
-    return '/downloads/mac-os/';
+    if (/Linux/i.test(ua) && !/Android/i.test(ua)) return '/download/linux/';
+    return '/download/mac-os/';
   })(),
   302
 );

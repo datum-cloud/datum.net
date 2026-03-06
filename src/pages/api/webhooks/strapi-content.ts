@@ -112,6 +112,13 @@ function invalidateAuthorCache(): string[] {
 }
 
 /**
+ * Handle roadmap cache invalidation
+ */
+function invalidateRoadmapCache(): string[] {
+  return invalidateCache('strapi-roadmaps');
+}
+
+/**
  * POST handler for Strapi webhook
  */
 export const POST: APIRoute = async ({ request }) => {
@@ -187,6 +194,12 @@ export const POST: APIRoute = async ({ request }) => {
       deletedFiles = invalidateAuthorCache();
       console.log(
         `[Webhook] Invalidated author cache (${deletedFiles.length} files):`,
+        deletedFiles
+      );
+    } else if (model === 'roadmap') {
+      deletedFiles = invalidateRoadmapCache();
+      console.log(
+        `[Webhook] Invalidated roadmap cache (${deletedFiles.length} files):`,
         deletedFiles
       );
     } else {

@@ -38,6 +38,96 @@ const description = fm.description || 'Download Datum';
 ---
 
 <Layout title={title} description={description} bodyClass="page-download" meta={meta}>
+  <script>
+    (function () {
+      let contentFrame = document.querySelector<HTMLElement>('.download-content-frame');
+      const downloadNav = document.querySelector<HTMLElement>('.download-nav');
+      const mobileNav = document.querySelector<HTMLElement>('.download-nav-mobile');
+
+      if (!contentFrame || (!downloadNav && !mobileNav)) return;
+
+      async function navigateTo(url: string, pushState = true): Promise<void> {
+        contentFrame!.classList.add('download-content-frame--loading');
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            window.location.href = url;
+            return;
+          }
+
+          const html = await response.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const newFrame = doc.querySelector<HTMLElement>('.download-content-frame');
+
+          if (!newFrame) {
+            window.location.href = url;
+            return;
+          }
+
+          contentFrame!.replaceWith(newFrame);
+          contentFrame = newFrame;
+
+          const newTitle = doc.querySelector('title')?.textContent;
+          if (newTitle) document.title = newTitle;
+
+          updateActiveLinks(url);
+
+          if (pushState) {
+            history.pushState({ url }, newTitle ?? '', url);
+          }
+        } catch {
+          contentFrame!.classList.remove('download-content-frame--loading');
+          window.location.href = url;
+        }
+      }
+
+      function updateActiveLinks(url: string): void {
+        const pathname = new URL(url, window.location.origin).pathname;
+
+        for (const link of document.querySelectorAll<HTMLAnchorElement>('.download-nav-link')) {
+          if (link.getAttribute('href') !== '#') {
+            link.classList.toggle('download-nav-link--active', link.pathname === pathname);
+          }
+        }
+
+        let activeLabel = '';
+        for (const link of document.querySelectorAll<HTMLAnchorElement>(
+          '.download-nav-mobile-link'
+        )) {
+          if (link.getAttribute('href') === '#') continue;
+          const isActive = link.pathname === pathname;
+          link.classList.toggle('download-nav-mobile-link--active', isActive);
+          if (isActive) {
+            activeLabel = link.querySelector('span')?.textContent?.trim() ?? '';
+          }
+        }
+
+        const selectedEl = document.querySelector('.download-nav-mobile-selected');
+        if (selectedEl && activeLabel) selectedEl.textContent = activeLabel;
+      }
+
+      downloadNav?.addEventListener('click', (e) => {
+        const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-link');
+        if (!link || link.getAttribute('href') === '#') return;
+        e.preventDefault();
+        navigateTo(link.href);
+      });
+
+      mobileNav?.addEventListener('click', (e) => {
+        const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-mobile-link');
+        if (!link || link.getAttribute('href') === '#') return;
+        e.preventDefault();
+        navigateTo(link.href);
+        window.dispatchEvent(new Event('close-download-dropdown'));
+      });
+
+      window.addEventListener('popstate', (e: PopStateEvent) => {
+        const url = (e.state as { url?: string })?.url ?? window.location.href;
+        navigateTo(url, false);
+      });
+    })();
+  </script>
   <section class="datum-container">
     <Hero
       class="light pb-0"

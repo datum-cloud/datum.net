@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
-import astroExpressiveCode from 'astro-expressive-code';
 import { createInlineSvgUrl } from '@expressive-code/core';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
@@ -51,7 +50,6 @@ export default defineConfig({
     layout: 'constrained',
   },
   integrations: [
-    astroExpressiveCode(expressiveCodeConfig),
     announcement({
       show: true,
       label: "We're hiring!",

@@ -29,10 +29,11 @@ const pageFm = page.data;
 
 // SEO
 const fm = entry.data;
-const meta = fm.meta || {};
-const title =
-  `${pageFm.title || ''}${pageFm.title && fm.title ? ' | ' : ''}${fm.title || ''}`.trim() ||
-  'Download';
+const meta = { ...(fm.meta || {}) };
+const title = fm.title
+  ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
+  : 'Developer tools and desktop apps - Datum Cloud';
+meta.title = title; // Layout uses meta.title when set; ensure full title with prefix
 const description = fm.description || 'Download Datum';
 ---
 

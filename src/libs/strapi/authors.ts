@@ -7,13 +7,18 @@ import { Cache } from '@libs/cache';
 import type { StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const STRAPI_URL =
-  import.meta.env.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || '';
-const CACHE_ENABLED =
-  import.meta.env.STRAPI_CACHE_ENABLED === 'true' || import.meta.env.STRAPI_CACHE_ENABLED === '1';
+  import.meta.env.STRAPI_URL ||
+  process.env.STRAPI_URL ||
+  'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
+const cacheEnabledRaw = import.meta.env.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
+const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
 const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
-const envTtlSec = parseInt(import.meta.env.STRAPI_CACHE_TTL ?? '300', 10);
+const envTtlSec = parseInt(
+  import.meta.env.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '300',
+  10
+);
 const CACHE_TTL =
   Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
 

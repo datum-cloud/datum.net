@@ -5,7 +5,7 @@ description: "Quickly and safely expose local environments to the internet, for 
 icon: "terminal"
 order: 1
 meta:
-  title: "Download MacOS"
+  title: "Download for Datumctl"
   description: ""
 ---
 
@@ -61,6 +61,33 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 ### nix (Linux and macOS)
 
   **datumctl ships with a flake.nix so you don’t have to install anything:**
+
+  ```
+  # Pick latest from git
+  nix run github:datum-cloud/datumctl
+
+  # Specify version
+  nix run github:datum-cloud/datumctl/b044455d877b800812e4fd78e42429c1617c011b
+
+  # Run from local git clone
+  nix run
+
+  # Start shell with all dependencies available
+  nix develop --command zsh
+
+  # Build locally
+  nix build
+
+  # ...or for specific platform
+  nix build .#packages.x86_64-linux.default
+  nix build .#packages.aarch64-linux.default
+  ```
+
+  You can, however, incorporate it into your home-manager build or other flake so that it’s always available in your profile.
+  </TabItem>
+
+  <TabItem label="nix">
+  datumctl ships with a flake.nix so you don’t have to install anything:
 
   ```
   # Pick latest from git

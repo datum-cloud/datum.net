@@ -526,6 +526,7 @@
     }
 
     .copy {
+      @apply top-3!;
       button {
         @apply bg-transparent! before:border-0!;
         @apply after:bg-(--ec-frm-inlBtnFg);

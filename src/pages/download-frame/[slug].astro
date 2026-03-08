@@ -17,9 +17,11 @@ if (!entry || entry.data.draft) {
 
 const { Content } = await render(entry);
 const fm = entry.data;
-const title = fm.title
-  ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
-  : 'Developer tools and desktop apps - Datum Cloud';
+const title =
+  fm.meta?.title ??
+  (fm.title
+    ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
+    : 'Developer tools and desktop apps - Datum Cloud');
 ---
 
 <div class="download-content-frame" data-page-title={title}>

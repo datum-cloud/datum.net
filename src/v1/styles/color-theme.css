@@ -19,15 +19,43 @@
     --prose-bullets: var(--color-glacier-mist-700);
     --prose-counters: var(--color-glacier-mist-700);
   }
+  /*
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --color-borderpanel: color-mix(in srgb, var(--color-glacier-mist-900) 10%, transparent);
+      --prose-bullets: var(--color-glacier-mist-700);
+      --prose-counters: var(--color-glacier-mist-700);
+    }
+  }
+  */
 }
 
 /* Target .expressive-code directly to match EC's own selector specificity */
 .expressive-code {
   --ec-frm-inlBtnFg: var(--color-pine-forge);
   --ec-code-background: var(--glacier-mist-700);
+  --ec-codeBg: var(--glacier-mist-700);
+  --ec-frm-edBg: var(--glacier-mist-700);
   --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 40%, transparent);
 }
 
 [data-theme='dark'] .expressive-code {
   --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 3%, transparent);
+  --ec-code-background: var(--color-midnight-fjord-muted);
+  --ec-codeBg: var(--color-midnight-fjord-muted);
+  --ec-frm-edBg: var(--color-midnight-fjord-muted);
+  --ec-frm-trmBg: var(--color-midnight-fjord-muted);
+  --ec-frm-trmTtbBg: var(--color-midnight-fjord-blue);
+  --ec-codeFg: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='github-light']) .expressive-code {
+    --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 3%, transparent);
+    --ec-code-background: var(--color-midnight-fjord-muted);
+    --ec-codeBg: var(--color-midnight-fjord-muted);
+    --ec-frm-edBg: var(--color-midnight-fjord-muted);
+    --ec-frm-trmBg: var(--color-midnight-fjord-muted);
+    --ec-frm-trmTtbBg: var(--color-midnight-fjord-blue);
+  }
 }

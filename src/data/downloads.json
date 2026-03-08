@@ -6,20 +6,20 @@
         {
           "id": "mac-os",
           "label": "mac",
-          "href": "/downloads/mac-os/",
+          "href": "/download/mac-os/",
           "icon": "apple"
         },
         {
           "id": "windows",
           "label": "Windows",
-          "href": "/downloads/windows/",
+          "href": "/download/windows/",
           "icon": "windows"
         },
         {
           "id": "linux",
           "label": "Linux",
           "icon": "linux",
-          "href": "/downloads/linux/"
+          "href": "/download/linux/"
         }
       ]
     },
@@ -29,13 +29,13 @@
         {
           "id": "datumctl",
           "label": "datumctl",
-          "href": "/downloads/datumctl/",
+          "href": "/download/datumctl/",
           "icon": "terminal"
         },
         {
           "id": "datum-mcp",
           "label": "Datum MCP",
-          "href": "/downloads/datum-mcp/",
+          "href": "/download/datum-mcp/",
           "icon": "workflow"
         }
       ]

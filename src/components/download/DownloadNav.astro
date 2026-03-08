@@ -54,7 +54,11 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
 ---
 
 <!-- Mobile dropdown (visible only on mobile) -->
-<div class="download-nav-mobile" x-data="{ open: false }">
+<div
+  class="download-nav-mobile"
+  x-data="{ open: false }"
+  @close-download-dropdown.window="open = false"
+>
   <button
     class="download-nav-mobile-trigger"
     @click="open = !open"

@@ -84,24 +84,37 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
             {section.items.map((item: DownloadNavItem) => {
               const href = getItemHref(item);
               const active = isActive(item.id, href);
+              const isBadge = 'badge' in item && item.badge;
               return (
                 <li>
-                  <a
-                    href={href ?? '#'}
-                    class:list={[
-                      'download-nav-mobile-link',
-                      { 'download-nav-mobile-link--active': active },
-                    ]}
-                    data-astro-prefetch="hover"
-                  >
-                    {item.icon && (
-                      <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
-                    )}
-                    <span>{item.label}</span>
-                    {'badge' in item && item.badge && (
+                  {isBadge ? (
+                    <span
+                      class:list={[
+                        'download-nav-mobile-link',
+                        'download-nav-mobile-link--disabled',
+                      ]}
+                    >
+                      {item.icon && (
+                        <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
+                      )}
+                      <span>{item.label}</span>
                       <span class="download-nav-badge">{item.badge}</span>
-                    )}
-                  </a>
+                    </span>
+                  ) : (
+                    <a
+                      href={href}
+                      class:list={[
+                        'download-nav-mobile-link',
+                        { 'download-nav-mobile-link--active': active },
+                      ]}
+                      data-astro-prefetch="hover"
+                    >
+                      {item.icon && (
+                        <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
+                      )}
+                      <span>{item.label}</span>
+                    </a>
+                  )}
                 </li>
               );
             })}
@@ -123,23 +136,33 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
             {section.items.map((item: DownloadNavItem) => {
               const href = getItemHref(item);
               const active = isActive(item.id, href);
+              const isBadge = 'badge' in item && item.badge;
               return (
                 <li class="download-nav-item">
-                  <a
-                    href={href ?? '#'}
-                    class:list={['download-nav-link', { 'download-nav-link--active': active }]}
-                    data-astro-prefetch="hover"
-                  >
-                    {item.icon && (
-                      <div class="download-nav-icon">
-                        <Icon name={item.icon} size="md" />
-                      </div>
-                    )}
-                    <span class="download-nav-label">{item.label}</span>
-                    {'badge' in item && item.badge && (
+                  {isBadge ? (
+                    <span class:list={['download-nav-link', 'download-nav-link--disabled']}>
+                      {item.icon && (
+                        <div class="download-nav-icon">
+                          <Icon name={item.icon} size="md" />
+                        </div>
+                      )}
+                      <span class="download-nav-label">{item.label}</span>
                       <span class="download-nav-badge">{item.badge}</span>
-                    )}
-                  </a>
+                    </span>
+                  ) : (
+                    <a
+                      href={href}
+                      class:list={['download-nav-link', { 'download-nav-link--active': active }]}
+                      data-astro-prefetch="hover"
+                    >
+                      {item.icon && (
+                        <div class="download-nav-icon">
+                          <Icon name={item.icon} size="md" />
+                        </div>
+                      )}
+                      <span class="download-nav-label">{item.label}</span>
+                    </a>
+                  )}
                 </li>
               );
             })}

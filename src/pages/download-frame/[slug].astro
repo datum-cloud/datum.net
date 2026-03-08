@@ -1,0 +1,38 @@
+---
+// src/pages/download-frame/[slug].astro
+export const prerender = false;
+
+import Icon from '@components/Icon.astro';
+import { getEntry, render } from 'astro:content';
+
+const { slug } = Astro.params;
+if (!slug) {
+  return new Response('Not found', { status: 404 });
+}
+
+const entry = await getEntry('download', slug);
+if (!entry || entry.data.draft) {
+  return new Response('Not found', { status: 404 });
+}
+
+const { Content } = await render(entry);
+const fm = entry.data;
+const title = fm.title
+  ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
+  : 'Developer tools and desktop apps - Datum Cloud';
+---
+
+<div class="download-content-frame" data-page-title={title}>
+  <div class="download-content-header">
+    <div class="download-content-title">
+      <div>
+        {fm.icon && <Icon name={fm.icon} size="xl" class="download-content-title-icon" />}
+      </div>
+      <h1 class="download-content-title-text">{fm.title}</h1>
+    </div>
+  </div>
+
+  <div class="download-section">
+    <Content />
+  </div>
+</div>

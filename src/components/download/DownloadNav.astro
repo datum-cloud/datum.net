@@ -8,21 +8,13 @@ type DownloadNavProps = {
   class?: string;
 };
 
-type DownloadNavLinkItem = {
-  id: string;
-  label: string;
-  href: string;
-  icon: string;
-};
-
-type DownloadNavBadgeItem = {
+type DownloadNavItem = {
   id: string;
   label: string;
   icon: string;
-  badge: string;
+  href?: string;
+  badge?: string;
 };
-
-type DownloadNavItem = DownloadNavLinkItem | DownloadNavBadgeItem;
 
 type DownloadsSection = {
   title: string;
@@ -30,10 +22,6 @@ type DownloadsSection = {
 };
 
 const downloadsData = downloadsDataRaw as { sections: DownloadsSection[] };
-
-function getItemHref(item: DownloadNavItem): string | undefined {
-  return 'href' in item ? item.href : undefined;
-}
 
 const { activeId, class: className = '' } = Astro.props as DownloadNavProps;
 
@@ -49,7 +37,7 @@ function isActive(itemId: string, itemHref?: string): boolean {
 
 // Find the active item label for mobile dropdown display
 const allItems = downloadsData.sections.flatMap((s) => s.items);
-const activeItem = allItems.find((item) => isActive(item.id, getItemHref(item)));
+const activeItem = allItems.find((item) => isActive(item.id, item.href));
 const activeLabel = activeItem?.label ?? 'Select a platform';
 ---
 
@@ -82,26 +70,38 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
           <p class="download-nav-mobile-section-title">{section.title}</p>
           <ul class="download-nav-mobile-list">
             {section.items.map((item: DownloadNavItem) => {
-              const href = getItemHref(item);
-              const active = isActive(item.id, href);
+              const active = isActive(item.id, item.href);
               return (
                 <li>
-                  <a
-                    href={href ?? '#'}
-                    class:list={[
-                      'download-nav-mobile-link',
-                      { 'download-nav-mobile-link--active': active },
-                    ]}
-                    data-astro-prefetch="hover"
-                  >
-                    {item.icon && (
-                      <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
-                    )}
-                    <span>{item.label}</span>
-                    {'badge' in item && item.badge && (
-                      <span class="download-nav-badge">{item.badge}</span>
-                    )}
-                  </a>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      class:list={[
+                        'download-nav-mobile-link',
+                        { 'download-nav-mobile-link--active': active },
+                      ]}
+                      data-astro-prefetch="hover"
+                    >
+                      {item.icon && (
+                        <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
+                      )}
+                      <span>{item.label}</span>
+                      {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                    </a>
+                  ) : (
+                    <span
+                      class:list={[
+                        'download-nav-mobile-link',
+                        'download-nav-mobile-link--disabled',
+                      ]}
+                    >
+                      {item.icon && (
+                        <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
+                      )}
+                      <span>{item.label}</span>
+                      {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                    </span>
+                  )}
                 </li>
               );
             })}
@@ -121,25 +121,34 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
           <h3 class="download-nav-section-title">{section.title}</h3>
           <ul class="download-nav-list">
             {section.items.map((item: DownloadNavItem) => {
-              const href = getItemHref(item);
-              const active = isActive(item.id, href);
+              const active = isActive(item.id, item.href);
               return (
                 <li class="download-nav-item">
-                  <a
-                    href={href ?? '#'}
-                    class:list={['download-nav-link', { 'download-nav-link--active': active }]}
-                    data-astro-prefetch="hover"
-                  >
-                    {item.icon && (
-                      <div class="download-nav-icon">
-                        <Icon name={item.icon} size="md" />
-                      </div>
-                    )}
-                    <span class="download-nav-label">{item.label}</span>
-                    {'badge' in item && item.badge && (
-                      <span class="download-nav-badge">{item.badge}</span>
-                    )}
-                  </a>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      class:list={['download-nav-link', { 'download-nav-link--active': active }]}
+                      data-astro-prefetch="hover"
+                    >
+                      {item.icon && (
+                        <div class="download-nav-icon">
+                          <Icon name={item.icon} size="md" />
+                        </div>
+                      )}
+                      <span class="download-nav-label">{item.label}</span>
+                      {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                    </a>
+                  ) : (
+                    <span class:list={['download-nav-link', 'download-nav-link--disabled']}>
+                      {item.icon && (
+                        <div class="download-nav-icon">
+                          <Icon name={item.icon} size="md" />
+                        </div>
+                      )}
+                      <span class="download-nav-label">{item.label}</span>
+                      {item.badge && <span class="download-nav-badge">{item.badge}</span>}
+                    </span>
+                  )}
                 </li>
               );
             })}

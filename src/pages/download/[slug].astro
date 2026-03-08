@@ -30,10 +30,12 @@ const pageFm = page.data;
 // SEO
 const fm = entry.data;
 const meta = { ...(fm.meta || {}) };
-const title = fm.title
-  ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
-  : 'Developer tools and desktop apps - Datum Cloud';
-meta.title = title; // Layout uses meta.title when set; ensure full title with prefix
+const title =
+  fm.meta?.title ??
+  (fm.title
+    ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
+    : 'Developer tools and desktop apps - Datum Cloud');
+meta.title = title;
 const description = fm.description || 'Download Datum';
 ---
 
@@ -46,38 +48,60 @@ const description = fm.description || 'Download Datum';
 
       if (!contentFrame || (!downloadNav && !mobileNav)) return;
 
-      async function navigateTo(url: string, pushState = true): Promise<void> {
-        contentFrame!.classList.add('download-content-frame--loading');
+      const frameCache: Map<string, HTMLElement> = new Map();
 
+      function toFrameUrl(pageUrl: string): string {
+        const pathname = new URL(pageUrl, window.location.origin).pathname;
+        const slug = pathname.replace(/\/$/, '').split('/').pop();
+        return `/download-frame/${slug}/`;
+      }
+
+      async function fetchFrame(pageUrl: string): Promise<HTMLElement | null> {
+        const frameUrl = toFrameUrl(pageUrl);
         try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            window.location.href = url;
-            return;
-          }
-
+          const response = await fetch(frameUrl);
+          if (!response.ok) return null;
           const html = await response.text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
-          const newFrame = doc.querySelector<HTMLElement>('.download-content-frame');
+          return doc.querySelector<HTMLElement>('.download-content-frame');
+        } catch {
+          return null;
+        }
+      }
+
+      async function navigateTo(url: string, pushState = true): Promise<void> {
+        const cached = frameCache.get(url);
+
+        if (cached) {
+          const newFrame = cached.cloneNode(true) as HTMLElement;
+          contentFrame!.replaceWith(newFrame);
+          contentFrame = newFrame;
+          const newTitle = newFrame.dataset.pageTitle;
+          if (newTitle) document.title = newTitle;
+          updateActiveLinks(url);
+          if (pushState) history.pushState({ url }, newTitle ?? '', url);
+          return;
+        }
+
+        try {
+          const newFrame = await fetchFrame(url);
 
           if (!newFrame) {
             window.location.href = url;
             return;
           }
 
+          frameCache.set(url, newFrame.cloneNode(true) as HTMLElement);
           contentFrame!.replaceWith(newFrame);
           contentFrame = newFrame;
 
-          const newTitle = doc.querySelector('title')?.textContent;
+          const newTitle = newFrame.dataset.pageTitle;
           if (newTitle) document.title = newTitle;
 
           updateActiveLinks(url);
 
-          if (pushState) {
-            history.pushState({ url }, newTitle ?? '', url);
-          }
+          if (pushState) history.pushState({ url }, newTitle ?? '', url);
         } catch {
-          contentFrame!.classList.remove('download-content-frame--loading');
           window.location.href = url;
         }
       }
@@ -107,16 +131,31 @@ const description = fm.description || 'Download Datum';
         if (selectedEl && activeLabel) selectedEl.textContent = activeLabel;
       }
 
+      function prefetchAll(): void {
+        const links = document.querySelectorAll<HTMLAnchorElement>('.download-nav-link');
+        const currentPath = window.location.pathname;
+        for (const link of links) {
+          const href = link.getAttribute('href');
+          if (!href || href === '#') continue;
+          const pageUrl = new URL(href, window.location.origin).href;
+          const pathname = new URL(pageUrl, window.location.origin).pathname;
+          if (pathname === currentPath || frameCache.has(pageUrl)) continue;
+          fetchFrame(pageUrl).then((frame) => {
+            if (frame) frameCache.set(pageUrl, frame);
+          });
+        }
+      }
+
       downloadNav?.addEventListener('click', (e) => {
         const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-link');
-        if (!link || link.getAttribute('href') === '#') return;
+        if (!link || !(link instanceof HTMLAnchorElement)) return;
         e.preventDefault();
         navigateTo(link.href);
       });
 
       mobileNav?.addEventListener('click', (e) => {
         const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-mobile-link');
-        if (!link || link.getAttribute('href') === '#') return;
+        if (!link || !(link instanceof HTMLAnchorElement)) return;
         e.preventDefault();
         navigateTo(link.href);
         window.dispatchEvent(new Event('close-download-dropdown'));
@@ -126,6 +165,12 @@ const description = fm.description || 'Download Datum';
         const url = (e.state as { url?: string })?.url ?? window.location.href;
         navigateTo(url, false);
       });
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(prefetchAll);
+      } else {
+        setTimeout(prefetchAll, 200);
+      }
     })();
   </script>
   <section class="datum-container">

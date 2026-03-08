@@ -47,19 +47,22 @@
           "id": "go",
           "label": "Go",
           "icon": "go",
-          "badge": "Coming"
+          "badge": "Coming",
+          "href": "/download/go/"
         },
         {
           "id": "typescript",
           "label": "TypeScript",
           "icon": "ts",
-          "badge": "Coming"
+          "badge": "Coming",
+          "href": "/download/typescript/"
         },
         {
           "id": "rust",
           "label": "Rust",
           "icon": "rust",
-          "badge": "Coming"
+          "badge": "Coming",
+          "href": "/download/rust/"
         }
       ]
     }

@@ -92,7 +92,7 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
                       'download-nav-mobile-link',
                       { 'download-nav-mobile-link--active': active },
                     ]}
-                    data-astro-prefetch="hover"
+                    data-astro-prefetch="viewport"
                   >
                     {item.icon && (
                       <Icon name={item.icon} size="sm" class="download-nav-mobile-icon" />
@@ -128,7 +128,7 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
                   <a
                     href={href ?? '#'}
                     class:list={['download-nav-link', { 'download-nav-link--active': active }]}
-                    data-astro-prefetch="hover"
+                    data-astro-prefetch="viewport"
                   >
                     {item.icon && (
                       <div class="download-nav-icon">

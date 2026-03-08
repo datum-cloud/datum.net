@@ -1,14 +1,5 @@
 /* Download Components */
 
-@keyframes download-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
 @layer components {
   /* Download Container - Two Column Layout */
   .download-container {
@@ -108,20 +99,6 @@
   .download-content-frame--loading {
     @apply pointer-events-none opacity-40 select-none;
     @apply transition-opacity duration-150;
-    @apply overflow-hidden;
-
-    &::after {
-      content: '';
-      @apply absolute inset-0 z-10;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        color-mix(in srgb, var(--color-glacier-mist-800) 60%, transparent) 50%,
-        transparent 100%
-      );
-      background-size: 200% 100%;
-      animation: download-shimmer 1.2s ease-in-out infinite;
-    }
   }
 
   .download-content-header {

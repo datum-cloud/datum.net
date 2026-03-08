@@ -1,25 +1,25 @@
 ---
 // src/pages/downloads/[slug].astro
-export const prerender = false;
-
 import '@v1/styles/page-download.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Download from '@components/download/Download.astro';
 import Icon from '@components/Icon.astro';
-import { getEntry, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import { getCollectionEntry } from '@utils/collectionUtils';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('download', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id } }));
+}
 
 const page = await getCollectionEntry('pages', 'download');
 
-const slug = Astro.params.slug;
-if (!slug) {
-  return Astro.redirect('/downloads/');
-}
+const { slug } = Astro.params;
 
 const entry = await getEntry('download', slug);
-if (!entry || entry.data.draft) {
+if (!entry) {
   return Astro.redirect('/404');
 }
 
@@ -30,10 +30,7 @@ const pageFm = page.data;
 // SEO
 const fm = entry.data;
 const meta = { ...(fm.meta || {}) };
-const title = fm.title
-  ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
-  : 'Developer tools and desktop apps - Datum Cloud';
-meta.title = title; // Layout uses meta.title when set; ensure full title with prefix
+const title = fm.title ? ` ${fm.title}` : 'Developer tools and desktop apps - Datum Cloud';
 const description = fm.description || 'Download Datum';
 ---
 
@@ -46,17 +43,23 @@ const description = fm.description || 'Download Datum';
 
       if (!contentFrame || (!downloadNav && !mobileNav)) return;
 
+      const cache = new Map();
+
       async function navigateTo(url: string, pushState = true): Promise<void> {
         contentFrame!.classList.add('download-content-frame--loading');
 
         try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            window.location.href = url;
-            return;
+          let html = cache.get(url);
+          if (!html) {
+            const response = await fetch(url);
+            if (!response.ok) {
+              window.location.href = url;
+              return;
+            }
+            html = await response.text();
+            cache.set(url, html);
           }
 
-          const html = await response.text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const newFrame = doc.querySelector<HTMLElement>('.download-content-frame');
 

@@ -1,13 +1,18 @@
 ---
-title: Connections
+title: Connectors
 slug: network
 keyFeatures:
-  - Galactic VPC - Private Internet backbones that span clouds with policy controls.
-  - Tunnels - Instant access to any system without network pain. No dynamic DNS, no port forwarding, no VPNs.
-benefits: Eliminate vendor lock-in with seamless multi-cloud connectivity. Reduce network complexity by 60% while improving security posture. Enable rapid scaling across regions without infrastructure constraints.
+  - Built with a zero trust architecture
+  - Features flexible and lightweight QUIC tunnels
+  - Built on Iroh, a library that establishes direct peer-to-peer QUIC connections.
+  - Resilient, secure certificate-based routing
 readTheDocs:
-  - label: Galactic VPC - Tunnels
-    url: "https://www.datum.net/docs/galactic-vpc/"
+  - label: Download our Desktop App
+    url: "https://www.datum.net/download/"
 ---
 
-Securely interact with various infrastructure environments as well as clouds, partners and customers.
+Safely expose local environments to the internet for free.
+
+---
+
+We're building for diverse connectivity options, but starting with QUIC-based tunnels and a common use case: safely sharing localhost with the world.

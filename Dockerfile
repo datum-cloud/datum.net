@@ -7,6 +7,7 @@ COPY package*.json ./
 
 FROM base AS build
 ENV NODE_ENV=production
+ENV STRAPI_CACHE_ENABLED=true
 COPY ./.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .

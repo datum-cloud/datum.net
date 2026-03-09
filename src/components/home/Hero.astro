@@ -13,7 +13,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 <header class:list={['hero--main z-11', className]}>
   <Announcement />
   <div class="bg-midnight-fjord aspect-auto h-auto w-full">
-    <Nav />
+    <Nav showLoginButton={true} showGithubButton={false} />
     {/* Hero Main Content */}
     <div
       class="fade-in--small max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-20 xl:pb-44"

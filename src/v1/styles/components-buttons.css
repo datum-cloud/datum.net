@@ -1,8 +1,9 @@
 @layer components {
   /* Generic Button Components */
   .btn {
-    @apply datum-text-base inline-flex max-h-[52px] items-center justify-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
-    @apply border-white/20 hover:bg-white/10;
+    @apply datum-text-base inline-flex max-h-[52px] items-center justify-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition;
+    @apply hover:border-glacier-mist-900 hover:cursor-pointer hover:bg-white/5;
+    @apply border-glacier-mist-900/30;
     @apply px-5 py-3 md:px-6 md:py-3.75;
     .btn-icon {
       @apply text-blush-quartz;

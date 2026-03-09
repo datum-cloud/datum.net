@@ -125,7 +125,7 @@ export interface NormalizedStrapiArticle {
   body?: string;
 }
 
-const strapiUrl = import.meta.env.STRAPI_URL || process.env.STRAPI_URL;
+const strapiUrl = import.meta.env?.STRAPI_URL || process.env.STRAPI_URL;
 const STRAPI_BASE_URL =
   typeof strapiUrl === 'string' && strapiUrl
     ? strapiUrl.replace(/\/$/, '')

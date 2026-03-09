@@ -7,23 +7,23 @@ import { Cache } from '@libs/cache';
 import type { StrapiRoadmap, StrapiRoadmapsResponse } from '../../types/strapi';
 
 const STRAPI_URL =
-  import.meta.env.STRAPI_URL ||
+  import.meta.env?.STRAPI_URL ||
   process.env.STRAPI_URL ||
   'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
-const cacheEnabledRaw = import.meta.env.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
+const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
+const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
 const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
 const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
 const envTtlSec = parseInt(
-  import.meta.env.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '300',
+  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '300',
   10
 );
 const ROADMAPS_CACHE_TTL =
   Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
 
 const envTimeoutSec = parseInt(
-  import.meta.env.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '10',
+  import.meta.env?.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '10',
   10
 );
 const FETCH_TIMEOUT_MS =

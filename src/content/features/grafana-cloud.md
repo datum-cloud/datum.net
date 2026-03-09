@@ -1,6 +1,6 @@
 ---
-title: Grafana Cloud
+title: Metrics Export
 iconName: grafana
 ---
 
-Export OpenTelemetry (OTel) metrics to Grafana Cloud along with prebuilt dashboards.
+Export full OTel metrics to Grafana Cloud along with prebuilt dashboards.

@@ -11,7 +11,7 @@ COPY ./.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .
 RUN chmod -R 755 src/pages
-RUN npm run build
+RUN --mount=type=cache,target=/app/.cache npm run build
 
 FROM base AS development
 ENV NODE_ENV=development

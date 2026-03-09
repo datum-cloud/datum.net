@@ -15,11 +15,15 @@
     </div>
   </div>
 
-  <div class="feature-table--section border-t md:border-t-0">
-    <div class="feature-table--content">
-      <slot name="description" />
-    </div>
-  </div>
+  {
+    Astro.slots.has('description') && (
+      <div class="feature-table--section border-t md:border-t-0">
+        <div class="feature-table--content">
+          <slot name="description" />
+        </div>
+      </div>
+    )
+  }
 
   <!-- Key Features Section -->
   <div class="feature-table--section">
@@ -28,7 +32,7 @@
     </div>
   </div>
 
-  <!-- Read the docs Section -->
+  <!-- Next steps Section -->
   <div class="feature-table--section">
     <div class="feature-table--content role-tags">
       <slot name="docs" />

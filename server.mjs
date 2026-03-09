@@ -5,6 +5,7 @@ import sirv from 'sirv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { createReadStream, existsSync, statSync } from 'fs';
+import { createGzip, createBrotliCompress, constants as zlibConstants } from 'zlib';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -229,6 +230,34 @@ function isCompressible(url) {
   return COMPRESSIBLE_EXTENSIONS.test(url);
 }
 
+// Generate a stable ETag from a file's mtime and size
+function generateETag(stat) {
+  return `"${stat.mtime.getTime().toString(16)}-${stat.size.toString(16)}"`;
+}
+
+// Check conditional request headers; returns true if a 304 was sent
+function handleConditional(req, res, etag, lastModified, cacheControl, varyHeader) {
+  const ifNoneMatch = req.headers['if-none-match'];
+  const ifModifiedSince = req.headers['if-modified-since'];
+
+  const etagMatch = ifNoneMatch && ifNoneMatch === etag;
+  const modifiedMatch =
+    !ifNoneMatch && ifModifiedSince && new Date(ifModifiedSince) >= lastModified;
+
+  if (etagMatch || modifiedMatch) {
+    res.writeHead(304, {
+      ETag: etag,
+      'Last-Modified': lastModified.toUTCString(),
+      'Cache-Control': cacheControl,
+      Vary: varyHeader,
+      'X-Cache': 'HIT',
+    });
+    res.end();
+    return true;
+  }
+  return false;
+}
+
 // Serve pre-compressed files (.gz, .br) for text-based content
 function serveCompressed(req, res, next) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
@@ -248,19 +277,31 @@ function serveCompressed(req, res, next) {
   const acceptEncoding = req.headers['accept-encoding'] || '';
   const filePath = join(CLIENT_DIR, url);
 
+  // Use the original file's stat for a consistent ETag across encodings
+  const originalStat = existsSync(filePath) ? statSync(filePath) : null;
+  const cacheControl = url.includes('/_astro/')
+    ? 'public, max-age=31536000, immutable'
+    : 'public, max-age=0, must-revalidate';
+
   // Try brotli first (better compression ratio)
   if (acceptEncoding.includes('br')) {
     const brPath = filePath + '.br';
     if (existsSync(brPath)) {
-      const stat = statSync(brPath);
+      const stat = originalStat ?? statSync(brPath);
+      const etag = generateETag(stat);
+      const lastModified = stat.mtime;
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
+
       res.writeHead(200, {
         'Content-Type': getContentType(url),
         'Content-Encoding': 'br',
-        'Content-Length': stat.size,
+        'Content-Length': statSync(brPath).size,
+        ETag: etag,
+        'Last-Modified': lastModified.toUTCString(),
         Vary: 'Accept-Encoding',
-        'Cache-Control': url.includes('/_astro/')
-          ? 'public, max-age=31536000, immutable'
-          : 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
+        'X-Cache': 'MISS',
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -275,15 +316,21 @@ function serveCompressed(req, res, next) {
   if (acceptEncoding.includes('gzip')) {
     const gzPath = filePath + '.gz';
     if (existsSync(gzPath)) {
-      const stat = statSync(gzPath);
+      const stat = originalStat ?? statSync(gzPath);
+      const etag = generateETag(stat);
+      const lastModified = stat.mtime;
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
+
       res.writeHead(200, {
         'Content-Type': getContentType(url),
         'Content-Encoding': 'gzip',
-        'Content-Length': stat.size,
+        'Content-Length': statSync(gzPath).size,
+        ETag: etag,
+        'Last-Modified': lastModified.toUTCString(),
         Vary: 'Accept-Encoding',
-        'Cache-Control': url.includes('/_astro/')
-          ? 'public, max-age=31536000, immutable'
-          : 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
+        'X-Cache': 'MISS',
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -295,6 +342,73 @@ function serveCompressed(req, res, next) {
   }
 
   next();
+}
+
+const SSR_COMPRESSIBLE = /^(text\/|application\/(javascript|json|xml|manifest\+json)|image\/svg)/;
+
+// Wrap the Astro SSR handler with streaming compression and cache headers
+function handleSSR(req, res) {
+  const acceptEncoding = req.headers['accept-encoding'] ?? '';
+
+  let compressor = null;
+  let encoding = null;
+
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    if (acceptEncoding.includes('br')) {
+      compressor = createBrotliCompress({
+        params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 4 },
+      });
+      encoding = 'br';
+    } else if (acceptEncoding.includes('gzip')) {
+      compressor = createGzip({ level: 6 });
+      encoding = 'gzip';
+    }
+  }
+
+  const origWriteHead = res.writeHead.bind(res);
+  const origWrite = res.write.bind(res);
+  const origEnd = res.end.bind(res);
+
+  let compressionActive = false;
+
+  res.writeHead = (statusCode, headers) => {
+    const h = headers && typeof headers === 'object' ? { ...headers } : {};
+
+    const ct = String(h['content-type'] ?? h['Content-Type'] ?? res.getHeader('content-type') ?? '');
+    compressionActive = !!compressor && SSR_COMPRESSIBLE.test(ct);
+
+    if (compressionActive) {
+      delete h['content-length'];
+      delete h['Content-Length'];
+      h['Content-Encoding'] = encoding;
+      h['Vary'] = 'Accept-Encoding';
+    }
+
+    if (!h['Cache-Control'] && !h['cache-control']) {
+      h['Cache-Control'] = 'no-cache';
+    }
+
+    return origWriteHead(statusCode, h);
+  };
+
+  if (compressor) {
+    compressor.on('data', (chunk) => origWrite(chunk));
+    compressor.on('end', () => origEnd());
+    compressor.on('error', () => origEnd());
+
+    res.write = (chunk, enc, cb) => {
+      if (!compressionActive) return origWrite(chunk, enc, cb);
+      return compressor.write(chunk, enc, cb);
+    };
+
+    res.end = (chunk, enc, cb) => {
+      if (!compressionActive) return origEnd(chunk, enc, cb);
+      if (chunk) compressor.write(chunk);
+      compressor.end();
+    };
+  }
+
+  handler(req, res);
 }
 
 const server = createServer((req, res) => {
@@ -335,10 +449,10 @@ const server = createServer((req, res) => {
     }
   }
 
-  // Middleware order: compressed files → static files → Astro handler
+  // Middleware order: compressed files → static files → Astro SSR handler
   serveCompressed(req, res, () => {
     staticServer(req, res, () => {
-      handler(req, res);
+      handleSSR(req, res);
     });
   });
 });

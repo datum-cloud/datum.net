@@ -93,7 +93,7 @@ function isValidCachedData(data: unknown): data is { upcoming: LumaEvent[]; past
  * @returns The API key as a string if found, otherwise null.
  */
 function getApiKey(): string | null {
-  return import.meta.env.LUMA_API_KEY || process.env.LUMA_API_KEY || null;
+  return import.meta.env?.LUMA_API_KEY || process.env.LUMA_API_KEY || null;
 }
 
 /**

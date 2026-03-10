@@ -18,11 +18,11 @@
     {
       "title": "Get started with:",
       "items": [
-        "Runtime: DNS, Proxy, AI Gateway",
-        "Connections: Tunnels, VPNs",
-        "Metrics Export",
-        "Assets: Domains, Secrets",
-        "Teams, RBAC, & Machine Accounts"
+        "AI Edge (Envoy Proxy + Coraza WAF)",
+        "Connectors (QUIC tunnels, more soon)",
+        "DNS, Domains",
+        "OTel Metrics Export",
+        "Secrets, Teams, RBAC, Machine Accounts"
       ]
     }
   ]

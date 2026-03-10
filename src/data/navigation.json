@@ -113,7 +113,8 @@
       "title": "Legal",
       "items": [
         { "text": "Terms", "href": "/legal/terms/" },
-        { "text": "Privacy", "href": "/legal/privacy/" }
+        { "text": "Privacy", "href": "/legal/privacy/" },
+        { "text": "AUP", "href": "/legal/aup/" }
       ]
     }
   ],
@@ -170,6 +171,7 @@
       "items": [
         { "text": "Terms of Service", "href": "/legal/terms/" },
         { "text": "Privacy Policy", "href": "/legal/privacy/" },
+        { "text": "AUP", "href": "/legal/aup/" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

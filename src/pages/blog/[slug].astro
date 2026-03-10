@@ -22,6 +22,7 @@ import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
 import { truncateByWords } from '@libs/string';
 import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
+import { generateArticleEtag } from '@utils/etagUtils';
 
 // Additional imports for paginated blog listing
 import GlobalSection from '@components/GlobalSection.astro';
@@ -60,6 +61,33 @@ if (isPageNumber) {
 const article = !isPageNumber ? await fetchStrapiArticleBySlug(slug as string) : null;
 if (!isPageNumber && !article) {
   return Astro.redirect('/404');
+}
+
+// ETag-based 304 for article pages — skip full render when client has fresh copy
+if (!isPageNumber && article) {
+  const etag = generateArticleEtag(
+    article.slug,
+    article.updatedAt,
+    article.documentId,
+    article.originalPublishedAt
+  );
+  const ifNoneMatch = Astro.request.headers.get('if-none-match');
+  const ourHash = etag.replace(/^"|"$/g, '');
+  const clientMatches =
+    ifNoneMatch === '*' ||
+    (ifNoneMatch?.split(',') ?? []).some(
+      (e) => e.trim().replace(/^W\//, '').replace(/^"|"$/g, '') === ourHash
+    );
+  if (clientMatches) {
+    return new Response(null, {
+      status: 304,
+      headers: {
+        ETag: etag,
+        'Cache-Control': 'public, max-age=300, stale-while-revalidate=3600',
+      },
+    });
+  }
+  Astro.response.headers.set('ETag', etag);
 }
 
 // Article-specific data — all guarded so they're safe when article is null (pagination pages)

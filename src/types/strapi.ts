@@ -80,6 +80,7 @@ export interface StrapiArticle {
   slug: string;
   description?: string;
   originalPublishedAt?: string;
+  updatedAt?: string;
   blocks?: StrapiBlock[];
   cover?: StrapiImage;
   author?: StrapiAuthor;

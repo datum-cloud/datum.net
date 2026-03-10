@@ -159,6 +159,7 @@ export const ARTICLE_BY_SLUG_QUERY = `
       slug
       description
       originalPublishedAt
+      updatedAt
       blocks {
         __typename
         ... on ComponentSharedQuote {

@@ -387,13 +387,7 @@ const blogListingMeta = {
               {/* Featured Image */}
               {fm?.featuredImage && (
                 <div class="blog-article-image">
-                  <img
-                    src={fm.featuredImage}
-                    alt={article?.cover?.alternativeText || fm?.title}
-                    class="fade-in--pure"
-                    data-reveal="fade-in--pure--visible"
-                    data-reveal-delay="100"
-                  />
+                  <img src={fm.featuredImage} alt={article?.cover?.alternativeText || fm?.title} />
                 </div>
               )}
 

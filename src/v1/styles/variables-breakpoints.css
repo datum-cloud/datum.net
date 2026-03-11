@@ -107,8 +107,8 @@
     --text-10xl-canela-letter-spacing: var(--xs);
 
     --text-11xl-canela-font-family: var(--canela);
-    --text-11xl-canela-font-size: var(--72px);
-    --text-11xl-canela-line-height: var(--80px);
+    --text-11xl-canela-font-size: var(--38px);
+    --text-11xl-canela-line-height: var(--44px);
     --text-11xl-canela-letter-spacing: var(--xxs);
 
     --text-article-body-font-family: var(--alliance);
@@ -242,8 +242,8 @@
       --text-10xl-canela-letter-spacing: var(--xs);
 
       --text-11xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-font-size: var(--38px);
+      --text-11xl-canela-line-height: var(--44px);
       --text-11xl-canela-letter-spacing: var(--xxs);
 
       --text-article-body-font-family: var(--alliance);
@@ -378,8 +378,8 @@
       --text-10xl-canela-letter-spacing: var(--xxs);
 
       --text-11xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-font-size: var(--60px);
+      --text-11xl-canela-line-height: var(--68px);
       --text-11xl-canela-letter-spacing: var(--xxs);
 
       --text-article-body-font-family: var(--alliance);
@@ -650,8 +650,8 @@
       --text-10xl-canela-letter-spacing: var(--xxs);
 
       --text-11xl-canela-font-family: var(--canela);
-      --text-11xl-canela-font-size: var(--72px);
-      --text-11xl-canela-line-height: var(--80px);
+      --text-11xl-canela-font-size: var(--80px);
+      --text-11xl-canela-line-height: var(--92px);
       --text-11xl-canela-letter-spacing: var(--xxs);
 
       --text-article-body-font-family: var(--alliance);

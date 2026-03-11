@@ -33,7 +33,7 @@
   /* Footer Components */
 
   .footer-illustration-container {
-    @apply bg-glacier-mist-700 relative;
+    @apply bg-aurora-moss relative;
     @apply relative z-9;
 
     &:before {

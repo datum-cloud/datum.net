@@ -1,5 +1,5 @@
 ---
-title: Audit & Activity logs
+title: Audit & Activity Logs
 iconName: circle-gauge
 ---
 

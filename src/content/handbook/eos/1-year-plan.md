@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
+  title: "1 Year Plan - Datum Handbook"
   description: ""
 ---
 

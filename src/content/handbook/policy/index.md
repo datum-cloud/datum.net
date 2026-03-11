@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Information Security & Compliance Policies at Datum"
+  title: "Information Security & Compliance Policies - Datum Handbook"
   description: "Ensure compliance and security. Read Datum's official policies on data retention, incident response, access control, and disaster recovery standards."
 ---
 

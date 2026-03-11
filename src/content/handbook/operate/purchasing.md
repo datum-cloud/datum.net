@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "How employees can spend money at Datum"
+  title: "Purchasing - Datum Handbook"
   description: "Our philosophy on company spending. We trust you to spend responsibly. Read the Datum purchasing guidelines for travel, procurement, and reimbursements."
 ---
 

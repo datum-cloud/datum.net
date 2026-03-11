@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Datum Information Classification Policy"
+  title: "Datum Information Classification Policy - Datum Handbook"
   description: "Read Datum's Information Classification Policy. Definitions of data sensitivity levels—Public, Internal, and Confidential—and standards for data protection."
 ---
 

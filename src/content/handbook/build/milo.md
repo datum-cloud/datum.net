@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Milo: Datum's Open Source Business OS"
+  title: "Milo - Datum's Open Source Business Operating System"
   description: "Automate your operations. A technical guide to Milo, the open source backend that unifies identity, metering, and policy management for modern service providers."
 ---
 

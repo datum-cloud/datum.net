@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Engineering & Design Principles - Datum Technical Docs"
+  title: "Engineering & Design Principles - Datum Handbook"
   description: "How Datum is built. A technical guide to our global infrastructure, open source components, and the engineering principles behind our neutral platform."
 ---
 

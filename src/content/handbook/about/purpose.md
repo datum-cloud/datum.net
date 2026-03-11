@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Datum's Purpose - Upgrading the Internet for AI"
+  title: "Datum's Purpose - Upgrading the Internet for AI - Datum Handbook"
   description: "Why we build. Datum's mission is to democratize access to internet superpowers—like global backbones and authoritative DNS—so you can build without barriers."
 ---
 

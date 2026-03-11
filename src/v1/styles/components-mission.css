@@ -1,0 +1,188 @@
+@layer components {
+  .mission-grid {
+    @apply grid;
+    grid-template-columns: 1fr minmax(0, 890px) 1fr;
+  }
+
+  .mission-section {
+    grid-column: 2;
+    @apply flex flex-col items-center gap-10;
+    @apply pb-16 md:pb-20 lg:pb-28;
+    @apply first:pt-16 md:first:pt-20 lg:first:pt-28;
+  }
+
+  .mission-label {
+    @apply bg-midnight-fjord inline-flex items-center justify-center;
+    @apply px-2 pt-px;
+    @apply text-glacier-mist-700 font-mono;
+    @apply text-(length:--18px) leading-(--26px);
+
+    strong {
+      @apply font-bold;
+    }
+  }
+
+  .mission-body {
+    @apply flex items-start justify-center gap-5;
+    @apply md:gap-10 lg:gap-14;
+  }
+
+  .mission-body-line {
+    @apply hidden;
+    @apply flex w-1 shrink-0 md:w-15 lg:w-20;
+    @apply border-glacier-mist-900 border-r-3 border-solid;
+    @apply self-stretch;
+
+    &::after {
+      @apply block h-23 content-[''];
+    }
+  }
+
+  .mission-wrapper {
+    @apply flex flex-col items-start gap-10;
+    @apply w-full;
+  }
+
+  /* Why Datum paragraphs */
+  .mission-paragraphs {
+    @apply flex flex-col gap-10;
+
+    p {
+      @apply datum-text-3xl text-app---dark---utility-3 text-pretty;
+
+      strong {
+        @apply text-midnight-fjord font-semibold;
+      }
+
+      em {
+        @apply text-midnight-fjord font-normal italic;
+      }
+    }
+  }
+
+  /* Why Now - numbered items */
+  .mission-reasons {
+    @apply flex flex-col gap-16;
+  }
+
+  .mission-reasons-item {
+    @apply flex items-start gap-4;
+
+    &:nth-child(2) {
+      @apply pl-10 md:pl-30 lg:pl-36;
+    }
+
+    &:nth-child(3) {
+      @apply pl-36 md:pl-66 lg:pl-72;
+    }
+  }
+
+  .mission-reasons-text-wrap {
+    @apply min-w-0 flex-1;
+  }
+
+  .mission-reasons-number {
+    @apply text-midnight-fjord shrink-0;
+    @apply relative;
+    @apply md:h-7! md:w-5.25! lg:h-8.5! lg:w-6.25! xl:top-0 xl:h-10.5! xl:w-8.25!;
+    @apply top-1 h-4.75 w-6.5 md:top-0;
+  }
+
+  .mission-reasons-text {
+    @apply bg-[#F7E1E1] px-2 leading-[1.235]!;
+    @apply datum-text-3xl text-canyon-clay---links text-pretty;
+    @apply box-decoration-clone;
+    strong {
+      @apply text-midnight-fjord font-semibold;
+    }
+  }
+
+  /* Our Vision - checklist */
+  .mission-vision-checks {
+    @apply inline-flex flex-col items-start gap-5;
+  }
+
+  .mission-vision-check {
+    @apply inline-flex w-fit items-center gap-3;
+    @apply bg-aurora-moss;
+    @apply px-4 py-1;
+  }
+
+  .mission-vision-check-icon {
+    @apply text-pine-forge h-5 w-5.5 shrink-0;
+  }
+
+  .mission-vision-check-text {
+    @apply datum-text-3xl text-pine-forge;
+
+    strong {
+      @apply text-midnight-fjord font-semibold;
+    }
+  }
+
+  .mission-vision-closing {
+    @apply flex flex-col items-start gap-14;
+    @apply mt-14;
+  }
+
+  .mission-vision-cta-text {
+    @apply datum-text-3xl text-app---dark---utility-3;
+    @apply max-w-2xl;
+
+    strong {
+      @apply text-midnight-fjord font-semibold;
+    }
+  }
+
+  .mission-vision-video {
+    @apply bg-midnight-fjord;
+    @apply flex items-center gap-5;
+    @apply py-2.5 pr-5 pl-2.5;
+    @apply rounded-md;
+    @apply no-underline;
+    @apply transition-opacity hover:opacity-90;
+  }
+
+  .video-thumb {
+    @apply relative z-10 overflow-hidden rounded-md;
+  }
+
+  .video-thumb-blend {
+    @apply pointer-events-none absolute inset-0;
+    background-color: rgb(230 245 159);
+    mix-blend-mode: multiply;
+  }
+
+  .mission-vision-video-thumb {
+    @apply h-18 w-29 shrink-0 overflow-hidden rounded-sm;
+    @apply bg-midnight-fjord;
+
+    img {
+      @apply h-full w-full object-cover;
+      @apply opacity-80 mix-blend-screen;
+    }
+  }
+
+  .mission-vision-video-thumb-overlay {
+    @apply absolute inset-0;
+    @apply bg-aurora-moss/70 mix-blend-multiply;
+  }
+
+  .mission-vision-video-thumb-play {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+
+  .mission-vision-video-info {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .mission-vision-video-title {
+    @apply font-alliance font-semibold text-white;
+    @apply text-(length:--20px) leading-(--28px);
+  }
+
+  .mission-vision-video-duration {
+    @apply font-alliance font-medium text-white/40;
+    @apply text-(length:--12px) leading-(--16px);
+  }
+}

@@ -198,12 +198,7 @@ handbooks.forEach((collection) => {
       {showSidebar && <Sidebar selectedId={articleId} items={items} />}
 
       {/* Main Content Area */}
-      <article
-        class="handbook-content fade-in--pure"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-immediate="true"
-        data-reveal-delay="100"
-      >
+      <article class="handbook-content">
         {
           breadcrumbData.length > 0 && (
             <div>

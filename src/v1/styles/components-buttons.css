@@ -79,11 +79,11 @@
     @apply text-midnight-fjord border-white bg-white hover:bg-white/90;
   }
 
-  .btn--navy {
+  .btn--midnight-fjord {
     @apply bg-midnight-fjord/90 hover:bg-midnight-fjord/80 border-midnight-fjord text-white;
   }
 
-  .btn--navy-alpha {
+  .btn--midnight-fjord-alpha {
     @apply bg-midnight-fjord/90 border-white/20 text-white hover:bg-white/10;
   }
 

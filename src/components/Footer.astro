@@ -30,19 +30,32 @@ const navData = navigation as NavData;
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
-        <div class="max-width flex flex-col gap-5.5 text-center md:gap-10">
-          <h3 class="datum-text-7xl">Interested in shaping the internet for AI?</h3>
-          <div class="flex items-center justify-center gap-7">
+      <div class="text-midnight-fjord bg-aurora-moss relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
+        <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
+          <h3 class="datum-text-11xl [&_span]:text-pine-forge">
+            <span>Less talk,</span> more building
+          </h3>
+          <p class="datum-text-xl max-w-186 text-pretty">
+            Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
+            exposing localhost to the internet, with more on the way.
+          </p>
+          <div class="flex items-center justify-center gap-4">
             <Button
-              class="btn btn--alpha"
-              text="Start for free"
+              class="btn btn--midnight-fjord"
+              text="Get started"
               icon={{ name: 'arrow-right', size: 'md' }}
               iconPosition="right"
               iconClass="stroke-1.5"
               target="_blank"
               href="https://auth.datum.net/ui/v2/login/register"
-              data-fathom-event="Pre-footer: Start for free"
+              data-fathom-event="Pre-footer: Get started"
+            />
+            <Button
+              class="btn btn--alpha"
+              text="Download local apps"
+              target="_blank"
+              href="https://auth.datum.net/ui/v2/login/register"
+              data-fathom-event="Pre-footer: Download local apps"
             />
           </div>
         </div>

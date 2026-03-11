@@ -1,9 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import Illustration from '@v1/assets/images/home-illustration.webp';
+import Illustration from '@v1/assets/images/home.webp';
+import IllaStars from '@v1/assets/images/stars.webp';
 import Nav from '@components/Nav.astro';
-import Button from '@components/Button.astro';
+// import Button from '@components/Button.astro';
 import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
@@ -16,22 +17,23 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     <Nav showLoginButton={true} showGithubButton={false} />
     {/* Hero Main Content */}
     <div
-      class="fade-in--small max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-20 xl:pb-44"
-      data-reveal="fade-in--small--visible"
-      data-reveal-immediate="true"
+      class="max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-28 xl:pb-40"
       role="banner"
     >
       <h1
-        class="datum-text-10xl m-auto max-w-140 text-white"
+        class="datum-text-11xl [&_span]:text-aurora-moss m-auto max-w-190 text-white"
         set:html={marked.parseInline(title)}
       />
 
       {
         description && (
-          <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
+          <p
+            class="hero--main-content-description datum-text-xl m-auto mt-0 mb-0 max-w-120 text-pretty opacity-80"
+            set:html={marked.parseInline(description)}
+          />
         )
       }
-
+      <!--
       <div class="flex flex-col justify-center gap-6 sm:flex-row">
         <Button
           class="btn btn--aurora-moss"
@@ -49,16 +51,26 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
           data-fathom-event="Homepage: Chat with founder"
         />
       </div>
+      -->
     </div>
 
-    <div class="absolute bottom-0 left-0 z-0 flex h-full w-full items-end">
+    <div class="absolute right-0 bottom-0 z-10 flex h-full w-auto items-end">
       <Image
         src={Illustration}
         layout="constrained"
         loading="eager"
         fetchpriority="high"
-        alt="Hero Illustration"
-        class="h-auto w-full translate-y-[7%] object-cover md:object-contain"
+        alt="Home Illustration"
+        class="size-auto max-h-full translate-y-[3%]"
+      />
+    </div>
+    <div class="absolute right-0 bottom-0 z-2 flex h-full w-full items-end">
+      <Image
+        src={IllaStars}
+        layout="constrained"
+        loading="eager"
+        alt="Stars Illustration"
+        class="size-auto object-cover"
       />
     </div>
   </div>

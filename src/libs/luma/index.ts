@@ -139,7 +139,9 @@ export async function fetchLumaEvents(): Promise<{
 
     const data: LumaEventsResponse = await response.json();
     const now = new Date();
-    const allEvents = (data.entries || []).map((entry) => entry.event);
+    const allEvents = (data.entries || [])
+      .map((entry) => entry.event)
+      .filter((event) => event.visibility?.toUpperCase() !== 'PRIVATE');
 
     // Split into upcoming and past events
     const upcoming = allEvents

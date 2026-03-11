@@ -16,11 +16,10 @@
     {
       "title": "Everything in Builder plan plus:",
       "items": [
-        "$10 in usage credits included",
-        "Galactic VPC & Cloud Onramps",
-        "SSL for SaaS with unlimited certs",
-        "Domain Connect",
-        "Uptime SLAs and 24/7 email support"
+        "Galactic VPC",
+        "Cloud Onramps",
+        "Uptime SLAs",
+        "24/7 email support"
       ]
     }
   ]

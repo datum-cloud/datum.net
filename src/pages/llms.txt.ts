@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
-import { extractDescription, buildUrl, buildDocsUrl } from '@utils/llmsUtils';
+import { extractDescription, buildUrl } from '@utils/llmsUtils';
 import { fetchStrapiArticles } from '@libs/strapi';
 
 export const GET: APIRoute = async () => {
@@ -43,20 +43,6 @@ export const GET: APIRoute = async () => {
       const description = post.description || 'No description available';
       const postUrl = buildUrl(post.slug, 'blog');
       llmsContent += `- [${post.title}](${postUrl}) - ${description}\n`;
-    }
-
-    // Get all Docs entries
-    const docs = await getCollection('docs');
-
-    // Add Docs
-    if (docs.length > 0) {
-      llmsContent += `\n## Docs\n\n`;
-      for (const doc of docs) {
-        const description =
-          doc.data.description || extractDescription(doc.body, 'No description available');
-        const docUrl = buildDocsUrl(doc.id);
-        llmsContent += `- [${doc.data.title}](${docUrl}) - ${description}\n`;
-      }
     }
 
     // Get all handbook entries

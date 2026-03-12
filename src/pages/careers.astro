@@ -65,8 +65,7 @@ const description = fm.description || '';
       </div>
     </section>
 
-    <script>
-      // @ts-expect-error - Ashby is a global variable
+    <script is:inline>
       window.__Ashby = {
         settings: {
           ashbyBaseJobBoardUrl: 'https://jobs.ashbyhq.com/datum',

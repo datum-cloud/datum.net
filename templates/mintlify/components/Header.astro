@@ -1,0 +1,85 @@
+---
+import type { TabInfoWithIcon } from '@/src/types/navigation';
+import docsConfig from '@/docs/docs.json';
+import Icon from '@components/Icon.astro';
+import { SearchBar } from './SearchBar';
+import AssistantBar from './AssistantBar';
+import { MobileActionButtons, MobileNavToggle } from './MobileHeaderActions';
+
+interface Props {
+  tabs: TabInfoWithIcon[] | null;
+  pageTitle?: string;
+  groupName?: string;
+}
+
+const { tabs, pageTitle, groupName } = Astro.props as Props;
+const usingTabs = tabs && tabs.length > 0;
+
+type LogoConfig = { light?: string; dark?: string; href?: string };
+const logo = (typeof docsConfig.logo === 'object' ? docsConfig.logo : {}) as LogoConfig;
+---
+
+<header class="sticky top-0 z-50 w-full px-8">
+  <div
+    class="absolute left-1/2 h-full w-screen flex-none -translate-x-1/2 border-b border-gray-500/5 bg-white/95 backdrop-blur transition-colors duration-500 supports-backdrop-blur:bg-white/60"
+  >
+  </div>
+  <div class="relative">
+    <div>
+      <div class="relative">
+        <div class:list={['flex h-16 min-w-0 items-center']}>
+          <div
+            class:list={[
+              'relative flex h-full min-w-0 flex-1 items-center justify-between gap-x-4 border-b border-gray-500/5',
+              !usingTabs && 'lg:border-none',
+            ]}
+          >
+            <div class="flex shrink-0 items-center lg:flex-1">
+              <a href={logo.href ?? '/'} class="flex shrink-0 items-center">
+                <img src={logo.light ?? '/datum-light.svg'} alt={docsConfig.name} class="h-7" />
+              </a>
+            </div>
+            <div class="hidden min-w-0 flex-1 items-center justify-center gap-3 lg:flex">
+              <div class="w-full max-w-sm">
+                <SearchBar client:load />
+              </div>
+              <div class="shrink-0" transition:persist="assistant-bar">
+                <AssistantBar client:load />
+              </div>
+            </div>
+            <MobileActionButtons client:load />
+            <div class="hidden flex-1 items-center justify-end lg:flex"></div>
+          </div>
+        </div>
+        {pageTitle && <MobileNavToggle pageTitle={pageTitle} groupName={groupName} client:load />}
+      </div>
+      {
+        usingTabs && (
+          <div class="hidden h-12 lg:flex">
+            <div class="flex h-full gap-x-6 text-sm">
+              {tabs.map((tab) => (
+                <a
+                  href={tab.href?.endsWith('/') ? tab.href : `${tab.href}/`}
+                  class:list={[
+                    'group relative flex h-full items-center gap-2 font-medium text-gray-600 hover:text-gray-800',
+                    tab.isActive &&
+                      'text-gray-800 [text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
+                  ]}
+                >
+                  <Icon name={tab.icon} size="sm" />
+                  {tab.name}
+                  <div
+                    class:list={[
+                      'absolute bottom-0 left-0 h-[1.5px] w-full',
+                      tab.isActive ? 'bg-(--primary)' : 'group-hover:bg-gray-200',
+                    ]}
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</header>

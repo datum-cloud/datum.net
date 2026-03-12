@@ -1,0 +1,112 @@
+---
+import type { DocsConfig } from '@mintlify/astro';
+import type { TabInfoWithIcon } from '@/src/types/navigation';
+
+import { getCollection, render } from 'astro:content';
+import Layout from '@templates/mintlify/layouts/Layout.astro';
+import Header from '@templates/mintlify/components/Header.astro';
+import Footer from '@templates/mintlify/components/Footer';
+import SiteFooter from '@templates/mintlify/components/SiteFooter';
+import { PageContextMenu } from '@templates/mintlify/components/PageContextMenu';
+import { components } from '@mintlify/astro/components';
+import { resolvePageData } from '@mintlify/astro/helpers';
+import docsConfig from '@/docs/docs.json';
+import Sidebar, { MobileSidebar } from '@templates/mintlify/components/Sidebar';
+import TableOfContents from '@templates/mintlify/components/TableOfContents';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+
+  return docs.map((doc) => {
+    const slug = doc.id === 'index' ? undefined : doc.id;
+    return {
+      params: { slug },
+      props: { doc, allDocs: docs },
+    };
+  });
+}
+
+const { doc, allDocs } = Astro.props;
+const { Content, headings } = await render(doc);
+
+const titleMap = Object.fromEntries(allDocs.map((doc) => [doc.id, doc.data.title || doc.id]));
+const currentPath = doc.id === 'index' ? '/' : `/${doc.id}`;
+const page = resolvePageData(docsConfig as unknown as DocsConfig, {
+  currentPath,
+  titleMap,
+});
+
+type RawTabEntry = { tab: string; icon?: string | { name: string } };
+const rawConfigTabs = (docsConfig.navigation as { tabs?: RawTabEntry[] }).tabs ?? [];
+const iconMap = new Map(
+  rawConfigTabs.map((t) => [t.tab, typeof t.icon === 'string' ? t.icon : t.icon?.name])
+);
+const tabs: TabInfoWithIcon[] | null = page.tabs
+  ? page.tabs.map((tab) => ({ ...tab, icon: iconMap.get(tab.name) }))
+  : null;
+---
+
+<Layout title={doc.data.title || doc.id} description={doc.data.description}>
+  <div>
+    <Header tabs={tabs} pageTitle={doc.data.title || doc.id} groupName={page.groupName} />
+
+    <MobileSidebar
+      navigation={page.navigation}
+      currentPath={currentPath}
+      tabs={tabs || []}
+      anchors={page.anchors}
+      client:load
+    />
+
+    <div class="w-full px-4 pt-3 lg:pt-0">
+      <div class="flex min-h-[calc(100vh-4rem)] lg:gap-10" style="container-type: inline-size;">
+        <div transition:animate="none">
+          <Sidebar
+            navigation={page.navigation}
+            currentPath={currentPath}
+            anchors={page.anchors}
+            client:load
+          />
+        </div>
+
+        <main class="min-w-0 flex-1 py-10" id="main-content">
+          <article class="w-full">
+            <header class="pb-8 leading-none">
+              {
+                page.groupName && (
+                  <p class="mt-0.5 text-sm font-semibold text-(--primary)">{page.groupName}</p>
+                )
+              }
+              <div
+                class="mt-2.5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+              >
+                <div class="flex flex-col gap-2.5">
+                  <h1
+                    class="text-2xl font-bold tracking-tight wrap-anywhere text-gray-900 sm:text-3xl"
+                  >
+                    {doc.data.title || doc.id}
+                  </h1>
+                  {
+                    doc.data.description && (
+                      <div class="prose prose-gray max-w-2xl text-lg">
+                        <p>{doc.data.description}</p>
+                      </div>
+                    )
+                  }
+                </div>
+                <PageContextMenu pathname={currentPath} className="sm:mt-0" client:load />
+              </div>
+            </header>
+            <div class="mdx-content prose max-w-none">
+              <Content components={components} />
+              <Footer prev={page.footerPages.prev} next={page.footerPages.next} />
+            </div>
+          </article>
+          <SiteFooter socials={docsConfig.footer?.socials ?? {}} client:load />
+        </main>
+
+        <TableOfContents headings={headings} client:load />
+      </div>
+    </div>
+  </div>
+</Layout>

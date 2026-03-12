@@ -1,7 +1,5 @@
 import { z, reference, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { docsLoader } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const metaSchema = (image?: any) =>
@@ -298,6 +296,19 @@ const download = defineCollection({
     }),
 });
 
+const docs = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './.mintlify/docs' }),
+  schema: z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    icon: z.string().optional(),
+    sidebarTitle: z.string().optional(),
+    deprecated: z.boolean().optional(),
+    lastUpdatedDate: z.string().optional(),
+    createdDate: z.string().optional(),
+  }),
+});
+
 export const collections = {
   pages,
   about,
@@ -309,15 +320,5 @@ export const collections = {
   pricing,
   faq,
   download,
-  docs: defineCollection({
-    loader: docsLoader(),
-    schema: docsSchema({
-      extend: ({ image }) =>
-        z.object({
-          // override lastUpdated from original schema
-          updatedDate: z.string().optional(),
-          meta: metaSchema(image),
-        }),
-    }),
-  }),
+  docs,
 };

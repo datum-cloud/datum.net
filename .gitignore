@@ -1,6 +1,10 @@
 # build output
 dist/
 
+# Mintlify docs content (synced from datum-cloud/new-doc by build:docs)
+docs/
+.mintlify
+
 # Bun
 bun.lockb
 .bun/
@@ -57,4 +61,6 @@ bunfig.toml
 .tmp/
 
 # ignore local claude settings
-.claude/settings.local.json
+.claude/
+.agents/
+skills-lock.json

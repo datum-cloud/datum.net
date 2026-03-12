@@ -2,6 +2,12 @@
  * Type definitions for navigation data structure
  */
 
+import type { TabInfo } from '@mintlify/astro/helpers';
+
+export interface TabInfoWithIcon extends TabInfo {
+  icon?: string;
+}
+
 export interface NavItem {
   text: string;
   desc?: string;

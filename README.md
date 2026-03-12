@@ -595,9 +595,17 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ---
 
+## Mintlify
+
+npx astro add react
+npm add use-debounce zustand @ai-sdk/react
+
+<!-- npm install @mintlify/astro @mintlify/components @mintlify/models @mintlify/validation use-debounce zustand ai @ai-sdk/react -->
+
+npm install @mintlify/astro
+
 ## Resources
 
-- [Front Matter CMS Documentation](https://frontmatter.codes/docs)
 - [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
 - [Zod Schema Validation](https://zod.dev/)
 - [Project Content Structure](./CONTENT_STRUCTURE.md)

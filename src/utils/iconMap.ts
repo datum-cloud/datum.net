@@ -93,6 +93,7 @@ import {
   Webhook,
   X,
   Zap,
+  Glasses,
 } from '@lucide/astro';
 
 // Icon mapping object
@@ -191,6 +192,7 @@ const iconMap = {
   webhook: Webhook,
   x: X,
   zap: Zap,
+  glasses: Glasses,
 } as const;
 
 // Icon mapping function

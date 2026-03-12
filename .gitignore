@@ -57,4 +57,4 @@ bunfig.toml
 .tmp/
 
 # ignore local claude settings
-.claude/settings.local.json
+.claude/

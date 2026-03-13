@@ -13,7 +13,8 @@ import type { FeaturesDataProps } from '@/src/types/features';
 
 import { Image } from 'astro:assets';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { getEntries } from 'astro:content';
+import { getEntries, getCollection } from 'astro:content';
+import FAQ from '@components/FAQ.astro';
 import { marked } from 'marked';
 
 const page = await getCollectionEntry('features', 'index');
@@ -28,6 +29,10 @@ const secondContents: Array<{
   data: FeaturesDataProps;
   body: string;
 }> = fm.sections.second && (await getEntries(fm.sections.second));
+
+const faqs = (await getCollection('faq'))
+  .filter((faq) => !faq.data.draft && faq.data.category === 'features')
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
 // SEO
 const meta = fm.meta || {};
@@ -58,10 +63,10 @@ const description = fm.description;
           <div class="max-width">
             <Table>
               <h2 slot="header">{firstContents[0].data.title}</h2>
-              <Fragment slot="description" set:html={marked.parse(firstContents[0].body)} />
 
               {firstContents[0].data.keyFeatures && (
                 <Fragment slot="features">
+                  <Fragment set:html={marked.parse(firstContents[0].body)} />
                   <h3>Key features</h3>
                   <ul>
                     {firstContents[0].data.keyFeatures.map((feature) => (
@@ -71,27 +76,9 @@ const description = fm.description;
                 </Fragment>
               )}
 
-              {firstContents[0].data.benefits && (
-                <Fragment slot="benefits">
-                  <h3>Benefits</h3>
-                  <p>{firstContents[0].data.benefits}</p>
-                </Fragment>
-              )}
-
-              {firstContents[0].data.perfectFor && (
-                <Fragment slot="audience">
-                  <h3>Perfect for</h3>
-                  <ul>
-                    {firstContents[0].data.perfectFor.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-
               {firstContents[0].data.readTheDocs && (
                 <Fragment slot="docs">
-                  <h3>Read the docs</h3>
+                  <h3>Next steps</h3>
                   <ul>
                     {firstContents[0].data.readTheDocs.map((item) => (
                       <li>
@@ -126,10 +113,9 @@ const description = fm.description;
             <Table class="z-40">
               <h2 slot="header">{firstContents[1].data.title}</h2>
 
-              <Fragment slot="description" set:html={marked.parse(firstContents[1].body)} />
-
               {firstContents[1].data.keyFeatures && (
                 <Fragment slot="features">
+                  <Fragment set:html={marked.parse(firstContents[1].body)} />
                   <h3>Key features</h3>
                   <ul>
                     {firstContents[1].data.keyFeatures.map((feature) => (
@@ -139,27 +125,9 @@ const description = fm.description;
                 </Fragment>
               )}
 
-              {firstContents[1].data.benefits && (
-                <Fragment slot="benefits">
-                  <h3>Benefits</h3>
-                  <p>{firstContents[1].data.benefits}</p>
-                </Fragment>
-              )}
-
-              {firstContents[1].data.perfectFor && (
-                <Fragment slot="audience">
-                  <h3>Perfect for</h3>
-                  <ul>
-                    {firstContents[1].data.perfectFor.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-
               {firstContents[1].data.readTheDocs && (
                 <Fragment slot="docs">
-                  <h3>Read the docs</h3>
+                  <h3>Next steps</h3>
                   <ul>
                     {firstContents[1].data.readTheDocs.map((item) => (
                       <li>
@@ -194,6 +162,23 @@ const description = fm.description;
         </div>
       )
     }
+    <div class="section--block section--block--pad bg-glacier-mist-700">
+      <div class="max-width">
+        <div class="grid grid-cols-12 gap-6" x-data="{ expandedFaq: null }">
+          <h2 class="datum-text-7xl col-span-12 col-start-1 md:col-span-5">Common Questions</h2>
+          <div class="col-span-12 md:col-span-7">
+            <div class="faq-list">
+              {
+                faqs.map((faq, index) => {
+                  return <FAQ faq={faq} index={index} />;
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <Footer />
   </section>
 </Layout>

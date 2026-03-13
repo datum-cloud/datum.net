@@ -96,6 +96,18 @@ export interface StrapiArticleResponse {
   articles: StrapiArticle[];
 }
 
+export interface StrapiRoadmap {
+  documentId: string;
+  title: string;
+  description?: string;
+  releaseDate: string;
+  githubUrl?: string;
+}
+
+export interface StrapiRoadmapsResponse {
+  roadmaps: StrapiRoadmap[];
+}
+
 /**
  * Normalized article type for components (matches local blog structure)
  */
@@ -113,9 +125,10 @@ export interface NormalizedStrapiArticle {
   body?: string;
 }
 
+const strapiUrl = import.meta.env?.STRAPI_URL || process.env.STRAPI_URL;
 const STRAPI_BASE_URL =
-  typeof import.meta.env.STRAPI_URL === 'string' && import.meta.env.STRAPI_URL
-    ? import.meta.env.STRAPI_URL.replace(/\/$/, '')
+  typeof strapiUrl === 'string' && strapiUrl
+    ? strapiUrl.replace(/\/$/, '')
     : 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 
 /**

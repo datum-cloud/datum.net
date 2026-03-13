@@ -20,12 +20,7 @@ const {
 }: Props = Astro.props;
 ---
 
-<nav
-  class="nav--main fade-in--pure"
-  data-reveal="fade-in--pure--visible"
-  data-reveal-immediate="true"
-  role="navigation"
->
+<nav class="nav--main" role="navigation">
   {/* Logo */}
 
   <div class="nav-logo-container">
@@ -59,26 +54,25 @@ const {
       )
     }
 
+    {
+      showLoginButton && (
+        <Button
+          class="btn btn--sm"
+          text="Sign in"
+          href="https://cloud.datum.net/"
+          data-fathom-event="Nav: Sign in"
+        />
+      )
+    }
+
     <Button
       class="btn btn--sm"
       target="_blank"
       href="https://auth.datum.net/ui/v2/login/register"
       data-fathom-event="Nav: Request Access"
     >
-      Request Access
+      Start for free
     </Button>
-    {
-      showLoginButton && (
-        <Button
-          class="btn btn--sm"
-          text="Log In"
-          icon={{ name: 'user', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
-          href="https://cloud.datum.net/"
-        />
-      )
-    }
   </div>
 
   {/* Mobile Menu Component */}

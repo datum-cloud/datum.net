@@ -1,0 +1,21 @@
+---
+title: "AI Edge"
+sidebar:
+  order: 3
+meta:
+  title: "AI Edge - Internet Traffic Routing"
+  description: "Learn how to set up an AI Edge in Datum using HTTPProxy. This tutorial covers configuration, backend routing, hostname verification, advanced rules, and troubleshooting for seamless Kubernetes traffic management."
+---
+
+Simplify how you protect and route internet traffic to your backend services. Datum’s AI Edge is a streamlined, single-manifest approach that automatically manages the hard stuff.
+
+1. **Portal Management UI** – View, setup and manage AI Edge resources via the portal. Edit backend endpoints and host name/s after creation.
+2. **Enhanced Status Visibility** – Display status information including: Programmed status "Accepted" and "Programmed", Generated hostname(s), Custom hostname verification status, and TLS verification status.
+3. **Protection & Security** – Built-in Coraza WAF with TLS termination via Envoy.
+4. **Cloud Portal Traffic Metrics** - Filtered by region: Global Upstream Latency Percentile, Regional Upstream RPS,  Regional Upstream Response and Errors.
+5. **DNS & Domain Integration** – Integration with Domain resources for custom hostname configuration, including: Visual indication of verification status, Quick links to related Domain resources, Clear messaging for unverified hostnames.
+6. **Endpoint Failover with Passive Health Checks** – Track errors at origin and failover to backup when failure threshold is crossed.
+7. **Path Configuration** - Determine how incoming requests are matched and routed based on their URL paths.
+8. **Audit Log** – Track and expose all events (create/update/delete, hostname changes, backend modifications, programming status changes) for audit and compliance.
+
+**Protocols** - We support HTTP(S) 1.1, HTTP2, gRPC, and WebSockets.

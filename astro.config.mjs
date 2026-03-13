@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
-import astroExpressiveCode from 'astro-expressive-code';
+import { createInlineSvgUrl } from '@expressive-code/core';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
 import mermaid from 'astro-mermaid';
@@ -12,18 +12,21 @@ import node from '@astrojs/node';
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
-import copyMarkdown from './src/plugins/copy-markdown/index.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+
+const lucideCopyIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
 
 const expressiveCodeConfig = {
   themes: ['github-light', 'github-dark'],
   styleOverrides: {
     borderRadius: '0.5rem',
+    frames: {
+      copyIcon: createInlineSvgUrl(lucideCopyIconSvg),
+    },
   },
 };
 
@@ -45,7 +48,6 @@ export default defineConfig({
     layout: 'constrained',
   },
   integrations: [
-    astroExpressiveCode(expressiveCodeConfig),
     announcement({
       show: true,
       label: "We're hiring!",
@@ -73,18 +75,6 @@ export default defineConfig({
       autoTheme: true,
     }),
     starlight({
-      plugins: [
-        copyMarkdown({
-          includeFrontmatter: false,
-          showToast: true,
-          copyText: 'Copy for LLM',
-          copiedText: 'Copied!',
-          showViewMarkdown: true,
-          githubRawBaseUrl:
-            'https://raw.githubusercontent.com/datum-cloud/datum.net/refs/heads/main',
-          contentPath: 'src/content/docs',
-        }),
-      ],
       title: 'Datum',
       disable404Route: true,
       credits: false,
@@ -172,7 +162,7 @@ export default defineConfig({
           items: [
             { label: 'Runtime Overview', link: 'docs/runtime/' },
             { label: 'Datum DNS', autogenerate: { directory: 'docs/runtime/dns' } },
-            { label: 'Datum Proxy', link: 'docs/runtime/proxy/' },
+            { label: 'AI Edge', link: 'docs/runtime/ai-edge/' },
             { label: 'AI Gateway', link: 'docs/runtime/ai-gateway/' },
           ],
           collapsed: true,
@@ -192,15 +182,7 @@ export default defineConfig({
           autogenerate: { directory: 'docs/metrics' },
           collapsed: true,
         },
-        {
-          label: 'Glossary',
-          link: 'docs/glossary/',
-        },
       ],
-    }),
-    glossary({
-      source: 'docs/docs/glossary.mdx',
-      contentDir: 'docs',
     }),
     sitemap({
       exclude: [

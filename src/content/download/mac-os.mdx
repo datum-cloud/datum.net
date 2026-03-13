@@ -1,0 +1,44 @@
+---
+slug: "mac-os"
+title: "Download now"
+description: "Quickly and safely expose local environments to the internet, for free."
+icon: "apple"
+order: 1
+meta:
+  title: "Developer tools and desktop apps - Datum Cloud"
+  description: "Quickly and safely expose local environments to the internet, for free with Datum's Rust-based desktop macOS app."
+  og:
+    title: "Try Datum's Desktop app for free"
+    description: "Quickly and safely expose local environments to the internet, for free."
+---
+
+import { Tabs, TabItem, Aside } from '@components/content';
+import Button from '@components/Button.astro';
+
+<Aside type="note" icon="approve-check-circle">
+  Quickly and safely expose local environments to the internet, for free.
+</Aside>
+
+## Installation
+
+<Tabs>
+  <TabItem label="Homebrew">
+  Install Datum via Homebrew with the following command:
+
+  ```
+  brew install --cask datum-cloud/tap/desktop
+  ```
+  </TabItem>
+
+  <TabItem label="Direct download">
+  <Button
+    text="Download now"
+    class="btn btn--pine-forge"
+    href="https://github.com/datum-cloud/datum-connect/releases/latest/download/Datum.dmg"
+    target="_blank"
+    iconPosition="right"
+    icon={{ name: 'download', size: 'md' }}
+  />
+  </TabItem>
+</Tabs>
+

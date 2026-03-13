@@ -60,7 +60,7 @@
   }
 
   .nav-dropdown-menu {
-    @apply pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
+    @apply shadow-modal pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu,
@@ -96,44 +96,77 @@
 
   /* Mega Dropdown Styles */
   .nav-dropdown-mega {
-    @apply grid min-w-96 grid-cols-2 gap-8;
+    @apply -left-[120%] grid grid-cols-2 gap-4 p-3;
   }
 
   .nav-dropdown-mega-section {
-    @apply mb-0;
+    @apply mb-0 flex min-w-[260px] flex-col gap-3;
   }
 
   .nav-dropdown-mega-items {
-    @apply space-y-0;
+    @apply flex flex-col gap-1;
   }
 
   .nav-dropdown-mega .nav-dropdown-item {
-    @apply mb-5 last:mb-0;
-  }
-
-  .nav-dropdown-mega .nav-dropdown-item:not(:last-child) {
-    @apply border-midnight-fjord/10 border-b pb-5;
-  }
-
-  /* Mega Dropdown Styles */
-  .nav-dropdown-mega {
-    @apply grid min-w-96 grid-cols-2 gap-8;
-  }
-
-  .nav-dropdown-mega-section {
     @apply mb-0;
   }
 
-  .nav-dropdown-mega-items {
-    @apply space-y-0;
+  .nav-dropdown-mega .nav-dropdown-title {
+    @apply mb-0 px-4;
+    span {
+      @apply text-midnight-fjord/50 border-app---dark---utility-5 inline-block w-full border-b pt-4 pb-2.5 text-xs font-normal tracking-normal normal-case;
+    }
   }
 
-  .nav-dropdown-mega .nav-dropdown-item {
-    @apply mb-5 last:mb-0;
+  .nav-dropdown-mega .nav-dropdown-link {
+    @apply hover:bg-aurora-moss hover:text-midnight-fjord gap-0 rounded-md px-4 py-2.5 hover:bg-[url('../assets/images/bg-hover-nav.png')] hover:bg-contain hover:bg-right hover:bg-no-repeat [&>span]:border-b-0;
   }
 
-  .nav-dropdown-mega .nav-dropdown-item:not(:last-child) {
-    @apply border-midnight-fjord/10 border-b pb-5;
+  .nav-dropdown-mega .nav-dropdown-link span {
+    @apply datum-text-base font-semibold;
+  }
+
+  /* Card Dropdown Styles (Product) */
+  .nav-dropdown-cards-wrapper {
+    @apply -left-[150%] p-3;
+  }
+
+  .nav-dropdown-cards {
+    @apply flex gap-4;
+  }
+
+  .nav-dropdown-card-item {
+    @apply flex-1;
+  }
+
+  .nav-dropdown-card-link {
+    @apply border-glacier-mist-900 text-midnight-fjord hover:border-aurora-moss hover:bg-aurora-moss relative flex aspect-4/3 h-[200px] flex-col gap-2 overflow-hidden rounded-[3px] border p-7 transition-colors duration-200;
+    @apply relative;
+    @apply hover:before:opacity-100;
+
+    &::after,
+    &::before {
+      content: '';
+      @apply absolute bottom-0 left-0 h-[110px] bg-no-repeat;
+      @apply block w-full transition-opacity duration-200 ease-in-out;
+    }
+
+    &::after {
+      @apply z-10 opacity-100;
+      @apply bg-(image:--nav-card-image) bg-auto bg-bottom-right bg-no-repeat;
+    }
+    &::before {
+      @apply z-5 opacity-0;
+      @apply bg-[url('../assets/images/bg-hover-nav-alt.png')] bg-auto bg-bottom;
+    }
+  }
+
+  .nav-dropdown-card-title {
+    @apply datum-text-base font-semibold;
+  }
+
+  .nav-dropdown-card-desc {
+    @apply text-xs opacity-60;
   }
 
   /* Mobile Navigation Styles */
@@ -157,36 +190,31 @@
   }
 
   .mobile-menu {
-    @apply bg-aurora-moss fixed top-0 left-0 z-90 h-full w-[calc(100%-80px)] transition-transform duration-300 ease-in-out md:hidden;
+    @apply bg-aurora-moss fixed top-0 left-0 z-90 flex h-full w-[calc(100%-80px)] flex-col gap-12 overflow-y-auto px-8 pt-12 pb-10 transition-transform duration-300 ease-in-out md:hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .mobile-menu-header {
-    @apply border-midnight-fjord/10 flex items-center justify-between border-b p-6;
+  .mobile-menu::-webkit-scrollbar {
+    display: none;
   }
 
   .mobile-menu-logo {
-    @apply flex items-center;
-  }
+    @apply shrink-0;
+    --color-logo-object: var(--color-midnight-fjord);
+    --color-logo-text: var(--color-midnight-fjord);
 
-  .mobile-menu-logo svg {
-    @apply w-17;
-  }
-
-  .mobile-menu-close {
-    @apply text-midnight-fjord hover:text-midnight-fjord/80 flex h-10 w-10 items-center justify-center transition-colors duration-200;
+    svg {
+      @apply w-25;
+    }
   }
 
   .mobile-menu-content {
-    @apply flex h-full flex-col overflow-y-auto;
-    @apply [-ms-overflow-style:none] [scrollbar-width:none];
-  }
-
-  .mobile-menu-content::-webkit-scrollbar {
-    @apply hidden;
+    @apply flex-1;
   }
 
   .mobile-menu-list {
-    @apply space-y-5 p-8.5;
+    @apply flex flex-col gap-7;
   }
 
   .mobile-menu-item {
@@ -194,7 +222,11 @@
   }
 
   .mobile-menu-link {
-    @apply text-midnight-fjord hover:text-midnight-fjord/80 datum-text-base w-full items-center justify-between font-semibold transition-colors duration-200;
+    @apply text-midnight-fjord hover:text-midnight-fjord/80 datum-text-2xl flex w-full items-center justify-between font-semibold transition-colors duration-200;
+  }
+
+  .mobile-menu-link-icon {
+    @apply opacity-40 transition-transform duration-200 ease-in-out;
   }
 
   .mobile-dropdown-content {
@@ -202,15 +234,16 @@
   }
 
   .mobile-dropdown-section {
-    @apply pt-3.5;
+    @apply pt-5;
   }
 
   .mobile-dropdown-title {
-    @apply text-midnight-fjord/60 font-alliance mb-3 text-sm font-semibold tracking-wider uppercase;
+    @apply text-midnight-fjord/50 datum-text-xs mb-3 font-semibold;
   }
 
   .mobile-dropdown-items {
-    @apply space-y-2;
+    @apply space-y-2.5;
+    @apply border-midnight-fjord/10 border-l pl-4;
   }
 
   .mobile-dropdown-item {
@@ -221,8 +254,32 @@
     @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-text-base block transition-colors duration-200;
   }
 
-  .mobile-menu-actions {
-    @apply space-x-3 px-8.5;
+  .mobile-menu-footer {
+    @apply flex flex-col gap-5;
+  }
+
+  .mobile-menu-ctas {
+    @apply flex flex-col gap-2;
+  }
+
+  .mobile-cta-secondary {
+    @apply border-midnight-fjord/90 text-midnight-fjord hover:bg-midnight-fjord/5 flex h-9 w-full items-center justify-center gap-2 rounded-md border text-xs font-semibold transition-colors duration-200;
+  }
+
+  .mobile-cta-primary {
+    @apply bg-midnight-fjord text-glacier-mist-700 hover:bg-midnight-fjord/90 flex h-9 w-full items-center justify-center gap-2 rounded-md text-xs font-semibold transition-colors duration-200;
+  }
+
+  .mobile-menu-social {
+    @apply flex items-center justify-center gap-10;
+  }
+
+  .mobile-social-link {
+    @apply text-midnight-fjord hover:text-midnight-fjord/70 flex items-center gap-2 text-xs transition-colors duration-200;
+  }
+
+  .mobile-social-icon {
+    @apply h-5 w-5;
   }
 
   .max-w-datum {

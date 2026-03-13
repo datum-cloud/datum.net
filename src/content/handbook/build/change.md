@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 5, 2026
 authors: drew
 meta:
-  title: "How We Plan and Execute on Changes at Datum"
+  title: "How We Plan and Execute on Changes at Datum - Datum Handbook"
   description: "Systems, and their operators, exist in time and space. Production changes are calendar events, not chat messages."
 ---
 

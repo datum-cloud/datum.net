@@ -14,6 +14,11 @@ export class Cache {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   set(key: string, data: any, expiresIn?: number): void {
+    // Ensure cache directory exists in case it was deleted while the dev server is running
+    if (!fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true });
+    }
+
     const filePath = path.join(this.cacheDir, `${key}.json`);
     fs.writeFileSync(filePath, JSON.stringify(data), 'utf-8');
 

@@ -7,18 +7,26 @@ import { Cache } from '@libs/cache';
 import type { StrapiArticlesResponse, StrapiArticle } from '../../types/strapi';
 
 const STRAPI_URL =
-  import.meta.env.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || '';
-const CACHE_ENABLED =
-  import.meta.env.STRAPI_CACHE_ENABLED === 'true' || import.meta.env.STRAPI_CACHE_ENABLED === '1';
+  import.meta.env?.STRAPI_URL ||
+  process.env.STRAPI_URL ||
+  'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
+const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
+const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
-const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
-const envTtlSec = parseInt(import.meta.env.STRAPI_CACHE_TTL ?? '300', 10);
+const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const envTtlSec = parseInt(
+  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
+  10
+);
 const ARTICLES_CACHE_TTL =
   Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
 
 // Request timeout — fail fast so the fallback cache can kick in
-const envTimeoutSec = parseInt(import.meta.env.STRAPI_TIMEOUT ?? '10', 10);
+const envTimeoutSec = parseInt(
+  import.meta.env?.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '10',
+  10
+);
 const FETCH_TIMEOUT_MS =
   Number.isNaN(envTimeoutSec) || envTimeoutSec <= 0 ? 10_000 : envTimeoutSec * 1000;
 

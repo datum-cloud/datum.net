@@ -1,8 +1,9 @@
 @layer components {
   /* Generic Button Components */
   .btn {
-    @apply datum-text-base inline-flex max-h-[52px] items-center justify-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition hover:cursor-pointer;
-    @apply border-white/20 hover:bg-white/10;
+    @apply datum-text-base inline-flex max-h-[52px] items-center justify-center gap-3 rounded-md border font-semibold tracking-normal whitespace-nowrap text-white no-underline! transition;
+    @apply hover:border-glacier-mist-900 hover:cursor-pointer hover:bg-white/5;
+    @apply border-glacier-mist-900/30;
     @apply px-5 py-3 md:px-6 md:py-3.75;
     .btn-icon {
       @apply text-blush-quartz;
@@ -47,7 +48,7 @@
   }
 
   .btn--pine-forge {
-    @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white;
+    @apply bg-pine-forge hover:bg-pine-forge/80 border-none text-white!;
   }
 
   .btn--app-dark-utility-2 {
@@ -78,11 +79,11 @@
     @apply text-midnight-fjord border-white bg-white hover:bg-white/90;
   }
 
-  .btn--navy {
+  .btn--midnight-fjord {
     @apply bg-midnight-fjord/90 hover:bg-midnight-fjord/80 border-midnight-fjord text-white;
   }
 
-  .btn--navy-alpha {
+  .btn--midnight-fjord-alpha {
     @apply bg-midnight-fjord/90 border-white/20 text-white hover:bg-white/10;
   }
 

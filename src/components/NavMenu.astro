@@ -61,7 +61,9 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
             <a
               href={item.href}
               class={`nav-menu-link ${isActive ? 'link--active' : ''}`}
-              data-astro-prefetch="hover"
+              target={item.isExternal ? '_blank' : undefined}
+              rel={item.isExternal ? 'noopener noreferrer' : undefined}
+              data-astro-prefetch={item.isExternal ? undefined : 'hover'}
               tabindex="0"
             >
               <span>{item.text}</span>
@@ -69,27 +71,58 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
             </a>
             {item.children && (
               <ul
-                class={`nav-dropdown-menu ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
+                class={`nav-dropdown-menu ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
               >
                 {item.children.map((section) => (
                   <li
                     class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
                   >
                     {'title' in section && section.title && (
-                      <h3 class="nav-dropdown-title">{section.title}</h3>
+                      <h3 class="nav-dropdown-title">
+                        <span>{section.title}</span>
+                      </h3>
                     )}
                     <ul
-                      class={`nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`}
+                      class={
+                        section.isCardLayout
+                          ? 'nav-dropdown-cards'
+                          : `nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`
+                      }
                     >
                       {section.items?.map((subItem) => {
                         const isSubItemActive = isActivePath(subItem.href, currentPath);
 
-                        return (
+                        return section.isCardLayout ? (
+                          <li
+                            class={`nav-dropdown-card-item ${isSubItemActive ? 'item--active' : ''}`}
+                          >
+                            <a
+                              href={subItem.href}
+                              class={`nav-dropdown-card-link ${isSubItemActive ? 'item--active' : ''}`}
+                              style={
+                                'image' in subItem && subItem.image
+                                  ? `--nav-card-image: url('${subItem.image}')`
+                                  : undefined
+                              }
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
+                              tabindex="0"
+                            >
+                              <span class="nav-dropdown-card-title">{subItem.text}</span>
+                              {'desc' in subItem && subItem.desc && (
+                                <span class="nav-dropdown-card-desc">{subItem.desc}</span>
+                              )}
+                            </a>
+                          </li>
+                        ) : (
                           <li class={`nav-dropdown-item ${isSubItemActive ? 'item--active' : ''}`}>
                             <a
                               href={subItem.href}
                               class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
-                              data-astro-prefetch="hover"
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
                               tabindex="0"
                             >
                               {'icon' in subItem && subItem.icon && (

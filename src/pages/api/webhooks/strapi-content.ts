@@ -108,6 +108,9 @@ function invalidateAuthorCache(): string[] {
   // Invalidate team members cache (same underlying authors database)
   deletedFiles.push(...invalidateCache('strapi-team-members'));
 
+  // Invalidate per-author slug cache (strapi-author-slug-*)
+  deletedFiles.push(...invalidateCache('strapi-author-slug-'));
+
   return deletedFiles;
 }
 

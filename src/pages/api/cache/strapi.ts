@@ -1,4 +1,4 @@
-// src/pages/api/cache/strapi-regenerate.ts
+// src/pages/api/cache/strapi.ts
 
 export const prerender = false;
 

@@ -38,6 +38,9 @@ export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'always',
   output: 'static',
+  security: {
+    checkOrigin: false,
+  },
   adapter: node({
     mode: 'middleware',
   }),

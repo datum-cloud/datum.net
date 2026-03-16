@@ -69,7 +69,7 @@ export default defineConfig({
       autoTheme: true,
     }),
     ...(isProd ? [syncDocs()] : []),
-    mintlify({ docsDir: './docs' }),
+    mintlify({ docsDir: './knowledge' }),
     react(),
     mdx(),
     // glossary({

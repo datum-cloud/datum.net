@@ -36,8 +36,9 @@ export function useContextualOptions({
   pathname: string;
   options?: string[];
 }) {
-  const repoPath = `https://github.com/datum-cloud/new-doc/blob/main`;
-  const markdownUrl = `${repoPath}${pathname}.mdx`;
+  const rawRepoPath = `https://raw.githubusercontent.com/datum-cloud/new-doc/main`;
+  const markdownUrl = `${rawRepoPath}${pathname}.mdx`;
+  const markdownViewUrl = `https://github.com/datum-cloud/new-doc/blob/main${pathname}.mdx`;
 
   const allOptions: ContextualOptionItem[] = useMemo(
     () => [
@@ -64,7 +65,7 @@ export function useContextualOptions({
         description: 'View this page as plain text',
         icon: MarkdownIcon,
         action: () => {
-          window.open(markdownUrl, '_blank');
+          window.open(markdownViewUrl, '_blank');
         },
         externalLink: true,
       },

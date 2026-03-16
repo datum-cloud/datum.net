@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 const execAsync = promisify(exec);
 
 const DOCS_REPO_URL = process.env.DOCS_REPO_URL || 'https://github.com/datum-cloud/new-doc';
-const DOCS_PATH = process.env.DOCS_REPO_PATH || 'docs';
+const DOCS_PATH = 'knowledge';
 const TMP_ARCHIVE = join(DOCS_PATH, '..', '.tmp-sync-docs.zip');
 
 function parseGitHubUrl(url: string): { org: string; repo: string } | null {

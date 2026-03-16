@@ -41,7 +41,7 @@ export function TabsDropdown({ tabs }: TabsDropdownProps) {
             {tabs.map((tab) => (
               <a
                 key={tab.name}
-                href={tab.href}
+                href={tab.href.endsWith('/') ? tab.href : `${tab.href}/`}
                 className={cn(
                   'flex items-center justify-between rounded-md px-2.5 py-2 text-sm font-medium hover:bg-gray-100',
                   tab.isActive ? 'text-primary' : 'text-gray-800'

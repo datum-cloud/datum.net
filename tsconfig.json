@@ -29,7 +29,8 @@
       "@data/*": ["./src/data/*"],
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"],
-      "@templates/*": ["./templates/*"]
+      "@templates/*": ["./templates/*"],
+      "@knowledge/*": ["./knowledge/*"]
     },
     "plugins": [
       {

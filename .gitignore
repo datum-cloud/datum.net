@@ -2,7 +2,7 @@
 dist/
 
 # Mintlify docs content (synced from datum-cloud/new-doc by build:docs)
-docs/
+knowledge/
 .mintlify
 
 # Bun

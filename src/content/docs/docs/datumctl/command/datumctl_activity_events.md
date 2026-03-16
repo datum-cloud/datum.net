@@ -1,52 +1,58 @@
 ---
-title: "datumctl activity history"
+title: "datumctl activity events"
 sidebar:
   hidden: true
 ---
 
-View the change history of a specific resource
+Query Kubernetes events with extended retention
 
 ### Synopsis
 
-View the change history of a specific resource over time by querying audit logs.
+Query Kubernetes events with 60-day retention (vs. 24 hours in native Events API).
 
-This command shows you the history of changes to a resource, displaying each modification
-in chronological order. Use --diff to see what changed between consecutive versions.
+This command provides access to historical Kubernetes events stored in ClickHouse,
+allowing you to investigate past issues and track event patterns over time.
 
-The command accepts the resource type and name as separate arguments:
-  - RESOURCE_TYPE: The type of resource (e.g., domains, dnsrecordsets, configmaps, secrets)
-  - NAME: The name of the specific resource instance
+Time Formats:
+  Relative: "now-7d", "now-2h", "now-30m" (units: s, m, h, d, w)
+  Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)
 
-Use the -n/--namespace flag for namespaced resources.
+Field Selectors:
+  Use standard Kubernetes field selector syntax (e.g., "type=Warning").
+  Multiple conditions are comma-separated (all must match).
+
+  Supported fields:
+    - type: Normal or Warning
+    - reason: Event reason (FailedMount, Pulled, etc.)
+    - regarding.kind: Pod, Deployment, etc.
+    - regarding.name: Specific object name
+    - regarding.namespace: Namespace of regarding object
 
 Examples:
-  ### View change history of a domain
-  activity history domains miloapis-com-0c8dxl -n default
+  ### Recent events (last 24 hours)
+  kubectl activity events
 
-  ### View change history of a DNS record set
-  activity history dnsrecordsets dns-record-www-example-com -n production
+  ### Warning events in the last week
+  kubectl activity events --start-time "now-7d" --type Warning
 
-  ### View history with diff to see what changed
-  activity history configmaps app-config -n default --diff
+  ### Events for a specific pod
+  kubectl activity events --regarding-name my-pod --regarding-kind Pod
 
-  ### View changes from the last 7 days
-  activity history secrets api-credentials -n default --start-time "now-7d"
+  ### Mount failures
+  kubectl activity events --reason FailedMount
 
-  ### Get all changes (fetch all pages)
-  activity history domains example-com -n default --all-pages
+  ### Events in production namespace
+  kubectl activity events -n production
 
-  ### Use different output formats
-  activity history configmaps app-settings -n default -o json
-  activity history secrets db-password -n default -o yaml
+  ### Use standard field selector
+  kubectl activity events --field-selector "regarding.kind=Pod,type=Warning"
 
-Output Modes:
-  Default (table): Shows a table with timestamp, verb, user, and status code
-  --diff: Shows unified diff between consecutive resource versions
-  -o json/yaml: Output raw audit events in JSON or YAML format
+  ### Discover what reasons exist
+  kubectl activity events --suggest reason
 
 
 ```
-datumctl activity history RESOURCE_TYPE NAME [flags]
+datumctl activity events [flags]
 ```
 
 ### Options
@@ -55,14 +61,22 @@ datumctl activity history RESOURCE_TYPE NAME [flags]
       --all-pages                     Fetch all pages of results
       --allow-missing-template-keys   If true, ignore any errors in templates when a field or map key is missing in the template. Only applies to golang and jsonpath output formats. (default true)
       --continue-after string         Pagination cursor from previous query
-      --diff                          Show diff between consecutive resource versions
+      --debug                         Show debug information
       --end-time string               End time (relative: 'now' or absolute: RFC3339) (default "now")
-  -h, --help                          help for history
-      --limit int32                   Maximum number of results per page (1-1000) (default 100)
+      --field-selector string         Standard Kubernetes field selector
+  -h, --help                          help for events
+      --limit int32                   Maximum number of results per page (1-1000) (default 25)
+  -n, --namespace string              Filter by namespace
+      --no-headers                    Omit table headers
   -o, --output string                 Output format. One of: (json, yaml, kyaml, name, go-template, go-template-file, template, templatefile, jsonpath, jsonpath-as-json, jsonpath-file).
+      --reason string                 Filter by event reason (e.g., FailedMount, Pulled)
+      --regarding-kind string         Filter by regarding object kind (Pod, Deployment)
+      --regarding-name string         Filter by regarding object name
       --show-managed-fields           If true, keep the managedFields when printing objects in JSON or YAML format.
-      --start-time string             Start time (relative: 'now-7d' or absolute: RFC3339) (default "now-30d")
+      --start-time string             Start time (relative: 'now-7d' or absolute: RFC3339) (default "now-24h")
+      --suggest string                Show distinct values for a field (facet query)
       --template string               Template string or path to template file to use when -o=go-template, -o=go-template-file. The template format is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+      --type string                   Filter by event type: Normal, Warning
 ```
 
 ### Options inherited from parent commands
@@ -76,7 +90,6 @@ datumctl activity history RESOURCE_TYPE NAME [flags]
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
       --log-flush-frequency duration   Maximum number of seconds between log flushes (default 5s)
-  -n, --namespace string               If present, the namespace scope for this CLI request
       --organization string            organization name
       --platform-wide                  access the platform root instead of a project or organization control plane
       --project string                 project name

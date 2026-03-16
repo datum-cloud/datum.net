@@ -1,68 +1,91 @@
 ---
-title: "datumctl activity history"
+title: "datumctl activity feed"
 sidebar:
   hidden: true
 ---
 
-View the change history of a specific resource
+Query human-readable activity summaries
 
 ### Synopsis
 
-View the change history of a specific resource over time by querying audit logs.
+Query human-readable activity summaries from the control plane.
 
-This command shows you the history of changes to a resource, displaying each modification
-in chronological order. Use --diff to see what changed between consecutive versions.
+Activities are translated from audit logs and events using ActivityPolicy rules,
+providing human-friendly descriptions of what changed in your cluster.
 
-The command accepts the resource type and name as separate arguments:
-  - RESOURCE_TYPE: The type of resource (e.g., domains, dnsrecordsets, configmaps, secrets)
-  - NAME: The name of the specific resource instance
+Time Formats:
+  Relative: "now-7d", "now-2h", "now-30m" (units: s, m, h, d, w)
+  Absolute: "2024-01-01T00:00:00Z" (RFC3339 with timezone)
 
-Use the -n/--namespace flag for namespaced resources.
+Output Formats:
+  table (default): Structured view with timestamp, actor, source, and summary
+  summary: Just the summaries, one per line
+  json/yaml: Full activity objects
+
+CEL Filters:
+  spec.changeSource       - "human" or "system"
+  spec.actor.name         - Actor display name
+  spec.actor.type         - "user", "serviceaccount", "controller"
+  spec.resource.kind      - Resource kind (Deployment, Pod, etc.)
+  spec.resource.namespace - Resource namespace
+  spec.resource.apiGroup  - API group
+  spec.summary            - Activity summary text
 
 Examples:
-  ### View change history of a domain
-  activity history domains miloapis-com-0c8dxl -n default
+  ### Recent human activity
+  kubectl activity feed --change-source human
 
-  ### View change history of a DNS record set
-  activity history dnsrecordsets dns-record-www-example-com -n production
+  ### Activities for a specific actor
+  kubectl activity feed --actor alice@example.com
 
-  ### View history with diff to see what changed
-  activity history configmaps app-config -n default --diff
+  ### Deployment changes
+  kubectl activity feed --kind Deployment
 
-  ### View changes from the last 7 days
-  activity history secrets api-credentials -n default --start-time "now-7d"
+  ### Search for specific text
+  kubectl activity feed --search "created HTTPProxy"
 
-  ### Get all changes (fetch all pages)
-  activity history domains example-com -n default --all-pages
+  ### Live feed of human changes
+  kubectl activity feed --change-source human --watch
 
-  ### Use different output formats
-  activity history configmaps app-settings -n default -o json
-  activity history secrets db-password -n default -o yaml
+  ### Production namespace activity
+  kubectl activity feed -n production
 
-Output Modes:
-  Default (table): Shows a table with timestamp, verb, user, and status code
-  --diff: Shows unified diff between consecutive resource versions
-  -o json/yaml: Output raw audit events in JSON or YAML format
+  ### Filter with CEL for complex queries
+  kubectl activity feed --filter "spec.resource.kind in ['Deployment', 'StatefulSet']"
+
+  ### Discover active users
+  kubectl activity feed --suggest spec.actor.name
 
 
 ```
-datumctl activity history RESOURCE_TYPE NAME [flags]
+datumctl activity feed [flags]
 ```
 
 ### Options
 
 ```
+      --actor string                  Filter by actor name
       --all-pages                     Fetch all pages of results
       --allow-missing-template-keys   If true, ignore any errors in templates when a field or map key is missing in the template. Only applies to golang and jsonpath output formats. (default true)
+      --api-group string              Filter by API group
+      --change-source string          Filter by change source: human, system
       --continue-after string         Pagination cursor from previous query
-      --diff                          Show diff between consecutive resource versions
+      --debug                         Show debug information
       --end-time string               End time (relative: 'now' or absolute: RFC3339) (default "now")
-  -h, --help                          help for history
-      --limit int32                   Maximum number of results per page (1-1000) (default 100)
+      --filter string                 CEL filter expression
+  -h, --help                          help for feed
+      --kind string                   Filter by resource kind (Deployment, Pod, etc.)
+      --limit int32                   Maximum number of results per page (1-1000) (default 25)
+  -n, --namespace string              Filter by resource namespace
+      --no-headers                    Omit table headers
   -o, --output string                 Output format. One of: (json, yaml, kyaml, name, go-template, go-template-file, template, templatefile, jsonpath, jsonpath-as-json, jsonpath-file).
+      --resource-uid string           Get history of specific resource by UID
+      --search string                 Full-text search in summaries
       --show-managed-fields           If true, keep the managedFields when printing objects in JSON or YAML format.
-      --start-time string             Start time (relative: 'now-7d' or absolute: RFC3339) (default "now-30d")
+      --start-time string             Start time (relative: 'now-7d' or absolute: RFC3339) (default "now-24h")
+      --suggest string                Show distinct values for a field (facet query)
       --template string               Template string or path to template file to use when -o=go-template, -o=go-template-file. The template format is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+  -w, --watch                         Watch for new activities
 ```
 
 ### Options inherited from parent commands
@@ -76,7 +99,6 @@ datumctl activity history RESOURCE_TYPE NAME [flags]
       --disable-compression            If true, opt-out of response compression for all requests to the server
       --insecure-skip-tls-verify       If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
       --log-flush-frequency duration   Maximum number of seconds between log flushes (default 5s)
-  -n, --namespace string               If present, the namespace scope for this CLI request
       --organization string            organization name
       --platform-wide                  access the platform root instead of a project or organization control plane
       --project string                 project name

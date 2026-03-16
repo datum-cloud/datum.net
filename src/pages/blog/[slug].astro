@@ -30,6 +30,9 @@ import BlogStrapiSkeleton from '@components/blog/BlogStrapiSkeleton.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import config from '@data/siteConfig.json';
 
+// Strapi content — cache with stale-while-revalidate; webhook invalidates when content changes
+Astro.response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+
 const { slug } = Astro.params;
 
 // Detect pagination: numeric slugs (≥ 2) are page numbers, not article slugs
@@ -252,7 +255,7 @@ const blogListingMeta = {
         <Hero class="light" hideContent={true} />
 
         <section class="bg-glacier-mist-700 section--block pt-6 md:pt-10 xl:pt-16">
-          <div class="max-width blog-detail max-w-256.5">
+          <div class="max-width blog-detail max-w-256.5 pb-14 md:pb-20 lg:pb-28">
             <aside class="blog-aside">
               <div class="blog-aside-content sticky top-0">
                 <Button
@@ -384,13 +387,7 @@ const blogListingMeta = {
               {/* Featured Image */}
               {fm?.featuredImage && (
                 <div class="blog-article-image">
-                  <img
-                    src={fm.featuredImage}
-                    alt={article?.cover?.alternativeText || fm?.title}
-                    class="fade-in--pure"
-                    data-reveal="fade-in--pure--visible"
-                    data-reveal-delay="100"
-                  />
+                  <img src={fm.featuredImage} alt={article?.cover?.alternativeText || fm?.title} />
                 </div>
               )}
 

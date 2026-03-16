@@ -12,12 +12,7 @@ const selectedCategory = getCategory(selectedId);
 ---
 
 <aside class:list={['handbook-sidebar']}>
-  <nav
-    class="fade-in--pure"
-    data-reveal="fade-in--pure--visible"
-    data-reveal-immediate="true"
-    data-reveal-delay="100"
-  >
+  <nav>
     <div data-state="open" data-orientation="vertical" class="menu-container" id="menu">
       {
         Object.values(items).map(

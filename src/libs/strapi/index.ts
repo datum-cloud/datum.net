@@ -4,8 +4,10 @@
  */
 
 const STRAPI_URL =
-  import.meta.env.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || '';
+  import.meta.env?.STRAPI_URL ||
+  process.env.STRAPI_URL ||
+  'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
 
 interface GraphQLResponse<T> {
   data: T;
@@ -75,13 +77,14 @@ export type {
   StrapiArticleResponse,
   StrapiAuthorsResponse,
   NormalizedStrapiArticle,
+  StrapiRoadmap,
+  StrapiRoadmapsResponse,
 } from '../../types/strapi';
 export { getStrapiMediaUrl, normalizeArticle, resolveMarkdownStrapiUrls } from '../../types/strapi';
 
 // Re-export authors module
 export {
   AUTHORS_QUERY,
-  AUTHOR_BY_DOCUMENT_ID_QUERY,
   AUTHOR_BY_SLUG_QUERY,
   fetchStrapiAuthors,
   fetchStrapiAuthorByDocumentId,
@@ -99,3 +102,12 @@ export {
   fetchStrapiArticles,
   fetchStrapiArticleBySlug,
 } from './articles';
+
+// Re-export roadmaps module
+export {
+  ROADMAPS_QUERY,
+  fetchStrapiRoadmaps,
+  groupRoadmapsByDate,
+  getMonthAbbreviation,
+  type GroupedRoadmaps,
+} from './roadmaps';

@@ -7,13 +7,18 @@ import { Cache } from '@libs/cache';
 import type { StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const STRAPI_URL =
-  import.meta.env.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN || '';
-const CACHE_ENABLED =
-  import.meta.env.STRAPI_CACHE_ENABLED === 'true' || import.meta.env.STRAPI_CACHE_ENABLED === '1';
+  import.meta.env?.STRAPI_URL ||
+  process.env.STRAPI_URL ||
+  'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
+const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
+const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
-const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
-const envTtlSec = parseInt(import.meta.env.STRAPI_CACHE_TTL ?? '300', 10);
+const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const envTtlSec = parseInt(
+  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
+  10
+);
 const CACHE_TTL =
   Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
 
@@ -72,7 +77,6 @@ async function graphqlQuery<T>(
 const cache = new Cache('.cache');
 const CACHE_KEY = 'strapi-authors';
 const TEAM_MEMBERS_CACHE_KEY = 'strapi-team-members';
-const AUTHOR_CACHE_PREFIX = 'strapi-author-';
 const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
 
 /**
@@ -86,35 +90,6 @@ const TEAM_BG_COLORS = ['#5F735E', '#BF9595', '#D1CDC0'] as const;
 export const AUTHORS_QUERY = `
   query GetAuthors {
     authors(pagination: { limit: 100 }) {
-      documentId
-      slug
-      name
-      title
-      bio
-      isTeam
-      team
-      tick
-      surprising
-      weekends
-      avatar {
-        url
-        alternativeText
-      }
-      social {
-        twitter
-        linkedin
-        github
-      }
-    }
-  }
-`;
-
-/**
- * GraphQL query to fetch a single author by documentId
- */
-export const AUTHOR_BY_DOCUMENT_ID_QUERY = `
-  query GetAuthorByDocumentId($documentId: String!) {
-    authors(filters: { documentId: { eq: $documentId } }) {
       documentId
       slug
       name
@@ -301,42 +276,15 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
 
 /**
  * Fetch single author by documentId.
- * Caches each author separately (per-author cache).
- * @param documentId - Author documentId (used as slug in URL)
+ * Uses strapi-authors list (already includes documentId); no separate cache needed.
+ * @param documentId - Author documentId (used as slug in URL for backwards compat)
  * @returns The author or null if not found
  */
 export async function fetchStrapiAuthorByDocumentId(
   documentId: string
 ): Promise<StrapiAuthorFull | null> {
-  const cacheKey = `${AUTHOR_CACHE_PREFIX}${documentId}`;
-
-  if (CACHE_ENABLED && cache.has(cacheKey)) {
-    const cached = cache.get<StrapiAuthorFull>(cacheKey);
-    if (cached && isValidStrapiAuthor(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn(
-        `Invalid cached Strapi author data detected for documentId "${documentId}", fetching fresh data from API`
-      );
-    }
-  }
-
-  const response = await graphqlQuery<StrapiAuthorsResponse>(AUTHOR_BY_DOCUMENT_ID_QUERY, {
-    documentId,
-  });
-
-  if (!response?.authors || response.authors.length === 0) {
-    return null;
-  }
-
-  const author = response.authors[0];
-
-  if (CACHE_ENABLED) {
-    cache.set(cacheKey, author, CACHE_TTL);
-  }
-
-  return author;
+  const authors = await fetchStrapiAuthors();
+  return authors.find((a) => a.documentId === documentId) ?? null;
 }
 
 /**

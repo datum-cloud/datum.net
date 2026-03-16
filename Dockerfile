@@ -7,11 +7,15 @@ COPY package*.json ./
 
 FROM base AS build
 ENV NODE_ENV=production
+ENV STRAPI_CACHE_ENABLED=true
 COPY ./.kube/config.yaml ./.kube/config.yaml
 RUN --mount=type=cache,target=/root/.npm npm install --ignore-scripts
 COPY . .
 RUN chmod -R 755 src/pages
-RUN npm run build
+# Warmup: .cache in layer, so production gets it at runtime
+RUN npm run build:cache
+# Build: cache mount speeds up rebuilds; .cache from layer above persists after unmount
+RUN --mount=type=cache,target=/app/.cache npm run build
 
 FROM base AS development
 ENV NODE_ENV=development
@@ -29,6 +33,7 @@ COPY --from=build /app/server.mjs ./server.mjs
 COPY --from=build /app/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --ignore-scripts
 COPY --from=build /app/src/pages ./src/pages
+COPY --from=build /app/.cache ./.cache
 RUN chmod -R 755 src/pages
 
 ENV HOST=0.0.0.0

@@ -239,10 +239,6 @@
 
     .expressive-code {
       @apply max-w-full lg:max-w-150 xl:max-w-190;
-
-      pre > code {
-        @apply text-(length:--text-sm-font-size);
-      }
     }
 
     :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *))::before,

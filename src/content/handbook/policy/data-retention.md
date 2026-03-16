@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Data Retention Policy - Compliance & Schedules"
+  title: "Data Retention Policy - Compliance & Schedules - Datum Handbook"
   description: "How we manage data longevity. Guidelines on the storage, archiving, and secure destruction of data throughout its lifecycle on the Datum platform."
 ---
 

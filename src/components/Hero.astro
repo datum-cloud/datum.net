@@ -21,14 +21,10 @@ const {
 
 <header class:list={['hero--main', className]}>
   <Announcement />
-  <Nav />
+  <Nav showLoginButton={true} showGithubButton={false} />
   {
     !hideContent && (
-      <div
-        class="hero--main-content fade-in--small"
-        data-reveal="fade-in--small--visible"
-        data-reveal-immediate="true"
-      >
+      <div class="hero--main-content">
         {/* Hero Main Content */}
         {(title || description) && (
           <div class="hero--main-content-inner" role="banner">

@@ -108,7 +108,17 @@ function invalidateAuthorCache(): string[] {
   // Invalidate team members cache (same underlying authors database)
   deletedFiles.push(...invalidateCache('strapi-team-members'));
 
+  // Invalidate per-author slug cache (strapi-author-slug-*)
+  deletedFiles.push(...invalidateCache('strapi-author-slug-'));
+
   return deletedFiles;
+}
+
+/**
+ * Handle roadmap cache invalidation
+ */
+function invalidateRoadmapCache(): string[] {
+  return invalidateCache('strapi-roadmaps');
 }
 
 /**
@@ -187,6 +197,12 @@ export const POST: APIRoute = async ({ request }) => {
       deletedFiles = invalidateAuthorCache();
       console.log(
         `[Webhook] Invalidated author cache (${deletedFiles.length} files):`,
+        deletedFiles
+      );
+    } else if (model === 'roadmap') {
+      deletedFiles = invalidateRoadmapCache();
+      console.log(
+        `[Webhook] Invalidated roadmap cache (${deletedFiles.length} files):`,
         deletedFiles
       );
     } else {

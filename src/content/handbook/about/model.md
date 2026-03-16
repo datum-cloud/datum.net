@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "How We Make Money - Datum Business Model"
+  title: "Our Business Model - Datum Handbook"
   description: "Our approach to building a sustainable open source company. Learn about Datum's commercial strategy, AGPLv3 licensing, and how we prioritize value for builders."
 ---
 

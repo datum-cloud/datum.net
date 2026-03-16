@@ -1,19 +1,21 @@
 ---
-title: Runtime
+title: AI Edge
 slug: internet-edge
 keyFeatures:
-  - DNS - An authoritative DNS service backed by PowerDNS and HickoryDNS.
-  - Adaptive Proxy - A global proxy to secure, protect and accelerate applications and network services. Powered by Envoy.
-  - AI Gateway - A globally distributed gateway for interacting with GenAI services. Powered by Envoy AI Gateway.
-benefits:
-  Gain complete visibility into network performance with 360-degree observability. Reduce mean time to resolution (MTTR) by 50% with intelligent alerting. Optimize costs with detailed usage analytics and rightsizing recommendations.
+  - 100% free and simple to deploy
+  - Multiple and custom hostnames
+  - Out of the box health checks
+  - Full metrics export to Grafana Cloud
+  - Optional authentication
+  - Powered by the open source Envoy proxy and Coraza WAF
+  - Backed by 17+ global points of presence
 readTheDocs:
-  - label: DNS
-    url: "https://www.datum.net/docs/runtime/dns/"
-  - label: Proxy
-    url: "https://www.datum.net/docs/runtime/proxy/"
-  - label: AI Gateway
-    url: "https://www.datum.net/docs/runtime/ai-gateway/"
+  - label: Signup for Free
+    url: "https://auth.datum.net/ui/v2/login/register"
 ---
 
-Core network services delivered on Datum’s global edge to help you safely interact with the internet.
+Why shouldn't every agent or app have its own global edge?
+
+---
+
+To help answer this question we've abstracted two underlying capabilities (our HTTPProxy and WAF) into a single feature that protects and safely routes global internet traffic to backend services.

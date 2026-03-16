@@ -30,22 +30,31 @@ const navData = navigation as NavData;
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="text-midnight-fjord relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
-        <div
-          class="fade-in--pure max-width flex flex-col gap-5.5 text-center md:gap-10"
-          data-reveal="fade-in--pure--visible"
-        >
-          <h3 class="datum-text-7xl">Interested in shaping the internet for AI?</h3>
-          <div class="flex items-center justify-center gap-7">
+      <div class="text-midnight-fjord bg-aurora-moss relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
+        <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
+          <h3 class="datum-text-11xl [&_span]:text-pine-forge">
+            <span>Less talk,</span> more building
+          </h3>
+          <p class="datum-text-xl max-w-186 text-pretty">
+            Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
+            exposing localhost to the internet, with more on the way.
+          </p>
+          <div class="flex items-center justify-center gap-4">
             <Button
-              class="btn btn--alpha"
-              text="Join the waitlist"
+              class="btn btn--midnight-fjord"
+              text="Get started"
               icon={{ name: 'arrow-right', size: 'md' }}
               iconPosition="right"
               iconClass="stroke-1.5"
               target="_blank"
               href="https://auth.datum.net/ui/v2/login/register"
-              data-fathom-event="Pre-footer: Join the waitlist"
+              data-fathom-event="Pre-footer: Get started"
+            />
+            <Button
+              class="btn btn--alpha"
+              text="Download local apps"
+              href="/download/"
+              data-fathom-event="Pre-footer: Download local apps"
             />
           </div>
         </div>
@@ -89,11 +98,7 @@ const navData = navigation as NavData;
   <!-- Main Footer Content -->
   <div class="bg-midnight-fjord relative z-20">
     <div class="footer-main">
-      <div
-        class="footer-grid fade-in--pure"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-delay="100"
-      >
+      <div class="footer-grid">
         <!-- Navigation Sections -->
 
         <div class="footer-nav-container" role="navigation">
@@ -158,12 +163,12 @@ const navData = navigation as NavData;
                 ))
               }
             </div>
-            <p
+            <!-- <p
               class="footer-copyright mb-2 w-full text-center text-nowrap md:text-right [&_a]:inline-block"
             >
               <a href="/legal/terms/" class="footer-nav-link" tabindex="0">Terms of Service</a>,
               <a href="/legal/privacy/" class="footer-nav-link" tabindex="0">Privacy Policy</a>
-            </p>
+            </p> -->
             <p class="footer-copyright">
               &copy; {new Date().getFullYear()} Datum Technology, Inc.
             </p>

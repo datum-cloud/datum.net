@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: ""
+  title: "Infrastructure - Datum Handbook"
   description: ""
 ---
 

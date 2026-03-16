@@ -23,6 +23,10 @@
       @apply datum-prose-lg;
       @apply text-glacier-mist-700;
       @apply prose-headings:text-aurora-moss;
+
+      hr {
+        @apply my-6 border-white/20;
+      }
     }
   }
 

@@ -93,7 +93,7 @@ function isValidCachedData(data: unknown): data is { upcoming: LumaEvent[]; past
  * @returns The API key as a string if found, otherwise null.
  */
 function getApiKey(): string | null {
-  return import.meta.env.LUMA_API_KEY || process.env.LUMA_API_KEY || null;
+  return import.meta.env?.LUMA_API_KEY || process.env.LUMA_API_KEY || null;
 }
 
 /**
@@ -139,7 +139,9 @@ export async function fetchLumaEvents(): Promise<{
 
     const data: LumaEventsResponse = await response.json();
     const now = new Date();
-    const allEvents = (data.entries || []).map((entry) => entry.event);
+    const allEvents = (data.entries || [])
+      .map((entry) => entry.event)
+      .filter((event) => event.visibility?.toUpperCase() !== 'PRIVATE');
 
     // Split into upcoming and past events
     const upcoming = allEvents

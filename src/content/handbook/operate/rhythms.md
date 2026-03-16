@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Dec 26, 2025
 authors: jacob
 meta:
-  title: "Datum Company Rhythms & Rituals"
+  title: "Datum Company Rhythms & Rituals - Datum Handbook"
   description: "The heartbeat of Datum. Discover the communication cycles and rituals that keep our distributed team aligned, from 1:1s to company-wide all-hands."
 ---
 

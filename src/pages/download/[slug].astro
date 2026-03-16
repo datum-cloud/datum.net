@@ -1,0 +1,207 @@
+---
+// src/pages/downloads/[slug].astro
+export const prerender = false;
+
+import '@v1/styles/page-download.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Download from '@components/download/Download.astro';
+import Icon from '@components/Icon.astro';
+import { getEntry, render } from 'astro:content';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'download');
+
+const slug = Astro.params.slug;
+if (!slug) {
+  return Astro.redirect('/downloads/');
+}
+
+const entry = await getEntry('download', slug);
+if (!entry || entry.data.draft) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await render(entry);
+
+const pageFm = page.data;
+
+// SEO
+const fm = entry.data;
+const meta = { ...(fm.meta || {}) };
+const title =
+  fm.meta?.title ??
+  (fm.title
+    ? `Developer tools and desktop apps - Datum Cloud | ${fm.title}`
+    : 'Developer tools and desktop apps - Datum Cloud');
+meta.title = title;
+const description = fm.description || 'Download Datum';
+---
+
+<Layout title={title} description={description} bodyClass="page-download" meta={meta}>
+  <script>
+    (function () {
+      let contentFrame = document.querySelector<HTMLElement>('.download-content-frame');
+      const downloadNav = document.querySelector<HTMLElement>('.download-nav');
+      const mobileNav = document.querySelector<HTMLElement>('.download-nav-mobile');
+
+      if (!contentFrame || (!downloadNav && !mobileNav)) return;
+
+      const frameCache: Map<string, HTMLElement> = new Map();
+
+      function toFrameUrl(pageUrl: string): string {
+        const pathname = new URL(pageUrl, window.location.origin).pathname;
+        const slug = pathname.replace(/\/$/, '').split('/').pop();
+        return `/download-frame/${slug}/`;
+      }
+
+      async function fetchFrame(pageUrl: string): Promise<HTMLElement | null> {
+        const frameUrl = toFrameUrl(pageUrl);
+        try {
+          const response = await fetch(frameUrl);
+          if (!response.ok) return null;
+          const html = await response.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return doc.querySelector<HTMLElement>('.download-content-frame');
+        } catch {
+          return null;
+        }
+      }
+
+      async function navigateTo(url: string, pushState = true): Promise<void> {
+        const cached = frameCache.get(url);
+
+        if (cached) {
+          const newFrame = cached.cloneNode(true) as HTMLElement;
+          contentFrame!.replaceWith(newFrame);
+          contentFrame = newFrame;
+          const newTitle = newFrame.dataset.pageTitle;
+          if (newTitle) document.title = newTitle;
+          updateActiveLinks(url);
+          if (pushState) history.pushState({ url }, newTitle ?? '', url);
+          return;
+        }
+
+        try {
+          const newFrame = await fetchFrame(url);
+
+          if (!newFrame) {
+            window.location.href = url;
+            return;
+          }
+
+          frameCache.set(url, newFrame.cloneNode(true) as HTMLElement);
+          contentFrame!.replaceWith(newFrame);
+          contentFrame = newFrame;
+
+          const newTitle = newFrame.dataset.pageTitle;
+          if (newTitle) document.title = newTitle;
+
+          updateActiveLinks(url);
+
+          if (pushState) history.pushState({ url }, newTitle ?? '', url);
+        } catch {
+          window.location.href = url;
+        }
+      }
+
+      function updateActiveLinks(url: string): void {
+        const pathname = new URL(url, window.location.origin).pathname;
+
+        for (const link of document.querySelectorAll<HTMLAnchorElement>('.download-nav-link')) {
+          if (link.getAttribute('href') !== '#') {
+            link.classList.toggle('download-nav-link--active', link.pathname === pathname);
+          }
+        }
+
+        let activeLabel = '';
+        for (const link of document.querySelectorAll<HTMLAnchorElement>(
+          '.download-nav-mobile-link'
+        )) {
+          if (link.getAttribute('href') === '#') continue;
+          const isActive = link.pathname === pathname;
+          link.classList.toggle('download-nav-mobile-link--active', isActive);
+          if (isActive) {
+            activeLabel = link.querySelector('span')?.textContent?.trim() ?? '';
+          }
+        }
+
+        const selectedEl = document.querySelector('.download-nav-mobile-selected');
+        if (selectedEl && activeLabel) selectedEl.textContent = activeLabel;
+      }
+
+      function prefetchAll(): void {
+        const links = document.querySelectorAll<HTMLAnchorElement>('.download-nav-link');
+        const currentPath = window.location.pathname;
+        for (const link of links) {
+          const href = link.getAttribute('href');
+          if (!href || href === '#') continue;
+          const pageUrl = new URL(href, window.location.origin).href;
+          const pathname = new URL(pageUrl, window.location.origin).pathname;
+          if (pathname === currentPath || frameCache.has(pageUrl)) continue;
+          fetchFrame(pageUrl).then((frame) => {
+            if (frame) frameCache.set(pageUrl, frame);
+          });
+        }
+      }
+
+      downloadNav?.addEventListener('click', (e) => {
+        const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-link');
+        if (!link || !(link instanceof HTMLAnchorElement)) return;
+        e.preventDefault();
+        navigateTo(link.href);
+      });
+
+      mobileNav?.addEventListener('click', (e) => {
+        const link = (e.target as Element).closest<HTMLAnchorElement>('.download-nav-mobile-link');
+        if (!link || !(link instanceof HTMLAnchorElement)) return;
+        e.preventDefault();
+        navigateTo(link.href);
+        window.dispatchEvent(new Event('close-download-dropdown'));
+      });
+
+      window.addEventListener('popstate', (e: PopStateEvent) => {
+        const url = (e.state as { url?: string })?.url ?? window.location.href;
+        navigateTo(url, false);
+      });
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(prefetchAll);
+      } else {
+        setTimeout(prefetchAll, 200);
+      }
+    })();
+  </script>
+  <section class="datum-container">
+    <Hero
+      class="light pb-0"
+      title={pageFm.title}
+      description={pageFm.description}
+      bodyClass={`page-brand page-brand--${page.id}`}
+      meta={meta}
+    />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 z-20 pt-0">
+      <div class="max-width">
+        <Download activeId={entry.data.slug}>
+          <div class="download-content-frame">
+            <div class="download-content-header">
+              <div class="download-content-title">
+                <div>
+                  {fm.icon && <Icon name={fm.icon} size="xl" class="download-content-title-icon" />}
+                </div>
+                <h1 class="download-content-title-text">{fm.title}</h1>
+              </div>
+            </div>
+
+            <div class="download-section">
+              <Content />
+            </div>
+          </div>
+        </Download>
+      </div>
+    </div>
+    <Footer class="z-10" />
+  </section>
+</Layout>

@@ -2,45 +2,67 @@
   "main": [
     {
       "text": "Product",
-      "href": "/features/"
+      "href": "/features/",
+      "children": [
+        {
+          "isCardLayout": true,
+          "items": [
+            {
+              "text": "Core features",
+              "image": "/images/nav/core-features.png",
+              "desc": "Critical network services",
+              "href": "/features/"
+            },
+            {
+              "text": "Pricing",
+              "image": "/images/nav/pricing.png",
+              "desc": "Pssssssst... It’s free",
+              "href": "/pricing/"
+            }
+          ]
+        }
+      ]
     },
     {
-      "text": "Pricing",
-      "href": "/pricing/"
-    },
-    {
-      "text": "Docs",
-      "href": "/docs/"
-    },
-    {
-      "text": "Community",
+      "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
       "children": [
         {
+          "title": "Get started:",
           "items": [
-            { "icon": "calendar", "text": "Events", "href": "/events/" },
-            { "icon": "calendar-range", "text": "Roadmap", "href": "/resources/roadmap/" },
-            { "icon": "list-restart", "text": "Changelog", "href": "/resources/changelog/" },
-            { "icon": "code", "text": "Open Source", "href": "/resources/open-source/" }
+            { "text": "Blog", "href": "/blog/" },
+            {
+              "text": "Videos",
+              "href": "https://www.youtube.com/@Datum-Cloud",
+              "isExternal": true
+            },
+            {
+              "text": "GitHub Discussions",
+              "href": "https://github.com/orgs/datum-cloud/discussions",
+              "isExternal": true
+            }
+          ]
+        },
+        {
+          "title": "Get involved:",
+          "items": [
+            {
+              "text": "Discord",
+              "href": "https://discord.com/invite/AeA9XZu4Py",
+              "isExternal": true
+            },
+            { "text": "Changelog", "href": "/changelog/" },
+            { "text": "Roadmap", "href": "/roadmap/" },
+            { "text": "Events", "href": "/events/" },
+            { "text": "Careers", "href": "/careers/" }
           ]
         }
       ]
     },
     {
-      "text": "Company",
-      "href": "/about/",
-      "children": [
-        {
-          "items": [
-            { "icon": "default", "text": "About", "href": "/about/" },
-            { "icon": "book-text", "text": "Handbook", "href": "/handbook/" },
-            { "icon": "book-image", "text": "Blog", "href": "/blog/" },
-            { "icon": "backpack", "text": "Careers", "href": "/careers/" },
-            { "icon": "messages-square", "text": "Get in touch ", "href": "/contact/" }
-          ]
-        }
-      ]
+      "text": "Download",
+      "href": "/download/"
     }
   ],
   "right": [
@@ -52,22 +74,29 @@
   ],
   "footer": [
     {
-      "title": "General",
+      "title": "Product",
       "items": [
-        { "text": "Home", "href": "/" },
-        { "text": "Product", "href": "/features/" },
-        { "text": "Pricing", "href": "/pricing/" },
-        { "text": "Docs", "href": "/docs/" },
+        {
+          "text": "Core features",
+          "href": "/features/"
+        },
+        {
+          "text": "Pricing",
+          "href": "/pricing/"
+        },
         { "text": "Status", "href": "https://www.datumstatus.net/", "isExternal": true }
       ]
     },
     {
-      "title": "Community",
+      "title": "Resources",
       "items": [
-        { "text": "Events", "href": "/events/" },
-        { "text": "Roadmap", "href": "/resources/roadmap/" },
-        { "text": "Changelog", "href": "/resources/changelog/" },
-        { "text": "Open Source", "href": "/resources/open-source/" }
+        { "text": "Blog", "href": "/blog/" },
+        { "text": "Changelog", "href": "/changelog/" },
+        { "text": "Roadmap", "href": "/roadmap/" },
+        { "text": "Open Source", "href": "/open-source/" },
+        { "text": "Discord", "href": "https://discord.com/invite/AeA9XZu4Py" },
+        { "text": "GitHub", "href": "https://github.com/orgs/datum-cloud/discussions" },
+        { "text": "Youtube", "href": "https://www.youtube.com/@Datum-Cloud" }
       ]
     },
     {
@@ -75,21 +104,17 @@
       "items": [
         { "text": "About", "href": "/about/" },
         { "text": "Handbook", "href": "/handbook/" },
-        { "text": "Blog", "href": "/blog/" },
         { "text": "Careers", "href": "/careers/", "label": "New" },
-        { "text": "Get In Touch", "href": "/contact/" },
-        { "text": "Design Assets", "href": "/brand/" }
+        { "text": "Events", "href": "/events/" },
+        { "text": "Brand Assets", "href": "/brand/" }
       ]
     },
     {
-      "title": "Access",
+      "title": "Legal",
       "items": [
-        { "text": "Github", "href": "https://github.com/datum-cloud", "isExternal": true },
-        {
-          "text": "Request Access",
-          "href": "https://auth.datum.net/ui/v2/login/register",
-          "isExternal": true
-        }
+        { "text": "Terms", "href": "/legal/terms/" },
+        { "text": "Privacy", "href": "/legal/privacy/" },
+        { "text": "AUP", "href": "/legal/aup/" }
       ]
     }
   ],
@@ -125,10 +150,10 @@
     {
       "title": "Resources",
       "items": [
-        { "text": "Changelog", "href": "/resources/changelog/" },
-        { "text": "Roadmap", "href": "/resources/roadmap/" },
+        { "text": "Changelog", "href": "/changelog/" },
+        { "text": "Roadmap", "href": "/roadmap/" },
         { "text": "Get In Touch", "href": "/contact/" },
-        { "text": "Open Source", "href": "/resources/open-source/" }
+        { "text": "Open Source", "href": "/open-source/" }
       ]
     },
     {
@@ -146,6 +171,7 @@
       "items": [
         { "text": "Terms of Service", "href": "/legal/terms/" },
         { "text": "Privacy Policy", "href": "/legal/privacy/" },
+        { "text": "AUP", "href": "/legal/aup/" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

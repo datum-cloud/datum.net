@@ -1,10 +1,10 @@
 ---
-title: Product Improvements and Updates
+title: Changelog
 description: Stay up to date with new feature releases & fixes. Want to know what we're building next? [Check out our roadmap](/resources/roadmap/)
 meta:
   title: "Datum Changelog: Feature Releases and Product Updates"
   description: "Stay up-to-date with Datum's latest feature releases, bug fixes, and improvements for our AI-native solutions, Edge Networking platform, and open source cloud."
   og:
-    title: Where the magic happens
+    title: What we shippped
     description: Stay up to date and in the know about product improvements and launches.
 ---

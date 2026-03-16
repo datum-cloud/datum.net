@@ -157,14 +157,14 @@
     }
 
     .color-swatch {
-      @apply flex items-center space-x-4;
+      @apply flex items-start space-x-4;
 
       .color-swatch--preview {
-        @apply h-12 w-12 rounded-sm;
+        @apply h-14 w-14 rounded-sm;
       }
 
       .color-swatch--info {
-        @apply flex flex-col space-y-1;
+        @apply flex flex-col space-y-0;
 
         .color-swatch--shade {
           @apply text-sm font-medium text-gray-900;
@@ -172,6 +172,10 @@
 
         .color-swatch--hex {
           @apply font-mono text-sm text-gray-600;
+        }
+
+        .color-swatch--pantone {
+          @apply text-sm text-gray-600;
         }
       }
     }

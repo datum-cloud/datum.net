@@ -212,6 +212,8 @@ const staticServer = sirv(CLIENT_DIR, {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     } else if (pathname.match(/\.(html)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (pathname.startsWith('/download/brand-assets/')) {
+      res.setHeader('Cache-Control', 'no-store, must-revalidate');
     }
     // Force download for Office documents and archives
     if (DOWNLOAD_EXTENSIONS.test(pathname)) {
@@ -374,7 +376,9 @@ function handleSSR(req, res) {
   res.writeHead = (statusCode, headers) => {
     const h = headers && typeof headers === 'object' ? { ...headers } : {};
 
-    const ct = String(h['content-type'] ?? h['Content-Type'] ?? res.getHeader('content-type') ?? '');
+    const ct = String(
+      h['content-type'] ?? h['Content-Type'] ?? res.getHeader('content-type') ?? ''
+    );
     compressionActive = !!compressor && SSR_COMPRESSIBLE.test(ct);
 
     if (compressionActive) {

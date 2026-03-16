@@ -4,6 +4,9 @@ global:
     configurationCM: 'postgresql-config'
     auth:
       database: 'datum_net'
+      username: 'postgres'
+      password: 'datum'
+      postgresPassword: 'datum' # Admin password
     resources:
       requests:
         cpu: '1'

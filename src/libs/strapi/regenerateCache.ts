@@ -38,7 +38,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   const errors: string[] = [];
 
   // 1. strapi-articles
-  if (!cache.has(ARTICLES_CACHE_KEY)) {
+  if (!(await cache.has(ARTICLES_CACHE_KEY))) {
     try {
       await fetchStrapiArticles();
       regenerated.push(ARTICLES_CACHE_KEY);
@@ -50,7 +50,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   }
 
   // 2. strapi-authors
-  if (!cache.has(AUTHORS_CACHE_KEY)) {
+  if (!(await cache.has(AUTHORS_CACHE_KEY))) {
     try {
       await fetchStrapiAuthors();
       regenerated.push(AUTHORS_CACHE_KEY);
@@ -62,7 +62,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   }
 
   // 3. strapi-roadmaps
-  if (!cache.has(ROADMAPS_CACHE_KEY)) {
+  if (!(await cache.has(ROADMAPS_CACHE_KEY))) {
     try {
       await fetchStrapiRoadmaps();
       regenerated.push(ROADMAPS_CACHE_KEY);
@@ -74,7 +74,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   }
 
   // 4. strapi-team-members (depends on authors)
-  if (!cache.has(TEAM_MEMBERS_CACHE_KEY)) {
+  if (!(await cache.has(TEAM_MEMBERS_CACHE_KEY))) {
     try {
       await getStrapiTeamMembers();
       regenerated.push(TEAM_MEMBERS_CACHE_KEY);
@@ -93,7 +93,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
 
   for (const article of articles) {
     const key = `${ARTICLE_CACHE_PREFIX}${article.slug}`;
-    if (!cache.has(key)) {
+    if (!(await cache.has(key))) {
       try {
         await fetchStrapiArticleBySlug(article.slug);
         regenerated.push(key);
@@ -114,7 +114,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
     }
 
     const slugKey = `${AUTHOR_SLUG_CACHE_PREFIX}${author.slug}`;
-    if (!cache.has(slugKey)) {
+    if (!(await cache.has(slugKey))) {
       try {
         await fetchStrapiAuthorBySlug(author.slug);
         regenerated.push(slugKey);

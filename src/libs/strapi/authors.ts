@@ -248,8 +248,8 @@ function sortStrapiTeamMembers(a: StrapiAuthorFull, b: StrapiAuthorFull): number
  * @returns Array of all Strapi authors
  */
 export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
-  if (CACHE_ENABLED && cache.has(CACHE_KEY)) {
-    const cached = cache.get<StrapiAuthorFull[]>(CACHE_KEY);
+  if (CACHE_ENABLED && (await cache.has(CACHE_KEY))) {
+    const cached = await cache.get<StrapiAuthorFull[]>(CACHE_KEY);
     if (cached && isValidCachedAuthors(cached)) {
       return cached;
     }
@@ -268,7 +268,7 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
   const authors = response.authors;
 
   if (CACHE_ENABLED) {
-    cache.set(CACHE_KEY, authors, CACHE_TTL);
+    await cache.set(CACHE_KEY, authors, CACHE_TTL);
   }
 
   return authors;
@@ -296,8 +296,8 @@ export async function fetchStrapiAuthorByDocumentId(
 export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAuthorFull | null> {
   const cacheKey = `${AUTHOR_SLUG_CACHE_PREFIX}${slug}`;
 
-  if (CACHE_ENABLED && cache.has(cacheKey)) {
-    const cached = cache.get<StrapiAuthorFull>(cacheKey);
+  if (CACHE_ENABLED && (await cache.has(cacheKey))) {
+    const cached = await cache.get<StrapiAuthorFull>(cacheKey);
     if (cached && isValidStrapiAuthor(cached)) {
       return cached;
     }
@@ -317,7 +317,7 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
   const author = response.authors[0];
 
   if (CACHE_ENABLED) {
-    cache.set(cacheKey, author, CACHE_TTL);
+    await cache.set(cacheKey, author, CACHE_TTL);
   }
 
   return author;
@@ -331,8 +331,8 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
  */
 export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
   // Check dedicated team members cache first
-  if (CACHE_ENABLED && cache.has(TEAM_MEMBERS_CACHE_KEY)) {
-    const cached = cache.get<StrapiAuthorFull[]>(TEAM_MEMBERS_CACHE_KEY);
+  if (CACHE_ENABLED && (await cache.has(TEAM_MEMBERS_CACHE_KEY))) {
+    const cached = await cache.get<StrapiAuthorFull[]>(TEAM_MEMBERS_CACHE_KEY);
     if (cached && isValidCachedAuthors(cached)) {
       return cached;
     }
@@ -348,7 +348,7 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
 
   // Cache the sorted team members
   if (CACHE_ENABLED) {
-    cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, CACHE_TTL);
+    await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, CACHE_TTL);
   }
 
   return teamMembers;

@@ -8,7 +8,7 @@
 }
 
 @utility max-width {
-  @apply mx-auto w-full max-w-7xl px-7;
+  @apply max-w-8xl mx-auto w-full px-7;
 }
 
 @utility max-width-internal {

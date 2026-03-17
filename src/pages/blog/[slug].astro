@@ -3,6 +3,7 @@
 export const prerender = false;
 
 import '@v1/styles/page-blog.css';
+import { Image } from 'astro:assets';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -77,9 +78,15 @@ const fm = article
   : null;
 
 const formattedDate = fm?.date ? formatShortDate(fm.date) : '';
-const readingTime = estimateReadingTime(
-  article?.blocks?.map((b: StrapiBlock) => b.body).join('\n') || ''
-);
+
+// Use pre-calculated readingTimeMinutes from article, or fall back to calculating from blocks
+const readingTimeMinutes =
+  article?.readingTimeMinutes ??
+  estimateReadingTime(article?.blocks?.map((b: StrapiBlock) => b.body).join('\n') || '').minutes;
+const readingTime = {
+  minutes: readingTimeMinutes,
+  text: `${readingTimeMinutes} min read`,
+};
 
 // Get author data
 const authorName = article?.author?.name || '';
@@ -273,9 +280,11 @@ const blogListingMeta = {
                     <div class="blog-article-author-avatar">
                       {authorAvatar ? (
                         <a href={authorHref ?? '#'} class="blog-article-author-image">
-                          <img
+                          <Image
                             src={authorAvatar}
                             alt={authorName}
+                            width={64}
+                            height={64}
                             class="h-full w-full object-cover"
                             style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                           />
@@ -387,7 +396,17 @@ const blogListingMeta = {
               {/* Featured Image */}
               {fm?.featuredImage && (
                 <div class="blog-article-image">
-                  <img src={fm.featuredImage} alt={article?.cover?.alternativeText || fm?.title} />
+                  <Image
+                    src={fm.featuredImage}
+                    alt={article?.cover?.alternativeText || fm?.title}
+                    width={1200}
+                    height={630}
+                    widths={[400, 800, 1200]}
+                    sizes="(max-width: 768px) 400px, (max-width: 1200px) 800px, 1200px"
+                    format="webp"
+                    loading="eager"
+                    fetchpriority="high"
+                  />
                 </div>
               )}
 

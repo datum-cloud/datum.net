@@ -17,14 +17,10 @@ const { page = 1 } = Astro.props as Props;
 // Fetch articles from Strapi (cached list, without rich-text blocks)
 const rawArticles: StrapiArticle[] = await fetchStrapiArticles();
 
-// Normalize and sort articles
+// Normalize articles (already sorted by newest first in fetchStrapiArticles)
 let articles: NormalizedStrapiArticle[] = [];
 if (rawArticles.length > 0) {
   articles = rawArticles.map(normalizeArticle);
-  // Sort by date (newest first) - should already be sorted but ensure consistency
-  articles.sort((a, b) => {
-    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-  });
 }
 
 // Pagination
@@ -58,8 +54,8 @@ const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}/` : un
     <>
       {featuredPosts.length > 0 && (
         <div class="featured-posts-section">
-          {featuredPosts.map((post) => (
-            <FeaturedPostStrapi post={post} baseUrl={baseUrl} />
+          {featuredPosts.map((post, index) => (
+            <FeaturedPostStrapi post={post} baseUrl={baseUrl} priority={index === 0} />
           ))}
         </div>
       )}

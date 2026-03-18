@@ -1,0 +1,18 @@
+{
+  "_comment": "Rename to evt-….json OR public slug from luma.com/XXXX (e.g. or9xabm6.json). Optional lumaApiId inside file for alternate filename. All content fields optional.",
+  "title": "NYC Alt Cloud Meetup (May 2026)",
+  "guests": [
+    {
+      "name": "Tony Perez",
+      "title": "Infrastructure Engineer at CoreWeave",
+      "avatarUrl": "/images/speakers/tony-perez.jpg"
+    },
+    {
+      "name": "Rob May",
+      "title": "CEO & Co-Founder of Neurometric",
+      "avatarUrl": "/images/speakers/rob-may.jpg"
+    }
+  ],
+  "youtubeUrl": "https://www.youtube.com/watch?v=IiWFPgR2ygY",
+  "description": "**May 13th** - Theme: Go Big or Go Small, We Got Ya!\n\n*   5:00 - Doors open, drinks mingling\n    *   6:00 - Tony from CoreWeave - Big Iron, Tiny Red Fish\n    *   6:30 - Rob from Neurometrics: Small but Mighty, Where SLM’s Shine\n*   7:00 - Drinks and Mingling"
+}

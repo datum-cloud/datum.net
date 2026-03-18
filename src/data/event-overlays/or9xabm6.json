@@ -1,0 +1,13 @@
+{
+  "_comment": "Rename to evt-….json OR public slug from luma.com/XXXX (e.g. or9xabm6.json). Optional lumaApiId inside file for alternate filename. All content fields optional.",
+  "title": "Boston Alt Cloud Meetup (April 2026)",
+  "guests": [
+    {
+      "name": "Matt Butcher",
+      "title": "former software engineer at NVIDIA",
+      "avatarUrl": "/images/speakers/nikhil-kanamarla.jpg"
+    }
+  ],
+  "youtubeUrl": "https://www.youtube.com/watch?v=IiWFPgR2ygY",
+  "description": "**April 14th** - Trends in developer land\n\n*   5:30 - Doors open, drinks mingling\n*   6:15 - Matt Butcher (Fermyon / Akamai)\n*   6:45 - TBD\n*   7:15 - Mingling"
+}

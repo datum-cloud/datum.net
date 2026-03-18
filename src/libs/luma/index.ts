@@ -31,6 +31,7 @@ export interface LumaEvent {
   visibility?: string;
   meeting_url?: string;
   zoom_meeting_url?: string;
+  tags?: string[];
 }
 
 export interface LumaEventEntry {
@@ -45,7 +46,14 @@ export interface LumaEventsResponse {
   next_cursor?: string;
 }
 
+export interface LumaHost {
+  api_id: string;
+  name: string;
+  avatar_url?: string;
+}
+
 const LUMA_API_BASE_URL = 'https://public-api.luma.com/v1/';
+const LUMA_CACHE_TTL = 86400000; // 24 hours in ms
 
 /**
  * Validates that an object is a valid LumaEvent
@@ -97,6 +105,117 @@ function getApiKey(): string | null {
 }
 
 /**
+ * Returns true if the event is a Community Huddle.
+ * Checks Luma tags first, falls back to event name.
+ */
+export function isEventCommunityHuddle(event: LumaEvent): boolean {
+  const tags = event.tags ?? [];
+  if (tags.some((t) => t.toLowerCase().replace(/\s+/g, '-').includes('community-huddle'))) {
+    return true;
+  }
+  return event.name.toLowerCase().includes('community huddle');
+}
+
+/**
+ * Title for UI (headings, links, image alt). Community Huddles are prefixed with the full English
+ * month of {@link LumaEvent.start_at} in the event's {@link LumaEvent.timezone}.
+ * @param event - Luma event
+ * @returns Display title string
+ */
+export function getEventDisplayName(event: LumaEvent): string {
+  if (!isEventCommunityHuddle(event)) {
+    return event.name;
+  }
+  const start = new Date(event.start_at);
+  if (Number.isNaN(start.getTime())) {
+    return event.name;
+  }
+  try {
+    const month = start.toLocaleString('en-US', {
+      month: 'long',
+      timeZone: event.timezone || 'UTC',
+    });
+    return `${month} ${event.name}`;
+  } catch {
+    return event.name;
+  }
+}
+
+/**
+ * Returns true if the event is an Alt Cloud Meetup.
+ */
+export function isEventAltCloudMeetup(event: LumaEvent): boolean {
+  const tags = event.tags ?? [];
+  if (tags.some((t) => t.toLowerCase().replace(/\s+/g, '-').includes('alt-cloud-meetup'))) {
+    return true;
+  }
+  return event.name.toLowerCase().includes('alt cloud meetup');
+}
+
+/**
+ * Returns true if Datum is merely attending this event (not hosting it).
+ * These show "We'll be there" / "Come find us" badge and are NOT linkable to internal pages.
+ */
+export function isEventExternal(event: LumaEvent): boolean {
+  const tags = event.tags ?? [];
+  return tags.some((t) => {
+    const normalized = t.toLowerCase().replace(/\s+/g, '-');
+    return normalized.includes('external') || normalized.includes('we-will-be-there');
+  });
+}
+
+/**
+ * Returns true if this is a Datum-hosted event (not merely attending).
+ */
+export function isEventDatumHosted(event: LumaEvent): boolean {
+  return !isEventExternal(event);
+}
+
+/**
+ * Returns true if the event is part of a recurring series.
+ * Community Huddles are treated as recurring (same detection as {@link isEventCommunityHuddle}).
+ */
+export function isEventRecurringSeries(event: LumaEvent): boolean {
+  if (isEventCommunityHuddle(event)) {
+    return true;
+  }
+  const tags = event.tags ?? [];
+  return tags.some((t) => t.toLowerCase().replace(/\s+/g, '-').includes('recurring-series'));
+}
+
+/**
+ * Returns a URL-safe slug for the event (its api_id).
+ */
+export function getEventSlug(event: LumaEvent): string {
+  return event.api_id;
+}
+
+/**
+ * Keeps events whose `start_at` falls in the UTC calendar month after `ref`'s month (e.g. in March,
+ * only April dates), sorted by start time ascending.
+ * @param events - Events to filter (typically already narrowed by type)
+ * @param ref - Reference instant; defaults to now
+ */
+export function filterEventsInNextUtcMonth(
+  events: LumaEvent[],
+  ref: Date = new Date()
+): LumaEvent[] {
+  const y = ref.getUTCFullYear();
+  const m = ref.getUTCMonth();
+  const targetM = (m + 1) % 12;
+  const targetY = m === 11 ? y + 1 : y;
+  const startMs = Date.UTC(targetY, targetM, 1, 0, 0, 0, 0);
+  const endMs = Date.UTC(targetY, targetM + 1, 0, 23, 59, 59, 999);
+
+  return events
+    .filter((e) => {
+      const t = new Date(e.start_at).getTime();
+      return t >= startMs && t <= endMs;
+    })
+    .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
+}
+
+/**
  * Fetch all events from Luma API
  * Uses the calendar/list-events endpoint as per Luma API documentation
  * @see https://docs.luma.com/reference/get_v1-calendar-list-events
@@ -140,7 +259,10 @@ export async function fetchLumaEvents(): Promise<{
     const data: LumaEventsResponse = await response.json();
     const now = new Date();
     const allEvents = (data.entries || [])
-      .map((entry) => entry.event)
+      .map((entry) => ({
+        ...entry.event,
+        tags: entry.tags ?? [],
+      }))
       .filter((event) => event.visibility?.toUpperCase() !== 'PRIVATE');
 
     // Split into upcoming and past events
@@ -151,17 +273,64 @@ export async function fetchLumaEvents(): Promise<{
     const past = allEvents
       .filter((event) => new Date(event.start_at) < now)
       .sort((a, b) => new Date(b.start_at).getTime() - new Date(a.start_at).getTime())
-      .slice(0, 10); // Get only 8 most recent past events
+      .slice(0, 10); // Get only 10 most recent past events
 
     const result = { upcoming, past };
 
-    // Cache the result for 5 minutes (300000 ms)
-    await cache.set(cacheKey, result, 300000);
+    await cache.set(cacheKey, result, LUMA_CACHE_TTL);
 
     return result;
   } catch (error) {
     console.error('Error fetching Luma events:', error);
     // Return empty arrays instead of throwing to allow build to continue
     return { upcoming: [], past: [] };
+  }
+}
+
+/**
+ * Fetches hosts for a single event from the Luma get-event endpoint.
+ * Results are cached per event for 5 minutes.
+ */
+export async function fetchEventHosts(eventApiId: string): Promise<LumaHost[]> {
+  const cacheKey = `luma-hosts-${eventApiId}`;
+
+  if (await cache.has(cacheKey)) {
+    const cached = await cache.get<LumaHost[]>(cacheKey);
+    if (cached && Array.isArray(cached)) {
+      return cached;
+    }
+  }
+
+  const apiKey = getApiKey();
+  if (!apiKey) return [];
+
+  try {
+    const response = await fetch(
+      `${LUMA_API_BASE_URL}event/get?id=${encodeURIComponent(eventApiId)}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-luma-api-key': apiKey as string,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    const hosts: LumaHost[] = (data.hosts || []).map(
+      (h: { api_id: string; name: string; avatar_url?: string }) => ({
+        api_id: h.api_id,
+        name: h.name,
+        avatar_url: h.avatar_url,
+      })
+    );
+
+    await cache.set(cacheKey, hosts, LUMA_CACHE_TTL);
+    return hosts;
+  } catch (error) {
+    console.error(`Error fetching hosts for event ${eventApiId}:`, error);
+    return [];
   }
 }

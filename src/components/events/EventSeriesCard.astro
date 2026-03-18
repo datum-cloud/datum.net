@@ -1,0 +1,366 @@
+---
+// src/components/events/EventSeriesCard.astro
+// Expanded event card for category detail pages
+
+import { Image } from 'astro:assets';
+import { marked } from 'marked';
+import {
+  getEventDisplayName,
+  isEventDatumHosted,
+  isEventExternal,
+  isEventRecurringSeries,
+  type LumaEvent,
+  type LumaHost,
+} from '@libs/luma';
+import { getEventOverlayForEvent } from '@libs/events-overlay';
+import { toYouTubeEmbedUrl, toYouTubeWatchUrl } from '@utils/youtube';
+import { formatDate, formatTime } from '@utils/dateUtils';
+import Icon from '@components/Icon.astro';
+import EventBadge from '@components/events/EventBadge.astro';
+
+interface Props {
+  event: LumaEvent;
+  hosts?: LumaHost[];
+  isPast?: boolean;
+  /** When true, past events may open a recording in the video modal if overlay has a valid YouTube URL */
+  showVideo?: boolean;
+  /** When true (e.g. Community Huddles), past list rows open a recap detail modal instead of jumping straight to video */
+  pastOpensDetailModal?: boolean;
+}
+
+const {
+  event,
+  hosts = [],
+  isPast = false,
+  showVideo = false,
+  pastOpensDetailModal = false,
+} = Astro.props as Props;
+
+const displayName = getEventDisplayName(event);
+const overlay = getEventOverlayForEvent(event);
+const locationText = event.geo_address_json?.city_state || 'Virtual';
+/** Matches EventCalendarSection collapsed `city` field (omit meta row when absent). */
+const cityLabel = event.geo_address_json?.city_state ?? (event.meeting_url ? 'Virtual' : null);
+const isRecurring = isEventRecurringSeries(event);
+
+const recordingEmbedUrl =
+  showVideo && overlay?.youtubeUrl
+    ? toYouTubeEmbedUrl(overlay.youtubeUrl, { autoplay: true, mute: true })
+    : null;
+const recordingWatchUrl =
+  showVideo && overlay?.youtubeUrl ? toYouTubeWatchUrl(overlay.youtubeUrl) : null;
+
+/**
+ * Raw markdown for the Agenda block from `description_md` (section after `## Agenda` when present).
+ */
+function extractAgendaSectionMarkdown(md: string | undefined): string {
+  if (!md) return '';
+  const agendaMatch = md.match(/##\s*Agenda\s*\n([\s\S]*?)(?=\n##|\n---|$)/i);
+  const body = agendaMatch ? agendaMatch[1] : md;
+  return body.trim();
+}
+
+const agendaMarkdown = extractAgendaSectionMarkdown(event.description_md);
+
+const descriptionRaw = overlay?.description?.trim() ?? '';
+const descriptionHtml = descriptionRaw !== '' ? marked.parse(descriptionRaw, { async: false }) : '';
+
+const coveredSourceMd =
+  (overlay?.description?.trim() ? overlay.description.trim() : agendaMarkdown.trim()) || '';
+const pastModalCoveredHtml =
+  coveredSourceMd !== '' ? String(marked.parse(coveredSourceMd, { async: false })) : '';
+const modalTitle = overlay?.title?.trim() || displayName;
+const modalDateLine = formatDate(
+  event.start_at,
+  'en-GB',
+  { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
+  event.timezone
+);
+const pastModalPayloadJson =
+  isPast && pastOpensDetailModal
+    ? JSON.stringify({
+        title: modalTitle,
+        dateLine: modalDateLine,
+        coveredHtml: pastModalCoveredHtml,
+        videoUrl: recordingWatchUrl ?? '',
+        slidesUrl: overlay?.slidesUrl?.trim() ?? '',
+        coverUrl: event.cover_url ?? '',
+      })
+    : null;
+
+const formattedDate = formatDate(
+  event.start_at,
+  'en-US',
+  { weekday: 'short', day: 'numeric', month: 'short' },
+  event.timezone
+);
+
+// Pass timeZoneName: undefined so formatTime suppresses the auto-appended abbreviation.
+// We extract the abbreviation ourselves and append it after the time string.
+const formattedTime = formatTime(
+  event.start_at,
+  'en-US',
+  { hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: undefined },
+  event.timezone
+);
+
+// Get timezone abbreviation
+const timezoneAbbr = event.timezone
+  ? (new Intl.DateTimeFormat('en-US', { timeZoneName: 'short', timeZone: event.timezone })
+      .formatToParts(new Date(event.start_at))
+      .find((p) => p.type === 'timeZoneName')?.value ?? '')
+  : '';
+---
+
+{
+  isPast ? (
+    pastOpensDetailModal && pastModalPayloadJson ? (
+      <article class:list={['event-calendar-list__item', 'event-calendar-list__item--past-modal']}>
+        <button
+          type="button"
+          class:list={['event-calendar-list__recording-trigger']}
+          data-community-huddle-past-open
+          data-modal={pastModalPayloadJson}
+          aria-label={`Open recap: ${modalTitle}`}
+        >
+          <div class="event-calendar-list__item-collapsed">
+            <div class="event-calendar-list__item-header">
+              <p class="event-calendar-list__item-name">{displayName}</p>
+              <div class="event-calendar-list__badges">
+                {isRecurring && <EventBadge type="recurring-series" />}
+                {isEventDatumHosted(event) && <EventBadge type="datum-hosted" />}
+                {isEventExternal(event) && <EventBadge type="external-attending" />}
+              </div>
+            </div>
+            <div class="event-calendar-list__item-meta">
+              <div class="event-calendar-list__meta-item">
+                <Icon name="calendar-fold" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                <span>{formattedDate}</span>
+              </div>
+              <div class="event-calendar-list__meta-item">
+                <Icon name="clock" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                <span>
+                  {formattedTime}
+                  {timezoneAbbr ? ` ${timezoneAbbr}` : ''}
+                </span>
+              </div>
+              {cityLabel && (
+                <div class="event-calendar-list__meta-item">
+                  <Icon name="map-pin" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                  <span>{cityLabel}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </button>
+      </article>
+    ) : (
+      <article
+        class:list={[
+          'event-calendar-list__item',
+          recordingEmbedUrl && 'event-calendar-list__item--has-recording',
+        ]}
+      >
+        {recordingEmbedUrl ? (
+          <button
+            type="button"
+            class:list={['event-calendar-list__recording-trigger']}
+            data-video-recording-trigger
+            data-embed-url={recordingEmbedUrl}
+            aria-label={`Watch recording: ${displayName}`}
+          >
+            <div class="event-calendar-list__item-collapsed">
+              <div class="event-calendar-list__item-header">
+                <p class="event-calendar-list__item-name">{displayName}</p>
+                <div class="event-calendar-list__badges">
+                  {isRecurring && <EventBadge type="recurring-series" />}
+                  {isEventDatumHosted(event) && <EventBadge type="datum-hosted" />}
+                  {isEventExternal(event) && <EventBadge type="external-attending" />}
+                </div>
+              </div>
+              <div class="event-calendar-list__item-meta">
+                <div class="event-calendar-list__meta-item">
+                  <Icon
+                    name="calendar-fold"
+                    size="sm"
+                    class="text-app---dark---utility-4 shrink-0"
+                  />
+                  <span>{formattedDate}</span>
+                </div>
+                <div class="event-calendar-list__meta-item">
+                  <Icon name="clock" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                  <span>
+                    {formattedTime}
+                    {timezoneAbbr ? ` ${timezoneAbbr}` : ''}
+                  </span>
+                </div>
+                {cityLabel && (
+                  <div class="event-calendar-list__meta-item">
+                    <Icon name="map-pin" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                    <span>{cityLabel}</span>
+                  </div>
+                )}
+              </div>
+              <p class="event-calendar-list__recording-hint">
+                <Icon name="play" size="sm" class="shrink-0" />
+                Watch recording
+              </p>
+            </div>
+          </button>
+        ) : (
+          <div class="event-calendar-list__item-collapsed">
+            <div class="event-calendar-list__item-header">
+              <p class="event-calendar-list__item-name">{displayName}</p>
+              <div class="event-calendar-list__badges">
+                {isRecurring && <EventBadge type="recurring-series" />}
+                {isEventDatumHosted(event) && <EventBadge type="datum-hosted" />}
+                {isEventExternal(event) && <EventBadge type="external-attending" />}
+              </div>
+            </div>
+            <div class="event-calendar-list__item-meta">
+              <div class="event-calendar-list__meta-item">
+                <Icon name="calendar-fold" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                <span>{formattedDate}</span>
+              </div>
+              <div class="event-calendar-list__meta-item">
+                <Icon name="clock" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                <span>
+                  {formattedTime}
+                  {timezoneAbbr ? ` ${timezoneAbbr}` : ''}
+                </span>
+              </div>
+              {cityLabel && (
+                <div class="event-calendar-list__meta-item">
+                  <Icon name="map-pin" size="sm" class="text-app---dark---utility-4 shrink-0" />
+                  <span>{cityLabel}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </article>
+    )
+  ) : (
+    <article class="event-series-card">
+      <div class="event-series-card__body">
+        <h3 class="event-series-card__title">{displayName}</h3>
+
+        {descriptionHtml && (
+          <div class="event-series-card__section">
+            <h4 class="event-series-card__section-label">Agenda</h4>
+            {/* <div class="event-series-card__agenda-md datum-prose" set:html={agendaHtml} /> */}
+            <div class="event-series-card__body-md datum-prose" set:html={descriptionHtml} />
+          </div>
+        )}
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 lg:gap-12">
+          {overlay?.guests && overlay.guests.length > 0 && (
+            <div class="event-series-card__section">
+              <h4 class="event-series-card__section-label">Guests</h4>
+              <div class="event-series-card__speakers">
+                {overlay.guests.map((guest) => (
+                  <div class="event-series-card__speaker">
+                    {guest.avatarUrl?.trim() ? (
+                      <Image
+                        src={guest.avatarUrl.trim()}
+                        alt={guest.name}
+                        width={48}
+                        height={48}
+                        class="event-series-card__speaker-avatar"
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <div>
+                      <p class="event-series-card__speaker-name">{guest.name}</p>
+                      <p class="event-series-card__speaker-title">{guest.title}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {hosts.length > 0 && (
+            <div class="event-series-card__section">
+              <h4 class="event-series-card__section-label">Hosted by</h4>
+              <div class="event-series-card__speakers">
+                {hosts.map((host) => (
+                  <div class="event-series-card__speaker">
+                    {host.avatar_url?.trim() ? (
+                      <Image
+                        src={host.avatar_url.trim()}
+                        alt={host.name}
+                        width={48}
+                        height={48}
+                        class="event-series-card__speaker-avatar"
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <div>
+                      <p class="event-series-card__speaker-name">{host.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="event-series-card__sidebar">
+        {event.cover_url && (
+          <div class="event-series-card__cover">
+            <Image
+              src={event.cover_url}
+              alt={displayName}
+              width={188}
+              height={188}
+              loading="lazy"
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )}
+
+        <div class="event-series-card__meta">
+          {isRecurring && <EventBadge type="recurring-series" />}
+
+          <div class="event-series-card__meta-row mt-3">
+            <Icon name="calendar-fold" size="sm" class="text-app---dark---utility-4 shrink-0" />
+            <span>{formattedDate}</span>
+          </div>
+
+          <div class="event-series-card__meta-row">
+            <Icon name="clock" size="sm" class="text-app---dark---utility-4 shrink-0" />
+            <span>
+              {formattedTime}
+              {timezoneAbbr ? ` ${timezoneAbbr}` : ''}
+            </span>
+          </div>
+
+          <div class="event-series-card__meta-row">
+            <Icon name="map-pin" size="sm" class="text-app---dark---utility-4 shrink-0" />
+            <span>{locationText}</span>
+          </div>
+        </div>
+
+        <div class="event-series-card__actions">
+          <a href={event.url} target="_blank" rel="noopener noreferrer" class="btn btn--pine-forge">
+            Register
+            <Icon name="external-link" size="sm" class="ml-1" />
+          </a>
+
+          {event.zoom_meeting_url && (
+            <a
+              href={event.zoom_meeting_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="event-series-card__zoom-link"
+            >
+              Zoom link
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
+  )
+}

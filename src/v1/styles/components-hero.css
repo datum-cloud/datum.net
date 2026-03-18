@@ -120,6 +120,10 @@
     @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-16 xl:gap-6 xl:pt-12 xl:pb-20;
   }
 
+  .hero--secondary-nav {
+    @apply max-width relative z-10 mx-auto w-full px-6 pb-6 md:px-10 md:pb-8;
+  }
+
   .hero--main-content-icon {
     @apply text-midnight-fjord hover:text-midnight-fjord/80 datum-text-base flex items-center gap-5 transition-colors duration-200;
 
@@ -154,6 +158,7 @@
   }
 
   .hero--main-content-description {
+    @apply max-w-142 text-pretty;
     a {
       @apply hover:text-midnight-fjord/70 hover:border-midnight-fjord/70 border-midnight-fjord border-b transition-colors hover:cursor-pointer;
     }

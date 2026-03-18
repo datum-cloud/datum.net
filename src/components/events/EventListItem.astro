@@ -2,7 +2,7 @@
 // src/components/events/EventListItem.astro
 // Event list item component for displaying events in a list format
 
-import type { LumaEvent } from '@libs/luma';
+import { getEventDisplayName, type LumaEvent } from '@libs/luma';
 import Icon from '@components/Icon.astro';
 import { formatDate } from '@utils/dateUtils';
 
@@ -11,6 +11,8 @@ interface Props {
 }
 
 const { event } = Astro.props as Props;
+
+const displayName = getEventDisplayName(event);
 
 // Get location for filtering
 const eventLocation = event.geo_address_json?.city || (event.meeting_url ? 'Online' : '');
@@ -21,10 +23,10 @@ const eventLocation = event.geo_address_json?.city || (event.meeting_url ? 'Onli
     href={event.url}
     target="_blank"
     rel="noopener noreferrer"
-    title={event.name}
+    title={displayName}
     class="entry-list-item--wrapper"
   >
-    <p class="entry-list-item--title">{event.name}</p>
+    <p class="entry-list-item--title">{displayName}</p>
 
     <div class="entry-list-item--meta">
       {

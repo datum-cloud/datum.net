@@ -1,0 +1,13 @@
+{
+  "_comment": "Rename to evt-….json OR public slug from luma.com/XXXX (e.g. or9xabm6.json). Optional lumaApiId inside file for alternate filename. All content fields optional.",
+  "title": "NYC Alt Cloud Meetup (April 2026)",
+  "guests": [
+    {
+      "name": "Nikhil Kanamarla",
+      "title": "former software engineer at NVIDIA",
+      "avatarUrl": "/images/speakers/nikhil-kanamarla.jpg"
+    }
+  ],
+  "youtubeUrl": "https://www.youtube.com/watch?v=IiWFPgR2ygY",
+  "description": "**April 15th** - The Splinternet is Upon Us \n\n*   5:00 - Doors open, drinks mingling\n*   6:00 - Nikhil Kanamarla \"Object Storage in the Age of AI\"\n*   6:30 - TBD\n*   7:00 - Drinks and Mingling"
+}

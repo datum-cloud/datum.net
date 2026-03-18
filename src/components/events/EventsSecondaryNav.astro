@@ -1,0 +1,105 @@
+---
+// src/components/events/EventsSecondaryNav.astro
+// Secondary tab navigation between event category pages (Alpine dropdown on small screens; colors match desktop tabs)
+
+import Icon from '@components/Icon.astro';
+
+const currentPath = Astro.url.pathname;
+
+const tabs = [
+  { label: 'All events', href: '/events/' },
+  { label: 'Community Huddles', href: '/events/community-huddles/' },
+  { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups/' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/events/') {
+    return currentPath === '/events/' || currentPath === '/events';
+  }
+  return currentPath.startsWith(href);
+}
+
+const activeTab = tabs.find((t) => isActive(t.href)) ?? tabs[0];
+const activeLabel = activeTab.label;
+
+const mobileMenuId = 'events-secondary-nav-mobile-menu';
+const mobileTriggerId = 'events-secondary-nav-mobile-trigger';
+---
+
+<nav class="events-secondary-nav" aria-label="Event categories">
+  <div class="events-secondary-nav-mobile md:hidden" x-data="{ open: false }">
+    <button
+      type="button"
+      id={mobileTriggerId}
+      class="events-secondary-nav-mobile-trigger"
+      @click="open = !open"
+      :aria-expanded="open.toString()"
+      aria-haspopup="listbox"
+      aria-controls={mobileMenuId}
+    >
+      <span class="events-secondary-nav-mobile-label">Event category</span>
+      <span class="events-secondary-nav-mobile-selected">{activeLabel}</span>
+      <span
+        class="events-secondary-nav-mobile-chevron"
+        :class="{ 'events-secondary-nav-mobile-chevron--open': open }"
+        aria-hidden="true"
+      >
+        <Icon name="chevron-down" size="sm" class="text-midnight-fjord" />
+      </span>
+    </button>
+    <div
+      id={mobileMenuId}
+      class="events-secondary-nav-mobile-dropdown"
+      x-show="open"
+      @click.outside="open = false"
+      x-cloak
+      role="listbox"
+      aria-labelledby={mobileTriggerId}
+    >
+      <ul class="events-secondary-nav-mobile-list" role="presentation">
+        {
+          tabs.map((tab) => (
+            <li role="presentation">
+              <a
+                href={tab.href}
+                class:list={[
+                  'events-secondary-nav-mobile-link',
+                  { 'events-secondary-nav-mobile-link--active': isActive(tab.href) },
+                ]}
+                role="option"
+                aria-selected={isActive(tab.href) ? 'true' : 'false'}
+                @click="open = false"
+                data-astro-prefetch="hover"
+              >
+                <span>{tab.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <ul class="events-secondary-nav__list">
+    {
+      tabs.map((tab, index) => (
+        <li>
+          <a
+            href={tab.href}
+            class:list={[
+              'events-secondary-nav__tab',
+              {
+                'events-secondary-nav__tab--active': isActive(tab.href),
+                'events-secondary-nav__tab--first': index === 0,
+                'events-secondary-nav__tab--last': index === tabs.length - 1,
+              },
+            ]}
+            aria-current={isActive(tab.href) ? 'page' : undefined}
+          >
+            {tab.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

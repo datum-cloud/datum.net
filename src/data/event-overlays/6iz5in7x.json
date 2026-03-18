@@ -1,0 +1,13 @@
+{
+  "_comment": "Rename to evt-….json OR public slug from luma.com/XXXX (e.g. or9xabm6.json). Optional lumaApiId inside file for alternate filename. All content fields optional.",
+  "title": "Boston Alt Cloud Meetup (May 2026)",
+  "guests": [
+    {
+      "name": "James Logan",
+      "title": "Scientific Engineer at Commonwealth Fusion Systems",
+      "avatarUrl": "/images/speakers/james-logan.jpg"
+    }
+  ],
+  "youtubeUrl": "https://www.youtube.com/watch?v=IiWFPgR2ygY",
+  "description": "**May 14th** - Boston Does Big Things with Sand (Silicon, Meet Concrete)\n\n*   5:00 - Doors open, drinks mingling\n*   6:00 - TBD\n*   6:30 - James Logan - Commonwealth Fusion “Atoms and Bits”\n*   7:00 - Mingling"
+}

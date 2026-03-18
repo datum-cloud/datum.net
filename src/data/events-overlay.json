@@ -1,0 +1,3 @@
+{
+  "_comment": "Legacy overrides keyed by Luma api_id (optional). Prefer one file per event in event-overlays/*.json. Keys starting with _ are ignored."
+}

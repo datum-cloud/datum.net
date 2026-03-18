@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Datum Company Travel Policy"
+  title: "Company Travel Policy - Datum Handbook"
   description: "Guidelines for business travel. Read the Datum travel policy, including expense reimbursements, booking procedures, and per diems for team offsites."
 ---
 

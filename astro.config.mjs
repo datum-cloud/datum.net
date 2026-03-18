@@ -12,11 +12,9 @@ import node from '@astrojs/node';
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
-import copyMarkdown from './src/plugins/copy-markdown/index.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -40,6 +38,9 @@ export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'always',
   output: 'static',
+  security: {
+    checkOrigin: false,
+  },
   adapter: node({
     mode: 'middleware',
   }),
@@ -48,6 +49,7 @@ export default defineConfig({
   },
   image: {
     layout: 'constrained',
+    domains: ['grateful-excitement-dfe9d47bad.media.strapiapp.com'],
   },
   integrations: [
     announcement({
@@ -77,18 +79,6 @@ export default defineConfig({
       autoTheme: true,
     }),
     starlight({
-      plugins: [
-        copyMarkdown({
-          includeFrontmatter: false,
-          showToast: true,
-          copyText: 'Copy for LLM',
-          copiedText: 'Copied!',
-          showViewMarkdown: true,
-          githubRawBaseUrl:
-            'https://raw.githubusercontent.com/datum-cloud/datum.net/refs/heads/main',
-          contentPath: 'src/content/docs',
-        }),
-      ],
       title: 'Datum',
       disable404Route: true,
       credits: false,
@@ -196,15 +186,7 @@ export default defineConfig({
           autogenerate: { directory: 'docs/metrics' },
           collapsed: true,
         },
-        {
-          label: 'Glossary',
-          link: 'docs/glossary/',
-        },
       ],
-    }),
-    glossary({
-      source: 'docs/docs/glossary.mdx',
-      contentDir: 'docs',
     }),
     sitemap({
       exclude: [

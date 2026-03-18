@@ -107,8 +107,8 @@ export async function fetchLumaEvents(): Promise<{
 }> {
   const cacheKey = 'luma-events';
 
-  if (cache.has(cacheKey)) {
-    const cached = cache.get<{ upcoming: LumaEvent[]; past: LumaEvent[] }>(cacheKey);
+  if (await cache.has(cacheKey)) {
+    const cached = await cache.get<{ upcoming: LumaEvent[]; past: LumaEvent[] }>(cacheKey);
     if (cached && isValidCachedData(cached)) {
       return cached;
     }
@@ -139,7 +139,9 @@ export async function fetchLumaEvents(): Promise<{
 
     const data: LumaEventsResponse = await response.json();
     const now = new Date();
-    const allEvents = (data.entries || []).map((entry) => entry.event);
+    const allEvents = (data.entries || [])
+      .map((entry) => entry.event)
+      .filter((event) => event.visibility?.toUpperCase() !== 'PRIVATE');
 
     // Split into upcoming and past events
     const upcoming = allEvents
@@ -154,7 +156,7 @@ export async function fetchLumaEvents(): Promise<{
     const result = { upcoming, past };
 
     // Cache the result for 5 minutes (300000 ms)
-    cache.set(cacheKey, result, 300000);
+    await cache.set(cacheKey, result, 300000);
 
     return result;
   } catch (error) {

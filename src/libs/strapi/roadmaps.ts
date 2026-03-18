@@ -14,9 +14,9 @@ const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN |
 const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
 const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
-const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
+const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const envTtlSec = parseInt(
-  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '300',
+  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
   10
 );
 const ROADMAPS_CACHE_TTL =
@@ -143,8 +143,8 @@ function isValidCachedRoadmaps(data: unknown): data is StrapiRoadmap[] {
  * @returns Array of all Strapi roadmap milestones
  */
 export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
-  if (CACHE_ENABLED && cache.has(ROADMAPS_CACHE_KEY)) {
-    const cached = cache.get<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
+  if (CACHE_ENABLED && (await cache.has(ROADMAPS_CACHE_KEY))) {
+    const cached = await cache.get<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
     if (cached && isValidCachedRoadmaps(cached)) {
       return cached;
     }
@@ -157,7 +157,7 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
 
   if (!response?.roadmaps) {
     console.warn('Strapi unavailable — checking persistent fallback cache for roadmaps');
-    const fallback = fallbackCache.get<StrapiRoadmap[]>(FALLBACK_ROADMAPS_KEY);
+    const fallback = await fallbackCache.get<StrapiRoadmap[]>(FALLBACK_ROADMAPS_KEY);
     if (fallback && isValidCachedRoadmaps(fallback)) {
       console.warn(`Serving ${fallback.length} roadmaps from stale fallback cache`);
       return fallback;
@@ -169,10 +169,10 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
   const roadmaps = response.roadmaps;
 
   if (CACHE_ENABLED) {
-    cache.set(ROADMAPS_CACHE_KEY, roadmaps, ROADMAPS_CACHE_TTL);
+    await cache.set(ROADMAPS_CACHE_KEY, roadmaps, ROADMAPS_CACHE_TTL);
   }
 
-  fallbackCache.set(FALLBACK_ROADMAPS_KEY, roadmaps);
+  await fallbackCache.set(FALLBACK_ROADMAPS_KEY, roadmaps);
 
   return roadmaps;
 }

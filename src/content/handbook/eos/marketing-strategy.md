@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
+  title: "Marketing Strategy - Datum Handbook"
   description: ""
+  og:
+    title: "Datum's Marketing Strategy"
 ---
 
 This tool captures (at the highest level) the customers we are trying to serve, why they might need to buy from us, and our process for getting more of them. 

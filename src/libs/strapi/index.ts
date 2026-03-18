@@ -85,7 +85,6 @@ export { getStrapiMediaUrl, normalizeArticle, resolveMarkdownStrapiUrls } from '
 // Re-export authors module
 export {
   AUTHORS_QUERY,
-  AUTHOR_BY_DOCUMENT_ID_QUERY,
   AUTHOR_BY_SLUG_QUERY,
   fetchStrapiAuthors,
   fetchStrapiAuthorByDocumentId,

@@ -4,6 +4,7 @@
  */
 
 import { Cache } from '@libs/cache';
+import { getReadingTimeMinutesFromContent } from '@libs/string';
 import type { StrapiArticlesResponse, StrapiArticle } from '../../types/strapi';
 
 const STRAPI_URL =
@@ -14,9 +15,9 @@ const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN |
 const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
 const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 
-const DEFAULT_CACHE_TTL_MS = 300000; // 5 minutes
+const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const envTtlSec = parseInt(
-  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '300',
+  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
   10
 );
 const ARTICLES_CACHE_TTL =
@@ -24,11 +25,11 @@ const ARTICLES_CACHE_TTL =
 
 // Request timeout — fail fast so the fallback cache can kick in
 const envTimeoutSec = parseInt(
-  import.meta.env?.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '10',
+  import.meta.env?.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '3',
   10
 );
 const FETCH_TIMEOUT_MS =
-  Number.isNaN(envTimeoutSec) || envTimeoutSec <= 0 ? 10_000 : envTimeoutSec * 1000;
+  Number.isNaN(envTimeoutSec) || envTimeoutSec <= 0 ? 3_000 : envTimeoutSec * 1000;
 
 interface GraphQLResponse<T> {
   data: T;
@@ -107,7 +108,7 @@ const FALLBACK_ARTICLE_PREFIX = 'article-';
  */
 export const ARTICLES_QUERY = `
   query GetArticles {
-    articles(pagination: { limit: 100 }) {
+    articles(pagination: { limit: 100 }, sort: ["originalPublishedAt:desc"]) {
       documentId
       title
       slug
@@ -115,10 +116,6 @@ export const ARTICLES_QUERY = `
       originalPublishedAt
       blocks {
         __typename
-        ... on ComponentSharedQuote {
-          body
-          title
-        }
         ... on ComponentSharedRichText {
           id
           body
@@ -272,8 +269,8 @@ function isValidCachedArticles(data: unknown): data is StrapiArticle[] {
  */
 export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
   // Check short-lived TTL cache first (when enabled)
-  if (CACHE_ENABLED && cache.has(ARTICLES_CACHE_KEY)) {
-    const cached = cache.get<StrapiArticle[]>(ARTICLES_CACHE_KEY);
+  if (CACHE_ENABLED && (await cache.has(ARTICLES_CACHE_KEY))) {
+    const cached = await cache.get<StrapiArticle[]>(ARTICLES_CACHE_KEY);
     if (cached && isValidCachedArticles(cached)) {
       return cached;
     }
@@ -287,7 +284,7 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
 
   if (!response?.articles) {
     console.warn('Strapi unavailable — checking persistent fallback cache for articles');
-    const fallback = fallbackCache.get<StrapiArticle[]>(FALLBACK_ARTICLES_KEY);
+    const fallback = await fallbackCache.get<StrapiArticle[]>(FALLBACK_ARTICLES_KEY);
     if (fallback && isValidCachedArticles(fallback)) {
       console.warn(`Serving ${fallback.length} articles from stale fallback cache`);
       return fallback;
@@ -298,38 +295,49 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
 
   // For list cache we drop rich-text blocks to keep cache small, but preserve reading time.
   // Detail pages should use fetchStrapiArticleBySlug to get full content including blocks.
+  // Only the top 3 newest articles keep full cover metadata for featured cards.
+  // Articles are sorted by newest first via GraphQL sort parameter.
+  const topCoverIds = new Set(response.articles.slice(0, 3).map((a) => a.documentId));
+
   const articles = response.articles.map((article) => {
     // Calculate reading time from blocks before removing them
-    let readingTimeMinutes = 1;
-    if (article.blocks && article.blocks.length > 0) {
-      const bodyContent = article.blocks
-        .map((block) => block.body || '')
-        .filter(Boolean)
-        .join('\n\n');
-      const wordCount = bodyContent
-        .replace(/```[\s\S]*?```/g, '')
-        .replace(/`[^`]*`/g, '')
-        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-        .replace(/[#*_~`]/g, '')
-        .replace(/<[^>]*>/g, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .split(/\s+/)
-        .filter((word) => word.length > 0).length;
-      readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
-    }
+    const bodyContent = (article.blocks || [])
+      .map((block) => block.body || '')
+      .filter(Boolean)
+      .join('\n\n');
+    const readingTimeMinutes = getReadingTimeMinutesFromContent(bodyContent);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { blocks, ...rest } = article;
-    return { ...rest, readingTimeMinutes } as StrapiArticle;
+    const { blocks, cover, ...rest } = article;
+
+    const base: StrapiArticle = {
+      ...rest,
+      readingTimeMinutes,
+    };
+
+    // Preserve cover metadata only for the top 3 newest articles (small + medium only to reduce cache size)
+    if (topCoverIds.has(article.documentId) && cover) {
+      base.cover = {
+        url: cover.url,
+        alternativeText: cover.alternativeText,
+        width: cover.width,
+        height: cover.height,
+        formats: {
+          small: cover.formats?.small,
+          medium: cover.formats?.medium,
+        },
+      };
+    }
+
+    return base;
   });
 
   if (CACHE_ENABLED) {
-    cache.set(ARTICLES_CACHE_KEY, articles, ARTICLES_CACHE_TTL);
+    await cache.set(ARTICLES_CACHE_KEY, articles, ARTICLES_CACHE_TTL);
   }
 
   // Always persist a fallback snapshot — no TTL so it survives Strapi outages
-  fallbackCache.set(FALLBACK_ARTICLES_KEY, articles);
+  await fallbackCache.set(FALLBACK_ARTICLES_KEY, articles);
 
   return articles;
 }
@@ -344,8 +352,8 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
 export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArticle | null> {
   const cacheKey = `${ARTICLE_CACHE_PREFIX}${slug}`;
 
-  if (CACHE_ENABLED && cache.has(cacheKey)) {
-    const cached = cache.get<StrapiArticle>(cacheKey);
+  if (CACHE_ENABLED && (await cache.has(cacheKey))) {
+    const cached = await cache.get<StrapiArticle>(cacheKey);
     if (cached && isValidStrapiArticle(cached)) {
       return cached;
     }
@@ -361,7 +369,7 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
   if (!response?.articles || response.articles.length === 0) {
     console.warn(`Strapi unavailable — checking persistent fallback cache for article "${slug}"`);
     const fallbackKey = `${FALLBACK_ARTICLE_PREFIX}${slug}`;
-    const fallback = fallbackCache.get<StrapiArticle>(fallbackKey);
+    const fallback = await fallbackCache.get<StrapiArticle>(fallbackKey);
     if (fallback && isValidStrapiArticle(fallback)) {
       console.warn(`Serving article "${slug}" from stale fallback cache`);
       return fallback;
@@ -371,13 +379,22 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
 
   const article = response.articles[0];
 
+  // Calculate reading time from blocks if not already present
+  if (!article.readingTimeMinutes && article.blocks) {
+    const bodyContent = article.blocks
+      .map((block) => block.body || '')
+      .filter(Boolean)
+      .join('\n\n');
+    article.readingTimeMinutes = getReadingTimeMinutesFromContent(bodyContent);
+  }
+
   if (CACHE_ENABLED) {
-    cache.set(cacheKey, article, ARTICLES_CACHE_TTL);
+    await cache.set(cacheKey, article, ARTICLES_CACHE_TTL);
   }
 
   // Always persist a fallback snapshot — no TTL so it survives Strapi outages
   const fallbackKey = `${FALLBACK_ARTICLE_PREFIX}${slug}`;
-  fallbackCache.set(fallbackKey, article);
+  await fallbackCache.set(fallbackKey, article);
 
   return article;
 }

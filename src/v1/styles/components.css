@@ -33,8 +33,8 @@
   /* Footer Components */
 
   .footer-illustration-container {
-    @apply bg-glacier-mist-700 relative;
-    @apply relative z-9;
+    @apply bg-aurora-moss relative;
+    @apply relative z-9 pt-5 lg:pt-1;
 
     &:before {
       @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-4 w-full content-[''];
@@ -538,27 +538,62 @@
       }
     }
   }
-}
 
-@layer starlight.components {
-  starlight-tabs {
-    .tablist-wrapper {
-      ul.astro-esqgolmp {
-        @apply mt-4;
-        @apply relative;
-        @apply border-glacier-mist-900 border-b-2;
+  .tablist-wrapper {
+    ul.tablist {
+      @apply mt-4;
+      @apply relative;
+      @apply border-glacier-mist-900 border-b-2;
 
-        .tab {
-          @apply mr-6 mb-0 pl-0;
-          a {
-            @apply mb-0 px-0;
-          }
-        }
-
-        .tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role='tab'][aria-selected='true'] {
-          --sl-tab-color-border: var(--color-midnight-fjord);
+      .tab {
+        @apply mr-6 mb-0 pl-0;
+        a {
+          @apply mb-0 px-0;
         }
       }
+
+      .tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role='tab'][aria-selected='true'] {
+        --sl-tab-color-border: var(--color-midnight-fjord);
+      }
     }
+  }
+
+  /* Tabs component */
+  datum-tabs {
+    @apply block;
+  }
+
+  datum-tabs .tablist-wrapper {
+    @apply overflow-x-auto;
+  }
+
+  datum-tabs [role='tablist'] {
+    @apply border-app---dark---utility-4 flex list-none border-b-2 p-0;
+  }
+
+  datum-tabs .tab {
+    @apply flex;
+  }
+
+  datum-tabs .tab > [role='tab'] {
+    @apply flex items-center gap-2 px-5 py-[0.275rem] break-normal no-underline;
+    @apply text-app---dark---utility-4;
+    @apply relative outline-offset-2;
+
+    &:after {
+      content: '';
+      @apply absolute right-0 -bottom-[2px] left-0 h-px;
+    }
+  }
+
+  datum-tabs .tab [role='tab'][aria-selected='true'] {
+    @apply text-midnight-fjord;
+    &:after {
+      @apply border-midnight-fjord border-b-2;
+    }
+  }
+
+  datum-tabs .tablist-wrapper ~ [role='tabpanel'] {
+    @apply mt-4;
   }
 }

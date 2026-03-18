@@ -144,40 +144,40 @@
     --color-note: var(--aurora-moss);
     --color-caution: #e2e9e3;
 
-    .starlight-aside--note {
+    .note--note {
       --sl-color-asides-border: var(--aurora-moss);
       @apply bg-(--color-note)/30;
     }
 
-    .starlight-aside--caution {
+    .note--caution {
       --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-(--color-caution);
     }
 
-    .starlight-aside--tip {
+    .note--tip {
       --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-(--color-tip);
     }
 
-    .starlight-aside__title {
+    .note__title {
       @apply text-midnight-fjord text-lg font-semibold;
       @apply mt-0 mb-0 flex items-center gap-0;
     }
 
-    .starlight-aside {
+    .note {
       @apply inline-flex w-full items-center gap-3;
       @apply mb-6 p-5;
       @apply border-l-5 border-(--sl-color-asides-border);
       @apply [&>p:last-child]:mb-0;
       @apply mt-6 first:mt-0;
 
-      .starlight-aside__title {
+      .note__title {
         @apply text-pine-forge overflow-hidden -indent-[1000px];
         svg {
           @apply h-5.5! w-5.5!;
         }
       }
-      .starlight-aside__content {
+      .note__content {
         @apply [&>p:last-child]:mb-0;
         @apply datum-text-sm text-pine-forge;
       }

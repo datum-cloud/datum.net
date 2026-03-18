@@ -182,7 +182,7 @@ const description = fm.description || 'Download Datum';
       meta={meta}
     />
 
-    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0 pb-0">
+    <div class="section--block section--block--pad bg-glacier-mist-700 z-20 pt-0">
       <div class="max-width">
         <Download activeId={entry.data.slug}>
           <div class="download-content-frame">
@@ -202,6 +202,6 @@ const description = fm.description || 'Download Datum';
         </Download>
       </div>
     </div>
-    <Footer />
+    <Footer class="z-10" />
   </section>
 </Layout>

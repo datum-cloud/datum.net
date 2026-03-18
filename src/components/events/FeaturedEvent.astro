@@ -2,16 +2,18 @@
 // src/components/events/FeaturedEvent.astro
 // Featured event card component
 
-import type { LumaEvent } from '@libs/luma';
+import { getEventDisplayName, type ContentEvent } from '@libs/events';
 import Icon from '@components/Icon.astro';
 import Button from '@components/Button.astro';
 import { formatDate, formatTime } from '@utils/dateUtils';
 
 interface Props {
-  event: LumaEvent;
+  event: ContentEvent;
 }
 
 const { event } = Astro.props as Props;
+
+const displayName = getEventDisplayName(event);
 
 // Determine if event is online
 const isOnline = !event.geo_address_json?.city_state || event.meeting_url;
@@ -30,7 +32,7 @@ const getFirstParagraph = (description: string): string => {
   return paragraphs.length > 0 ? paragraphs[0].trim() : description.trim();
 };
 
-const firstParagraph = event.description ? getFirstParagraph(event.description) : '';
+const firstParagraph = event.description_md ? getFirstParagraph(event.description_md) : '';
 ---
 
 <div
@@ -44,12 +46,12 @@ const firstParagraph = event.description ? getFirstParagraph(event.description) 
           href={event.url}
           target="_blank"
           rel="noopener noreferrer"
-          title={event.name}
+          title={displayName}
           class="block overflow-clip transition-all duration-300 ease-in-out hover:opacity-90"
         >
           <img
             src={event.cover_url}
-            alt={event.name}
+            alt={displayName}
             loading="lazy"
             class="aspect-4/3 size-auto w-full object-cover md:w-[455px]"
           />
@@ -67,13 +69,15 @@ const firstParagraph = event.description ? getFirstParagraph(event.description) 
           rel="noopener noreferrer"
           class="text-midnight-fjord hover:text-midnight-fjord/70 transition-all duration-200 ease-linear"
         >
-          {event.name}
+          {displayName}
         </a>
       </h3>
 
       {
         firstParagraph && (
-          <p class="datum-text-base text-midnight-fjord/80 text-pretty">{firstParagraph}</p>
+          <p class="featured-event__description datum-text-base text-midnight-fjord/80 text-pretty">
+            {firstParagraph}
+          </p>
         )
       }
     </div>

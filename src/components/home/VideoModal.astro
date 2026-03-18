@@ -18,10 +18,14 @@ const { class: className } = Astro.props as { class?: string };
 </video-modal>
 
 <script>
+  import {
+    HOMEPAGE_FEATURE_VIDEO_EMBED_URL,
+    sanitizeYoutubeEmbedUrlForIframe,
+  } from '@utils/youtube';
+
   const VIDEO_MODAL_OPEN_EVENT = 'video-modal-open';
   const VIDEO_MODAL_CLOSE_EVENT = 'video-modal-close';
 
-  // Add event names to window object
   declare global {
     interface Window {
       VIDEO_MODAL_OPEN_EVENT: string;
@@ -29,12 +33,21 @@ const { class: className } = Astro.props as { class?: string };
     }
 
     interface CustomEventMap {
-      'video-modal-open': CustomEvent;
+      'video-modal-open': CustomEvent<{ embedUrl?: string }>;
       'video-modal-close': CustomEvent;
     }
   }
 
   const VIDEO_MODAL_HASH = '#video-modal';
+
+  function resolveEmbedUrl(detail?: { embedUrl?: string }): string {
+    const fromEvent = detail?.embedUrl;
+    if (fromEvent) {
+      const safe = sanitizeYoutubeEmbedUrlForIframe(fromEvent.trim());
+      if (safe) return safe;
+    }
+    return sanitizeYoutubeEmbedUrlForIframe(HOMEPAGE_FEATURE_VIDEO_EMBED_URL)!;
+  }
 
   class VideoModal extends HTMLElement {
     dialog: HTMLDialogElement;
@@ -60,7 +73,6 @@ const { class: className } = Astro.props as { class?: string };
     }
 
     setupEventListeners() {
-      document.addEventListener(VIDEO_MODAL_OPEN_EVENT, () => this.openModal());
       this.closeBtn.addEventListener('click', () => this.closeModal());
       window.addEventListener('popstate', () => {
         if (this.dialog.open && window.location.hash !== VIDEO_MODAL_HASH) this.closeModal();
@@ -76,7 +88,6 @@ const { class: className } = Astro.props as { class?: string };
         document.dispatchEvent(new CustomEvent(VIDEO_MODAL_CLOSE_EVENT));
       });
 
-      // Listen for ESC key
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && this.dialog.open) {
           this.closeModal();
@@ -90,28 +101,24 @@ const { class: className } = Astro.props as { class?: string };
       const isLink = 'href' in (target || {});
       const isOutsideDialog = document.body.contains(target) && !this.dialogFrame.contains(target);
 
-      // Check if click is inside a dialog but outside dialog-frame
       const isInDialog = target.closest('dialog') !== null;
       const isInDialogFrame = target.closest('.modal-frame') !== null;
       const isDialogBackdropClick = isInDialog && !isInDialogFrame;
 
-      // Prevent closing if click happens too soon after opening (within 300ms)
       const clickTime = Date.now();
       const timeSinceOpen = clickTime - this.dialogOpenedAt;
       const isTooSoon = timeSinceOpen < 300;
 
-      // Handle different click scenarios
       if (isDialogBackdropClick) {
-        // This is a click on the dialog backdrop
         this.closeModal();
       } else if ((isLink || isOutsideDialog) && !isTooSoon) {
-        // This is a click outside the dialog or on a link
         this.closeModal();
       }
     };
 
-    openModal() {
-      this.populateContent();
+    openModal(detail?: { embedUrl?: string }) {
+      const embedUrl = resolveEmbedUrl(detail);
+      this.populateContent(embedUrl);
       this.dialog.showModal();
       document.body.toggleAttribute('data-video-modal-open', true);
       this.dialogOpenedAt = Date.now();
@@ -129,13 +136,15 @@ const { class: className } = Astro.props as { class?: string };
       this.dialog.close();
     }
 
-    populateContent() {
+    populateContent(embedUrl: string) {
+      const safe = sanitizeYoutubeEmbedUrlForIframe(embedUrl);
+      if (!safe) return;
       this.contentContainer.innerHTML = `
         <div class="modal-embed-wrapper">
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/AJpcgirSndk?si=iSh6tmAyFphBgQsd&autoplay=1&mute=1"
+            src="${safe.replace(/"/g, '&quot;')}"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -151,9 +160,36 @@ const { class: className } = Astro.props as { class?: string };
     }
   }
 
-  customElements.define('video-modal', VideoModal);
+  if (!customElements.get('video-modal')) {
+    customElements.define('video-modal', VideoModal);
+  }
 
-  // Export the event names for other components to use
+  function firstVideoModalEl(): VideoModal | null {
+    return document.querySelector('video-modal');
+  }
+
+  if (!(globalThis as { __videoModalDocHooks?: boolean }).__videoModalDocHooks) {
+    (globalThis as { __videoModalDocHooks?: boolean }).__videoModalDocHooks = true;
+
+    document.addEventListener(VIDEO_MODAL_OPEN_EVENT, (ev: Event) => {
+      const detail = (ev as CustomEvent<{ embedUrl?: string }>).detail;
+      firstVideoModalEl()?.openModal(detail);
+    });
+
+    document.addEventListener('click', (e: MouseEvent) => {
+      const t = (e.target as HTMLElement)?.closest?.('[data-video-recording-trigger]');
+      if (!t) return;
+      const embed = t.getAttribute('data-embed-url');
+      if (!embed) return;
+      e.preventDefault();
+      const safe = sanitizeYoutubeEmbedUrlForIframe(embed);
+      if (!safe) return;
+      document.dispatchEvent(
+        new CustomEvent(VIDEO_MODAL_OPEN_EVENT, { detail: { embedUrl: safe } })
+      );
+    });
+  }
+
   window.VIDEO_MODAL_OPEN_EVENT = VIDEO_MODAL_OPEN_EVENT;
   window.VIDEO_MODAL_CLOSE_EVENT = VIDEO_MODAL_CLOSE_EVENT;
 </script>

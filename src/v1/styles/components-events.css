@@ -1,3 +1,613 @@
 @layer components {
   /* Featured event styles moved to FeaturedEvent.astro component */
+
+  .featured-event__description {
+    @apply min-w-0 break-words;
+  }
+
+  .event-badge {
+    @apply datum-text-xs inline-flex w-fit shrink-0 items-center gap-2 rounded-md px-2.5 py-1 font-normal;
+  }
+
+  .event-badge--recurring {
+    @apply bg-blush-quartz/30 text-canyon-clay---links;
+  }
+
+  .event-badge--hosted {
+    @apply bg-potted-olive/20 text-app---dark---utility-4;
+  }
+
+  .event-badge--attending {
+    @apply bg-amber-100 text-amber-800;
+  }
+
+  .event-badge--saying-hi {
+    @apply bg-green-100 text-green-800;
+  }
+
+  /* --- Overview layout --- */
+  .events-overview {
+    @apply flex flex-col;
+  }
+
+  .events-category-cards {
+    @apply mb-12 flex flex-col gap-10 md:mb-16 md:flex-row lg:mb-20;
+  }
+
+  /* --- Event Category Cards (overview page top section) --- */
+  .event-category-card {
+    @apply relative flex min-w-0 flex-1 overflow-hidden rounded-lg no-underline shadow-sm transition-opacity duration-200 hover:opacity-90;
+  }
+
+  .event-category-card--clay {
+    @apply bg-canyon-clay---links text-glacier-mist-700;
+  }
+
+  .event-category-card--forest {
+    @apply bg-pine-forge text-glacier-mist-700;
+  }
+
+  .event-category-card__content {
+    @apply z-10 flex flex-1 flex-col justify-between p-6 md:p-8 lg:p-10;
+  }
+
+  .event-category-card__text {
+    @apply flex flex-col gap-4;
+  }
+
+  .event-category-card__title {
+    @apply text-glacier-mist-700 datum-text-2xl leading-tight font-semibold;
+  }
+
+  .event-category-card__badge {
+    @apply text-glacier-mist-700 datum-text-sm inline-flex items-center gap-2.5;
+  }
+
+  .event-category-card__arrow {
+    @apply text-aurora-moss mt-auto;
+
+    svg {
+      @apply size-7! md:size-8! lg:size-10!;
+
+      :where(circle, path, line, polyline, polygon) {
+        stroke-width: 1;
+      }
+    }
+  }
+
+  .event-category-card__image {
+    @apply relative aspect-square h-42 shrink-0 overflow-hidden md:h-52 lg:h-72;
+  }
+
+  .event-category-card__image img {
+    @apply absolute inset-0 h-full w-full object-cover;
+  }
+
+  /* --- Events overview skeleton (Card.astro deferred fallback) --- */
+  .events-overview-skeleton {
+    @apply flex flex-col;
+  }
+
+  .events-overview-skeleton__pulse {
+    @apply bg-midnight-fjord/20 ring-midnight-fjord/12 animate-pulse rounded-md ring-1 ring-inset;
+  }
+
+  .events-overview-skeleton__category-cards {
+    @apply mb-12 flex flex-col gap-10 md:mb-16 md:flex-row lg:mb-20;
+  }
+
+  .events-overview-skeleton__category-card {
+    @apply border-glacier-mist-900 relative flex min-w-0 flex-1 overflow-hidden rounded-lg border bg-white/75 shadow-sm;
+  }
+
+  .events-overview-skeleton__category-content {
+    @apply z-10 flex flex-1 flex-col justify-between p-6 md:p-8 lg:p-10;
+  }
+
+  .events-overview-skeleton__category-text {
+    @apply flex flex-col gap-4;
+  }
+
+  .events-overview-skeleton__category-title {
+    @apply h-8 max-w-[13rem] md:max-w-[16rem];
+  }
+
+  .events-overview-skeleton__category-badge {
+    @apply h-5 w-28;
+  }
+
+  .events-overview-skeleton__category-arrow {
+    @apply mt-auto h-9 w-9 shrink-0 rounded-full;
+  }
+
+  .events-overview-skeleton__category-image {
+    @apply aspect-square h-42 shrink-0 md:h-52 lg:h-72;
+  }
+
+  .events-overview-skeleton__heading-wrap {
+    @apply mb-0 flex justify-center;
+  }
+
+  .events-overview-skeleton__heading {
+    @apply mb-8 h-10 w-44 rounded-lg md:h-11 md:w-52 lg:h-12 lg:w-60;
+  }
+
+  .events-overview-skeleton__calendar-section {
+    @apply py-8 md:py-10 lg:py-12;
+  }
+
+  .events-overview-skeleton__calendar-layout {
+    @apply flex flex-col gap-4 md:flex-row md:gap-8 lg:gap-10;
+  }
+
+  .events-overview-skeleton__calendar-widget {
+    @apply border-glacier-mist-900 flex w-full shrink-0 flex-col gap-5 rounded-lg border bg-white p-6 shadow-sm md:w-64 lg:w-69 xl:w-79;
+  }
+
+  .events-overview-skeleton__calendar-header {
+    @apply grid grid-cols-3 items-center gap-2;
+  }
+
+  .events-overview-skeleton__calendar-nav {
+    @apply h-7 w-7 rounded-sm;
+
+    &:first-child {
+      @apply justify-self-start;
+    }
+
+    &:last-child {
+      @apply justify-self-end;
+    }
+  }
+
+  .events-overview-skeleton__calendar-month {
+    @apply h-5 w-28 justify-self-center rounded-md;
+  }
+
+  .events-overview-skeleton__calendar-dow {
+    @apply grid grid-cols-7 gap-1;
+  }
+
+  .events-overview-skeleton__calendar-dow-cell {
+    @apply mx-auto h-3 w-5 rounded-sm;
+  }
+
+  .events-overview-skeleton__calendar-grid {
+    @apply grid grid-cols-7 gap-y-2;
+  }
+
+  .events-overview-skeleton__calendar-day {
+    @apply mx-auto aspect-square w-8 max-w-full rounded-md;
+  }
+
+  .events-overview-skeleton__list {
+    @apply flex min-h-0 flex-1 flex-col gap-3;
+  }
+
+  .events-overview-skeleton__list-item {
+    @apply border-glacier-mist-900 flex flex-col gap-4 rounded-lg border bg-white p-6 shadow-sm md:p-8;
+  }
+
+  .events-overview-skeleton__list-header {
+    @apply flex flex-wrap items-center gap-4;
+  }
+
+  .events-overview-skeleton__list-title {
+    @apply h-7 min-w-0 flex-1 rounded-md;
+  }
+
+  .events-overview-skeleton__list-badges {
+    @apply flex shrink-0 flex-wrap gap-2;
+  }
+
+  .events-overview-skeleton__list-badge {
+    @apply h-6 w-28 rounded-md;
+
+    &--narrow {
+      @apply w-20;
+    }
+  }
+
+  .events-overview-skeleton__list-meta {
+    @apply flex flex-row flex-wrap items-start gap-3 md:gap-5 lg:gap-7;
+  }
+
+  .events-overview-skeleton__list-meta-chunk {
+    @apply h-5 w-32 rounded-sm;
+
+    &--short {
+      @apply w-24;
+    }
+
+    &--medium {
+      @apply w-28;
+    }
+  }
+
+  /* --- Event Calendar Section --- */
+  .event-calendar-section {
+    @apply py-8 md:py-10 lg:py-12;
+  }
+
+  .event-calendar-section__heading {
+    @apply datum-text-2xl mb-8 font-medium text-white;
+  }
+
+  .event-calendar-section__layout {
+    @apply flex flex-col gap-4 md:flex-row md:gap-8 lg:gap-10;
+  }
+
+  /* Calendar widget */
+  .event-calendar-widget {
+    @apply border-glacier-mist-900 w-full shrink-0 rounded-lg border bg-white p-8;
+    @apply w-full md:w-64 lg:w-69 xl:w-79;
+  }
+
+  .event-calendar-widget__header {
+    @apply mb-6 flex items-center justify-between pt-1;
+  }
+
+  .event-calendar-widget__month-label {
+    @apply text-midnight-fjord datum-text-base font-semibold;
+  }
+
+  .event-calendar-widget__nav-btn {
+    @apply border-glacier-mist-900 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm border opacity-50 transition-opacity hover:opacity-100;
+  }
+
+  .event-calendar-widget__nav-btn:disabled {
+    @apply cursor-not-allowed opacity-20 hover:opacity-20;
+  }
+
+  .event-calendar-widget__nav-btn svg {
+    @apply text-midnight-fjord;
+  }
+
+  .event-calendar-widget__dow-row {
+    @apply grid grid-cols-7;
+  }
+
+  .event-calendar-widget__dow {
+    @apply datum-text-xs text-app---dark---utility-3 text-center;
+    @apply h-5.25;
+  }
+
+  .event-calendar-widget__grid {
+    @apply grid grid-cols-7 gap-y-2;
+  }
+
+  .event-calendar-widget__day {
+    @apply text-midnight-fjord datum-text-sm flex aspect-square cursor-default items-center justify-center rounded-md transition-colors duration-150;
+  }
+
+  .event-calendar-widget__day.day--other-month {
+    @apply text-app---dark---utility-2 opacity-50;
+  }
+
+  .event-calendar-widget__day.day--has-events {
+    @apply bg-aurora-moss text-midnight-fjord cursor-pointer rounded-full;
+  }
+
+  .event-calendar-widget__day.day--selected {
+    @apply bg-midnight-fjord!;
+    @apply rounded-full text-white;
+  }
+
+  .event-calendar-widget__day.day--today {
+    @apply border-glacier-mist-900 rounded-full border;
+  }
+
+  /* Event list (right column) */
+  .event-calendar-list {
+    @apply flex flex-1 flex-col gap-3;
+  }
+
+  .event-calendar-list__empty {
+    @apply datum-text-sm text-white/60;
+  }
+
+  .event-calendar-list__item {
+    @apply border-glacier-mist-900 flex flex-col gap-4 rounded-lg border bg-white p-6 md:p-8;
+  }
+
+  /**
+   * When the row is a single recording trigger, padding on the item left a non-clickable band.
+   * Move inset spacing onto the button so the full card is the hit target.
+   */
+  .event-calendar-list__item:has(> .event-calendar-list__recording-trigger) {
+    @apply p-0;
+  }
+
+  .event-calendar-list__item:has(> .event-calendar-list__recording-trigger)
+    .event-calendar-list__recording-trigger {
+    @apply box-border block w-full rounded-lg p-6 text-left md:p-8;
+  }
+
+  .event-calendar-list__item.item--external {
+    @apply opacity-80;
+  }
+
+  .event-calendar-list__item-header {
+    @apply flex flex-col items-start gap-4 md:flex-row md:items-center;
+  }
+
+  .event-calendar-list__item-name {
+    @apply text-midnight-fjord datum-text-xl flex-1 font-semibold;
+  }
+
+  .event-calendar-list__badges {
+    @apply flex shrink-0 flex-wrap gap-2;
+  }
+
+  .event-calendar-list__item-meta {
+    @apply flex flex-row items-start gap-3 md:gap-5 lg:gap-7;
+  }
+
+  .event-calendar-list__meta-item {
+    @apply text-app---dark---utility-4 datum-text-sm flex shrink-0 items-center gap-1.5 md:gap-2.5;
+  }
+
+  .event-calendar-list__meta-item svg {
+    @apply text-app---dark---utility-4 shrink-0;
+  }
+
+  /* Expanded event item (when calendar day is selected) */
+  .event-calendar-list__item.item--expanded {
+    @apply p-6 md:p-8 lg:p-10;
+  }
+
+  .event-calendar-list__item-collapsed {
+    @apply flex flex-col gap-4;
+  }
+
+  .event-calendar-list__item-expanded {
+    @apply flex flex-col gap-6 md:flex-row md:gap-8 lg:gap-10;
+  }
+
+  .event-calendar-list__expanded-body {
+    @apply flex flex-1 flex-col gap-6 md:gap-8;
+    @apply min-w-0 break-words;
+  }
+
+  .event-calendar-list__expanded-title {
+    @apply text-midnight-fjord datum-text-2xl font-semibold;
+  }
+
+  .event-calendar-list__expanded-section {
+    @apply flex flex-col gap-4 md:gap-5;
+  }
+
+  .event-calendar-list__expanded-heading {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .event-calendar-list__expanded-description {
+    @apply text-midnight-fjord min-w-0 break-words;
+  }
+
+  .event-calendar-list__expanded-agenda {
+    @apply list-disc pl-6;
+  }
+
+  .event-calendar-list__expanded-agenda li {
+    @apply text-midnight-fjord datum-text-base mb-2 break-words md:mb-2.5;
+  }
+
+  .event-calendar-list__expanded-sidebar {
+    @apply flex shrink-0 flex-col items-start gap-4 md:gap-5;
+  }
+
+  .event-calendar-list__expanded-cover {
+    @apply overflow-hidden rounded-sm;
+    @apply w-full max-w-47;
+    @apply aspect-square;
+  }
+
+  .event-calendar-list__expanded-cover img {
+    @apply h-full w-full object-cover;
+  }
+
+  .event-calendar-list__expanded-meta {
+    @apply flex flex-col gap-2.5;
+  }
+
+  .event-calendar-list__expanded-meta-row {
+    @apply datum-text-sm flex items-center gap-2.5;
+    @apply text-app---dark---utility-3;
+  }
+
+  .event-calendar-list__expanded-meta-row svg {
+    @apply text-app---dark---utility-3 shrink-0;
+  }
+
+  .event-calendar-list__register-btn {
+    @apply bg-pine-forge datum-text-sm inline-flex items-center gap-2 rounded-md px-5 py-3 font-semibold text-white no-underline transition-opacity hover:opacity-90;
+  }
+
+  .event-calendar-list__zoom-link {
+    @apply text-canyon-clay---links datum-text-sm underline;
+  }
+
+  /* --- Events Secondary Nav --- */
+  .events-secondary-nav {
+    @apply flex justify-center;
+  }
+
+  /* Mobile: Alpine dropdown; palette matches .events-secondary-nav__tab / __tab--active */
+  .events-secondary-nav-mobile {
+    @apply relative mx-auto block w-full max-w-lg md:hidden;
+  }
+
+  .events-secondary-nav-mobile-trigger {
+    @apply border-blush-quartz flex w-full cursor-pointer items-center gap-3 rounded-full border-2 bg-white px-5 py-3 text-left;
+    @apply hover:bg-glacier-mist-700;
+    @apply focus-visible:ring-midnight-fjord focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+  }
+
+  .events-secondary-nav-mobile-label {
+    @apply datum-text-base text-app---dark---utility-4 flex-1;
+  }
+
+  .events-secondary-nav-mobile-selected {
+    @apply datum-text-base text-midnight-fjord shrink-0 font-semibold;
+  }
+
+  .events-secondary-nav-mobile-chevron {
+    @apply text-midnight-fjord flex h-2.5 w-2.5 shrink-0 items-center justify-center transition-transform duration-200;
+
+    &--open {
+      @apply rotate-180;
+    }
+  }
+
+  .events-secondary-nav-mobile-dropdown {
+    @apply border-blush-quartz absolute top-full right-0 left-0 z-50 mt-2 rounded-lg border-2 bg-white py-2 shadow-sm;
+  }
+
+  .events-secondary-nav-mobile-list {
+    @apply flex flex-col;
+  }
+
+  .events-secondary-nav-mobile-link {
+    @apply text-midnight-fjord datum-text-base mx-2 flex items-center gap-2 rounded-md px-4 py-3 no-underline transition-colors duration-150;
+    @apply hover:bg-glacier-mist-700;
+
+    &--active {
+      @apply bg-blush-quartz text-midnight-fjord;
+      @apply hover:bg-blush-quartz;
+    }
+  }
+
+  .events-secondary-nav__list {
+    @apply m-0 hidden list-none flex-wrap p-0 md:flex;
+  }
+
+  .events-secondary-nav__tab {
+    @apply text-midnight-fjord datum-text-base border-blush-quartz inline-flex items-center border-2 bg-white px-6 py-2 font-normal no-underline transition-colors duration-150;
+    @apply -mr-0.5;
+
+    @apply hover:bg-glacier-mist-700;
+  }
+
+  .events-secondary-nav__tab--first {
+    @apply rounded-l-full;
+  }
+
+  .events-secondary-nav__tab--last {
+    @apply mr-0 rounded-r-full;
+  }
+
+  .events-secondary-nav__tab--active {
+    @apply bg-blush-quartz border-blush-quartz text-midnight-fjord hover:bg-[#E3C4C4];
+  }
+
+  /* --- Event Series Card (category detail pages) --- */
+  .event-series-card {
+    @apply border-glacier-mist-900 flex flex-col gap-8 rounded-lg border bg-white p-6 md:flex-row md:gap-10 md:p-10;
+  }
+
+  .event-series-card__body {
+    @apply flex flex-1 flex-col gap-8;
+    @apply min-w-0;
+  }
+
+  .event-series-card__title {
+    @apply text-midnight-fjord datum-text-3xl font-semibold;
+  }
+
+  /* Overlay description (markdown); long URLs / tokens must wrap */
+  .event-series-card__body-md {
+    @apply text-midnight-fjord min-w-0 break-words;
+  }
+
+  .event-series-card__section {
+    @apply flex flex-col gap-5;
+  }
+
+  .event-series-card__section-label {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .event-series-card__agenda {
+    @apply m-0 list-disc p-0 pl-6;
+  }
+
+  .event-series-card__agenda li {
+    @apply text-midnight-fjord datum-text-base mb-2.5 break-words;
+  }
+
+  /* Rendered from Luma `description_md` via marked + datum-prose */
+  .event-series-card__agenda-md {
+    @apply text-midnight-fjord min-w-0 break-words;
+
+    :where(h1, h2, h3, h4, h5, h6) {
+      @apply text-midnight-fjord;
+    }
+
+    /* Hide leading intro line often duplicated under the “Agenda” heading */
+    & > p:first-of-type {
+      @apply hidden;
+    }
+  }
+
+  .event-series-card__speakers {
+    @apply flex flex-col gap-5;
+  }
+
+  .event-series-card__speaker {
+    @apply flex items-center gap-4;
+  }
+
+  .event-series-card__speaker-avatar {
+    @apply h-12 w-12 shrink-0 rounded-lg object-cover;
+  }
+
+  .event-series-card__speaker-name {
+    @apply text-midnight-fjord datum-text-base font-semibold;
+  }
+
+  .event-series-card__speaker-title {
+    @apply text-midnight-fjord datum-text-sm opacity-60;
+  }
+
+  .event-series-card__sidebar {
+    @apply flex shrink-0 flex-col gap-5;
+  }
+
+  .event-series-card__cover {
+    @apply overflow-hidden rounded-sm;
+    @apply h-47 w-47;
+  }
+
+  .event-series-card__cover img {
+    @apply h-full w-full object-cover;
+  }
+
+  .event-series-card__meta {
+    @apply flex flex-col gap-2.5;
+  }
+
+  .event-series-card__meta-row {
+    @apply text-app---dark---utility-4 datum-text-sm flex items-center gap-2.5;
+  }
+
+  .event-series-card__actions {
+    @apply flex flex-col items-start gap-4;
+  }
+
+  .event-series-card__zoom-link {
+    @apply text-canyon-clay---links hover:text-canyon-clay---links/80 datum-text-sm underline;
+  }
+
+  .event-series-card__video-label {
+    @apply text-midnight-fjord datum-text-sm mb-2 font-medium;
+  }
+
+  .event-series-card__video-embed {
+    @apply relative aspect-[16/9] overflow-hidden rounded-lg;
+  }
+
+  .event-series-card__video-embed iframe {
+    @apply absolute inset-0 h-full w-full;
+  }
 }

@@ -1,0 +1,46 @@
+@import './base.css';
+@import './components-events.css';
+
+@layer components {
+  .event-series-secondary-nav-wrapper {
+    @apply bg-glacier-mist-700 px-6 pt-6 md:px-10 md:pt-10;
+  }
+
+  /* Wraps the main content section on category pages */
+  .event-series-content {
+    /* intentionally empty — spacing handled by section--block--pad */
+  }
+
+  .event-series-layout {
+    @apply pb-20;
+  }
+
+  .event-series-tabs-container {
+    @apply flex flex-col gap-8;
+  }
+
+  .event-series-tabs {
+    @apply flex gap-4 md:gap-6 lg:gap-8;
+  }
+
+  .event-series-tab {
+    @apply text-midnight-fjord/50 hover:text-midnight-fjord datum-text-base relative cursor-pointer pb-3 font-medium transition-colors duration-150;
+  }
+
+  .event-series-tab--active {
+    @apply text-midnight-fjord;
+  }
+
+  .event-series-tab--active::after {
+    content: '';
+    @apply bg-midnight-fjord absolute right-0 bottom-0 left-0 h-0.5;
+  }
+
+  .event-series-list {
+    @apply flex flex-col gap-6;
+  }
+
+  .event-series-empty {
+    @apply text-midnight-fjord/60 py-8 text-center text-base;
+  }
+}

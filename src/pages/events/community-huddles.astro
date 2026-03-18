@@ -1,0 +1,88 @@
+---
+// src/pages/events/community-huddles.astro
+export const prerender = false;
+
+import '@v1/styles/page-event-series.css';
+import { fetchLumaEvents, isEventCommunityHuddle } from '@libs/luma';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import EventsSecondaryNav from '@components/events/EventsSecondaryNav.astro';
+import EventSeriesCard from '@components/events/EventSeriesCard.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+
+const page = await getCollectionEntry('pages', 'community-huddles');
+
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Alt Cloud Meetups';
+const description = fm.description;
+
+const { upcoming, past } = await fetchLumaEvents();
+
+const communityHuddlesUpcoming = upcoming.filter(isEventCommunityHuddle);
+const communityHuddlesPast = past.filter(isEventCommunityHuddle);
+---
+
+<Layout title={title} description={description} bodyClass="page-event-series" meta={meta}>
+  <section class="datum-container">
+    <Hero class="light pb-0" title={title} description={description} />
+
+    <section
+      class="event-series-content section--block section--block--pad bg-glacier-mist-700 pt-0"
+    >
+      <div class="max-width">
+        <div>
+          <EventsSecondaryNav />
+        </div>
+
+        <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
+          <div class="event-series-tabs">
+            <button
+              type="button"
+              class="event-series-tab"
+              x-bind:class="{ 'event-series-tab--active': activeTab === 'upcoming' }"
+              x-on:click="activeTab = 'upcoming'">Upcoming</button
+            >
+            <button
+              type="button"
+              class="event-series-tab"
+              x-bind:class="{ 'event-series-tab--active': activeTab === 'past' }"
+              x-on:click="activeTab = 'past'">Past</button
+            >
+          </div>
+
+          <div x-show="activeTab === 'upcoming'" class="event-series-list">
+            {
+              communityHuddlesUpcoming.length > 0 ? (
+                communityHuddlesUpcoming.map((event) => (
+                  <EventSeriesCard event={event} isPast={false} showVideo={false} />
+                ))
+              ) : (
+                <p class="event-series-empty">
+                  No upcoming Community Huddles at the moment. Check back soon!
+                </p>
+              )
+            }
+          </div>
+
+          <div x-show="activeTab === 'past'" class="event-series-list">
+            {
+              communityHuddlesPast.length > 0 ? (
+                communityHuddlesPast.map((event) => (
+                  <EventSeriesCard event={event} isPast={true} showVideo={true} />
+                ))
+              ) : (
+                <p class="event-series-empty">No past Community Huddles recorded yet.</p>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Footer showIllustration={false} showBackground={false} showCTA={false} />
+  </section>
+</Layout>

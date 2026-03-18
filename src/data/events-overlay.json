@@ -1,0 +1,13 @@
+{
+  "_comment": "Keyed by Luma event api_id. Add youtubeUrl for past event recordings. Add speakers for featured speakers.",
+  "evt-example-api-id": {
+    "youtubeUrl": "https://www.youtube.com/embed/EXAMPLE",
+    "speakers": [
+      {
+        "name": "Example Speaker",
+        "title": "Role, Company",
+        "avatarUrl": "/images/speakers/example.jpg"
+      }
+    ]
+  }
+}

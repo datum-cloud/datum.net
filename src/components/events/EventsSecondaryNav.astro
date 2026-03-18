@@ -1,0 +1,44 @@
+---
+// src/components/events/EventsSecondaryNav.astro
+// Secondary tab navigation between event category pages
+
+const currentPath = Astro.url.pathname;
+
+const tabs = [
+  { label: 'All events', href: '/events/' },
+  { label: 'Community Huddles', href: '/events/community-huddles/' },
+  { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups/' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/events/') {
+    return currentPath === '/events/' || currentPath === '/events';
+  }
+  return currentPath.startsWith(href);
+}
+---
+
+<nav class="events-secondary-nav" aria-label="Event categories">
+  <ul class="events-secondary-nav__list">
+    {
+      tabs.map((tab, index) => (
+        <li>
+          <a
+            href={tab.href}
+            class:list={[
+              'events-secondary-nav__tab',
+              {
+                'events-secondary-nav__tab--active': isActive(tab.href),
+                'events-secondary-nav__tab--first': index === 0,
+                'events-secondary-nav__tab--last': index === tabs.length - 1,
+              },
+            ]}
+            aria-current={isActive(tab.href) ? 'page' : undefined}
+          >
+            {tab.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

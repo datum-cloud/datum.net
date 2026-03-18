@@ -1,0 +1,232 @@
+---
+// src/components/events/EventSeriesCard.astro
+// Expanded event card for category detail pages
+
+import { Image } from 'astro:assets';
+import type { LumaEvent, LumaHost } from '@libs/luma';
+import { isEventRecurringSeries } from '@libs/luma';
+import { getEventOverlay } from '@libs/events-overlay';
+import { formatDate, formatTime } from '@utils/dateUtils';
+import Icon from '@components/Icon.astro';
+import EventBadge from '@components/events/EventBadge.astro';
+
+interface Props {
+  event: LumaEvent;
+  hosts?: LumaHost[];
+  isPast?: boolean;
+  showVideo?: boolean;
+}
+
+const { event, hosts = [], isPast = false, showVideo = false } = Astro.props as Props;
+
+const overlay = getEventOverlay(event.api_id);
+const isOnline = !event.geo_address_json?.city_state || !!event.meeting_url;
+const locationText = event.geo_address_json?.city_state || 'Virtual';
+const isRecurring = isEventRecurringSeries(event);
+
+// Only allow YouTube embed URLs to prevent arbitrary iframe injection
+const safeYoutubeUrl =
+  overlay?.youtubeUrl?.startsWith('https://www.youtube.com/embed/') ||
+  overlay?.youtubeUrl?.startsWith('https://youtube.com/embed/')
+    ? overlay.youtubeUrl
+    : null;
+
+// Parse agenda items from description_md
+// Looks for ## Agenda section; falls back to full content
+function extractAgendaItems(md: string | undefined): string[] {
+  if (!md) return [];
+  const agendaMatch = md.match(/##\s*Agenda\s*\n([\s\S]*?)(?=\n##|\n---|$)/i);
+  const agendaText = agendaMatch ? agendaMatch[1] : md;
+  return agendaText
+    .split('\n')
+    .map((line) => line.replace(/^[-*•]\s*/, '').trim())
+    .filter((line) => line.length > 0 && !line.startsWith('#'))
+    .slice(0, 8);
+}
+
+const agendaItems = extractAgendaItems(event.description_md);
+
+const formattedDate = formatDate(
+  event.start_at,
+  'en-US',
+  { weekday: 'short', day: 'numeric', month: 'short' },
+  event.timezone
+);
+
+// Pass timeZoneName: undefined so formatTime suppresses the auto-appended abbreviation.
+// We extract the abbreviation ourselves and append it after the time string.
+const formattedTime = formatTime(
+  event.start_at,
+  'en-US',
+  { hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: undefined },
+  event.timezone
+);
+
+// Get timezone abbreviation
+const timezoneAbbr = event.timezone
+  ? (new Intl.DateTimeFormat('en-US', { timeZoneName: 'short', timeZone: event.timezone })
+      .formatToParts(new Date(event.start_at))
+      .find((p) => p.type === 'timeZoneName')?.value ?? '')
+  : '';
+---
+
+<article class="event-series-card">
+  <div class="event-series-card__body">
+    <h3 class="event-series-card__title">{event.name}</h3>
+
+    {
+      agendaItems.length > 0 && (
+        <div class="event-series-card__section">
+          <h4 class="event-series-card__section-label">{isPast ? 'What we covered' : 'Agenda'}</h4>
+          <ul class="event-series-card__agenda">
+            {agendaItems.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      hosts.length > 0 && (
+        <div class="event-series-card__section">
+          <h4 class="event-series-card__section-label">Hosted by</h4>
+          <div class="event-series-card__speakers">
+            {hosts.map((host) => (
+              <div class="event-series-card__speaker">
+                {host.avatar_url ? (
+                  <Image
+                    src={host.avatar_url}
+                    alt={host.name}
+                    width={48}
+                    height={48}
+                    class="event-series-card__speaker-avatar"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="event-series-card__speaker-avatar event-series-card__speaker-avatar--placeholder">
+                    {host.name.charAt(0)}
+                  </div>
+                )}
+                <div>
+                  <p class="event-series-card__speaker-name">{host.name}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    {
+      !hosts.length && overlay?.speakers && overlay.speakers.length > 0 && (
+        <div class="event-series-card__section">
+          <h4 class="event-series-card__section-label">Featuring</h4>
+          <div class="event-series-card__speakers">
+            {overlay.speakers.map((speaker) => (
+              <div class="event-series-card__speaker">
+                {speaker.avatarUrl ? (
+                  <Image
+                    src={speaker.avatarUrl}
+                    alt={speaker.name}
+                    width={48}
+                    height={48}
+                    class="event-series-card__speaker-avatar"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="event-series-card__speaker-avatar event-series-card__speaker-avatar--placeholder">
+                    {speaker.name.charAt(0)}
+                  </div>
+                )}
+                <div>
+                  <p class="event-series-card__speaker-name">{speaker.name}</p>
+                  <p class="event-series-card__speaker-title">{speaker.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="event-series-card__sidebar">
+    {
+      event.cover_url && (
+        <div class="event-series-card__cover">
+          <Image
+            src={event.cover_url}
+            alt={event.name}
+            width={188}
+            height={188}
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      )
+    }
+
+    <div class="event-series-card__meta">
+      {isRecurring && <EventBadge type="recurring-series" />}
+
+      <div class="event-series-card__meta-row">
+        <Icon name="calendar-fold" size="sm" class="text-app---dark---utility-4 shrink-0" />
+        <span>{formattedDate}</span>
+      </div>
+
+      <div class="event-series-card__meta-row">
+        <Icon name="clock" size="sm" class="text-app---dark---utility-4 shrink-0" />
+        <span>{formattedTime}{timezoneAbbr ? ` ${timezoneAbbr}` : ''}</span>
+      </div>
+
+      <div class="event-series-card__meta-row">
+        <Icon
+          name={isOnline ? 'video' : 'map-pin'}
+          size="sm"
+          class="text-app---dark---utility-4 shrink-0"
+        />
+        <span>{locationText}</span>
+      </div>
+    </div>
+
+    {
+      !isPast && (
+        <div class="event-series-card__actions">
+          <a href={event.url} target="_blank" rel="noopener noreferrer" class="btn btn--pine-forge">
+            Register
+            <Icon name="external-link" size="sm" class="ml-1" />
+          </a>
+
+          {event.zoom_meeting_url && (
+            <a
+              href={event.zoom_meeting_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="event-series-card__zoom-link"
+            >
+              Zoom link
+            </a>
+          )}
+        </div>
+      )
+    }
+
+    {
+      isPast && showVideo && safeYoutubeUrl && (
+        <div class="event-series-card__video">
+          <p class="event-series-card__video-label">Watch the recording</p>
+          <div class="event-series-card__video-embed">
+            <iframe
+              src={safeYoutubeUrl}
+              title={`Recording: ${event.name}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )
+    }
+  </div>
+</article>

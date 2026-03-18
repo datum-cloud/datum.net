@@ -15,6 +15,7 @@ import RustIcon from '@v1/assets/icons/rust.svg';
 import TerminaIcon from '@v1/assets/icons/terminal.svg';
 import WorkflowIcon from '@v1/assets/icons/workflow.svg';
 import VisionCheckIcon from '@v1/assets/icons/vision-check.svg';
+import DatumLogoIcon from '@v1/assets/icons/datum-logo.svg';
 import MissionOneIcon from '@v1/assets/icons/1_.svg';
 import MissionTwoIcon from '@v1/assets/icons/2_.svg';
 import MissionThreeIcon from '@v1/assets/icons/3_.svg';
@@ -67,6 +68,8 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <WorkflowIcon class={`${sizeClass} ${className}`} />
   ) : name === 'vision-check' ? (
     <VisionCheckIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'datum-logo' ? (
+    <DatumLogoIcon class={`${sizeClass} ${className}`} />
   ) : name === 'mission-1' ? (
     <MissionOneIcon class={`${sizeClass} ${className}`} />
   ) : name === 'mission-2' ? (

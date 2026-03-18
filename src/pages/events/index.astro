@@ -9,7 +9,6 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Card from '@components/events/Card.astro';
-import GlobalSection from '@components/GlobalSection.astro';
 import Skeleton from '@components/events/Skeleton.astro';
 
 const page = await getCollectionEntry('pages', 'events');
@@ -23,15 +22,9 @@ const description = fm.description;
 
 <Layout title={title} description={description} bodyClass="page-events" meta={meta}>
   <section class="datum-container">
-    <Hero
-      class="light pb-30"
-      iconName={fm.iconName}
-      title={title}
-      description={page.body}
-      subtitle={fm.subtitle}
-    />
+    <Hero class="light pb-0" title={title} />
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark">
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">
         <Card server:defer>
           <Skeleton slot="fallback" />
@@ -39,8 +32,6 @@ const description = fm.description;
       </div>
     </div>
 
-    <GlobalSection />
-
-    <Footer />
+    <Footer showIllustration={false} showBackground={false} showCTA={false} />
   </section>
 </Layout>

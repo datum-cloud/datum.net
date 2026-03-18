@@ -1,3 +1,397 @@
 @layer components {
   /* Featured event styles moved to FeaturedEvent.astro component */
+
+  .event-badge {
+    @apply datum-text-xs inline-flex items-center gap-2 rounded-md px-2.5 py-1 font-normal;
+  }
+
+  .event-badge--recurring {
+    background-color: rgba(236, 208, 208, 0.3);
+    @apply text-canyon-clay---links;
+  }
+
+  .event-badge--hosted {
+    background-color: rgba(173, 186, 176, 0.2);
+    @apply text-app---dark---utility-4;
+  }
+
+  .event-badge--attending {
+    @apply bg-amber-100 text-amber-800;
+  }
+
+  .event-badge--saying-hi {
+    @apply bg-green-100 text-green-800;
+  }
+
+  /* --- Event Category Cards (overview page top section) --- */
+  .event-category-card {
+    @apply relative flex min-w-0 flex-1 overflow-hidden rounded-lg no-underline transition-opacity duration-200 hover:opacity-90;
+    box-shadow: 1px 8px 8px 0px rgba(0, 0, 0, 0.02);
+  }
+
+  .event-category-card--clay {
+    @apply bg-canyon-clay---links text-glacier-mist-700;
+  }
+
+  .event-category-card--forest {
+    @apply bg-pine-forge text-glacier-mist-700;
+  }
+
+  .event-category-card__content {
+    @apply z-10 flex flex-1 flex-col justify-between p-6 md:p-8 lg:p-10;
+  }
+
+  .event-category-card__text {
+    @apply flex flex-col gap-4;
+  }
+
+  .event-category-card__title {
+    @apply text-glacier-mist-700 datum-text-2xl leading-tight font-semibold;
+  }
+
+  .event-category-card__badge {
+    @apply text-glacier-mist-700 datum-text-sm inline-flex items-center gap-2.5;
+  }
+
+  .event-category-card__arrow {
+    @apply text-glacier-mist-700/60 mt-auto;
+  }
+
+  .event-category-card__image {
+    @apply relative shrink-0 overflow-hidden;
+    width: 288px;
+    height: 288px;
+  }
+
+  .event-category-card__image img {
+    @apply absolute inset-0 h-full w-full object-cover;
+  }
+
+  /* --- Overview layout --- */
+  .events-overview {
+    @apply flex flex-col;
+  }
+
+  .events-category-cards {
+    @apply mb-12 flex flex-col gap-10 sm:flex-row md:mb-16 lg:mb-20;
+  }
+
+  /* --- Event Calendar Section --- */
+  .event-calendar-section {
+    @apply py-8 md:py-10 lg:py-12;
+  }
+
+  .event-calendar-section__heading {
+    @apply datum-text-2xl mb-8 font-medium text-white;
+  }
+
+  .event-calendar-section__layout {
+    @apply flex flex-col gap-4 md:flex-row md:gap-8 lg:gap-10;
+  }
+
+  /* Calendar widget */
+  .event-calendar-widget {
+    @apply border-glacier-mist-900 w-full shrink-0 rounded-lg border bg-white p-8;
+    @apply w-full md:w-64 lg:w-69 xl:w-79;
+  }
+
+  .event-calendar-widget__header {
+    @apply mb-6 flex items-center justify-between pt-1;
+  }
+
+  .event-calendar-widget__month-label {
+    @apply text-midnight-fjord datum-text-base font-semibold;
+  }
+
+  .event-calendar-widget__nav-btn {
+    @apply border-glacier-mist-900 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm border opacity-50 transition-opacity hover:opacity-100;
+  }
+
+  .event-calendar-widget__nav-btn svg {
+    @apply text-midnight-fjord;
+  }
+
+  .event-calendar-widget__dow-row {
+    @apply grid grid-cols-7;
+  }
+
+  .event-calendar-widget__dow {
+    @apply datum-text-xs text-center;
+    color: var(--color-app---dark---utility-3, #67717c);
+    height: 21px;
+    line-height: 21px;
+  }
+
+  .event-calendar-widget__grid {
+    @apply grid grid-cols-7;
+    row-gap: 8px;
+  }
+
+  .event-calendar-widget__day {
+    @apply text-midnight-fjord datum-text-sm flex cursor-default items-center justify-center rounded-md transition-all duration-150;
+    aspect-ratio: 1;
+  }
+
+  .event-calendar-widget__day.day--other-month {
+    @apply opacity-50;
+    color: var(--color-app---dark---utility-2, #384555);
+  }
+
+  .event-calendar-widget__day.day--has-events {
+    background-color: rgba(230, 245, 159, 0.6);
+    @apply text-midnight-fjord cursor-pointer rounded-full;
+  }
+
+  .event-calendar-widget__day.day--selected {
+    background-color: var(--color-midnight-fjord) !important;
+    @apply rounded-full text-white;
+  }
+
+  .event-calendar-widget__day.day--today {
+    @apply border-glacier-mist-900 rounded-full border;
+  }
+
+  /* Event list (right column) */
+  .event-calendar-list {
+    @apply flex flex-1 flex-col gap-3;
+  }
+
+  .event-calendar-list__empty {
+    @apply datum-text-sm text-white/60;
+  }
+
+  .event-calendar-list__item {
+    @apply border-glacier-mist-900 flex flex-col gap-4 rounded-lg border bg-white p-6 md:p-8;
+  }
+
+  .event-calendar-list__item.item--external {
+    @apply opacity-80;
+  }
+
+  .event-calendar-list__item-header {
+    @apply flex items-center gap-4;
+  }
+
+  .event-calendar-list__item-name {
+    @apply text-midnight-fjord datum-text-xl flex-1 font-semibold;
+  }
+
+  .event-calendar-list__badges {
+    @apply flex shrink-0 flex-wrap gap-2;
+  }
+
+  .event-calendar-list__item-meta {
+    @apply flex flex-row items-start gap-3 md:gap-5 lg:gap-7;
+  }
+
+  .event-calendar-list__meta-item {
+    @apply text-app---dark---utility-4 datum-text-sm flex shrink-0 items-center gap-1.5 md:gap-2.5;
+  }
+
+  .event-calendar-list__meta-item svg {
+    @apply text-app---dark---utility-4 shrink-0;
+  }
+
+  /* Expanded event item (when calendar day is selected) */
+  .event-calendar-list__item.item--expanded {
+    @apply p-6 md:p-8 lg:p-10;
+  }
+
+  .event-calendar-list__item-collapsed {
+    @apply flex flex-col gap-4;
+  }
+
+  .event-calendar-list__item-expanded {
+    @apply flex flex-col gap-6 md:flex-row md:gap-8 lg:gap-10;
+  }
+
+  .event-calendar-list__expanded-body {
+    @apply flex flex-1 flex-col gap-6 md:gap-8;
+    @apply min-w-0 break-words;
+  }
+
+  .event-calendar-list__expanded-title {
+    @apply text-midnight-fjord datum-text-2xl font-semibold;
+  }
+
+  .event-calendar-list__expanded-section {
+    @apply flex flex-col gap-4 md:gap-5;
+  }
+
+  .event-calendar-list__expanded-heading {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .event-calendar-list__expanded-agenda {
+    @apply list-disc pl-6;
+  }
+
+  .event-calendar-list__expanded-agenda li {
+    @apply text-midnight-fjord datum-text-base mb-2 md:mb-2.5;
+  }
+
+  .event-calendar-list__expanded-sidebar {
+    @apply flex shrink-0 flex-col items-start gap-4 md:gap-5;
+  }
+
+  .event-calendar-list__expanded-cover {
+    @apply overflow-hidden rounded-sm;
+    width: 100%;
+    max-width: 188px;
+    aspect-ratio: 1;
+  }
+
+  .event-calendar-list__expanded-cover img {
+    @apply h-full w-full object-cover;
+  }
+
+  .event-calendar-list__expanded-meta {
+    @apply flex flex-col gap-2.5;
+  }
+
+  .event-calendar-list__expanded-meta-row {
+    @apply datum-text-sm flex items-center gap-2.5;
+    color: var(--color-app---dark---utility-3, #67717c);
+  }
+
+  .event-calendar-list__expanded-meta-row svg {
+    @apply shrink-0;
+    color: var(--color-app---dark---utility-3, #67717c);
+  }
+
+  .event-calendar-list__register-btn {
+    @apply bg-pine-forge datum-text-sm inline-flex items-center gap-2 rounded-md px-5 py-3 font-semibold text-white no-underline transition-opacity hover:opacity-90;
+  }
+
+  .event-calendar-list__zoom-link {
+    @apply text-canyon-clay---links datum-text-sm underline;
+  }
+
+  /* --- Events Secondary Nav --- */
+  .events-secondary-nav {
+    @apply mb-8 flex justify-center;
+  }
+
+  .events-secondary-nav__list {
+    @apply m-0 flex list-none flex-wrap p-0;
+  }
+
+  .events-secondary-nav__tab {
+    @apply text-midnight-fjord datum-text-base border-blush-quartz inline-flex items-center border-2 bg-white px-6 py-2 font-normal no-underline transition-colors duration-150;
+    margin-right: -2px;
+  }
+
+  .events-secondary-nav__tab:hover {
+    background-color: rgba(236, 208, 208, 0.3);
+  }
+
+  .events-secondary-nav__tab--first {
+    border-radius: 1000px 0 0 1000px;
+  }
+
+  .events-secondary-nav__tab--last {
+    border-radius: 0 1000px 1000px 0;
+    margin-right: 0;
+  }
+
+  .events-secondary-nav__tab--active {
+    @apply bg-blush-quartz border-blush-quartz text-midnight-fjord;
+  }
+
+  /* --- Event Series Card (category detail pages) --- */
+  .event-series-card {
+    @apply border-glacier-mist-900 flex flex-col gap-8 rounded-lg border bg-white p-6 md:flex-row md:gap-10 md:p-10;
+  }
+
+  .event-series-card__body {
+    @apply flex flex-1 flex-col gap-8;
+    min-width: 0;
+  }
+
+  .event-series-card__title {
+    @apply text-midnight-fjord datum-text-3xl font-semibold;
+  }
+
+  .event-series-card__section {
+    @apply flex flex-col gap-5;
+  }
+
+  .event-series-card__section-label {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .event-series-card__agenda {
+    @apply m-0 list-disc p-0 pl-6;
+  }
+
+  .event-series-card__agenda li {
+    @apply text-midnight-fjord datum-text-base mb-2.5 break-words;
+  }
+
+  .event-series-card__speakers {
+    @apply flex flex-col gap-5;
+  }
+
+  .event-series-card__speaker {
+    @apply flex items-center gap-4;
+  }
+
+  .event-series-card__speaker-avatar {
+    @apply h-12 w-12 shrink-0 rounded-lg object-cover;
+  }
+
+  .event-series-card__speaker-avatar--placeholder {
+    @apply bg-midnight-fjord/10 text-midnight-fjord flex items-center justify-center text-sm font-semibold;
+  }
+
+  .event-series-card__speaker-name {
+    @apply text-midnight-fjord datum-text-base font-semibold;
+  }
+
+  .event-series-card__speaker-title {
+    @apply text-midnight-fjord datum-text-sm opacity-60;
+  }
+
+  .event-series-card__sidebar {
+    @apply flex shrink-0 flex-col gap-5;
+  }
+
+  .event-series-card__cover {
+    @apply overflow-hidden rounded-sm;
+    width: 188px;
+    height: 188px;
+  }
+
+  .event-series-card__cover img {
+    @apply h-full w-full object-cover;
+  }
+
+  .event-series-card__meta {
+    @apply flex flex-col gap-2.5;
+  }
+
+  .event-series-card__meta-row {
+    @apply text-app---dark---utility-4 datum-text-sm flex items-center gap-2.5;
+  }
+
+  .event-series-card__actions {
+    @apply flex flex-col items-start gap-4;
+  }
+
+  .event-series-card__zoom-link {
+    @apply text-canyon-clay---links hover:text-canyon-clay---links/80 datum-text-sm underline;
+  }
+
+  .event-series-card__video-label {
+    @apply text-midnight-fjord datum-text-sm mb-2 font-medium;
+  }
+
+  .event-series-card__video-embed {
+    @apply relative overflow-hidden rounded-lg;
+    aspect-ratio: 16 / 9;
+  }
+
+  .event-series-card__video-embed iframe {
+    @apply absolute inset-0 h-full w-full;
+  }
 }

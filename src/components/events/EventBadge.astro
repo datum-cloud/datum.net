@@ -1,0 +1,31 @@
+---
+// src/components/events/EventBadge.astro
+// Reusable badge pill for event type labels
+
+type BadgeType = 'recurring-series' | 'datum-hosted' | 'external-attending' | 'external-saying-hi';
+
+interface Props {
+  type: BadgeType;
+  class?: string;
+}
+
+const { type, class: className = '' } = Astro.props as Props;
+
+const labels: Record<BadgeType, string> = {
+  'recurring-series': 'Recurring Series',
+  'datum-hosted': 'Datum Hosted',
+  'external-attending': "We'll be there",
+  'external-saying-hi': 'Come find us and say hi!',
+};
+
+const colorClasses: Record<BadgeType, string> = {
+  'recurring-series': 'event-badge--recurring',
+  'datum-hosted': 'event-badge--hosted',
+  'external-attending': 'event-badge--attending',
+  'external-saying-hi': 'event-badge--saying-hi',
+};
+---
+
+<span class={`event-badge ${colorClasses[type]} ${className}`}>
+  {labels[type]}
+</span>

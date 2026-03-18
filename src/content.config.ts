@@ -296,6 +296,40 @@ const download = defineCollection({
     }),
 });
 
+// Define events collections
+const events = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/events' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      apiId: z.string(),
+      startAt: z.string(),
+      endAt: z.string(),
+      timezone: z.string(),
+      url: z.string(),
+      coverImage: image().optional(),
+      geoAddress: z
+        .object({
+          address: z.string().optional(),
+          city: z.string().optional(),
+          region: z.string().optional(),
+          country: z.string().optional(),
+          cityState: z.string().optional(),
+          fullAddress: z.string().optional(),
+          description: z.string().optional(),
+        })
+        .optional(),
+      geoLatitude: z.union([z.string(), z.number()]).optional(),
+      geoLongitude: z.union([z.string(), z.number()]).optional(),
+      meetingUrl: z.string().optional(),
+      zoomMeetingUrl: z.string().optional(),
+      youtubeUrl: z.string().optional(),
+      slidesUrl: z.string().optional(),
+      tags: z.array(z.string()).optional(),
+      eventType: z.enum(['community-huddle', 'alt-cloud-meetup', 'external', 'other']),
+    }),
+});
+
 export const collections = {
   pages,
   about,
@@ -307,4 +341,5 @@ export const collections = {
   pricing,
   faq,
   download,
+  events,
 };

@@ -3,11 +3,11 @@
 /**
  * Cache warmup script — pre-populates .cache/*.json before build.
  *
- * Fetches from Luma, GitHub (stargazer/roadmaps/changelogs), and Strapi,
+ * Fetches from GitHub (stargazer/roadmaps/changelogs), and Strapi,
  * then writes to .cache/ so the build can use cached data instead of hitting APIs.
  *
  * Run: npm run build:cache (or tsx scripts/warmup-cache.ts)
- * Env: LUMA_API_KEY, STRAPI_URL, STRAPI_TOKEN, APP_ID, APP_PRIVATE_KEY, APP_INSTALLATION_ID
+ * Env: STRAPI_URL, STRAPI_TOKEN, APP_ID, APP_PRIVATE_KEY, APP_INSTALLATION_ID
  */
 
 import { loadEnv } from 'vite';
@@ -25,17 +25,6 @@ Object.assign(process.env, env);
 
 async function warmup(): Promise<void> {
   console.log('[warmup-cache] Starting cache warmup...\n');
-
-  // Luma
-  try {
-    const { fetchLumaEvents } = await import('../src/libs/luma/index');
-    const luma = await fetchLumaEvents();
-    console.log(
-      `[warmup-cache] Luma: ${luma.upcoming.length} upcoming, ${luma.past.length} past events`
-    );
-  } catch (err) {
-    console.warn('[warmup-cache] Luma failed:', err instanceof Error ? err.message : err);
-  }
 
   // Stargazer / GitHub (datum.ts)
   try {

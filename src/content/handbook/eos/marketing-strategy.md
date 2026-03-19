@@ -37,4 +37,3 @@ This tool captures (at the highest level) the customers we are trying to serve, 
 ## Guarantee (WIP)
 
 Give us 90 days to prove how a private network can accelerate your business, or it's free for a year. 
-- Notable traction in at least two ecosystem verticals (e.g. AI infra, data, security, etc)

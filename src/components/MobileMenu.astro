@@ -154,9 +154,18 @@ const mainNav = navData.main;
                             <a
                               href={subItem.href}
                               class="mobile-dropdown-link"
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
                               x-on:click="closeMenu()"
                             >
                               <span>{subItem.text}</span>
+                              {subItem.isExternal && (
+                                <Icon
+                                  name="external-link"
+                                  size="sm"
+                                  class="nav-dropdown-external-icon"
+                                />
+                              )}
                             </a>
                           </li>
                         ))}

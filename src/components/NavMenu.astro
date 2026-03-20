@@ -130,7 +130,16 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
                                   <Icon name={subItem.icon} size="md" />
                                 </div>
                               )}
-                              <span>{subItem.text}</span>
+                              <span class="inline-flex items-center gap-1.5">
+                                {subItem.text}
+                                {subItem.isExternal && (
+                                  <Icon
+                                    name="external-link"
+                                    size="sm"
+                                    class="nav-dropdown-external-icon"
+                                  />
+                                )}
+                              </span>
                             </a>
                           </li>
                         );

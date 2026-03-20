@@ -82,6 +82,10 @@
     @apply bg-canyon-clay/20 text-canyon-clay---links flex h-8.5 w-8.5 items-center justify-center rounded;
   }
 
+  .nav-dropdown-external-icon {
+    @apply text-midnight-fjord/30;
+  }
+
   .nav-dropdown-link span {
     @apply datum-text-lg font-medium;
   }
@@ -251,7 +255,7 @@
   }
 
   .mobile-dropdown-link {
-    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-text-base block transition-colors duration-200;
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-text-base inline-flex items-center gap-1.5 transition-colors duration-200;
   }
 
   .mobile-menu-footer {

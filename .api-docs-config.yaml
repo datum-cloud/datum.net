@@ -7,13 +7,13 @@ sources:
   - name: milo
     org: datum-cloud
     repo: milo
-    version: v0.21.0
+    version: v0.23.0
 
   # Network Services Operator - Networking APIs (Domains, HTTPProxy)
   - name: network-services-operator
     org: datum-cloud
     repo: network-services-operator
-    version: v0.19.1
+    version: v0.21.0
 
   # Telemetry Services Operator - Observability APIs (ExportPolicy)
   - name: telemetry-services-operator

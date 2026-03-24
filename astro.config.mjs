@@ -22,6 +22,7 @@ const lucideCopyIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" he
 
 const expressiveCodeConfig = {
   themes: ['github-light', 'github-dark'],
+  useDarkModeMediaQuery: false,
   styleOverrides: {
     borderRadius: '0.5rem',
     frames: {

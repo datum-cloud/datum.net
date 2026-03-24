@@ -61,6 +61,9 @@ const description = fm.description || '';
         <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
         <div x-show="hasAshbyJobId" x-cloak>
           <div id="ashby_embed"></div>
+          <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
+            <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+          </div>
         </div>
       </div>
     </section>
@@ -74,7 +77,23 @@ const description = fm.description || '';
         },
       };
     </script>
-    <script is:inline src="https://jobs.ashbyhq.com/datum/embed?version=2"></script>
+    <script
+      is:inline
+      src="https://jobs.ashbyhq.com/datum/embed?version=2"
+      onerror="document.getElementById('ashby_embed_fallback').style.display='block'"></script>
+    <script is:inline>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (!params.has('ashby_jid')) return;
+        setTimeout(function () {
+          var embed = document.getElementById('ashby_embed');
+          var fallback = document.getElementById('ashby_embed_fallback');
+          if (embed && fallback && !embed.hasChildNodes()) {
+            fallback.style.display = 'block';
+          }
+        }, 5000);
+      })();
+    </script>
 
     <Footer />
   </section>

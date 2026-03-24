@@ -40,15 +40,20 @@ export interface AshbyJobBoardResponse {
   jobs: AshbyJob[];
 }
 
+export interface AshbyFetchResult {
+  jobs: AshbyJob[];
+  error: boolean;
+}
+
 export interface GroupedJobs {
   [department: string]: AshbyJob[];
 }
 
 /**
  * Fetches all job postings from Ashby public posting API
- * @returns Promise<AshbyJob[]> - Array of job postings
+ * @returns Promise<AshbyJob[] | null> - Array of job postings, or null on error
  */
-export async function fetchJobPostings(): Promise<AshbyJob[]> {
+export async function fetchJobPostings(): Promise<AshbyFetchResult> {
   const url = `https://api.ashbyhq.com/posting-api/job-board/${ASHBY_JOB_BOARD_NAME}?includeCompensation=true`;
 
   try {
@@ -60,14 +65,15 @@ export async function fetchJobPostings(): Promise<AshbyJob[]> {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch jobs: ${response.status}`);
+      console.error(`Ashby API error: ${response.status}`);
+      return { jobs: [], error: true };
     }
 
     const data: AshbyJobBoardResponse = await response.json();
-    return data.jobs || [];
+    return { jobs: data.jobs || [], error: false };
   } catch (error) {
     console.error('Error fetching Ashby jobs:', error);
-    return [];
+    return { jobs: [], error: true };
   }
 }
 

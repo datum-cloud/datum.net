@@ -68,7 +68,7 @@ export default defineConfig({
       theme: 'forest',
       autoTheme: true,
     }),
-    ...(isProd ? [syncDocs()] : []),
+    syncDocs(),
     mintlify({ docsDir: './knowledge' }),
     react(),
     mdx(),

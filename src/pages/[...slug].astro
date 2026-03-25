@@ -36,13 +36,16 @@ const page = resolvePageData(docsConfig as unknown as DocsConfig, {
   titleMap,
 });
 
-type RawTabEntry = { tab: string; icon?: string | { name: string } };
+type RawTabEntry = { tab: string; icon?: string | { name: string }; hidden?: boolean };
 const rawConfigTabs = (docsConfig.navigation as { tabs?: RawTabEntry[] }).tabs ?? [];
-const iconMap = new Map(
-  rawConfigTabs.map((t) => [t.tab, typeof t.icon === 'string' ? t.icon : t.icon?.name])
+const tabMetaMap = new Map(
+  rawConfigTabs.map((t) => [
+    t.tab,
+    { icon: typeof t.icon === 'string' ? t.icon : t.icon?.name, hidden: t.hidden },
+  ])
 );
 const tabs: TabInfoWithIcon[] | null = page.tabs
-  ? page.tabs.map((tab) => ({ ...tab, icon: iconMap.get(tab.name) }))
+  ? page.tabs.map((tab) => ({ ...tab, ...tabMetaMap.get(tab.name) }))
   : null;
 ---
 

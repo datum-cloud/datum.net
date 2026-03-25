@@ -2,7 +2,7 @@ FROM node:24.14.0-alpine3.22 AS base
 WORKDIR /app
 ENV ASTRO_TELEMETRY_DISABLED=true
 RUN apk update && \
-    apk add --no-cache git
+    apk add --no-cache git curl unzip
 COPY package*.json ./
 
 FROM base AS build

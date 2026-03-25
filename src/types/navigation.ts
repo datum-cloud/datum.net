@@ -6,6 +6,7 @@ import type { TabInfo } from '@mintlify/astro/helpers';
 
 export interface TabInfoWithIcon extends TabInfo {
   icon?: string;
+  hidden?: boolean;
 }
 
 export interface NavItem {

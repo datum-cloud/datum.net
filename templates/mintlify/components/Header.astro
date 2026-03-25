@@ -57,25 +57,28 @@ const logo = (typeof docsConfig.logo === 'object' ? docsConfig.logo : {}) as Log
         usingTabs && (
           <div class="hidden h-12 lg:flex">
             <div class="flex h-full gap-x-6 text-sm">
-              {tabs.map((tab) => (
-                <a
-                  href={tab.href?.endsWith('/') ? tab.href : `${tab.href}/`}
-                  class:list={[
-                    'group relative flex h-full items-center gap-2 font-medium text-gray-600 hover:text-gray-800',
-                    tab.isActive &&
-                      'text-gray-800 [text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
-                  ]}
-                >
-                  <Icon name={tab.icon} size="sm" />
-                  {tab.name}
-                  <div
+              {console.log(tabs)}
+              {tabs
+                .filter((tab) => !tab.hidden)
+                .map((tab) => (
+                  <a
+                    href={tab.href?.endsWith('/') ? tab.href : `${tab.href}/`}
                     class:list={[
-                      'absolute bottom-0 left-0 h-[1.5px] w-full',
-                      tab.isActive ? 'bg-(--primary)' : 'group-hover:bg-gray-200',
+                      'group relative flex h-full items-center gap-2 font-medium text-gray-600 hover:text-gray-800',
+                      tab.isActive &&
+                        'text-gray-800 [text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
                     ]}
-                  />
-                </a>
-              ))}
+                  >
+                    <Icon name={tab.icon} size="sm" />
+                    {tab.name}
+                    <div
+                      class:list={[
+                        'absolute bottom-0 left-0 h-[1.5px] w-full',
+                        tab.isActive ? 'bg-(--primary)' : 'group-hover:bg-gray-200',
+                      ]}
+                    />
+                  </a>
+                ))}
             </div>
           </div>
         )

@@ -22,7 +22,6 @@ This document provides a comprehensive overview of Datum Inc. website project st
 ├── tsconfig.json           # TypeScript configuration
 ├── eslint.config.mjs       # ESLint configuration
 ├── playwright.config.ts    # Playwright test configuration
-├── pagefind.yml            # Pagefind search configuration
 └── starlight.d.ts          # Starlight TypeScript definitions
 ```
 
@@ -335,8 +334,6 @@ Static files served as-is:
 - `images/` - Static images
 - `scripts/` - Client-side scripts
 - `download/` - Downloadable assets
-- `pagefind/` - Main site search index (generated)
-- `pagefind-blog/` - Blog-specific search index (generated)
 - `favicons/` - Favicon files
 - `favicon.ico`, `favicon.png`, `favicon.svg` - Root favicons
 - `site.webmanifest` - Web app manifest

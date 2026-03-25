@@ -79,7 +79,7 @@ Feature suggestions are welcome! Please create an issue with:
    # Edit .env with your configuration
    ```
 
-4. **Build for pagefind** (required for dev mode):
+4. **Build** (required for dev mode):
 
    ```bash
    npm run build

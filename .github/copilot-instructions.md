@@ -52,16 +52,6 @@ Always use path aliases for imports:
 - Common pattern: `x-data="{ open: false }"` for toggle states
 - Use `x-collapse` for expandable sections (see `handbook/Sidebar.astro`)
 
-### Starlight Documentation
-
-The `/docs` route is powered by Starlight with heavy customization:
-
-- Override components in `src/components/starlight/`
-- Custom sidebar, header, footer, search components
-- Access Starlight context: `Astro.locals.starlightRoute` (has `hasSidebar`, `toc`, `sidebar`)
-- Translations: `Astro.locals.t('search.label')`
-- Glossary plugin: `@libs/server/glossary.js`
-
 ### Actions (Server Functions)
 
 Astro Actions in `src/actions/` provide type-safe server endpoints:
@@ -120,7 +110,7 @@ Used for GitHub API responses (5-10 min TTL)
 
 ```bash
 npm run dev              # Dev server at localhost:4321
-npm run build            # Production build + Pagefind indexing
+npm run build            # Production build
 npm run lint             # ESLint check
 npm run lint:fix         # Auto-fix linting issues
 npm run lint:md:fix      # Fix markdown issues (MDX in src/content/)
@@ -130,9 +120,8 @@ npm run test:e2e         # Playwright E2E tests
 
 ### Critical Build Steps
 
-1. Must run `npm run build` once before dev to generate Pagefind search indices
-2. Pagefind indexes: main site (`dist/pagefind`) and blog-only (`dist/pagefind-blog`)
-3. Dev mode copies these to `public/` directory
+1. Must run `npm run build`
+2. Dev mode copies these to `public/` directory
 
 ### Environment Variables
 
@@ -160,7 +149,7 @@ npm run test:e2e         # Playwright E2E tests
 - Flat config format (`eslint.config.mjs`)
 - TypeScript, Astro, MDX support
 - **Accessibility:** Most jsx-a11y rules disabled (intentional for marketing site)
-- Ignores: `dist/`, `public/pagefind*/`, `src/content/`
+- Ignores: `dist/`, `src/content/`
 
 ### TypeScript
 
@@ -188,13 +177,12 @@ Kubernetes configs in `config/` (base, dev, gateway)
 
 ## Common Pitfalls
 
-1. **Pagefind Search:** Must build once before dev mode works
-2. **Content Collections:** Always await `getCollection()` / `getCollectionEntry()`
-3. **AlpineJS:** Components need `x-data` to initialize Alpine context
-4. **Middleware:** `Astro.locals` only available after middleware runs
-5. **Images:** Use `image()` in schemas, not plain strings for local images
-6. **Trailing Slashes:** Configured as `always` in `astro.config.mjs`
-7. **Routes:** Dynamic routes use `[slug].astro` or `[...slug].astro` patterns
+1. **Content Collections:** Always await `getCollection()` / `getCollectionEntry()`
+2. **AlpineJS:** Components need `x-data` to initialize Alpine context
+3. **Middleware:** `Astro.locals` only available after middleware runs
+4. **Images:** Use `image()` in schemas, not plain strings for local images
+5. **Trailing Slashes:** Configured as `always` in `astro.config.mjs`
+6. **Routes:** Dynamic routes use `[slug].astro` or `[...slug].astro` patterns
 
 ## File Organization
 

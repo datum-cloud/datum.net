@@ -1,5 +1,6 @@
 // server.mjs
-import { createServer } from 'http';
+import { createServer, request as httpRequest } from 'http';
+import { request as httpsRequest } from 'https';
 import { handler } from './dist/server/entry.mjs';
 import sirv from 'sirv';
 import { fileURLToPath } from 'url';
@@ -48,7 +49,6 @@ const CONTENT_TYPES = {
   '.pf_fragment': 'application/octet-stream',
   '.pf_index': 'application/octet-stream',
   '.pf_meta': 'application/octet-stream',
-  '.pagefind': 'application/octet-stream',
 };
 
 const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
@@ -61,7 +61,7 @@ const REDIRECTS = {
   '/team': { destination: '/about/', status: 302 },
   '/jobs/': { destination: '/careers/', status: 302 },
   '/community-huddle/': { destination: '/events/', status: 302 },
-  '/docs/overview/': { destination: '/docs/', status: 302 },
+  '/docs/': { destination: '/docs/overview/', status: 302 },
   '/docs/roadmap': { destination: '/resources/roadmap/', status: 302 },
   '/docs/tutorials/gateway': { destination: '/docs/tutorials/httpproxy/', status: 302 },
   '/docs/get-started/datum-concepts/': {
@@ -187,6 +187,27 @@ const REDIRECTS = {
   '/legal/security': { destination: '/docs/overview/support/', status: 302 },
   '/legal/security/': { destination: '/docs/overview/support/', status: 302 },
 };
+
+const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.app';
+
+// Reverse proxy routes: requests matching prefix are forwarded to the target host.
+// Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy
+const PROXY_ROUTES = [
+  // Mintlify static assets — long-lived cache allowed
+  { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
+  // Core docs path
+  { prefix: '/docs', target: MINTLIFY_TARGET, cache: false },
+  // Mintlify internal routes
+  { prefix: '/_mintlify', target: MINTLIFY_TARGET, cache: false },
+  // AI / agent discovery files
+  { prefix: '/.well-known/vercel', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/skills', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/agent-skills', target: MINTLIFY_TARGET, cache: false },
+  // LLM context files
+  { prefix: '/llms.txt', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/llms-full.txt', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/skill.md', target: MINTLIFY_TARGET, cache: false },
+];
 
 // Prefix-based redirects: source prefix → destination prefix (preserves the rest of the path)
 const PREFIX_REDIRECTS = [
@@ -346,6 +367,42 @@ function serveCompressed(req, res, next) {
   next();
 }
 
+function handleProxy(req, res, target, cache = false) {
+  const targetUrl = new URL(target);
+  const isHttps = targetUrl.protocol === 'https:';
+  const requestFn = isHttps ? httpsRequest : httpRequest;
+
+  const options = {
+    hostname: targetUrl.hostname,
+    port: targetUrl.port || (isHttps ? 443 : 80),
+    path: req.url,
+    method: req.method,
+    headers: {
+      ...req.headers,
+      host: targetUrl.hostname,
+      'x-forwarded-host': req.headers.host,
+      'x-forwarded-proto': 'https',
+    },
+  };
+
+  const proxyReq = requestFn(options, (proxyRes) => {
+    const headers = { ...proxyRes.headers };
+    if (!cache) {
+      headers['cache-control'] = 'no-cache, no-store, must-revalidate';
+    }
+    res.writeHead(proxyRes.statusCode, headers);
+    proxyRes.pipe(res);
+  });
+
+  proxyReq.on('error', (err) => {
+    console.error('Proxy error:', err);
+    res.writeHead(502);
+    res.end('Bad Gateway');
+  });
+
+  req.pipe(proxyReq);
+}
+
 const SSR_COMPRESSIBLE = /^(text\/|application\/(javascript|json|xml|manifest\+json)|image\/svg)/;
 
 // Wrap the Astro SSR handler with streaming compression and cache headers
@@ -449,6 +506,14 @@ const server = createServer((req, res) => {
         'Cache-Control': 'no-cache',
       });
       res.end();
+      return;
+    }
+  }
+
+  // Handle proxy routes
+  for (const route of PROXY_ROUTES) {
+    if (url.startsWith(route.prefix)) {
+      handleProxy(req, res, route.target, route.cache);
       return;
     }
   }

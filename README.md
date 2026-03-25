@@ -56,7 +56,7 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
-3. Build file to enable pagefind in dev mode:
+3. Build file in dev mode:
 
 ```bash
 npm run build

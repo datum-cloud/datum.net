@@ -5,14 +5,12 @@ on:
     branches:
       - main
     paths-ignore:
-      - "README.md"
-      - "env.example"
-      - ".vscode/**"
-      - "public/pagefind/**"
-      - "**/pagefind/**"
+      - 'README.md'
+      - 'env.example'
+      - '.vscode/**'
 
   release:
-    types: ["published"]
+    types: ['published']
 
 jobs:
   check-files:

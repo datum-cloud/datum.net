@@ -4,7 +4,8 @@
       "WebFetch(domain:www.figma.com)",
       "mcp__claude_ai_Figma__get_design_context",
       "Bash(npx astro:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(gh issue:*)"
     ]
   }
 }

@@ -116,6 +116,51 @@ import { Tabs, TabItem, Aside } from '@components/content';
   You can, however, incorporate it into your home-manager build or other flake so that it’s always available in your profile.
   </TabItem>
 
+  <TabItem label="Windows">
+  ### Install datumctl
+
+  1. Download the latest Windows release from the [GitHub Releases page](https://github.com/datum-cloud/datumctl/releases/latest/).
+
+  2. Extract the archive.
+
+  3. Move the binary to a directory on your system, for example:
+
+  ```
+  C:\Tools\datumctl\
+  ```
+
+### Add to PATH
+
+  Add the directory containing `datumctl.exe` to your `PATH` so it can be run from any terminal.
+
+#### Using the UI
+
+  1. Open **Start** and search for: `Environment Variables`
+  2. Select: `Edit the system environment variables`
+  3. Click: `Environment Variables`
+  4. Under **System variables**, select: `Path`, then click **Edit**
+  5. Click **New** and add: `C:\Tools\datumctl\`
+  6. Click **OK** to save all changes
+
+#### Using PowerShell (optional)
+
+  ```powershell
+  [Environment]::SetEnvironmentVariable(
+    "Path",
+    $env:Path + ";C:\Tools\datumctl\",
+    [EnvironmentVariableTarget]::Machine
+  )
+  ```
+
+### Verify installation
+
+  Open a new terminal and run:
+
+  ```
+  datumctl version
+  ```
+  </TabItem>
+
   <TabItem label="Build from source">
   If you prefer, you can build datumctl from source:
 

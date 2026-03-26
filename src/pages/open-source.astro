@@ -22,9 +22,121 @@ const fm = page.data;
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'Datum Open Source Projects';
 const description = fm.description;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/open-source/#webpage',
+      url: 'https://www.datum.net/open-source/',
+      name: 'Open Source – Datum',
+      description:
+        'Datum is an open source company. In addition to the core projects it leads and maintains, Datum actively uses and contributes to open source projects including HickoryDNS, Crossplane, Envoy, Iroh, and SRv6.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-20',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/datum-cloud/datum/#oss',
+      name: 'Datum',
+      description:
+        "An open source system for managing and connecting network and data focused workloads, anywhere. Datum's core cloud platform, licensed under AGPLv3.",
+      codeRepository: 'https://github.com/datum-cloud/datum',
+      programmingLanguage: 'Go',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      url: 'https://www.datum.net/',
+      maintainer: { '@id': 'https://www.datum.net/#organization' },
+      author: { '@id': 'https://www.datum.net/#organization' },
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/datum-cloud/milo-os/#oss',
+      name: 'Milo',
+      description:
+        'An open source business operating system for product-led, B2B companies. Built and maintained by Datum.',
+      codeRepository: 'https://github.com/datum-cloud/milo-os.com',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      url: 'https://www.datum.net/open-source/',
+      maintainer: { '@id': 'https://www.datum.net/#organization' },
+      author: { '@id': 'https://www.datum.net/#organization' },
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/hickory-dns/hickory-dns/#oss',
+      name: 'HickoryDNS',
+      description:
+        'A Rust-based DNS client, server, and resolver built to be safe and secure from the ground up. Dual-licensed under Apache 2.0 and MIT. Used by Datum for its DNS infrastructure.',
+      codeRepository: 'https://github.com/hickory-dns/hickory-dns',
+      programmingLanguage: 'Rust',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://github.com/hickory-dns/hickory-dns',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/crossplane/crossplane/#oss',
+      name: 'Crossplane',
+      description:
+        'A Cloud Native Computing Foundation project and framework for building cloud native control planes. Used by Datum to normalize cloud provider integrations.',
+      codeRepository: 'https://github.com/crossplane/crossplane',
+      programmingLanguage: 'Go',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://www.crossplane.io/',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/envoyproxy/envoy/#oss',
+      name: 'Envoy',
+      description:
+        "An open source edge and service proxy designed for cloud-native applications. Powers Datum's AI Edge feature.",
+      codeRepository: 'https://github.com/envoyproxy/envoy',
+      programmingLanguage: 'C++',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://www.envoyproxy.io/',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/envoyproxy/ai-gateway/#oss',
+      name: 'Envoy AI Gateway',
+      description:
+        'An open source project for using Envoy Gateway to handle request traffic from application clients to generative AI services.',
+      codeRepository: 'https://github.com/envoyproxy/ai-gateway',
+      programmingLanguage: 'Go',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://aigateway.envoyproxy.io/',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/FRRouting/frr/#oss-srv6',
+      name: 'SRv6',
+      description:
+        'Segment Routing over IPv6 (SRv6) uses an IPv6 extension header called the Segment Routing Header (SRH) to specify exact packet hops. Used by Datum for deterministic traffic routing.',
+      url: 'https://segment-routing.org/',
+      programmingLanguage: 'C',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': 'https://github.com/n0-computer/iroh/#oss',
+      name: 'Iroh',
+      description:
+        "A Rust library for building direct peer-to-peer QUIC connections between devices using public key addressing. Powers Datum's QUIC-based Connectors feature.",
+      codeRepository: 'https://github.com/n0-computer/iroh',
+      programmingLanguage: 'Rust',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      url: 'https://iroh.computer/',
+    },
+  ],
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-open-source" meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass="page-open-source"
+  meta={meta}
+  jsonLd={jsonLd}
+>
   <section class="datum-container">
     <Hero
       class="light"

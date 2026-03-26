@@ -141,6 +141,59 @@ if (fm?.title) {
 // Canonical page URL from config (SITE_URL) so copy/share works behind reverse proxy
 const pageCanonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 
+// JSON-LD for article pages only
+const articleJsonLd =
+  article && fm
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            '@id': `https://www.datum.net/blog/${slug}/#webpage`,
+            url: `https://www.datum.net/blog/${slug}/`,
+            name: fm.title,
+            isPartOf: { '@id': 'https://www.datum.net/blog/#blog' },
+            inLanguage: 'en-US',
+          },
+          {
+            '@type': 'BlogPosting',
+            '@id': `https://www.datum.net/blog/${slug}/#post`,
+            headline: fm.title,
+            description: fm.description ?? '',
+            url: `https://www.datum.net/blog/${slug}/`,
+            datePublished: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
+            dateModified: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
+            ...(readingTime.minutes ? { timeRequired: `PT${readingTime.minutes}M` } : {}),
+            inLanguage: 'en-US',
+            ...(fm.featuredImage
+              ? {
+                  image: {
+                    '@type': 'ImageObject',
+                    url:
+                      typeof fm.featuredImage === 'string'
+                        ? fm.featuredImage
+                        : (fm.featuredImage as { src: string }).src,
+                    width: 1200,
+                    height: 630,
+                  },
+                }
+              : {}),
+            author: {
+              '@type': 'Person',
+              name: authorName || 'Datum',
+              ...(authorHref ? { url: `https://www.datum.net${authorHref}` } : {}),
+            },
+            publisher: { '@id': 'https://www.datum.net/#organization' },
+            isPartOf: { '@id': 'https://www.datum.net/blog/#blog' },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `https://www.datum.net/blog/${slug}/#webpage`,
+            },
+          },
+        ],
+      }
+    : null;
+
 // SEO: build meta from Strapi seo, same pattern as blog/[slug].astro
 const title = article?.seo?.metaTitle ?? fm?.title;
 const description = article?.seo?.metaDescription ?? fm?.description ?? '';
@@ -257,6 +310,7 @@ const blogListingMeta = {
       author={fm?.author}
       bodyClass={`page-blog page-blog--strapi-${slug}`}
       meta={articleMeta}
+      jsonLd={articleJsonLd ?? undefined}
     >
       <section class="datum-container">
         <Hero class="light" hideContent={true} />

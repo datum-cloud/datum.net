@@ -38,9 +38,128 @@ const faqs = (await getCollection('faq'))
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'Datum Features';
 const description = fm.description;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/features/#webpage',
+      url: 'https://www.datum.net/features/',
+      name: 'Datum Features – Critical Network Infrastructure',
+      description:
+        'Core networking features for agents and developers: AI Edge with global points of presence, QUIC-based Connectors, DNS, Domains, Metrics Export, Audit Logs, and Kubernetes-native tooling. Forever free tier available.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-20',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://www.datum.net/#product',
+      name: 'Datum Cloud',
+      url: 'https://www.datum.net/',
+      applicationCategory: 'NetworkingApplication',
+      operatingSystem: 'Linux, macOS, Windows',
+      description:
+        'An open source network cloud providing AI Edge, QUIC-based tunnels, DNS, Domains, OTel metrics export, and Kubernetes-native control plane — built for modern alt cloud providers and AI-native teams.',
+      publisher: { '@id': 'https://www.datum.net/#organization' },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        name: 'Builder tier',
+        description:
+          'Forever free tier including AI Edge and QUIC tunnels for exposing localhost to the internet.',
+        url: 'https://www.datum.net/pricing/',
+      },
+      featureList: [
+        'AI Edge — global Envoy-based edge proxy with WAF, custom hostnames, health checks, and 17+ global points of presence',
+        'Connectors — zero trust QUIC tunnels built on Iroh for safely exposing localhost to the internet',
+        'datumctl — Kubernetes-style CLI for authenticating and managing resources',
+        'Datum MCP — self-hosted MCP server with Cursor integration for AI agents',
+        'Developer Tools — macOS, Windows, and Linux desktop apps',
+        'DNS — secure authoritative DNS served across 17 global locations',
+        'Domains — programmatic domain management across providers',
+        'Metrics Export — OpenTelemetry metrics export to Grafana Cloud with prebuilt dashboards',
+        'Audit & Activity Logs — production-grade activity and audit logging',
+        'AGPLv3 License — open source with community contributions',
+      ],
+      softwareVersion: '2025',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://www.datum.net/features/#faq',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'How mature is Datum Cloud?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Datum is an early stage company and its product is evolving steadily. Core features like additional Connectors, Galactic VPC, and Compute are in progress, alongside platform features for enterprise readiness and operational scale.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Why is Datum currently free?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Datum offers a forever-free service tier as a core commitment. As the product matures, all features will be enabled in the free tier with reasonable usage limits. A paid plan with an SLA and additional deployment models are planned for later in 2026.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What deployment models does Datum Cloud offer?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Datum currently offers a public cloud model (multi-tenant at the control plane and network level) and open source. A managed cloud offering (single-tenant control plane) and a bring-your-own-cloud (BYOC) model are planned pending design partner demand.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does Datum Cloud compare to public clouds and CDNs?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Datum offers features that mirror aspects of large public clouds and CDNs — an edge proxy, reverse tunnel, DNS, global reach, and a high-performance backbone — but is built specifically for modern alt cloud providers with an open, AI-native, neutral strategy.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: "What are the 'internet superpowers' Datum talks about?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "Internet superpowers refer to networking capabilities like peering, interconnection, and deterministic routing that large tech companies use to control traffic flow, improve performance, lower costs, and comply with regulation. Datum's mission is to make these available to every developer, agent, and builder.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: "What is Datum's relationship with Kubernetes?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "Datum's control plane is built on Kubernetes Custom Resource Definitions (CRDs). You don't need to use Kubernetes to use Datum Cloud, but it will feel natural if you do. Kubernetes familiarity also means LLMs like Claude have a more seamless and accurate experience working with Datum's APIs.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: "How is Datum's infrastructure structured?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Datum deploys infrastructure at top internet aggregation points globally, packaged into Regions and Availability Zones (AZs). Each Region represents a geographic and network boundary; each AZ provides independent capacity within that Region. Regions use a country-anchored naming format: two-letter ISO country code, cardinal direction, region index, and AZ identifier (e.g. us-central-1a).',
+          },
+        },
+      ],
+    },
+  ],
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-features" meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass="page-features"
+  meta={meta}
+  jsonLd={jsonLd}
+>
   <section class="datum-container overflow-clip">
     <Hero
       class="light"

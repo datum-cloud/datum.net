@@ -23,9 +23,75 @@ const contentData = await getEntries(contents);
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'About Datum';
 const description = fm.description ? fm.description : '';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://www.datum.net/about/#webpage',
+      url: 'https://www.datum.net/about/',
+      name: 'About Datum – Open Network Cloud for AI',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#zac-smith',
+      name: 'Zac Smith',
+      jobTitle: 'Co-Founder and CEO',
+      worksFor: { '@id': 'https://www.datum.net/#organization' },
+      sameAs: 'https://www.linkedin.com/in/zsmith/',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#jacob-smith',
+      name: 'Jacob Smith',
+      jobTitle: 'Co-Founder, Head of Growth',
+      worksFor: { '@id': 'https://www.datum.net/#organization' },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.datum.net/#organization',
+      founder: [
+        { '@id': 'https://www.datum.net/about/#zac-smith' },
+        { '@id': 'https://www.datum.net/about/#jacob-smith' },
+      ],
+      funder: [
+        {
+          '@type': 'Organization',
+          name: 'Amplify Partners',
+          url: 'https://www.amplifypartners.com/',
+        },
+        { '@type': 'Organization', name: 'CRV', url: 'https://www.crv.com/' },
+        { '@type': 'Organization', name: 'Encoded Ventures', url: 'https://encoded.vc/' },
+        {
+          '@type': 'Organization',
+          name: 'Cervin Ventures',
+          url: 'https://www.cervinventures.com/',
+        },
+        { '@type': 'Organization', name: 'Ex/Ante', url: 'https://www.buildexante.com/' },
+        { '@type': 'Organization', name: 'Step Function', url: 'https://www.stepfunction.vc/' },
+        { '@type': 'Organization', name: 'Vine Ventures', url: 'https://vineventures.com/' },
+      ],
+      knowsAbout: [
+        'network cloud',
+        'alternative cloud',
+        'AI infrastructure',
+        'Kubernetes',
+        'open source networking',
+        'QUIC tunnels',
+        'edge computing',
+        'BGP',
+        'anycast',
+        'zero trust networking',
+      ],
+    },
+  ],
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-about" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-about" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
     <Hero class="light bg-white" />
 

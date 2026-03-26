@@ -9,17 +9,17 @@ interface Session {
 }
 
 // Helper to decode JWT without verification (for debugging)
-function decodeJWT(token: string): unknown {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = parts[1];
-    const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
-    return decoded;
-  } catch {
-    return null;
-  }
-}
+// function decodeJWT(token: string): unknown {
+//   try {
+//     const parts = token.split('.');
+//     if (parts.length !== 3) return null;
+//     const payload = parts[1];
+//     const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
+//     return decoded;
+//   } catch {
+//     return null;
+//   }
+// }
 
 export const GET: APIRoute = async ({ cookies }) => {
   try {
@@ -42,8 +42,8 @@ export const GET: APIRoute = async ({ cookies }) => {
 
     const session: Session = JSON.parse(sessionCookie);
 
-    const tokenPayload = decodeJWT(session.accessToken);
-    console.log('Token payload:', JSON.stringify(tokenPayload, null, 2));
+    // const tokenPayload = decodeJWT(session.accessToken);
+    // console.log('Token payload:', JSON.stringify(tokenPayload, null, 2));
 
     // Try using ID token from cookie if available
     const idTokenCookie = cookies.get('_id_token')?.value;

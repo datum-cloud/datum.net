@@ -147,69 +147,67 @@ const { class: className } = Astro.props as { class?: string };
 
       // Color palette that cycles through (matches @utils/authorUtils.ts)
       const bgColors = ['#5F735E', '#BF9595', '#D1CDC0'];
-      const getBgColor = (index: number): string => {
-        return bgColors[index % bgColors.length];
-      };
+      const getBgColor = (index: number): string => bgColors[index % bgColors.length];
       const bgColor = member.index !== undefined ? getBgColor(member.index) : bgColors[0];
 
-      // Build avatar HTML
-      const avatarHTML = data.avatar
-        ? `<div class="profile-modal--avatar" style="background-color: ${bgColor}">
-             <img src="${data.avatar.src}" alt="${data.name}" />
-           </div>`
-        : '';
+      this.contentContainer.textContent = '';
 
-      // Build meta grid items
-      const metaItems = [];
+      // Row 1: avatar + info
+      const rowFirst = document.createElement('div');
+      rowFirst.className = 'profile-modal--row-first';
 
-      if (data.bio) {
-        metaItems.push(`
-          <div class="profile-modal--meta-item">
-            <label>About</label>
-            <p>${data.bio}</p>
-          </div>
-        `);
-      }
-      if (data.tick) {
-        metaItems.push(`
-          <div class="profile-modal--meta-item">
-            <label>What makes me tick</label>
-            <p>${data.tick}</p>
-          </div>
-        `);
-      }
-      if (data.surprising) {
-        metaItems.push(`
-          <div class="profile-modal--meta-item">
-            <label>Something surprising</label>
-            <p>${data.surprising}</p>
-          </div>
-        `);
-      }
-      if (data.weekends) {
-        metaItems.push(`
-          <div class="profile-modal--meta-item">
-            <label>On weekends I'm</label>
-            <p>${data.weekends}</p>
-          </div>
-        `);
+      if (data.avatar) {
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'profile-modal--avatar';
+        avatarDiv.style.backgroundColor = bgColor;
+        const img = document.createElement('img');
+        img.src = data.avatar.src;
+        img.alt = data.name;
+        avatarDiv.appendChild(img);
+        rowFirst.appendChild(avatarDiv);
       }
 
-      // Populate the content
-      this.contentContainer.innerHTML = `
-        <div class="profile-modal--row-first">
-          ${avatarHTML}
-          <div class="profile-modal--info">
-            <div class="profile-modal--info-header">
-              <h2>${data.name}</h2>
-              ${data.title ? `<p>${data.title}</p>` : ''}
-            </div>
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'profile-modal--info';
+      const infoHeader = document.createElement('div');
+      infoHeader.className = 'profile-modal--info-header';
+      const h2 = document.createElement('h2');
+      h2.textContent = data.name;
+      infoHeader.appendChild(h2);
+      if (data.title) {
+        const titleP = document.createElement('p');
+        titleP.textContent = data.title;
+        infoHeader.appendChild(titleP);
+      }
+      infoDiv.appendChild(infoHeader);
+      rowFirst.appendChild(infoDiv);
+      this.contentContainer.appendChild(rowFirst);
 
-          </div>
-        </div>
+      // Row 2: meta items
+      const metaFields: { label: string; value: string | undefined }[] = [
+        { label: 'About', value: data.bio },
+        { label: 'What makes me tick', value: data.tick },
+        { label: 'Something surprising', value: data.surprising },
+        { label: "On weekends I'm", value: data.weekends },
+      ];
 
-        ${metaItems.length > 0 ? `<div class="profile-modal--row-second">${metaItems.join('')}</div>` : ''}
-      `;
+      const presentFields = metaFields.filter((f) => f.value);
+      if (presentFields.length > 0) {
+        const rowSecond = document.createElement('div');
+        rowSecond.className = 'profile-modal--row-second';
+        for (const field of presentFields) {
+          const item = document.createElement('div');
+          item.className = 'profile-modal--meta-item';
+          const label = document.createElement('label');
+          label.textContent = field.label;
+          const p = document.createElement('p');
+          p.textContent = field.value!;
+          item.appendChild(label);
+          item.appendChild(p);
+          rowSecond.appendChild(item);
+        }
+        this.contentContainer.appendChild(rowSecond);
+      }
     }
   }
 

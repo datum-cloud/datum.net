@@ -5,6 +5,7 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
 import defaultOgImage from '@content/images/og/default.png';
 
 const {
@@ -18,7 +19,23 @@ const {
   dataTheme = '',
   bodyClass = 'template',
   meta,
+  jsonLd,
 } = Astro.props as LayoutProps;
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://www.datum.net/#organization',
+  name: 'Datum Technology, Inc.',
+  url: 'https://www.datum.net/',
+  logo: 'https://www.datum.net/logo-light.svg',
+  description: 'An open, neutral, global network cloud built for AI.',
+  sameAs: [
+    'https://github.com/orgs/datum-cloud',
+    'https://discord.com/invite/AeA9XZu4Py',
+    'https://www.youtube.com/@Datum-Cloud',
+  ],
+};
 
 const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
 const isProduction = mode === 'production';
@@ -131,6 +148,9 @@ const twitterImage =
         ],
       }}
     />
+
+    <JsonLd data={organizationSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
 
     {/* Analytics (Fathom) - Load early but defer execution */}
     {

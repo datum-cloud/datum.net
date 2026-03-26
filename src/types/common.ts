@@ -12,6 +12,7 @@ export interface LayoutProps {
   fluid?: boolean;
   dataTheme: string;
   bodyClass?: string;
+  jsonLd?: Record<string, unknown>;
   meta?: {
     title?: string;
     description?: string;

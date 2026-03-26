@@ -31,9 +31,42 @@ const blogMeta = {
     ...meta?.og,
   },
 };
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/blog/#webpage',
+      url: 'https://www.datum.net/blog/',
+      name: 'Datum Blog – Updates on Alternative Cloud and AI Native Industry News',
+      description:
+        'Read the latest from the Datum team — product vision, engineering deep dives, open source strategy, and insights on the next wave of AI-native cloud platforms.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-01-14',
+    },
+    {
+      '@type': 'Blog',
+      '@id': 'https://www.datum.net/blog/#blog',
+      name: 'Datum Blog',
+      description:
+        'Thoughts and updates from the Datum team — covering alternative cloud, AI-native infrastructure, open source strategy, Kubernetes control planes, and product direction.',
+      url: 'https://www.datum.net/blog/',
+      publisher: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+    },
+  ],
+};
 ---
 
-<Layout title={title || 'Datum'} description={description} bodyClass="page-blog" meta={blogMeta}>
+<Layout
+  title={title || 'Datum'}
+  description={description}
+  bodyClass="page-blog"
+  meta={blogMeta}
+  jsonLd={jsonLd}
+>
   <section class="datum-container">
     <Hero
       class="light"

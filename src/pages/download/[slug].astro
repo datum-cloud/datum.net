@@ -37,9 +37,156 @@ const title =
     : 'Developer tools and desktop apps - Datum Cloud');
 meta.title = title;
 const description = fm.description || 'Download Datum';
+
+const downloadAppSchemas: Record<string, Record<string, unknown>> = {
+  'mac-os': {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/mac-os/#app',
+    name: 'Datum Desktop – macOS',
+    description:
+      'Native macOS app for quickly and safely exposing local environments to the internet using QUIC-based tunnels. Free to download and use.',
+    operatingSystem: 'macOS',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/mac-os/',
+    downloadUrl: 'https://github.com/datum-cloud/datum-connect/releases/latest/download/Datum.dmg',
+    installUrl: 'https://www.datum.net/download/mac-os/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+    softwareRequirements: 'Homebrew (optional) or direct .dmg download',
+  },
+  windows: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/windows/#app',
+    name: 'Datum Desktop – Windows',
+    description:
+      'Native Windows app for quickly and safely exposing local environments to the internet using QUIC-based tunnels. Free to download and use.',
+    operatingSystem: 'Windows',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/windows/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  linux: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/linux/#app',
+    name: 'Datum Desktop – Linux',
+    description:
+      'Native Linux app for quickly and safely exposing local environments to the internet using QUIC-based tunnels. Free to download and use.',
+    operatingSystem: 'Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/linux/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  datumctl: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/datumctl/#app',
+    name: 'datumctl',
+    description:
+      'A Kubernetes-style CLI for authenticating and managing Datum Cloud resources using familiar get, apply, and delete syntax.',
+    operatingSystem: 'macOS, Windows, Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/datumctl/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  'datum-mcp': {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/datum-mcp/#app',
+    name: 'Datum MCP',
+    description:
+      'An official self-hosted MCP server tightly integrated with Cursor, enabling AI agents to manage Datum Cloud network infrastructure programmatically.',
+    operatingSystem: 'macOS, Windows, Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/datum-mcp/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  go: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/go/#app',
+    name: 'Datum Go SDK',
+    description: 'Official Datum Cloud SDK for Go. Coming soon.',
+    operatingSystem: 'macOS, Windows, Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/go/',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/PreOrder',
+    },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  typescript: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/typescript/#app',
+    name: 'Datum TypeScript SDK',
+    description: 'Official Datum Cloud SDK for TypeScript. Coming soon.',
+    operatingSystem: 'macOS, Windows, Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/typescript/',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/PreOrder',
+    },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+  rust: {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://www.datum.net/download/rust/#app',
+    name: 'Datum Rust SDK',
+    description: 'Official Datum Cloud SDK for Rust. Coming soon.',
+    operatingSystem: 'macOS, Windows, Linux',
+    applicationCategory: 'DeveloperApplication',
+    url: 'https://www.datum.net/download/rust/',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/PreOrder',
+    },
+    publisher: { '@id': 'https://www.datum.net/#organization' },
+    isPartOf: { '@id': 'https://www.datum.net/#product' },
+  },
+};
+
+const appSchema = slug ? downloadAppSchemas[slug] : undefined;
+const jsonLd = appSchema
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebPage',
+          '@id': `https://www.datum.net/download/${slug}/#webpage`,
+          url: `https://www.datum.net/download/${slug}/`,
+          name: title,
+          description,
+          isPartOf: { '@id': 'https://www.datum.net/#organization' },
+          inLanguage: 'en-US',
+        },
+        appSchema,
+      ],
+    }
+  : undefined;
 ---
 
-<Layout title={title} description={description} bodyClass="page-download" meta={meta}>
+<Layout
+  title={title}
+  description={description}
+  bodyClass="page-download"
+  meta={meta}
+  jsonLd={jsonLd}
+>
   <script>
     (function () {
       let contentFrame = document.querySelector<HTMLElement>('.download-content-frame');

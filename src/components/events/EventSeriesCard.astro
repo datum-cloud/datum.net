@@ -292,7 +292,11 @@ const timezoneAbbr = event.timezone
           </div>
 
           <div class="event-series-card__meta-row">
-            <Icon name="map-pin" size="sm" class="text-app---dark---utility-4 shrink-0" />
+            <Icon
+              name={locationText === 'Virtual' ? 'video' : 'map-pin'}
+              size="sm"
+              class="text-app---dark---utility-4 shrink-0"
+            />
             <span>{locationText}</span>
           </div>
         </div>

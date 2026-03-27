@@ -486,7 +486,7 @@
     @apply text-midnight-fjord datum-text-base border-blush-quartz inline-flex items-center border-2 bg-white px-6 py-2 font-normal no-underline transition-colors duration-150;
     @apply -mr-0.5;
 
-    @apply hover:bg-glacier-mist-700;
+    @apply hover:bg-midnight-fjord/10;
   }
 
   .events-secondary-nav__tab--first {

@@ -1,14 +1,14 @@
 @layer components {
   .essentials-header {
-    @apply flex w-full flex-col items-start gap-10;
-    @apply mb-16;
+    @apply flex w-full flex-col items-start gap-4 md:gap-6 lg:gap-8 xl:gap-10;
+    @apply mb-8 md:mb-10 lg:mb-12 xl:mb-16;
   }
 
   .essentials-label {
     @apply bg-midnight-fjord inline-flex items-center justify-center;
     @apply px-2 pt-px;
-    @apply text-glacier-mist-700 font-dejavu;
-    @apply text-(length:--18px) leading-(--26px);
+    @apply text-glacier-mist-700;
+    @apply datum-text-lg font-dejavu;
   }
 
   .essentials-title {

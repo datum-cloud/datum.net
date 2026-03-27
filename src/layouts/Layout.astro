@@ -26,15 +26,21 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': 'https://www.datum.net/#organization',
-  name: 'Datum Technology, Inc.',
-  url: 'https://www.datum.net/',
-  logo: 'https://www.datum.net/logo-light.svg',
-  description: 'An open, neutral, global network cloud built for AI.',
+  name: 'Datum',
+  legalName: 'Datum Technology, Inc.',
+  url: 'https://www.datum.net',
+  logo: 'https://www.datum.net/logo.png',
+  description: 'Open source network cloud for AI',
   sameAs: [
-    'https://github.com/orgs/datum-cloud',
+    'https://github.com/datum-cloud',
+    'https://www.youtube.com/@datum-cloud',
     'https://discord.com/invite/AeA9XZu4Py',
-    'https://www.youtube.com/@Datum-Cloud',
   ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Datum Cloud',
+    description: 'Global network cloud platform for AI workloads',
+  },
 };
 
 const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;

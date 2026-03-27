@@ -1,0 +1,100 @@
+---
+// src/pages/events/community-huddles.astro
+import '@v1/styles/page-event-series.css';
+import { fetchEvents, filterEventsInNextUtcMonth, isEventCommunityHuddle } from '@libs/events';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import EventSeriesCard from '@components/events/EventSeriesCard.astro';
+import CommunityHuddlePastModal from '@components/events/CommunityHuddlePastModal.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'community-huddles');
+
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Community Huddles';
+const description = fm.description;
+
+const { upcoming, past } = await fetchEvents();
+
+const communityHuddlesUpcoming = filterEventsInNextUtcMonth(
+  upcoming.filter(isEventCommunityHuddle)
+);
+const communityHuddlesPast = past.filter(isEventCommunityHuddle);
+---
+
+<Layout title={title} description={description} bodyClass="page-event-series" meta={meta}>
+  <section class="datum-container">
+    <Hero class="light pb-0" title={title} description={description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Event categories"
+        mobileLabel="Event category"
+        items={[
+          { label: 'All events', href: '/events/', exact: true },
+          { label: 'Community Huddles', href: '/events/community-huddles/' },
+          { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups/' },
+        ]}
+      />
+    </Hero>
+
+    <section
+      class="event-series-content section--block section--block--pad bg-glacier-mist-700 pt-0"
+    >
+      <div class="max-width-5xl">
+        <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
+          <div class="event-series-tabs">
+            <button
+              type="button"
+              class="event-series-tab"
+              x-bind:class="{ 'event-series-tab--active': activeTab === 'upcoming' }"
+              x-on:click="activeTab = 'upcoming'">Upcoming</button
+            >
+            <button
+              type="button"
+              class="event-series-tab"
+              x-bind:class="{ 'event-series-tab--active': activeTab === 'past' }"
+              x-on:click="activeTab = 'past'">Past</button
+            >
+          </div>
+
+          <div x-show="activeTab === 'upcoming'" class="event-series-list">
+            {
+              communityHuddlesUpcoming.length > 0 ? (
+                communityHuddlesUpcoming.map((event) => (
+                  <EventSeriesCard event={event} isPast={false} showVideo={false} />
+                ))
+              ) : (
+                <p class="event-series-empty">
+                  No Community Huddles scheduled for next month yet. Check back soon!
+                </p>
+              )
+            }
+          </div>
+
+          <div x-show="activeTab === 'past'" class="event-series-list" style="display: none;">
+            {
+              communityHuddlesPast.length > 0 ? (
+                communityHuddlesPast.map((event) => (
+                  <EventSeriesCard
+                    event={event}
+                    isPast={true}
+                    showVideo={true}
+                    pastOpensDetailModal={true}
+                  />
+                ))
+              ) : (
+                <p class="event-series-empty">No past Community Huddles recorded yet.</p>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CommunityHuddlePastModal />
+    <Footer showIllustration={false} showBackground={false} showCTA={false} />
+  </section>
+</Layout>

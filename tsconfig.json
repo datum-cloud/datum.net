@@ -15,6 +15,8 @@
       "@layouts/*": ["./src/layouts/*"],
       "@v1/*": ["./src/v1/*"],
       "@content/*": ["./src/content/*"],
+      "@hosts/*": ["./src/content/events/images/hosts/*"],
+      "@guests/*": ["./src/content/events/images/guests/*"],
       "@data/*": ["./src/data/*"],
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"]

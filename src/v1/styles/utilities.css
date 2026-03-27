@@ -15,6 +15,10 @@
   @apply mx-auto w-full max-w-(--breakpoint---internal) px-7;
 }
 
+@utility max-width-5xl {
+  @apply mx-auto w-full max-w-5xl px-7;
+}
+
 @utility text-size {
   @apply font-alliance;
   @apply text-sm xl:text-base;

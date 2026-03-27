@@ -1,0 +1,115 @@
+---
+// src/components/SecondaryTabNav.astro
+// Pill-style secondary tabs; Alpine dropdown on small screens
+// Styles: import components-secondary-tab-nav.css from the page stylesheet (after base.css), e.g. page-event-series.css
+
+import Icon from '@components/Icon.astro';
+
+import type { SecondaryTabNavItem, SecondaryTabNavProps } from '@/src/types/common';
+
+const {
+  items,
+  ariaLabel,
+  mobileLabel,
+  idPrefix = 'secondary-tab-nav',
+} = Astro.props as SecondaryTabNavProps;
+
+function normalizePath(p: string): string {
+  const trimmed = p.replace(/\/+$/, '');
+  return trimmed === '' ? '/' : trimmed;
+}
+
+function isItemActive(item: SecondaryTabNavItem, pathname: string): boolean {
+  const path = normalizePath(pathname);
+  const base = normalizePath(item.href);
+  if (item.exact) {
+    return path === base;
+  }
+  return path === base || path.startsWith(`${base}/`);
+}
+
+const currentPath = Astro.url.pathname;
+const activeItem = items.find((item) => isItemActive(item, currentPath)) ?? items[0];
+const activeLabel = activeItem.label;
+
+const mobileMenuId = `${idPrefix}-mobile-menu`;
+const mobileTriggerId = `${idPrefix}-mobile-trigger`;
+---
+
+<nav class="secondary-tab-nav" aria-label={ariaLabel}>
+  <div class="secondary-tab-nav-mobile md:hidden" x-data="{ open: false }">
+    <button
+      type="button"
+      id={mobileTriggerId}
+      class="secondary-tab-nav-mobile-trigger"
+      @click="open = !open"
+      :aria-expanded="open.toString()"
+      aria-haspopup="listbox"
+      aria-controls={mobileMenuId}
+    >
+      <span class="secondary-tab-nav-mobile-label">{mobileLabel}</span>
+      <span class="secondary-tab-nav-mobile-selected">{activeLabel}</span>
+      <span
+        class="secondary-tab-nav-mobile-chevron"
+        :class="{ 'secondary-tab-nav-mobile-chevron--open': open }"
+        aria-hidden="true"
+      >
+        <Icon name="chevron-down" size="sm" class="text-midnight-fjord" />
+      </span>
+    </button>
+    <div
+      id={mobileMenuId}
+      class="secondary-tab-nav-mobile-dropdown"
+      x-show="open"
+      @click.outside="open = false"
+      x-cloak
+      role="listbox"
+      aria-labelledby={mobileTriggerId}
+    >
+      <ul class="secondary-tab-nav-mobile-list" role="presentation">
+        {
+          items.map((item) => (
+            <li role="presentation">
+              <a
+                href={item.href}
+                class:list={[
+                  'secondary-tab-nav-mobile-link',
+                  { 'secondary-tab-nav-mobile-link--active': isItemActive(item, currentPath) },
+                ]}
+                role="option"
+                aria-selected={isItemActive(item, currentPath) ? 'true' : 'false'}
+                @click="open = false"
+                data-astro-prefetch="hover"
+              >
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <ul class="secondary-tab-nav__list">
+    {
+      items.map((item, index) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'secondary-tab-nav__tab',
+              {
+                'secondary-tab-nav__tab--active': isItemActive(item, currentPath),
+                'secondary-tab-nav__tab--first': index === 0,
+                'secondary-tab-nav__tab--last': index === items.length - 1,
+              },
+            ]}
+            aria-current={isItemActive(item, currentPath) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

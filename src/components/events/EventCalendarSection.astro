@@ -1,0 +1,621 @@
+---
+// src/components/events/EventCalendarSection.astro
+// "Find us at:" calendar + event list section for the overview page
+
+import type { ContentEvent } from '@libs/events';
+import {
+  isEventDatumHosted,
+  isEventRecurringSeries,
+  isEventExternal,
+  getEventDisplayName,
+} from '@libs/events';
+import { marked } from 'marked';
+
+interface Props {
+  upcoming: ContentEvent[];
+  past: ContentEvent[];
+}
+
+const { upcoming, past } = Astro.props as Props;
+
+// All events combined for the calendar
+const allEvents = [...upcoming, ...past];
+
+// Serialize events to JSON for Alpine.js (only fields we need)
+const eventsData = allEvents.map((e) => {
+  const descriptionSource = e.description_md ?? e.description ?? null;
+  let description_html: string | null = null;
+  if (descriptionSource?.trim()) {
+    const html = String(marked.parse(descriptionSource.trim(), { async: false })).trim();
+    if (html) description_html = html;
+  }
+
+  return {
+    api_id: e.api_id,
+    name: getEventDisplayName(e),
+    start_at: e.start_at,
+    end_at: e.end_at,
+    timezone: e.timezone,
+    url: e.url,
+    cover_url: e.cover_url ?? null,
+    description_html,
+    zoom_meeting_url: e.zoom_meeting_url ?? null,
+    city: e.geo_address_json?.city_state ?? (e.meeting_url ? 'Virtual' : null),
+    isExternal: isEventExternal(e),
+    isDatumHosted: isEventDatumHosted(e),
+    isRecurringSeries: isEventRecurringSeries(e),
+  };
+});
+
+const eventsJson = JSON.stringify(eventsData);
+---
+
+<section class="event-calendar-section">
+  <div
+    class="event-calendar-section__layout"
+    x-data={`eventCalendar(${eventsJson})`}
+    x-init="init()"
+  >
+    {/* Left: Mini Calendar Widget */}
+    <div>
+      <div class="event-calendar-widget">
+        <div class="event-calendar-widget__header">
+          <button
+            type="button"
+            class="event-calendar-widget__nav-btn"
+            x-bind:disabled="!canPrevMonth"
+            x-on:click="prevMonth()"
+            x-bind:aria-label="canPrevMonth ? 'Previous month' : 'No events in earlier months'"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="m15 18-6-6 6-6"></path></svg
+            >
+          </button>
+          <span class="event-calendar-widget__month-label" x-text="monthLabel"></span>
+          <button
+            type="button"
+            class="event-calendar-widget__nav-btn"
+            x-bind:disabled="!canNextMonth"
+            x-on:click="nextMonth()"
+            x-bind:aria-label="canNextMonth ? 'Next month' : 'No events in later months'"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="m9 18 6-6-6-6"></path></svg
+            >
+          </button>
+        </div>
+
+        <div class="event-calendar-widget__dow-row">
+          {
+            ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
+              <span class="event-calendar-widget__dow">{d}</span>
+            ))
+          }
+        </div>
+
+        <div class="event-calendar-widget__grid">
+          <template x-for="day in calendarDays" :key="day.dateStr">
+            <button
+              type="button"
+              class="event-calendar-widget__day"
+              x-bind:class="{
+              'day--other-month': !day.inMonth,
+              'day--has-events': day.hasEvents && day.inMonth,
+              'day--selected': day.inMonth && day.dateStr === selectedDay,
+              'day--today': day.isToday,
+            }"
+              x-on:click="day.hasEvents && day.inMonth && selectDay(day.dateStr)"
+              x-text="day.date"></button>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    {/* Right: Event List */}
+    <div class="event-calendar-list">
+      <template x-if="filteredEvents.length === 0">
+        <p class="event-calendar-list__empty">No events this month.</p>
+      </template>
+
+      <template x-for="event in filteredEvents" :key="event.api_id">
+        <div
+          class="event-calendar-list__item"
+          x-bind:class="{ 'item--external': event.isExternal, 'item--expanded': isEventExpanded(event) }"
+        >
+          {/* --- Collapsed state (no day selected or external event) --- */}
+          <template x-if="!isEventExpanded(event)">
+            <div
+              class="event-calendar-list__item-collapsed"
+              x-bind:class="{ 'event-calendar-list__item-collapsed--clickable': event.isDatumHosted }"
+              x-bind:role="event.isDatumHosted ? 'button' : false"
+              x-bind:tabindex="event.isDatumHosted ? 0 : false"
+              x-bind:aria-label="event.isDatumHosted ? 'Show full details for ' + event.name : false"
+              x-on:click="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.enter.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.space.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+            >
+              <div class="event-calendar-list__item-header">
+                <p class="event-calendar-list__item-name" x-text="event.name"></p>
+                <div class="event-calendar-list__badges">
+                  <template x-if="event.isRecurringSeries">
+                    <span class="event-badge event-badge--recurring">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"
+                        ></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"
+                        ></path></svg
+                      >
+                      Recurring Series
+                    </span>
+                  </template>
+                  <template x-if="event.isDatumHosted">
+                    <span class="event-badge event-badge--hosted">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        ><path
+                          d="M4.48116 0C4.30948 0 4.16949 0.139548 4.16949 0.311672C4.16949 0.483797 4.16949 3.35709 4.16949 3.35709C4.16949 3.52877 4.30904 3.66102 4.48116 3.66102L5.96009 3.66876C6.57111 3.66876 7.15307 3.90736 7.59901 4.34009C8.04759 4.77591 8.29808 5.35127 8.30512 5.96097C8.31216 6.58563 8.07401 7.17376 7.63511 7.6175C7.19622 8.06124 6.61073 8.30556 5.9865 8.30556H5.96009C5.35039 8.29852 4.77503 8.04803 4.33921 7.59945C3.90648 7.15395 3.66101 6.57155 3.66101 5.96053V4.46423C3.66101 4.29255 3.52833 4.1695 3.35621 4.1695H0.311673C0.139989 4.1695 0 4.29211 0 4.46423V7.50965C0 7.68133 0.139549 7.83051 0.311673 7.83051H2.71481C3.03793 7.83051 3.24615 7.82572 3.41784 7.84906C3.64587 7.87987 3.79863 7.94502 3.91396 8.05992C4.0293 8.17481 4.09401 8.32801 4.12483 8.55604C4.14816 8.72817 4.16949 8.93595 4.16949 9.25951V11.6622C4.16949 11.8339 4.29211 12 4.46423 12H5.98694C6.6706 12 7.34193 11.859 7.98244 11.6327C10.3697 10.7888 11.9739 8.51994 11.9739 5.98694C11.9739 3.45394 10.3697 1.18506 7.98244 0.341167C7.34193 0.114896 6.6706 0 5.98694 0H4.4816H4.48116Z"
+                          fill="#ADBAB0"></path></svg
+                      >
+                      Datum Hosted
+                    </span>
+                  </template>
+                  <template x-if="event.isExternal">
+                    <span class="event-badge event-badge--attending">We'll be there</span>
+                  </template>
+                </div>
+              </div>
+              <div class="event-calendar-list__item-meta">
+                <div class="event-calendar-list__meta-item">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="M8 2v4"></path><path d="M16 2v4"></path><path
+                      d="M21 17V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11"></path><path
+                      d="M3 10h18"></path><path d="M15 22l2-2v-4h4"></path></svg
+                  >
+                  <span x-text="formatEventShortDate(event.start_at, event.timezone)"></span>
+                </div>
+                <div class="event-calendar-list__meta-item">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"
+                    ></polyline></svg
+                  >
+                  <span x-text="formatEventTime(event.start_at, event.timezone)"></span>
+                </div>
+                <template x-if="event.city">
+                  <div class="event-calendar-list__meta-item">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      x-show="event.city === 'Virtual'"
+                      ><path
+                        d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+                      ></path><rect width="14" height="12" x="2" y="6" rx="2"></rect></svg
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      x-show="event.city !== 'Virtual'"
+                      ><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle
+                        cx="12"
+                        cy="10"
+                        r="3"></circle></svg
+                    >
+                    <span x-text="event.city"></span>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </template>
+
+          {/* --- Expanded state (day selected + Datum hosted event) --- */}
+          <template x-if="isEventExpanded(event)">
+            <div class="event-calendar-list__item-expanded">
+              {/* Left: Title + Agenda */}
+              <div class="event-calendar-list__expanded-body">
+                <p class="event-calendar-list__expanded-title" x-text="event.name"></p>
+
+                <template x-if="event.description_html">
+                  <div class="event-calendar-list__expanded-description datum-prose">
+                    <h4 class="event-calendar-list__expanded-heading">Agenda</h4>
+                    <div x-html="event.description_html"></div>
+                  </div>
+                </template>
+              </div>
+
+              {/* Right: Cover + Meta + CTA */}
+              <div class="event-calendar-list__expanded-sidebar">
+                <template x-if="event.cover_url">
+                  <div class="event-calendar-list__expanded-cover">
+                    <img x-bind:src="event.cover_url" x-bind:alt="event.name" loading="lazy" />
+                  </div>
+                </template>
+
+                <template x-if="event.isRecurringSeries">
+                  <span class="event-badge event-badge--recurring">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"
+                      ></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"
+                      ></path></svg
+                    >
+                    Recurring Series
+                  </span>
+                </template>
+
+                <div class="event-calendar-list__expanded-meta">
+                  <div class="event-calendar-list__expanded-meta-row">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><path d="M8 2v4"></path><path d="M16 2v4"></path><path
+                        d="M21 17V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11"></path><path
+                        d="M3 10h18"></path><path d="M15 22l2-2v-4h4"></path></svg
+                    >
+                    <span x-text="formatEventShortDate(event.start_at, event.timezone)"></span>
+                  </div>
+                  <div class="event-calendar-list__expanded-meta-row">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"
+                      ></polyline></svg
+                    >
+                    <span x-text="formatEventTime(event.start_at, event.timezone)"></span>
+                  </div>
+                  <template x-if="event.city">
+                    <div class="event-calendar-list__expanded-meta-row">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        x-show="event.city === 'Virtual'"
+                        ><path
+                          d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+                        ></path><rect width="14" height="12" x="2" y="6" rx="2"></rect></svg
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        x-show="event.city !== 'Virtual'"
+                        ><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle
+                          cx="12"
+                          cy="10"
+                          r="3"></circle></svg
+                      >
+                      <span x-text="event.city"></span>
+                    </div>
+                  </template>
+                </div>
+
+                <a
+                  x-bind:href="event.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="event-calendar-list__register-btn"
+                >
+                  Register
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg
+                  >
+                </a>
+
+                <template x-if="event.zoom_meeting_url">
+                  <a
+                    x-bind:href="event.zoom_meeting_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="event-calendar-list__zoom-link">Zoom link</a
+                  >
+                </template>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  window.eventCalendar = function eventCalendar(events) {
+    /** @param {string} iso - Luma `start_at` (YYYY-MM-… prefix, UTC) */
+    function ymKeyFromIso(iso) {
+      var m = String(iso).match(/^(\d{4})-(\d{2})/);
+      if (!m) return null;
+      return parseInt(m[1], 10) * 12 + parseInt(m[2], 10) - 1;
+    }
+
+    return {
+      events: events,
+      currentYear: new Date().getFullYear(),
+      currentMonth: new Date().getMonth(),
+      selectedDay: null,
+
+      get monthLabel() {
+        return new Date(this.currentYear, this.currentMonth, 1).toLocaleDateString('en-US', {
+          month: 'long',
+          year: 'numeric',
+        });
+      },
+
+      get calendarDays() {
+        var year = this.currentYear;
+        var month = this.currentMonth;
+        var firstDay = new Date(year, month, 1).getDay();
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var daysInPrevMonth = new Date(year, month, 0).getDate();
+        var today = new Date();
+        var todayStr =
+          today.getFullYear() +
+          '-' +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          '-' +
+          String(today.getDate()).padStart(2, '0');
+        var days = [];
+
+        for (var i = firstDay - 1; i >= 0; i--) {
+          var d = daysInPrevMonth - i;
+          var prevMonth = month === 0 ? 12 : month;
+          var prevYear = month === 0 ? year - 1 : year;
+          var dateStr =
+            prevYear + '-' + String(prevMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+          days.push({
+            date: d,
+            dateStr: dateStr,
+            inMonth: false,
+            hasEvents: false,
+            isToday: false,
+          });
+        }
+
+        for (var d2 = 1; d2 <= daysInMonth; d2++) {
+          var dateStr2 =
+            year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d2).padStart(2, '0');
+          var hasEvents = this.events.some(function (e) {
+            return e.start_at.startsWith(dateStr2);
+          });
+          days.push({
+            date: d2,
+            dateStr: dateStr2,
+            inMonth: true,
+            hasEvents: hasEvents,
+            isToday: dateStr2 === todayStr,
+          });
+        }
+
+        var trailing = 42 - days.length;
+        for (var d3 = 1; d3 <= trailing; d3++) {
+          var nextMonth = month === 11 ? 1 : month + 2;
+          var nextYear = month === 11 ? year + 1 : year;
+          var dateStr3 =
+            nextYear + '-' + String(nextMonth).padStart(2, '0') + '-' + String(d3).padStart(2, '0');
+          days.push({
+            date: d3,
+            dateStr: dateStr3,
+            inMonth: false,
+            hasEvents: false,
+            isToday: false,
+          });
+        }
+
+        return days;
+      },
+
+      get filteredEvents() {
+        var year = this.currentYear;
+        var month = this.currentMonth;
+        var monthPrefix = year + '-' + String(month + 1).padStart(2, '0');
+        var monthEvents = this.events.filter(function (e) {
+          return e.start_at.startsWith(monthPrefix);
+        });
+        if (this.selectedDay) {
+          var sel = this.selectedDay;
+          monthEvents = monthEvents.filter(function (e) {
+            return e.start_at.startsWith(sel);
+          });
+        }
+        return monthEvents.sort(function (a, b) {
+          return new Date(a.start_at) - new Date(b.start_at);
+        });
+      },
+
+      get canPrevMonth() {
+        var cur = this.currentYear * 12 + this.currentMonth;
+        return this.events.some(function (e) {
+          var k = ymKeyFromIso(e.start_at);
+          return k !== null && k < cur;
+        });
+      },
+
+      get canNextMonth() {
+        var cur = this.currentYear * 12 + this.currentMonth;
+        return this.events.some(function (e) {
+          var k = ymKeyFromIso(e.start_at);
+          return k !== null && k > cur;
+        });
+      },
+
+      selectDay: function (dateStr) {
+        this.selectedDay = this.selectedDay === dateStr ? null : dateStr;
+      },
+
+      isEventExpanded: function (event) {
+        return (
+          this.selectedDay && event.isDatumHosted && event.start_at.startsWith(this.selectedDay)
+        );
+      },
+
+      prevMonth: function () {
+        if (!this.canPrevMonth) return;
+        if (this.currentMonth === 0) {
+          this.currentMonth = 11;
+          this.currentYear -= 1;
+        } else {
+          this.currentMonth -= 1;
+        }
+        this.selectedDay = null;
+      },
+
+      nextMonth: function () {
+        if (!this.canNextMonth) return;
+        if (this.currentMonth === 11) {
+          this.currentMonth = 0;
+          this.currentYear += 1;
+        } else {
+          this.currentMonth += 1;
+        }
+        this.selectedDay = null;
+      },
+
+      formatEventDate: function (startAt, timezone) {
+        var opts = {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        };
+        if (timezone) opts.timeZone = timezone;
+        return new Date(startAt).toLocaleString('en-US', opts);
+      },
+
+      formatEventShortDate: function (startAt, timezone) {
+        var opts = { weekday: 'short', day: 'numeric', month: 'short' };
+        if (timezone) opts.timeZone = timezone;
+        return new Date(startAt).toLocaleDateString('en-US', opts);
+      },
+
+      formatEventTime: function (startAt, timezone) {
+        var opts = { hour: '2-digit', minute: '2-digit', hour12: false };
+        if (timezone) opts.timeZone = timezone;
+        var timeStr = new Date(startAt).toLocaleTimeString('en-US', opts);
+        if (timezone) {
+          var abbr = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short', timeZone: timezone })
+            .formatToParts(new Date(startAt))
+            .find(function (p) {
+              return p.type === 'timeZoneName';
+            });
+          if (abbr) timeStr += ' ' + abbr.value;
+        }
+        return timeStr;
+      },
+
+      init: function () {
+        var now = new Date();
+        var upcoming = this.events
+          .filter(function (e) {
+            return new Date(e.start_at) >= now;
+          })
+          .sort(function (a, b) {
+            return new Date(a.start_at) - new Date(b.start_at);
+          });
+        if (upcoming.length > 0) {
+          var d = new Date(upcoming[0].start_at);
+          this.currentYear = d.getFullYear();
+          this.currentMonth = d.getMonth();
+        }
+      },
+    };
+  };
+</script>

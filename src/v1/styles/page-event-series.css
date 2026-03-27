@@ -1,0 +1,89 @@
+@import './base.css';
+@import './components-events.css';
+@import './components-secondary-tab-nav.css';
+
+@layer components {
+  /* Wraps the main content section on category pages */
+  .event-series-content {
+    /* intentionally empty — spacing handled by section--block--pad */
+  }
+
+  .event-series-layout {
+    @apply pb-20;
+  }
+
+  .event-series-tabs-container {
+    @apply flex flex-col gap-8;
+  }
+
+  .event-series-tabs {
+    @apply flex gap-4 md:gap-6 lg:gap-8;
+  }
+
+  .event-series-tab {
+    @apply text-midnight-fjord/50 hover:text-midnight-fjord datum-text-base relative cursor-pointer pb-3 font-medium transition-colors duration-150;
+  }
+
+  .event-series-tab--active {
+    @apply text-midnight-fjord;
+  }
+
+  .event-series-tab--active::after {
+    content: '';
+    @apply bg-midnight-fjord absolute right-0 bottom-0 left-0 h-0.5;
+  }
+
+  .event-series-list {
+    @apply flex flex-col gap-6;
+  }
+
+  .event-series-empty {
+    @apply text-midnight-fjord/60 py-8 text-center text-base;
+  }
+
+  .event-calendar-list__recording-trigger {
+    @apply m-0 w-full cursor-pointer border-0 bg-transparent p-0 text-left;
+  }
+
+  .event-calendar-list__item--has-recording {
+    @apply focus-visible:ring-midnight-fjord/40 transition-opacity hover:opacity-95 focus-visible:ring-2 focus-visible:outline-none;
+  }
+
+  .event-calendar-list__recording-hint {
+    @apply text-midnight-fjord datum-text-sm mt-2 flex items-center gap-2 font-medium underline-offset-2 hover:underline;
+  }
+
+  /* Past event rows on series pages (Figma: title left, history + date right) */
+  .event-calendar-list__item--past-datum:not(:has(> .event-calendar-list__recording-trigger)) {
+    @apply p-8;
+  }
+
+  .event-calendar-list__item--past-datum .event-calendar-list__recording-trigger {
+    @apply p-8;
+  }
+
+  .event-calendar-list__past-datum-row {
+    @apply flex min-w-0 flex-1 items-center justify-between gap-4;
+  }
+
+  .event-calendar-list__past-datum-title {
+    @apply text-midnight-fjord datum-text-xl min-w-0 flex-1 truncate font-semibold;
+  }
+
+  .event-calendar-list__past-datum-date {
+    @apply text-app---dark---utility-4 datum-text-sm flex shrink-0 items-center gap-2.5 whitespace-nowrap;
+  }
+
+  .event-calendar-list__past-datum-stack {
+    @apply flex flex-col items-stretch gap-4;
+  }
+
+  .event-calendar-list__past-datum-stack .event-calendar-list__recording-hint {
+    @apply mt-0;
+  }
+
+  .event-calendar-list__item--past-modal {
+    @apply focus-visible:ring-midnight-fjord/40 border-app---dark---utility-5 cursor-pointer transition-[box-shadow,transform,border-color] duration-200 ease-out focus-visible:ring-2 focus-visible:outline-none;
+    @apply hover:border-app---dark---utility-3;
+  }
+}

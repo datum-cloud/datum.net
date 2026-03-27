@@ -22,6 +22,15 @@ const {
 <header class:list={['hero--main', className]}>
   <Announcement />
   <Nav showLoginButton={true} showGithubButton={false} />
+
+  {
+    Astro.slots.has('before-content') && (
+      <div class="hero--before-content px-7 pt-8 pb-0 md:pt-10 md:pb-2 lg:pt-12 lg:pb-4">
+        <slot name="before-content" />
+      </div>
+    )
+  }
+
   {
     !hideContent && (
       <div class="hero--main-content">
@@ -48,6 +57,7 @@ const {
             )}
           </div>
         )}
+
         {imagePath && (
           <div class="hero--main-content-image">
             <Image

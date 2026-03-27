@@ -53,8 +53,112 @@
 
   /* Prevent page scroll when modal is open */
   body[data-video-modal-open],
-  body[data-newsletter-modal-open] {
+  body[data-newsletter-modal-open],
+  body[data-event-modal-open] {
     @apply overflow-clip;
+  }
+
+  /* Past Community Huddle recap — Figma node 11074:47906 */
+  community-huddle-past-modal {
+    @apply contents;
+  }
+
+  .community-huddle-past-modal__dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max min-h-0 w-[92%] max-w-[56rem];
+    @apply max-h-[calc(100vh-4rem)];
+    @apply bg-transparent;
+  }
+
+  .community-huddle-past-modal__dialog[open] {
+    @apply flex;
+  }
+
+  .community-huddle-past-modal__dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur-[9px];
+  }
+
+  .community-huddle-past-modal__frame {
+    @apply border-app---dark---utility-5 shadow-modal max-h-[calc(100vh-5rem)] overflow-y-auto rounded-[9px] border border-solid p-6 md:p-10;
+  }
+
+  .community-huddle-past-modal__close {
+    @apply top-2 right-2 md:top-3 md:right-3;
+  }
+
+  .community-huddle-past-modal__inner {
+    @apply text-midnight-fjord flex max-w-[1280px] flex-col gap-8;
+  }
+
+  .community-huddle-past-modal__header {
+    @apply flex flex-col gap-2;
+  }
+
+  .community-huddle-past-modal__date-row {
+    @apply flex items-center gap-2.5;
+  }
+
+  .community-huddle-past-modal__date {
+    @apply text-app---dark---utility-4 datum-text-sm m-0;
+  }
+
+  .community-huddle-past-modal__title {
+    @apply text-midnight-fjord m-0 text-3xl leading-[42px] font-semibold tracking-normal;
+  }
+
+  .community-huddle-past-modal__columns {
+    @apply flex flex-col gap-8 lg:flex-row lg:gap-10;
+  }
+
+  .community-huddle-past-modal__recap,
+  .community-huddle-past-modal__covered {
+    @apply min-w-0 flex-1;
+  }
+
+  .community-huddle-past-modal__section-title {
+    @apply text-midnight-fjord m-0 mb-7 text-xl leading-7 font-semibold tracking-normal;
+  }
+
+  .community-huddle-past-modal__recap-trigger {
+    @apply border-app---dark---utility-5 m-0 w-full max-w-[311px] cursor-pointer overflow-hidden rounded-md border-0 bg-transparent p-0 no-underline;
+  }
+
+  .community-huddle-past-modal__recap-thumb {
+    @apply bg-pine-forge relative block aspect-16/9 w-full max-w-[311px] overflow-hidden rounded-md;
+  }
+
+  .community-huddle-past-modal__recap-thumb img {
+    @apply absolute inset-0 h-full w-full object-cover;
+    filter: blur(5px);
+    transform: scale(1.06);
+  }
+
+  .community-huddle-past-modal__recap-play {
+    @apply border-aurora-moss bg-aurora-moss text-midnight-fjord absolute top-1/2 left-1/2 flex size-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 shadow-sm;
+  }
+
+  .community-huddle-past-modal__covered-body {
+    @apply text-midnight-fjord datum-text-base m-0 min-w-0 break-words;
+
+    :where(ul) {
+      @apply mb-0 list-disc space-y-2.5 ps-6;
+    }
+
+    :where(li)::marker {
+      @apply text-midnight-fjord;
+    }
+
+    :where(p) {
+      @apply mb-2.5 last:mb-0;
+    }
+  }
+
+  .community-huddle-past-modal__slides-row {
+    @apply flex items-center gap-2.5;
+  }
+
+  .community-huddle-past-modal__slides-link {
+    @apply text-canyon-clay---links datum-text-sm underline decoration-solid;
   }
 
   /* Newsletter Modal (same dialog pattern as video-modal) */

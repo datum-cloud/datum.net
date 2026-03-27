@@ -61,6 +61,16 @@
         @apply text-midnight-fjord;
       }
     }
+
+    &.content-alt {
+      .hero--main-content-title {
+        @apply datum-text-11xl mb-0 max-w-xl lg:max-w-4xl;
+      }
+
+      .hero--main-content-description {
+        @apply text-app---dark---utility-3 datum-text-2xl max-w-2xl text-pretty;
+      }
+    }
   }
 
   [data-theme='light'] {
@@ -151,10 +161,13 @@
 
   .hero--main-content-title {
     @apply datum-text-8xl mb-0 max-w-xl lg:max-w-3xl;
+    span {
+      @apply text-pine-forge;
+    }
   }
 
   .hero--main-content-title-alt {
-    @apply datum-text-10xl mb-0 max-w-xl;
+    @apply datum-text-11xl mb-0 max-w-xl lg:max-w-4xl;
   }
 
   .hero--main-content-description {

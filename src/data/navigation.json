@@ -14,6 +14,12 @@
               "href": "/features/"
             },
             {
+              "text": "Essentials",
+              "image": "/images/nav/essentials.png",
+              "desc": "Enterprise-grade networking primitives",
+              "href": "/essentials/"
+            },
+            {
               "text": "Pricing",
               "image": "/images/nav/pricing.png",
               "desc": "Pssssssst... It’s free",

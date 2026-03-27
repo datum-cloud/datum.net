@@ -33,7 +33,23 @@
     }
 
     .link--active {
-      @apply [&>span]:border-b-2;
+      & > span {
+        @apply relative;
+
+        &::before,
+        &::after {
+          content: '';
+          @apply absolute bottom-0 left-0 h-0.5;
+        }
+
+        &::before {
+          @apply bg-blush-quartz w-full;
+        }
+
+        &::after {
+          @apply bg-midnight-fjord w-3;
+        }
+      }
     }
 
     .nav-menu-item {
@@ -42,6 +58,10 @@
 
     .nav-menu-link {
       @apply flex items-center gap-2 font-normal hover:opacity-80;
+
+      & > span {
+        @apply pb-1;
+      }
     }
   }
 
@@ -51,7 +71,7 @@
   }
 
   .nav-dropdown-arrow {
-    @apply transition-transform duration-200 ease-in-out;
+    @apply -mt-1 transition-transform duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-arrow,
@@ -133,6 +153,10 @@
   /* Card Dropdown Styles (Product) */
   .nav-dropdown-cards-wrapper {
     @apply -left-[150%] p-3;
+  }
+
+  .nav-dropdown-menu.nav-dropdown-parent--product {
+    @apply -left-[250%]! p-3;
   }
 
   .nav-dropdown-cards {

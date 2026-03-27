@@ -2,6 +2,7 @@
 import '@v1/styles/page-pricing.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getCollection } from 'astro:content';
@@ -151,20 +152,20 @@ const jsonLd = {
 };
 ---
 
-<Layout
-  title={page.data.title}
-  description={page.data.description}
-  bodyClass={`page-${page.id}`}
-  meta={meta}
-  jsonLd={jsonLd}
->
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={page.data.iconName}
-      title={page.data.title}
-      subtitle={page.data.subtitle}
-    />
+    <Hero class="light content-alt" title={page.data.title}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Core features', href: '/features/', exact: true },
+          { label: 'Essentials', href: '/essentials/' },
+          { label: 'Pricing', href: '/pricing/' },
+        ]}
+      />
+    </Hero>
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">

@@ -19,7 +19,7 @@
   body {
     @apply font-primary;
     @apply antialiased;
-    @apply bg-glacier-mist-900;
+    @apply bg-glacier-mist-700;
   }
 
   html,

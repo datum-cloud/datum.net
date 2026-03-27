@@ -153,6 +153,7 @@ export interface ContentEvent {
   tags?: string[];
   // Extensions beyond old LumaEvent
   eventType: string;
+  theme?: string;
   youtubeUrl?: string;
   slidesUrl?: string;
   /** Content collection entry id (directory slug) */
@@ -206,6 +207,7 @@ export async function fetchEvents(): Promise<{
       zoom_meeting_url: d.zoomMeetingUrl,
       tags: d.tags ?? [],
       eventType: d.eventType,
+      theme: d.theme,
       youtubeUrl: d.youtubeUrl,
       slidesUrl: d.slidesUrl,
       collectionId: entry.id,

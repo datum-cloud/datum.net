@@ -181,6 +181,12 @@ const timezoneAbbr = event.timezone
       <div class="event-series-card__body">
         <h3 class="event-series-card__title">{displayName}</h3>
 
+        {event.theme && (
+          <div class="event-series-card__section">
+            <h4 class="event-series-card__section-label">{event.theme}</h4>
+          </div>
+        )}
+
         {descriptionHtml && (
           <div class="event-series-card__section">
             <h4 class="event-series-card__section-label">Agenda</h4>
@@ -192,7 +198,7 @@ const timezoneAbbr = event.timezone
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 lg:gap-12">
           {guests.length > 0 && (
             <div class="event-series-card__section">
-              <h4 class="event-series-card__section-label">Guests</h4>
+              <h5 class="event-series-card__section-label">Guests</h5>
               <div class="event-series-card__speakers">
                 {guests.map((guest) => (
                   <div class="event-series-card__speaker">

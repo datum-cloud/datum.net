@@ -43,8 +43,6 @@ export interface PaginationProps {
 export interface HeroProps {
   iconName?: string;
   title?: string;
-  /** Extra classes for the hero title element. */
-  titleClass?: string;
   subtitle?: string;
   description?: string;
   class?: string;

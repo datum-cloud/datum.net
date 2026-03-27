@@ -1,0 +1,62 @@
+@layer components {
+  .essentials-header {
+    @apply flex w-full flex-col items-start gap-10;
+    @apply mb-16;
+  }
+
+  .essentials-label {
+    @apply bg-midnight-fjord inline-flex items-center justify-center;
+    @apply px-2 pt-px;
+    @apply text-glacier-mist-700 font-dejavu;
+    @apply text-(length:--18px) leading-(--26px);
+  }
+
+  .essentials-title {
+    @apply text-balance;
+    @apply font-canela;
+    @apply datum-text-9xl;
+    @apply text-midnight-fjord;
+
+    span {
+      @apply text-pine-forge;
+    }
+  }
+
+  .essentials-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+    @apply border-glacier-mist-900 border-2;
+    @apply bg-glacier-mist-900 gap-px;
+  }
+
+  .essentials-item {
+    @apply bg-glacier-mist-700;
+    @apply flex flex-col items-start gap-7;
+    @apply p-8 lg:p-11;
+  }
+
+  .essentials-item-icon {
+    @apply bg-aurora-moss rounded-sm;
+    @apply flex items-center justify-center;
+    @apply size-10;
+
+    svg {
+      @apply text-app---dark---utility-3 size-5;
+    }
+
+    img {
+      @apply size-5;
+    }
+  }
+
+  .essentials-item-content {
+    @apply flex w-full flex-col gap-2;
+  }
+
+  .essentials-item-title {
+    @apply text-midnight-fjord font-dejavu text-lg leading-6 font-bold whitespace-nowrap;
+  }
+
+  .essentials-item-description {
+    @apply datum-text-base text-app---dark---utility-3 opacity-80;
+  }
+}

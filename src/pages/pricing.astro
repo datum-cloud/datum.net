@@ -151,13 +151,7 @@ const jsonLd = {
 };
 ---
 
-<Layout
-  title={page.data.title}
-  description={page.data.description}
-  bodyClass={`page-${page.id}`}
-  meta={meta}
-  jsonLd={jsonLd}
->
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
     <Hero
       class="light"

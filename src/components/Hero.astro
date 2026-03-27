@@ -11,6 +11,7 @@ import type { HeroProps } from '@/src/types/common';
 const {
   iconName = '',
   title = '',
+  titleClass,
   subtitle = '',
   description = '',
   class: className,
@@ -48,10 +49,15 @@ const {
               </div>
             ) : null}
 
-            {title && <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />}
+            {title && (
+              <h1
+                class:list={['hero--main-content-title', titleClass]}
+                set:html={marked.parseInline(title)}
+              />
+            )}
             {description && (
               <p
-                class="hero--main-content-description"
+                class:list={['hero--main-content-description', titleClass]}
                 set:html={marked.parseInline(description)}
               />
             )}

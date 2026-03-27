@@ -5,7 +5,7 @@ import { fetchEvents, isEventAltCloudMeetup } from '@libs/events';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import EventsSecondaryNav from '@components/events/EventsSecondaryNav.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import EventSeriesCard from '@components/events/EventSeriesCard.astro';
 import VideoModal from '@components/home/VideoModal.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -25,7 +25,16 @@ const altMeetupsPast = past.filter(isEventAltCloudMeetup);
 <Layout title={title} description={description} bodyClass="page-event-series" meta={meta}>
   <section class="datum-container">
     <Hero class="light pb-0" title={title} description={description}>
-      <EventsSecondaryNav slot="before-content" />
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Event categories"
+        mobileLabel="Event category"
+        items={[
+          { label: 'All events', href: '/events/', exact: true },
+          { label: 'Community Huddles', href: '/events/community-huddles/' },
+          { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups/' },
+        ]}
+      />
     </Hero>
 
     <section

@@ -1,5 +1,6 @@
 @import './base.css';
 @import './components-events.css';
+@import './components-secondary-tab-nav.css';
 
 @layer components {
   /* Wraps the main content section on category pages */

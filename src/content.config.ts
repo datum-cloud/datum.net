@@ -326,6 +326,7 @@ const events = defineCollection({
       youtubeUrl: z.string().optional(),
       slidesUrl: z.string().optional(),
       tags: z.array(z.string()).optional(),
+      theme: z.string().optional(),
       eventType: z.enum(['community-huddle', 'alt-cloud-meetup', 'external', 'other']),
     }),
 });

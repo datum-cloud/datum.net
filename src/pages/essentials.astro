@@ -13,7 +13,7 @@ import features from '@data/features.json';
 const page = await getCollectionEntry('pages', 'essentials');
 
 const faqs = (await getCollection('faq'))
-  .filter((faq) => !faq.data.draft && faq.data.category === 'pricing')
+  .filter((faq) => !faq.data.draft && faq.data.category === 'features')
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
 // SEO

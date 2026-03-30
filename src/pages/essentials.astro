@@ -1,0 +1,142 @@
+---
+import '@v1/styles/page-essentials.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { getCollection } from 'astro:content';
+import FAQ from '@components/FAQ.astro';
+import Icon from '@components/Icon.astro';
+import features from '@data/features.json';
+
+const page = await getCollectionEntry('pages', 'essentials');
+
+const faqs = (await getCollection('faq'))
+  .filter((faq) => !faq.data.draft && faq.data.category === 'features')
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const theTitle = 'The bare <span>necessities</span>';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/essentials/',
+      url: 'https://www.datum.net/essentials/',
+      name: 'Datum Essentials – Enterprise-grade networking primitives',
+      description:
+        'We like to make our cloud enjoyable to use, andgenuinely useful with a handful of essential features.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-27',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://www.datum.net/pricing/#faq',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: "What's included in the free Builder tier, and will it always be free?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "Yes, the Builder tier is completely free and Datum's goal is to keep it that way. It includes core programmatic capabilities for developing, protecting, and connecting applications on the internet — including AI Edge, Connectors, DNS, Domains, OTel Metrics Export, Secrets, Teams, RBAC, and Machine Accounts.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'When does the Scaler tier launch, and how is it different from the free tier?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "The Scaler tier is coming in the first half of 2026. In addition to support and SLA guarantees, it includes features that use Datum's global backbone — such as private connections to AWS or GCP — as well as certificate management and domain connect.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: "What does 'traffic usage' mean for Scaler tier pricing?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'The Scaler tier uses a pay-as-you-grow model with a base price of $20/month plus additional charges based on actual traffic usage. The plan includes $10 in usage credits to help offset initial traffic costs.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Who is the Provider tier for, and how much does it cost?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "The Provider tier is designed for alt cloud providers that deliver their value directly on top of connected infrastructure. Pricing is custom. It includes everything in the Scaler plan plus Managed Cloud and BYOC options, private virtual backbones, and custom AnyCAST and IP Space. Prospective customers can schedule time with Datum's founders to learn more.",
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container">
+    <Hero class="light content-alt pb-0" title={theTitle} description={fm.description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Core features', href: '/features/', exact: true },
+          { label: 'Essentials', href: '/essentials/' },
+          { label: 'Pricing', href: '/pricing/' },
+        ]}
+      />
+    </Hero>
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+      <div class="max-width">
+        <div class="border-glacier-mist-900 border-l-2 pl-4 md:pl-12 lg:pl-16 xl:pl-20">
+          <div class="essentials-header">
+            <div class="essentials-label">Useful features_</div>
+            <h2 class="essentials-title">At a price called <span>zero!</span></h2>
+          </div>
+
+          <div class="essentials-grid">
+            {
+              features.map((feature) => (
+                <div class="essentials-item">
+                  <div class="essentials-item-icon">
+                    <Icon name={feature.icon} class="stroke-1" />
+                  </div>
+                  <div class="essentials-item-content">
+                    <p class="essentials-item-title">{feature.title}</p>
+                    <p class="essentials-item-description">{feature.description}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section--block section--block--pad bg-glacier-mist-800">
+      <div class="max-width">
+        <div class="grid grid-cols-12 gap-6" x-data="{ expandedFaq: null }">
+          <h2 class="datum-text-7xl col-span-12 col-start-1 md:col-span-5">
+            Frequently asked questions
+          </h2>
+          <div class="col-span-12 md:col-span-7">
+            <div class="faq-list">
+              {
+                faqs.map((faq, index) => {
+                  return <FAQ faq={faq} index={index} />;
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

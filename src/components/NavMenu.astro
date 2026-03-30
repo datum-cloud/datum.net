@@ -42,6 +42,16 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
     ) ?? false
   );
 }
+
+/** Stable class for top-level nav label, e.g. `nav-dropdown-parent--product`. */
+function navDropdownParentClass(text: string): string {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+  return `nav-dropdown-parent--${slug}`;
+}
 ---
 
 <div class="nav-menu-wrapper">
@@ -71,7 +81,7 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
             </a>
             {item.children && (
               <ul
-                class={`nav-dropdown-menu ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
+                class={`nav-dropdown-menu ${navDropdownParentClass(item.text)} ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
               >
                 {item.children.map((section) => (
                   <li

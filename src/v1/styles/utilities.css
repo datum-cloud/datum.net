@@ -184,6 +184,15 @@
   @apply text-(length:--text-8xl-canela-font-size);
 }
 
+@utility datum-text-9xl {
+  @apply text-balance;
+  @apply font-canela;
+
+  @apply tracking-(--text-9xl-canela-letter-spacing);
+  @apply leading-(--text-9xl-canela-line-height);
+  @apply text-(length:--text-9xl-canela-font-size);
+}
+
 @utility datum-text-10xl {
   @apply text-balance;
   @apply font-canela;

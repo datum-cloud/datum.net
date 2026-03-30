@@ -2,6 +2,7 @@
 import '@v1/styles/page-features.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import Table from '@components/features/Table.astro';
 import Cards from '@components/features/Cards.astro';
@@ -153,21 +154,20 @@ const jsonLd = {
 };
 ---
 
-<Layout
-  title={title}
-  description={description}
-  bodyClass="page-features"
-  meta={meta}
-  jsonLd={jsonLd}
->
+<Layout bodyClass="page-features" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container overflow-clip">
-    <Hero
-      class="light"
-      iconName="goal"
-      title={title}
-      description={description}
-      subtitle={fm.subtitle}
-    />
+    <Hero class="light content-alt" title={title} description={description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Core features', href: '/features/', exact: true },
+          { label: 'Essentials', href: '/essentials/' },
+          { label: 'Pricing', href: '/pricing/' },
+        ]}
+      />
+    </Hero>
 
     {
       firstContents[0] && (

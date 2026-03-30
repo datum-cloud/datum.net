@@ -12,7 +12,6 @@ import LinuxIcon from '@v1/assets/icons/linux.svg';
 import GoIcon from '@v1/assets/icons/go.svg';
 import TsIcon from '@v1/assets/icons/ts.svg';
 import RustIcon from '@v1/assets/icons/rust.svg';
-import TerminaIcon from '@v1/assets/icons/terminal.svg';
 import WorkflowIcon from '@v1/assets/icons/workflow.svg';
 import VisionCheckIcon from '@v1/assets/icons/vision-check.svg';
 import DatumLogoIcon from '@v1/assets/icons/datum-logo.svg';
@@ -63,8 +62,6 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <TsIcon class={`${sizeClass} ${className}`} />
   ) : name === 'rust' ? (
     <RustIcon class={`${sizeClass} ${className}`} />
-  ) : name === 'terminal' ? (
-    <TerminaIcon class={`${sizeClass} ${className}`} />
   ) : name === 'workflow' ? (
     <WorkflowIcon class={`${sizeClass} ${className}`} />
   ) : name === 'vision-check' ? (

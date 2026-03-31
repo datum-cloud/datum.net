@@ -82,12 +82,6 @@
     'DejaVu Sans Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
 
-  /* Starlight */
-  --sl-label-icon-size: 18px;
-
-  /* Color Datum */
-  --sl-color-text-accent: #bf9595;
-
   --color-borderpanellight: #d0d0ca;
   --color-borderpaneldark: #313066;
 

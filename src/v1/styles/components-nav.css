@@ -12,10 +12,6 @@
         }
       }
 
-      starlight-theme-select {
-        @apply mr-0;
-      }
-
       .btn.gh-button {
         /* @apply border-0 md:border; */
         span {

@@ -355,13 +355,13 @@
     }
     li:not(:last-child)::after {
       content: '/';
-      @apply mx-1.25 text-[color:var(--sl-color-text)];
+      @apply text-midnight-fjord mx-1.25;
     }
     a {
-      @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
+      @apply text-midnight-fjord hover:text-canyon-clay---links text-nowrap no-underline transition-colors;
     }
     svg {
-      @apply mr-1.25 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+      @apply text-canyon-clay mr-1.25 inline-block h-4 w-4 align-middle;
     }
     a.is-index {
       @apply -translate-y-0.5;
@@ -550,10 +550,6 @@
         a {
           @apply mb-0 px-0;
         }
-      }
-
-      .tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role='tab'][aria-selected='true'] {
-        --sl-tab-color-border: var(--color-midnight-fjord);
       }
     }
   }

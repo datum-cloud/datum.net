@@ -18,7 +18,7 @@ Our initial focus is to help a new class of builders get access to the core ‘i
 * Generous quotas
 * No paid option
 
-## Datum for SaaS (Production grade self-service)
+## Datum for Production (Production grade self-service)
 We hope that many builders and platform engineers will want to consume our value in production use cases. To do that, they’ll want an SLA and we’ll need to charge money, especially for sending traffic across our backbone and brokering connections with clouds, etc. 
 * $20/mo + usage
 * Expanded features

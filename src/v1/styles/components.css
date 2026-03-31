@@ -8,6 +8,27 @@
     background-color: var(--color-blush-quartz) !important;
   }
 
+  /* Section Label & Title */
+  .section-label {
+    @apply bg-midnight-fjord inline-flex items-center justify-center;
+    @apply px-2 pt-px;
+    @apply text-glacier-mist-700;
+    @apply datum-text-lg font-dejavu;
+  }
+
+  .section-label--muted {
+    @apply bg-transparent;
+    @apply text-app---dark---utility-3;
+  }
+
+  .section-title {
+    @apply datum-text-8xl text-midnight-fjord;
+  }
+
+  .section-title--sm {
+    @apply datum-text-7xl text-midnight-fjord;
+  }
+
   /* Section Block */
   .section--block {
     @apply relative z-10;

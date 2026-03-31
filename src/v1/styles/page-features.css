@@ -1,4 +1,5 @@
 @import './base.css';
 @import './components-secondary-tab-nav.css';
 @import './components-features.css';
-@import './components-faq.css';
+
+@import './fonts-dejavu.css';

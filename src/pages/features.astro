@@ -1,39 +1,18 @@
 ---
+// src/pages/features.astro
 import '@v1/styles/page-features.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
-import Table from '@components/features/Table.astro';
-import Cards from '@components/features/Cards.astro';
-
-import ImageTwoMen from '@v1/assets/images/two-men.png';
-import ImageLight from '@v1/assets/images/light-trail.png';
-
-import type { FeaturesDataProps } from '@/src/types/features';
-
+import Icon from '@components/Icon.astro';
 import { Image } from 'astro:assets';
+
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { getEntries, getCollection } from 'astro:content';
-import FAQ from '@components/FAQ.astro';
-import { marked } from 'marked';
+import featuresMapImage from '@v1/assets/images/features-map.png';
 
-const page = await getCollectionEntry('features', 'index');
+const page = await getCollectionEntry('pages', 'features');
 const fm = page.data;
-
-const firstContents: Array<{
-  data: FeaturesDataProps;
-  body: string;
-}> = fm.sections.first && (await getEntries(fm.sections.first));
-
-const secondContents: Array<{
-  data: FeaturesDataProps;
-  body: string;
-}> = fm.sections.second && (await getEntries(fm.sections.second));
-
-const faqs = (await getCollection('faq'))
-  .filter((faq) => !faq.data.draft && faq.data.category === 'features')
-  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
 // SEO
 const meta = fm.meta || {};
@@ -88,68 +67,6 @@ const jsonLd = {
       softwareVersion: '2025',
       license: 'https://www.gnu.org/licenses/agpl-3.0.html',
     },
-    {
-      '@type': 'FAQPage',
-      '@id': 'https://www.datum.net/features/#faq',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'How mature is Datum Cloud?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Datum is an early stage company and its product is evolving steadily. Core features like additional Connectors, Galactic VPC, and Compute are in progress, alongside platform features for enterprise readiness and operational scale.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Why is Datum currently free?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Datum offers a forever-free service tier as a core commitment. As the product matures, all features will be enabled in the free tier with reasonable usage limits. A paid plan with an SLA and additional deployment models are planned for later in 2026.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What deployment models does Datum Cloud offer?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Datum currently offers a public cloud model (multi-tenant at the control plane and network level) and open source. A managed cloud offering (single-tenant control plane) and a bring-your-own-cloud (BYOC) model are planned pending design partner demand.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How does Datum Cloud compare to public clouds and CDNs?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Datum offers features that mirror aspects of large public clouds and CDNs — an edge proxy, reverse tunnel, DNS, global reach, and a high-performance backbone — but is built specifically for modern alt cloud providers with an open, AI-native, neutral strategy.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: "What are the 'internet superpowers' Datum talks about?",
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "Internet superpowers refer to networking capabilities like peering, interconnection, and deterministic routing that large tech companies use to control traffic flow, improve performance, lower costs, and comply with regulation. Datum's mission is to make these available to every developer, agent, and builder.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: "What is Datum's relationship with Kubernetes?",
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "Datum's control plane is built on Kubernetes Custom Resource Definitions (CRDs). You don't need to use Kubernetes to use Datum Cloud, but it will feel natural if you do. Kubernetes familiarity also means LLMs like Claude have a more seamless and accurate experience working with Datum's APIs.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: "How is Datum's infrastructure structured?",
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Datum deploys infrastructure at top internet aggregation points globally, packaged into Regions and Availability Zones (AZs). Each Region represents a geographic and network boundary; each AZ provides independent capacity within that Region. Regions use a country-anchored naming format: two-letter ISO country code, cardinal direction, region index, and AZ identifier (e.g. us-central-1a).',
-          },
-        },
-      ],
-    },
   ],
 };
 ---
@@ -162,141 +79,347 @@ const jsonLd = {
         ariaLabel="Product"
         mobileLabel="Product"
         items={[
-          { label: 'Core features', href: '/features/', exact: true },
+          { label: 'Features', href: '/features/', exact: true },
           { label: 'Essentials', href: '/essentials/' },
           { label: 'Pricing', href: '/pricing/' },
         ]}
       />
     </Hero>
 
-    {
-      firstContents[0] && (
-        <div class="section--block section--block--pad bg-midnight-fjord dark pb-22">
-          <div class="absolute top-1/2 -right-26 z-20 inline-block max-w-149 -translate-y-1/2">
-            <Image
-              src={ImageLight}
-              alt="Light Trail"
-              class="relative h-auto w-[670px] -rotate-45"
-            />
-          </div>
-          <div class="max-width">
-            <Table>
-              <h2 slot="header">{firstContents[0].data.title}</h2>
-
-              {firstContents[0].data.keyFeatures && (
-                <Fragment slot="features">
-                  <Fragment set:html={marked.parse(firstContents[0].body)} />
-                  <h3>Key features</h3>
-                  <ul>
-                    {firstContents[0].data.keyFeatures.map((feature) => (
-                      <li>{feature}</li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-
-              {firstContents[0].data.readTheDocs && (
-                <Fragment slot="docs">
-                  <h3>Next steps</h3>
-                  <ul>
-                    {firstContents[0].data.readTheDocs.map((item) => (
-                      <li>
-                        <a href={item.url}>{item.label}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-            </Table>
-          </div>
-        </div>
-      )
-    }
-
-    {
-      firstContents[1] && (
-        <div class="section--block section--block--pad bg-midnight-fjord dark overflow-visible pt-0">
-          <div class="max-width relative">
-            <div class="absolute top-0 left-15 z-30 inline-block -translate-y-full">
-              <Image
-                src={ImageTwoMen}
-                alt="Two Men"
-                class="relative h-auto w-[60px] md:w-[110px]"
-                data-scroll-effect="parallax"
-                data-scroll-speed="0.1"
-                data-scroll-direction="down"
-                data-viewport-offset="-200"
-                data-max-movement="50"
-              />
-            </div>
-            <Table class="z-40">
-              <h2 slot="header">{firstContents[1].data.title}</h2>
-
-              {firstContents[1].data.keyFeatures && (
-                <Fragment slot="features">
-                  <Fragment set:html={marked.parse(firstContents[1].body)} />
-                  <h3>Key features</h3>
-                  <ul>
-                    {firstContents[1].data.keyFeatures.map((feature) => (
-                      <li>{feature}</li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-
-              {firstContents[1].data.readTheDocs && (
-                <Fragment slot="docs">
-                  <h3>Next steps</h3>
-                  <ul>
-                    {firstContents[1].data.readTheDocs.map((item) => (
-                      <li>
-                        <a href={item.url}>{item.label}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </Fragment>
-              )}
-            </Table>
-          </div>
-
-          <div class="absolute bottom-1/2 -left-30 z-20 hidden w-auto max-w-2/3 translate-y-1/2 md:block">
-            <Image
-              src={ImageLight}
-              alt="Light Trail"
-              class="relative h-auto w-full max-w-[650px]"
-            />
-          </div>
-        </div>
-      )
-    }
-
-    {
-      secondContents && (
-        <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
-          <div class="max-width">
-            <div class="border-midnight-fjord border bg-white p-7 md:p-12 xl:p-16">
-              <Cards features={secondContents} />
-            </div>
-          </div>
-        </div>
-      )
-    }
-    <div class="section--block section--block--pad bg-glacier-mist-700">
+    <div class="section--block section--block--pad bg-glacier-mist-700 features-hero-wrapper pt-0">
+      <div class="features-matrix-bg" aria-hidden="true"></div>
       <div class="max-width">
-        <div class="grid grid-cols-12 gap-6" x-data="{ expandedFaq: null }">
-          <h2 class="datum-text-7xl col-span-12 col-start-1 md:col-span-5">Common Questions</h2>
-          <div class="col-span-12 md:col-span-7">
-            <div class="faq-list">
-              {
-                faqs.map((faq, index) => {
-                  return <FAQ faq={faq} index={index} />;
-                })
-              }
+        <div class="features-page">
+          <!-- Section 1: Hero Image -->
+          <section class="features-hero-image">
+            <video autoplay muted loop playsinline preload="auto" width="978" height="533">
+              <source src="/videos/terminal-v6.webm" type="video/webm" />
+              <source src="/videos/terminal-v6.mp4" type="video/mp4" />
+            </video>
+          </section>
+
+          <!-- Section 2: AI Edge -->
+          <section class="features-section">
+            <div class="features-section-header">
+              <div>
+                <span class="section-label">AI Edge_</span>
+              </div>
+              <div class="features-section-header-text">
+                <h2 class="section-title">Meet the internet in style</h2>
+                <p class="features-section-description">
+                  Give every agent or app a global edge to absorb attacks, interact with the broader
+                  internet, and safely route traffic to backend services.
+                </p>
+              </div>
             </div>
+
+            <div class="features-section-content">
+              <div class="features-section-content--left">
+                <div class="features-map-image">
+                  <Image
+                    src={featuresMapImage}
+                    alt="Datum Cloud map"
+                    widths={[640, 960, 1066]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 960px) 100vw, 1066px"
+                  />
+                </div>
+              </div>
+
+              <div class="features-section-content--right">
+                <div class="features-bullet-list">
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Powered by Envoy</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Envoy is the internet's leading distributed proxy, deployed at scale with
+                      Google, Netflix, Salesforce and more. Why not you?
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Built-in Coraza WAF</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Firewalls are hard business. While we can't solve that, we can quickly cover
+                      the top OWASP threats with Coraza. You're welcome!
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">17+ global regions</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      The world is big, but the internet gathers in a smaller set of key "football
+                      cities" like Amsterdam, Ashburn, and Tokyo to interact and exchange traffic.
+                      That's where we are today.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 3: Connectors -->
+          <section class="features-section">
+            <div class="features-section-header">
+              <div>
+                <span class="section-label">Connectors_</span>
+              </div>
+              <div class="features-section-header-text">
+                <h2 class="section-title max-w-3xl">
+                  Orchestrate diverse conections, starting with Tunnels
+                </h2>
+                <p class="features-section-description">
+                  We're focused on supporting all kinds of connections, from developer-focused (e.g.
+                  Tailscale Tailnets, Wireguard VPNs) to low level L2/L3 telco (AWS Direct Connect,
+                  Equinix Fabric, Megaport Onramps, etc). But first, QUIC-based Tunnels!
+                </p>
+              </div>
+            </div>
+
+            <div class="features-section-content">
+              <div class="features-section-content--left">
+                <div class="features-bullet-list">
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Zero Trust for Agents</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Safeguard data and bring up workloads with instant connectivity to exactly
+                      what it needs.
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Built on Iroh, powered by QUIC</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Lightweight, flexible tunnels built using the Iroh protocol for direct
+                      peer-to-peer connections.
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Resilient Routing</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Certificate-based routing keeps connections secure, stable, and ready for
+                      chaos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="features-cta">
+                <div class="features-cta-banner">
+                  <span class="features-cta-banner-text">Wanna <span>try it</span></span>
+                  <span class="features-cta-banner-icon">
+                    <Icon name="question-mark" />
+                  </span>
+                </div>
+
+                <p class="features-cta-description">
+                  Expose <a href="https://www.datum.net/download/">localhost</a> to the internet with
+                  our desktop apps:
+                </p>
+
+                <div class="features-cta-links">
+                  <div class="features-cta-link">
+                    <Icon name="apple" size="md" />
+                    <a href="https://www.datum.net/download/mac-os/">mac</a>
+                  </div>
+
+                  <div class="features-cta-link">
+                    <Icon name="windows" size="md" />
+                    <a href="https://www.datum.net/download/windows/">Windows</a>
+                  </div>
+
+                  <div class="features-cta-link">
+                    <Icon name="linux" size="md" />
+                    <a href="https://www.datum.net/download/linux/">Linux</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4: Galactic VPC + UFO -->
+          <div class="features-cards">
+            <section class="features-card">
+              <div class="features-card-header">
+                <div class="features-card-labels">
+                  <span class="section-label">Galactic VPC_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
+                </div>
+                <div class="features-section-header-text">
+                  <h2 class="section-title--sm">Route traffic where you want it</h2>
+                  <p class="features-section-description">
+                    Internet backbones weren't designed for most humans, let alone agents. Our
+                    Galactic VPC is built for an agentic world. Virtual backbones for every agent.
+                  </p>
+                </div>
+              </div>
+
+              <div class="features-bullet-list">
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">SRv6, Policy-Based Overlay</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Define how traffic flows with segment routing that put you in control of every
+                    hop.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Fully Programmable</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    We're working on a VPC like you'd get in the public cloud, but everywhere!
+                    Telemetry included.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Optimized for Private Paths</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Skip the public internet and opt for private paths that keep traffic fast,
+                    predictable, and secure.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section class="features-card">
+              <div class="features-card-header">
+                <div class="features-card-labels">
+                  <span class="section-label">UFO_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
+                </div>
+                <div class="features-section-header-text">
+                  <h2 class="section-title--sm">Isolated, cold-start compute</h2>
+                  <p class="features-section-description">
+                    That's why our "Unikernel Function Offload" feature provides 100% isolation,
+                    millisecond cold starts, and scale to zero snapshotting.
+                  </p>
+                </div>
+              </div>
+
+              <div class="features-bullet-list">
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Built for AI</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Moving intelligence to the edge with fast, low-cost, secure virtual machines.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Tiny and Mighty</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Start in &lt;10 ms with true scale to zero. Run any workload, stateless or
+                    stateful.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Powered by Unikraft</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Because we're not dummies, we partnered with the crew leading the unikernel
+                    revolution.
+                  </p>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Section 5: Values -->
+    <section class="section--block section--block--pad bg-glacier-mist-800">
+      <div class="max-width">
+        <div class="features-values">
+          <h2 class="features-values-title">
+            Values that guide<br />how we build
+          </h2>
+
+          <div class="features-values-list">
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                <strong>AX</strong>, then <strong>DX</strong>, then <strong>UX</strong>.
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Build for <strong>M's</strong> of backbones, <strong>B's</strong> of tunnels,
+                <strong>T's</strong> of unikernels
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Be <strong>humble</strong>, <strong>curious</strong>, and <strong>helpful</strong>
+                <br />(we're operators at heart).
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                <strong>No weird sales gates</strong>, overt jargon, or marketing crap.
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Ship a first version, then <strong>make it better!</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <Footer />
   </section>

@@ -18,6 +18,8 @@ import DatumLogoIcon from '@v1/assets/icons/datum-logo.svg';
 import MissionOneIcon from '@v1/assets/icons/1_.svg';
 import MissionTwoIcon from '@v1/assets/icons/2_.svg';
 import MissionThreeIcon from '@v1/assets/icons/3_.svg';
+import ArrowRightIcon from '@v1/assets/svgs/arrow-right.svg';
+import QuestionMarkIcon from '@v1/assets/icons/question-mark.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -74,6 +76,10 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <MissionTwoIcon class={`${sizeClass} ${className}`} />
   ) : name === 'mission-3' ? (
     <MissionThreeIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'arrow-right-alt' ? (
+    <ArrowRightIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'question-mark' ? (
+    <QuestionMarkIcon class={`${sizeClass} ${className}`} />
   ) : IconComponent ? (
     <IconComponent class={`${sizeClass} ${className}`} />
   ) : (

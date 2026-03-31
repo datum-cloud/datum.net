@@ -36,10 +36,7 @@ export default defineConfig({
   },
   image: {
     layout: 'constrained',
-    domains: [
-      'grateful-excitement-dfe9d47bad.media.strapiapp.com',
-      'images.lumacdn.com',
-    ],
+    domains: ['grateful-excitement-dfe9d47bad.media.strapiapp.com', 'images.lumacdn.com'],
   },
   integrations: [
     mdx(),
@@ -85,7 +82,7 @@ export default defineConfig({
       HTML: true,
       JavaScript: true,
       Image: true,
-      SVG: false,
+      SVG: true,
     }),
     compressor({
       gzip: true,

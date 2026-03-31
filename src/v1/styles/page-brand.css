@@ -126,19 +126,11 @@
       @apply bg-white p-6.5 md:p-10 lg:p-14.75 xl:p-18.5;
     }
 
-    .brand-card-image--title {
-      @apply text-22 mb-5 leading-[1.2] font-semibold;
-    }
-
     &.small-pad {
       .brand-card-image--content {
         @apply p-8 lg:p-10.75;
       }
     }
-  }
-
-  .brand-content {
-    @apply bg-white p-10 font-normal md:p-15 lg:p-20 [&_*]:leading-[1.45];
   }
 
   /* Color Palette Component */

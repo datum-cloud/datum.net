@@ -363,7 +363,7 @@ Version changelog entries:
 
 ### Documentation (`docs/docs/`)
 
-Starlight-based documentation organized by topic:
+Documentation organized by topic:
 
 - **alt-cloud/** - Alternative cloud configurations
 - **api/** - API documentation (8 pages)

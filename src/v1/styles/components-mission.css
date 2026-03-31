@@ -134,15 +134,6 @@
     }
   }
 
-  .mission-vision-video {
-    @apply bg-midnight-fjord;
-    @apply flex items-center gap-5;
-    @apply py-2.5 pr-5 pl-2.5;
-    @apply rounded-md;
-    @apply no-underline;
-    @apply transition-opacity hover:opacity-90;
-  }
-
   .video-thumb {
     @apply relative z-10 overflow-hidden rounded-md;
   }
@@ -151,38 +142,5 @@
     @apply pointer-events-none absolute inset-0;
     background-color: rgb(230 245 159);
     mix-blend-mode: multiply;
-  }
-
-  .mission-vision-video-thumb {
-    @apply h-18 w-29 shrink-0 overflow-hidden rounded-sm;
-    @apply bg-midnight-fjord;
-
-    img {
-      @apply h-full w-full object-cover;
-      @apply opacity-80 mix-blend-screen;
-    }
-  }
-
-  .mission-vision-video-thumb-overlay {
-    @apply absolute inset-0;
-    @apply bg-aurora-moss/70 mix-blend-multiply;
-  }
-
-  .mission-vision-video-thumb-play {
-    @apply absolute inset-0 flex items-center justify-center;
-  }
-
-  .mission-vision-video-info {
-    @apply flex flex-col gap-1.5;
-  }
-
-  .mission-vision-video-title {
-    @apply font-alliance font-semibold text-white;
-    @apply text-(length:--20px) leading-(--28px);
-  }
-
-  .mission-vision-video-duration {
-    @apply font-alliance font-medium text-white/40;
-    @apply text-(length:--12px) leading-(--16px);
   }
 }

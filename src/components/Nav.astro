@@ -5,19 +5,13 @@ import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
-import ThemeSelect from '@components/ThemeSelect.astro';
 
 type Props = {
   showGithubButton?: boolean;
   showLoginButton?: boolean;
-  showThemeSelect?: boolean;
 };
 
-const {
-  showGithubButton = true,
-  showLoginButton = false,
-  showThemeSelect = false,
-}: Props = Astro.props;
+const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
 ---
 
 <nav class="nav--main" role="navigation">
@@ -37,8 +31,6 @@ const {
 
   {/* Desktop Actions */}
   <div class="nav-actions">
-    {showThemeSelect && <ThemeSelect />}
-
     {
       showGithubButton && (
         <Button

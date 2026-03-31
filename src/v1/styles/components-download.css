@@ -117,45 +117,27 @@
     @apply text-midnight-fjord;
   }
 
-  .download-content-info {
-    @apply flex items-center gap-3;
-    @apply border-pale-yellow rounded border-l-4;
-    @apply bg-pale-yellow/30;
-    @apply p-5;
-  }
-
-  .download-content-info-icon {
-    @apply h-5 w-5 flex-shrink-0;
-    @apply text-pine-forge;
-  }
-
-  .download-content-info-text {
-    @apply text-sm leading-6;
-    @apply text-pine-forge;
-  }
-
   /* Download Section */
   .download-section {
     @apply flow-root;
     @apply datum-prose-docs-article-alt;
 
-    /* Starlight aside variables (only defined in starlight.css otherwise) */
     --color-tip: var(--glacier-mist-800);
     --color-note: var(--aurora-moss);
     --color-caution: #e2e9e3;
 
     .note--note {
-      --sl-color-asides-border: var(--aurora-moss);
+      --color-aside-border: var(--aurora-moss);
       @apply bg-(--color-note)/30;
     }
 
     .note--caution {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
+      --color-aside-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-(--color-caution);
     }
 
     .note--tip {
-      --sl-color-asides-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
+      --color-aside-border: color-mix(in srgb, var(--color-midnight-fjord) 10%, transparent);
       @apply bg-(--color-tip);
     }
 
@@ -167,7 +149,7 @@
     .note {
       @apply inline-flex w-full items-center gap-3;
       @apply mb-6 p-5;
-      @apply border-l-5 border-(--sl-color-asides-border);
+      @apply border-l-5 border-(--color-aside-border);
       @apply [&>p:last-child]:mb-0;
       @apply mt-6 first:mt-0;
 

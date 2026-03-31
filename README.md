@@ -242,23 +242,23 @@ This project uses [Front Matter CMS](https://frontmatter.codes/) - a powerful he
 3. Search for "Front Matter CMS"
 4. Click "Install" on the extension by Elio Struyf
 
-**Note**: This project already has Front Matter configuration in `.frontmatter/starlight/contenttypes.json`, so you can skip manual initialization.
+**Note**: If the repo includes a `.frontmatter/` configuration, you can use it and skip manual Front Matter project initialization.
 
 #### Available Content Types
 
-| Content Type | Description                     | Location                  |
-| ------------ | ------------------------------- | ------------------------- |
-| `docs`       | Documentation pages (Starlight) | `src/content/docs/`       |
-| `blog`       | Blog posts                      | `src/content/blog/`       |
-| `authors`    | Author profiles                 | `src/content/authors/`    |
-| `handbook`   | Company handbook                | `src/content/handbook/`   |
-| `changelog`  | Version changelogs              | `src/content/changelog/`  |
-| `features`   | Product features                | `src/content/features/`   |
-| `faq`        | FAQ entries                     | `src/content/faq/`        |
-| `categories` | Blog categories                 | `src/content/categories/` |
-| `pages`      | Marketing pages                 | `src/content/pages/`      |
-| `about`      | About pages                     | `src/content/about/`      |
-| `legal`      | Legal documents                 | `src/content/legal/`      |
+| Content Type | Description         | Location                  |
+| ------------ | ------------------- | ------------------------- |
+| `docs`       | Documentation pages | `src/content/docs/`       |
+| `blog`       | Blog posts          | `src/content/blog/`       |
+| `authors`    | Author profiles     | `src/content/authors/`    |
+| `handbook`   | Company handbook    | `src/content/handbook/`   |
+| `changelog`  | Version changelogs  | `src/content/changelog/`  |
+| `features`   | Product features    | `src/content/features/`   |
+| `faq`        | FAQ entries         | `src/content/faq/`        |
+| `categories` | Blog categories     | `src/content/categories/` |
+| `pages`      | Marketing pages     | `src/content/pages/`      |
+| `about`      | About pages         | `src/content/about/`      |
+| `legal`      | Legal documents     | `src/content/legal/`      |
 
 #### Field Groups
 

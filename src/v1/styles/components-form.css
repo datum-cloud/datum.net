@@ -58,8 +58,4 @@
   .form--actions {
     @apply flex flex-col items-stretch justify-stretch gap-6 self-stretch md:gap-8 lg:gap-10;
   }
-
-  .form--submit {
-    @apply font-alliance bg-aurora-moss focus:ring-aurora-moss text-midnight-fjord md:text-19 flex h-12 flex-row items-center justify-center gap-3 rounded-lg px-6 text-base leading-[1.4] font-semibold transition-colors duration-200 hover:bg-[#D4E88F] focus:ring-2 focus:ring-offset-2 focus:outline-none md:h-[62px] md:gap-[13.19px] md:rounded-[7.15px] md:px-[28.62px];
-  }
 }

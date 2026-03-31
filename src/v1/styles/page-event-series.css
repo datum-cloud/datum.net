@@ -8,10 +8,6 @@
     /* intentionally empty — spacing handled by section--block--pad */
   }
 
-  .event-series-layout {
-    @apply pb-20;
-  }
-
   .event-series-tabs-container {
     @apply flex flex-col gap-8;
   }

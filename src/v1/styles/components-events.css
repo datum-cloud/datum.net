@@ -229,10 +229,6 @@
     @apply py-8 md:py-10 lg:py-12;
   }
 
-  .event-calendar-section__heading {
-    @apply datum-text-2xl mb-8 font-medium text-white;
-  }
-
   .event-calendar-section__layout {
     @apply flex flex-col gap-4 md:flex-row md:gap-8 lg:gap-10;
   }
@@ -394,24 +390,12 @@
     @apply text-midnight-fjord datum-text-2xl font-semibold;
   }
 
-  .event-calendar-list__expanded-section {
-    @apply flex flex-col gap-4 md:gap-5;
-  }
-
   .event-calendar-list__expanded-heading {
     @apply text-midnight-fjord datum-text-xl font-semibold;
   }
 
   .event-calendar-list__expanded-description {
     @apply text-midnight-fjord min-w-0 break-words;
-  }
-
-  .event-calendar-list__expanded-agenda {
-    @apply list-disc pl-6;
-  }
-
-  .event-calendar-list__expanded-agenda li {
-    @apply text-midnight-fjord datum-text-base mb-2 break-words md:mb-2.5;
   }
 
   .event-calendar-list__expanded-sidebar {
@@ -476,14 +460,6 @@
     @apply text-midnight-fjord datum-text-xl font-semibold;
   }
 
-  .event-series-card__agenda {
-    @apply m-0 list-disc p-0 pl-6;
-  }
-
-  .event-series-card__agenda li {
-    @apply text-midnight-fjord datum-text-base mb-2.5 break-words;
-  }
-
   /* Rendered from Luma `description_md` via marked + datum-prose */
   .event-series-card__agenda-md {
     @apply text-midnight-fjord min-w-0 break-words;
@@ -545,17 +521,5 @@
 
   .event-series-card__zoom-link {
     @apply text-canyon-clay---links hover:text-canyon-clay---links/80 datum-text-sm underline;
-  }
-
-  .event-series-card__video-label {
-    @apply text-midnight-fjord datum-text-sm mb-2 font-medium;
-  }
-
-  .event-series-card__video-embed {
-    @apply relative aspect-[16/9] overflow-hidden rounded-lg;
-  }
-
-  .event-series-card__video-embed iframe {
-    @apply absolute inset-0 h-full w-full;
   }
 }

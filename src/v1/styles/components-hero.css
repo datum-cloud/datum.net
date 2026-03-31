@@ -48,10 +48,6 @@
         }
       }
 
-      .mobile-menu-actions .btn {
-        @apply text-white;
-      }
-
       .nav-logo {
         --color-logo-object: var(--color-canyon-clay);
         --color-logo-text: var(--color-midnight-fjord);
@@ -95,10 +91,6 @@
         }
       }
 
-      .mobile-menu-actions .btn {
-        @apply text-white;
-      }
-
       .nav-logo {
         --color-logo-object: var(--color-tuscany);
         --color-logo-text: var(--color-midnight-fjord);
@@ -122,16 +114,8 @@
     }
   }
 
-  .hero--main-content-icon-subtitle {
-    @apply flex items-center gap-3.25;
-  }
-
   .hero--main-content-inner {
     @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-16 xl:gap-6 xl:pt-12 xl:pb-20;
-  }
-
-  .hero--secondary-nav {
-    @apply max-width relative z-10 mx-auto w-full px-6 pb-6 md:px-10 md:pb-8;
   }
 
   .hero--main-content-icon {
@@ -151,23 +135,11 @@
     }
   }
 
-  .hero--main-content-title-container {
-    @apply flex items-center gap-5 md:gap-6 lg:gap-9;
-  }
-
-  .hero--main-content-subtitle {
-    @apply datum-text-base;
-  }
-
   .hero--main-content-title {
     @apply datum-text-8xl mb-0 max-w-xl lg:max-w-3xl;
     span {
       @apply text-pine-forge;
     }
-  }
-
-  .hero--main-content-title-alt {
-    @apply datum-text-11xl mb-0 max-w-xl lg:max-w-4xl;
   }
 
   .hero--main-content-description {

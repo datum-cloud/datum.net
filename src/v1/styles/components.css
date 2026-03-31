@@ -24,10 +24,6 @@
     &.--pad-mobile {
       @apply py-10 pb-0 md:py-16 lg:py-20 xl:py-28;
     }
-
-    &.section--block--pad-sm {
-      @apply py-10 md:py-16 xl:py-24;
-    }
   }
 
   /* Footer Components */
@@ -68,98 +64,10 @@
     }
   }
 
-  .footer-signup-form {
-    @apply border-midnight-fjord flex items-center border-b pb-2;
-  }
-
-  .footer-signup-input {
-    @apply text-midnight-fjord placeholder-midnight-fjord datum-text-lg bg-blush-quartz flex-1 outline-none;
-  }
-
-  .footer-signup-button {
-    @apply ml-4 hover:cursor-pointer;
-  }
-
-  /* List Styles */
-  .ordered-list {
-    @apply datum-list-headings flex list-none flex-col;
-    counter-reset: ordered-counter;
-  }
-
-  .ordered-list--sans {
-    @apply font-alliance lg:text-22 text-base md:text-lg;
-  }
-
-  .ordered-list li {
-    @apply text-midnight-fjord flex gap-3.75 py-4 md:gap-5 md:py-4.75;
-    @apply border-b-glacier-mist-900 border-b;
-    @apply last:border-b-0;
-    counter-increment: ordered-counter;
-
-    .item-title {
-      @apply datum-text-3xl font-canela -tracking-[0.8px];
-    }
-
-    .item-description {
-      @apply datum-text-base;
-    }
-  }
-
-  .ordered-list li::before {
-    @apply font-frontliner text-mauve text-xsm lg:text-22 w-5.25 leading-relaxed font-light tracking-widest md:w-7.5 md:text-xl;
-    @apply translate-y-1.25 md:translate-y-0 lg:translate-y-2;
-    content: '0' counter(ordered-counter) '.';
-  }
-
   .label {
     @apply datum-text-sm font-semibold;
     @apply px-2 py-1;
     @apply border-app---dark---utility-4/50 rounded-md border;
-  }
-
-  /* Generic Logo/Brand Grid Components */
-  .logo-grid {
-    @apply border-midnight-fjord grid overflow-x-auto border border-t-0;
-  }
-
-  .logo-grid--3-6 {
-    @apply grid-cols-3 lg:grid-cols-6 lg:[&>div:nth-child(3)]:border-r! [&>div:nth-child(3n)]:border-r-0;
-  }
-
-  .logo-grid--2-3 {
-    @apply grid-cols-2 md:grid-cols-3 lg:grid-cols-6;
-  }
-
-  .logo-grid--4 {
-    @apply grid-cols-2 md:grid-cols-4;
-  }
-
-  .logo-item {
-    @apply border-midnight-fjord flex items-center justify-center border-t border-r last:border-r-0;
-  }
-
-  .logo-item--landscape {
-    @apply aspect-26/19;
-  }
-
-  .logo-item--square {
-    @apply aspect-square;
-  }
-
-  .logo-item--tall {
-    @apply h-48;
-  }
-
-  .logo-item--padding-sm {
-    @apply p-4;
-  }
-
-  .logo-item--padding-md {
-    @apply p-6 md:p-8;
-  }
-
-  .logo-item--padding-lg {
-    @apply p-8 md:p-10;
   }
 
   /* Logo Image Variants */
@@ -169,36 +77,6 @@
 
   .logo-img--standard {
     @apply mx-10 w-3/5;
-  }
-
-  .logo-img--contained {
-    @apply max-h-16 max-w-full;
-  }
-
-  .logo-img--full {
-    @apply h-full w-full;
-  }
-
-  .logo-img--medium {
-    @apply w-2/3;
-  }
-
-  /* Glossary Tooltip */
-  .glossary-term {
-    @apply cursor-help border-b border-dashed no-underline;
-  }
-  .glossary-tooltip {
-    @apply bg-glacier-mist-800 fixed z-[9999] max-w-80 rounded-sm p-4 shadow-sm;
-    @apply opacity-0 transition-opacity duration-200;
-    display: none;
-  }
-
-  .glossary-tooltip-title {
-    @apply mb-2 text-sm font-semibold text-gray-900;
-  }
-
-  .glossary-tooltip-description {
-    @apply text-sm leading-relaxed text-gray-700;
   }
 
   /* article aside */
@@ -344,9 +222,6 @@
         @apply hidden;
       }
     }
-    li.docs-sm {
-      @apply after:hidden;
-    }
     li:nth-child(2) {
       @apply inline-block md:hidden;
     }
@@ -355,13 +230,13 @@
     }
     li:not(:last-child)::after {
       content: '/';
-      @apply mx-1.25 text-[color:var(--sl-color-text)];
+      @apply text-midnight-fjord mx-1.25;
     }
     a {
-      @apply text-nowrap text-[color:var(--sl-color-text)] no-underline transition-colors hover:text-[color:var(--sl-color-text-accent)];
+      @apply text-midnight-fjord hover:text-canyon-clay---links text-nowrap no-underline transition-colors;
     }
     svg {
-      @apply mr-1.25 inline-block h-4 w-4 align-middle text-[color:var(--sl-color-text-accent)];
+      @apply text-canyon-clay mr-1.25 inline-block h-4 w-4 align-middle;
     }
     a.is-index {
       @apply -translate-y-0.5;
@@ -423,10 +298,6 @@
 
   .toc-link {
     @apply text-midnight-fjord/80 hover:text-midnight-fjord my-1 inline-block transition-colors duration-200 ease-out;
-  }
-
-  .toc-empty {
-    @apply text-midnight-fjord/60 datum-docs-sidebar-links italic;
   }
 
   /* Active link highlighting */
@@ -550,10 +421,6 @@
         a {
           @apply mb-0 px-0;
         }
-      }
-
-      .tab:where(.astro-esqgolmp) :where(.astro-esqgolmp)[role='tab'][aria-selected='true'] {
-        --sl-tab-color-border: var(--color-midnight-fjord);
       }
     }
   }

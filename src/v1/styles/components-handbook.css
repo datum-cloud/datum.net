@@ -32,7 +32,7 @@
   .article-body {
     @apply datum-prose-longform flow-root;
 
-    /* Autolink headings - Starlight style */
+    /* Autolink heading anchors */
     --anchor-icon-size: 16px;
     --anchor-icon-gap: 0.375em;
 

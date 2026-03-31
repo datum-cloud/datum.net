@@ -227,12 +227,4 @@
   .newsletter-modal-actions {
     @apply flex justify-center;
   }
-
-  .newsletter-modal-message {
-    @apply datum-text-sm text-canyon-clay---links;
-  }
-
-  .newsletter-modal-message--error {
-    @apply text-canyon-clay---links;
-  }
 }

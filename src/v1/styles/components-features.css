@@ -93,10 +93,6 @@
     @apply flex flex-col gap-6;
   }
 
-  .feature-card--section-content {
-    @apply flex flex-col gap-6;
-  }
-
   .feature-card-item--content {
     @apply text-midnight-fjord;
     h3 {

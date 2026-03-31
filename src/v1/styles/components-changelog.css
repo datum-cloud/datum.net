@@ -62,10 +62,6 @@
     @apply flex flex-wrap items-center justify-between gap-5;
   }
 
-  .changelog-entry-card-title {
-    @apply datum-text-2xl text-midnight-fjord m-0 font-semibold;
-  }
-
   .changelog-entry-card-link {
     @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 no-underline hover:underline;
   }

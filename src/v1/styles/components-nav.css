@@ -205,10 +205,6 @@
     }
   }
 
-  .mobile-menu-icon {
-    @apply h-6 w-6;
-  }
-
   .mobile-menu-overlay {
     @apply fixed inset-0 z-80 bg-black/50 backdrop-blur-xs md:hidden;
   }
@@ -304,10 +300,6 @@
 
   .mobile-social-icon {
     @apply h-5 w-5;
-  }
-
-  .max-w-datum {
-    @apply max-w-(--datum-max-width);
   }
 
   /* Footer Navigation Styles */

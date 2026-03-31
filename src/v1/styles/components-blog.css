@@ -38,115 +38,6 @@
     @apply datum-text-base text-pretty opacity-80;
   }
 
-  .blog-featured--author {
-    @apply flex items-center gap-4;
-  }
-
-  .blog-featured--avatar {
-    @apply bg-glacier-mist-900 h-[52px] w-[52px] overflow-hidden rounded-full;
-  }
-
-  .blog-featured--avatar-img {
-    @apply h-full w-full object-cover;
-  }
-
-  .blog-featured--avatar-placeholder {
-    @apply flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-lg font-medium text-white;
-  }
-
-  .blog-featured--author-name {
-    @apply text-aurora-moss font-alliance text-lg font-normal;
-  }
-
-  /* Category Filters */
-  .blog-filters {
-    @apply mb-16 flex flex-col items-stretch justify-between gap-12 md:flex-row;
-  }
-
-  .blog-filters--search {
-    @apply flex items-start gap-2;
-  }
-
-  .blog-filters--categories {
-    @apply flex flex-wrap items-center gap-4;
-  }
-
-  .blog-filter {
-    @apply font-alliance rounded-lg border border-white px-6 py-3 text-sm whitespace-nowrap text-white opacity-50 transition-all duration-200 md:text-base;
-  }
-
-  .blog-filter:hover {
-    @apply opacity-100;
-  }
-
-  .blog-filter--active {
-    @apply bg-white/10 opacity-100;
-  }
-
-  /* Search Input */
-  .blog-search {
-    @apply relative w-full md:w-80 lg:w-100;
-  }
-
-  .blog-search--input {
-    @apply font-alliance w-full rounded-lg border border-white/25 bg-white/10 px-3 py-4 pr-10 text-sm text-white placeholder-white/50 focus:border-white/50 focus:bg-white/20 focus:outline-none;
-  }
-
-  .blog-search--input::placeholder {
-    @apply text-white/50;
-  }
-
-  .blog-search--icon {
-    @apply absolute inset-y-0 right-0 flex items-center pr-3 text-white/50;
-  }
-
-  .blog-search--clear {
-    @apply rounded-lg border border-white/25 bg-white/10 p-2 text-white/50 transition-all duration-200 hover:bg-white/20 hover:text-white;
-  }
-
-  /* Search No Results */
-  .blog-search--no-results {
-    @apply py-12 text-center;
-  }
-
-  .blog-search--no-results h3 {
-    @apply mt-2 text-sm font-medium text-white;
-  }
-
-  .blog-search--no-results p {
-    @apply mt-1 text-sm text-white/70;
-  }
-
-  /* Blog List - Uses shared list component styles */
-  .blog-list {
-  }
-
-  /* Keep blog-specific date styling */
-
-  .blog-item--category {
-    @apply flex items-center;
-  }
-
-  .blog-item--tag {
-    @apply font-alliance rounded-lg border border-white px-4 py-2 text-sm font-semibold whitespace-nowrap text-white opacity-50;
-  }
-
-  .blog-item--author {
-    @apply flex items-center;
-  }
-
-  .blog-item--avatar {
-    @apply bg-glacier-mist-900 h-9 w-9 overflow-hidden rounded-full;
-  }
-
-  .blog-item--avatar-img {
-    @apply h-full w-full object-cover;
-  }
-
-  .blog-item--avatar-placeholder {
-    @apply flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white;
-  }
-
   /* Pagination */
   .blog-pagination {
     @apply flex items-center justify-center gap-4;
@@ -155,10 +46,6 @@
     a {
       @apply font-alliance rounded-lg border border-white/25 px-4 py-2 text-center text-sm font-semibold tracking-[-0.0025em] text-white transition-all duration-200 hover:bg-white/10;
     }
-  }
-
-  .blog-pagination--active {
-    @apply border-white/50 bg-white/10;
   }
 
   .blog-pagination--inner {
@@ -182,45 +69,17 @@
     @apply max-w-179 min-w-0 flex-grow;
   }
 
-  .blog-article-container {
-    @apply container mx-auto max-w-4xl px-6;
-  }
-
   .blog-article-header,
   .blog-article-image {
     @apply mb-4 md:mb-6 lg:mb-10;
   }
 
-  .blog-back-button {
-    @apply hover:text-pine-forge/80 text-pine-forge inline-flex items-center gap-1.5 text-sm leading-[1.2] font-semibold tracking-[1px] uppercase transition-colors;
-  }
-
   .blog-aside-content {
     @apply z-10 block w-full space-y-4 self-start pt-3;
-  }
-  .blog-article-date,
-  .blog-article-share {
-    @apply font-alliance text-19 text-pine-forge leading-[1.2];
-  }
-
-  .blog-article-share {
-    @apply hover:text-pine-forge/80 hover:border-pine-forge/80 border-pine-forge border-b transition-colors hover:cursor-pointer;
-  }
-
-  .blog-article-categories {
-    @apply flex flex-wrap gap-2;
-  }
-
-  .blog-article-category {
-    @apply font-alliance bg-pine-forge/10 text-pine-forge rounded-full px-3 py-1 text-xs font-medium;
   }
 
   .blog-article-title {
     @apply datum-text-8xl;
-  }
-
-  .blog-article-description {
-    @apply font-alliance text-midnight-fjord text-left text-xl leading-[1.45] md:text-2xl;
   }
 
   .blog-article-image {
@@ -249,14 +108,6 @@
 
   .blog-article-author-name {
     @apply datum-text-sm font-medium;
-  }
-
-  .blog-article-error {
-    @apply rounded-lg bg-red-50 p-8 text-center;
-
-    p {
-      @apply text-red-600;
-    }
   }
 
   body.page-blog {
@@ -319,6 +170,9 @@
     .skeleton-item[data-index='4'] {
       --index: 3;
     }
+  }
+
+  .blog-list {
   }
 
   @keyframes skeleton-pulse {

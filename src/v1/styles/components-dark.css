@@ -4,9 +4,6 @@
     .btn svg {
       @apply text-aurora-moss!;
     }
-    .footer-docs {
-      @apply border-t border-(--color-borderpanel);
-    }
 
     html,
     body,

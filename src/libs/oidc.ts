@@ -9,8 +9,8 @@ const redirect_uri =
   process.env.AUTH_OIDC_REDIRECT_URI || import.meta.env.AUTH_OIDC_REDIRECT_URI || '';
 
 if (!server || !clientId || !redirect_uri) {
-  throw new Error(
-    'Missing required OIDC configuration. Please set AUTH_OIDC_ISSUER, AUTH_OIDC_CLIENT_ID, and AUTH_OIDC_REDIRECT_URI environment variables.'
+  console.warn(
+    '[OIDC] Warning: Missing required OIDC configuration. Please set AUTH_OIDC_ISSUER, AUTH_OIDC_CLIENT_ID, and AUTH_OIDC_REDIRECT_URI environment variables.'
   );
 }
 

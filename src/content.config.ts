@@ -1,4 +1,5 @@
-import { z, reference, defineCollection } from 'astro:content';
+import { reference, defineCollection } from 'astro:content';
+import { z } from 'zod';
 import { glob } from 'astro/loaders';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,7 +93,7 @@ const about = defineCollection({
       items: z.array(z.string()).optional(),
       link: z
         .object({
-          url: z.string().url(),
+          url: z.url(),
           label: z.string(),
         })
         .optional(),
@@ -213,7 +214,7 @@ const features = defineCollection({
         .array(
           z.object({
             label: z.string(),
-            url: z.string().url().optional(),
+            url: z.url().optional(),
           })
         )
         .optional(),

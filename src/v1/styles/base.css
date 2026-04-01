@@ -45,17 +45,17 @@
     }
   }
 
-  /* Hide elements with x-cloak until Alpine.js initializes */
-  [x-cloak] {
-    @apply hidden;
-  }
-
   &
     :is(
       :where(h1, h2, h3, h4, h5, h6, th):not(:where([class~='not-prose'], [class~='not-prose'] *))
     ) {
     color: inherit;
   }
+}
+
+/* Outside @layer so it has higher specificity than layered styles */
+[x-cloak] {
+  display: none !important;
 }
 
 @import './utilities.css';

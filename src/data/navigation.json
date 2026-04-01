@@ -47,21 +47,22 @@
               "text": "GitHub Discussions",
               "href": "https://github.com/orgs/datum-cloud/discussions",
               "isExternal": true
+            },
+            {
+              "text": "Discord",
+              "href": "https://discord.com/invite/AeA9XZu4Py",
+              "isExternal": true
             }
           ]
         },
         {
           "title": "Get involved:",
           "items": [
-            {
-              "text": "Discord",
-              "href": "https://discord.com/invite/AeA9XZu4Py",
-              "isExternal": true
-            },
             { "text": "Changelog", "href": "/changelog/" },
             { "text": "Roadmap", "href": "/roadmap/" },
             { "text": "Events", "href": "/events/" },
-            { "text": "Careers", "href": "/careers/" }
+            { "text": "Careers", "href": "/careers/" },
+            { "text": "Handbook", "href": "/handbook/" }
           ]
         }
       ]

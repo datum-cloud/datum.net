@@ -11,10 +11,10 @@
   }
 
   .features-hero-image {
-    @apply relative z-10 mx-auto max-w-[978] overflow-hidden rounded-lg shadow-2xl;
+    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg shadow-2xl lg:min-w-[978px];
 
     video {
-      @apply block h-auto w-full;
+      @apply bg-midnight-fjord block h-auto w-full;
     }
   }
 

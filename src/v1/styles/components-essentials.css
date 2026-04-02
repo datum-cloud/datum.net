@@ -4,12 +4,6 @@
     @apply mb-8 md:mb-10 lg:mb-12 xl:mb-16;
   }
 
-  .essentials-title {
-    span {
-      @apply text-pine-forge;
-    }
-  }
-
   .essentials-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
     @apply border-glacier-mist-900 border-2;

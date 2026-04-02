@@ -98,25 +98,34 @@ const jsonLd = {
               loop
               playsinline
               preload="auto"
-              poster="/videos/terminal-v6-poster.jpg"
               width="978"
               height="549"
+              style="background-color: #292D32;"
             >
-              <source src="/videos/terminal-v6.webm" type="video/webm" />
-              <source src="/videos/terminal-v6.mp4" type="video/mp4" />
+              <source src="/videos/terminal-v6-1.webm" type="video/webm" />
+              <source src="/videos/terminal-v6-1.mp4" type="video/mp4" />
             </video>
             <script>
-              {
-                const v = document.querySelector(
+              document.addEventListener('DOMContentLoaded', () => {
+                const video = document.querySelector(
                   '.features-hero-image video'
-                ) as HTMLVideoElement | null;
-                if (v) {
-                  v.playbackRate = 0.5; // ← adjust: 1.0 = normal, 0.5 = half speed
-                  v.addEventListener('ratechange', () => {
-                    if (v.playbackRate !== 0.5) v.playbackRate = 0.5;
-                  });
-                }
-              }
+                ) as HTMLVideoElement;
+                if (!video) return;
+
+                video.play().catch(() => {
+                  const observer = new IntersectionObserver(
+                    (entries) => {
+                      entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                          video.play().catch(() => {});
+                        }
+                      });
+                    },
+                    { threshold: 0.25 }
+                  );
+                  observer.observe(video);
+                });
+              });
             </script>
           </section>
 
@@ -124,10 +133,10 @@ const jsonLd = {
           <section class="features-section">
             <div class="features-section-header">
               <div>
-                <span class="features-section-label">AI Edge_</span>
+                <span class="section-label">AI Edge_</span>
               </div>
               <div class="features-section-header-text">
-                <h2 class="features-section-title">Meet the internet in style</h2>
+                <h2 class="section-title">Meet the internet in style</h2>
                 <p class="features-section-description">
                   Give every agent or app a global edge to absorb attacks, interact with the broader
                   internet, and safely route traffic to backend services.
@@ -195,10 +204,10 @@ const jsonLd = {
           <section class="features-section">
             <div class="features-section-header">
               <div>
-                <span class="features-section-label">Connectors_</span>
+                <span class="section-label">Connectors_</span>
               </div>
               <div class="features-section-header-text">
-                <h2 class="features-section-title">
+                <h2 class="section-title max-w-2xl">
                   Orchestrate diverse conections, starting with Tunnels
                 </h2>
                 <p class="features-section-description">
@@ -285,13 +294,11 @@ const jsonLd = {
             <section class="features-card">
               <div class="features-card-header">
                 <div class="features-card-labels">
-                  <span class="features-section-label">Galactic VPC_</span>
-                  <span class="features-section-label features-section-label--muted">
-                    (coming soon)
-                  </span>
+                  <span class="section-label">Galactic VPC_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
                 </div>
                 <div class="features-section-header-text">
-                  <h2 class="features-section-title--sm">Route traffic where you want it</h2>
+                  <h2 class="section-title--sm">Route traffic where you want it</h2>
                   <p class="features-section-description">
                     Internet backbones weren't designed for most humans, let alone agents. Our
                     Galactic VPC is built for an agentic world. Virtual backbones for every agent.
@@ -338,13 +345,11 @@ const jsonLd = {
             <section class="features-card">
               <div class="features-card-header">
                 <div class="features-card-labels">
-                  <span class="features-section-label">UFO_</span>
-                  <span class="features-section-label features-section-label--muted">
-                    (coming soon)
-                  </span>
+                  <span class="section-label">UFO_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
                 </div>
                 <div class="features-section-header-text">
-                  <h2 class="features-section-title--sm">Isolated, cold-start compute</h2>
+                  <h2 class="section-title--sm">Isolated, cold-start compute</h2>
                   <p class="features-section-description">
                     That's why our "Unikernel Function Offload" feature provides 100% isolation,
                     millisecond cold starts, and scale to zero snapshotting.

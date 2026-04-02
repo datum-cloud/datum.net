@@ -60,11 +60,11 @@
 
     &.content-alt {
       .hero--main-content-title {
-        @apply datum-text-11xl mb-0 max-w-xl lg:max-w-4xl;
+        @apply datum-text-8xl mb-0 max-w-xl lg:max-w-4xl;
       }
 
       .hero--main-content-description {
-        @apply text-app---dark---utility-3 datum-text-2xl max-w-2xl text-pretty;
+        @apply text-midnight-fjord datum-text-lg max-w-2xl text-pretty;
       }
     }
   }
@@ -115,7 +115,7 @@
   }
 
   .hero--main-content-inner {
-    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-16 xl:gap-6 xl:pt-12 xl:pb-20;
+    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-12 lg:pb-14 xl:gap-6 xl:pt-12 xl:pb-16;
   }
 
   .hero--main-content-icon {

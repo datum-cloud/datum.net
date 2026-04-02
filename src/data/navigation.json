@@ -8,7 +8,7 @@
           "isCardLayout": true,
           "items": [
             {
-              "text": "Core features",
+              "text": "Features",
               "image": "/images/nav/core-features.png",
               "desc": "Critical network services",
               "href": "/features/"

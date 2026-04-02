@@ -4,19 +4,7 @@
     @apply mb-8 md:mb-10 lg:mb-12 xl:mb-16;
   }
 
-  .essentials-label {
-    @apply bg-midnight-fjord inline-flex items-center justify-center;
-    @apply px-2 pt-px;
-    @apply text-glacier-mist-700;
-    @apply datum-text-lg font-dejavu;
-  }
-
   .essentials-title {
-    @apply text-balance;
-    @apply font-canela;
-    @apply datum-text-9xl;
-    @apply text-midnight-fjord;
-
     span {
       @apply text-pine-forge;
     }

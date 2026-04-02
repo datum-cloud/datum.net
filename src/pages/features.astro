@@ -10,6 +10,7 @@ import { Image } from 'astro:assets';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 import featuresMapImage from '@v1/assets/images/features-map.png';
+import videoFrameImage from '@v1/assets/images/video-frame.png';
 
 const page = await getCollectionEntry('pages', 'features');
 const fm = page.data;
@@ -91,24 +92,22 @@ const jsonLd = {
       <div class="max-width">
         <div class="features-page">
           <!-- Section 1: Hero Image -->
-          <section class="features-hero-image">
-            <video
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              width="978"
-              height="549"
-              style="background-color: #292D32;"
-            >
-              <source src="/videos/terminal-v6-1.webm" type="video/webm" />
-              <source src="/videos/terminal-v6-1.mp4" type="video/mp4" />
+          <section class="features-hero-video">
+            <Image
+              class="features-hero-video-frame"
+              src={videoFrameImage}
+              alt=""
+              aria-hidden="true"
+              loading="eager"
+            />
+            <video autoplay muted loop playsinline preload="auto">
+              <source src="/videos/terminal-v7.webm" type="video/webm" />
+              <source src="/videos/terminal-v7.mp4" type="video/mp4" />
             </video>
             <script>
               document.addEventListener('DOMContentLoaded', () => {
                 const video = document.querySelector(
-                  '.features-hero-image video'
+                  '.features-hero-video video'
                 ) as HTMLVideoElement;
                 if (!video) return;
 

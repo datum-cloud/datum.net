@@ -45,17 +45,17 @@ const benefits = [
   <div class="max-width">
     <h2 class="datum-text-8xl mb-10 text-center font-medium">Open by design</h2>
     <p class="datum-text-lg mb-10 text-center text-pretty md:mb-18">What to expect working here</p>
-    <div class="border-midnight-fjord border bg-white p-7 md:p-12 xl:p-16">
-      <div class="feature-cards-grid">
+    <div class="border-midnight-fjord border bg-white p-7 md:p-16">
+      <div class="flex flex-wrap gap-x-13 gap-y-8">
         {
           benefits.map((benefit) => (
-            <div class="feature-card-item flex flex-row items-start gap-5">
-              <div class="iconize">
+            <div class="flex w-full items-start gap-6 md:w-[calc(33.333%-35px)]">
+              <div class="bg-canyon-clay/20 text-canyon-clay---links flex h-10 w-10 shrink-0 items-center justify-center rounded-[4.7px] p-2">
                 <Icon name={benefit.icon} size="md" />
               </div>
-              <div class="feature-card-item--content">
-                <h3>{benefit.title}</h3>
-                <p>{benefit.description}</p>
+              <div class="text-midnight-fjord flex min-w-0 flex-1 flex-col gap-2.5">
+                <h3 class="datum-text-lg font-medium">{benefit.title}</h3>
+                <p class="datum-text-base opacity-80">{benefit.description}</p>
               </div>
             </div>
           ))

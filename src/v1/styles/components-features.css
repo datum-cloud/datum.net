@@ -11,7 +11,20 @@
   }
 
   .features-hero-image {
-    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg shadow-2xl lg:min-w-[978px];
+    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg lg:min-w-[978px];
+
+    /* Modern device bezel — 5px mobile, 7px md+ */
+    border: 5px solid rgba(4, 10, 18, 0.9);
+
+    @screen md {
+      border-width: 7px;
+    }
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      /* top-edge glass highlight */ 0 0 0 1px rgba(255, 255, 255, 0.07),
+      /* outer breath ring        */ 0 2px 4px rgba(0, 0, 0, 0.25),
+      /* close contact shadow     */ 0 20px 60px rgba(0, 0, 0, 0.28),
+      /* main depth shadow        */ 0 48px 120px rgba(0, 0, 0, 0.18); /* wide atmospheric glow    */
 
     video {
       @apply bg-midnight-fjord block h-auto w-full;

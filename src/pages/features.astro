@@ -105,6 +105,19 @@ const jsonLd = {
               <source src="/videos/terminal-v6.webm" type="video/webm" />
               <source src="/videos/terminal-v6.mp4" type="video/mp4" />
             </video>
+            <script>
+              {
+                const v = document.querySelector(
+                  '.features-hero-image video'
+                ) as HTMLVideoElement | null;
+                if (v) {
+                  v.playbackRate = 0.5; // ← adjust: 1.0 = normal, 0.5 = half speed
+                  v.addEventListener('ratechange', () => {
+                    if (v.playbackRate !== 0.5) v.playbackRate = 0.5;
+                  });
+                }
+              }
+            </script>
           </section>
 
           <!-- Section 2: AI Edge -->

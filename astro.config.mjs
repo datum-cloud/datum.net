@@ -42,9 +42,9 @@ export default defineConfig({
     mdx(),
     announcement({
       show: true,
-      label: "We're hiring!",
-      text: "We're actively building our team, join us",
-      href: '/careers/',
+      label: 'Free download',
+      text: 'Take your local.host global with our Alpha http desktop app',
+      href: '/download/',
       icon: {
         name: 'arrow-right',
         size: 'sm',

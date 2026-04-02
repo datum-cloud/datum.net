@@ -110,12 +110,20 @@
   }
 
   .features-map-image {
-    @apply overflow-hidden rounded-lg;
+    @apply relative overflow-hidden rounded-lg;
 
     img,
     svg {
       @apply block h-auto w-full;
     }
+  }
+
+  .features-map-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
 
   .features-cta {

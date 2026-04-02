@@ -22,11 +22,18 @@
   }
 
   .section-title {
-    @apply datum-text-8xl text-midnight-fjord;
+    @apply datum-text-8xl text-midnight-fjord text-pretty;
   }
 
   .section-title--sm {
     @apply datum-text-7xl text-midnight-fjord;
+  }
+
+  .section-title,
+  .section-title--sm {
+    span {
+      @apply text-pine-forge;
+    }
   }
 
   /* Section Block */

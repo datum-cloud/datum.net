@@ -10,14 +10,19 @@
     @apply mask-t-from-0% mask-t-to-90%;
   }
 
-  .features-hero-image {
-    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg bg-[#292D32] lg:min-w-[978px];
-    @apply border-[5px] border-solid border-[rgba(4,10,18,0.9)];
-    @apply md:border-[7px];
-    @apply shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_0_1px_rgba(255,255,255,0.07),0_2px_4px_rgba(0,0,0,0.25),0_20px_60px_rgba(0,0,0,0.28),0_48px_120px_rgba(0,0,0,0.18)];
+  .features-hero-video {
+    @apply relative z-10 mx-auto max-w-[985px] lg:min-w-[985px];
+    @apply shadow-[0_0_10px_-2px_rgba(0,0,0,0.2),0_20px_45px_0_rgba(0,0,0,0.28)];
+    @apply overflow-hidden rounded-[9px];
+
+    .features-hero-video-frame {
+      @apply relative z-0 block h-auto w-full;
+    }
 
     video {
-      @apply block h-auto w-full bg-[#292D32];
+      @apply absolute z-10 block h-auto rounded-b-[6px];
+      @apply bottom-[0.7%] left-1/2 -translate-x-1/2;
+      @apply w-[99.2%];
     }
   }
 

@@ -11,23 +11,13 @@
   }
 
   .features-hero-image {
-    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg lg:min-w-[978px];
-
-    /* Modern device bezel — 5px mobile, 7px md+ */
-    border: 5px solid rgba(4, 10, 18, 0.9);
-
-    @screen md {
-      border-width: 7px;
-    }
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      /* top-edge glass highlight */ 0 0 0 1px rgba(255, 255, 255, 0.07),
-      /* outer breath ring        */ 0 2px 4px rgba(0, 0, 0, 0.25),
-      /* close contact shadow     */ 0 20px 60px rgba(0, 0, 0, 0.28),
-      /* main depth shadow        */ 0 48px 120px rgba(0, 0, 0, 0.18); /* wide atmospheric glow    */
+    @apply relative z-10 mx-auto max-w-[978px] overflow-hidden rounded-lg bg-[#292D32] lg:min-w-[978px];
+    @apply border-[5px] border-solid border-[rgba(4,10,18,0.9)];
+    @apply md:border-[7px];
+    @apply shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_0_1px_rgba(255,255,255,0.07),0_2px_4px_rgba(0,0,0,0.25),0_20px_60px_rgba(0,0,0,0.28),0_48px_120px_rgba(0,0,0,0.18)];
 
     video {
-      @apply bg-midnight-fjord block h-auto w-full;
+      @apply block h-auto w-full bg-[#292D32];
     }
   }
 
@@ -44,26 +34,6 @@
 
   .features-section-header-text {
     @apply flex flex-col gap-7;
-  }
-
-  .features-section-label {
-    @apply bg-midnight-fjord inline-flex items-center justify-center;
-    @apply px-2 pt-px;
-    @apply text-glacier-mist-700;
-    @apply datum-text-lg font-dejavu;
-  }
-
-  .features-section-label--muted {
-    @apply bg-transparent;
-    @apply text-app---dark---utility-3;
-  }
-
-  .features-section-title {
-    @apply datum-text-8xl text-midnight-fjord text-pretty;
-  }
-
-  .features-section-title--sm {
-    @apply datum-text-7xl text-midnight-fjord;
   }
 
   .features-section-description {
@@ -132,11 +102,7 @@
   }
 
   .features-map-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    @apply pointer-events-none absolute inset-0 h-full w-full;
   }
 
   .features-cta {

@@ -1,21 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import Illustration from '@v1/assets/images/home.webp';
+import DeviceOff from '@v1/assets/images/home-device-off.png';
+import DeviceOn from '@v1/assets/images/home-device-on.png';
 import IllaStars from '@v1/assets/images/stars.webp';
 import Nav from '@components/Nav.astro';
-// import Button from '@components/Button.astro';
 import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
 ---
 
-<header class:list={['hero--main z-11', className]}>
+<header id="hero-header" class:list={['hero--main relative z-11', className]}>
   <Announcement />
-  <div class="bg-midnight-fjord aspect-auto h-auto w-full">
+  <div class="bg-midnight-fjord relative aspect-auto h-auto w-full overflow-hidden">
     <Nav showLoginButton={true} showGithubButton={false} />
-    {/* Hero Main Content */}
+
+    {/* Hero text */}
     <div
       class="max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-28 xl:pb-40"
       role="banner"
@@ -24,7 +25,6 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         class="datum-text-11xl [&_span]:text-aurora-moss m-auto max-w-190 text-white"
         set:html={marked.parseInline(title)}
       />
-
       {
         description && (
           <p
@@ -54,24 +54,246 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       -->
     </div>
 
-    <div class="absolute right-0 bottom-0 z-10 flex h-full w-auto items-end">
-      <Image
-        src={Illustration}
-        layout="constrained"
-        loading="eager"
-        fetchpriority="high"
-        alt="Home Illustration"
-        class="size-auto max-h-full translate-y-[3%]"
-      />
-    </div>
-    <div class="absolute right-0 bottom-0 z-2 flex h-full w-full items-end">
+    {
+      /*
+      Stars — covers full hero (inset-0) so it sits behind the nav too.
+      Starts hidden; fades in after device activates.
+      JS drives the slow drift + flicker after activation.
+    */
+    }
+    <div
+      id="hero-stars"
+      class="absolute inset-0 z-2"
+      style="opacity: 0; will-change: transform, opacity;"
+    >
       <Image
         src={IllaStars}
         layout="constrained"
         loading="eager"
-        alt="Stars Illustration"
-        class="size-auto object-cover"
+        alt=""
+        aria-hidden="true"
+        class="h-full w-full object-cover"
       />
     </div>
   </div>
+
+  {/* Illustration — outside overflow-hidden so feet can bleed below the hero */}
+  <div class="absolute right-0 bottom-0 z-10 flex h-full w-auto translate-y-[3.1%] items-end">
+    <Image
+      id="hero-device-off"
+      src={DeviceOff}
+      layout="constrained"
+      loading="eager"
+      fetchpriority="high"
+      alt="Home Illustration"
+      class="size-auto max-h-full"
+      style="opacity: 1;"
+    />
+
+    {/* Device on — cross-fades in with flicker, then stable */}
+    <Image
+      id="hero-device-on"
+      src={DeviceOn}
+      layout="constrained"
+      loading="eager"
+      alt="Home Illustration — device on"
+      class="absolute right-0 bottom-0 size-auto max-h-full"
+      style="opacity: 0;"
+    />
+  </div>
 </header>
+
+<script>
+  // ── Hero animation ──────────────────────────────────────────────────────────
+  // Phase 1  IDLE     (0 → LASER_DELAY)       device off, stars hidden
+  // Phase 2  FLICKER  (→ +FLICKER_DUR)        troubled startup, beam flickers
+  // Phase 3  ALIVE                             device on, stars drift + flicker,
+  //                                            device occasionally misbehaves
+  // ──────────────────────────────────────────────────────────────────────────
+
+  const LASER_DELAY = 2304; // ms before startup
+  const FLICKER_DUR = 8888; // ms of struggling flicker phase
+  const RESTART_DELAY = 30000; // ms of alive time before cycling back to startup
+
+  const imgOff = document.getElementById('hero-device-off') as HTMLElement | null;
+  const imgOn = document.getElementById('hero-device-on') as HTMLElement | null;
+  const stars = document.getElementById('hero-stars') as HTMLElement | null;
+  const header = document.getElementById('hero-header') as HTMLElement | null;
+  const glowSpan = header?.querySelector('h1 span') as HTMLElement | null;
+
+  // aurora-moss = #e6f59f; scale all layers by alpha
+  function setGlow(alpha: number) {
+    if (!glowSpan) return;
+    if (alpha <= 0) {
+      glowSpan.style.textShadow = 'none';
+      return;
+    }
+    const a = Math.min(1, alpha);
+    glowSpan.style.textShadow =
+      `0 0 15px rgba(230,245,159,${(0.7 * a).toFixed(3)}),` +
+      `0 0 40px rgba(230,245,159,${(0.4 * a).toFixed(3)}),` +
+      `0 0 80px rgba(230,245,159,${(0.2 * a).toFixed(3)})`;
+  }
+
+  if (!imgOff || !imgOn || !stars) throw new Error('Hero: missing elements');
+
+  // ── Reset — fade everything out, then restart the full cycle ───────────────
+  function resetAndRestart() {
+    const FADE_OUT = 1200; // ms to fade stars + device out
+
+    stars!.style.transition = `opacity ${FADE_OUT}ms ease-in-out`;
+    imgOn!.style.transition = `opacity ${FADE_OUT}ms ease-in-out`;
+
+    header?.classList.remove('hero--alive');
+    stars!.style.opacity = '0';
+    imgOn!.style.opacity = '0';
+    setGlow(0);
+
+    setTimeout(() => {
+      stars!.style.transition = '';
+      imgOn!.style.transition = '';
+      // Reset position only after stars are fully invisible — no visible jolt
+      stars!.style.transform = 'translateX(0px)';
+      // Restart full cycle from Phase 1
+      setTimeout(startFlicker, LASER_DELAY);
+    }, FADE_OUT + 100);
+  }
+
+  // ── Phase 3 ambient loop ────────────────────────────────────────────────────
+  function startAmbient() {
+    let lastTs = -1;
+    let elapsed = 0;
+    let stopped = false;
+
+    // Stars drift state
+    let starsOpacity = 0;
+    const STARS_FADE_IN = 1800; // ms for stars to reach full opacity
+
+    // Stars flicker — subtle random breathing
+    let sFlickerTarget = 1.0;
+    let sFlickerTimer = 800 + Math.random() * 1500;
+
+    // Device occasional flicker — random episode timer
+    let dEpisodeTimer = 5000 + Math.random() * 8000; // first episode in 5–13s
+    let dEpisodeActive = false;
+    let dEpisodeStart = 0;
+    let dEpisodeDur = 0;
+
+    // Schedule restart after RESTART_DELAY
+    setTimeout(() => {
+      stopped = true;
+      resetAndRestart();
+    }, RESTART_DELAY);
+
+    function ambient(ts: number) {
+      if (stopped) return;
+
+      const dt = lastTs < 0 ? 16 : Math.min(ts - lastTs, 50);
+      lastTs = ts;
+      elapsed += dt;
+
+      // ── Stars: fade in ───────────────────────────────────────────────────
+      if (starsOpacity < 1) {
+        starsOpacity = Math.min(1, elapsed / STARS_FADE_IN);
+      }
+
+      // ── Stars: continuous rightward drift (60px over the 30s cycle) ────────
+      const driftX = elapsed * (60 / RESTART_DELAY);
+
+      // ── Device: random episode flicker ───────────────────────────────────
+      dEpisodeTimer -= dt;
+
+      if (!dEpisodeActive && dEpisodeTimer <= 0) {
+        dEpisodeActive = true;
+        dEpisodeStart = ts;
+        dEpisodeDur = 250 + Math.random() * 900; // 250ms–1.15s stutter
+        dEpisodeTimer = 6000 + Math.random() * 12000; // next in 6–18s
+      }
+
+      // ── Stars opacity — synced to device episode when active ─────────────
+      let sTargetOpacity: number;
+      if (dEpisodeActive) {
+        const t = ts - dEpisodeStart;
+        const sec = t / 1000;
+        const pct = t / dEpisodeDur;
+
+        if (pct < 1) {
+          // Stars flicker in lockstep with device
+          const noise =
+            Math.sin(sec * 38.7) * 0.3 + Math.sin(sec * 17.1) * 0.25 + Math.sin(sec * 5.3) * 0.2;
+          const dAlpha = Math.max(0.15, 0.75 + noise);
+          imgOn!.style.opacity = String(dAlpha);
+          setGlow(dAlpha);
+          // Stars mirror the same flicker value
+          sTargetOpacity = starsOpacity * dAlpha;
+        } else {
+          // Recover — snap device back to stable
+          dEpisodeActive = false;
+          imgOn!.style.transition = 'opacity 0.18s ease-out';
+          imgOn!.style.opacity = '1';
+          setGlow(1);
+          setTimeout(() => {
+            imgOn!.style.transition = '';
+          }, 200);
+          sTargetOpacity = starsOpacity;
+        }
+      } else {
+        // Idle breathing flicker for stars
+        sFlickerTimer -= dt;
+        if (sFlickerTimer <= 0) {
+          sFlickerTarget = 0.78 + Math.random() * 0.22;
+          sFlickerTimer = 500 + Math.random() * 1800;
+        }
+        sTargetOpacity = starsOpacity * sFlickerTarget;
+      }
+
+      const sCurrent = parseFloat(stars!.style.opacity || '0');
+      const sSmoothed = sCurrent + (sTargetOpacity - sCurrent) * 0.04;
+
+      stars!.style.opacity = String(sSmoothed);
+      stars!.style.transform = `translateX(${driftX.toFixed(2)}px)`;
+
+      requestAnimationFrame(ambient);
+    }
+
+    requestAnimationFrame(ambient);
+  }
+
+  // ── Phase 2: flicker startup ─────────────────────────────────────────────
+  function startFlicker() {
+    let startTime = -1;
+
+    function flicker(ts: number) {
+      if (startTime < 0) startTime = ts;
+      const t = ts - startTime;
+      const pct = Math.min(1, t / FLICKER_DUR);
+
+      const sec = t / 1000;
+      const noise =
+        Math.sin(sec * 19.3) * 0.3 +
+        Math.sin(sec * 7.1) * 0.25 +
+        Math.sin(sec * 43.7) * 0.2 +
+        Math.sin(sec * 3.3) * 0.15 +
+        Math.sin(sec * 61.1) * 0.1;
+
+      const alpha = Math.max(0, Math.min(1, Math.pow(pct, 0.65) * 0.8 + noise * pct * 0.55));
+
+      imgOn!.style.opacity = String(alpha);
+      setGlow(alpha);
+
+      if (t < FLICKER_DUR) {
+        requestAnimationFrame(flicker);
+      } else {
+        // Snap to stable, then start ambient loop
+        imgOn!.style.opacity = '1';
+        setGlow(1);
+        setTimeout(startAmbient, 200);
+      }
+    }
+
+    requestAnimationFrame(flicker);
+  }
+
+  // ── Phase 1: wait, then trigger startup ──────────────────────────────────
+  setTimeout(startFlicker, LASER_DELAY);
+</script>

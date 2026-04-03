@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import DeviceOff from '@v1/assets/images/home-device-off.png';
-import DeviceOn from '@v1/assets/images/home-device-on.png';
+import DeviceOff from '@v1/assets/images/home-device-off.webp';
+import DeviceOn from '@v1/assets/images/home-device-on.webp';
 import IllaStars from '@v1/assets/images/stars.webp';
 import Nav from '@components/Nav.astro';
 import Announcement from '@components/Announcement.astro';
@@ -73,6 +73,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         src={IllaStars}
         layout="constrained"
         loading="eager"
+        fetchpriority="high"
         alt=""
         aria-hidden="true"
         class="h-full w-full object-cover"
@@ -81,7 +82,9 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
   </div>
 
   {/* Illustration — outside overflow-hidden so feet can bleed below the hero */}
-  <div class="absolute right-0 bottom-0 z-10 flex h-full w-auto translate-y-[3.1%] items-end">
+  <div
+    class="absolute right-0 bottom-0 z-10 flex h-full w-auto translate-y-[2.6%] items-end md:translate-y-[3.1%]"
+  >
     <Image
       id="hero-device-off"
       src={DeviceOff}
@@ -99,6 +102,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       src={DeviceOn}
       layout="constrained"
       loading="eager"
+      fetchpriority="high"
       alt="Home Illustration — device on"
       class="absolute right-0 bottom-0 size-auto max-h-full"
       style="opacity: 0;"

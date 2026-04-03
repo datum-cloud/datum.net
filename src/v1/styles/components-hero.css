@@ -1,4 +1,8 @@
 @layer components {
+  body.mobile-menu-open #hero-header #hero-container {
+    @apply overflow-visible!;
+  }
+
   .hero--main {
     @apply relative flex flex-col justify-center;
 

@@ -1,0 +1,77 @@
+---
+// src/components/locations/LocationsMap.astro
+import { Image } from 'astro:assets';
+
+import mapImage from '@v1/assets/images/world-map-dots.png';
+import locations from '@data/locations.json';
+
+const pins = locations.map((loc, i) => ({
+  ...loc,
+  x: loc.mapX,
+  y: loc.mapY,
+  pulseDelay: ((i * 0.4) % 2.5).toFixed(1),
+}));
+---
+
+<div
+  class="locations-map"
+  x-data="{ activeLocation: null }"
+  x-on:keydown.escape.window="activeLocation = null"
+>
+  <div class="locations-map--container" x-on:click="activeLocation = null">
+    <div class="locations-map--bg">
+      <Image
+        src={mapImage}
+        alt=""
+        role="presentation"
+        loading="eager"
+        widths={[640, 1054, 2108]}
+        sizes="(max-width: 1054px) 100vw, 1054px"
+      />
+    </div>
+
+    {
+      pins.map((pin) => (
+        <button
+          class="locations-map--pin"
+          style={`left: ${pin.x}%; top: ${pin.y}%`}
+          x-on:click.stop={`activeLocation = activeLocation === '${pin.regionCode}' ? null : '${pin.regionCode}'`}
+          x-bind:class={`{ 'is-active': activeLocation === '${pin.regionCode}' }`}
+          aria-label={`${pin.metro} — ${pin.regionCode}`}
+          type="button"
+        >
+          <span class="locations-map--pin-inner">
+            <span class="locations-map--pin-ring" style={`animation-delay: ${pin.pulseDelay}s`} />
+            <span class="locations-map--pin-dot" />
+          </span>
+
+          <div
+            class="locations-map--tooltip"
+            x-on:click.stop=""
+            x-show={`activeLocation === '${pin.regionCode}'`}
+            x-cloak
+            x-transition:enter="transition ease-out duration-150"
+            x-transition:enter-start="opacity-0 translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-1"
+            role="tooltip"
+          >
+            <div class="locations-map--tooltip-card">
+              <p class="locations-map--tooltip-group">
+                <span class="locations-map--tooltip-label">Region code_</span>
+                <span class="locations-map--tooltip-value">{pin.regionCode}</span>
+              </p>
+              <p class="locations-map--tooltip-group">
+                <span class="locations-map--tooltip-label">Metropolitan area_</span>
+                <span class="locations-map--tooltip-value">{pin.metro}</span>
+              </p>
+            </div>
+            <div class="locations-map--tooltip-line" />
+          </div>
+        </button>
+      ))
+    }
+  </div>
+</div>

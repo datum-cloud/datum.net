@@ -37,6 +37,7 @@
         {
           "title": "Get started:",
           "items": [
+            { "text": "Locations", "href": "/locations/" },
             { "text": "Blog", "href": "/blog/" },
             {
               "text": "Videos",

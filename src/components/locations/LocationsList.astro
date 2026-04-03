@@ -1,0 +1,37 @@
+---
+// src/components/locations/LocationsList.astro
+import locations from '@data/locations.json';
+
+const groupLabels: Record<string, string> = {
+  NA: 'North America (NA)',
+  LATAM: 'Latin America (LATAM)',
+  EU: 'Europe (EU)',
+  MEA: 'Middle East & Africa (MEA)',
+  APAC: 'Asia Pacific (APAC)',
+};
+
+const groupOrder = ['NA', 'LATAM', 'EU', 'MEA', 'APAC'];
+
+const grouped = groupOrder.map((key) => ({
+  key,
+  label: groupLabels[key],
+  items: locations
+    .filter((loc) => loc.group === key)
+    .sort((a, b) => a.metro.localeCompare(b.metro)),
+}));
+---
+
+<div class="locations-list">
+  {
+    grouped.map((group) => (
+      <div class="locations-list--group">
+        <h3 class="locations-list--header">{group.label}</h3>
+        <div class="locations-list--items">
+          {group.items.map((loc) => (
+            <span class="locations-list--item">{loc.metro}</span>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>

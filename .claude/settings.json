@@ -1,4 +1,8 @@
 {
+  "enabledPlugins": {
+    "datum-platform@datum-claude-code-plugins": true,
+    "datum-gtm@datum-claude-code-plugins": true
+  },
   "extraKnownMarketplaces": {
     "datum-claude-code-plugins": {
       "source": {
@@ -6,9 +10,5 @@
         "repo": "datum-cloud/claude-code-plugins"
       }
     }
-  },
-  "enabledPlugins": {
-    "datum-platform@datum-claude-code-plugins": true,
-    "datum-gtm@datum-claude-code-plugins": true
   }
 }

@@ -1,5 +1,5 @@
 ---
-import '@v1/styles/global.css';
+import '@v1/styles/page-legal.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -19,6 +19,7 @@ export async function getStaticPaths() {
 }
 
 const page = Astro.props.entry;
+const allLegal = Astro.props.legal;
 
 // SEO
 const fm = page.data;
@@ -26,6 +27,16 @@ const meta = fm.meta || {};
 const { Content } = await render(page);
 const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
+
+// Build ordered side nav (matching design order)
+const navOrder = ['terms', 'privacy', 'aup', 'dpa', 'subprocessors'];
+const sortedLegal = [...allLegal].sort((a, b) => {
+  const ai = navOrder.indexOf(a.id);
+  const bi = navOrder.indexOf(b.id);
+  const aIdx = ai === -1 ? navOrder.length : ai;
+  const bIdx = bi === -1 ? navOrder.length : bi;
+  return aIdx - bIdx;
+});
 ---
 
 <Layout
@@ -36,15 +47,43 @@ const description = fm.description;
 >
   <section class="datum-container">
     <Hero
-      class="light [&_.hero--main-content-inner]:pb-15"
-      iconName={fm.iconName}
-      title={title}
-      subtitle={fm.subtitle}
+      class="light bg-glacier-mist-800 [&_.hero--main-content-title]:max-w-none [&_.hero--main-content-title]:whitespace-nowrap"
+      title="Privacy Policies and Security Practices"
     />
 
-    <div class="section--block bg-glacier-mist-700">
-      <Content />
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+      <div class="max-width">
+        <div class="legal-layout">
+          <!-- Side Nav -->
+          <aside class="legal-sidenav">
+            <nav>
+              {
+                sortedLegal.map((entry) => (
+                  <a
+                    href={`/legal/${entry.id}/`}
+                    class:list={[
+                      'legal-sidenav-item',
+                      { 'legal-sidenav-item--active': entry.id === page.id },
+                    ]}
+                  >
+                    {entry.data.title}
+                  </a>
+                ))
+              }
+            </nav>
+          </aside>
+
+          <!-- Main Content -->
+          <main class="legal-content">
+            <Content />
+          </main>
+
+          <!-- On this page (reserved column) -->
+          <!-- <div class="legal-on-this-page" aria-hidden="true"></div> -->
+        </div>
+      </div>
     </div>
+
     <Footer showCTA={false} />
   </section>
 </Layout>

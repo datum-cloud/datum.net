@@ -30,10 +30,13 @@ const navData = navigation as NavData;
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="text-midnight-fjord bg-aurora-moss relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
+      <div
+        id="footer-cta-bg"
+        class="text-midnight-fjord bg-aurora-moss relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28"
+      >
         <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
-          <h3 class="datum-text-11xl [&_span]:text-pine-forge">
-            <span>Less talk,</span> more building
+          <h3 class="datum-text-11xl">
+            <span id="footer-less-talk">Less talk,</span> more building
           </h3>
           <p class="datum-text-xl max-w-186 text-pretty">
             Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
@@ -65,7 +68,10 @@ const navData = navigation as NavData;
   {/* Background Landscape - Conditionally rendered */}
   {
     showBackground && (
-      <div class:list={['footer-illustration-container', !showCTA && 'bg-glacier-mist-700 pt-30']}>
+      <div
+        id="footer-illustration-bg"
+        class:list={['footer-illustration-container', !showCTA && 'bg-glacier-mist-700 pt-30']}
+      >
         <div class="relative w-full">
           <Image
             src={ImageFooter}
@@ -202,6 +208,64 @@ const navData = navigation as NavData;
 
   <NewsletterModal />
 </footer>
+
+<script>
+  // ── Footer CTA — background color morph ───────────────────────────────────
+  // Cycles through brand palette colors, smooth ease-in-out between each.
+  const el = document.getElementById('footer-cta-bg');
+  const elBg = document.getElementById('footer-illustration-bg');
+  const elTxt = document.getElementById('footer-less-talk') as HTMLElement | null;
+  if (el) {
+    // [R, G, B] — bright/warm palette colours
+    const COLORS: [number, number, number][] = [
+      [230, 245, 159], // aurora-moss    #e6f59f
+      [236, 208, 208], // blush-quartz   #ecd0d0
+      [173, 186, 176], // potted-olive   #adbab0
+      [240, 140, 140], // alert-red-dark #f08c8c
+    ];
+
+    const PHASE_DUR = 7000; // ms per colour stop
+    let startTime = -1;
+
+    // Smoothstep — ease in+out, no abrupt edges
+    function smoothstep(t: number) {
+      return t * t * (3 - 2 * t);
+    }
+
+    function lerp(a: number, b: number, t: number) {
+      return a + (b - a) * t;
+    }
+
+    function frame(ts: number) {
+      if (startTime < 0) startTime = ts;
+      const elapsed = ts - startTime;
+      const totalDur = PHASE_DUR * COLORS.length;
+      const cycleT = (elapsed % totalDur) / totalDur; // 0→1 forever
+
+      const phaseF = cycleT * COLORS.length;
+      const phaseIdx = Math.floor(phaseF) % COLORS.length;
+      const nextIdx = (phaseIdx + 1) % COLORS.length;
+      const phaseT = smoothstep(phaseF - phaseIdx);
+
+      const c = COLORS[phaseIdx];
+      const n = COLORS[nextIdx];
+
+      const r = Math.round(lerp(c[0], n[0], phaseT));
+      const g = Math.round(lerp(c[1], n[1], phaseT));
+      const b = Math.round(lerp(c[2], n[2], phaseT));
+
+      const rgb = `rgb(${r},${g},${b})`;
+      el.style.backgroundColor = rgb;
+      if (elBg) (elBg as HTMLElement).style.backgroundColor = rgb;
+      if (elTxt)
+        elTxt.style.color = `rgb(${Math.round(r * 0.55)},${Math.round(g * 0.55)},${Math.round(b * 0.55)})`;
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  }
+</script>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {

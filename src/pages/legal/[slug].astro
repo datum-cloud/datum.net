@@ -47,7 +47,7 @@ const sortedLegal = [...allLegal].sort((a, b) => {
 >
   <section class="datum-container">
     <Hero
-      class="light bg-glacier-mist-800 [&_.hero--main-content-title]:max-w-none [&_.hero--main-content-title]:whitespace-nowrap"
+      class="light bg-glacier-mist-800 [&_.hero--main-content-title]:max-w-none"
       title="Privacy Policies and Security Practices"
     />
 
@@ -55,8 +55,50 @@ const sortedLegal = [...allLegal].sort((a, b) => {
       <div class="max-width">
         <div class="legal-layout">
           <!-- Side Nav -->
-          <aside class="legal-sidenav">
-            <nav>
+          <aside
+            class="legal-sidenav"
+            x-data="{ open: false }"
+            @click.away="open = false"
+            @resize.window="if (window.innerWidth >= 768) open = false"
+          >
+            <button
+              class="legal-sidenav-toggle md:hidden"
+              @click="open = !open"
+              :aria-expanded="open"
+              aria-controls="legal-sidenav-menu"
+            >
+              <span class="legal-sidenav-toggle--text">Menu</span>
+              <svg
+                x-show="!open"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"
+                ></line><line x1="3" y1="18" x2="21" y2="18"></line></svg
+              >
+              <svg
+                x-show="open"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"
+                ></line></svg
+              >
+            </button>
+
+            <nav id="legal-sidenav-menu" x-show="open" x-transition style="display: none;">
               {
                 sortedLegal.map((entry) => (
                   <a
@@ -65,6 +107,7 @@ const sortedLegal = [...allLegal].sort((a, b) => {
                       'legal-sidenav-item',
                       { 'legal-sidenav-item--active': entry.id === page.id },
                     ]}
+                    @click="open = false"
                   >
                     {entry.data.title}
                   </a>

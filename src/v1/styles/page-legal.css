@@ -1,0 +1,35 @@
+@import './base.css';
+
+@layer components {
+  .legal-hero {
+    @apply bg-glacier-mist-800!;
+  }
+
+  .legal-layout {
+    @apply flex w-full items-start px-10;
+  }
+
+  .legal-sidenav {
+    @apply sticky top-0 w-64.75 shrink-0 self-start overflow-auto pt-20 pr-7 pb-7;
+
+    nav {
+      @apply flex flex-col gap-1;
+    }
+  }
+
+  .legal-sidenav-item {
+    @apply datum-text-sm text-midnight-fjord/60 hover:text-midnight-fjord block rounded-md px-2 py-2 font-medium transition-colors duration-150;
+
+    &.legal-sidenav-item--active {
+      @apply bg-glacier-mist-800 text-midnight-fjord font-semibold opacity-100;
+    }
+  }
+
+  .legal-content {
+    @apply min-w-0 flex-1 p-20;
+  }
+
+  .legal-on-this-page {
+    @apply w-53.25 shrink-0 self-stretch;
+  }
+}

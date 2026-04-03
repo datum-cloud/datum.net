@@ -43,7 +43,7 @@ export default defineConfig({
     announcement({
       show: true,
       label: 'Free download',
-      text: 'Take your localhost global with our Alpha http desktop app',
+      text: 'Take your localhost global with our alpha http desktop app',
       href: '/download/',
       icon: {
         name: 'arrow-right',

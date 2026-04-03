@@ -47,38 +47,40 @@ const sortedLegal = [...allLegal].sort((a, b) => {
 >
   <section class="datum-container">
     <Hero
-      class="light legal-hero [&_.hero--main-content-inner]:pb-16 [&_.hero--main-content-title]:max-w-none [&_.hero--main-content-title]:whitespace-nowrap"
+      class="light bg-glacier-mist-800 [&_.hero--main-content-title]:max-w-none [&_.hero--main-content-title]:whitespace-nowrap"
       title="Privacy Policies and Security Practices"
     />
 
-    <div class="bg-glacier-mist-700">
-      <div class="legal-layout">
-        <!-- Side Nav -->
-        <aside class="legal-sidenav">
-          <nav>
-            {
-              sortedLegal.map((entry) => (
-                <a
-                  href={`/legal/${entry.id}`}
-                  class:list={[
-                    'legal-sidenav-item',
-                    { 'legal-sidenav-item--active': entry.id === page.id },
-                  ]}
-                >
-                  {entry.data.title}
-                </a>
-              ))
-            }
-          </nav>
-        </aside>
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+      <div class="max-width">
+        <div class="legal-layout">
+          <!-- Side Nav -->
+          <aside class="legal-sidenav">
+            <nav>
+              {
+                sortedLegal.map((entry) => (
+                  <a
+                    href={`/legal/${entry.id}/`}
+                    class:list={[
+                      'legal-sidenav-item',
+                      { 'legal-sidenav-item--active': entry.id === page.id },
+                    ]}
+                  >
+                    {entry.data.title}
+                  </a>
+                ))
+              }
+            </nav>
+          </aside>
 
-        <!-- Main Content -->
-        <main class="legal-content">
-          <Content />
-        </main>
+          <!-- Main Content -->
+          <main class="legal-content">
+            <Content />
+          </main>
 
-        <!-- On this page (reserved column) -->
-        <div class="legal-on-this-page" aria-hidden="true"></div>
+          <!-- On this page (reserved column) -->
+          <!-- <div class="legal-on-this-page" aria-hidden="true"></div> -->
+        </div>
       </div>
     </div>
 

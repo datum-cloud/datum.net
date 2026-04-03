@@ -19,7 +19,8 @@
   body {
     @apply font-primary;
     @apply antialiased;
-    @apply bg-glacier-mist-700;
+    @apply bg-glacier-mist-900;
+    /* @apply bg-glacier-mist-700; */
   }
 
   html,
@@ -33,6 +34,10 @@
   .prose h4,
   .prose h5 {
     @apply font-canela;
+  }
+
+  .datum-container {
+    @apply bg-glacier-mist-700;
   }
 
   /* Prevent body scroll when mobile menu is active */

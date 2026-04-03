@@ -1,16 +1,12 @@
 @import './base.css';
 
 @layer components {
-  .legal-hero {
-    @apply bg-glacier-mist-800!;
-  }
-
   .legal-layout {
-    @apply flex w-full items-start px-10;
+    @apply flex w-full flex-col items-start md:flex-row;
   }
 
   .legal-sidenav {
-    @apply sticky top-0 w-64.75 shrink-0 self-start overflow-auto pt-20 pr-7 pb-7;
+    @apply sticky top-0 w-full shrink-0 self-start overflow-auto pt-8 pr-0 pb-7 md:w-64.75 md:pt-10 md:pr-7 lg:pt-16 xl:pt-20;
 
     nav {
       @apply flex flex-col gap-1;
@@ -26,7 +22,7 @@
   }
 
   .legal-content {
-    @apply min-w-0 flex-1 p-20;
+    @apply flex-1 p-0 md:p-10 lg:p-16 xl:p-20;
   }
 
   .legal-on-this-page {

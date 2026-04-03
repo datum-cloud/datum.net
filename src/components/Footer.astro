@@ -255,7 +255,7 @@ const navData = navigation as NavData;
       const b = Math.round(lerp(c[2], n[2], phaseT));
 
       const rgb = `rgb(${r},${g},${b})`;
-      el.style.backgroundColor = rgb;
+      el!.style.backgroundColor = rgb;
       if (elBg) (elBg as HTMLElement).style.backgroundColor = rgb;
       if (elTxt)
         elTxt.style.color = `rgb(${Math.round(r * 0.55)},${Math.round(g * 0.55)},${Math.round(b * 0.55)})`;

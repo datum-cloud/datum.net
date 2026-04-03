@@ -179,15 +179,20 @@
   }
 
   .article-footer {
-    @apply mt-10 md:mt-14;
+    @apply border-glacier-mist-900 relative w-full border-t-2;
+    @apply mt-8 md:mt-10 lg:mt-12;
+    @apply pt-8 md:pt-10 lg:pt-12;
     @apply flex flex-col gap-6;
     .article-nav {
       @apply mt-0 md:mt-0;
     }
 
     .last-updated {
-      @apply datum-text-sm text-midnight-fjord/60 flex gap-1;
-      @apply text-midnight-fjord/60;
+      @apply datum-docs-article-body text-midnight-fjord flex flex-col gap-1;
+
+      span {
+        @apply block w-full font-semibold;
+      }
     }
 
     .edit-page {
@@ -286,18 +291,19 @@
   }
 
   .toc-title {
-    @apply datum-docs-sidebar-headings py-1.75 font-medium;
+    @apply datum-text-xs text-midnight-fjord/60 pb-4;
   }
 
   .toc-nav {
-    @apply w-full;
+    @apply border-glacier-mist-900 relative w-full border-l-2 border-dashed pl-4;
   }
 
   .toc-list {
+    @apply flex flex-col gap-2;
   }
 
   .toc-item {
-    @apply datum-docs-sidebar-links list-none;
+    @apply datum-text-sm text-midnight-fjord/60 relative list-none;
   }
 
   .toc-item--level-1 {
@@ -325,12 +331,16 @@
   }
 
   .toc-link {
-    @apply text-midnight-fjord/80 hover:text-midnight-fjord my-1 inline-block transition-colors duration-200 ease-out;
+    @apply text-midnight-fjord/60 hover:text-midnight-fjord inline-block transition-colors duration-200 ease-out;
   }
 
-  /* Active link highlighting */
   .toc-link.active {
-    @apply text-canyon-clay---links font-medium;
+    @apply text-midnight-fjord;
+  }
+
+  .toc-item:has(.toc-link.active)::before {
+    @apply bg-blush-quartz absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full content-[''];
+    left: calc(-1rem - 1px);
   }
 
   /* figure */

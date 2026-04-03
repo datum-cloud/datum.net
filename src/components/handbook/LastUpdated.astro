@@ -18,7 +18,7 @@ const dateTime = formatISODate(date);
 {
   date && (
     <p class="last-updated">
-      Last updated: <time datetime={dateTime}>{formattedDate}</time>
+      <span>Last updated:</span> <time datetime={dateTime}>{formattedDate}</time>
     </p>
   )
 }

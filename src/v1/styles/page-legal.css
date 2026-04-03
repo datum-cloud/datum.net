@@ -6,10 +6,24 @@
   }
 
   .legal-sidenav {
-    @apply sticky top-0 w-full shrink-0 self-start overflow-auto pt-8 pr-0 pb-7 md:w-64.75 md:pt-10 md:pr-7 lg:pt-16 xl:pt-20;
+    @apply w-full shrink-0 self-start pt-6 pb-8 md:sticky md:top-0 md:w-64.75 md:overflow-auto md:pt-10 md:pr-7 md:pb-7 lg:pt-16 xl:pt-20;
 
+    /* Mobile toggle button */
+    .legal-sidenav-toggle {
+      @apply flex w-full items-center justify-between border border-gray-200 bg-white p-3 text-left transition-colors duration-200 hover:bg-gray-50 md:hidden;
+
+      .legal-sidenav-toggle--text {
+        @apply datum-text-base font-medium text-gray-900;
+      }
+    }
+
+    /* Nav list — hidden on mobile until toggled, always visible on desktop */
     nav {
-      @apply flex flex-col gap-1;
+      @apply flex flex-col gap-1 rounded-md border border-t-0 border-gray-200 bg-white p-2 md:border-0 md:bg-transparent md:p-0;
+
+      @media (min-width: 768px) {
+        display: flex !important;
+      }
     }
   }
 
@@ -18,6 +32,23 @@
 
     &.legal-sidenav-item--active {
       @apply bg-glacier-mist-800 text-midnight-fjord font-semibold opacity-100;
+    }
+
+    /* Mobile only: match brand nav dropdown style */
+    @media (max-width: 767px) {
+      @apply datum-text-base text-midnight-fjord rounded-none px-3 py-1;
+
+      &:hover {
+        @apply text-canyon-clay---links;
+      }
+
+      &.legal-sidenav-item--active {
+        @apply text-canyon-clay---links bg-transparent;
+
+        &:hover {
+          @apply text-midnight-fjord;
+        }
+      }
     }
   }
 

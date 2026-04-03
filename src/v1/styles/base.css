@@ -45,9 +45,6 @@
     &.mobile-menu-open {
       @apply fixed w-full overflow-hidden;
     }
-    &[data-aside-menu-expanded] {
-      @apply fixed w-full overflow-hidden;
-    }
   }
 
   &

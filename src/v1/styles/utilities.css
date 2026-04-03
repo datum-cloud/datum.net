@@ -1,3 +1,6 @@
+@utility linear-gradient-light {
+  @apply from-blush-quartz/50 to-blush-quartz/50 bg-white bg-linear-to-t;
+}
 @utility datum-container {
   @apply container m-auto max-w-(--datum-max-width);
 }

@@ -19,7 +19,8 @@
   body {
     @apply font-primary;
     @apply antialiased;
-    @apply bg-glacier-mist-700;
+    @apply bg-glacier-mist-900;
+    /* @apply bg-glacier-mist-700; */
   }
 
   html,
@@ -35,6 +36,10 @@
     @apply font-canela;
   }
 
+  .datum-container {
+    @apply bg-glacier-mist-700;
+  }
+
   /* Prevent body scroll when mobile menu is active */
   body {
     &.mobile-menu-open {
@@ -45,17 +50,17 @@
     }
   }
 
-  /* Hide elements with x-cloak until Alpine.js initializes */
-  [x-cloak] {
-    @apply hidden;
-  }
-
   &
     :is(
       :where(h1, h2, h3, h4, h5, h6, th):not(:where([class~='not-prose'], [class~='not-prose'] *))
     ) {
     color: inherit;
   }
+}
+
+/* Outside @layer so it has higher specificity than layered styles */
+[x-cloak] {
+  display: none !important;
 }
 
 @import './utilities.css';

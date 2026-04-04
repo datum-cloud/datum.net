@@ -19,6 +19,16 @@
   ],
   "guests": [
     {
+      "name": "Tim Kraska",
+      "title": "Professor at MIT, formerly a director at AWS, Co-Founder of Einblick and Instancio",
+      "avatarUrl": "tim-kraska.jpg"
+    },
+    {
+      "name": "Matt Butcher",
+      "title": "Vice President of Product Management at Akamai Technologies",
+      "avatarUrl": "matt-butcher.jpg"
+    },
+    {
       "name": "James Logan",
       "title": "Scientific Engineer at Commonwealth Fusion Systems",
       "avatarUrl": "james-logan.jpg"

@@ -64,9 +64,17 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       JS drives the slow drift + flicker after activation.
     */
     }
+    {
+      /*
+      Stars div is intentionally oversized beyond inset-0.
+      It extends 220px left and 90px down past the hero bounds so the
+      arc drift (max 200px right, 70px up) never reveals a gap.
+      overflow-hidden on hero-container clips it to the visible hero area.
+    */
+    }
     <div
       id="hero-stars"
-      class="absolute inset-0 z-2"
+      class="absolute top-0 right-0 -bottom-[90px] -left-[220px] z-2"
       style="opacity: 0; will-change: transform, opacity;"
     >
       <Image
@@ -144,6 +152,35 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 
   if (!imgOff || !imgOn || !stars) throw new Error('Hero: missing elements');
 
+  // ── Arc-length LUT — ensures constant-speed traversal of the elliptical arc ─
+  // Without this, parametric speed varies from 200 px/s (start) to 70 px/s (end)
+  // because the ellipse radii differ. The LUT maps arc-fraction → angle so each
+  // frame advances the same physical distance regardless of ellipse shape.
+  const ARC_RX = 200,
+    ARC_RY = 70,
+    ARC_SPAN = Math.PI / 2;
+  const ARC_N = 500;
+  const _arcLen: number[] = [0];
+  for (let i = 1; i <= ARC_N; i++) {
+    const a = (i / ARC_N) * ARC_SPAN;
+    const spd = Math.sqrt((ARC_RX * Math.cos(a)) ** 2 + (ARC_RY * Math.sin(a)) ** 2);
+    _arcLen.push(_arcLen[i - 1] + spd * (ARC_SPAN / ARC_N));
+  }
+  const ARC_TOTAL = _arcLen[ARC_N];
+
+  function arcFracToAngle(frac: number): number {
+    const s = Math.min(frac * ARC_TOTAL, ARC_TOTAL);
+    let lo = 0,
+      hi = ARC_N;
+    while (hi - lo > 1) {
+      const m = (lo + hi) >> 1;
+      if (_arcLen[m] < s) lo = m;
+      else hi = m;
+    }
+    const t = _arcLen[hi] > _arcLen[lo] ? (s - _arcLen[lo]) / (_arcLen[hi] - _arcLen[lo]) : 0;
+    return ((lo + t) / ARC_N) * ARC_SPAN;
+  }
+
   // ── Reset — fade everything out, then restart the full cycle ───────────────
   function resetAndRestart() {
     const FADE_OUT = 1200; // ms to fade stars + device out
@@ -154,13 +191,25 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     header?.classList.remove('hero--alive');
     stars!.style.opacity = '0';
     imgOn!.style.opacity = '0';
-    setGlow(0);
+
+    // Glow fades with device — transition to zero-alpha (not 'none') so CSS interpolates
+    if (glowSpan) {
+      glowSpan.style.transition = `text-shadow ${FADE_OUT}ms ease-in-out`;
+      glowSpan.style.textShadow =
+        '0 0 15px rgba(230,245,159,0),' +
+        '0 0 40px rgba(230,245,159,0),' +
+        '0 0 80px rgba(230,245,159,0)';
+    }
 
     setTimeout(() => {
       stars!.style.transition = '';
       imgOn!.style.transition = '';
+      if (glowSpan) {
+        glowSpan.style.transition = '';
+        glowSpan.style.textShadow = 'none';
+      }
       // Reset position only after stars are fully invisible — no visible jolt
-      stars!.style.transform = 'translateX(0px)';
+      stars!.style.transform = 'translateX(0px) translateY(0px)';
       // Restart full cycle from Phase 1
       setTimeout(startFlicker, LASER_DELAY);
     }, FADE_OUT + 100);
@@ -174,6 +223,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 
     // Stars drift state
     let starsOpacity = 0;
+    let sCurrentOpacity = 0; // tracked in JS to avoid DOM reads (prevents forced reflow)
     const STARS_FADE_IN = 1800; // ms for stars to reach full opacity
 
     // Stars flicker — subtle random breathing
@@ -185,6 +235,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     let dEpisodeActive = false;
     let dEpisodeStart = 0;
     let dEpisodeDur = 0;
+
+    // Glow breath — slow sine pulse when device is stable
+    const BREATH_PERIOD = 3200; // ms per breath cycle
+    let glowCurrent = 1.0; // tracked in JS to smooth transitions
 
     // Schedule restart after RESTART_DELAY
     setTimeout(() => {
@@ -204,8 +258,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         starsOpacity = Math.min(1, elapsed / STARS_FADE_IN);
       }
 
-      // ── Stars: continuous rightward drift (60px over the 30s cycle) ────────
-      const driftX = elapsed * (60 / RESTART_DELAY);
+      // ── Stars: constant-speed arc (LUT-corrected, upper-right quarter) ──
+      const arcAngle = arcFracToAngle(elapsed / RESTART_DELAY);
+      const driftX = ARC_RX * Math.sin(arcAngle);
+      const driftY = -ARC_RY * (1 - Math.cos(arcAngle));
 
       // ── Device: random episode flicker ───────────────────────────────────
       dEpisodeTimer -= dt;
@@ -219,6 +275,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 
       // ── Stars opacity — synced to device episode when active ─────────────
       let sTargetOpacity: number;
+      let glowTarget: number;
       if (dEpisodeActive) {
         const t = ts - dEpisodeStart;
         const sec = t / 1000;
@@ -230,19 +287,19 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
             Math.sin(sec * 38.7) * 0.3 + Math.sin(sec * 17.1) * 0.25 + Math.sin(sec * 5.3) * 0.2;
           const dAlpha = Math.max(0.15, 0.75 + noise);
           imgOn!.style.opacity = String(dAlpha);
-          setGlow(dAlpha);
           // Stars mirror the same flicker value
           sTargetOpacity = starsOpacity * dAlpha;
+          glowTarget = dAlpha;
         } else {
           // Recover — snap device back to stable
           dEpisodeActive = false;
           imgOn!.style.transition = 'opacity 0.18s ease-out';
           imgOn!.style.opacity = '1';
-          setGlow(1);
           setTimeout(() => {
             imgOn!.style.transition = '';
           }, 200);
           sTargetOpacity = starsOpacity;
+          glowTarget = 1;
         }
       } else {
         // Idle breathing flicker for stars
@@ -252,13 +309,19 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
           sFlickerTimer = 500 + Math.random() * 1800;
         }
         sTargetOpacity = starsOpacity * sFlickerTarget;
+        // Glow breathes slowly via sine wave: 0.55–1.0
+        glowTarget = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin((elapsed / BREATH_PERIOD) * Math.PI * 2));
       }
 
-      const sCurrent = parseFloat(stars!.style.opacity || '0');
-      const sSmoothed = sCurrent + (sTargetOpacity - sCurrent) * 0.04;
+      // Smooth glow transitions (episode snaps fast, breath eases slowly)
+      const glowLerp = dEpisodeActive ? 0.25 : 0.03;
+      glowCurrent = glowCurrent + (glowTarget - glowCurrent) * glowLerp;
+      setGlow(glowCurrent);
 
-      stars!.style.opacity = String(sSmoothed);
-      stars!.style.transform = `translateX(${driftX.toFixed(2)}px)`;
+      sCurrentOpacity = sCurrentOpacity + (sTargetOpacity - sCurrentOpacity) * 0.04;
+
+      stars!.style.opacity = String(sCurrentOpacity);
+      stars!.style.transform = `translateX(${driftX.toFixed(2)}px) translateY(${driftY.toFixed(2)}px)`;
 
       requestAnimationFrame(ambient);
     }

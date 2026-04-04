@@ -90,7 +90,7 @@
 
   .mission-reasons-text {
     @apply bg-[#F7E1E1] px-2 leading-[1.235]!;
-    @apply datum-text-3xl text-canyon-clay---links text-pretty;
+    @apply datum-text-3xl text-pretty text-[#7d5252];
     @apply box-decoration-clone;
     strong {
       @apply text-midnight-fjord font-semibold;

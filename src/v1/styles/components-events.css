@@ -479,7 +479,7 @@
   }
 
   .event-series-card__speaker {
-    @apply flex items-center gap-4;
+    @apply flex items-start gap-4;
   }
 
   .event-series-card__speaker-avatar {

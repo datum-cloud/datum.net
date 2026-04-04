@@ -16,5 +16,22 @@
       "name": "Will Lehmann",
       "avatarUrl": "1767596e-7938-483c-8dc5-7fdaeffdb5dd.jpg"
     }
+  ],
+  "guests": [
+    {
+      "name": "Justin Sheehy",
+      "title": "Chief Architect, Performance and Reliability / Infrastructure Engineering at Akamai Technologies",
+      "avatarUrl": "justin-sheehy.jpg"
+    },
+    {
+      "name": "Mike Fox",
+      "title": "Sales Leader at CodeRabbit",
+      "avatarUrl": "mike-fox.jpg"
+    },
+    {
+      "name": "Jack Klamer",
+      "title": "Senior Distributed Systems Engineer at Netflix",
+      "avatarUrl": "jack-klamer.jpg"
+    }
   ]
 }

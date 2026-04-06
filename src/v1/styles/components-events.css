@@ -460,6 +460,11 @@
     @apply text-midnight-fjord datum-text-xl font-semibold;
   }
 
+  /* Guests + hosts: single column so long bios/titles do not leave an empty sibling column */
+  .event-series-card__hosts-guests {
+    @apply flex flex-col gap-8 md:gap-10 lg:gap-12;
+  }
+
   /* Rendered from Luma `description_md` via marked + datum-prose */
   .event-series-card__agenda-md {
     @apply text-midnight-fjord min-w-0 break-words;

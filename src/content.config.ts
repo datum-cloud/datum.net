@@ -1,5 +1,5 @@
 import { reference, defineCollection } from 'astro:content';
-import { z } from 'zod';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

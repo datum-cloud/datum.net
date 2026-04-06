@@ -15,6 +15,7 @@ import { toYouTubeEmbedUrl, toYouTubeWatchUrl } from '@utils/youtube';
 import { formatDate, formatTime } from '@utils/dateUtils';
 import Icon from '@components/Icon.astro';
 import EventBadge from '@components/events/EventBadge.astro';
+import EventPeople from '@components/events/EventPeople.astro';
 
 interface Props {
   event: ContentEvent;
@@ -28,7 +29,6 @@ interface Props {
 
 const {
   event,
-  hosts: hostsProp,
   isPast = false,
   showVideo = false,
   pastOpensDetailModal = false,
@@ -36,7 +36,7 @@ const {
 
 const displayName = getEventDisplayName(event);
 const hostsGuests = getEventHostsGuests(event);
-const hosts = hostsProp ?? hostsGuests.hosts;
+// const hosts = hostsProp ?? hostsGuests.hosts;
 const guests = hostsGuests.guests;
 const locationText = event.geo_address_json?.city_state || 'Virtual';
 const isRecurring = isEventRecurringSeries(event);
@@ -195,75 +195,9 @@ const timezoneAbbr = event.timezone
           </div>
         )}
 
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8 lg:gap-12">
-          {guests.length > 0 && (
-            <div class="event-series-card__section">
-              <h5 class="event-series-card__section-label">Guests</h5>
-              <div class="event-series-card__speakers">
-                {guests.map((guest) => (
-                  <div class="event-series-card__speaker">
-                    {guest.avatarImage ? (
-                      <Image
-                        src={guest.avatarImage}
-                        alt={guest.name}
-                        width={48}
-                        height={48}
-                        class="event-series-card__speaker-avatar"
-                        loading="lazy"
-                      />
-                    ) : guest.avatarUrl?.trim() ? (
-                      <img
-                        src={guest.avatarUrl.trim()}
-                        alt={guest.name}
-                        width={48}
-                        height={48}
-                        class="event-series-card__speaker-avatar"
-                        loading="lazy"
-                      />
-                    ) : null}
-                    <div>
-                      <p class="event-series-card__speaker-name">{guest.name}</p>
-                      <p class="event-series-card__speaker-title">{guest.title}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {hosts.length > 0 && (
-            <div class="event-series-card__section hidden">
-              <h4 class="event-series-card__section-label">Hosted by</h4>
-              <div class="event-series-card__speakers">
-                {hosts.map((host) => (
-                  <div class="event-series-card__speaker">
-                    {host.avatarImage ? (
-                      <Image
-                        src={host.avatarImage}
-                        alt={host.name}
-                        width={48}
-                        height={48}
-                        class="event-series-card__speaker-avatar"
-                        loading="lazy"
-                      />
-                    ) : host.avatarUrl?.trim() ? (
-                      <img
-                        src={host.avatarUrl.trim()}
-                        alt={host.name}
-                        width={48}
-                        height={48}
-                        class="event-series-card__speaker-avatar"
-                        loading="lazy"
-                      />
-                    ) : null}
-                    <div>
-                      <p class="event-series-card__speaker-name">{host.name}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        <div class="event-series-card__hosts-guests">
+          <EventPeople people={guests} sectionLabel="Guests" headingLevel="h5" />
+          {/* <EventPeople people={hosts} sectionLabel="Hosted by" /> */}
         </div>
       </div>
 

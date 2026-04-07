@@ -12,6 +12,7 @@ const teamMembers = await getTeamMembers();
 const teamMembersData = teamMembers.map((member, index) => ({
   id: member.id,
   index,
+  slug: member.id,
   data: {
     name: member.data.name,
     bio: member.data.bio,
@@ -82,31 +83,43 @@ const teamMembersData = teamMembers.map((member, index) => ({
 </section>
 
 <script is:inline define:vars={{ teamMembersData }}>
-  // Store team members data for the modal
   const teamData = teamMembersData;
+  // Debug: expose slugs for inspection
+  window.__datumTeamSlugs = teamData.map((m) => ({ slug: m.slug, name: m.data.name }));
 
-  // Wait for DOM to be ready
+  function dispatchOpenEvent(member) {
+    document.dispatchEvent(
+      new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, { detail: { member } })
+    );
+  }
+
+  function openMemberBySlug(slug) {
+    if (!slug || !window.PROFILE_MODAL_OPEN_EVENT) return;
+    const member = teamData.find((m) => m.slug === slug);
+    if (member) dispatchOpenEvent(member);
+  }
+
+  function tryOpenFromHash() {
+    const hash = window.location.hash.slice(1);
+    if (hash) openMemberBySlug(hash);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const triggers = document.querySelectorAll('[data-member-trigger]');
-
-    triggers.forEach((trigger) => {
+    // Wire up card click triggers
+    document.querySelectorAll('[data-member-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
-        const target = e.currentTarget;
-        if (!target) return;
-
-        const memberIndex = target.getAttribute('data-member-index');
-        const index = parseInt(memberIndex || '0', 10);
+        const index = parseInt(e.currentTarget.getAttribute('data-member-index') || '0', 10);
         const member = teamData[index];
-
-        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
-          // Dispatch event with member data
-          document.dispatchEvent(
-            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
-              detail: { member },
-            })
-          );
-        }
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) dispatchOpenEvent(member);
       });
     });
+
+    // Deep-link: try immediately, then once the custom element is guaranteed ready.
+    // Covers both orderings of inline vs. module script execution.
+    tryOpenFromHash();
+    customElements.whenDefined('profile-modal').then(tryOpenFromHash);
   });
+
+  // Handle hash changes after page load (browser back/forward, in-page links)
+  window.addEventListener('hashchange', tryOpenFromHash);
 </script>

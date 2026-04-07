@@ -30,6 +30,7 @@ const { class: className } = Astro.props as { class?: string };
 
   interface MemberData {
     index?: number;
+    slug?: string;
     data: {
       name: string;
       bio?: string;
@@ -129,6 +130,11 @@ const { class: className } = Astro.props as { class?: string };
       this.dialog.showModal();
       document.body.toggleAttribute('data-profile-modal-open', true);
 
+      // Update URL hash for deep-linking
+      if (member.slug) {
+        history.replaceState(null, '', '#' + member.slug);
+      }
+
       // Record when the dialog was opened
       this.dialogOpenedAt = Date.now();
 
@@ -140,6 +146,8 @@ const { class: className } = Astro.props as { class?: string };
 
     closeModal() {
       this.dialog.close();
+      // Clear the hash without adding a history entry
+      history.replaceState(null, '', location.pathname + location.search);
     }
 
     populateContent(member: MemberData) {

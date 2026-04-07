@@ -89,9 +89,17 @@
   }
 
   .mission-reasons-text {
-    @apply bg-[#F7E1E1] px-2 leading-[1.235]!;
+    @apply px-2 leading-[1.235]!;
     @apply datum-text-3xl text-pretty text-[#7d5252];
     @apply box-decoration-clone;
+    background-image: linear-gradient(#f7e1e1, #f7e1e1);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
     strong {
       @apply text-midnight-fjord font-semibold;
     }
@@ -104,8 +112,15 @@
 
   .mission-vision-check {
     @apply inline-flex w-fit items-center gap-3;
-    @apply bg-aurora-moss;
     @apply px-4 py-1;
+    background-image: linear-gradient(#e6f59f, #e6f59f);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
   }
 
   .mission-vision-check-icon {

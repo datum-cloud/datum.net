@@ -76,8 +76,16 @@
   }
 
   .features-bullet-marker {
-    @apply bg-aurora-moss text-center;
+    @apply text-center;
     @apply w-5 shrink-0 px-1;
+    background-image: linear-gradient(#e6f59f, #e6f59f);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
 
     @apply text-midnight-fjord;
     @apply inline-flex items-center justify-center;
@@ -118,8 +126,16 @@
   }
 
   .features-cta-banner {
-    @apply bg-aurora-moss inline-flex items-center gap-3;
+    @apply inline-flex items-center gap-3;
     @apply self-start px-4 py-1;
+    background-image: linear-gradient(#e6f59f, #e6f59f);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
 
     .features-cta-banner-text {
       @apply font-alliance text-pine-forge;
@@ -206,8 +222,16 @@
   }
 
   .features-value-marker {
-    @apply bg-aurora-moss flex shrink-0 items-center justify-center self-stretch;
+    @apply flex shrink-0 items-center justify-center self-stretch;
     @apply px-0.5;
+    background-image: linear-gradient(#e6f59f, #e6f59f);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
 
     svg {
       @apply block h-5 w-6;

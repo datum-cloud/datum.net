@@ -140,3 +140,36 @@ const jsonLd = {
     <Footer />
   </section>
 </Layout>
+
+<script>
+  (function initHighlights() {
+    function makeHighlighter(container: Element, selector: string, threshold = 0.4) {
+      let isHighlighted = false;
+
+      function highlight() {
+        if (isHighlighted) return;
+        isHighlighted = true;
+        Array.from(container.querySelectorAll<HTMLElement>(selector)).forEach((el, i) =>
+          setTimeout(() => el.classList.add('highlight-animate'), i * 80)
+        );
+      }
+
+      new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) highlight();
+        },
+        { threshold }
+      ).observe(container);
+
+      new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) isHighlighted = false;
+        },
+        { threshold: 0 }
+      ).observe(container);
+    }
+
+    const grid = document.querySelector('.essentials-grid');
+    if (grid) makeHighlighter(grid, '.essentials-item-icon');
+  })();
+</script>

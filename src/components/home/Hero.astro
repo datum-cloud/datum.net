@@ -25,7 +25,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       role="banner"
     >
       <h1
-        class="datum-text-11xl [&_span]:text-aurora-moss m-auto max-w-190 text-white"
+        class="datum-text-11xl [&_span]:text-aurora-moss m-auto max-w-190 text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]"
         set:html={marked.parseInline(title)}
       />
       {

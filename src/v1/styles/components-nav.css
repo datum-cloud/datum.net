@@ -46,7 +46,7 @@
       @apply datum-text-base hidden items-center justify-center text-white md:flex md:gap-6 lg:gap-8 xl:gap-10;
     }
 
-    .link--active {
+    .nav-menu-link.link--active {
       & > span {
         @apply relative;
 
@@ -419,5 +419,11 @@
     &:disabled {
       @apply cursor-not-allowed opacity-60;
     }
+  }
+}
+
+@layer utilities {
+  .nav-dropdown-link.link--active > span {
+    @apply decoration-midnight-fjord underline decoration-solid;
   }
 }

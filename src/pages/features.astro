@@ -824,4 +824,51 @@ const jsonLd = {
       ).observe(el);
     });
   })();
+
+  // Video tilt — scroll-driven perspective reveal
+  (function initVideoTilt() {
+    const el = document.querySelector<HTMLElement>('.features-hero-video');
+    if (!el) return;
+
+    el.style.opacity = '0';
+
+    const ANGLE = 18; // degrees laid back at rest
+    const SCALE = 0.92; // slightly smaller at rest
+
+    let rafId = 0;
+
+    function update() {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      // progress: 0 when element top hits bottom of viewport, 1 when element is vertically centered
+      const startY = vh;
+      const endY = (vh - rect.height) / 2;
+      const progress =
+        endY === startY ? 1 : Math.max(0, Math.min(1, (startY - rect.top) / (startY - endY)));
+
+      if (progress >= 1) {
+        el.style.transform = '';
+      } else {
+        const angle = ANGLE * (1 - progress);
+        const scale = SCALE + (1 - SCALE) * progress;
+        el.style.transform = `perspective(1200px) rotateX(${angle.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      }
+    }
+
+    update();
+    el.style.opacity = '1';
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          update();
+          rafId = 0;
+        });
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update, { passive: true });
+  })();
 </script>

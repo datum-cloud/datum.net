@@ -14,6 +14,8 @@
     @apply relative z-10 mx-auto max-w-[985px] lg:min-w-[985px];
     @apply shadow-[0_0_10px_-2px_rgba(0,0,0,0.2),0_20px_45px_0_rgba(0,0,0,0.28)];
     @apply overflow-hidden rounded-[9px];
+    transform-origin: center center;
+    will-change: transform;
 
     .features-hero-video-frame {
       @apply relative z-0 block h-auto w-full;

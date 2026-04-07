@@ -13,6 +13,7 @@ const teamMembers: StrapiAuthorFull[] = await getStrapiTeamMembers();
 // Prepare team member data for client-side modal (serialize data)
 const teamMembersData = teamMembers.map((member, index) => ({
   id: member.documentId,
+  slug: member.slug || member.documentId,
   index,
   data: {
     name: member.name,
@@ -86,31 +87,35 @@ const teamMembersData = teamMembers.map((member, index) => ({
 </section>
 
 <script is:inline define:vars={{ teamMembersData }}>
-  // Store team members data for the modal
   const teamData = teamMembersData;
 
-  // Initialize event listeners - runs immediately since deferred content is already in DOM
-  (function initPeopleStrapi() {
-    const triggers = document.querySelectorAll('[data-member-trigger]');
+  function dispatchOpen(member) {
+    document.dispatchEvent(
+      new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, { detail: { member } })
+    );
+  }
 
-    triggers.forEach((trigger) => {
+  function openBySlug(slug) {
+    if (!slug || !window.PROFILE_MODAL_OPEN_EVENT) return;
+    const member = teamData.find((m) => m.slug === slug);
+    if (member) dispatchOpen(member);
+  }
+
+  // Initialize event listeners - runs immediately since server island content is already in DOM
+  (function init() {
+    document.querySelectorAll('[data-member-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
-        const target = e.currentTarget;
-        if (!target) return;
-
-        const memberIndex = target.getAttribute('data-member-index');
-        const index = parseInt(memberIndex || '0', 10);
+        const index = parseInt(e.currentTarget.getAttribute('data-member-index') || '0', 10);
         const member = teamData[index];
-
-        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
-          // Dispatch event with member data
-          document.dispatchEvent(
-            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
-              detail: { member },
-            })
-          );
-        }
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) dispatchOpen(member);
       });
+    });
+
+    // Deep-link: server island runs before ProfileModal's bundled module script,
+    // so wait for the custom element to be defined (which also sets PROFILE_MODAL_OPEN_EVENT).
+    customElements.whenDefined('profile-modal').then(() => {
+      const hash = window.location.hash.slice(1);
+      if (hash) openBySlug(hash);
     });
   })();
 </script>

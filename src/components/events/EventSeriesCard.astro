@@ -7,6 +7,7 @@ import { marked } from 'marked';
 import {
   getEventDisplayName,
   isEventRecurringSeries,
+  isEventAltCloudMeetup,
   getEventHostsGuests,
   type ContentEvent,
   type EventHost,
@@ -181,12 +182,6 @@ const timezoneAbbr = event.timezone
       <div class="event-series-card__body">
         <h3 class="event-series-card__title">{displayName}</h3>
 
-        {event.theme && (
-          <div class="event-series-card__section">
-            <h4 class="event-series-card__section-label">{event.theme}</h4>
-          </div>
-        )}
-
         {descriptionHtml && (
           <div class="event-series-card__section">
             <h4 class="event-series-card__section-label">Agenda</h4>
@@ -196,7 +191,11 @@ const timezoneAbbr = event.timezone
         )}
 
         <div class="event-series-card__hosts-guests">
-          <EventPeople people={guests} sectionLabel="Guests" headingLevel="h5" />
+          <EventPeople
+            people={guests}
+            sectionLabel={isEventAltCloudMeetup(event) ? 'Speakers' : 'Guests'}
+            headingLevel="h5"
+          />
           {/* <EventPeople people={hosts} sectionLabel="Hosted by" /> */}
         </div>
       </div>

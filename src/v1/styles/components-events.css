@@ -398,6 +398,14 @@
     @apply text-midnight-fjord min-w-0 break-words;
   }
 
+  .event-calendar-list__expanded-speakers {
+    @apply flex flex-col gap-3;
+  }
+
+  .event-calendar-list__expanded-speakers-list {
+    @apply flex flex-col gap-4;
+  }
+
   .event-calendar-list__expanded-sidebar {
     @apply flex shrink-0 flex-col items-start gap-4 md:gap-5;
   }

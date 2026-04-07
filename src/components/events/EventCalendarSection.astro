@@ -7,7 +7,9 @@ import {
   isEventDatumHosted,
   isEventRecurringSeries,
   isEventExternal,
+  isEventAltCloudMeetup,
   getEventDisplayName,
+  getEventHostsGuests,
 } from '@libs/events';
 import { marked } from 'marked';
 
@@ -30,6 +32,13 @@ const eventsData = allEvents.map((e) => {
     if (html) description_html = html;
   }
 
+  const { guests } = getEventHostsGuests(e);
+  const guestsData = guests.map((g) => ({
+    name: g.name,
+    title: g.title ?? null,
+    avatarSrc: g.avatarImage?.src ?? g.avatarUrl ?? null,
+  }));
+
   return {
     api_id: e.api_id,
     name: getEventDisplayName(e),
@@ -44,6 +53,8 @@ const eventsData = allEvents.map((e) => {
     isExternal: isEventExternal(e),
     isDatumHosted: isEventDatumHosted(e),
     isRecurringSeries: isEventRecurringSeries(e),
+    isAltCloudMeetup: isEventAltCloudMeetup(e),
+    guests: guestsData,
   };
 });
 
@@ -273,6 +284,38 @@ const eventsJson = JSON.stringify(eventsData);
                   <div class="event-calendar-list__expanded-description datum-prose">
                     <h4 class="event-calendar-list__expanded-heading">Agenda</h4>
                     <div x-html="event.description_html"></div>
+                  </div>
+                </template>
+
+                <template x-if="event.guests && event.guests.length > 0">
+                  <div class="event-calendar-list__expanded-speakers">
+                    <h4
+                      class="event-calendar-list__expanded-heading"
+                      x-text="event.isAltCloudMeetup ? 'Speakers' : 'Guests'"
+                    >
+                    </h4>
+                    <div class="event-calendar-list__expanded-speakers-list">
+                      <template x-for="guest in event.guests" :key="guest.name">
+                        <div class="event-series-card__speaker">
+                          <template x-if="guest.avatarSrc">
+                            <img
+                              x-bind:src="guest.avatarSrc"
+                              x-bind:alt="guest.name"
+                              width="48"
+                              height="48"
+                              loading="lazy"
+                              class="event-series-card__speaker-avatar"
+                            />
+                          </template>
+                          <div>
+                            <p class="event-series-card__speaker-name" x-text="guest.name"></p>
+                            <template x-if="guest.title">
+                              <p class="event-series-card__speaker-title" x-text="guest.title"></p>
+                            </template>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
                   </div>
                 </template>
               </div>

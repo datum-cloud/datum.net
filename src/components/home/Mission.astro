@@ -121,3 +121,37 @@ const { class: className = '' } = Astro.props;
     </div>
   </section>
 </div>
+
+<script>
+  function makeHighlighter(container: Element, selector: string, threshold = 0.4) {
+    let isHighlighted = false;
+
+    function highlight() {
+      if (isHighlighted) return;
+      isHighlighted = true;
+      Array.from(container.querySelectorAll<HTMLElement>(selector)).forEach((el, i) =>
+        setTimeout(() => el.classList.add('highlight-animate'), i * 180)
+      );
+    }
+
+    new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) highlight();
+      },
+      { threshold }
+    ).observe(container);
+
+    new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) isHighlighted = false;
+      },
+      { threshold: 0 }
+    ).observe(container);
+  }
+
+  const reasons = document.querySelector('.mission-reasons');
+  if (reasons) makeHighlighter(reasons, '.mission-reasons-text');
+
+  const visionChecks = document.querySelector('.mission-vision-checks');
+  if (visionChecks) makeHighlighter(visionChecks, '.mission-vision-check');
+</script>

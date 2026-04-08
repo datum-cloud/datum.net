@@ -154,11 +154,23 @@ const jsonLd = {
         );
       }
 
+      // Fire immediately if the container is already (partially) visible on load.
+      const rect = container.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        highlight();
+      }
+
+      // On mobile the grid stacks into a single column and can exceed the viewport
+      // height by 3×+, making a 0.4 threshold geometrically unreachable. Clamp it
+      // to 90% of the max visible fraction so it always fires.
+      const maxVisible = window.innerHeight / rect.height;
+      const effectiveThreshold = Math.min(threshold, maxVisible * 0.9);
+
       new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) highlight();
         },
-        { threshold }
+        { threshold: effectiveThreshold }
       ).observe(container);
 
       new IntersectionObserver(

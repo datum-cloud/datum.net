@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Trends in Cloud Infrastructure - Datum Handbook"
-  description: "AI is changing infrastructure. Read about the explosion of specialized AI and alt clouds and the 'talent gap' that makes Datum's open network cloud essential."
+  description: "A shift to AI native is changing infrastructure. Read about the explosion of specialized AI services and alt clouds that informs Datum's approach and founding principles"
   og:
       title: Trends in Cloud Infrastructure
       description: "3 Trends that are shaping the way we work at Datum"

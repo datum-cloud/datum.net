@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Anti-Harassment and discrimination policy at Datum"
   description: "Datum has zero tolerance for harassment. Read our policy on prohibited conduct, including discrimination based on race, gender, and sexual orientation."
+  og:
+    title: "Anti-harassment and discrimination policy"
 ---
 
 Datum is committed to providing a workplace free from discrimination and harassment. All employees, contractors, clients, and visitors have the right to work in an environment that promotes equal opportunity and prohibits discriminatory practices.

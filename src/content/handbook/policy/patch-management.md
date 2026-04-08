@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Datum Patch Management Policy - Remediation SLAs"
   description: "Maintaining a secure platform. Learn about our procedures for identifying, testing, and applying security patches to protect customer workloads."
+  og:
+    title: "Patch management policy"
 ---
 
 To avoid potential security incidents, Datum regularly reviews potential vulnerabilities in its environment and applies relevant patches.

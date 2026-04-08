@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Datum's Product Strategy - Vision, Values, and Rituals - Datum Handbook"
   description: "The nuts and bolts about how Datum is working to unlock internet superpowers for every agent, builder, and developer."
+  og:
+    title: "Product vision, values, and rituals"
 ---
 
 Datum is working to unlock 'internet superpowers' for every agent, builder, and developer. 

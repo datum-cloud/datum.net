@@ -7,7 +7,9 @@ updatedDate: Jan 23, 2026
 authors: jacob
 meta:
   title: "Quarterly Conversations - Datum Handbook"
-  description: ""
+  description: "Datum prioritizes growth and development. This is how we guide meanintful quarterly conversations to encourage open communication and enable growth."
+  og:
+    title: "Quarterly Conversations"
 ---
 
 This template helps structure meaningful quarterly conversations between managers and team members at Datum. Each person should complete the template before a conversation, focusing on honest reflection and forward-looking discussion. The purpose is to foster open communication, align on priorities, identify support needs, and enable growth.

@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "System Components & Architecture - Datum Handbook"
   description: "Explore the building blocks of Datum. A technical breakdown of our system components, including the control plane, data plane, and edge infrastructure."
+  og:
+    title: "System Components & Architecture"
 ---
 
 There are four main components that we assemble to make Datum work for customers: infrastructure, platform, backend, cloud.

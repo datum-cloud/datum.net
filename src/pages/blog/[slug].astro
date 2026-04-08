@@ -91,7 +91,10 @@ const readingTime = {
 // Get author data
 const authorName = article?.author?.name || '';
 const authorSlug = article?.author?.slug ?? article?.author?.documentId;
-const authorHref = authorSlug ? `/authors/${authorSlug}/` : undefined;
+const authorHref =
+  authorSlug && article?.author?.isTeam === true ? `/authors/${authorSlug}/` : undefined;
+const hasAuthorHref = Boolean(authorHref && authorHref.length > 0);
+
 const authorAvatar = article?.author?.avatar
   ? getStrapiMediaUrl(article.author.avatar.url)
   : undefined;
@@ -333,19 +336,36 @@ const blogListingMeta = {
                   <div class="blog-article-author">
                     <div class="blog-article-author-avatar">
                       {authorAvatar ? (
-                        <a href={authorHref ?? '#'} class="blog-article-author-image">
-                          <Image
-                            src={authorAvatar}
-                            alt={authorName}
-                            width={64}
-                            height={64}
-                            class="h-full w-full object-cover"
-                            style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
-                          />
-                        </a>
-                      ) : (
+                        hasAuthorHref ? (
+                          <a href={authorHref} class="blog-article-author-image">
+                            <Image
+                              src={authorAvatar}
+                              alt={authorName}
+                              width={64}
+                              height={64}
+                              class="h-full w-full object-cover"
+                              style={
+                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
+                              }
+                            />
+                          </a>
+                        ) : (
+                          <div class="blog-article-author-image">
+                            <Image
+                              src={authorAvatar}
+                              alt={authorName}
+                              width={64}
+                              height={64}
+                              class="h-full w-full object-cover"
+                              style={
+                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
+                              }
+                            />
+                          </div>
+                        )
+                      ) : hasAuthorHref ? (
                         <a
-                          href={authorHref ?? '#'}
+                          href={authorHref}
                           class="blog-article-author-image"
                           style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
                         >
@@ -353,11 +373,24 @@ const blogListingMeta = {
                             {authorName.charAt(0)}
                           </span>
                         </a>
+                      ) : (
+                        <div
+                          class="blog-article-author-image"
+                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+                        >
+                          <span class="text-lg font-bold text-gray-600">
+                            {authorName.charAt(0)}
+                          </span>
+                        </div>
                       )}
                     </div>
-                    <a href={authorHref ?? '#'} class="blog-article-author-name">
-                      {authorName}
-                    </a>
+                    {hasAuthorHref ? (
+                      <a href={authorHref} class="blog-article-author-name">
+                        {authorName}
+                      </a>
+                    ) : (
+                      <span class="blog-article-author-name">{authorName}</span>
+                    )}
                   </div>
                 )}
 

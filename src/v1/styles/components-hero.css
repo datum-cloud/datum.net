@@ -1,4 +1,8 @@
 @layer components {
+  body.mobile-menu-open #hero-header #hero-container {
+    @apply overflow-visible!;
+  }
+
   .hero--main {
     @apply relative flex flex-col justify-center;
 
@@ -52,6 +56,10 @@
         --color-logo-object: var(--color-canyon-clay);
         --color-logo-text: var(--color-midnight-fjord);
       }
+
+      .mobile-menu-button {
+        @apply text-midnight-fjord;
+      }
     }
 
     &.content-alt {
@@ -91,16 +99,11 @@
         --color-logo-object: var(--color-tuscany);
         --color-logo-text: var(--color-midnight-fjord);
       }
+
+      .mobile-menu-button {
+        @apply text-midnight-fjord;
+      }
     }
-  }
-
-  /* Mobile menu lives in footer but trigger is fixed top-right */
-  body:has(.hero--main.light) footer .mobile-menu-button {
-    @apply text-midnight-fjord;
-  }
-
-  [data-theme='light'] footer .mobile-menu-button {
-    @apply text-midnight-fjord;
   }
 
   .hero--main-content {

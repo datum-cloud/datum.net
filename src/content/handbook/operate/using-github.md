@@ -7,7 +7,9 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "How we operate - Datum Handbook"
-  description: ""
+  description: "GitHub is a critical piece of infrastructure and a daiily working environment for everyone at Datum; we organize our work in releases, ehnhancements and issues."
+  og:
+    title: "Using GitHub"
 ---
 
 GitHub is a critical piece of infrastructure and a daily working environment for everyone on our team. We use it in the following ways:

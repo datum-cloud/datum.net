@@ -7,7 +7,9 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "3 Year Picture - Datum Handbook"
-  description: ""
+  description: "Learn about Datum's 3-year vision"
+  og:
+    title: "3 Year Picture"
 ---
 
 **By December 31st, 2028**

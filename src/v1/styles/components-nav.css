@@ -219,8 +219,49 @@
   .mobile-menu-button {
     @apply relative z-90 ml-auto text-white transition-colors duration-200 hover:cursor-pointer hover:text-white/80 md:hidden;
 
-    svg {
+    .mobile-menu-icon {
       @apply h-7.5 w-7.5;
+
+      /* viewBox is 30×30, rendered at 30×30px → 1 SVG unit = 1 CSS px, no ambiguity */
+      .burger-top,
+      .burger-mid,
+      .burger-bot {
+        transition:
+          transform 0.3s ease-in-out,
+          opacity 0.2s ease-in-out;
+      }
+      .burger-top {
+        transform-origin: 15px 7px;
+      }
+      .burger-mid {
+        transform-origin: 15px 15px;
+      }
+      .burger-bot {
+        transform-origin: 15px 23px;
+      }
+    }
+
+    .mobile-menu-icon--open {
+      /* CSS applies right-to-left: rotate in place, then translateY in screen space */
+      /* Top bar: center (15,7) → rotate → still (15,7) → +8px → (15,15) = SVG center */
+      .burger-top {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .burger-mid {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .burger-bot {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .burger-top,
+      .burger-mid,
+      .burger-bot {
+        transition-duration: 0.01ms !important;
+      }
     }
   }
 

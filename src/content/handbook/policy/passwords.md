@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Password Policy & Authentication Standards at Datum"
   description: "How to secure your Datum account. Guidelines for creating strong passwords, using password managers, and enabling Multi-Factor Authentication (MFA)."
+  og:
+    title: "Password policy"
 ---
 
 To avoid potential security incidents, Datum requires employees to follow password requirements.

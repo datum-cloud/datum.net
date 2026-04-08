@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Pricing Tiers & Models - Datum Product Strategy"
   description: "Understanding our billing model. A guide to Datum's pricing tiers, from the free Builder plan to Enterprise interconnection, and the logic behind our rate limits."
+  og:
+    title: "Pricing"
 ---
 
 We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](/pricing/) for the latest official details. 

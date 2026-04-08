@@ -7,7 +7,7 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "Marketing Strategy - Datum Handbook"
-  description: ""
+  description: "Datum is focused on helping alternative cloud providers win with a holistic commitment to building open source and elegant product experiences"
   og:
     title: "Datum's Marketing Strategy"
 ---

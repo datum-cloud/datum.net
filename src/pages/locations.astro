@@ -58,3 +58,51 @@ const jsonLd = {
     <Footer showCTA={false} />
   </section>
 </Layout>
+
+<script>
+  (function initMapTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const el = document.querySelector<HTMLElement>('.locations-map');
+    if (!el) return;
+
+    el.style.opacity = '0';
+
+    const ANGLE = 35;
+
+    let rafId = 0;
+
+    function update() {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      const startY = vh;
+      const endY = (vh - rect.height) / 2;
+      const progress =
+        endY === startY ? 1 : Math.max(0, Math.min(1, (startY - rect.top) / (startY - endY)));
+
+      if (progress >= 1) {
+        el.style.transform = '';
+      } else {
+        const angle = ANGLE * (1 - progress);
+        el.style.transform = `perspective(1400px) rotateX(${angle.toFixed(2)}deg)`;
+      }
+    }
+
+    update();
+    el.style.opacity = '1';
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          update();
+          rafId = 0;
+        });
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update, { passive: true });
+  })();
+</script>

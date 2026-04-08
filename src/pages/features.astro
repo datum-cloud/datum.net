@@ -827,6 +827,8 @@ const jsonLd = {
 
   // Video tilt — scroll-driven perspective reveal
   (function initVideoTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const el = document.querySelector<HTMLElement>('.features-hero-video');
     if (!el) return;
 

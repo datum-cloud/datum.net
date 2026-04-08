@@ -15,10 +15,37 @@ const pins = locations.map((loc, i) => ({
 
 <div
   class="locations-map"
-  x-data="{ activeLocation: null }"
-  x-on:keydown.escape.window="activeLocation = null"
+  x-data={`{
+    activeLocation: null,
+    _idleTimer: null,
+    _restartTimer: null,
+    _running: false,
+    _codes: ${JSON.stringify(pins.map((p) => p.regionCode))},
+    startIdle() {
+      this._running = true;
+      const cycle = () => {
+        if (!this._running) return;
+        const next = this._codes[Math.floor(Math.random() * this._codes.length)];
+        this.activeLocation = next;
+        this._idleTimer = setTimeout(() => {
+          if (!this._running) return;
+          this.activeLocation = null;
+          this._idleTimer = setTimeout(cycle, 700 + Math.random() * 1000);
+        }, 1800 + Math.random() * 2000);
+      };
+      this._idleTimer = setTimeout(cycle, 1200);
+    },
+    stopIdle() {
+      this._running = false;
+      clearTimeout(this._idleTimer);
+      clearTimeout(this._restartTimer);
+      this._restartTimer = setTimeout(() => { this.activeLocation = null; this.startIdle(); }, 5000);
+    }
+  }`}
+  x-init="startIdle()"
+  x-on:keydown.escape.window="stopIdle(); activeLocation = null"
 >
-  <div class="locations-map--container" x-on:click="activeLocation = null">
+  <div class="locations-map--container" x-on:click="stopIdle(); activeLocation = null">
     <div class="locations-map--bg">
       <Image
         src={mapImage}
@@ -35,7 +62,7 @@ const pins = locations.map((loc, i) => ({
         <button
           class="locations-map--pin"
           style={`left: ${pin.x}%; top: ${pin.y}%`}
-          x-on:click.stop={`activeLocation = activeLocation === '${pin.regionCode}' ? null : '${pin.regionCode}'`}
+          x-on:click.stop={`stopIdle(); activeLocation = activeLocation === '${pin.regionCode}' ? null : '${pin.regionCode}'`}
           x-bind:class={`{ 'is-active': activeLocation === '${pin.regionCode}' }`}
           aria-label={`${pin.metro} — ${pin.regionCode}`}
           type="button"

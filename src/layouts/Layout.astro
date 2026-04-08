@@ -317,5 +317,24 @@ const twitterImage =
         }
       })();
     </script>
+    <script>
+      // Section label highlight — fires once per label as it enters the viewport
+      (function initSectionLabels() {
+        const labels = document.querySelectorAll('.section-label, .mission-label');
+        for (const label of Array.from(labels) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                label.classList.add('highlight-animate');
+              }
+            },
+            { threshold: 0.8 }
+          );
+          obs.observe(label);
+        }
+      })();
+    </script>
   </body>
 </html>

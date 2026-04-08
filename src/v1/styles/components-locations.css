@@ -5,6 +5,8 @@
 
   .locations-map {
     @apply relative w-full;
+    transform-origin: center bottom;
+    will-change: transform;
   }
 
   .locations-map--container {

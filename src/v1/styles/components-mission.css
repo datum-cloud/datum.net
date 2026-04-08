@@ -12,10 +12,18 @@
   }
 
   .mission-label {
-    @apply bg-midnight-fjord inline-flex items-center justify-center;
+    @apply inline-flex items-center justify-center;
     @apply px-2 pt-px;
     @apply text-glacier-mist-700 font-mono;
     @apply text-(length:--18px) leading-(--26px);
+    background-image: linear-gradient(var(--color-midnight-fjord), var(--color-midnight-fjord));
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
 
     strong {
       @apply font-bold;

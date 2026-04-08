@@ -132,6 +132,7 @@ export const ARTICLES_QUERY = `
         documentId
         slug
         name
+        isTeam
         avatar {
           url
           alternativeText
@@ -178,6 +179,7 @@ export const ARTICLE_BY_SLUG_QUERY = `
         documentId
         slug
         name
+        isTeam
         avatar {
           url
           alternativeText
@@ -222,6 +224,7 @@ export const ARTICLES_BY_CATEGORY_QUERY = `
         documentId
         slug
         name
+        isTeam
         avatar {
           url
           alternativeText

@@ -21,7 +21,9 @@ const articles = await fetchStrapiArticles();
 const authorNamesWithPosts = new Set(
   articles.map((a) => a.author?.name).filter((n): n is string => Boolean(n))
 );
-const authorsWithPosts = authors.filter((a) => authorNamesWithPosts.has(a.name));
+const authorsWithPosts = authors.filter(
+  (a) => a.isTeam === true && authorNamesWithPosts.has(a.name)
+);
 ---
 
 <Layout title={title} description={description} bodyClass="page-author page-authors" meta={{}}>

@@ -66,38 +66,12 @@ const mainNav = navData.main;
       x-bind:class="{ 'mobile-menu-icon--open': isOpen }"
       fill="none"
       stroke="currentColor"
-      viewBox="0 0 31 32"
+      viewBox="0 0 30 30"
+      aria-hidden="true"
     >
-      <!-- Burger menu icon (closed state) -->
-      <g x-show="!isOpen">
-        <path
-          d="M5.16406 16H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 23.75H20.6641"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 8.25H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </g>
-
-      <!-- Close icon (open state) -->
-      <path
-        x-cloak
-        x-show="isOpen"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2.58333"
-        d="M7.74703 8.25L23.247 23.75M7.74703 23.75L23.247 8.25"></path>
+      <path class="burger-top" d="M4 7h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-mid" d="M4 15h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-bot" d="M4 23h22" stroke-width="2.5" stroke-linecap="round"></path>
     </svg>
   </button>
 

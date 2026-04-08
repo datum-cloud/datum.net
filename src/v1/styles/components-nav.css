@@ -22,7 +22,7 @@
     @apply max-width relative z-80 m-auto flex w-full items-center justify-between py-2.5 md:grid md:grid-cols-12 md:py-6;
 
     .nav-actions {
-      @apply mr-3 ml-auto flex items-center gap-3 justify-self-end md:col-span-3 md:mr-0 md:gap-3.25;
+      @apply mr-10.25 ml-auto flex items-center gap-3 justify-self-end md:col-span-3 md:mr-0 md:gap-3.25;
 
       .btn {
         svg {
@@ -216,11 +216,33 @@
   .mobile-menu-container {
     @apply flex w-8 justify-self-end md:hidden;
   }
+
+  /* Mounted in footer DOM but trigger stays in header viewport */
+  footer .mobile-menu-container {
+    @apply fixed right-7 z-90 justify-center md:hidden;
+    top: calc(1.625rem + var(--announcement-offset, 0px));
+  }
+
+  footer .mobile-menu-button {
+    @apply ml-0;
+  }
+
   .mobile-menu-button {
     @apply relative z-90 ml-auto text-white transition-colors duration-200 hover:cursor-pointer hover:text-white/80 md:hidden;
 
     svg {
       @apply h-7.5 w-7.5;
+    }
+
+    .mobile-menu-icon-layer {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-menu-icon-layer {
+        transition-duration: 0.01ms !important;
+      }
     }
   }
 

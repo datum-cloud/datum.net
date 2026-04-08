@@ -29,17 +29,40 @@ if (!show) {
   x-data={`{
     announcementId: '${announcementId}',
     isHidden: false,
-    init() {
-      // Check localStorage and set initial state
-      if (typeof window !== 'undefined') {
-        this.isHidden = localStorage.getItem('announcement-hidden-' + this.announcementId) === 'true';
+    _announcementResizeObserver: null,
+    syncAnnouncementOffset() {
+      const root = document.documentElement;
+      if (this.isHidden) {
+        root.style.setProperty('--announcement-offset', '0px');
+        return;
       }
+      const el = this.$el;
+      const mb = parseFloat(getComputedStyle(el).marginBottom) || 0;
+      const h = el.offsetHeight + mb;
+      root.style.setProperty('--announcement-offset', h + 'px');
+    },
+    init() {
+      if (typeof window !== 'undefined') {
+        this.isHidden =
+          localStorage.getItem('announcement-hidden-' + this.announcementId) === 'true';
+      }
+      this.$nextTick(() => {
+        this.syncAnnouncementOffset();
+        if (this.isHidden || typeof ResizeObserver === 'undefined') return;
+        this._announcementResizeObserver = new ResizeObserver(() => this.syncAnnouncementOffset());
+        this._announcementResizeObserver.observe(this.$el);
+      });
     },
     closeAnnouncement() {
       this.isHidden = true;
       if (typeof window !== 'undefined') {
         localStorage.setItem('announcement-hidden-' + this.announcementId, 'true');
       }
+      if (this._announcementResizeObserver) {
+        this._announcementResizeObserver.disconnect();
+        this._announcementResizeObserver = null;
+      }
+      this.syncAnnouncementOffset();
     }
   }`}
   x-cloak

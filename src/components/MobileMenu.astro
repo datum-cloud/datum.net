@@ -14,6 +14,7 @@ const mainNav = navData.main;
 
 <div
   class="mobile-menu-container"
+  style="position: fixed; top: calc(1.625rem + var(--announcement-offset, 0px)); right: 1.75rem; z-index: 90;"
   x-data="{
     isOpen: false,
     toggleMenu() {
@@ -55,9 +56,24 @@ const mainNav = navData.main;
     aria-label="Toggle mobile menu"
     x-bind:aria-expanded="isOpen"
   >
-    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 31 32">
-      <!-- Burger menu icon (closed state) -->
-      <g x-show="!isOpen">
+    <svg
+      class="mobile-menu-button-svg h-8 w-8 overflow-visible"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 31 32"
+      aria-hidden="true"
+    >
+      <!-- Burger (menu closed) — fade, scale + rotation -->
+      <g
+        class="mobile-menu-icon-layer"
+        x-show="!isOpen"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-90 rotate-90"
+        x-transition:enter-end="opacity-100 scale-100 rotate-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100 rotate-0"
+        x-transition:leave-end="opacity-0 scale-90 -rotate-90"
+      >
         <path
           d="M5.16406 16H25.8307"
           stroke="currentColor"
@@ -78,14 +94,24 @@ const mainNav = navData.main;
           stroke-linejoin="round"></path>
       </g>
 
-      <!-- Close icon (open state) -->
-      <path
+      <!-- Close (menu open) -->
+      <g
+        class="mobile-menu-icon-layer"
         x-cloak
         x-show="isOpen"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2.58333"
-        d="M7.74703 8.25L23.247 23.75M7.74703 23.75L23.247 8.25"></path>
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-90 rotate-90"
+        x-transition:enter-end="opacity-100 scale-100 rotate-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100 rotate-0"
+        x-transition:leave-end="opacity-0 scale-90 -rotate-90"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.58333"
+          d="M7.74703 8.25L23.247 23.75M7.74703 23.75L23.247 8.25"></path>
+      </g>
     </svg>
   </button>
 

@@ -32,9 +32,5 @@ const description = 'The page you are looking for does not exist.';
     <Footer showCTA={false} showBackground={false} />
   </section>
 
-  {
-    import.meta.env.MODE === 'production' && (
-      <script>import '/src/v1/scripts/error-tracker.js';</script>
-    )
-  }
+  {import.meta.env.MODE === 'production' && <script>import '@v1/scripts/error-tracker.js';</script>}
 </Layout>

@@ -7,7 +7,9 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "1 Year Plan - Datum Handbook"
-  description: ""
+  description: "Learn about Datum's 1-year plan broken down by measurable revenue, organizations on the Datum Cloud platform, Builders on the Datum Cloud Platform and active ecosystem connections."
+  og:
+    title: "1 Year Plan"
 ---
 
 Each year we focus on achieving 3-7 key goals aligned with our company vision, including specific measurable targets for each goal. At such an early stage, this is more art than science, but it’s a very useful exercise to build as a team.

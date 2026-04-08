@@ -7,7 +7,9 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Infrastructure - Datum Handbook"
-  description: ""
+  description: "Datum is available in 17+ global locations. This article is focused on how we think about our global infrastructure footprint."
+  og:
+    title: "Infrastructure"
 ---
 
 Right now we’re deploying in what we call the “football cities of the internet” — the two dozen or so locations where the vast majority of internet traffic terminates, where private networks (such as financials, entertainment, enterprises) exchange traffic, and where you get onramp or offramp to the major cloud.

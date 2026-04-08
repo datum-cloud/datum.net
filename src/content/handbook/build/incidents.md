@@ -7,7 +7,9 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Incident Post-Mortems & RCAs at Datum - Datum Handbook"
-  description: "We learn and build in public. Browse the technical archive of Datum's incident post-mortems and Root Cause Analyses (RCAs) to understand how we improve system reliability."
+  description: "How we define incidents, respond to incidents to mitigate customer impact through following our incident reporting procedure to problem solve and prevent reoccuring incidents"
+  og:
+    title: "Incidents"
 ---
 
 We define incidents as unplanned events which require intervention of humans to reduce or eliminate a negative impact to customers, internal or external. Those impacts can include:

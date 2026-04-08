@@ -7,7 +7,9 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Our Business Model - Datum Handbook"
-  description: "Our approach to building a sustainable open source company. Learn about Datum's commercial strategy, AGPLv3 licensing, and how we prioritize value for builders."
+  description: "Datum's economic model includes consumption-based usage of our network cloud infrastructure; we've designed our business model to align with our customer's success."
+  og:
+    title: "How we make money"
 ---
 
 At the highest level, Datum’s economic model includes consumption-based usage of our network cloud infrastructure; orchestrating interactions between cloud, SaaS, and enterprise participants in virtual “meet me” rooms; and managing virtual global backbones for scaled provider and SaaS customers.

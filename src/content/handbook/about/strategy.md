@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Datum Corporate Strategy - Open Source & Neutrality"
   description: "Read about Datum's strategic vision. We combine a commercial open source (COSS) model with a neutral, federated architecture to empower the next generation of clouds."
+  og:
+    title: "Our strategy"
 ---
 
 If you’ve read any business books over the last twenty years, you know about big, hairy, audacious goals (BHAGs). Ours is to be the most trusted way for AI & digital ecosystems to interact. We think we’ll need millions, or even billions, of active connections to prove it.

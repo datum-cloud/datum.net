@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Access Control Policy - Datum Security Handbook"
   description: "Read Datum's Access Control Policy. Definitions for principle of least privilege, user access reviews, and secure authentication standards for our platform."
+  og:
+    title: "Access Control Policy"
 ---
 
 Datum limits access control based on job requirements, following the principle of least privilege.

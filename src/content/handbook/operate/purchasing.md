@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Purchasing - Datum Handbook"
   description: "Our philosophy on company spending. We trust you to spend responsibly. Read the Datum purchasing guidelines for travel, procurement, and reimbursements."
+  og:
+    title: "Spending money"
 ---
 
 Part of your job as an employee of Datum is to help us responsibly spend money. 

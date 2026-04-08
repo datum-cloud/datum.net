@@ -28,6 +28,9 @@ const author =
 if (!author) {
   return Astro.redirect('/404');
 }
+if (author.isTeam !== true) {
+  return Astro.redirect('/404');
+}
 
 const allArticles = await fetchStrapiArticles();
 const authorArticles = allArticles.filter((a) => a.author?.name === author.name);

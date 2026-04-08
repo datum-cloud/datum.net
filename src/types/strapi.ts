@@ -26,6 +26,7 @@ export interface StrapiAuthor {
   documentId?: string;
   slug?: string;
   name: string;
+  isTeam?: boolean;
   avatar?: StrapiImage;
 }
 

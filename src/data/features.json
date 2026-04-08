@@ -21,8 +21,8 @@
   },
   {
     "icon": "shield-check",
-    "title": "RBAC",
-    "description": "Enterprise-grade role-based permissions management system."
+    "title": "Fine Grained Permissions",
+    "description": "Manage groups and fine-grained IAM role assignments."
   },
   {
     "icon": "log-in",
@@ -52,7 +52,7 @@
   {
     "icon": "datum",
     "title": "Developer Tools",
-    "description": "Nix, macOS, Windows, and Linux apps for exposing localhost to the internet."
+    "description": "macOS, Windows, and Linux apps for exposing localhost to the internet."
   },
   {
     "icon": "plus",

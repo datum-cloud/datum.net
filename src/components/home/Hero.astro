@@ -134,21 +134,6 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
   const imgOn = document.getElementById('hero-device-on') as HTMLElement | null;
   const stars = document.getElementById('hero-stars') as HTMLElement | null;
   const header = document.getElementById('hero-header') as HTMLElement | null;
-  const glowSpan = header?.querySelector('h1 span') as HTMLElement | null;
-
-  // aurora-moss = #e6f59f; scale all layers by alpha
-  function setGlow(alpha: number) {
-    if (!glowSpan) return;
-    if (alpha <= 0) {
-      glowSpan.style.textShadow = 'none';
-      return;
-    }
-    const a = Math.min(1, alpha);
-    glowSpan.style.textShadow =
-      `0 0 15px rgba(230,245,159,${(0.7 * a).toFixed(3)}),` +
-      `0 0 40px rgba(230,245,159,${(0.4 * a).toFixed(3)}),` +
-      `0 0 80px rgba(230,245,159,${(0.2 * a).toFixed(3)})`;
-  }
 
   if (!imgOff || !imgOn || !stars) throw new Error('Hero: missing elements');
 
@@ -192,22 +177,9 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     stars!.style.opacity = '0';
     imgOn!.style.opacity = '0';
 
-    // Glow fades with device — transition to zero-alpha (not 'none') so CSS interpolates
-    if (glowSpan) {
-      glowSpan.style.transition = `text-shadow ${FADE_OUT}ms ease-in-out`;
-      glowSpan.style.textShadow =
-        '0 0 15px rgba(230,245,159,0),' +
-        '0 0 40px rgba(230,245,159,0),' +
-        '0 0 80px rgba(230,245,159,0)';
-    }
-
     setTimeout(() => {
       stars!.style.transition = '';
       imgOn!.style.transition = '';
-      if (glowSpan) {
-        glowSpan.style.transition = '';
-        glowSpan.style.textShadow = 'none';
-      }
       // Reset position only after stars are fully invisible — no visible jolt
       stars!.style.transform = 'translateX(0px) translateY(0px)';
       // Restart full cycle from Phase 1
@@ -235,10 +207,6 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     let dEpisodeActive = false;
     let dEpisodeStart = 0;
     let dEpisodeDur = 0;
-
-    // Glow breath — slow sine pulse when device is stable
-    const BREATH_PERIOD = 3200; // ms per breath cycle
-    let glowCurrent = 1.0; // tracked in JS to smooth transitions
 
     // Schedule restart after RESTART_DELAY
     setTimeout(() => {
@@ -275,7 +243,6 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 
       // ── Stars opacity — synced to device episode when active ─────────────
       let sTargetOpacity: number;
-      let glowTarget: number;
       if (dEpisodeActive) {
         const t = ts - dEpisodeStart;
         const sec = t / 1000;
@@ -287,9 +254,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
             Math.sin(sec * 38.7) * 0.3 + Math.sin(sec * 17.1) * 0.25 + Math.sin(sec * 5.3) * 0.2;
           const dAlpha = Math.max(0.15, 0.75 + noise);
           imgOn!.style.opacity = String(dAlpha);
-          // Stars mirror the same flicker value
           sTargetOpacity = starsOpacity * dAlpha;
-          glowTarget = dAlpha;
         } else {
           // Recover — snap device back to stable
           dEpisodeActive = false;
@@ -299,7 +264,6 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
             imgOn!.style.transition = '';
           }, 200);
           sTargetOpacity = starsOpacity;
-          glowTarget = 1;
         }
       } else {
         // Idle breathing flicker for stars
@@ -309,14 +273,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
           sFlickerTimer = 500 + Math.random() * 1800;
         }
         sTargetOpacity = starsOpacity * sFlickerTarget;
-        // Glow breathes slowly via sine wave: 0.55–1.0
-        glowTarget = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin((elapsed / BREATH_PERIOD) * Math.PI * 2));
       }
-
-      // Smooth glow transitions (episode snaps fast, breath eases slowly)
-      const glowLerp = dEpisodeActive ? 0.25 : 0.03;
-      glowCurrent = glowCurrent + (glowTarget - glowCurrent) * glowLerp;
-      setGlow(glowCurrent);
 
       sCurrentOpacity = sCurrentOpacity + (sTargetOpacity - sCurrentOpacity) * 0.04;
 
@@ -349,14 +306,12 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
       const alpha = Math.max(0, Math.min(1, Math.pow(pct, 0.65) * 0.8 + noise * pct * 0.55));
 
       imgOn!.style.opacity = String(alpha);
-      setGlow(alpha);
 
       if (t < FLICKER_DUR) {
         requestAnimationFrame(flicker);
       } else {
         // Snap to stable, then start ambient loop
         imgOn!.style.opacity = '1';
-        setGlow(1);
         setTimeout(startAmbient, 200);
       }
     }

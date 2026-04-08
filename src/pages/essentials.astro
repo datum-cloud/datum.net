@@ -19,7 +19,7 @@ const faqs = (await getCollection('faq'))
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const theTitle = 'The bare <span>necessities</span>';
+const theTitle = 'Batteries <span>included</span>';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -27,9 +27,8 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': 'https://www.datum.net/essentials/',
       url: 'https://www.datum.net/essentials/',
-      name: 'Datum Essentials – Enterprise-grade networking primitives',
-      description:
-        'We like to make our cloud enjoyable to use, andgenuinely useful with a handful of essential features.',
+      name: 'Batteries included – Enterprise-grade networking primitives',
+      description: 'We think core cloud features are essential, not optional.',
       isPartOf: { '@id': 'https://www.datum.net/#organization' },
       inLanguage: 'en-US',
       dateModified: '2026-03-27',

@@ -198,7 +198,7 @@ const PROXY_ROUTES = [
   { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
   // Core docs path
   { prefix: '/docs', target: MINTLIFY_TARGET, cache: false },
-  { prefix: '/docs/*', target: MINTLIFY_TARGET, cache: false },
+  // { prefix: '/docs/*', target: MINTLIFY_TARGET, cache: false },
   // Mintlify internal routes
   { prefix: '/_mintlify', target: MINTLIFY_TARGET, cache: false },
   // AI / agent discovery files

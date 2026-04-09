@@ -189,7 +189,7 @@ const REDIRECTS = {
   '/legal/security/': { destination: '/docs/overview/support/', status: 302 },
 };
 
-const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.app';
+const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
 
 // Reverse proxy routes: requests matching prefix are forwarded to the target host.
 // Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy
@@ -198,13 +198,13 @@ const PROXY_ROUTES = [
   { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
   // Core docs path
   { prefix: '/docs', target: MINTLIFY_TARGET, cache: false },
-  // { prefix: '/docs/*', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/docs/*', target: MINTLIFY_TARGET, cache: false },
   // Mintlify internal routes
   { prefix: '/_mintlify', target: MINTLIFY_TARGET, cache: false },
   // AI / agent discovery files
-  { prefix: '/.well-known/vercel', target: MINTLIFY_TARGET, cache: false },
-  { prefix: '/.well-known/skills', target: MINTLIFY_TARGET, cache: false },
-  { prefix: '/.well-known/agent-skills', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/vercel/*', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/skills/*', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/agent-skills/*', target: MINTLIFY_TARGET, cache: false },
   // LLM context files
   // { prefix: '/llms.txt', target: MINTLIFY_TARGET, cache: false },
   // { prefix: '/llms-full.txt', target: MINTLIFY_TARGET, cache: false },

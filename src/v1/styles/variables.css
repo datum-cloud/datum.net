@@ -1,7 +1,4 @@
 :root {
-  /* Pushed down by Announcement.astro when the banner is visible (pixel height via JS) */
-  --announcement-offset: 0px;
-
   /* breakpoints */
   --breakpoint-xs: 30rem;
   --breakpoint-sm: 40rem;

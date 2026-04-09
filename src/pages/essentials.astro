@@ -19,7 +19,7 @@ const faqs = (await getCollection('faq'))
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const theTitle = 'The bare <span>necessities</span>';
+const theTitle = 'Batteries <span>included</span>';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -27,9 +27,8 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': 'https://www.datum.net/essentials/',
       url: 'https://www.datum.net/essentials/',
-      name: 'Datum Essentials – Enterprise-grade networking primitives',
-      description:
-        'We like to make our cloud enjoyable to use, andgenuinely useful with a handful of essential features.',
+      name: 'Batteries included – Enterprise-grade networking primitives',
+      description: 'We think core cloud features are essential, not optional.',
       isPartOf: { '@id': 'https://www.datum.net/#organization' },
       inLanguage: 'en-US',
       dateModified: '2026-03-27',
@@ -154,11 +153,23 @@ const jsonLd = {
         );
       }
 
+      // Fire immediately if the container is already (partially) visible on load.
+      const rect = container.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        highlight();
+      }
+
+      // On mobile the grid stacks into a single column and can exceed the viewport
+      // height by 3×+, making a 0.4 threshold geometrically unreachable. Clamp it
+      // to 90% of the max visible fraction so it always fires.
+      const maxVisible = window.innerHeight / rect.height;
+      const effectiveThreshold = Math.min(threshold, maxVisible * 0.9);
+
       new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) highlight();
         },
-        { threshold }
+        { threshold: effectiveThreshold }
       ).observe(container);
 
       new IntersectionObserver(

@@ -14,7 +14,6 @@ const mainNav = navData.main;
 
 <div
   class="mobile-menu-container"
-  style="position: fixed; top: calc(1.625rem + var(--announcement-offset, 0px)); right: 1.75rem; z-index: 90;"
   x-data="{
     isOpen: false,
     toggleMenu() {
@@ -23,14 +22,20 @@ const mainNav = navData.main;
         document.body.style.overflow = 'hidden';
         document.body.classList.add('mobile-menu-open');
       } else {
-        document.body.style.overflow = '';
-        document.body.classList.remove('mobile-menu-open');
+        this._closeWithDelay();
       }
     },
     closeMenu() {
       this.isOpen = false;
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-menu-open');
+      this._closeWithDelay();
+    },
+    _closeWithDelay() {
+      setTimeout(() => {
+        if (!this.isOpen) {
+          document.body.style.overflow = '';
+          document.body.classList.remove('mobile-menu-open');
+        }
+      }, 300);
     }
   }"
   x-init="
@@ -57,61 +62,16 @@ const mainNav = navData.main;
     x-bind:aria-expanded="isOpen"
   >
     <svg
-      class="mobile-menu-button-svg h-8 w-8 overflow-visible"
+      class="mobile-menu-icon"
+      x-bind:class="{ 'mobile-menu-icon--open': isOpen }"
       fill="none"
       stroke="currentColor"
-      viewBox="0 0 31 32"
+      viewBox="0 0 30 30"
       aria-hidden="true"
     >
-      <!-- Burger (menu closed) — fade, scale + rotation -->
-      <g
-        class="mobile-menu-icon-layer"
-        x-show="!isOpen"
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-90 rotate-90"
-        x-transition:enter-end="opacity-100 scale-100 rotate-0"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 scale-100 rotate-0"
-        x-transition:leave-end="opacity-0 scale-90 -rotate-90"
-      >
-        <path
-          d="M5.16406 16H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 23.75H20.6641"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 8.25H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </g>
-
-      <!-- Close (menu open) -->
-      <g
-        class="mobile-menu-icon-layer"
-        x-cloak
-        x-show="isOpen"
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-90 rotate-90"
-        x-transition:enter-end="opacity-100 scale-100 rotate-0"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 scale-100 rotate-0"
-        x-transition:leave-end="opacity-0 scale-90 -rotate-90"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2.58333"
-          d="M7.74703 8.25L23.247 23.75M7.74703 23.75L23.247 8.25"></path>
-      </g>
+      <path class="burger-top" d="M4 7h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-mid" d="M4 15h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-bot" d="M4 23h22" stroke-width="2.5" stroke-linecap="round"></path>
     </svg>
   </button>
 

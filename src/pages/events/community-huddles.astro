@@ -19,7 +19,7 @@ const description = fm.description;
 
 const { upcoming, past } = await fetchEvents();
 
-const communityHuddlesUpcoming = upcoming.filter(isEventCommunityHuddle);
+const communityHuddlesUpcoming = upcoming.filter(isEventCommunityHuddle).slice(0, 1);
 const communityHuddlesPast = past.filter(isEventCommunityHuddle);
 ---
 

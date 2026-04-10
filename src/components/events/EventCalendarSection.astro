@@ -18,10 +18,10 @@ interface Props {
   past: ContentEvent[];
 }
 
-const { upcoming, past } = Astro.props as Props;
+const { upcoming } = Astro.props as Props;
 
 // All events combined for the calendar
-const allEvents = [...upcoming, ...past];
+const allEvents = [...upcoming];
 
 // Serialize events to JSON for Alpine.js (only fields we need)
 const eventsData = allEvents.map((e) => {

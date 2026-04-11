@@ -1,0 +1,39 @@
+---
+// src/components/blog/BlogStrapiSkeleton.astro
+// Skeleton loading state for Strapi blog
+---
+
+<div class="blog-strapi-skeleton">
+  <!-- Featured Posts Skeleton (3 items) -->
+  <div class="featured-posts-section">
+    {
+      [1, 2, 3].map((i) => (
+        <div class="blog-featured skeleton-item" data-index={i}>
+          <div class="blog-featured--image">
+            <div class="skeleton-box skeleton-image" />
+          </div>
+          <div class="blog-featured--text">
+            <div class="skeleton-box skeleton-title" />
+            <div class="skeleton-box skeleton-excerpt" />
+            <div class="skeleton-box skeleton-excerpt--short" />
+            <div class="skeleton-box skeleton-date" />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Blog List Skeleton (4 items) -->
+  <div class="blog-list">
+    {
+      [1, 2, 3, 4].map((i) => (
+        <div class="entry-list-item skeleton-item" data-index={i}>
+          <div class="entry-list-item--wrapper">
+            <div class="skeleton-box skeleton-list-title" />
+            <div class="skeleton-box skeleton-list-date" />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>

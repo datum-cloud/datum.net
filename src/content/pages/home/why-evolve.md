@@ -13,8 +13,8 @@ images:
     alt: Perplexity
   - img: images/svgs/Snowflakes.svg
     alt: Snowflakes
-  - img: images/svgs/Antrhopic.svg
-    alt: Antrhopic
+  - img: images/svgs/Anthropic.svg
+    alt: Anthropic
   - img: images/svgs/Cockroach.svg
     alt: Cockroach
   - img: images/svgs/Grafana.svg

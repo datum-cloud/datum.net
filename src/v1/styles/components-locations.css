@@ -1,0 +1,145 @@
+@layer components {
+  .locations-map--section {
+    @apply relative w-full;
+  }
+
+  .locations-map {
+    @apply relative w-full;
+    transform-origin: center bottom;
+    will-change: transform;
+  }
+
+  .locations-map--container {
+    @apply relative mx-auto;
+    aspect-ratio: 1054 / 600;
+  }
+
+  .locations-map--bg {
+    @apply h-full w-full select-none;
+
+    img {
+      @apply h-full w-full object-contain;
+    }
+  }
+
+  .locations-map--description {
+    @apply border-midnight-fjord max-w-full shrink-0 border-l pl-7 lg:max-w-70;
+
+    p {
+      @apply datum-text-base text-midnight-fjord/80 leading-relaxed;
+
+      strong {
+        @apply text-midnight-fjord font-semibold;
+      }
+    }
+  }
+
+  .locations-map--pin {
+    @apply absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0;
+
+    &:focus-visible {
+      @apply outline-none;
+
+      .locations-map--pin-dot {
+        @apply ring-aurora-moss ring-2 ring-offset-2;
+      }
+    }
+  }
+
+  .locations-map--pin-inner {
+    @apply relative flex h-3.75 w-3.75 items-center justify-center;
+  }
+
+  .locations-map--pin-ring {
+    @apply absolute inset-0 rounded-full opacity-40 transition-all duration-300;
+    @apply bg-[#B3D56F];
+    animation: pin-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pin-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.25);
+    }
+  }
+
+  .locations-map--pin-dot {
+    @apply relative h-1.75 w-1.75 rounded-full transition-all duration-300;
+    @apply bg-pine-forge;
+  }
+
+  .locations-map--pin:hover {
+    .locations-map--pin-ring {
+      @apply scale-130 opacity-100;
+      animation: none;
+    }
+
+    .locations-map--pin-dot {
+      @apply scale-110;
+    }
+  }
+
+  .locations-map--pin.is-active {
+    @apply z-20;
+
+    .locations-map--pin-ring {
+      @apply scale-180 opacity-100;
+      animation: none;
+    }
+
+    .locations-map--pin-dot {
+      @apply scale-125;
+    }
+  }
+
+  .locations-map--tooltip {
+    @apply absolute bottom-2.5 left-1/2 z-30 flex -translate-x-4 flex-col items-start;
+  }
+
+  .locations-map--tooltip-card {
+    @apply text-midnight-fjord border-midnight-fjord font-dejavu flex flex-col gap-2 border px-4 py-3 whitespace-nowrap;
+    @apply bg-[#b3d56f] shadow-[0_0_14px_0_#b3d56f];
+  }
+
+  .locations-map--tooltip-group {
+    @apply flex flex-col text-left;
+    @apply [&_span]:text-left;
+  }
+
+  .locations-map--tooltip-label {
+    @apply text-10 text-midnight-fjord/60 block leading-[18px];
+  }
+
+  .locations-map--tooltip-value {
+    @apply block text-[12px] leading-[18px] font-bold;
+  }
+
+  .locations-map--tooltip-line {
+    @apply bg-midnight-fjord ml-4 h-7 w-px;
+  }
+
+  .locations-list {
+    @apply grid grid-cols-2 gap-8 pt-10 pb-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
+  }
+
+  .locations-list--group {
+    @apply flex flex-col;
+  }
+
+  .locations-list--header {
+    @apply datum-text-base text-midnight-fjord pb-2.5 font-semibold;
+  }
+
+  .locations-list--items {
+    @apply border-midnight-fjord flex flex-col border-l;
+  }
+
+  .locations-list--item {
+    @apply datum-text-base text-midnight-fjord/80 py-1 pl-5;
+  }
+}

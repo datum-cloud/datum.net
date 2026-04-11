@@ -1,0 +1,123 @@
+---
+// src/components/locations/LocationsList.astro
+import locations from '@data/locations.json';
+
+const groupLabels: Record<string, string> = {
+  NA: 'North America (NA)',
+  LATAM: 'Latin America (LATAM)',
+  EU: 'Europe (EU)',
+  MEA: 'Middle East & Africa (MEA)',
+  APAC: 'Asia Pacific (APAC)',
+};
+
+const groupOrder = ['NA', 'LATAM', 'EU', 'MEA', 'APAC'];
+
+const grouped = groupOrder.map((key) => ({
+  key,
+  label: groupLabels[key],
+  items: locations
+    .filter((loc) => loc.group === key)
+    .sort((a, b) => a.metro.localeCompare(b.metro)),
+}));
+---
+
+<div class="locations-list">
+  {
+    grouped.map((group) => (
+      <div class="locations-list--group">
+        <h3 class="locations-list--header">{group.label}</h3>
+        <div class="locations-list--items">
+          {group.items.map((loc) => (
+            <span class="locations-list--item">{loc.metro}</span>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  (function initSplitFlap() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
+    const SCRAMBLE_MS = 1100;
+    const STAGGER_MS = 120;
+
+    function randomChar(ch: string) {
+      const pool = ch === ch.toUpperCase() ? UPPERCASE : LOWERCASE;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function scrambleEl(el: HTMLElement) {
+      const target = el.textContent ?? '';
+
+      // Prevent layout jank from variable-width scrambled chars
+      const rect = el.getBoundingClientRect();
+      el.style.display = 'inline-block';
+      el.style.width = `${rect.width}px`;
+      el.style.minHeight = `${rect.height}px`;
+      el.style.whiteSpace = 'nowrap';
+      el.style.overflow = 'hidden';
+
+      const start = performance.now();
+
+      function tick(now: number) {
+        const elapsed = now - start;
+        let result = '';
+        let allDone = true;
+
+        for (let i = 0; i < target.length; i++) {
+          const ch = target[i];
+          if (ch === ' ' || ch === ',') {
+            result += ch;
+            continue;
+          }
+          if (elapsed >= SCRAMBLE_MS + i * STAGGER_MS) {
+            result += ch;
+          } else {
+            allDone = false;
+            result += randomChar(ch);
+          }
+        }
+
+        el.textContent = result;
+        if (allDone) {
+          el.textContent = target;
+          el.style.display = '';
+          el.style.width = '';
+          el.style.minHeight = '';
+          el.style.whiteSpace = '';
+          el.style.overflow = '';
+          return;
+        }
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    function triggerGroup(group: Element) {
+      const items = Array.from(group.querySelectorAll<HTMLElement>('.locations-list--item'));
+      items.forEach((item, i) => {
+        setTimeout(() => scrambleEl(item), i * 80);
+      });
+    }
+
+    document.querySelectorAll('.locations-list--group').forEach((group) => {
+      let done = false;
+      const obs = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !done) {
+            done = true;
+            obs.disconnect();
+            triggerGroup(group);
+          }
+        },
+        { threshold: 0.3 }
+      );
+      obs.observe(group);
+    });
+  })();
+</script>

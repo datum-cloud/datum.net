@@ -1,0 +1,52 @@
+---
+// src/components/roadmap/RoadmapStrapiSkeleton.astro
+// Skeleton loading state for Strapi roadmap
+---
+
+<div class="roadmap-strapi-skeleton">
+  <!-- Upcoming Section Skeleton -->
+  <section class="roadmap-section">
+    <div class="skeleton-box skeleton-section-title"></div>
+    <div class="roadmap-table">
+      {
+        [1, 2].map((i) => (
+          <article class="roadmap-row skeleton-item" data-index={i}>
+            <div class="roadmap-month roadmap-month--upcoming">
+              <div class="skeleton-box skeleton-month" />
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-content--text">
+                <div class="skeleton-box skeleton-title" />
+                <div class="skeleton-box skeleton-description" />
+              </div>
+              <div class="skeleton-box skeleton-link" />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Previous Section Skeleton -->
+  <section class="roadmap-section">
+    <div class="skeleton-box skeleton-section-title"></div>
+    <div class="roadmap-table">
+      {
+        [4, 5, 6].map((i) => (
+          <article class="roadmap-row skeleton-item" data-index={i}>
+            <div class="roadmap-month roadmap-month--previous">
+              <div class="skeleton-box skeleton-month" />
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-content--text">
+                <div class="skeleton-box skeleton-title" />
+                <div class="skeleton-box skeleton-description" />
+              </div>
+              <div class="skeleton-box skeleton-link" />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</div>

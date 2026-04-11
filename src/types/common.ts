@@ -12,6 +12,7 @@ export interface LayoutProps {
   fluid?: boolean;
   dataTheme: string;
   bodyClass?: string;
+  jsonLd?: Record<string, unknown>;
   meta?: {
     title?: string;
     description?: string;
@@ -168,6 +169,20 @@ export interface AnnouncementProps {
     name: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
   };
+}
+
+export interface SecondaryTabNavItem {
+  label: string;
+  href: string;
+  /** When true, active only on this path (normalized), not on deeper URL segments */
+  exact?: boolean;
+}
+
+export interface SecondaryTabNavProps {
+  items: SecondaryTabNavItem[];
+  ariaLabel: string;
+  mobileLabel: string;
+  idPrefix?: string;
 }
 
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

@@ -1,0 +1,41 @@
+---
+import '@v1/styles/page-changelog.css';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Card from '@components/changelog/Card.astro';
+import OpenNetwork from '@components/GlobalSection.astro';
+import Skeleton from '@components/changelog/Skeleton.astro';
+
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('changelog', 'index');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Changelog';
+const description = fm.description ? fm.description : '';
+
+// const subtitle = fm.subtitle ? fm.subtitle : 'Changelog';
+// const icon = 'list-restart';
+---
+
+<Layout title={title} description={description} bodyClass="page-changelog" meta={meta}>
+  <section class="datum-container">
+    <Hero class="light" title={title} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 light overflow-clip pt-0">
+      <div class="changelog-container">
+        <Card server:defer>
+          <Skeleton slot="fallback" />
+        </Card>
+      </div>
+    </div>
+
+    <OpenNetwork />
+
+    <Footer />
+  </section>
+</Layout>

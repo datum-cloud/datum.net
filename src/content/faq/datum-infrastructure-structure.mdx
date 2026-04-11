@@ -1,0 +1,14 @@
+---
+question: "How is Datum's infrastructure structured?"
+order: 7
+category: "features"
+---
+
+Datum deploys infrastructure in the top internet aggregation points globally. These points of presence (PoPs) are packaged into Regions and Availability Zones (AZs). Each Region represents a specific geographic and network boundary, while each AZ provides independent capacity within that Region. Similar to most public clouds, Datum uses a country-anchored naming format with the following elements:
+
+| Field | Description |
+| :---- | :---- |
+| Geography | Two-letter ISO country code (example: US, DE, IN) |
+| Cardinal Direction | Directional indicator within the country: north, south, east, west, or central. |
+| Number | Region index within that location. |
+| Count | Availability Zone identifier: a, b, c, etc. |

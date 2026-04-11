@@ -1,0 +1,59 @@
+---
+// src/components/events/EventPeople.astro
+// People rows for event series cards (avatar, name, optional title)
+
+import { Image } from 'astro:assets';
+import type { EventGuest, EventHost } from '@libs/events';
+
+export interface EventPeopleProps {
+  people: (EventHost | EventGuest)[];
+  sectionLabel: string;
+  headingLevel?: 'h4' | 'h5';
+}
+
+const { people, sectionLabel, headingLevel = 'h4' } = Astro.props as EventPeopleProps;
+---
+
+{
+  people.length > 0 && (
+    <div class="event-series-card__section">
+      {headingLevel === 'h5' ? (
+        <h5 class="event-series-card__section-label">{sectionLabel}</h5>
+      ) : (
+        <h4 class="event-series-card__section-label">{sectionLabel}</h4>
+      )}
+      <div class="event-series-card__speakers">
+        {people.map((person) => {
+          const subtitle = 'title' in person ? person.title?.trim() : '';
+          return (
+            <div class="event-series-card__speaker">
+              {person.avatarImage ? (
+                <Image
+                  src={person.avatarImage}
+                  alt={person.name}
+                  width={48}
+                  height={48}
+                  class="event-series-card__speaker-avatar"
+                  loading="lazy"
+                />
+              ) : person.avatarUrl?.trim() ? (
+                <img
+                  src={person.avatarUrl.trim()}
+                  alt={person.name}
+                  width={48}
+                  height={48}
+                  class="event-series-card__speaker-avatar"
+                  loading="lazy"
+                />
+              ) : null}
+              <div>
+                <p class="event-series-card__speaker-name">{person.name}</p>
+                {subtitle ? <p class="event-series-card__speaker-title">{subtitle}</p> : null}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )
+}

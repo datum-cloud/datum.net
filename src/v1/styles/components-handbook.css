@@ -1,9 +1,5 @@
 /* Handbook Article Styles */
 @layer components {
-  /* Mobile menu toggle styles */
-  body.handbook-menu-open {
-    @apply overflow-hidden;
-  }
   .handbook-container {
     @apply relative flex w-full flex-col items-stretch md:flex-row;
   }
@@ -17,12 +13,11 @@
   .handbook-content {
     @apply flex max-w-none grow flex-col;
 
-    @apply py-9 md:py-10 lg:py-11 xl:py-12;
-    @apply px-0 md:px-5 lg:px-10 xl:px-14;
+    @apply p-9 pr-0 pl-0 md:p-12 md:pr-10 md:pl-10 lg:p-16 xl:p-20;
   }
 
   .article-header {
-    @apply mt-4 mb-3.5 md:mt-8 md:mb-4 lg:mt-10 lg:mb-5 xl:mt-12 xl:mb-6;
+    @apply mb-3.5 md:mb-4 lg:mb-5 xl:mb-6;
   }
 
   .article-title {
@@ -32,7 +27,7 @@
   .article-body {
     @apply datum-prose-longform flow-root;
 
-    /* Autolink headings - Starlight style */
+    /* Autolink heading anchors */
     --anchor-icon-size: 16px;
     --anchor-icon-gap: 0.375em;
 
@@ -91,7 +86,9 @@
   }
 
   .handbook-toc {
-    @apply border-glacier-mist-900 relative hidden w-full flex-col gap-y-4 border-l pt-9.75 pb-12 pl-7 md:mb-0 md:max-w-60.25 md:min-w-60.25 lg:flex;
+    @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
+    @apply pt-9 md:pt-12 lg:pt-16 xl:pt-20;
+    @apply pr-0 md:pl-4 lg:pl-7;
 
     .article-aside {
       @apply mb-6;
@@ -103,28 +100,34 @@
   }
 
   .handbook-sidebar {
-    @apply relative w-full flex-col gap-y-4 md:max-w-64.75 md:min-w-64.75;
-    @apply pt-10.75 pr-0 pb-0 md:mb-0 md:pr-7 md:pb-12;
-    @apply border-glacier-mist-900 border-r-0 md:border-r;
-    @apply hidden md:flex;
-    @apply md:mt-0 md:flex;
+    @apply relative w-full flex-col gap-y-0 md:max-w-55 md:min-w-55 md:gap-y-4 lg:max-w-64.75 lg:min-w-64.75;
+    @apply px-7 pt-5 pl-0 md:px-0 md:pt-12 lg:pt-16 xl:pt-20;
+    @apply pr-0 md:pr-4 lg:pr-7;
+    @apply flex md:flex;
   }
 
-  /* Mobile menu styles */
-  body[data-aside-menu-expanded] .handbook-sidebar {
-    @apply bg-glacier-mist-700 px-0;
-    @apply relative top-15 left-0 pt-5;
-    @apply left-0 w-full;
-    @apply overflow-y-auto;
-    @apply block h-[calc(100vh-100px)];
-    @apply absolute;
+  .sidebar-mobile-toggle {
+    @apply border-glacier-mist-900 flex w-full items-center justify-between border bg-white px-4 py-3 text-left;
+    @apply transition-colors duration-200 hover:bg-gray-50;
 
-    nav {
-      @apply mt-0 block;
+    .sidebar-mobile-toggle--text {
+      @apply text-midnight-fjord datum-text-base;
     }
 
-    .menu-container {
-      @apply block pb-20;
+    .sidebar-mobile-toggle--icon {
+      @apply text-midnight-fjord/60 transition-transform duration-200;
+    }
+
+    &[aria-expanded='true'] .sidebar-mobile-toggle--icon {
+      @apply rotate-180;
+    }
+  }
+
+  .sidebar-menu {
+    @apply border-glacier-mist-900 mt-0 w-full border bg-white p-4 md:mt-0 md:mt-2 md:border-0 md:bg-transparent md:p-0;
+
+    @media (min-width: 768px) {
+      display: block !important;
     }
   }
 
@@ -133,7 +136,7 @@
   }
 
   .handbook-sidebar .menu-container {
-    @apply w-full space-y-2.5 rounded-lg transition ease-[cubic-bezier(.36,.66,.6,1)];
+    @apply w-full space-y-2.5 transition ease-[cubic-bezier(.36,.66,.6,1)];
   }
 
   .handbook-sidebar .menu-category {
@@ -145,7 +148,11 @@
   }
 
   .handbook-sidebar .category-button {
-    @apply text-midnight-fjord flex w-full items-center;
+    @apply text-midnight-fjord flex w-full items-center gap-1;
+
+    svg {
+      @apply h-4 w-4 md:h-5 md:w-5;
+    }
   }
 
   .handbook-sidebar .chevron-icon {
@@ -157,16 +164,14 @@
   }
 
   .handbook-sidebar .category-title {
-    @apply datum-docs-sidebar-headings font-medium text-nowrap;
+    @apply datum-text-sm text-nowrap;
   }
 
   .handbook-sidebar .category-title--active {
   }
 
   .handbook-sidebar .menu-list {
-    /* @apply relative flex flex-col pr-7; */
-    /* @apply leading-normal; */
-    @apply mt-[6px] border-l border-(--color-borderpanel) pl-3;
+    @apply border-glacier-mist-900 mt-[6px] ml-[9px] border-l-2 pl-5;
   }
 
   .handbook-sidebar .menu-item {
@@ -174,11 +179,11 @@
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-docs-sidebar-links transition-colors duration-200 ease-out;
-    @apply inline-block py-1;
+    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-text-sm transition-colors duration-200 ease-out;
+    @apply inline-block w-full px-2 py-1;
   }
 
   .handbook-sidebar .menu-link--active {
-    @apply text-canyon-clay---links font-bold;
+    @apply bg-glacier-mist-800 text-midnight-fjord font-semibold;
   }
 }

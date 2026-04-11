@@ -1,4 +1,8 @@
 @layer components {
+  body.mobile-menu-open #hero-header #hero-container {
+    @apply overflow-visible!;
+  }
+
   .hero--main {
     @apply relative flex flex-col justify-center;
 
@@ -48,10 +52,6 @@
         }
       }
 
-      .mobile-menu-actions .btn {
-        @apply text-white;
-      }
-
       .nav-logo {
         --color-logo-object: var(--color-canyon-clay);
         --color-logo-text: var(--color-midnight-fjord);
@@ -59,6 +59,16 @@
 
       .mobile-menu-button {
         @apply text-midnight-fjord;
+      }
+    }
+
+    &.content-alt {
+      .hero--main-content-title {
+        @apply datum-text-8xl mb-0 max-w-xl lg:max-w-4xl;
+      }
+
+      .hero--main-content-description {
+        @apply text-midnight-fjord datum-text-lg max-w-2xl text-pretty;
       }
     }
   }
@@ -85,10 +95,6 @@
         }
       }
 
-      .mobile-menu-actions .btn {
-        @apply text-white;
-      }
-
       .nav-logo {
         --color-logo-object: var(--color-tuscany);
         --color-logo-text: var(--color-midnight-fjord);
@@ -112,12 +118,8 @@
     }
   }
 
-  .hero--main-content-icon-subtitle {
-    @apply flex items-center gap-3.25;
-  }
-
   .hero--main-content-inner {
-    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-16 xl:gap-6 xl:pt-12 xl:pb-20;
+    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-12 lg:pb-14 xl:gap-6 xl:pt-12 xl:pb-16;
   }
 
   .hero--main-content-icon {
@@ -137,25 +139,15 @@
     }
   }
 
-  .hero--main-content-title-container {
-    @apply flex items-center gap-5 md:gap-6 lg:gap-9;
-  }
-
-  .hero--main-content-subtitle {
-    @apply datum-text-base;
-  }
-
   .hero--main-content-title {
     @apply datum-text-8xl mb-0 max-w-xl lg:max-w-3xl;
-  }
-
-  .hero--main-content-title-alt {
-    @apply datum-text-10xl mb-0 max-w-xl;
+    span {
+      @apply text-pine-forge;
+    }
   }
 
   .hero--main-content-description {
-    @apply datum-text-xl m-auto mt-0 mb-0 max-w-xl opacity-80;
-
+    @apply max-w-142 text-pretty;
     a {
       @apply hover:text-midnight-fjord/70 hover:border-midnight-fjord/70 border-midnight-fjord border-b transition-colors hover:cursor-pointer;
     }

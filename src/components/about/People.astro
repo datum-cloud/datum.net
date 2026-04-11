@@ -1,8 +1,8 @@
 ---
 // src/components/about/People.astro
-import { Image } from 'astro:assets';
 import ProfileModal from './ProfileModal.astro';
 import { getTeamMembers, getTeamBgColor } from '@utils/authorUtils';
+import { getStrapiMediaUrl } from '@libs/strapi';
 import '@v1/styles/page-about.css';
 
 // Fetch all authors where isTeam is true and sort by order
@@ -12,11 +12,12 @@ const teamMembers = await getTeamMembers();
 const teamMembersData = teamMembers.map((member, index) => ({
   id: member.id,
   index,
+  slug: member.id,
   data: {
     name: member.data.name,
     bio: member.data.bio,
     title: member.data.title,
-    avatar: member.data.avatar ? { src: member.data.avatar.src } : undefined,
+    avatar: member.data.avatar ? { src: getStrapiMediaUrl(member.data.avatar.src) } : undefined,
     tick: member.data.tick,
     surprising: member.data.surprising,
     weekends: member.data.weekends,
@@ -26,12 +27,7 @@ const teamMembersData = teamMembers.map((member, index) => ({
 
 <section class="bg-glacier-mist-700 section--block section--block--pad">
   <div class="max-width">
-    <div
-      class="fade-in--pure relative z-10"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-immediate="true"
-      data-reveal-delay="100"
-    >
+    <div class="relative z-10">
       <h3 class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:max-w-md lg:mb-10">
         Meet the people behind Datum
       </h3>
@@ -56,13 +52,15 @@ const teamMembersData = teamMembers.map((member, index) => ({
             >
               {member.data.avatar && (
                 <div class="people--card-avatar">
-                  <Image
-                    src={member.data.avatar}
+                  <img
+                    src={getStrapiMediaUrl(member.data.avatar.src)}
                     alt={member.data.name}
                     class="size-auto w-full bg-cover"
                     style={`background-color: ${getTeamBgColor(index)}`}
+                    width={300}
+                    height={300}
+                    loading="lazy"
                   />
-                  {/* Check if member.data.title contains "Co-Founder" and show Founder label */}
                   {member.data.title && member.data.title.includes('Co-Founder') && (
                     <label class="people--card-founder-label">Founder</label>
                   )}
@@ -85,31 +83,43 @@ const teamMembersData = teamMembers.map((member, index) => ({
 </section>
 
 <script is:inline define:vars={{ teamMembersData }}>
-  // Store team members data for the modal
   const teamData = teamMembersData;
+  // Debug: expose slugs for inspection
+  window.__datumTeamSlugs = teamData.map((m) => ({ slug: m.slug, name: m.data.name }));
 
-  // Wait for DOM to be ready
+  function dispatchOpenEvent(member) {
+    document.dispatchEvent(
+      new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, { detail: { member } })
+    );
+  }
+
+  function openMemberBySlug(slug) {
+    if (!slug || !window.PROFILE_MODAL_OPEN_EVENT) return;
+    const member = teamData.find((m) => m.slug === slug);
+    if (member) dispatchOpenEvent(member);
+  }
+
+  function tryOpenFromHash() {
+    const hash = window.location.hash.slice(1);
+    if (hash) openMemberBySlug(hash);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const triggers = document.querySelectorAll('[data-member-trigger]');
-
-    triggers.forEach((trigger) => {
+    // Wire up card click triggers
+    document.querySelectorAll('[data-member-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
-        const target = e.currentTarget;
-        if (!target) return;
-
-        const memberIndex = target.getAttribute('data-member-index');
-        const index = parseInt(memberIndex || '0', 10);
+        const index = parseInt(e.currentTarget.getAttribute('data-member-index') || '0', 10);
         const member = teamData[index];
-
-        if (member && window.PROFILE_MODAL_OPEN_EVENT) {
-          // Dispatch event with member data
-          document.dispatchEvent(
-            new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, {
-              detail: { member },
-            })
-          );
-        }
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) dispatchOpenEvent(member);
       });
     });
+
+    // Deep-link: try immediately, then once the custom element is guaranteed ready.
+    // Covers both orderings of inline vs. module script execution.
+    tryOpenFromHash();
+    customElements.whenDefined('profile-modal').then(tryOpenFromHash);
   });
+
+  // Handle hash changes after page load (browser back/forward, in-page links)
+  window.addEventListener('hashchange', tryOpenFromHash);
 </script>

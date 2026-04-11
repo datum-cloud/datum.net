@@ -20,6 +20,7 @@
     @apply font-primary;
     @apply antialiased;
     @apply bg-glacier-mist-900;
+    /* @apply bg-glacier-mist-700; */
   }
 
   html,
@@ -35,19 +36,15 @@
     @apply font-canela;
   }
 
+  .datum-container {
+    @apply bg-glacier-mist-700;
+  }
+
   /* Prevent body scroll when mobile menu is active */
   body {
     &.mobile-menu-open {
       @apply fixed w-full overflow-hidden;
     }
-    &[data-aside-menu-expanded] {
-      @apply fixed w-full overflow-hidden;
-    }
-  }
-
-  /* Hide elements with x-cloak until Alpine.js initializes */
-  [x-cloak] {
-    @apply hidden;
   }
 
   &
@@ -56,6 +53,11 @@
     ) {
     color: inherit;
   }
+}
+
+/* Outside @layer so it has higher specificity than layered styles */
+[x-cloak] {
+  display: none !important;
 }
 
 @import './utilities.css';

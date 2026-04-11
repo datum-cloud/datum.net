@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Code Quality & Security Testing - Datum Policies"
+  title: "Code Quality & Security Testing - Datum Handbook"
   description: "Read Datum's Testing Policy. Our standards for software quality assurance, including unit testing, integration testing, and automated validation pipelines."
+  og:
+    title: "Testing policy"
 ---
 
 To avoid potential security incidents, Datum requires testing of its software to ensure that it functions as expected.

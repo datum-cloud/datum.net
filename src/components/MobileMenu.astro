@@ -1,6 +1,10 @@
 ---
+// src/components/MobileMenu.astro
 import type { NavData } from '@/src/types/navigation';
-import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import Logo from '@v1/assets/svgs/datum-logo-h.svg';
+import DiscordIcon from '@v1/assets/icons/discord.svg';
+import GithubIcon from '@v1/assets/icons/github.svg';
 import navigation from '@data/navigation.json';
 
 // Type-safe navigation data
@@ -18,14 +22,20 @@ const mainNav = navData.main;
         document.body.style.overflow = 'hidden';
         document.body.classList.add('mobile-menu-open');
       } else {
-        document.body.style.overflow = '';
-        document.body.classList.remove('mobile-menu-open');
+        this._closeWithDelay();
       }
     },
     closeMenu() {
       this.isOpen = false;
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-menu-open');
+      this._closeWithDelay();
+    },
+    _closeWithDelay() {
+      setTimeout(() => {
+        if (!this.isOpen) {
+          document.body.style.overflow = '';
+          document.body.classList.remove('mobile-menu-open');
+        }
+      }, 300);
     }
   }"
   x-init="
@@ -46,42 +56,22 @@ const mainNav = navData.main;
 >
   <!-- Mobile Menu Button -->
   <button
-    @click="toggleMenu()"
+    x-on:click="toggleMenu()"
     class="mobile-menu-button"
     aria-label="Toggle mobile menu"
-    :aria-expanded="isOpen"
+    x-bind:aria-expanded="isOpen"
   >
-    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 31 32">
-      <!-- Burger menu icon (closed state) -->
-      <g x-show="!isOpen">
-        <path
-          d="M5.16406 16H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 23.75H20.6641"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <path
-          d="M5.16406 8.25H25.8307"
-          stroke="currentColor"
-          stroke-width="2.58333"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </g>
-
-      <!-- Close icon (open state) -->
-      <path
-        x-cloak
-        x-show="isOpen"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2.58333"
-        d="M7.74703 8.25L23.247 23.75M7.74703 23.75L23.247 8.25"></path>
+    <svg
+      class="mobile-menu-icon"
+      x-bind:class="{ 'mobile-menu-icon--open': isOpen }"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 30 30"
+      aria-hidden="true"
+    >
+      <path class="burger-top" d="M4 7h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-mid" d="M4 15h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <path class="burger-bot" d="M4 23h22" stroke-width="2.5" stroke-linecap="round"></path>
     </svg>
   </button>
 
@@ -89,21 +79,23 @@ const mainNav = navData.main;
   <div
     x-show="isOpen"
     x-cloak
+    style="display: none"
     x-transition:enter="transition-opacity ease-linear duration-300"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
     x-transition:leave="transition-opacity ease-linear duration-300"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    @click="closeMenu()"
+    x-on:click="closeMenu()"
     class="mobile-menu-overlay"
   >
   </div>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile Menu Panel -->
   <div
     x-show="isOpen"
     x-cloak
+    style="display: none"
     x-transition:enter="transition ease-in-out duration-300 transform"
     x-transition:enter-start="-translate-x-full"
     x-transition:enter-end="translate-x-0"
@@ -112,22 +104,31 @@ const mainNav = navData.main;
     x-transition:leave-end="-translate-x-full"
     class="mobile-menu"
   >
+    <!-- Logo -->
+    <a href="/" class="mobile-menu-logo" x-on:click="closeMenu()">
+      <Logo />
+    </a>
+
+    <!-- Nav Links -->
     <div class="mobile-menu-content">
       <ul class="mobile-menu-list">
         {
-          mainNav.map((item) => (
-            <li class="mobile-menu-item">
-              <a
-                href={item.href}
-                class="mobile-menu-link"
-                @click="closeMenu()"
-                data-astro-prefetch="load"
-              >
-                <span>{item.text}</span>
-              </a>
+          mainNav.map((item) =>
+            item.children ? (
+              <li class="mobile-menu-item" x-data="{ open: false }">
+                <button
+                  class="mobile-menu-link"
+                  x-on:click="open = !open"
+                  x-bind:aria-expanded="open"
+                  type="button"
+                >
+                  <span>{item.text}</span>
+                  <span class="mobile-menu-link-icon" x-bind:class="{ 'rotate-180': open }">
+                    <Icon name="chevron-down" size="md" />
+                  </span>
+                </button>
 
-              {item.children && (
-                <div class="mobile-dropdown-content">
+                <div class="mobile-dropdown-content" x-show="open" x-collapse>
                   {item.children.map((section) => (
                     <div class="mobile-dropdown-section">
                       {'title' in section && section.title && (
@@ -139,9 +140,18 @@ const mainNav = navData.main;
                             <a
                               href={subItem.href}
                               class="mobile-dropdown-link"
-                              @click="closeMenu()"
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                              x-on:click="closeMenu()"
                             >
                               <span>{subItem.text}</span>
+                              {subItem.isExternal && (
+                                <Icon
+                                  name="external-link"
+                                  size="sm"
+                                  class="nav-dropdown-external-icon"
+                                />
+                              )}
                             </a>
                           </li>
                         ))}
@@ -149,30 +159,53 @@ const mainNav = navData.main;
                     </div>
                   ))}
                 </div>
-              )}
-            </li>
-          ))
+              </li>
+            ) : (
+              <li class="mobile-menu-item">
+                <a
+                  href={item.href}
+                  class="mobile-menu-link"
+                  x-on:click="closeMenu()"
+                  data-astro-prefetch="load"
+                >
+                  <span>{item.text}</span>
+                  <span class="mobile-menu-link-icon">
+                    <Icon name="arrow-right" size="md" />
+                  </span>
+                </a>
+              </li>
+            )
+          )
         }
       </ul>
+    </div>
 
-      <div class="mobile-menu-actions">
-        <Button
-          class="btn btn--clean text-midnight-fjord/40 hover:text-midnight-fjord/80"
-          icon={{ name: 'messages-square', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
+    <!-- Footer: CTAs + Social -->
+    <div class="mobile-menu-footer">
+      <div class="mobile-menu-ctas">
+        <a href="https://cloud.datum.net/" class="mobile-cta-secondary" x-on:click="closeMenu()">
+          Sign in
+          <Icon name="arrow-right" size="sm" />
+        </a>
+        <a
+          href="https://auth.datum.net/ui/v2/login/register"
+          class="mobile-cta-primary"
           target="_blank"
-          href="https://link.datum.net/discord"
-        />
-
-        <Button
-          class="btn btn--clean text-midnight-fjord/40 hover:text-midnight-fjord/80"
-          icon={{ name: 'github', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
-          target="_blank"
-          href="https://github.com/datum-cloud/datum/"
-        />
+          x-on:click="closeMenu()"
+        >
+          Start for free
+          <Icon name="arrow-right" size="sm" />
+        </a>
+      </div>
+      <div class="mobile-menu-social">
+        <a href="https://link.datum.net/discord" class="mobile-social-link" target="_blank">
+          <DiscordIcon class="mobile-social-icon" />
+          Discord
+        </a>
+        <a href="https://github.com/datum-cloud/datum/" class="mobile-social-link" target="_blank">
+          <GithubIcon class="mobile-social-icon" />
+          GitHub
+        </a>
       </div>
     </div>
   </div>

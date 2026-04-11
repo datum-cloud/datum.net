@@ -15,7 +15,7 @@ const description = "We're excited to get you onto the platform.";
   <section class="datum-container">
     <Hero class="light" />
 
-    <div class="section--block bg-glacier-mist-700 light">
+    <div class="section--block bg-glacier-mist-700 light pb-14 md:pb-20 lg:pb-28">
       <div class="max-width">
         <div
           class="border-midnight-fjord mx-auto max-w-2xl border bg-white p-8 text-center md:p-12 xl:p-16"
@@ -35,15 +35,13 @@ const description = "We're excited to get you onto the platform.";
             <p>
               In the meantime, join us on <a href="https://link.datum.net/discord" target="_blank"
                 >Discord</a
-              >, drop by an upcoming <a href="/events/">Event</a>, or check out our <a href="/docs/"
-                >Docs</a
-              >.
+              >, drop by an upcoming <a href="/events/">Event</a>.
             </p>
           </div>
         </div>
       </div>
     </div>
-
-    <Footer showCTA={false} showSignup={false} />
   </section>
+
+  <Footer showCTA={false} showBackground={false} showSignup={false} />
 </Layout>

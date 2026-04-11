@@ -48,11 +48,7 @@ const { content } = Astro.props as ContentProps;
 
   <div class="max-width">
     <!-- Main content container -->
-    <div
-      class="fade-in--pure md::gap-8.25 relative z-10 m-auto flex w-full flex-col items-center gap-8"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
+    <div class="md::gap-8.25 relative z-10 m-auto flex w-full flex-col items-center gap-8">
       <!-- Left content: What does good look like? -->
       <div class="max-w-full space-y-10 text-center md:max-w-95 lg:max-w-110 xl:max-w-120">
         <h2 class="datum-text-8xl">{content.data.title}</h2>

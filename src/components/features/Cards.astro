@@ -6,11 +6,7 @@ const { features } = Astro.props as FeaturesProps;
 if (!features) return null;
 ---
 
-<div
-  class="feature-cards-grid fade-in--pure"
-  data-reveal="fade-in--pure--visible"
-  data-reveal-delay="100"
->
+<div class="feature-cards-grid">
   {
     features.map((feature) => (
       <div class="feature-card-item flex flex-row items-start gap-5">

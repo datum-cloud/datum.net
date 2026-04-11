@@ -1,4 +1,7 @@
 ---
+// src/pages/about/index.astro
+export const prerender = false;
+
 import '@v1/styles/page-about.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -6,7 +9,8 @@ import Footer from '@components/Footer.astro';
 import OurMission from '@components/about/OurMission.astro';
 import Companies from '@components/about/Companies.astro';
 import Investors from '@components/about/Investors.astro';
-import People from '@components/about/People.astro';
+import PeopleStrapi from '@components/about/PeopleStrapi.astro';
+import PeopleStrapiSkeleton from '@components/about/PeopleStrapiSkeleton.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getEntries } from 'astro:content';
 
@@ -19,9 +23,88 @@ const contentData = await getEntries(contents);
 const meta = fm.meta || {};
 const title = fm.title ? fm.title : 'About Datum';
 const description = fm.description ? fm.description : '';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://www.datum.net/about/#webpage',
+      url: 'https://www.datum.net/about/',
+      name: 'About Datum – Open Network Cloud for AI',
+      sameAs: [
+        'https://github.com/orgs/datum-cloud',
+        'https://www.youtube.com/@datum-cloud',
+        'https://discord.com/invite/AeA9XZu4Py',
+        'https://www.linkedin.com/company/datum-cloud',
+      ],
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#zac-smith',
+      name: 'Zac Smith',
+      jobTitle: 'Co-Founder and CEO',
+      description:
+        'Co-founder and CEO of Datum. 20+ years building internet infrastructure at Voxel, Packet, Equinix, Fastly, and StackPath.',
+      knowsAbout: [
+        'cloud networking',
+        'internet infrastructure',
+        'open source software',
+        'alternative cloud providers',
+        'AI infrastructure',
+      ],
+      worksFor: { '@id': 'https://www.datum.net/#organization' },
+      sameAs: ['https://www.linkedin.com/in/zsmith/'],
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#jacob-smith',
+      name: 'Jacob Smith',
+      jobTitle: 'Co-Founder, Head of Growth',
+      description:
+        'Co-founder of Datum. Background in growth and go-to-market for infrastructure platforms at Packet and Equinix.',
+      knowsAbout: [
+        'cloud infrastructure',
+        'developer go-to-market',
+        'open source business models',
+        'network cloud',
+      ],
+      worksFor: { '@id': 'https://www.datum.net/#organization' },
+      sameAs: ['https://www.linkedin.com/in/jacobsmith79/'],
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.datum.net/#organization',
+      foundingDate: '2024',
+      founder: [
+        { '@id': 'https://www.datum.net/about/#zac-smith' },
+        { '@id': 'https://www.datum.net/about/#jacob-smith' },
+      ],
+      funder: [
+        {
+          '@type': 'Organization',
+          name: 'Amplify Partners',
+          url: 'https://www.amplifypartners.com/',
+        },
+        { '@type': 'Organization', name: 'CRV', url: 'https://www.crv.com/' },
+        { '@type': 'Organization', name: 'Encoded Ventures', url: 'https://encoded.vc/' },
+        {
+          '@type': 'Organization',
+          name: 'Cervin Ventures',
+          url: 'https://www.cervinventures.com/',
+        },
+        { '@type': 'Organization', name: 'Ex/Ante', url: 'https://www.buildexante.com/' },
+        { '@type': 'Organization', name: 'Step Function', url: 'https://www.stepfunction.vc/' },
+        { '@type': 'Organization', name: 'Vine Ventures', url: 'https://www.vineventures.com/' },
+      ],
+    },
+  ],
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-about" meta={meta}>
+<Layout title={title} description={description} bodyClass="page-about" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
     <Hero class="light bg-white" />
 
@@ -29,7 +112,9 @@ const description = fm.description ? fm.description : '';
 
     <Companies content={contentData[1]} />
 
-    <People />
+    <PeopleStrapi server:defer>
+      <PeopleStrapiSkeleton slot="fallback" />
+    </PeopleStrapi>
 
     <Investors content={contentData[2]} />
 

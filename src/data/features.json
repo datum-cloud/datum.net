@@ -1,0 +1,62 @@
+[
+  {
+    "icon": "network",
+    "title": "Authoritative DNS",
+    "description": "A secure and resilient DNS service, served across 17 locations."
+  },
+  {
+    "icon": "globe",
+    "title": "Domains",
+    "description": "Organize and programmatically manage domain resources across providers."
+  },
+  {
+    "icon": "lock",
+    "title": "Secrets",
+    "description": "Organize and protect sensitive data in a central location."
+  },
+  {
+    "icon": "grafana",
+    "title": "Metrics Export",
+    "description": "Export full OTel metrics to Grafana Cloud along with prebuilt dashboards."
+  },
+  {
+    "icon": "shield-check",
+    "title": "Fine Grained Permissions",
+    "description": "Manage groups and fine-grained IAM role assignments."
+  },
+  {
+    "icon": "log-in",
+    "title": "SSO",
+    "description": "Enterprise-grade authentication access."
+  },
+  {
+    "icon": "cpu",
+    "title": "Machine Accounts",
+    "description": "Assign identity credentials to agents or applications and let the machines do the rest."
+  },
+  {
+    "icon": "clipboard-list",
+    "title": "Audit & Activity Logs",
+    "description": "Production grade infrastructure with built in features for activity / audit logging."
+  },
+  {
+    "icon": "terminal",
+    "title": "datumctl",
+    "description": "Authenticate and manage resources using a K8s-style syntax (get, apply, delete)."
+  },
+  {
+    "icon": "circle-gauge",
+    "title": "Datum MCP",
+    "description": "An official, self-hosted MCP server that is tightly integrated with Cursor."
+  },
+  {
+    "icon": "datum",
+    "title": "Developer Tools",
+    "description": "macOS, Windows, and Linux apps for exposing localhost to the internet."
+  },
+  {
+    "icon": "plus",
+    "title": "+ more",
+    "description": "We'll continue to add more and more features as we grow."
+  }
+]

@@ -4,10 +4,10 @@ import { graphql } from '@octokit/graphql';
 import type { RequestParameters } from '@octokit/types';
 
 let response = {};
-const appId = import.meta.env.APP_ID || process.env.APP_ID;
-const privateKey = import.meta.env.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
+const appId = import.meta.env?.APP_ID || process.env.APP_ID;
+const privateKey = import.meta.env?.APP_PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
 const installationId = parseInt(
-  import.meta.env.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
+  import.meta.env?.APP_INSTALLATION_ID || process.env.APP_INSTALLATION_ID || '0',
   10
 );
 

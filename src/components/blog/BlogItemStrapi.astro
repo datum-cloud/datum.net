@@ -1,0 +1,30 @@
+---
+// src/components/blog/BlogItemStrapi.astro
+import { formatISODate } from '@utils/dateUtils';
+import type { NormalizedStrapiArticle } from '@/src/types/strapi';
+
+const { post, baseUrl = '/blog' } = Astro.props as {
+  post: NormalizedStrapiArticle;
+  baseUrl?: string;
+};
+---
+
+<div class="entry-list-item">
+  <a href={`${baseUrl}/${post.id}/`} title={post.data.title} class="entry-list-item--wrapper">
+    <p class="entry-list-item--title">{post.data.title}</p>
+
+    <div class="entry-list-item--meta">
+      <div class="blog--date">
+        <time datetime={formatISODate(post.data.date)}>
+          {
+            new Date(post.data.date).toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })
+          }
+        </time>
+      </div>
+    </div>
+  </a>
+</div>

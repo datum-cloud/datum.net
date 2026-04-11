@@ -1,7 +1,4 @@
 @layer components {
-  .entry-list {
-  }
-
   .entry-list-item {
     @apply border-glacier-mist-900/10 relative mb-0 border-b first:border-t;
   }

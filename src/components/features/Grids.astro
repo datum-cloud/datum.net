@@ -5,11 +5,7 @@ const { features } = Astro.props as FeaturesProps;
 if (!features) return null;
 ---
 
-<div
-  class="features-grid fade-in--pure"
-  data-reveal="fade-in--pure--visible"
-  data-reveal-delay="100"
->
+<div class="features-grid">
   <!-- Apps Feature Card -->
   {
     features.map((item) => (

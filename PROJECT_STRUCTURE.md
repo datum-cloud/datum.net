@@ -18,12 +18,9 @@ This document provides a comprehensive overview of Datum Inc. website project st
 ├── docker-compose.yml      # Docker Compose configuration
 ├── Dockerfile              # Docker build configuration
 ├── package.json            # Project dependencies and scripts
-├── tailwind.starlight.config.cjs  # Tailwind CSS configuration for Starlight
 ├── tsconfig.json           # TypeScript configuration
 ├── eslint.config.mjs       # ESLint configuration
-├── playwright.config.ts    # Playwright test configuration
-├── pagefind.yml            # Pagefind search configuration
-└── starlight.d.ts          # Starlight TypeScript definitions
+└── playwright.config.ts    # Playwright test configuration
 ```
 
 ## Source Code (`src/`)
@@ -70,7 +67,6 @@ Reusable UI components organized by feature:
 - `NavMenu.astro` - Navigation menu
 - `MobileMenu.astro` - Mobile navigation menu
 - `LogoDropdown.astro` - Logo dropdown menu
-- `ThemeSelect.astro` - Theme selector
 
 #### Feature-Specific Components
 
@@ -152,11 +148,6 @@ Reusable UI components organized by feature:
 - `Card.astro` - Roadmap card
 - `Skeleton.astro` - Loading skeleton
 
-**Starlight** (`starlight/`)
-
-- Custom Starlight theme components for documentation
-- `Footer.astro`, `Head.astro`, `Header.astro`, `MobileMenuToggle.astro`, `PageFrame.astro`, `PageSidebar.astro`, `Search.astro`, `SearchButton.astro`, `SearchModal.astro`, `SearchTrigger.astro`, `Sidebar.astro`, `SiteTitle.astro`, `TwoColumnContent.astro`
-
 ### Config (`src/config/`)
 
 Configuration files:
@@ -175,7 +166,7 @@ Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_ST
 - `careers/` - Career content and assets
 - `categories/` - Blog post categories
 - `changelog/` - Changelog entries
-- `docs/` - Documentation (Starlight)
+- `docs/` - Documentation
 - `faq/` - Frequently asked questions
 - `features/` - Feature descriptions
 - `handbook/` - Company handbook
@@ -335,8 +326,6 @@ Static files served as-is:
 - `images/` - Static images
 - `scripts/` - Client-side scripts
 - `download/` - Downloadable assets
-- `pagefind/` - Main site search index (generated)
-- `pagefind-blog/` - Blog-specific search index (generated)
 - `favicons/` - Favicon files
 - `favicon.ico`, `favicon.png`, `favicon.svg` - Root favicons
 - `site.webmanifest` - Web app manifest

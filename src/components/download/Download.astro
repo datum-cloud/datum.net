@@ -1,0 +1,21 @@
+---
+// src/components/download/Download.astro
+import '@v1/styles/page-download.css';
+import DownloadNav from '@components/download/DownloadNav.astro';
+
+type DownloadProps = {
+  activeId?: string;
+  class?: string;
+};
+
+const { activeId, class: className = '' } = Astro.props as DownloadProps;
+---
+
+<div class={`download-container ${className}`}>
+  <aside class="download-sidebar">
+    <DownloadNav activeId={activeId} />
+  </aside>
+  <main class="download-content">
+    <slot />
+  </main>
+</div>

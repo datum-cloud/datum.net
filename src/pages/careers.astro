@@ -41,12 +41,7 @@ const description = fm.description || '';
       <Benefits />
     </div>
 
-    <section
-      id="roles"
-      class="section--block section--block--pad fade-in--pure bg-white"
-      data-reveal="fade-in--pure--visible"
-      data-reveal-delay="100"
-    >
+    <section id="roles" class="section--block section--block--pad bg-white">
       <div class="max-width">
         <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
 
@@ -66,12 +61,14 @@ const description = fm.description || '';
         <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
         <div x-show="hasAshbyJobId" x-cloak>
           <div id="ashby_embed"></div>
+          <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
+            <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <script>
-      // @ts-expect-error - Ashby is a global variable
+    <script is:inline>
       window.__Ashby = {
         settings: {
           ashbyBaseJobBoardUrl: 'https://jobs.ashbyhq.com/datum',
@@ -80,7 +77,23 @@ const description = fm.description || '';
         },
       };
     </script>
-    <script src="https://jobs.ashbyhq.com/datum/embed?version=2" is:inline defer></script>
+    <script
+      is:inline
+      src="https://jobs.ashbyhq.com/datum/embed?version=2"
+      onerror="document.getElementById('ashby_embed_fallback').style.display='block'"></script>
+    <script is:inline>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (!params.has('ashby_jid')) return;
+        setTimeout(function () {
+          var embed = document.getElementById('ashby_embed');
+          var fallback = document.getElementById('ashby_embed_fallback');
+          if (embed && fallback && !embed.hasChildNodes()) {
+            fallback.style.display = 'block';
+          }
+        }, 5000);
+      })();
+    </script>
 
     <Footer />
   </section>

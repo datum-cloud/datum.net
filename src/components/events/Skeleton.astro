@@ -1,19 +1,91 @@
 ---
 // src/components/events/Skeleton.astro
-// Loading skeleton for events list
+// Loading skeleton mirroring Card.astro: category cards → “Find us at” → calendar + event list
+
+const listPlaceholderRows = [0, 1, 2];
+const dowCols = [0, 1, 2, 3, 4, 5, 6];
+const calendarWeekRows = [0, 1, 2, 3, 4];
 ---
 
-<div class="flex flex-col gap-8">
-  {
-    [...Array(2)].map(() => (
-      <div class="flex flex-col">
-        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
-        <div class="mb-2.5 h-7 max-w-[200px] animate-pulse rounded-full bg-gray-700" />
-        <div class="mb-2.5 h-5 max-w-[360px] animate-pulse rounded-full bg-gray-700" />
-        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
-        <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700" />
-        <div class="mb-2.5 h-5 max-w-[150px] animate-pulse rounded-full bg-gray-700" />
+<div class="events-overview-skeleton" aria-hidden="true">
+  <div class="events-overview-skeleton__category-cards">
+    <div class="events-overview-skeleton__category-card">
+      <div class="events-overview-skeleton__category-content">
+        <div class="events-overview-skeleton__category-text">
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__category-title">
+          </div>
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__category-badge">
+          </div>
+        </div>
+        <div class="events-overview-skeleton__pulse events-overview-skeleton__category-arrow"></div>
       </div>
-    ))
-  }
+      <div class="events-overview-skeleton__pulse events-overview-skeleton__category-image"></div>
+    </div>
+    <div class="events-overview-skeleton__category-card">
+      <div class="events-overview-skeleton__category-content">
+        <div class="events-overview-skeleton__category-text">
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__category-title">
+          </div>
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__category-badge">
+          </div>
+        </div>
+        <div class="events-overview-skeleton__pulse events-overview-skeleton__category-arrow"></div>
+      </div>
+      <div class="events-overview-skeleton__pulse events-overview-skeleton__category-image"></div>
+    </div>
+  </div>
+
+  <div class="events-overview-skeleton__heading-wrap">
+    <div class="events-overview-skeleton__pulse events-overview-skeleton__heading"></div>
+  </div>
+
+  <div class="events-overview-skeleton__calendar-section">
+    <div class="events-overview-skeleton__calendar-layout">
+      <div class="events-overview-skeleton__calendar-widget">
+        <div class="events-overview-skeleton__calendar-header">
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__calendar-nav"></div>
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__calendar-month">
+          </div>
+          <div class="events-overview-skeleton__pulse events-overview-skeleton__calendar-nav"></div>
+        </div>
+        <div class="events-overview-skeleton__calendar-dow">
+          {
+            dowCols.map(() => (
+              <div class="events-overview-skeleton__pulse events-overview-skeleton__calendar-dow-cell" />
+            ))
+          }
+        </div>
+        <div class="events-overview-skeleton__calendar-grid">
+          {
+            calendarWeekRows.flatMap(() =>
+              dowCols.map(() => (
+                <div class="events-overview-skeleton__pulse events-overview-skeleton__calendar-day" />
+              ))
+            )
+          }
+        </div>
+      </div>
+
+      <div class="events-overview-skeleton__list">
+        {
+          listPlaceholderRows.map(() => (
+            <div class="events-overview-skeleton__list-item">
+              <div class="events-overview-skeleton__list-header">
+                <div class="events-overview-skeleton__pulse events-overview-skeleton__list-title" />
+                <div class="events-overview-skeleton__list-badges">
+                  <div class="events-overview-skeleton__pulse events-overview-skeleton__list-badge" />
+                  <div class="events-overview-skeleton__pulse events-overview-skeleton__list-badge events-overview-skeleton__list-badge--narrow" />
+                </div>
+              </div>
+              <div class="events-overview-skeleton__list-meta">
+                <div class="events-overview-skeleton__pulse events-overview-skeleton__list-meta-chunk" />
+                <div class="events-overview-skeleton__pulse events-overview-skeleton__list-meta-chunk events-overview-skeleton__list-meta-chunk--short" />
+                <div class="events-overview-skeleton__pulse events-overview-skeleton__list-meta-chunk events-overview-skeleton__list-meta-chunk--medium" />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
 </div>

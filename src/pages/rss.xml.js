@@ -1,28 +1,31 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
+import { fetchStrapiArticles } from '@libs/strapi';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
-const index = await getCollectionEntry('pages', 'blog');
-
-const title = index.data.title || index.data.meta.title;
-const description = index.data.description || index.data.meta.description;
-
 export async function GET(context) {
-  const blogs = await getCollection('blog', ({ data }) => !data.draft);
+  const index = await getCollectionEntry('pages', 'blog');
+  const title = index.data.title || index.data.meta?.title || 'Datum Blog';
+  const description =
+    index.data.description || index.data.meta?.description || 'Latest news from Datum';
 
-  blogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+  const strapiArticles = await fetchStrapiArticles();
+
+  const sortedArticles = strapiArticles.sort((a, b) => {
+    const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
+    const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
+    return dateB - dateA;
+  });
 
   return rss({
     title: title,
     description: description,
     site: context.site,
-    items: blogs.map((post) => ({
-      title: post.data.title,
-      pubDate: post.data.date,
-      description: post.data.description,
-      link: `/blog/${post.id}/`,
+    items: sortedArticles.map((article) => ({
+      title: article.title,
+      pubDate: article.originalPublishedAt ? new Date(article.originalPublishedAt) : new Date(),
+      description: article.description,
+      link: `/blog/${article.slug}/`,
     })),
-    // (optional) inject custom xml
     customData: `<language>en-us</language>`,
   });
 }

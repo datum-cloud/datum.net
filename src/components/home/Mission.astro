@@ -1,0 +1,157 @@
+---
+// src/components/home/Mission.astro
+
+import Icon from '@components/Icon.astro';
+import Video from '@components/home/Video.astro';
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['mission-grid', className]}>
+  {/* Why Datum? */}
+  <section class="mission-section">
+    <div class="mission-wrapper">
+      <span class="mission-label">Why <strong class="pl-2">Datum?</strong></span>
+
+      <div class="mission-body">
+        <div class="mission-body-line"></div>
+
+        <div class="mission-paragraphs">
+          <p>
+            Datum exists to <strong>upgrade the internet</strong> for a world accelerated by AI.
+          </p>
+          <p>
+            In the future we're building, any company, app or agent can interact <strong
+              >privately</strong
+            > and <strong>deterministically</strong> with whatever it needs.
+          </p>
+          <p>
+            <strong>Our thesis is simple:</strong> even the most ambitious AI-native teams lack the knowledge,
+            people, time, and tools to participate in the internet at scale <em>"the old way."</em>
+          </p>
+          <p>
+            The old way is too <strong>obscure</strong><br />
+            It's too <strong>manual</strong>.<br />
+            Too <strong>telco</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Why now? */}
+  <section class="mission-section">
+    <div class="mission-wrapper">
+      <span class="mission-label">Why <strong class="pl-2">now?</strong></span>
+
+      <div class="mission-body">
+        <div class="mission-body-line"></div>
+
+        <div class="mission-reasons">
+          <div class="mission-reasons-item">
+            <Icon name="mission-1" class="mission-reasons-number" />
+            <span class="mission-reasons-text-wrap">
+              <span class="mission-reasons-text">
+                Software (and its data)<br />is going <strong>everywhere</strong>
+              </span>
+            </span>
+          </div>
+          <div class="mission-reasons-item">
+            <Icon name="mission-2" class="mission-reasons-number" />
+            <span class="mission-reasons-text-wrap">
+              <span class="mission-reasons-text">
+                A new class of<br />providers is <strong>exploding</strong>
+              </span>
+            </span>
+          </div>
+          <div class="mission-reasons-item">
+            <Icon name="mission-3" class="mission-reasons-number" />
+            <span class="mission-reasons-text-wrap">
+              <span class="mission-reasons-text">
+                The splinternet <br />has <strong>arrived</strong>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Our vision */}
+  <section class="mission-section">
+    <div class="mission-wrapper">
+      <span class="mission-label">Our <strong class="pl-2">vision:</strong></span>
+
+      <div class="mission-body">
+        <div class="mission-body-line"></div>
+
+        <div>
+          <div class="mission-vision-checks">
+            <span class="mission-vision-check">
+              <Icon name="vision-check" class="mission-vision-check-icon text-midnight-fjord" />
+              <span class="mission-vision-check-text">
+                An open, neutral, <strong>global network cloud</strong>
+              </span>
+            </span>
+            <span class="mission-vision-check">
+              <Icon name="vision-check" class="mission-vision-check-icon text-midnight-fjord" />
+              <span class="mission-vision-check-text">
+                Built for <strong>AI</strong>
+              </span>
+            </span>
+            <span class="mission-vision-check">
+              <Icon name="vision-check" class="mission-vision-check-icon text-midnight-fjord" />
+              <span class="mission-vision-check-text">
+                Focused on <strong>providers</strong>
+              </span>
+            </span>
+          </div>
+
+          <div class="mission-vision-closing">
+            <p class="mission-vision-cta-text">
+              So, <strong>that's</strong> what we're building! Care to join us?
+            </p>
+
+            <div>
+              <Video />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  function makeHighlighter(container: Element, selector: string, threshold = 0.4) {
+    let isHighlighted = false;
+
+    function highlight() {
+      if (isHighlighted) return;
+      isHighlighted = true;
+      Array.from(container.querySelectorAll<HTMLElement>(selector)).forEach((el, i) =>
+        setTimeout(() => el.classList.add('highlight-animate'), i * 180)
+      );
+    }
+
+    new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) highlight();
+      },
+      { threshold }
+    ).observe(container);
+
+    new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) isHighlighted = false;
+      },
+      { threshold: 0 }
+    ).observe(container);
+  }
+
+  const reasons = document.querySelector('.mission-reasons');
+  if (reasons) makeHighlighter(reasons, '.mission-reasons-text');
+
+  const visionChecks = document.querySelector('.mission-vision-checks');
+  if (visionChecks) makeHighlighter(visionChecks, '.mission-vision-check');
+</script>

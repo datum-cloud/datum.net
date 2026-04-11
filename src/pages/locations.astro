@@ -1,0 +1,109 @@
+---
+// src/pages/locations.astro
+import '@v1/styles/page-locations.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import LocationsMap from '@components/locations/LocationsMap.astro';
+import LocationsList from '@components/locations/LocationsList.astro';
+
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'locations');
+const fm = page.data;
+
+// SEO
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Locations';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/locations/#webpage',
+      url: 'https://www.datum.net/locations/',
+      name: 'Datum Cloud Global Locations',
+      description:
+        'Datum deploys infrastructure at the most important internet peering points globally with regions across North America, Latin America, Europe, Middle East & Africa, and Asia Pacific.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-04-01',
+    },
+  ],
+};
+---
+
+<Layout bodyClass="page-locations" meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container overflow-clip">
+    <Hero class="light" title={title} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0 pb-0">
+      <div class="max-width">
+        <section class="mb-8 flex flex-col items-center gap-10 lg:flex-row">
+          <div class="locations-map--description">
+            <p>
+              Our network is deployed at the most important <strong>internet peering points</strong> globally.
+              This ensures low-latency access to public clouds, AI clouds, and end users alike.
+            </p>
+          </div>
+          <div>
+            <LocationsMap />
+          </div>
+        </section>
+        <LocationsList />
+      </div>
+    </div>
+
+    <Footer showCTA={false} />
+  </section>
+</Layout>
+
+<script>
+  (function initMapTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const elFound = document.querySelector<HTMLElement>('.locations-map');
+    if (!elFound) return;
+    const el: HTMLElement = elFound;
+
+    el.style.opacity = '0';
+
+    const ANGLE = 35;
+
+    let rafId = 0;
+
+    function update() {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      const startY = vh;
+      const endY = (vh - rect.height) / 2;
+      const progress =
+        endY === startY ? 1 : Math.max(0, Math.min(1, (startY - rect.top) / (startY - endY)));
+
+      if (progress >= 1) {
+        el.style.transform = '';
+      } else {
+        const angle = ANGLE * (1 - progress);
+        el.style.transform = `perspective(1400px) rotateX(${angle.toFixed(2)}deg)`;
+      }
+    }
+
+    update();
+    el.style.opacity = '1';
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          update();
+          rafId = 0;
+        });
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update, { passive: true });
+  })();
+</script>

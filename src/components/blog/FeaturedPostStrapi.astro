@@ -1,0 +1,66 @@
+---
+// src/components/blog/FeaturedPostStrapi.astro
+import { Image } from 'astro:assets';
+import { formatISODate } from '@utils/dateUtils';
+import type { NormalizedStrapiArticle } from '@/src/types/strapi';
+
+const {
+  post,
+  baseUrl = '/blog',
+  priority = false,
+} = Astro.props as {
+  post: NormalizedStrapiArticle;
+  baseUrl?: string;
+  priority?: boolean;
+};
+
+// Use pre-calculated reading time from normalized article
+const readingTimeMinutes = post.data.readingTimeMinutes || 1;
+const readingTimeText = `${readingTimeMinutes} minute read`;
+---
+
+<div class="blog-featured">
+  <!-- Image on the left -->
+  <div class="blog-featured--image">
+    {
+      post.data.thumbnail && (
+        <a href={`${baseUrl}/${post.id}/`} title={post.data.title}>
+          <Image
+            src={post.data.thumbnail}
+            alt={post.data.title}
+            width={717}
+            height={454}
+            widths={[400, 717, 1200]}
+            sizes="(max-width: 768px) 400px, (max-width: 1200px) 717px, 1200px"
+            format="webp"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding={priority ? 'sync' : 'async'}
+            fetchpriority={priority ? 'high' : 'auto'}
+          />
+        </a>
+      )
+    }
+  </div>
+
+  <div class="blog-featured--text">
+    <h1 class="blog-featured--title">
+      <a href={`${baseUrl}/${post.id}/`}>{post.data.title}</a>
+    </h1>
+
+    <p class="blog-featured--excerpt">
+      {post.data.description || ''}
+    </p>
+
+    <div class="blog--date">
+      <time datetime={formatISODate(post.data.date)}>
+        {
+          new Date(post.data.date).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
+        } | {readingTimeText}
+      </time>
+    </div>
+  </div>
+</div>

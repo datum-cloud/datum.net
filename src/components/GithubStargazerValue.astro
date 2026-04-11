@@ -3,10 +3,9 @@ import { Cache } from '@libs/cache';
 
 const cache = new Cache('.cache');
 
-let starCount: number = 0;
-
-if (cache.has('stargazerCount')) {
-  starCount = cache.get<number>('stargazerCount') as number;
+let starCount = 0;
+if (await cache.has('stargazerCount')) {
+  starCount = (await cache.get<number>('stargazerCount')) ?? 0;
 }
 ---
 

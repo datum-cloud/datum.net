@@ -45,12 +45,10 @@ export default defineConfig([
     '**/pnpm-lock.yaml',
     '**/public/',
     'src/content/',
-    'public/pagefind',
-    'public/pagefind-blog',
-    '**/pagefind/**',
-    '**/pagefind-blog/**',
   ]),
   {
+    files: ['**/*.{js,jsx,ts,tsx,astro,md,mdx}'],
+
     extends: compat.extends(
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',

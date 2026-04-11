@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Quarterly Rocks - Datum Handbook"
+  description: "Datum defines Rocks as the critical projects we prioritize. This is our public acknowledgement of our Q1 and Q2 2026 commitments"
+  og:
+    title: "Quarterly Rocks"
 ---
 
 The concept of “rocks” is inspired by the rocks, pebbles, and technique for prioritization. Essentially, if you fill your glass with sand and pebbles, you don’t have room for the big rocks. 

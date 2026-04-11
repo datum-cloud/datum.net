@@ -1,5 +1,11 @@
 // src/utils/authorUtils.ts
-import { getCollection } from 'astro:content';
+import {
+  getStrapiTeamMembers,
+  getAuthorBgColorFromStrapi,
+  fetchStrapiAuthors,
+  getTeamBgColor as getStrapiTeamBgColor,
+} from '@libs/strapi/authors';
+import type { StrapiAuthorFull } from '@/src/types/strapi';
 
 /**
  * Color palette that cycles through for team member avatars
@@ -16,49 +22,51 @@ export const getTeamBgColor = (index: number): string => {
 };
 
 /**
- * Extracts the last name from a full name string
+ * Normalized team member structure for compatibility with existing components
  */
-function getLastName(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  return parts[parts.length - 1].toLowerCase();
+export interface NormalizedTeamMember {
+  id: string;
+  data: {
+    name: string;
+    title?: string;
+    bio?: string;
+    avatar?: { src: string };
+    tick?: string;
+    surprising?: string;
+    weekends?: string;
+    team?: string;
+    isTeam?: boolean;
+  };
 }
 
 /**
- * Extracts the first name from a full name string
+ * Transforms a Strapi author to the normalized format used by components
  */
-function getFirstName(name: string): string {
-  return name.trim().split(/\s+/)[0].toLowerCase();
+function normalizeTeamMember(author: StrapiAuthorFull): NormalizedTeamMember {
+  return {
+    id: author.slug || author.documentId,
+    data: {
+      name: author.name,
+      title: author.title || undefined,
+      bio: author.bio || undefined,
+      avatar: author.avatar?.url ? { src: author.avatar.url } : undefined,
+      tick: author.tick || undefined,
+      surprising: author.surprising || undefined,
+      weekends: author.weekends || undefined,
+      team: author.team || undefined,
+      isTeam: author.isTeam,
+    },
+  };
 }
 
 /**
- * Fetches all team members (authors where isTeam is true),
+ * Fetches all team members from Strapi (authors where isTeam is true),
  * sorted with founders first, then alphabetically by last name.
- * @returns Sorted array of team member entries
+ * @returns Sorted array of normalized team member entries
  */
-export async function getTeamMembers() {
-  const teamMembers = (await getCollection('authors', ({ data }) => data.isTeam === true)).sort(
-    (a, b) => {
-      const aIsFounder = a.data.team === 'founders';
-      const bIsFounder = b.data.team === 'founders';
-
-      // Founders always come first
-      if (aIsFounder && !bIsFounder) return -1;
-      if (!aIsFounder && bIsFounder) return 1;
-
-      // Among founders, sort by title so CEO comes first
-      if (aIsFounder && bIsFounder) {
-        const aIsCeo = a.data.title?.includes('CEO') ? 0 : 1;
-        const bIsCeo = b.data.title?.includes('CEO') ? 0 : 1;
-        if (aIsCeo !== bIsCeo) return aIsCeo - bIsCeo;
-      }
-
-      // Within the same group, sort by last name, then first name
-      const lastNameCmp = getLastName(a.data.name).localeCompare(getLastName(b.data.name));
-      if (lastNameCmp !== 0) return lastNameCmp;
-      return getFirstName(a.data.name).localeCompare(getFirstName(b.data.name));
-    }
-  );
-  return teamMembers;
+export async function getTeamMembers(): Promise<NormalizedTeamMember[]> {
+  const strapiTeamMembers = await getStrapiTeamMembers();
+  return strapiTeamMembers.map(normalizeTeamMember);
 }
 
 /**
@@ -76,3 +84,11 @@ export async function getAuthorBgColor(authorId: string): Promise<string | undef
 
   return undefined;
 }
+
+// Re-export Strapi author functions from strapi module (with caching)
+export {
+  getStrapiTeamMembers,
+  getAuthorBgColorFromStrapi,
+  fetchStrapiAuthors,
+  getStrapiTeamBgColor,
+};

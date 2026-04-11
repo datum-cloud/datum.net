@@ -1,6 +1,5 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
-import { Breadcrumbs } from 'astro-breadcrumbs';
 import Sidebar from '@components/handbook/Sidebar.astro';
 import PageNav from '@components/handbook/PageNav.astro';
 import TableOfContents from '@components/TableOfContents.astro';
@@ -16,7 +15,12 @@ dayjs.extend(utc);
 const handbooks = await getCollection('handbooks', ({ id }) => id !== 'index');
 const handbookIndex = await getEntry('handbooks', 'index');
 
-const { articleId: propArticleId, showSidebar = true, class: className } = Astro.props;
+const {
+  articleId: propArticleId,
+  showSidebar = true,
+  showTitle = true,
+  class: className,
+} = Astro.props;
 
 // Support both prop-based and URL parameter-based article loading
 const urlParam = Astro.url.searchParams.get('article');
@@ -47,78 +51,6 @@ const lastModified =
  * Headings extraction for the main article
  */
 const headings: MarkdownHeading[] = mainArticle ? mainArticle.headings : [];
-
-/**
- * Create breadcrumbs manually based on article ID
- * since Astro-Breadcrumbs doesn't support dynamic routes well.
- */
-let breadcrumbData = [];
-breadcrumbData.push(
-  {
-    text: 'Home',
-    href: '/',
-  },
-  {
-    text: 'Handbook',
-    class: 'handbook-menu-toggle',
-    href: '/handbook/',
-  },
-  {
-    text: 'Handbook',
-    href: '/handbook/',
-  }
-);
-
-// Extract path segments from article ID
-const pathSegments = articleId.split('/').filter(Boolean);
-
-if (pathSegments.length > 0 && pathSegments[0] !== 'index') {
-  for (let i = 0; i < pathSegments.length; i++) {
-    const segment = pathSegments[i];
-
-    // Skip the last segment as it will be the current page title
-    if (i < pathSegments.length - 1) {
-      // Format the segment title (capitalize words, replace dashes with spaces)
-      let segmentTitle = segment
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, (c: string) => c.toUpperCase());
-
-      // Convert "eos" to "EOS"
-      if (segmentTitle.toLowerCase() === 'eos') {
-        segmentTitle = 'EOS';
-      }
-
-      breadcrumbData.push({
-        text: segmentTitle,
-        href: '/handbook/' + segment + '/',
-      });
-    }
-  }
-
-  // Add the current page title as the last breadcrumb
-  if (mainArticleEntry?.data.title) {
-    breadcrumbData.push({
-      text: mainArticleEntry.data.title,
-    });
-  }
-} else {
-  // Show "Home > Handbook" for the landing page (index)
-  breadcrumbData = [
-    {
-      text: 'Home',
-      href: '/',
-    },
-    {
-      text: 'Handbook',
-      class: 'handbook-menu-toggle',
-      href: '/handbook/',
-    },
-    {
-      text: 'Handbook',
-      href: '/handbook/',
-    },
-  ];
-}
 
 /**
  * Build items structure from categories and handbooks data
@@ -198,47 +130,14 @@ handbooks.forEach((collection) => {
       {showSidebar && <Sidebar selectedId={articleId} items={items} />}
 
       {/* Main Content Area */}
-      <article
-        class="handbook-content fade-in--pure"
-        data-reveal="fade-in--pure--visible"
-        data-reveal-immediate="true"
-        data-reveal-delay="100"
-      >
+      <article class="handbook-content">
         {
-          breadcrumbData.length > 0 && (
-            <div>
-              <Breadcrumbs
-                mainBemClass="c-breadcrumbs"
-                linkTextFormat="sentence"
-                crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-                customizeLinks={[{ index: 'last', 'aria-disabled': true }]}
-              >
-                <svg
-                  slot="index"
-                  aria-label="Home Page"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                  <polyline points="9 22 9 12 15 12 15 22" />
-                </svg>
-              </Breadcrumbs>
-            </div>
+          showTitle && (
+            <header class="article-header">
+              <h1 class="article-title">{mainArticleEntry?.data.title}</h1>
+            </header>
           )
         }
-
-        <header class="article-header">
-          <h1 class="article-title">
-            {mainArticleEntry?.data.title}
-          </h1>
-        </header>
 
         <div class="article-body">
           {
@@ -285,47 +184,6 @@ handbooks.forEach((collection) => {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const handbookMenuToggle = document.querySelector('.handbook-menu-toggle');
-
-    // Function to toggle sidebar
-    const toggleSidebar = () => {
-      if (window.innerWidth < 768) {
-        const expanded = document.body.hasAttribute('data-aside-menu-expanded');
-
-        if (!expanded) {
-          document.body.setAttribute('data-aside-menu-expanded', '');
-          document.body.classList.add('handbook-menu-open');
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.removeAttribute('data-aside-menu-expanded');
-          document.body.classList.remove('handbook-menu-open');
-          document.body.style.overflow = '';
-        }
-      }
-    };
-
-    if (handbookMenuToggle) {
-      handbookMenuToggle.addEventListener('click', (e) => {
-        // Only enable the toggle functionality on mobile screens
-        if (window.innerWidth < 768) {
-          e.preventDefault();
-
-          // Use the toggle function
-          toggleSidebar();
-        }
-      });
-
-      // Add resize listener to disable toggle functionality on larger screens
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) {
-          // Ensure mobile menu is closed when resizing to larger screens
-          document.body.removeAttribute('data-aside-menu-expanded');
-          document.body.classList.remove('handbook-menu-open');
-          document.body.style.overflow = '';
-        }
-      });
-    }
-
     // Add anchor links to headings in article body
     const articleBody = document.querySelector('.article-body');
     if (articleBody) {

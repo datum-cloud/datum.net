@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Datum Company Travel Policy"
+  title: "Company Travel Policy - Datum Handbook"
   description: "Guidelines for business travel. Read the Datum travel policy, including expense reimbursements, booking procedures, and per diems for team offsites."
+  og:
+    title: "Traveling"
 ---
 
 All US-based employees use Ramp for expense management, which includes travel related purchases. The guidelines below are suggestions to help frame good judgment.

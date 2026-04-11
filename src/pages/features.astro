@@ -1,0 +1,877 @@
+---
+// src/pages/features.astro
+import '@v1/styles/page-features.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import Footer from '@components/Footer.astro';
+import Icon from '@components/Icon.astro';
+import { Image } from 'astro:assets';
+
+import { getCollectionEntry } from '@utils/collectionUtils';
+import featuresMapImage from '@v1/assets/images/features-map.png';
+import videoFrameImage from '@v1/assets/images/video-frame.png';
+
+const page = await getCollectionEntry('pages', 'features');
+const fm = page.data;
+
+// SEO
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Features';
+const description = fm.description;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/features/#webpage',
+      url: 'https://www.datum.net/features/',
+      name: 'Datum Features – Critical Network Infrastructure',
+      description:
+        'Core networking features for agents and developers: AI Edge with global points of presence, QUIC-based Connectors, DNS, Domains, Metrics Export, Audit Logs, and Kubernetes-native tooling. Forever free tier available.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-20',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://www.datum.net/#product',
+      name: 'Datum Cloud',
+      url: 'https://www.datum.net/',
+      applicationCategory: 'NetworkingApplication',
+      operatingSystem: 'Linux, macOS, Windows',
+      description:
+        'An open source network cloud providing AI Edge, QUIC-based tunnels, DNS, Domains, OTel metrics export, and Kubernetes-native control plane — built for modern alt cloud providers and AI-native teams.',
+      publisher: { '@id': 'https://www.datum.net/#organization' },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        name: 'Builder tier',
+        description:
+          'Forever free tier including AI Edge and QUIC tunnels for exposing localhost to the internet.',
+        url: 'https://www.datum.net/pricing/',
+      },
+      featureList: [
+        'AI Edge — global Envoy-based edge proxy with WAF, custom hostnames, health checks, and 17+ global points of presence',
+        'Connectors — zero trust QUIC tunnels built on Iroh for safely exposing localhost to the internet',
+        'datumctl — Kubernetes-style CLI for authenticating and managing resources',
+        'Datum MCP — self-hosted MCP server with Cursor integration for AI agents',
+        'Developer Tools — macOS, Windows, and Linux desktop apps',
+        'DNS — secure authoritative DNS served across 17 global locations',
+        'Domains — programmatic domain management across providers',
+        'Metrics Export — OpenTelemetry metrics export to Grafana Cloud with prebuilt dashboards',
+        'Audit & Activity Logs — production-grade activity and audit logging',
+        'AGPLv3 License — open source with community contributions',
+      ],
+      softwareVersion: '2025',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+    },
+  ],
+};
+---
+
+<Layout bodyClass="page-features" meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container overflow-clip">
+    <Hero class="light content-alt" title={title} description={description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Features', href: '/features/', exact: true },
+          { label: 'Essentials', href: '/essentials/' },
+          { label: 'Pricing', href: '/pricing/' },
+        ]}
+      />
+    </Hero>
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 features-hero-wrapper pt-0">
+      <div class="features-matrix-bg" aria-hidden="true"></div>
+      <div class="max-width">
+        <div class="features-page">
+          <!-- Section 1: Hero Image -->
+          <section class="features-hero-video">
+            <Image
+              class="features-hero-video-frame"
+              src={videoFrameImage}
+              alt=""
+              aria-hidden="true"
+              loading="eager"
+            />
+            <video autoplay muted loop playsinline preload="auto">
+              <source src="/videos/terminal-v7.webm" type="video/webm" />
+              <source src="/videos/terminal-v7.mp4" type="video/mp4" />
+            </video>
+            <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                const video = document.querySelector(
+                  '.features-hero-video video'
+                ) as HTMLVideoElement;
+                if (!video) return;
+
+                video.play().catch(() => {
+                  const observer = new IntersectionObserver(
+                    (entries) => {
+                      entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                          video.play().catch(() => {});
+                        }
+                      });
+                    },
+                    { threshold: 0.25 }
+                  );
+                  observer.observe(video);
+                });
+              });
+            </script>
+          </section>
+
+          <!-- Section 2: AI Edge -->
+          <section class="features-section">
+            <div class="features-section-header">
+              <div>
+                <span class="section-label">AI Edge_</span>
+              </div>
+              <div class="features-section-header-text">
+                <h2 class="section-title">Meet the internet in style</h2>
+                <p class="features-section-description">
+                  Give every agent or app a global edge to absorb attacks, interact with the broader
+                  internet, and safely route traffic to backend services.
+                </p>
+              </div>
+            </div>
+
+            <div class="features-section-content">
+              <div class="features-section-content--left">
+                <div class="features-map-image">
+                  <Image
+                    src={featuresMapImage}
+                    alt="Datum Cloud map"
+                    widths={[640, 960, 1066]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 960px) 100vw, 1066px"
+                  />
+                  <canvas
+                    class="features-map-canvas"
+                    id="features-network-canvas"
+                    aria-hidden="true"></canvas>
+                </div>
+              </div>
+
+              <div class="features-section-content--right">
+                <div class="features-bullet-list">
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Powered by Envoy</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Envoy is the internet's leading distributed proxy, deployed at scale with
+                      Google, Netflix, Salesforce and more. Why not you?
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Built-in Coraza WAF</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Firewalls are hard business. While we can't solve that, we can quickly cover
+                      the top OWASP threats with Coraza. You're welcome!
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">17+ global regions</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      The world is big, but the internet gathers in a smaller set of key "football
+                      cities" like Amsterdam, Ashburn, and Tokyo to interact and exchange traffic.
+                      That's where we are today.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 3: Connectors -->
+          <section class="features-section">
+            <div class="features-section-header">
+              <div>
+                <span class="section-label">Connectors_</span>
+              </div>
+              <div class="features-section-header-text">
+                <h2 class="section-title max-w-2xl">
+                  Orchestrate diverse connections, starting with Tunnels
+                </h2>
+                <p class="features-section-description">
+                  We're focused on supporting all kinds of connections, from developer-focused (e.g.
+                  Tailscale Tailnets, Wireguard VPNs) to low level L2/L3 telco (AWS Direct Connect,
+                  Equinix Fabric, Megaport Onramps, etc). But first, QUIC-based Tunnels!
+                </p>
+              </div>
+            </div>
+
+            <div class="features-section-content">
+              <div class="features-section-content--left">
+                <div class="features-bullet-list">
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Zero Trust for Agents</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Safeguard data and bring up workloads with instant connectivity to exactly
+                      what it needs.
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Built on Iroh, powered by QUIC</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Lightweight, flexible tunnels built using the Iroh protocol for direct
+                      peer-to-peer connections.
+                    </p>
+                  </div>
+
+                  <div class="features-bullet">
+                    <div class="features-bullet-header">
+                      <span class="features-bullet-marker"></span>
+                      <h3 class="features-bullet-title">Resilient Routing</h3>
+                    </div>
+                    <p class="features-bullet-description">
+                      Certificate-based routing keeps connections secure, stable, and ready for
+                      chaos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="features-cta">
+                <div class="features-cta-banner">
+                  <span class="features-cta-banner-text">Wanna <span>try it</span></span>
+                  <span class="features-cta-banner-icon">
+                    <Icon name="question-mark" />
+                  </span>
+                </div>
+
+                <p class="features-cta-description">
+                  Expose <a href="https://www.datum.net/download/">localhost</a> to the internet with
+                  our desktop apps:
+                </p>
+
+                <div class="features-cta-links">
+                  <div class="features-cta-link">
+                    <Icon name="apple" size="md" />
+                    <a
+                      href="https://www.datum.net/download/mac-os/"
+                      data-fathom-event="Features page: Download Mac">mac</a
+                    >
+                  </div>
+
+                  <div class="features-cta-link">
+                    <Icon name="windows" size="md" />
+                    <a
+                      href="https://www.datum.net/download/windows/"
+                      data-fathom-event="Features page: Download Windows">Windows</a
+                    >
+                  </div>
+
+                  <div class="features-cta-link">
+                    <Icon name="linux" size="md" />
+                    <a
+                      href="https://www.datum.net/download/linux/"
+                      data-fathom-event="Features page: Download Linux">Linux</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4: Galactic VPC + UFO -->
+          <div class="features-cards">
+            <section class="features-card">
+              <div class="features-card-header">
+                <div class="features-card-labels">
+                  <span class="section-label">Galactic VPC_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
+                </div>
+                <div class="features-section-header-text">
+                  <h2 class="section-title--sm">Route traffic where you want it</h2>
+                  <p class="features-section-description">
+                    Internet backbones weren't designed for most humans, let alone agents. Our
+                    Galactic VPC is built for an agentic world. Virtual backbones for every agent.
+                  </p>
+                </div>
+              </div>
+
+              <div class="features-bullet-list">
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">SRv6, Policy-Based Overlay</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Define how traffic flows with segment routing that put you in control of every
+                    hop.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Fully Programmable</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    We're working on a VPC like you'd get in the public cloud, but everywhere!
+                    Telemetry included.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Optimized for Private Paths</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Skip the public internet and opt for private paths that keep traffic fast,
+                    predictable, and secure.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section class="features-card">
+              <div class="features-card-header">
+                <div class="features-card-labels">
+                  <span class="section-label">UFO_</span>
+                  <span class="section-label section-label--muted"> (coming soon) </span>
+                </div>
+                <div class="features-section-header-text">
+                  <h2 class="section-title--sm">Isolated, cold-start compute</h2>
+                  <p class="features-section-description">
+                    That's why our "Unikernel Function Offload" feature provides 100% isolation,
+                    millisecond cold starts, and scale to zero snapshotting.
+                  </p>
+                </div>
+              </div>
+
+              <div class="features-bullet-list">
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Built for AI</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Moving intelligence to the edge with fast, low-cost, secure virtual machines.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Tiny and Mighty</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Start in &lt;10 ms with true scale to zero. Run any workload, stateless or
+                    stateful.
+                  </p>
+                </div>
+
+                <div class="features-bullet">
+                  <div class="features-bullet-header">
+                    <span class="features-bullet-marker"></span>
+                    <h3 class="features-bullet-title">Powered by Unikraft</h3>
+                  </div>
+                  <p class="features-bullet-description">
+                    Because we're not dummies, we partnered with the crew leading the unikernel
+                    revolution.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Values -->
+    <section class="section--block section--block--pad bg-glacier-mist-800">
+      <div class="max-width">
+        <div class="features-values">
+          <h2 class="features-values-title">
+            Values that guide<br />how we build
+          </h2>
+
+          <div class="features-values-list">
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                <strong>AX</strong>, then <strong>DX</strong>, then <strong>UX</strong>.
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Build for <strong>M's</strong> of backbones, <strong>B's</strong> of tunnels,
+                <strong>T's</strong> of unikernels
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Be <strong>humble</strong>, <strong>curious</strong>, and <strong>helpful</strong>
+                <br />(we're operators at heart).
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                <strong>No weird sales gates</strong>, overt jargon, or marketing crap.
+              </p>
+            </div>
+
+            <div class="features-value-item">
+              <div class="features-value-marker">
+                <Icon name="arrow-right-alt" />
+              </div>
+              <p class="features-value-text">
+                Ship a first version, then <strong>make it better!</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </section>
+</Layout>
+
+<script>
+  (function () {
+    const canvas = document.getElementById('features-network-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Node positions: x = (lon + 180) / 360  (equirectangular)
+    //                 y = Mercator ±65° projection
+    //   ym(d) = ln(tan(π/4 + d·π/360));  top=ym(65), bot=ym(-65)
+    //   y = (top - ym(lat)) / (top - bot)
+    const NODES = [
+      // North America (NA)
+      { id: 'san_jose', x: 0.161, y: 0.265, primary: false }, // -121.9, 37.3
+      { id: 'dallas', x: 0.231, y: 0.299, primary: false }, //  -96.8, 32.8
+      { id: 'toronto', x: 0.279, y: 0.215, primary: false }, //  -79.4, 43.7
+      { id: 'ashburn', x: 0.286, y: 0.257, primary: true }, //  -77.0, 39.0
+      { id: 'nyc', x: 0.294, y: 0.242, primary: false }, //  -74.0, 40.7
+      // Latin America (LATAM)
+      { id: 'santiago', x: 0.304, y: 0.639, primary: false }, //  -70.7, -33.5
+      { id: 'saopaulo', x: 0.371, y: 0.639, primary: false }, //  -46.6, -23.5
+      // Europe (EU)
+      { id: 'london', x: 0.5, y: 0.2, primary: true }, //   -0.1, 51.5
+      { id: 'amsterdam', x: 0.514, y: 0.2, primary: true }, //    4.9, 52.4
+      { id: 'frankfurt', x: 0.524, y: 0.25, primary: false }, //    8.7, 50.1
+      // Middle East & Africa (MEA)
+      { id: 'dubai', x: 0.654, y: 0.347, primary: false }, //   55.3, 25.2
+      { id: 'johannesburg', x: 0.578, y: 0.639, primary: false }, //   28.0, -26.2
+      // Asia Pacific (APAC)
+      { id: 'mumbai', x: 0.703, y: 0.387, primary: false }, //   72.9, 19.1
+      { id: 'singapore', x: 0.788, y: 0.492, primary: false }, //  103.8,  1.3
+      { id: 'sydney', x: 0.92, y: 0.695, primary: false }, //  151.2, -33.9
+      { id: 'tokyo', x: 0.888, y: 0.275, primary: true }, //  139.7, 35.7
+    ] as const;
+
+    const EDGES: [string, string][] = [
+      // NA internal
+      ['san_jose', 'dallas'],
+      ['san_jose', 'toronto'],
+      ['dallas', 'toronto'],
+      ['dallas', 'ashburn'],
+      ['toronto', 'ashburn'],
+      ['ashburn', 'nyc'],
+      ['toronto', 'nyc'],
+      // Trans-atlantic
+      ['ashburn', 'london'],
+      ['nyc', 'amsterdam'],
+      // Europe triangle
+      ['london', 'amsterdam'],
+      ['amsterdam', 'frankfurt'],
+      ['london', 'frankfurt'],
+      // Europe → MEA
+      ['frankfurt', 'dubai'],
+      ['amsterdam', 'johannesburg'],
+      // Europe → APAC
+      ['london', 'mumbai'],
+      // MEA internal
+      ['dubai', 'mumbai'],
+      ['dubai', 'johannesburg'],
+      // APAC
+      ['mumbai', 'singapore'],
+      ['singapore', 'sydney'],
+      ['singapore', 'tokyo'],
+      ['sydney', 'tokyo'],
+      // Trans-pacific
+      ['san_jose', 'tokyo'],
+      // Latin America
+      ['ashburn', 'saopaulo'],
+      ['saopaulo', 'santiago'],
+      // South Atlantic cable
+      ['johannesburg', 'saopaulo'],
+    ];
+
+    // Nodes eligible for red alert events — spread across regions
+    const ALERT_NODE_IDS = [
+      'ashburn',
+      'nyc',
+      'dallas',
+      'san_jose',
+      'saopaulo',
+      'london',
+      'amsterdam',
+      'frankfurt',
+      'dubai',
+      'johannesburg',
+      'mumbai',
+      'singapore',
+      'sydney',
+      'tokyo',
+    ];
+
+    // ─── Global position offset ─────────────────────────────────────────────
+    // Shift the entire node group without touching individual coordinates.
+    // OFFSET_X / OFFSET_Y are fractions of canvas width/height (0–1 scale).
+    // Examples: +0.05 moves all nodes 5% right/down, -0.05 moves left/up.
+    const OFFSET_X = -0.019; // ← edit me
+    const OFFSET_Y = 0.13; // ← edit me
+    // ────────────────────────────────────────────────────────────────────────
+
+    // aurora-moss: #e6f59f  |  blush-quartz: #ecd0d0
+    const NODE_COLOR = '#e6f59f';
+    const LINE_COLOR = 'rgba(230, 245, 159, 0.15)';
+    const PACKET_COLOR = '#ecd0d0';
+
+    // Red alert state
+    type Alert = { nodeId: string; startedAt: number; duration: number };
+    const activeAlerts: Alert[] = [];
+    let nextAlertAt = 1.5 + Math.random() * 3; // first pop after 1.5–4.5 s
+
+    function scheduleNextAlert() {
+      // Next pop: 4–9 seconds from now (calm, unhurried pace)
+      return nextAlertAt + 4 + Math.random() * 5;
+    }
+
+    // Ease-out quad: fast start, slow finish
+    function easeOut(t: number) {
+      return 1 - (1 - t) * (1 - t);
+    }
+
+    let animFrame = 0;
+    let startTime: number | null = null;
+
+    function nodeMap(): Record<string, (typeof NODES)[number]> {
+      const m: Record<string, (typeof NODES)[number]> = {};
+      for (const n of NODES) m[n.id] = n;
+      return m;
+    }
+    const nodeById = nodeMap();
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const parent = canvas!.parentElement!;
+      const rect = parent.getBoundingClientRect();
+      canvas!.width = Math.round(rect.width * dpr);
+      canvas!.height = Math.round(rect.height * dpr);
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnAlert(elapsed: number) {
+      // Pick a node that isn't already alerting
+      const busy = new Set(activeAlerts.map((a) => a.nodeId));
+      const candidates = ALERT_NODE_IDS.filter((id) => !busy.has(id));
+      if (candidates.length === 0) return;
+      const id = candidates[Math.floor(Math.random() * candidates.length)];
+      activeAlerts.push({ nodeId: id, startedAt: elapsed, duration: 2.2 });
+    }
+
+    function drawAlerts(elapsed: number, W: number, H: number) {
+      // Spawn new alert if it's time
+      if (elapsed >= nextAlertAt) {
+        spawnAlert(elapsed);
+        nextAlertAt = scheduleNextAlert();
+      }
+
+      // Draw and cull finished alerts
+      for (let i = activeAlerts.length - 1; i >= 0; i--) {
+        const alert = activeAlerts[i];
+        const progress = (elapsed - alert.startedAt) / alert.duration;
+        if (progress >= 1) {
+          activeAlerts.splice(i, 1);
+          continue;
+        }
+
+        const node = nodeById[alert.nodeId];
+        if (!node) continue;
+        const px = (node.x + OFFSET_X) * W;
+        const py = (node.y + OFFSET_Y) * H;
+        const ep = easeOut(progress);
+
+        // Outer ring — expands 4 → 22 px, fades out
+        const outerR = 4 + 18 * ep;
+        const outerAlpha = (1 - progress) * 0.65;
+        ctx!.beginPath();
+        ctx!.arc(px, py, outerR, 0, Math.PI * 2);
+        ctx!.strokeStyle = `rgba(220, 60, 60, ${outerAlpha})`;
+        ctx!.lineWidth = 1.5;
+        ctx!.stroke();
+
+        // Inner ring — slightly delayed, 2 → 11 px, fades out faster
+        const innerProgress = Math.max(0, (progress - 0.15) / 0.85);
+        if (innerProgress > 0) {
+          const innerR = 2 + 9 * easeOut(innerProgress);
+          const innerAlpha = (1 - innerProgress) * 0.45;
+          ctx!.beginPath();
+          ctx!.arc(px, py, innerR, 0, Math.PI * 2);
+          ctx!.strokeStyle = `rgba(220, 60, 60, ${innerAlpha})`;
+          ctx!.lineWidth = 1;
+          ctx!.stroke();
+        }
+
+        // Red core dot — fades out in the second half
+        const coreAlpha = progress < 0.5 ? 1 : 1 - (progress - 0.5) / 0.5;
+        ctx!.beginPath();
+        ctx!.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(220, 60, 60, ${coreAlpha})`;
+        ctx!.fill();
+      }
+    }
+
+    function draw(ts: number) {
+      // Schedule next frame FIRST — guarantees loop never stops, even if an error occurs below
+      animFrame = requestAnimationFrame(draw);
+
+      if (startTime === null) startTime = ts;
+      const elapsed = (ts - startTime) / 1000;
+
+      const dpr = window.devicePixelRatio || 1;
+      const W = canvas!.width / dpr;
+      const H = canvas!.height / dpr;
+
+      ctx!.clearRect(0, 0, W, H);
+
+      // Draw edges and animated packets
+      EDGES.forEach(([a, b], i) => {
+        const na = nodeById[a];
+        const nb = nodeById[b];
+        if (!na || !nb) return;
+
+        const ax = (na.x + OFFSET_X) * W,
+          ay = (na.y + OFFSET_Y) * H;
+        const bx = (nb.x + OFFSET_X) * W,
+          by = (nb.y + OFFSET_Y) * H;
+
+        // Static line
+        ctx!.beginPath();
+        ctx!.moveTo(ax, ay);
+        ctx!.lineTo(bx, by);
+        ctx!.strokeStyle = LINE_COLOR;
+        ctx!.lineWidth = 1;
+        ctx!.stroke();
+
+        // Two packets per edge, staggered
+        const speed = 0.12 + (i % 6) * 0.015;
+        for (let p = 0; p < 2; p++) {
+          const phase = p * 0.5 + i * 0.137;
+          const t = (elapsed * speed + phase) % 1;
+          const px = ax + (bx - ax) * t;
+          const py = ay + (by - ay) * t;
+
+          // Glow halo — blush quartz: 236,208,208
+          const grad = ctx!.createRadialGradient(px, py, 0, px, py, 5);
+          grad.addColorStop(0, 'rgba(236, 208, 208, 0.7)');
+          grad.addColorStop(1, 'rgba(236, 208, 208, 0)');
+          ctx!.beginPath();
+          ctx!.arc(px, py, 5, 0, Math.PI * 2);
+          ctx!.fillStyle = grad;
+          ctx!.fill();
+
+          // Packet dot
+          ctx!.beginPath();
+          ctx!.arc(px, py, 1.5, 0, Math.PI * 2);
+          ctx!.fillStyle = PACKET_COLOR;
+          ctx!.fill();
+        }
+      });
+
+      // Draw green nodes
+      NODES.forEach((node, idx) => {
+        const px = (node.x + OFFSET_X) * W;
+        const py = (node.y + OFFSET_Y) * H;
+        const coreR = node.primary ? 3.5 : 2.5;
+
+        // Outward pulse ring
+        const pulsePhase = (elapsed * 0.7 + idx * 0.37) % 1;
+        const pulseMaxR = node.primary ? 14 : 9;
+        ctx!.beginPath();
+        ctx!.arc(px, py, pulseMaxR * pulsePhase, 0, Math.PI * 2);
+        ctx!.strokeStyle = `rgba(230, 245, 159, ${(1 - pulsePhase) * 0.35})`;
+        ctx!.lineWidth = 1;
+        ctx!.stroke();
+
+        // Glow
+        const glowR = coreR * 3;
+        const glow = ctx!.createRadialGradient(px, py, 0, px, py, glowR);
+        glow.addColorStop(0, 'rgba(230, 245, 159, 0.5)');
+        glow.addColorStop(1, 'rgba(230, 245, 159, 0)');
+        ctx!.beginPath();
+        ctx!.arc(px, py, glowR, 0, Math.PI * 2);
+        ctx!.fillStyle = glow;
+        ctx!.fill();
+
+        // Core dot
+        ctx!.beginPath();
+        ctx!.arc(px, py, coreR, 0, Math.PI * 2);
+        ctx!.fillStyle = NODE_COLOR;
+        ctx!.fill();
+      });
+
+      // Draw red alert halos on top
+      drawAlerts(elapsed, W, H);
+    }
+
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(canvas.parentElement!);
+    resize();
+    animFrame = requestAnimationFrame(draw);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animFrame);
+      } else {
+        startTime = null;
+        nextAlertAt = 1.5 + Math.random() * 3;
+        animFrame = requestAnimationFrame(draw);
+      }
+    });
+  })();
+
+  // Highlight animations
+  (function initHighlights() {
+    function makeHighlighter(container: Element, selector: string, threshold = 0.4) {
+      let isHighlighted = false;
+
+      function highlight() {
+        if (isHighlighted) return;
+        isHighlighted = true;
+        Array.from(container.querySelectorAll<HTMLElement>(selector)).forEach((el, i) =>
+          setTimeout(() => el.classList.add('highlight-animate'), i * 120)
+        );
+      }
+
+      new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) highlight();
+        },
+        { threshold }
+      ).observe(container);
+
+      new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) isHighlighted = false;
+        },
+        { threshold: 0 }
+      ).observe(container);
+    }
+
+    document
+      .querySelectorAll('.features-bullet-list')
+      .forEach((el) => makeHighlighter(el, '.features-bullet-marker'));
+    document
+      .querySelectorAll('.features-values-list')
+      .forEach((el) => makeHighlighter(el, '.features-value-marker'));
+    document.querySelectorAll('.features-cta-banner').forEach((el) => {
+      let highlighted = false;
+      new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !highlighted) {
+            highlighted = true;
+            el.classList.add('highlight-animate');
+          }
+          if (!entries[0].isIntersecting) highlighted = false;
+        },
+        { threshold: 0.8 }
+      ).observe(el);
+    });
+  })();
+
+  // Video tilt — scroll-driven perspective reveal
+  (function initVideoTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const elFound = document.querySelector<HTMLElement>('.features-hero-video');
+    if (!elFound) return;
+    const el: HTMLElement = elFound;
+
+    el.style.opacity = '0';
+
+    const ANGLE = 18; // degrees laid back at rest
+    const SCALE = 0.92; // slightly smaller at rest
+
+    let rafId = 0;
+
+    function update() {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      // progress: 0 when element top hits bottom of viewport, 1 when element is vertically centered
+      const startY = vh;
+      const endY = (vh - rect.height) / 2;
+      const progress =
+        endY === startY ? 1 : Math.max(0, Math.min(1, (startY - rect.top) / (startY - endY)));
+
+      if (progress >= 1) {
+        el.style.transform = '';
+      } else {
+        const angle = ANGLE * (1 - progress);
+        const scale = SCALE + (1 - SCALE) * progress;
+        el.style.transform = `perspective(1200px) rotateX(${angle.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      }
+    }
+
+    update();
+    el.style.opacity = '1';
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          update();
+          rafId = 0;
+        });
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update, { passive: true });
+  })();
+</script>

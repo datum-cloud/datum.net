@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Customer Segments & Market Focus at Datum"
+  title: "Customer Segments & Market Focus at Datum - Datum Handbook"
   description: "Empowering the builders. Read about the user personas that drive our product decisions, from network architects to developers needing programmable infrastructure."
+  og:
+    title: "Who we are building for"
 ---
 
 Our customers are AI-native providers and digital leaders: AI startups, alt clouds, and next-gen enterprises who are building what’s next. They’re focused on innovation, speed to market, and making the future possible.

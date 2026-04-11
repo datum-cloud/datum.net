@@ -1,7 +1,6 @@
-import { z, reference, defineCollection } from 'astro:content';
+import { reference, defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
-import { docsLoader } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const metaSchema = (image?: any) =>
@@ -24,26 +23,6 @@ const metaSchema = (image?: any) =>
         .optional(),
     })
     .optional();
-
-// Define blog collections
-const blog = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      slug: z.string().optional(),
-      subtitle: z.string().optional(),
-      description: z.string().optional(),
-      date: z.date(),
-      author: z.string().optional(),
-      categories: z.array(z.string()).optional().default([]),
-      thumbnail: image().optional(),
-      featuredImage: image().optional(),
-      draft: z.boolean().optional().default(false),
-      updatedDate: z.string().optional(),
-      meta: metaSchema(image),
-    }),
-});
 
 // Define pages collections
 const pages = defineCollection({
@@ -114,7 +93,7 @@ const about = defineCollection({
       items: z.array(z.string()).optional(),
       link: z
         .object({
-          url: z.string().url(),
+          url: z.url(),
           label: z.string(),
         })
         .optional(),
@@ -133,32 +112,6 @@ const legal = defineCollection({
       description: z.string().optional(),
       iconName: z.string().optional(),
       meta: metaSchema(image),
-    }),
-});
-
-// Define authors collections
-const authors = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/authors' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string().optional(),
-      name: z.string(),
-      bio: z.string(),
-      avatar: image().optional(),
-      isTeam: z.boolean().optional().default(false),
-      team: z.enum(['founders', 'team']).optional(),
-      position: z.string().optional(),
-      social: z
-        .object({
-          twitter: z.string().optional(),
-          github: z.string().optional(),
-          linkedin: z.string().optional(),
-        })
-        .optional(),
-      tick: z.string().optional(),
-      surprising: z.string().optional(),
-      weekends: z.string().optional(),
-      bgColor: z.string().optional(),
     }),
 });
 
@@ -261,7 +214,7 @@ const features = defineCollection({
         .array(
           z.object({
             label: z.string(),
-            url: z.string().url().optional(),
+            url: z.url().optional(),
           })
         )
         .optional(),
@@ -302,6 +255,7 @@ const pricing = defineCollection({
           href: z.string().optional(),
           class: z.string().optional(),
           isExternal: z.boolean().optional(),
+          fathomEvent: z.string().optional(),
         })
         .optional(),
       featureGroups: z
@@ -328,27 +282,66 @@ const faq = defineCollection({
     }),
 });
 
+// Define download collections
+const download = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/download' }),
+  schema: ({ image }) =>
+    z.object({
+      slug: z.string(),
+      title: z.string(),
+      description: z.string().optional(),
+      icon: z.string().optional(),
+      order: z.number().optional().default(0),
+      draft: z.boolean().optional().default(false),
+      meta: metaSchema(image),
+    }),
+});
+
+// Define events collections
+const events = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/events' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      apiId: z.string(),
+      startAt: z.string(),
+      endAt: z.string(),
+      timezone: z.string(),
+      url: z.string(),
+      coverImage: image().optional(),
+      geoAddress: z
+        .object({
+          address: z.string().optional(),
+          city: z.string().optional(),
+          region: z.string().optional(),
+          country: z.string().optional(),
+          cityState: z.string().optional(),
+          fullAddress: z.string().optional(),
+          description: z.string().optional(),
+        })
+        .optional(),
+      geoLatitude: z.union([z.string(), z.number()]).optional(),
+      geoLongitude: z.union([z.string(), z.number()]).optional(),
+      meetingUrl: z.string().optional(),
+      zoomMeetingUrl: z.string().optional(),
+      youtubeUrl: z.string().optional(),
+      slidesUrl: z.string().optional(),
+      tags: z.array(z.string()).optional(),
+      theme: z.string().optional(),
+      eventType: z.enum(['community-huddle', 'alt-cloud-meetup', 'external', 'other']),
+    }),
+});
+
 export const collections = {
   pages,
   about,
   legal,
-  blog,
-  authors,
   categories,
   handbooks,
   changelog,
   features,
   pricing,
   faq,
-  docs: defineCollection({
-    loader: docsLoader(),
-    schema: docsSchema({
-      extend: ({ image }) =>
-        z.object({
-          // override lastUpdated from original schema
-          updatedDate: z.string().optional(),
-          meta: metaSchema(image),
-        }),
-    }),
-  }),
+  download,
+  events,
 };

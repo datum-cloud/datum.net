@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Datum Corporate Strategy - Open Source & Neutrality"
   description: "Read about Datum's strategic vision. We combine a commercial open source (COSS) model with a neutral, federated architecture to empower the next generation of clouds."
+  og:
+    title: "Our strategy"
 ---
 
 If you’ve read any business books over the last twenty years, you know about big, hairy, audacious goals (BHAGs). Ours is to be the most trusted way for AI & digital ecosystems to interact. We think we’ll need millions, or even billions, of active connections to prove it.
@@ -27,7 +29,6 @@ To update the concept in an age of AI and complex digital ecosystems, we are bui
 Our open source commitment:
 * Core Datum Cloud functionality is fully open source
 * [Community contributions](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests) are welcomed and celebrated 
-* [Documentation](/docs/) and examples are extensive and maintained
 * We provide paths for both self-hosted and managed data planes deployments
 
 We’re building Datum to be genuinely neutral because providers need a place to collaborate without competitive dynamics. We believe we succeed when our ecosystem partners succeed, so that means:

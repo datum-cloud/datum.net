@@ -21,7 +21,8 @@ const cookieOptions = {
   sameSite: 'lax' as const,
   secure: process.env.MODE === 'production',
   httpOnly: true,
-  maxAge: 60 * 60 * 24 * 7, // 7 days
+  maxAge: 60 * 60 * 24 * 7, // 7 days,
+  domain: '.datum.net',
 };
 
 /**

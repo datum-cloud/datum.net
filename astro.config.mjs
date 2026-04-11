@@ -2,16 +2,15 @@ import { defineConfig } from 'astro/config';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
+import mdx from '@astrojs/mdx';
 import mermaid from 'astro-mermaid';
 
 import { loadEnv } from 'vite';
-import starlight from '@astrojs/starlight';
 import node from '@astrojs/node';
 
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import glossary from './src/plugins/glossary.js';
 import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
@@ -26,6 +25,9 @@ export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'always',
   output: 'static',
+  security: {
+    checkOrigin: false,
+  },
   adapter: node({
     mode: 'middleware',
   }),
@@ -34,13 +36,15 @@ export default defineConfig({
   },
   image: {
     layout: 'constrained',
+    domains: ['grateful-excitement-dfe9d47bad.media.strapiapp.com', 'images.lumacdn.com'],
   },
   integrations: [
+    mdx(),
     announcement({
       show: true,
-      label: "We're hiring!",
-      text: "We're actively building our team, join us",
-      href: '/careers/',
+      label: 'Free download',
+      text: 'Take your localhost global with our alpha http desktop app',
+      href: '/download/',
       icon: {
         name: 'arrow-right',
         size: 'sm',
@@ -61,128 +65,6 @@ export default defineConfig({
     mermaid({
       theme: 'forest',
       autoTheme: true,
-    }),
-    starlight({
-      title: 'Datum',
-      disable404Route: true,
-      credits: false,
-      lastUpdated: true,
-      editLink: {
-        baseUrl: 'https://github.com/datum-cloud/datum.net/edit/main/',
-      },
-      logo: {
-        light: '/public/download/logo-datum-light.svg',
-        dark: '/public/download/logo-datum-dark.svg',
-        replacesTitle: true,
-      },
-      customCss: ['./src/v1/styles/starlight.css'], // https://github.com/withastro/starlight/blob/main/packages/starlight/style/props.css
-      description:
-        env.STARLIGHT_DESCRIPTION || 'Documentation for Datum - Your Data Management Solution',
-      social: [
-        {
-          icon: 'github',
-          label: 'GitHub',
-          href: env.GITHUB_PROJECT_URL || 'http://github.com/datum-cloud/datum.net',
-        },
-      ],
-      components: {
-        Head: '@components/starlight/Head.astro',
-        PageFrame: '@components/starlight/PageFrame.astro',
-        PageSidebar: '@components/starlight/PageSidebar.astro',
-        TwoColumnContent: '@components/starlight/TwoColumnContent.astro',
-        SiteTitle: '@components/starlight/SiteTitle.astro',
-        Header: '@components/starlight/Header.astro',
-        Footer: '@components/starlight/Footer.astro',
-        MobileMenuToggle: '@components/starlight/MobileMenuToggle.astro',
-        Sidebar: '@components/starlight/Sidebar.astro',
-        Search: '@components/starlight/Search.astro',
-      },
-      head: [
-        {
-          tag: 'script',
-          attrs: { src: '/scripts/markerio.js', defer: true },
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: 'https://cdn.usefathom.com/script.js',
-            defer: true,
-            'data-site': 'PXKRQKIZ',
-          },
-        },
-      ],
-      expressiveCode: {
-        themes: ['github-light', 'github-dark'],
-        styleOverrides: {
-          borderRadius: '0.5rem',
-        },
-      },
-
-      sidebar: [
-        {
-          label: 'Overview',
-          autogenerate: { directory: 'docs/overview' },
-          collapsed: true, // First group is expanded by default
-        },
-        {
-          label: 'Quickstart',
-          autogenerate: { directory: 'docs/quickstart' },
-          collapsed: true, // All other groups are collapsed by default
-        },
-        {
-          label: 'API',
-          autogenerate: { directory: 'docs/api' },
-          collapsed: true,
-        },
-        {
-          label: 'Command line',
-          autogenerate: { directory: 'docs/datumctl' },
-          collapsed: true, // First group is expanded by default
-        },
-        {
-          label: 'Our Infrastructure',
-          autogenerate: { directory: 'docs/infrastructure' },
-          collapsed: true,
-        },
-        {
-          label: 'Platform',
-          autogenerate: { directory: 'docs/platform' },
-          collapsed: true,
-        },
-        {
-          label: 'Runtime',
-          items: [
-            { label: 'Runtime Overview', link: 'docs/runtime/' },
-            { label: 'Datum DNS', autogenerate: { directory: 'docs/runtime/dns' } },
-            { label: 'Datum Proxy', link: 'docs/runtime/proxy/' },
-            { label: 'AI Gateway', link: 'docs/runtime/ai-gateway/' },
-          ],
-          collapsed: true,
-        },
-        {
-          label: 'Connections',
-          autogenerate: { directory: 'docs/connections' },
-          collapsed: true,
-        },
-        {
-          label: 'Assets',
-          autogenerate: { directory: 'docs/assets' },
-          collapsed: true,
-        },
-        {
-          label: 'Metrics',
-          autogenerate: { directory: 'docs/metrics' },
-          collapsed: true,
-        },
-        {
-          label: 'Glossary',
-          link: 'docs/glossary/',
-        },
-      ],
-    }),
-    glossary({
-      source: 'docs/docs/glossary.mdx',
-      contentDir: 'docs',
     }),
     sitemap({
       exclude: [

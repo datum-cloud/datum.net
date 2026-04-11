@@ -2,6 +2,7 @@
 import '@v1/styles/page-pricing.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { getCollection } from 'astro:content';
@@ -19,21 +20,152 @@ const faqs = (await getCollection('faq'))
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/pricing/#webpage',
+      url: 'https://www.datum.net/pricing/',
+      name: 'Datum Pricing – Start for Free',
+      description:
+        'Datum offers three plans: a forever-free Builder tier, a Scaler tier at $20/month plus usage (coming 2026), and a custom Provider tier for alt cloud companies. No network team required.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-20',
+    },
+    {
+      '@type': 'Product',
+      '@id': 'https://www.datum.net/#product',
+      name: 'Datum Cloud',
+      description:
+        'An open source network cloud for agents and developers. Provides AI Edge, QUIC-based Connectors, DNS, Domains, OTel Metrics Export, VPC networking, and Kubernetes-native tooling.',
+      brand: {
+        '@type': 'Brand',
+        name: 'Datum',
+        '@id': 'https://www.datum.net/#organization',
+      },
+      url: 'https://www.datum.net/',
+      offers: [
+        {
+          '@type': 'Offer',
+          '@id': 'https://www.datum.net/pricing/#builder',
+          name: 'Builder',
+          description:
+            'A low-friction plan for personal projects, development, and experimentation. Includes AI Edge (Envoy Proxy + Coraza WAF), Connectors (QUIC tunnels), DNS, Domains, OTel Metrics Export, Secrets, Teams, RBAC, and Machine Accounts.',
+          price: '0',
+          priceCurrency: 'USD',
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: '0',
+            priceCurrency: 'USD',
+            unitText: 'MONTH',
+          },
+          availability: 'https://schema.org/InStock',
+          url: 'https://auth.datum.net/ui/v2/login/register',
+          seller: { '@id': 'https://www.datum.net/#organization' },
+        },
+        {
+          '@type': 'Offer',
+          '@id': 'https://www.datum.net/pricing/#scaler',
+          name: 'Scaler',
+          description:
+            'A comprehensive platform to scale production apps and accelerate revenue. Includes everything in Builder plus Galactic VPC, Cloud Onramps, Uptime SLAs, and 24/7 email support. Base price $20/month plus traffic usage, with $10 in included usage credits.',
+          price: '20',
+          priceCurrency: 'USD',
+          priceSpecification: {
+            '@type': 'CompoundPriceSpecification',
+            priceComponent: [
+              {
+                '@type': 'UnitPriceSpecification',
+                name: 'Base fee',
+                price: '20',
+                priceCurrency: 'USD',
+                unitText: 'MONTH',
+              },
+              {
+                '@type': 'UnitPriceSpecification',
+                name: 'Traffic usage',
+                description:
+                  'Pay-as-you-grow usage charges beyond the base tier. Includes $10 in usage credits.',
+                priceCurrency: 'USD',
+              },
+            ],
+          },
+          availability: 'https://schema.org/PreOrder',
+          availabilityStarts: '2026-06-30',
+          url: 'https://www.datum.net/pricing/',
+          seller: { '@id': 'https://www.datum.net/#organization' },
+        },
+        {
+          '@type': 'Offer',
+          '@id': 'https://www.datum.net/pricing/#provider',
+          name: 'Provider',
+          description:
+            'A high-touch offering designed to help modern alt cloud service providers win. Includes everything in Scaler plus Managed Cloud and BYOC options, private virtual backbones, and custom AnyCAST and IP Space. Pricing is custom.',
+          availability: 'https://schema.org/InStock',
+          url: 'https://link.datum.net/founders',
+          seller: { '@id': 'https://www.datum.net/#organization' },
+        },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://www.datum.net/pricing/#faq',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: "What's included in the free Builder tier, and will it always be free?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "Yes, the Builder tier is completely free and Datum's goal is to keep it that way. It includes core programmatic capabilities for developing, protecting, and connecting applications on the internet — including AI Edge, Connectors, DNS, Domains, OTel Metrics Export, Secrets, Teams, RBAC, and Machine Accounts.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'When does the Scaler tier launch, and how is it different from the free tier?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "The Scaler tier is coming in the first half of 2026. In addition to support and SLA guarantees, it includes features that use Datum's global backbone — such as private connections to AWS or GCP — as well as certificate management and domain connect.",
+          },
+        },
+        {
+          '@type': 'Question',
+          name: "What does 'traffic usage' mean for Scaler tier pricing?",
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'The Scaler tier uses a pay-as-you-grow model with a base price of $20/month plus additional charges based on actual traffic usage. The plan includes $10 in usage credits to help offset initial traffic costs.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Who is the Provider tier for, and how much does it cost?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "The Provider tier is designed for alt cloud providers that deliver their value directly on top of connected infrastructure. Pricing is custom. It includes everything in the Scaler plan plus Managed Cloud and BYOC options, private virtual backbones, and custom AnyCAST and IP Space. Prospective customers can schedule time with Datum's founders to learn more.",
+          },
+        },
+      ],
+    },
+  ],
+};
 ---
 
-<Layout
-  title={page.data.title}
-  description={page.data.description}
-  bodyClass={`page-${page.id}`}
-  meta={meta}
->
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={page.data.iconName}
-      title={page.data.title}
-      subtitle={page.data.subtitle}
-    />
+    <Hero class="light content-alt" title={page.data.title}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Features', href: '/features/', exact: true },
+          { label: 'Essentials', href: '/essentials/' },
+          { label: 'Pricing', href: '/pricing/' },
+        ]}
+      />
+    </Hero>
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">

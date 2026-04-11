@@ -1,0 +1,57 @@
+---
+// src/components/content/Tabs.astro
+
+interface TabsProps {
+  syncKey?: string;
+}
+
+const { syncKey } = Astro.props as TabsProps;
+const panelHtml = await Astro.slots.render('default');
+
+// Process tab panels from rendered HTML
+const panelRegex =
+  /<datum-tab-item\s+data-label="([^"]*)"(?:\s+data-icon="([^"]*)")?[^>]*>([\s\S]*?)<\/datum-tab-item>/g;
+const panels: { panelId: string; tabId: string; label: string; icon?: string }[] = [];
+let processedHtml = panelHtml;
+let panelIndex = 0;
+
+processedHtml = panelHtml.replace(panelRegex, (_match, label, icon, content) => {
+  const panelId = `tab-panel-${Date.now()}-${panelIndex}`;
+  const tabId = `tab-${Date.now()}-${panelIndex}`;
+  panels.push({ panelId, tabId, label, ...(icon ? { icon } : {}) });
+  const hidden = panelIndex > 0 ? ' hidden' : '';
+  const tabindex = panelIndex === 0 ? ' tabindex="0"' : '';
+  panelIndex++;
+  return `<div id="${panelId}" aria-labelledby="${tabId}" role="tabpanel"${tabindex}${hidden}>${content}</div>`;
+});
+---
+
+<datum-tabs data-sync-key={syncKey}>
+  {
+    panels.length > 0 && (
+      <div class="tablist-wrapper not-content">
+        <ul role="tablist" class="tablist">
+          {panels.map(({ label, panelId, tabId }, idx) => (
+            <li role="presentation" class="tab">
+              <a
+                role="tab"
+                class="tab-link"
+                href={'#' + panelId}
+                id={tabId}
+                aria-selected={idx === 0 ? 'true' : 'false'}
+                tabindex={idx !== 0 ? -1 : 0}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  <Fragment set:html={processedHtml} />
+</datum-tabs>
+
+<script>
+  import '@components/content/tabs';
+</script>

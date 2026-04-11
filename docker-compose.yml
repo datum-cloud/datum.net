@@ -15,7 +15,7 @@ services:
       - .env
     networks:
       - datum-network
-    command: npm run dev -- --host 0.0.0.0 --port 4321
+    command: npm run dev --
 
   prod:
     build:

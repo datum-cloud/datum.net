@@ -1,64 +1,324 @@
 ---
 import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import Illustration from '@v1/assets/images/home-illustration.webp';
+import DeviceOff from '@v1/assets/images/home-device-off.webp';
+import DeviceOn from '@v1/assets/images/home-device-on.webp';
+import IllaStars from '@v1/assets/images/stars.webp';
 import Nav from '@components/Nav.astro';
-import Button from '@components/Button.astro';
 import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
 ---
 
-<header class:list={['hero--main z-11', className]}>
+<header id="hero-header" class:list={['hero--main relative z-11', className]}>
   <Announcement />
-  <div class="bg-midnight-fjord aspect-auto h-auto w-full">
-    <Nav />
-    {/* Hero Main Content */}
+  <div
+    id="hero-container"
+    class="bg-midnight-fjord relative aspect-auto h-auto w-full overflow-hidden"
+  >
+    <Nav showLoginButton={true} showGithubButton={false} />
+
+    {/* Hero text */}
     <div
-      class="fade-in--small max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-20 xl:pb-44"
-      data-reveal="fade-in--small--visible"
-      data-reveal-immediate="true"
+      class="max-width relative z-40 flex flex-col items-center justify-center gap-7 pt-16 pb-29 text-center md:pt-16 md:pb-44 lg:pt-18 lg:pb-32 xl:gap-9 xl:pt-28 xl:pb-40"
       role="banner"
     >
       <h1
-        class="datum-text-10xl m-auto max-w-140 text-white"
+        class="datum-text-11xl [&_span]:text-aurora-moss m-auto max-w-190 text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]"
         set:html={marked.parseInline(title)}
       />
-
       {
         description && (
-          <p class="hero--main-content-description" set:html={marked.parseInline(description)} />
+          <p
+            class="hero--main-content-description datum-text-xl m-auto mt-0 mb-0 max-w-120 text-pretty opacity-80"
+            set:html={marked.parseInline(description)}
+          />
         )
       }
-
+      <!--
       <div class="flex flex-col justify-center gap-6 sm:flex-row">
         <Button
           class="btn btn--aurora-moss"
-          text="Join the waitlist"
+          text="Start for free"
           target="_blank"
           icon={{ name: 'arrow-right', size: 'md' }}
           href="https://auth.datum.net/ui/v2/login/register"
-          target="_blank"
+          data-fathom-event="Homepage: Start for free"
         />
         <Button
           class="btn btn--midnight-fjord-alpha"
           text="Chat with a founder"
           href="https://link.datum.net/founders"
           target="_blank"
+          data-fathom-event="Homepage: Chat with founder"
         />
       </div>
+      -->
     </div>
 
-    <div class="absolute bottom-0 left-0 z-0 flex h-full w-full items-end">
+    {
+      /*
+      Stars — covers full hero (inset-0) so it sits behind the nav too.
+      Starts hidden; fades in after device activates.
+      JS drives the slow drift + flicker after activation.
+    */
+    }
+    {
+      /*
+      Stars div is intentionally oversized beyond inset-0.
+      It extends 220px left and 90px down past the hero bounds so the
+      arc drift (max 200px right, 70px up) never reveals a gap.
+      overflow-hidden on hero-container clips it to the visible hero area.
+    */
+    }
+    <div
+      id="hero-stars"
+      class="absolute top-0 right-0 -bottom-[90px] -left-[220px] z-2"
+      style="opacity: 0; will-change: transform, opacity;"
+    >
       <Image
-        src={Illustration}
+        src={IllaStars}
         layout="constrained"
         loading="eager"
         fetchpriority="high"
-        alt="Hero Illustration"
-        class="h-auto w-full translate-y-[7%] object-cover md:object-contain"
+        alt=""
+        aria-hidden="true"
+        class="h-full w-full object-cover"
       />
     </div>
   </div>
+
+  {/* Illustration — outside overflow-hidden so feet can bleed below the hero */}
+  <div
+    class="absolute right-0 bottom-0 z-10 flex h-full w-auto translate-y-[2.6%] items-end md:translate-y-[3.1%]"
+  >
+    <Image
+      id="hero-device-off"
+      src={DeviceOff}
+      layout="constrained"
+      loading="eager"
+      fetchpriority="high"
+      alt="Home Illustration"
+      class="size-auto max-h-full"
+      style="opacity: 1;"
+    />
+
+    {/* Device on — cross-fades in with flicker, then stable */}
+    <Image
+      id="hero-device-on"
+      src={DeviceOn}
+      layout="constrained"
+      loading="eager"
+      fetchpriority="high"
+      alt="Home Illustration — device on"
+      class="absolute right-0 bottom-0 size-auto max-h-full"
+      style="opacity: 0;"
+    />
+  </div>
 </header>
+
+<script>
+  // ── Hero animation ──────────────────────────────────────────────────────────
+  // Phase 1  IDLE     (0 → LASER_DELAY)       device off, stars hidden
+  // Phase 2  FLICKER  (→ +FLICKER_DUR)        troubled startup, beam flickers
+  // Phase 3  ALIVE                             device on, stars drift + flicker,
+  //                                            device occasionally misbehaves
+  // ──────────────────────────────────────────────────────────────────────────
+
+  const LASER_DELAY = 2304; // ms before startup
+  const FLICKER_DUR = 8888; // ms of struggling flicker phase
+  const RESTART_DELAY = 30000; // ms of alive time before cycling back to startup
+
+  const imgOff = document.getElementById('hero-device-off') as HTMLElement | null;
+  const imgOn = document.getElementById('hero-device-on') as HTMLElement | null;
+  const stars = document.getElementById('hero-stars') as HTMLElement | null;
+  const header = document.getElementById('hero-header') as HTMLElement | null;
+
+  if (!imgOff || !imgOn || !stars) throw new Error('Hero: missing elements');
+
+  // ── Arc-length LUT — ensures constant-speed traversal of the elliptical arc ─
+  // Without this, parametric speed varies from 200 px/s (start) to 70 px/s (end)
+  // because the ellipse radii differ. The LUT maps arc-fraction → angle so each
+  // frame advances the same physical distance regardless of ellipse shape.
+  const ARC_RX = 200,
+    ARC_RY = 70,
+    ARC_SPAN = Math.PI / 2;
+  const ARC_N = 500;
+  const _arcLen: number[] = [0];
+  for (let i = 1; i <= ARC_N; i++) {
+    const a = (i / ARC_N) * ARC_SPAN;
+    const spd = Math.sqrt((ARC_RX * Math.cos(a)) ** 2 + (ARC_RY * Math.sin(a)) ** 2);
+    _arcLen.push(_arcLen[i - 1] + spd * (ARC_SPAN / ARC_N));
+  }
+  const ARC_TOTAL = _arcLen[ARC_N];
+
+  function arcFracToAngle(frac: number): number {
+    const s = Math.min(frac * ARC_TOTAL, ARC_TOTAL);
+    let lo = 0,
+      hi = ARC_N;
+    while (hi - lo > 1) {
+      const m = (lo + hi) >> 1;
+      if (_arcLen[m] < s) lo = m;
+      else hi = m;
+    }
+    const t = _arcLen[hi] > _arcLen[lo] ? (s - _arcLen[lo]) / (_arcLen[hi] - _arcLen[lo]) : 0;
+    return ((lo + t) / ARC_N) * ARC_SPAN;
+  }
+
+  // ── Reset — fade everything out, then restart the full cycle ───────────────
+  function resetAndRestart() {
+    const FADE_OUT = 1200; // ms to fade stars + device out
+
+    stars!.style.transition = `opacity ${FADE_OUT}ms ease-in-out`;
+    imgOn!.style.transition = `opacity ${FADE_OUT}ms ease-in-out`;
+
+    header?.classList.remove('hero--alive');
+    stars!.style.opacity = '0';
+    imgOn!.style.opacity = '0';
+
+    setTimeout(() => {
+      stars!.style.transition = '';
+      imgOn!.style.transition = '';
+      // Reset position only after stars are fully invisible — no visible jolt
+      stars!.style.transform = 'translateX(0px) translateY(0px)';
+      // Restart full cycle from Phase 1
+      setTimeout(startFlicker, LASER_DELAY);
+    }, FADE_OUT + 100);
+  }
+
+  // ── Phase 3 ambient loop ────────────────────────────────────────────────────
+  function startAmbient() {
+    let lastTs = -1;
+    let elapsed = 0;
+    let stopped = false;
+
+    // Stars drift state
+    let starsOpacity = 0;
+    let sCurrentOpacity = 0; // tracked in JS to avoid DOM reads (prevents forced reflow)
+    const STARS_FADE_IN = 1800; // ms for stars to reach full opacity
+
+    // Stars flicker — subtle random breathing
+    let sFlickerTarget = 1.0;
+    let sFlickerTimer = 800 + Math.random() * 1500;
+
+    // Device occasional flicker — random episode timer
+    let dEpisodeTimer = 5000 + Math.random() * 8000; // first episode in 5–13s
+    let dEpisodeActive = false;
+    let dEpisodeStart = 0;
+    let dEpisodeDur = 0;
+
+    // Schedule restart after RESTART_DELAY
+    setTimeout(() => {
+      stopped = true;
+      resetAndRestart();
+    }, RESTART_DELAY);
+
+    function ambient(ts: number) {
+      if (stopped) return;
+
+      const dt = lastTs < 0 ? 16 : Math.min(ts - lastTs, 50);
+      lastTs = ts;
+      elapsed += dt;
+
+      // ── Stars: fade in ───────────────────────────────────────────────────
+      if (starsOpacity < 1) {
+        starsOpacity = Math.min(1, elapsed / STARS_FADE_IN);
+      }
+
+      // ── Stars: constant-speed arc (LUT-corrected, upper-right quarter) ──
+      const arcAngle = arcFracToAngle(elapsed / RESTART_DELAY);
+      const driftX = ARC_RX * Math.sin(arcAngle);
+      const driftY = -ARC_RY * (1 - Math.cos(arcAngle));
+
+      // ── Device: random episode flicker ───────────────────────────────────
+      dEpisodeTimer -= dt;
+
+      if (!dEpisodeActive && dEpisodeTimer <= 0) {
+        dEpisodeActive = true;
+        dEpisodeStart = ts;
+        dEpisodeDur = 250 + Math.random() * 900; // 250ms–1.15s stutter
+        dEpisodeTimer = 6000 + Math.random() * 12000; // next in 6–18s
+      }
+
+      // ── Stars opacity — synced to device episode when active ─────────────
+      let sTargetOpacity: number;
+      if (dEpisodeActive) {
+        const t = ts - dEpisodeStart;
+        const sec = t / 1000;
+        const pct = t / dEpisodeDur;
+
+        if (pct < 1) {
+          // Stars flicker in lockstep with device
+          const noise =
+            Math.sin(sec * 38.7) * 0.3 + Math.sin(sec * 17.1) * 0.25 + Math.sin(sec * 5.3) * 0.2;
+          const dAlpha = Math.max(0.15, 0.75 + noise);
+          imgOn!.style.opacity = String(dAlpha);
+          sTargetOpacity = starsOpacity * dAlpha;
+        } else {
+          // Recover — snap device back to stable
+          dEpisodeActive = false;
+          imgOn!.style.transition = 'opacity 0.18s ease-out';
+          imgOn!.style.opacity = '1';
+          setTimeout(() => {
+            imgOn!.style.transition = '';
+          }, 200);
+          sTargetOpacity = starsOpacity;
+        }
+      } else {
+        // Idle breathing flicker for stars
+        sFlickerTimer -= dt;
+        if (sFlickerTimer <= 0) {
+          sFlickerTarget = 0.78 + Math.random() * 0.22;
+          sFlickerTimer = 500 + Math.random() * 1800;
+        }
+        sTargetOpacity = starsOpacity * sFlickerTarget;
+      }
+
+      sCurrentOpacity = sCurrentOpacity + (sTargetOpacity - sCurrentOpacity) * 0.04;
+
+      stars!.style.opacity = String(sCurrentOpacity);
+      stars!.style.transform = `translateX(${driftX.toFixed(2)}px) translateY(${driftY.toFixed(2)}px)`;
+
+      requestAnimationFrame(ambient);
+    }
+
+    requestAnimationFrame(ambient);
+  }
+
+  // ── Phase 2: flicker startup ─────────────────────────────────────────────
+  function startFlicker() {
+    let startTime = -1;
+
+    function flicker(ts: number) {
+      if (startTime < 0) startTime = ts;
+      const t = ts - startTime;
+      const pct = Math.min(1, t / FLICKER_DUR);
+
+      const sec = t / 1000;
+      const noise =
+        Math.sin(sec * 19.3) * 0.3 +
+        Math.sin(sec * 7.1) * 0.25 +
+        Math.sin(sec * 43.7) * 0.2 +
+        Math.sin(sec * 3.3) * 0.15 +
+        Math.sin(sec * 61.1) * 0.1;
+
+      const alpha = Math.max(0, Math.min(1, Math.pow(pct, 0.65) * 0.8 + noise * pct * 0.55));
+
+      imgOn!.style.opacity = String(alpha);
+
+      if (t < FLICKER_DUR) {
+        requestAnimationFrame(flicker);
+      } else {
+        // Snap to stable, then start ambient loop
+        imgOn!.style.opacity = '1';
+        setTimeout(startAmbient, 200);
+      }
+    }
+
+    requestAnimationFrame(flicker);
+  }
+
+  // ── Phase 1: wait, then trigger startup ──────────────────────────────────
+  setTimeout(startFlicker, LASER_DELAY);
+</script>

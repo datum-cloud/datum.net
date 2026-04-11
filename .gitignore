@@ -18,22 +18,12 @@ yarn-error.log*
 pnpm-debug.log*
 
 # environment variables
-.env
-.env.local
-.env.production
-.env.development
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
-
-# pagefind for search
-public/pagefind/*
-
-# pagefind for blog search
-public/pagefind-blog/*
 
 # Playwright
 playwright-report/
@@ -55,3 +45,7 @@ bunfig.toml
 
 # API documentation generation artifacts
 .tmp/
+
+# ignore local claude settings
+.claude/settings.local.json
+config.bat

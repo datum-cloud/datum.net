@@ -1,5 +1,5 @@
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:content';
+import { z } from 'zod';
 
 import { K8sClient } from '@libs/k8s-client';
 import { createContact, type ContactSpec } from '@/src/types/k8s-resources';

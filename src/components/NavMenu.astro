@@ -42,6 +42,16 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
     ) ?? false
   );
 }
+
+/** Stable class for top-level nav label, e.g. `nav-dropdown-parent--product`. */
+function navDropdownParentClass(text: string): string {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+  return `nav-dropdown-parent--${slug}`;
+}
 ---
 
 <div class="nav-menu-wrapper">
@@ -60,8 +70,10 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
           >
             <a
               href={item.href}
-              class={`nav-menu-link ${isActive ? 'link--active' : ''}`}
-              data-astro-prefetch="hover"
+              class={`nav-menu-link ${isParentActive ? 'link--active' : ''}`}
+              target={item.isExternal ? '_blank' : undefined}
+              rel={item.isExternal ? 'noopener noreferrer' : undefined}
+              data-astro-prefetch={item.isExternal ? undefined : 'hover'}
               tabindex="0"
             >
               <span>{item.text}</span>
@@ -69,27 +81,58 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
             </a>
             {item.children && (
               <ul
-                class={`nav-dropdown-menu ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
+                class={`nav-dropdown-menu ${navDropdownParentClass(item.text)} ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
               >
                 {item.children.map((section) => (
                   <li
                     class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
                   >
                     {'title' in section && section.title && (
-                      <h3 class="nav-dropdown-title">{section.title}</h3>
+                      <h3 class="nav-dropdown-title">
+                        <span>{section.title}</span>
+                      </h3>
                     )}
                     <ul
-                      class={`nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`}
+                      class={
+                        section.isCardLayout
+                          ? 'nav-dropdown-cards'
+                          : `nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`
+                      }
                     >
                       {section.items?.map((subItem) => {
                         const isSubItemActive = isActivePath(subItem.href, currentPath);
 
-                        return (
+                        return section.isCardLayout ? (
+                          <li
+                            class={`nav-dropdown-card-item ${isSubItemActive ? 'item--active' : ''}`}
+                          >
+                            <a
+                              href={subItem.href}
+                              class={`nav-dropdown-card-link ${isSubItemActive ? 'item--active' : ''}`}
+                              style={
+                                'image' in subItem && subItem.image
+                                  ? `--nav-card-image: url('${subItem.image}')`
+                                  : undefined
+                              }
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
+                              tabindex="0"
+                            >
+                              <span class="nav-dropdown-card-title">{subItem.text}</span>
+                              {'desc' in subItem && subItem.desc && (
+                                <span class="nav-dropdown-card-desc">{subItem.desc}</span>
+                              )}
+                            </a>
+                          </li>
+                        ) : (
                           <li class={`nav-dropdown-item ${isSubItemActive ? 'item--active' : ''}`}>
                             <a
                               href={subItem.href}
                               class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
-                              data-astro-prefetch="hover"
+                              target={subItem.isExternal ? '_blank' : undefined}
+                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
                               tabindex="0"
                             >
                               {'icon' in subItem && subItem.icon && (
@@ -97,7 +140,16 @@ function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: s
                                   <Icon name={subItem.icon} size="md" />
                                 </div>
                               )}
-                              <span>{subItem.text}</span>
+                              <span class="inline-flex items-center gap-1.5">
+                                {subItem.text}
+                                {subItem.isExternal && (
+                                  <Icon
+                                    name="external-link"
+                                    size="sm"
+                                    class="nav-dropdown-external-icon"
+                                  />
+                                )}
+                              </span>
                             </a>
                           </li>
                         );

@@ -4,6 +4,7 @@ interface ColorSwatch {
   name: string;
   shade: string;
   hex: string;
+  pantone?: string;
 }
 
 interface ColorGroup {
@@ -14,23 +15,23 @@ interface ColorGroup {
 const colorGroups: ColorGroup[] = [
   {
     name: 'Midnight Fjord',
-    swatches: [{ name: 'Midnight Fjord', shade: '900', hex: '#0C1D31' }],
+    swatches: [{ name: 'Midnight Fjord', shade: '900', hex: '#0C1D31', pantone: 'Pantone 533 C' }],
   },
   {
     name: 'Aurora Moss',
-    swatches: [{ name: 'Aurora Moss', shade: '900', hex: '#E6F59F' }],
+    swatches: [{ name: 'Aurora Moss', shade: '900', hex: '#E6F59F', pantone: 'Pantone 379 C' }],
   },
   {
     name: 'Blush Quartz',
-    swatches: [{ name: 'Blush Quartz', shade: '900', hex: '#ECD0D0' }],
+    swatches: [{ name: 'Blush Quartz', shade: '900', hex: '#ECD0D0', pantone: 'Pantone 684 C' }],
   },
   {
     name: 'Canyon Clay',
-    swatches: [{ name: 'Canyon Clay', shade: '900', hex: '#BF9595' }],
+    swatches: [{ name: 'Canyon Clay', shade: '900', hex: '#BF9595', pantone: 'Pantone 694 C' }],
   },
   {
     name: 'Pine Forge',
-    swatches: [{ name: 'Pine Forge', shade: '900', hex: '#4D6356' }],
+    swatches: [{ name: 'Pine Forge', shade: '900', hex: '#4D6356', pantone: 'Pantone 5545 C' }],
   },
   {
     name: '',
@@ -39,9 +40,9 @@ const colorGroups: ColorGroup[] = [
   {
     name: 'Glacier Mist',
     swatches: [
-      { name: 'Glacier Mist', shade: '900', hex: '#E8E7E4' },
-      { name: 'Glacier Mist', shade: '800', hex: '#EFEFED' },
-      { name: 'Glacier Mist', shade: '700', hex: '#F6F6F5' },
+      { name: 'Glacier Mist', shade: '900', hex: '#E8E7E4', pantone: 'Pantone Cool Gray 3 C' },
+      { name: 'Glacier Mist', shade: '800', hex: '#EFEFED', pantone: 'Pantone Cool Gray 2 C' },
+      { name: 'Glacier Mist', shade: '700', hex: '#F6F6F5', pantone: 'Pantone Cool Gray 1 C' },
     ],
   },
 ];
@@ -63,6 +64,7 @@ const colorGroups: ColorGroup[] = [
                   <div class="color-swatch--info">
                     {swatch.shade && <span class="color-swatch--shade">{swatch.shade}</span>}
                     {swatch.hex && <span class="color-swatch--hex">{swatch.hex}</span>}
+                    {swatch.pantone && <span class="color-swatch--pantone">{swatch.pantone}</span>}
                   </div>
                 </div>
               ))}

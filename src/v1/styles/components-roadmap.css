@@ -1,60 +1,139 @@
 @layer components {
   .roadmap-container {
-    @apply max-width flex max-w-166.5 flex-col gap-13.5;
-  }
-  .roadmap-card {
-    @apply w-full border-l border-white/10;
+    @apply flex w-full flex-col items-center gap-20;
   }
 
-  .roadmap-card--content {
-    @apply flex gap-5.5 md:gap-10;
+  .roadmap-section {
+    @apply flex w-full max-w-full flex-col items-center gap-7 px-4 lg:max-w-243.5 lg:px-0;
   }
 
-  .roadmap-card--vote-section {
-    @apply flex-shrink-0;
+  .roadmap-section--title {
+    @apply text-midnight-fjord datum-text-2xl text-center;
   }
 
-  .roadmap-card--vote-counter {
-    @apply flex w-full flex-col items-start gap-0 md:w-40 md:items-center;
+  .roadmap-table {
+    @apply flex w-full flex-col items-start;
   }
 
-  .roadmap-card--vote-number {
-    @apply font-frontliner text-aurora-moss text-center text-6xl leading-tight font-light tracking-wider md:text-8xl;
+  .roadmap-row {
+    @apply border-midnight-fjord -mb-px flex w-full flex-col items-stretch justify-center gap-px border p-px lg:flex-row;
+    @apply hover:border-midnight-fjord/60 transition-all duration-200 ease-linear;
   }
 
-  .roadmap-card--vote-label {
-    @apply font-alliance text-center text-sm leading-tight font-medium tracking-wider text-white uppercase opacity-80;
+  .roadmap-month {
+    @apply flex w-full items-center justify-center self-stretch rounded-sm px-4 py-3 lg:w-29 lg:px-8 lg:py-0;
+
+    &.roadmap-month--upcoming {
+      @apply bg-aurora-moss;
+    }
+
+    &.roadmap-month--previous {
+      @apply bg-glacier-mist-900;
+    }
   }
 
-  .roadmap-card--info-section {
-    @apply flex flex-1 flex-col gap-4;
+  .roadmap-month--text {
+    @apply text-midnight-fjord font-mono text-lg leading-6 whitespace-nowrap;
   }
 
-  .roadmap-card--text-content {
-    @apply space-y-4;
+  .roadmap-content {
+    @apply flex w-full flex-1 flex-col items-start justify-around gap-4 px-4 py-6 lg:flex-row lg:items-center lg:gap-10 lg:px-8 lg:py-8;
+
+    &:hover {
+      .roadmap-link {
+        @apply text-midnight-fjord;
+      }
+    }
   }
 
-  .roadmap-card--title {
-    @apply datum-text-2xl font-medium text-white;
+  .roadmap-content--text {
+    @apply text-midnight-fjord flex w-full flex-1 flex-col items-start gap-0 lg:w-full lg:flex-initial;
   }
 
-  .roadmap-card--description {
-    @apply datum-prose opacity-80;
+  .roadmap-content--title {
+    @apply font-alliance datum-text-xl w-full;
   }
 
-  .roadmap-card--actions {
-    @apply flex flex-row gap-4;
+  .roadmap-content--description {
+    @apply font-alliance datum-text-base w-full opacity-60;
   }
 
-  .roadmap-card--vote-button {
-    @apply font-alliance text-blush-quartz border-blush-quartz border-b-1 text-sm leading-normal font-normal transition-all duration-200 hover:cursor-pointer hover:border-white hover:text-white active:text-white;
+  .roadmap-link {
+    @apply text-canyon-clay---links datum-text-base flex shrink-0 items-center gap-2.5 whitespace-nowrap transition-colors duration-200;
+
+    svg {
+      @apply stroke-1;
+    }
   }
 
-  .roadmap-card--vote-button[data-has-voted='true'] {
-    @apply border-white text-white;
+  .roadmap-link--icon {
+    @apply size-5 overflow-hidden;
   }
 
-  .roadmap-card--github-link {
-    @apply datum-text-sm text-blush-quartz border-blush-quartz border-b-1 font-normal transition-all duration-200 hover:border-white hover:text-white active:text-white;
+  .roadmap-strapi-skeleton {
+    @apply flex w-full flex-col items-center gap-20;
+
+    .skeleton-box {
+      @apply bg-midnight-fjord/10 rounded;
+      animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .skeleton-section-title {
+      @apply h-8 w-48;
+    }
+
+    .skeleton-month {
+      @apply h-6 w-12;
+    }
+
+    .skeleton-title {
+      @apply mb-2 h-6 w-3/4;
+    }
+
+    .skeleton-description {
+      @apply h-4 w-full;
+    }
+
+    .skeleton-link {
+      @apply h-5 w-20;
+    }
+
+    .skeleton-item {
+      animation-delay: calc(var(--index, 0) * 100ms);
+    }
+
+    .skeleton-item[data-index='1'] {
+      --index: 0;
+    }
+
+    .skeleton-item[data-index='2'] {
+      --index: 1;
+    }
+
+    .skeleton-item[data-index='3'] {
+      --index: 2;
+    }
+
+    .skeleton-item[data-index='4'] {
+      --index: 3;
+    }
+
+    .skeleton-item[data-index='5'] {
+      --index: 4;
+    }
+
+    .skeleton-item[data-index='6'] {
+      --index: 5;
+    }
+  }
+
+  @keyframes skeleton-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 }

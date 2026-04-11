@@ -58,8 +58,30 @@
 
 .faq-item--content-wrapper {
   @apply text-midnight-fjord datum-text-base pb-6;
-}
 
-.faq-item--content-wrapper p:not(:last-child) {
-  @apply mb-4;
+  p:not(:last-child) {
+    @apply mb-4;
+  }
+
+  a {
+    @apply text-canyon-clay---links/70 hover:text-canyon-clay---links;
+  }
+
+  table {
+    @apply w-full border-collapse text-sm;
+
+    th {
+      @apply py-2 pr-6 pb-3 text-left align-bottom font-semibold;
+      @apply border-midnight-fjord/20 border-b;
+    }
+
+    td {
+      @apply py-2.5 pr-6 align-top;
+      @apply border-midnight-fjord/10 border-b;
+    }
+
+    tr:last-child td {
+      @apply border-b-0;
+    }
+  }
 }

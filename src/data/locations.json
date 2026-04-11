@@ -1,0 +1,146 @@
+[
+  {
+    "regionCode": "us-east-1",
+    "metro": "Ashburn",
+    "latitude": 39.0438,
+    "longitude": -77.4874,
+    "mapX": 24.75,
+    "mapY": 44.55,
+    "group": "NA"
+  },
+  {
+    "regionCode": "us-east-2",
+    "metro": "New York City",
+    "latitude": 40.7128,
+    "longitude": -74.006,
+    "mapX": 27.08,
+    "mapY": 43.19,
+    "group": "NA"
+  },
+  {
+    "regionCode": "us-central-1",
+    "metro": "Dallas",
+    "latitude": 32.7767,
+    "longitude": -96.797,
+    "mapX": 20.86,
+    "mapY": 45.92,
+    "group": "NA"
+  },
+  {
+    "regionCode": "us-west-1",
+    "metro": "San Jose, California",
+    "latitude": 37.3382,
+    "longitude": -121.8863,
+    "mapX": 13.87,
+    "mapY": 44.55,
+    "group": "NA"
+  },
+  {
+    "regionCode": "ca-east-1",
+    "metro": "Toronto",
+    "latitude": 43.6532,
+    "longitude": -79.3832,
+    "mapX": 26.3,
+    "mapY": 39.09,
+    "group": "NA"
+  },
+  {
+    "regionCode": "cl-central-1",
+    "metro": "Chile",
+    "latitude": -33.4489,
+    "longitude": -70.6693,
+    "mapX": 27.0,
+    "mapY": 77.32,
+    "group": "LATAM"
+  },
+  {
+    "regionCode": "br-east-1",
+    "metro": "São Paolo",
+    "latitude": -23.5505,
+    "longitude": -46.6333,
+    "mapX": 34.07,
+    "mapY": 77.31,
+    "group": "LATAM"
+  },
+  {
+    "regionCode": "nl-west-1",
+    "metro": "Amsterdam",
+    "latitude": 52.3676,
+    "longitude": 4.9041,
+    "mapX": 48.83,
+    "mapY": 36.36,
+    "group": "EU"
+  },
+  {
+    "regionCode": "de-central-1",
+    "metro": "Frankfurt",
+    "latitude": 50.1109,
+    "longitude": 8.6821,
+    "mapX": 50.39,
+    "mapY": 37.73,
+    "group": "EU"
+  },
+  {
+    "regionCode": "gb-south-1",
+    "metro": "London",
+    "latitude": 51.5074,
+    "longitude": -0.1278,
+    "mapX": 47.28,
+    "mapY": 36.36,
+    "group": "EU"
+  },
+  {
+    "regionCode": "ae-north-1",
+    "metro": "Dubai",
+    "latitude": 25.2048,
+    "longitude": 55.2708,
+    "mapX": 62.82,
+    "mapY": 52.74,
+    "group": "MEA"
+  },
+  {
+    "regionCode": "za-central-1",
+    "metro": "Johannesburg",
+    "latitude": -26.2041,
+    "longitude": 28.0473,
+    "mapX": 55.05,
+    "mapY": 77.3,
+    "group": "MEA"
+  },
+  {
+    "regionCode": "in-west-1",
+    "metro": "Mumbai",
+    "latitude": 19.076,
+    "longitude": 72.8777,
+    "mapX": 68.26,
+    "mapY": 55.47,
+    "group": "APAC"
+  },
+  {
+    "regionCode": "sg-central-1",
+    "metro": "Singapore",
+    "latitude": 1.3521,
+    "longitude": 103.8198,
+    "mapX": 76.81,
+    "mapY": 63.66,
+    "group": "APAC"
+  },
+  {
+    "regionCode": "au-east-1",
+    "metro": "Sydney",
+    "latitude": -33.8688,
+    "longitude": 151.2093,
+    "mapX": 89.24,
+    "mapY": 85.5,
+    "group": "APAC"
+  },
+  {
+    "regionCode": "jp-east-1",
+    "metro": "Tokyo",
+    "latitude": 35.6762,
+    "longitude": 139.6503,
+    "mapX": 85.35,
+    "mapY": 44.55,
+    "group": "APAC"
+  }
+]

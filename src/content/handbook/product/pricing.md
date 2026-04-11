@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Pricing Tiers & Models - Datum Product Strategy"
   description: "Understanding our billing model. A guide to Datum's pricing tiers, from the free Builder plan to Enterprise interconnection, and the logic behind our rate limits."
+  og:
+    title: "Pricing"
 ---
 
 We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](/pricing/) for the latest official details. 
@@ -18,7 +20,7 @@ Our initial focus is to help a new class of builders get access to the core ‘i
 * Generous quotas
 * No paid option
 
-## Datum for SaaS (Production grade self-service)
+## Datum for Production (Production grade self-service)
 We hope that many builders and platform engineers will want to consume our value in production use cases. To do that, they’ll want an SLA and we’ll need to charge money, especially for sending traffic across our backbone and brokering connections with clouds, etc. 
 * $20/mo + usage
 * Expanded features

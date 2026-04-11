@@ -1,2 +1,0 @@
-site: dist/client/
-glob: '**/*.{html}'

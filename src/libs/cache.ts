@@ -1,5 +1,5 @@
 import type { AstroGlobal } from 'astro';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'node:path';
 
 export class Cache {
@@ -7,19 +7,22 @@ export class Cache {
 
   constructor(cacheDir: string) {
     this.cacheDir = cacheDir;
-    if (!fs.existsSync(cacheDir)) {
-      fs.mkdirSync(cacheDir, { recursive: true });
-    }
+  }
+
+  private async ensureDir(): Promise<void> {
+    await fs.mkdir(this.cacheDir, { recursive: true });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set(key: string, data: any, expiresIn?: number): void {
+  async set(key: string, data: any, expiresIn?: number): Promise<void> {
+    await this.ensureDir();
+
     const filePath = path.join(this.cacheDir, `${key}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(data), 'utf-8');
+    await fs.writeFile(filePath, JSON.stringify(data), 'utf-8');
 
     if (expiresIn) {
       const expirationTime = Date.now() + expiresIn;
-      fs.writeFileSync(
+      await fs.writeFile(
         filePath.replace('.json', '.expires'),
         JSON.stringify(expirationTime),
         'utf-8'
@@ -27,105 +30,111 @@ export class Cache {
     }
   }
 
-  get<T>(key: string): T | null {
+  async get<T>(key: string): Promise<T | null> {
     const filePath = path.join(this.cacheDir, `${key}.json`);
     const expiresPath = path.join(this.cacheDir, `${key}.expires`);
 
-    if (fs.existsSync(filePath)) {
-      try {
-        const data = fs.readFileSync(filePath, 'utf-8');
+    try {
+      const data = await fs.readFile(filePath, 'utf-8');
 
-        // Check if file is empty or whitespace only
-        if (!data.trim()) {
-          console.warn(`Cache file for key "${key}" is empty, clearing cache`);
-          this.clear(key);
-          return null;
-        }
-
-        let expirationTime: number | null = null;
-        if (fs.existsSync(expiresPath)) {
-          try {
-            const expiresData = fs.readFileSync(expiresPath, 'utf-8');
-            expirationTime = JSON.parse(expiresData);
-          } catch (error) {
-            console.warn(`Invalid expiration file for key "${key}", clearing cache:`, error);
-            this.clear(key);
-            return null;
-          }
-        }
-
-        if (expirationTime && Date.now() > expirationTime) {
-          this.clear(key);
-          return null;
-        }
-
-        return JSON.parse(data) as T;
-      } catch (error) {
-        console.warn(`Failed to parse cache file for key "${key}":`, error);
-        this.clear(key);
+      if (!data.trim()) {
+        console.warn(`Cache file for key "${key}" is empty, clearing cache`);
+        await this.clear(key);
         return null;
       }
-    }
-    return null;
-  }
 
-  clear(key: string): void {
-    const filePath = path.join(this.cacheDir, `${key}.json`);
-    const expiresPath = path.join(this.cacheDir, `${key}.expires`);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
-    if (fs.existsSync(expiresPath)) {
-      fs.unlinkSync(expiresPath);
-    }
-  }
-
-  clearAll(): void {
-    const files = fs.readdirSync(this.cacheDir);
-    for (const file of files) {
-      fs.unlinkSync(path.join(this.cacheDir, file));
-    }
-  }
-
-  has(key: string): boolean {
-    const filePath = path.join(this.cacheDir, `${key}.json`);
-    const expiresPath = path.join(this.cacheDir, `${key}.expires`);
-
-    if (fs.existsSync(filePath)) {
+      let expirationTime: number | null = null;
       try {
-        // Check if file is empty
-        const data = fs.readFileSync(filePath, 'utf-8');
-        if (!data.trim()) {
-          this.clear(key);
-          return false;
-        }
+        const expiresData = await fs.readFile(expiresPath, 'utf-8');
+        expirationTime = JSON.parse(expiresData);
+      } catch {
+        // No expires file or invalid — treat as no expiry
+      }
 
-        if (fs.existsSync(expiresPath)) {
-          try {
-            const expirationTime = JSON.parse(fs.readFileSync(expiresPath, 'utf-8'));
-            if (Date.now() > expirationTime) {
-              this.clear(key);
-              return false;
-            }
-          } catch (error) {
-            console.warn(`Invalid expiration file for key "${key}", clearing cache:`, error);
-            this.clear(key);
-            return false;
-          }
-        }
-        return true;
-      } catch (error) {
-        console.warn(`Error checking cache for key "${key}":`, error);
-        this.clear(key);
-        return false;
+      if (expirationTime && Date.now() > expirationTime) {
+        await this.clear(key);
+        return null;
+      }
+
+      return JSON.parse(data) as T;
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        return null;
+      }
+      console.warn(`Failed to parse cache file for key "${key}":`, err);
+      await this.clear(key);
+      return null;
+    }
+  }
+
+  async clear(key: string): Promise<void> {
+    const filePath = path.join(this.cacheDir, `${key}.json`);
+    const expiresPath = path.join(this.cacheDir, `${key}.expires`);
+    try {
+      await fs.unlink(filePath);
+    } catch {
+      // Ignore ENOENT
+    }
+    try {
+      await fs.unlink(expiresPath);
+    } catch {
+      // Ignore ENOENT
+    }
+  }
+
+  async clearAll(): Promise<void> {
+    try {
+      const files = await fs.readdir(this.cacheDir);
+      await Promise.all(files.map((file) => fs.unlink(path.join(this.cacheDir, file))));
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw err;
       }
     }
-    return false;
   }
 
-  getAllKeys(): string[] {
-    const files = fs.readdirSync(this.cacheDir);
-    return files.map((file) => path.basename(file, '.json'));
+  async has(key: string): Promise<boolean> {
+    const filePath = path.join(this.cacheDir, `${key}.json`);
+    const expiresPath = path.join(this.cacheDir, `${key}.expires`);
+
+    try {
+      const data = await fs.readFile(filePath, 'utf-8');
+      if (!data.trim()) {
+        await this.clear(key);
+        return false;
+      }
+
+      try {
+        const expiresData = await fs.readFile(expiresPath, 'utf-8');
+        const expirationTime = JSON.parse(expiresData);
+        if (Date.now() > expirationTime) {
+          await this.clear(key);
+          return false;
+        }
+      } catch {
+        // No expires file — treat as valid
+      }
+      return true;
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        return false;
+      }
+      console.warn(`Error checking cache for key "${key}":`, err);
+      await this.clear(key);
+      return false;
+    }
+  }
+
+  async getAllKeys(): Promise<string[]> {
+    try {
+      const files = await fs.readdir(this.cacheDir);
+      return files.map((file) => path.basename(file, '.json'));
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        return [];
+      }
+      throw err;
+    }
   }
 
   setCacheHeader(type: 'long' | 'short') {

@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Weekly Scorecard - Datum Handbook"
+  description: "How Datum Operates - Keeping track of our weekly metrics"
+  og:
+    title: "Weekly Scorecard"
 ---
 
 A final key component that we use in our weekly meetings (all hands “kickoff” and leadership L10”) and other team meetings is a weekly scorecard. The scorecard consists of 7-10 metrics that are predictive in nature and include strict definitions (including where to source and acquire each metric) and a single accountable owner on the leadership team.

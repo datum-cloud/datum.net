@@ -4,19 +4,24 @@
 
 export interface NavItem {
   text: string;
+  desc?: string;
   href: string;
   icon?: string;
+  image?: string;
   isExternal?: boolean;
   label?: string;
 }
 
 export interface NavSection {
   title?: string;
+  isCardLayout?: boolean;
   items: NavItem[];
 }
 
 export interface NavMainItem {
   text: string;
+  title?: string;
+  desc?: string;
   href: string;
   isExternal?: boolean;
   isMegaDropdown?: boolean;

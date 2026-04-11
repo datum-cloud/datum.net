@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Risk Assessment Policy - Datum Security Framework"
+  title: "Datum Security Framework - Datum Handbook"
   description: "Read Datum's Risk Assessment Policy. Our official framework for identifying, evaluating, and mitigating security and operational risks across the platform."
+  og:
+      title: Datum's security framework 
 ---
 
 ## Scope

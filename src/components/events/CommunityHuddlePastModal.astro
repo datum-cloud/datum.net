@@ -1,0 +1,241 @@
+---
+// src/components/events/CommunityHuddlePastModal.astro
+// Past huddle recap layout — Figma Datum Master, node 11074:47906.
+import Icon from '@components/Icon.astro';
+---
+
+<community-huddle-past-modal>
+  <dialog class="community-huddle-past-modal__dialog" aria-label="Community Huddle recap">
+    <div class="modal-frame community-huddle-past-modal__frame">
+      <button
+        type="button"
+        data-close-modal
+        class="modal-close community-huddle-past-modal__close"
+        aria-label="Close"
+      >
+        <Icon name="close" size="sm" class="modal-close-icon" />
+      </button>
+      <div class="community-huddle-past-modal__inner">
+        <header class="community-huddle-past-modal__header">
+          <div class="community-huddle-past-modal__date-row">
+            <Icon name="calendar-fold" size="sm" class="text-app---dark---utility-4 shrink-0" />
+            <p class="community-huddle-past-modal__date" data-past-modal-date></p>
+          </div>
+          <h2 class="community-huddle-past-modal__title" data-past-modal-title></h2>
+        </header>
+
+        <div class="community-huddle-past-modal__columns">
+          <div class="community-huddle-past-modal__recap" data-past-modal-recap hidden>
+            <h3 class="community-huddle-past-modal__section-title">Watch the recap</h3>
+            <a
+              class="community-huddle-past-modal__recap-trigger"
+              data-past-modal-recap-link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="community-huddle-past-modal__recap-thumb">
+                <img data-past-modal-cover alt="" width="311" height="175" hidden />
+                <span class="community-huddle-past-modal__recap-play" aria-hidden="true">
+                  <Icon name="play" size="md" class="text-midnight-fjord" />
+                </span>
+              </span>
+              <span class="sr-only">Watch recap on YouTube (opens in new tab)</span>
+            </a>
+          </div>
+          <div class="community-huddle-past-modal__covered" data-past-modal-covered hidden>
+            <h3 class="community-huddle-past-modal__section-title">We covered</h3>
+            <div
+              class="community-huddle-past-modal__covered-body datum-prose"
+              data-past-modal-covered-body
+            >
+            </div>
+          </div>
+        </div>
+
+        <div class="community-huddle-past-modal__slides-row" data-past-modal-slides hidden>
+          <Icon name="presentation" size="sm" class="text-midnight-fjord shrink-0" />
+          <a
+            class="community-huddle-past-modal__slides-link"
+            data-past-modal-slides-link
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer">View the slides</a
+          >
+        </div>
+      </div>
+    </div>
+  </dialog>
+</community-huddle-past-modal>
+
+<script>
+  const OPEN_ATTR = 'data-community-huddle-past-open';
+
+  type PastModalPayload = {
+    title: string;
+    dateLine: string;
+    coveredHtml: string;
+    videoUrl: string;
+    slidesUrl: string;
+    coverUrl: string;
+  };
+
+  /** @param href - Candidate YouTube watch URL */
+  function isSafeYoutubeWatchTabUrl(href: string): boolean {
+    try {
+      const u = new URL(href);
+      if (u.protocol !== 'https:') return false;
+      const host = u.hostname.replace(/^www\./, '');
+      if (host !== 'youtube.com' && host !== 'm.youtube.com') return false;
+      if (u.pathname !== '/watch') return false;
+      const v = u.searchParams.get('v');
+      return typeof v === 'string' && /^[\w-]{11}$/.test(v);
+    } catch {
+      return false;
+    }
+  }
+
+  class CommunityHuddlePastModal extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    dialogOpenedAt = 0;
+
+    elDate: HTMLElement;
+    elTitle: HTMLElement;
+    elRecap: HTMLElement;
+    elRecapLink: HTMLAnchorElement;
+    elCover: HTMLImageElement;
+    elCovered: HTMLElement;
+    elCoveredBody: HTMLElement;
+    elSlidesRow: HTMLElement;
+    elSlidesLink: HTMLAnchorElement;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.modal-frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.elDate = this.querySelector('[data-past-modal-date]')!;
+      this.elTitle = this.querySelector('[data-past-modal-title]')!;
+      this.elRecap = this.querySelector('[data-past-modal-recap]')!;
+      this.elRecapLink = this.querySelector<HTMLAnchorElement>('[data-past-modal-recap-link]')!;
+      this.elCover = this.querySelector<HTMLImageElement>('[data-past-modal-cover]')!;
+      this.elCovered = this.querySelector('[data-past-modal-covered]')!;
+      this.elCoveredBody = this.querySelector('[data-past-modal-covered-body]')!;
+      this.elSlidesRow = this.querySelector('[data-past-modal-slides]')!;
+      this.elSlidesLink = this.querySelector<HTMLAnchorElement>('[data-past-modal-slides-link]')!;
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-event-modal-open', false);
+        window.removeEventListener('click', this.onWindowClick);
+        this.clearPayload();
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    onWindowClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isInDialog = target.closest('dialog') !== null;
+      const isInDialogFrame = target.closest('.community-huddle-past-modal__frame') !== null;
+      const isBackdrop = isInDialog && !isInDialogFrame;
+      const timeSinceOpen = Date.now() - this.dialogOpenedAt;
+      if (isBackdrop || (timeSinceOpen >= 300 && !this.dialogFrame.contains(target))) {
+        this.closeModal();
+      }
+    };
+
+    clearPayload() {
+      this.elRecapLink.href = '#';
+      this.elCoveredBody.innerHTML = '';
+      this.elCover.removeAttribute('src');
+      this.elCover.hidden = true;
+    }
+
+    applyPayload(p: PastModalPayload) {
+      this.elDate.textContent = p.dateLine;
+      this.elTitle.textContent = p.title;
+
+      const video = p.videoUrl?.trim() ?? '';
+      if (video && isSafeYoutubeWatchTabUrl(video)) {
+        this.elRecap.hidden = false;
+        this.elRecapLink.href = video;
+      } else {
+        this.elRecap.hidden = true;
+        this.elRecapLink.href = '#';
+      }
+
+      if (p.coverUrl.trim()) {
+        this.elCover.src = p.coverUrl.trim();
+        this.elCover.hidden = false;
+      } else {
+        this.elCover.removeAttribute('src');
+        this.elCover.hidden = true;
+      }
+
+      const html = p.coveredHtml.trim();
+      if (html) {
+        this.elCovered.hidden = false;
+        this.elCoveredBody.innerHTML = html;
+      } else {
+        this.elCovered.hidden = true;
+        this.elCoveredBody.innerHTML = '';
+      }
+
+      const slides = p.slidesUrl.trim();
+      if (slides) {
+        this.elSlidesRow.hidden = false;
+        this.elSlidesLink.href = slides;
+      } else {
+        this.elSlidesRow.hidden = true;
+        this.elSlidesLink.href = '#';
+      }
+    }
+
+    openFromButton(btn: HTMLElement) {
+      const raw = btn.getAttribute('data-modal');
+      if (!raw) return;
+      let payload: PastModalPayload;
+      try {
+        payload = JSON.parse(raw) as PastModalPayload;
+      } catch {
+        return;
+      }
+      this.applyPayload(payload);
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-event-modal-open', true);
+      this.dialogOpenedAt = Date.now();
+      setTimeout(() => window.addEventListener('click', this.onWindowClick), 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+  }
+
+  if (!customElements.get('community-huddle-past-modal')) {
+    customElements.define('community-huddle-past-modal', CommunityHuddlePastModal);
+  }
+
+  if (!(globalThis as { __communityHuddlePastOpenHook?: boolean }).__communityHuddlePastOpenHook) {
+    (globalThis as { __communityHuddlePastOpenHook?: boolean }).__communityHuddlePastOpenHook =
+      true;
+    document.addEventListener('click', (e: MouseEvent) => {
+      const t = (e.target as HTMLElement)?.closest?.(`[${OPEN_ATTR}]`);
+      if (!t) return;
+      const host = document.querySelector('community-huddle-past-modal');
+      if (!host || !('openFromButton' in host)) return;
+      e.preventDefault();
+      (host as CommunityHuddlePastModal).openFromButton(t as HTMLElement);
+    });
+  }
+</script>

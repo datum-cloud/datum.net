@@ -19,12 +19,7 @@ const { Content } = await render(page);
 ---
 
 <Layout title={fm.title} description={fm.description} bodyClass={`page-${page.id}`} meta={meta}>
-  <section
-    class="datum-container fade-in--pure"
-    data-reveal="fade-in--pure--visible"
-    data-reveal-delay="100"
-    data-reveal-immediate="true"
-  >
+  <section class="datum-container">
     <Hero class="light" hideContent={true} />
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pb-0">
@@ -51,6 +46,7 @@ const { Content } = await render(page);
                   class="btn btn--canyon-clay---links btn--sm"
                   href="https://link.datum.net/founders"
                   target="_blank"
+                  data-fathom-event="Contact: Founder Meeting"
                 />
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:content';
+import { z } from 'zod';
 
 import { OIDCClient } from '@libs/oidc';
 import { incrementVote, decrementVote, getUserVoted as getUserVotedValue } from '@libs/postgres';

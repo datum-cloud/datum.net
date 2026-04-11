@@ -5,6 +5,7 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
 import defaultOgImage from '@content/images/og/default.png';
 
 const {
@@ -18,11 +19,33 @@ const {
   dataTheme = '',
   bodyClass = 'template',
   meta,
+  jsonLd,
 } = Astro.props as LayoutProps;
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://www.datum.net/#organization',
+  name: 'Datum',
+  legalName: 'Datum Technology, Inc.',
+  url: 'https://www.datum.net',
+  logo: 'https://www.datum.net/logo-light.svg',
+  description: 'Open source network cloud for AI',
+  sameAs: [
+    'https://github.com/orgs/datum-cloud',
+    'https://www.youtube.com/@Datum-Cloud',
+    'https://discord.com/invite/AeA9XZu4Py',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Datum Cloud',
+    description: 'Global network cloud platform for AI workloads',
+  },
+};
 
 const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
 const isProduction = mode === 'production';
-const pageUrl = Astro.url.href;
+const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const imageContent = image ? image : defaultOgImage;
 
 // Overwrite with meta
@@ -132,6 +155,9 @@ const twitterImage =
       }}
     />
 
+    <JsonLd data={organizationSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
+
     {/* Analytics (Fathom) - Load early but defer execution */}
     {
       isProduction && (
@@ -144,7 +170,17 @@ const twitterImage =
       <slot />
     </main>
     <script>
-      import '/src/v1/scripts/scroll-effects.js';
+      import '@v1/scripts/scroll-effects.js';
+    </script>
+
+    {/* Fathom event tracking - fires on any element with data-fathom-event */}
+    <script is:inline>
+      document.addEventListener('click', function (e) {
+        var el = e.target.closest('[data-fathom-event]');
+        if (el && window.fathom) {
+          window.fathom.trackEvent(el.getAttribute('data-fathom-event'));
+        }
+      });
     </script>
 
     {/* HelpScout Beacon open trigger handler */}
@@ -278,6 +314,25 @@ const twitterImage =
           requestIdleCallback(loadMarker, { timeout: 4000 });
         } else {
           setTimeout(loadMarker, 3000);
+        }
+      })();
+    </script>
+    <script>
+      // Section label highlight — fires once per label as it enters the viewport
+      (function initSectionLabels() {
+        const labels = document.querySelectorAll('.section-label, .mission-label');
+        for (const label of Array.from(labels) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                label.classList.add('highlight-animate');
+              }
+            },
+            { threshold: 0.8 }
+          );
+          obs.observe(label);
         }
       })();
     </script>

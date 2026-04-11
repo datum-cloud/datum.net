@@ -1,0 +1,21 @@
+{
+  "hosts": [
+    {
+      "name": "Jacob Smith",
+      "avatarUrl": "9efa1d68-3718-420b-bca9-1b3c4181354f.jpg"
+    },
+    {
+      "name": "Alex Moskowitz",
+      "avatarUrl": "avatar_17.png"
+    },
+    {
+      "name": "Jacob Conger",
+      "avatarUrl": "f2ddef55-d328-47b8-9b36-178834cd67cb.png"
+    },
+    {
+      "name": "Justin Gage",
+      "avatarUrl": "4860c0ec-1ed2-47ec-b4a2-bc225619b08b.jpg"
+    }
+  ],
+  "guests": []
+}

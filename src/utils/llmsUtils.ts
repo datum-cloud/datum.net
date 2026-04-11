@@ -96,25 +96,3 @@ export const buildUrl = (id: string, basePath: string = ''): string => {
     return `${siteUrl}/${prefix}${cleanId}/`;
   }
 };
-
-// Build URL specifically for docs (special case: docs live at /docs/ path)
-export const buildDocsUrl = (id: string): string => {
-  // Normalize siteUrl - remove trailing slashes
-  const siteUrl = (site || '').replace(/\/+$/, '');
-
-  // Strip leading 'docs/' or exact 'docs' (content lives in docs/docs/)
-  let cleanId = id.replace(/^\/+|\/+$/g, '');
-  if (cleanId === 'docs') {
-    cleanId = 'index';
-  } else if (cleanId.startsWith('docs/')) {
-    cleanId = cleanId.slice(5);
-  }
-
-  if (cleanId === '' || cleanId === 'index') {
-    return `${siteUrl}/docs/`;
-  } else if (cleanId.endsWith('/index')) {
-    return `${siteUrl}/docs/${cleanId.replace('/index', '')}/`;
-  } else {
-    return `${siteUrl}/docs/${cleanId}/`;
-  }
-};

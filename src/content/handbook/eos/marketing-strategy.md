@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Marketing Strategy - Datum Handbook"
+  description: "Datum is focused on helping alternative cloud providers win with a holistic commitment to building open source and elegant product experiences"
+  og:
+    title: "Datum's Marketing Strategy"
 ---
 
 This tool captures (at the highest level) the customers we are trying to serve, why they might need to buy from us, and our process for getting more of them. 
@@ -35,4 +37,3 @@ This tool captures (at the highest level) the customers we are trying to serve, 
 ## Guarantee (WIP)
 
 Give us 90 days to prove how a private network can accelerate your business, or it's free for a year. 
-- Notable traction in at least two ecosystem verticals (e.g. AI infra, data, security, etc)

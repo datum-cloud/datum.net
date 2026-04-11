@@ -1,10 +1,12 @@
 // server.mjs
-import { createServer } from 'http';
+import { createServer, request as httpRequest } from 'http';
+import { request as httpsRequest } from 'https';
 import { handler } from './dist/server/entry.mjs';
 import sirv from 'sirv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { createReadStream, existsSync, statSync } from 'fs';
+import { createGzip, createBrotliCompress, constants as zlibConstants } from 'zlib';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -47,7 +49,6 @@ const CONTENT_TYPES = {
   '.pf_fragment': 'application/octet-stream',
   '.pf_index': 'application/octet-stream',
   '.pf_meta': 'application/octet-stream',
-  '.pagefind': 'application/octet-stream',
 };
 
 const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
@@ -55,12 +56,13 @@ const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
 // Redirect configuration with Cache-Control: no-cache
 const REDIRECTS = {
   '/product': { destination: '/features/', status: 302 },
-  '/feature/': { destination: '/features/', status: 301 },
-  '/product/overview/overview': { destination: '/features/', status: 301 },
+  '/feature/': { destination: '/features/', status: 302 },
+  '/product/overview/overview': { destination: '/features/', status: 302 },
   '/team': { destination: '/about/', status: 302 },
   '/jobs/': { destination: '/careers/', status: 302 },
   '/community-huddle/': { destination: '/events/', status: 302 },
-  '/docs/overview/': { destination: '/docs/', status: 302 },
+  '/docs/': { destination: '/docs/overview/', status: 302 },
+  '/docs': { destination: '/docs/overview/', status: 302 },
   '/docs/roadmap': { destination: '/resources/roadmap/', status: 302 },
   '/docs/tutorials/gateway': { destination: '/docs/tutorials/httpproxy/', status: 302 },
   '/docs/get-started/datum-concepts/': {
@@ -69,17 +71,19 @@ const REDIRECTS = {
   },
   '/docs/tasks/create-project/': { destination: '/docs/platform/projects/', status: 302 },
   '/docs/tasks/developer-guide': { destination: '/docs/developer-guide/', status: 302 },
-  '/docs/task/tools/': { destination: '/docs/', status: 301 },
-  '/docs/tutorials/grafana/': { destination: '/docs/workflows/grafana-cloud/', status: 301 },
-  '/docs/tutorials/httpproxy/': { destination: '/docs/runtime/proxy/', status: 301 },
+  '/docs/task/tools/': { destination: '/docs/', status: 302 },
+  '/docs/tutorials/grafana/': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
+  '/docs/tutorials/httpproxy/': { destination: '/docs/runtime/ai-edge/', status: 302 },
   '/docs/get-started/': { destination: '/docs/quickstart/', status: 302 },
-  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 301 },
-  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 301 },
-  '/docs/contribution-guidelines/': { destination: '/docs/', status: 301 },
-  '/docs/guides/using-byoc/': { destination: '/docs/', status: 301 },
+  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 302 },
+  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 302 },
+  '/docs/contribution-guidelines/': { destination: '/docs/', status: 302 },
+  '/docs/guides/using-byoc/': { destination: '/docs/', status: 302 },
   '/docs/workflows/': { destination: '/docs/', status: 302 },
-  '/docs/workflows/1-click-waf/': { destination: '/docs/runtime/proxy/', status: 302 },
-  '/handbook/engineering/rfc/': { destination: '/handbook/build/', status: 301 },
+  '/docs/workflows/1-click-waf/': { destination: '/docs/runtime/ai-edge/', status: 302 },
+  '/docs/runtime/proxy/': { destination: '/docs/runtime/ai-edge/', status: 302 },
+  '/docs/runtime/proxy': { destination: '/docs/runtime/ai-edge/', status: 302 },
+  '/handbook/engineering/rfc/': { destination: '/handbook/build/', status: 302 },
   '/handbook/company/what-we-believe/': { destination: '/handbook/about/purpose/', status: 302 },
   '/handbook/culture/anti-harassment-and-discrimination-policy/': {
     destination: '/handbook/policy/anti-harassment/',
@@ -96,26 +100,116 @@ const REDIRECTS = {
     status: 302,
   },
   '/handbook/go-to-market/approach-gtm/': { destination: '/handbook/about/model/', status: 302 },
-  '/netzero/overview/overview': { destination: '/', status: 301 },
+  '/netzero/overview/overview': { destination: '/', status: 302 },
   '/api-reference/invite/deletes-a-invite-by-id': {
     destination: '/docs/api/reference/',
-    status: 301,
+    status: 302,
   },
   '/blog/internet-superpowers-for-every-builder/)_/': {
     destination: '/blog/internet-superpowers-for-every-builder/',
-    status: 301,
+    status: 302,
   },
   '/legal/': { destination: '/legal/terms/', status: 302 },
   '/privacy-policy/': { destination: '/legal/privacy/', status: 302 },
   '/privacy/': { destination: '/legal/privacy/', status: 302 },
   '/terms-of-service/': { destination: '/legal/terms/', status: 302 },
-  '/index.asp': { destination: '/', status: 301 },
+  '/index.asp': { destination: '/', status: 302 },
   '/logon.html': { destination: 'https://auth.datum.net/ui/v2/login/loginname', status: 302 },
   '/public-slack/': { destination: 'https://link.datum.net/discord', status: 302 },
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
   '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
   '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
+  '/downloads/': { destination: '/download/', status: 302 },
+  '/downloads/mac-os/': { destination: '/download/mac-os/', status: 302 },
+  '/downloads/windows/': { destination: '/download/windows/', status: 302 },
+  '/downloads/linux/': { destination: '/download/linux/', status: 302 },
+  '/downloads/datumctl/': { destination: '/download/datumctl/', status: 302 },
+  '/downloads/datum-mcp/': { destination: '/download/datum-mcp/', status: 302 },
+  '/resources/changelog/': { destination: '/changelog/', status: 302 },
+  '/resources/roadmap/': { destination: '/roadmap/', status: 302 },
+  '/resources/open-source/': { destination: '/open-source/', status: 302 },
+
+  // No-trailing-slash variants
+  '/docs/get-started': { destination: '/docs/quickstart/', status: 302 },
+  '/docs/get-started/datum-concepts': {
+    destination: '/docs/quickstart/datum-concepts/',
+    status: 302,
+  },
+  '/docs/tasks/create-project': { destination: '/docs/platform/projects/', status: 302 },
+  '/docs/tutorials/gateway/': { destination: '/docs/tutorials/httpproxy/', status: 302 },
+  '/docs/tutorials/httpproxy': { destination: '/docs/runtime/ai-edge/', status: 302 },
+  '/docs/tutorials/grafana': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
+  '/docs/contribution-guidelines': { destination: '/docs/', status: 302 },
+  '/docs/guides/using-byoc': { destination: '/docs/', status: 302 },
+
+  // Additional docs redirects
+  '/docs/developer-guide': { destination: '/docs/datumctl/developer/overview/', status: 302 },
+  '/docs/developer-guide/': { destination: '/docs/datumctl/developer/overview/', status: 302 },
+  '/docs/tasks/tools': { destination: '/docs/datumctl/', status: 302 },
+  '/docs/tasks/tools/': { destination: '/docs/datumctl/', status: 302 },
+  '/docs/tutorials/domains': { destination: '/docs/assets/domains/', status: 302 },
+  '/docs/tutorials/domains/': { destination: '/docs/assets/domains/', status: 302 },
+  '/docs/guides/contribution-guidelines.mdx': { destination: '/docs/guides/', status: 302 },
+  '/docs/workflows/grafana-cloud': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
+  '/docs/workflows/grafana-cloud/': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
+  '/docs/changelog': { destination: '/resources/changelog/', status: 302 },
+  '/docs/changelog/': { destination: '/resources/changelog/', status: 302 },
+
+  // Site page aliases
+  '/about-us': { destination: '/about/', status: 302 },
+  '/about-us/': { destination: '/about/', status: 302 },
+  '/team/': { destination: '/about/', status: 302 },
+  '/leadership': { destination: '/about/', status: 302 },
+  '/leadership/': { destination: '/about/', status: 302 },
+  '/jobs': { destination: '/careers/', status: 302 },
+  '/feature': { destination: '/features/', status: 302 },
+  '/products': { destination: '/features/', status: 302 },
+  '/products/': { destination: '/features/', status: 302 },
+  '/product/vpc': { destination: '/features/', status: 302 },
+  '/design': { destination: '/brand/', status: 302 },
+  '/design/': { destination: '/brand/', status: 302 },
+  '/support': { destination: '/contact/', status: 302 },
+  '/support/': { destination: '/contact/', status: 302 },
+  '/overview/datum': { destination: '/docs/overview/why-datum/', status: 302 },
+  '/overview/datum/': { destination: '/docs/overview/why-datum/', status: 302 },
+
+  // Legal aliases and typos
+  '/privacy-policy': { destination: '/legal/privacy/', status: 302 },
+  '/privacy': { destination: '/legal/privacy/', status: 302 },
+  '/terms-of-service': { destination: '/legal/terms/', status: 302 },
+  '/legal/privacy-policy': { destination: '/legal/privacy/', status: 302 },
+  '/legal/privacy-policy/': { destination: '/legal/privacy/', status: 302 },
+  '/legal/pricavy': { destination: '/legal/privacy/', status: 302 },
+  '/legal/pricavy/': { destination: '/legal/privacy/', status: 302 },
+  '/legal/term': { destination: '/legal/terms/', status: 302 },
+  '/legal/term/': { destination: '/legal/terms/', status: 302 },
+  '/legal/trust': { destination: '/legal/privacy/', status: 302 },
+  '/legal/trust/': { destination: '/legal/privacy/', status: 302 },
+  '/legal/security': { destination: '/docs/overview/support/', status: 302 },
+  '/legal/security/': { destination: '/docs/overview/support/', status: 302 },
 };
+
+const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
+
+// Reverse proxy routes: requests matching prefix are forwarded to the target host.
+// Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy
+const PROXY_ROUTES = [
+  // Mintlify static assets — long-lived cache allowed
+  { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
+  // Core docs path
+  { prefix: '/docs', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/docs/*', target: MINTLIFY_TARGET, cache: false },
+  // Mintlify internal routes
+  { prefix: '/_mintlify', target: MINTLIFY_TARGET, cache: false },
+  // AI / agent discovery files
+  { prefix: '/.well-known/vercel/*', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/skills/*', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/.well-known/agent-skills/*', target: MINTLIFY_TARGET, cache: false },
+  // LLM context files
+  // { prefix: '/llms.txt', target: MINTLIFY_TARGET, cache: false },
+  // { prefix: '/llms-full.txt', target: MINTLIFY_TARGET, cache: false },
+  { prefix: '/skill.md', target: MINTLIFY_TARGET, cache: false },
+];
 
 // Prefix-based redirects: source prefix → destination prefix (preserves the rest of the path)
 const PREFIX_REDIRECTS = [
@@ -141,6 +235,8 @@ const staticServer = sirv(CLIENT_DIR, {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     } else if (pathname.match(/\.(html)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (pathname.startsWith('/download/brand-assets/')) {
+      res.setHeader('Cache-Control', 'no-store, must-revalidate');
     }
     // Force download for Office documents and archives
     if (DOWNLOAD_EXTENSIONS.test(pathname)) {
@@ -157,6 +253,34 @@ function getContentType(url) {
 
 function isCompressible(url) {
   return COMPRESSIBLE_EXTENSIONS.test(url);
+}
+
+// Generate a stable ETag from a file's mtime and size
+function generateETag(stat) {
+  return `"${stat.mtime.getTime().toString(16)}-${stat.size.toString(16)}"`;
+}
+
+// Check conditional request headers; returns true if a 304 was sent
+function handleConditional(req, res, etag, lastModified, cacheControl, varyHeader) {
+  const ifNoneMatch = req.headers['if-none-match'];
+  const ifModifiedSince = req.headers['if-modified-since'];
+
+  const etagMatch = ifNoneMatch && ifNoneMatch === etag;
+  const modifiedMatch =
+    !ifNoneMatch && ifModifiedSince && new Date(ifModifiedSince) >= lastModified;
+
+  if (etagMatch || modifiedMatch) {
+    res.writeHead(304, {
+      ETag: etag,
+      'Last-Modified': lastModified.toUTCString(),
+      'Cache-Control': cacheControl,
+      Vary: varyHeader,
+      'X-Cache': 'HIT',
+    });
+    res.end();
+    return true;
+  }
+  return false;
 }
 
 // Serve pre-compressed files (.gz, .br) for text-based content
@@ -178,19 +302,31 @@ function serveCompressed(req, res, next) {
   const acceptEncoding = req.headers['accept-encoding'] || '';
   const filePath = join(CLIENT_DIR, url);
 
+  // Use the original file's stat for a consistent ETag across encodings
+  const originalStat = existsSync(filePath) ? statSync(filePath) : null;
+  const cacheControl = url.includes('/_astro/')
+    ? 'public, max-age=31536000, immutable'
+    : 'public, max-age=0, must-revalidate';
+
   // Try brotli first (better compression ratio)
   if (acceptEncoding.includes('br')) {
     const brPath = filePath + '.br';
     if (existsSync(brPath)) {
-      const stat = statSync(brPath);
+      const stat = originalStat ?? statSync(brPath);
+      const etag = generateETag(stat);
+      const lastModified = stat.mtime;
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
+
       res.writeHead(200, {
         'Content-Type': getContentType(url),
         'Content-Encoding': 'br',
-        'Content-Length': stat.size,
+        'Content-Length': statSync(brPath).size,
+        ETag: etag,
+        'Last-Modified': lastModified.toUTCString(),
         Vary: 'Accept-Encoding',
-        'Cache-Control': url.includes('/_astro/')
-          ? 'public, max-age=31536000, immutable'
-          : 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
+        'X-Cache': 'MISS',
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -205,15 +341,21 @@ function serveCompressed(req, res, next) {
   if (acceptEncoding.includes('gzip')) {
     const gzPath = filePath + '.gz';
     if (existsSync(gzPath)) {
-      const stat = statSync(gzPath);
+      const stat = originalStat ?? statSync(gzPath);
+      const etag = generateETag(stat);
+      const lastModified = stat.mtime;
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
+
       res.writeHead(200, {
         'Content-Type': getContentType(url),
         'Content-Encoding': 'gzip',
-        'Content-Length': stat.size,
+        'Content-Length': statSync(gzPath).size,
+        ETag: etag,
+        'Last-Modified': lastModified.toUTCString(),
         Vary: 'Accept-Encoding',
-        'Cache-Control': url.includes('/_astro/')
-          ? 'public, max-age=31536000, immutable'
-          : 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
+        'X-Cache': 'MISS',
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -225,6 +367,111 @@ function serveCompressed(req, res, next) {
   }
 
   next();
+}
+
+function handleProxy(req, res, target, cache = false) {
+  const targetUrl = new URL(target);
+  const isHttps = targetUrl.protocol === 'https:';
+  const requestFn = isHttps ? httpsRequest : httpRequest;
+
+  const options = {
+    hostname: targetUrl.hostname,
+    port: targetUrl.port || (isHttps ? 443 : 80),
+    path: req.url,
+    method: req.method,
+    headers: {
+      ...req.headers,
+      host: targetUrl.hostname,
+      'x-forwarded-host': req.headers.host,
+      'x-forwarded-proto': 'https',
+    },
+  };
+
+  const proxyReq = requestFn(options, (proxyRes) => {
+    const headers = { ...proxyRes.headers };
+    if (!cache) {
+      headers['cache-control'] = 'no-cache, no-store, must-revalidate';
+    }
+    res.writeHead(proxyRes.statusCode, headers);
+    proxyRes.pipe(res);
+  });
+
+  proxyReq.on('error', (err) => {
+    console.error('Proxy error:', err);
+    res.writeHead(502);
+    res.end('Bad Gateway');
+  });
+
+  req.pipe(proxyReq);
+}
+
+const SSR_COMPRESSIBLE = /^(text\/|application\/(javascript|json|xml|manifest\+json)|image\/svg)/;
+
+// Wrap the Astro SSR handler with streaming compression and cache headers
+function handleSSR(req, res) {
+  const acceptEncoding = req.headers['accept-encoding'] ?? '';
+
+  let compressor = null;
+  let encoding = null;
+
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    if (acceptEncoding.includes('br')) {
+      compressor = createBrotliCompress({
+        params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 4 },
+      });
+      encoding = 'br';
+    } else if (acceptEncoding.includes('gzip')) {
+      compressor = createGzip({ level: 6 });
+      encoding = 'gzip';
+    }
+  }
+
+  const origWriteHead = res.writeHead.bind(res);
+  const origWrite = res.write.bind(res);
+  const origEnd = res.end.bind(res);
+
+  let compressionActive = false;
+
+  res.writeHead = (statusCode, headers) => {
+    const h = headers && typeof headers === 'object' ? { ...headers } : {};
+
+    const ct = String(
+      h['content-type'] ?? h['Content-Type'] ?? res.getHeader('content-type') ?? ''
+    );
+    compressionActive = !!compressor && SSR_COMPRESSIBLE.test(ct);
+
+    if (compressionActive) {
+      delete h['content-length'];
+      delete h['Content-Length'];
+      h['Content-Encoding'] = encoding;
+      h['Vary'] = 'Accept-Encoding';
+    }
+
+    if (!h['Cache-Control'] && !h['cache-control']) {
+      h['Cache-Control'] = 'no-cache';
+    }
+
+    return origWriteHead(statusCode, h);
+  };
+
+  if (compressor) {
+    compressor.on('data', (chunk) => origWrite(chunk));
+    compressor.on('end', () => origEnd());
+    compressor.on('error', () => origEnd());
+
+    res.write = (chunk, enc, cb) => {
+      if (!compressionActive) return origWrite(chunk, enc, cb);
+      return compressor.write(chunk, enc, cb);
+    };
+
+    res.end = (chunk, enc, cb) => {
+      if (!compressionActive) return origEnd(chunk, enc, cb);
+      if (chunk) compressor.write(chunk);
+      compressor.end();
+    };
+  }
+
+  handler(req, res);
 }
 
 const server = createServer((req, res) => {
@@ -265,10 +512,18 @@ const server = createServer((req, res) => {
     }
   }
 
-  // Middleware order: compressed files → static files → Astro handler
+  // Handle proxy routes
+  for (const route of PROXY_ROUTES) {
+    if (url.startsWith(route.prefix)) {
+      handleProxy(req, res, route.target, route.cache);
+      return;
+    }
+  }
+
+  // Middleware order: compressed files → static files → Astro SSR handler
   serveCompressed(req, res, () => {
     staticServer(req, res, () => {
-      handler(req, res);
+      handleSSR(req, res);
     });
   });
 });

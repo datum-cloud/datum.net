@@ -6,8 +6,11 @@ sidebar:
 updatedDate: Feb 2, 2026
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "How we hire - Datum Careers"
+  description: "Understand the interview process and how we hire for open roles"
+  og:
+      title: "How we approach hiring for open roles"
+      description: "Learn about our hiring process: from applications to interviews"
 ---
 
 Datum uses Ashby as its applicant tracking system to coordinate recruiting activities. All job postings, candidate communications, interview scheduling, and hiring decisions are routed through Ashby to ensure a consistent and professional experience for candidates.

@@ -40,8 +40,8 @@ const nextArticle =
 {/* Last Updated */}
 <footer id="footer-article" class="article-footer">
   <div class="flex flex-wrap justify-between">
-    {currentArticle && <EditPage filePath={currentArticle.path} />}
     {lastUpdated && <LastUpdated date={lastUpdated} />}
+    {currentArticle && <EditPage filePath={currentArticle.path} />}
   </div>
 
   <ArticleNavigation

@@ -40,6 +40,7 @@
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
+  --color-app---dark---utility-3: #67717c;
   --color-app---dark---utility-4: #90969c;
   --color-app---dark---utility-5: #e3e2df;
 
@@ -77,12 +78,9 @@
   --font-frontliner:
     'Frontliner', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-
-  /* Starlight */
-  --sl-label-icon-size: 18px;
-
-  /* Color Datum */
-  --sl-color-text-accent: #bf9595;
+  --font-dejavu:
+    'DejaVu Sans Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
 
   --color-borderpanellight: #d0d0ca;
   --color-borderpaneldark: #313066;
@@ -95,4 +93,6 @@
   --radius-lg: var(--radius-lg);
 
   --color-borderpanel: var(--color-glacier-mist-900);
+
+  --ec-frm-inlBtnFg: var(--color-aurora-moss);
 }

@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Datum Change Management Policy & Control"
+  title: "Datum Change Management Policy & Control - Datum Handbook"
   description: "Read the Datum Change Management Policy. Our standards for code review, testing, and deployment approvals to ensure stability and minimize risk."
+  og:
+    title: "Change management policy"
 ---
 
 To avoid potential security incidents, Datum requires change management controls to ensure only authorized changes are made to its environment and processes.

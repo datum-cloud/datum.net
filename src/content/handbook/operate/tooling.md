@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Collaboration Tools - How We Work at Datum"
   description: "We believe in the right tools for the job. Read about the software ecosystem that enables our distributed team to collaborate, communicate, and ship code."
+  og:
+    title: "Tooling"
 ---
 
 In line with our ethos of working in the open, surfing across time zones, and serving builders, we try to do our work in places that can be visible to others and are naturally well documented.

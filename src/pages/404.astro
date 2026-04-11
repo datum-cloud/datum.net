@@ -15,7 +15,7 @@ const description = 'The page you are looking for does not exist.';
   <section class="datum-container">
     <Hero class="light" title={title} />
 
-    <div class="section--block bg-glacier-mist-700">
+    <div class="section--block bg-glacier-mist-700 pb-14 md:pb-20 lg:pb-28">
       <main class="mx-auto max-w-391 px-6">
         <Image src={Image404} alt="404" class="mx-auto mb-12 h-auto w-full max-w-[423px]" />
         <article class="prose prose-xl mx-auto text-center">
@@ -23,24 +23,14 @@ const description = 'The page you are looking for does not exist.';
           <Button
             text="Return to homepage"
             href="/"
-            class="btn btn--alpha mr-1"
-            icon={{ name: 'arrow-right', size: 'md' }}
-          />
-          <Button
-            text="Browse our Docs"
-            href="/docs/"
-            class="btn btn--alpha ml-1"
+            class="btn btn--alpha mr-0 mb-4 md:mr-1 md:mb-0"
             icon={{ name: 'arrow-right', size: 'md' }}
           />
         </article>
       </main>
     </div>
-    <Footer showCTA={false} />
+    <Footer showCTA={false} showBackground={false} />
   </section>
 
-  {
-    import.meta.env.MODE === 'production' && (
-      <script>import '/src/v1/scripts/error-tracker.js';</script>
-    )
-  }
+  {import.meta.env.MODE === 'production' && <script>import '@v1/scripts/error-tracker.js';</script>}
 </Layout>

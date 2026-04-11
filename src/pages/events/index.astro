@@ -1,0 +1,78 @@
+---
+// src/pages/events/index.astro
+// Events page displaying all events from content collections
+
+import '@v1/styles/page-events.css';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Card from '@components/events/Card.astro';
+
+const page = await getCollectionEntry('pages', 'events');
+
+// SEO
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title ? fm.title : 'Datum Events';
+const description = fm.description;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/events/#webpage',
+      url: 'https://www.datum.net/events/',
+      name: 'Datum Events – Meetups, Conferences & Community Gatherings',
+      description:
+        'Datum holds regular community events throughout the US and online, covering Datum Cloud, alternative cloud infrastructure, and AI-native networking technologies.',
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-03-20',
+    },
+    {
+      '@type': 'EventSeries',
+      '@id': 'https://www.datum.net/events/#series',
+      name: 'Datum Community Events',
+      description:
+        'Regular in-person and online events hosted by Datum, discussing open source network cloud, alternative cloud infrastructure, AI-native connectivity, and the next generation of cloud builders.',
+      url: 'https://www.datum.net/events/',
+      organizer: { '@id': 'https://www.datum.net/#organization' },
+      location: [
+        {
+          '@type': 'VirtualLocation',
+          url: 'https://www.datum.net/events/',
+        },
+        {
+          '@type': 'Place',
+          name: 'Various locations across the United States',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'US',
+          },
+        },
+      ],
+      eventAttendanceMode: 'https://schema.org/MixedEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      inLanguage: 'en-US',
+      isAccessibleForFree: true,
+    },
+  ],
+};
+---
+
+<Layout title={title} description={description} bodyClass="page-events" meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container">
+    <Hero class="light pb-0" title={title} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+      <div class="max-width">
+        <Card />
+      </div>
+    </div>
+
+    <Footer showIllustration={false} showBackground={false} showCTA={false} />
+  </section>
+</Layout>

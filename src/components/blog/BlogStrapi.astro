@@ -1,0 +1,80 @@
+---
+// src/components/blog/BlogStrapi.astro
+import { fetchStrapiArticles } from '@libs/strapi';
+import { normalizeArticle } from '@/src/types/strapi';
+import type { StrapiArticle, NormalizedStrapiArticle } from '@libs/strapi';
+import FeaturedPostStrapi from './FeaturedPostStrapi.astro';
+import BlogItemStrapi from './BlogItemStrapi.astro';
+import BlogPagination from '@components/blog/BlogPagination.astro';
+import config from '@data/siteConfig.json';
+
+interface Props {
+  page?: number;
+}
+
+const { page = 1 } = Astro.props as Props;
+
+// Fetch articles from Strapi (cached list, without rich-text blocks)
+const rawArticles: StrapiArticle[] = await fetchStrapiArticles();
+
+// Normalize articles (already sorted by newest first in fetchStrapiArticles)
+let articles: NormalizedStrapiArticle[] = [];
+if (rawArticles.length > 0) {
+  articles = rawArticles.map(normalizeArticle);
+}
+
+// Pagination
+const pageSize = config.pageSize;
+const currentPage = Math.max(1, page);
+const totalItems = articles.length;
+const totalPages = Math.ceil(totalItems / pageSize);
+
+// Slice articles for the current page
+const pageStart = (currentPage - 1) * pageSize;
+const pageArticles = articles.slice(pageStart, pageStart + pageSize);
+
+// Featured posts (first 3) only on page 1
+const featuredPosts = currentPage === 1 ? pageArticles.slice(0, 3) : [];
+const listPosts = currentPage === 1 ? pageArticles.slice(3) : pageArticles;
+
+// Pagination URLs
+const baseUrl = '/blog';
+const prevPage = currentPage - 1;
+const prevUrl =
+  currentPage > 1 ? (prevPage === 1 ? `${baseUrl}/` : `${baseUrl}/${prevPage}/`) : undefined;
+const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}/` : undefined;
+---
+
+{
+  articles.length === 0 ? (
+    <div class="py-12 text-center">
+      <p class="text-gray-500">No articles found. Please check your Strapi connection.</p>
+    </div>
+  ) : (
+    <>
+      {featuredPosts.length > 0 && (
+        <div class="featured-posts-section">
+          {featuredPosts.map((post, index) => (
+            <FeaturedPostStrapi post={post} baseUrl={baseUrl} priority={index === 0} />
+          ))}
+        </div>
+      )}
+
+      <div class="blog-list">
+        {listPosts.map((post) => (
+          <BlogItemStrapi post={post} baseUrl={baseUrl} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <BlogPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl={baseUrl}
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
+        />
+      )}
+    </>
+  )
+}

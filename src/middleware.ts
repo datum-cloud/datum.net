@@ -3,12 +3,8 @@ import { sequence } from 'astro:middleware';
 import type { MiddlewareHandler } from 'astro';
 
 const PROTECTED_ROUTES = [/^\/dev($|\/.*)/];
-type RedirectStatus = 300 | 301 | 302 | 303 | 304 | 307 | 308;
 
-const REDIRECTS: Record<string, { destination: string; status: RedirectStatus }> = {
-  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 301 },
-  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 301 },
-};
+const DOCS_PATH_PREFIX = /^\/docs(\/|$)/;
 
 const isProtected = (path: string): boolean => {
   return PROTECTED_ROUTES.some((pattern) => pattern.test(path));
@@ -17,11 +13,6 @@ const isProtected = (path: string): boolean => {
 const routeGuard: MiddlewareHandler = async ({ url, redirect }, next) => {
   const mode = process.env.MODE || import.meta.env.MODE;
   const pathName = new URL(url).pathname;
-
-  const redirectConfig = REDIRECTS[pathName];
-  if (redirectConfig) {
-    return redirect(redirectConfig.destination, redirectConfig.status);
-  }
 
   if (isProtected(pathName)) {
     // only for development mode, to ease testing
@@ -43,4 +34,20 @@ const baseMiddleware: MiddlewareHandler = async (context, next) => {
   return next();
 };
 
-export const onRequest = sequence(routeGuard, baseMiddleware);
+export const docsHeaders: MiddlewareHandler = async ({ url }, next) => {
+  const pathName = new URL(url).pathname;
+
+  if (!DOCS_PATH_PREFIX.test(pathName)) {
+    return next();
+  }
+
+  const response = await next();
+  const mutableResponse = new Response(response.body, response);
+
+  mutableResponse.headers.delete('X-Frame-Options');
+  mutableResponse.headers.set('Content-Security-Policy', 'frame-ancestors *');
+
+  return mutableResponse;
+};
+
+export const onRequest = sequence(routeGuard, baseMiddleware, docsHeaders);

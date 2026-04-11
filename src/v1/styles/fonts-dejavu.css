@@ -1,0 +1,42 @@
+/*! DejaVu Sans Mono — webfont kit merged for datum.net */
+
+/* DejaVu Sans Mono Font Family */
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-webfont.woff') format('woff'),
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-webfont.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-Bold-webfont.woff') format('woff'),
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-Bold-webfont.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-Oblique-webfont.woff') format('woff'),
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-Oblique-webfont.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-BoldOblique-webfont.woff') format('woff'),
+    url('/fonts/dejavu-sans-mono/DejaVuSansMono-BoldOblique-webfont.ttf') format('truetype');
+}

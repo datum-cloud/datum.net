@@ -33,25 +33,25 @@ async function stargazerCount(isClientSide: boolean = false): Promise<number> {
   let stargazers = 0;
   const name = 'datum';
 
-  if (cache.has('stargazerCount')) {
-    return cache.get<number>('stargazerCount') as number;
-  } else {
-    if (isClientSide) {
-      try {
-        const API_URL = `https://api.github.com/repos/${owner}/${name}`;
-        const response = await fetch(API_URL);
-        const data = await response.json();
+  if (await cache.has('stargazerCount')) {
+    return (await cache.get<number>('stargazerCount')) ?? 0;
+  }
+  if (isClientSide) {
+    try {
+      const API_URL = `https://api.github.com/repos/${owner}/${name}`;
+      const response = await fetch(API_URL);
+      const data = await response.json();
 
-        if (response.ok) {
-          stargazers = data.stargazers_count || 0;
-          cache.set('stargazerCount', stargazers, 1000 * 60 * 5); // cache for 5 minutes
-        }
-      } catch {
-        stargazers = 0;
+      if (response.ok) {
+        stargazers = data.stargazers_count || 0;
+        await cache.set('stargazerCount', stargazers, 1000 * 60 * 5); // cache for 5 minutes
       }
-    } else {
-      try {
-        const query = `
+    } catch {
+      stargazers = 0;
+    }
+  } else {
+    try {
+      const query = `
           query ($owner: String!, $name: String!) {
             repository(owner: $owner, name: $name) {
               stargazerCount
@@ -59,21 +59,19 @@ async function stargazerCount(isClientSide: boolean = false): Promise<number> {
           }
         `;
 
-        const variables = {
-          owner,
-          name,
-        };
+      const variables = {
+        owner,
+        name,
+      };
 
-        const response = (await graph(query, variables)) as ResponseProps;
-        stargazers = response.repository.stargazerCount || 0;
-        cache.set('stargazerCount', stargazers, 1000 * 60 * 10); // cache for 10 minutes
-      } catch {
-        stargazers = 0;
-      }
+      const response = (await graph(query, variables)) as ResponseProps;
+      stargazers = response.repository.stargazerCount || 0;
+      await cache.set('stargazerCount', stargazers, 1000 * 60 * 10); // cache for 10 minutes
+    } catch {
+      stargazers = 0;
     }
-
-    return stargazers;
   }
+  return stargazers;
 }
 
 async function roadmaps(): Promise<RoadmapProps[]> {
@@ -98,9 +96,10 @@ async function roadmaps(): Promise<RoadmapProps[]> {
   };
   let roadmaps: RoadmapProps[] = [];
 
-  if (cache.has('roadmaps')) {
-    return cache.get<RoadmapProps[]>('roadmaps') as RoadmapProps[];
-  } else {
+  if (await cache.has('roadmaps')) {
+    return (await cache.get<RoadmapProps[]>('roadmaps')) ?? [];
+  }
+  {
     try {
       const query = `
           query ($owner: String!, $name: String!, $labels: String!) {
@@ -141,10 +140,10 @@ async function roadmaps(): Promise<RoadmapProps[]> {
     }
 
     if (roadmaps.length > 0) {
-      cache.set('roadmaps', roadmaps, 1000 * 60 * 10); // cache for 30 minutes
+      await cache.set('roadmaps', roadmaps, 1000 * 60 * 10); // cache for 30 minutes
     }
-    return roadmaps;
   }
+  return roadmaps;
 }
 
 async function changelogs(): Promise<ChangelogProps[]> {
@@ -178,9 +177,10 @@ async function changelogs(): Promise<ChangelogProps[]> {
     slug: 'changelog',
   };
 
-  if (cache.has('changelogs')) {
-    return cache.get<ChangelogProps[]>('changelogs') as ChangelogProps[];
-  } else {
+  if (await cache.has('changelogs')) {
+    return (await cache.get<ChangelogProps[]>('changelogs')) ?? [];
+  }
+  {
     try {
       const categoryQuery = `
         query ($owner:String!, $name:String!, $slug:String!) {
@@ -237,7 +237,7 @@ async function changelogs(): Promise<ChangelogProps[]> {
       changelogs = Object(response.repository.discussions.nodes).map((log: ChangelogProps) => ({
         ...log,
       }));
-      cache.set('changelogs', changelogs, 1000 * 60 * 10); // cache for 10 minutes
+      await cache.set('changelogs', changelogs, 1000 * 60 * 10); // cache for 10 minutes
     } catch {
       changelogs = [];
     }

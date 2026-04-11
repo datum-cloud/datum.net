@@ -68,6 +68,30 @@ async function stripTags(
 }
 
 /**
+ * Estimate reading time in minutes for a given text content.
+ * Mirrors the logic used in dateUtils.estimateReadingTime but returns only minutes.
+ * @param content - The raw or markdown content to analyze
+ * @param wordsPerMinute - Reading speed (default 200 wpm)
+ */
+function getReadingTimeMinutesFromContent(content: string, wordsPerMinute: number = 200): number {
+  const cleanContent = content
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#*_~`]/g, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!cleanContent) {
+    return 1;
+  }
+
+  const wordCount = cleanContent.split(/\s+/).filter((word) => word.length > 0).length;
+  return Math.max(1, Math.round(wordCount / wordsPerMinute));
+}
+
+/**
  * Generates a random string of specified length
  * @param length - The desired length of the random string
  * @returns Random string containing lowercase letters and numbers
@@ -79,4 +103,11 @@ const generateRandomString = (length: number): string => {
   ).join('');
 };
 
-export { truncate, truncateByWords, removeHeaderTags, stripTags, generateRandomString };
+export {
+  truncate,
+  truncateByWords,
+  removeHeaderTags,
+  stripTags,
+  getReadingTimeMinutesFromContent,
+  generateRandomString,
+};

@@ -1,25 +1,44 @@
-<div class="changelog-item--content">
-  <div class="changelog-item--date">
-    <span class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700"></span>
-  </div>
-
-  <div class="changelog-item--main">
-    <h3 class="changelog-item--title">
-      <span class="mb-2.5 h-7 max-w-[200px] animate-pulse rounded-full bg-gray-700"></span>
-    </h3>
-    <div class="changelog-item--description">
-      <div class="mb-2.5 h-5 max-w-[360px] animate-pulse rounded-full bg-gray-700"></div>
-      <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700"></div>
-      <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700"></div>
-      <div class="mb-2.5 h-5 animate-pulse rounded-full bg-gray-700"></div>
-    </div>
-
-    <div class="changelog-item--tags">
-      <div class="changelog-item--tag-group">
-        <div class="changelog-item--tag-description">
-          <span class="mb-2.5 h-5 max-w-[150px] animate-pulse rounded-full bg-gray-700"></span>
+<div class="changelog-list">
+  {
+    [1, 2, 3].map((_, index) => (
+      <div class:list={['changelog-entry', { 'changelog-entry--last': index === 2 }]}>
+        <div class="changelog-entry-sidebar">
+          <div class="changelog-entry-timeline">
+            <div class="changelog-entry-dot">
+              <div class="size-6 animate-pulse rounded-full bg-gray-300" />
+            </div>
+            <div class="changelog-entry-line" />
+          </div>
+          <div class="changelog-entry-nav">
+            <div class="mb-4 h-10 w-full max-w-64 animate-pulse rounded bg-gray-300" />
+            <div class="h-4 w-32 animate-pulse rounded bg-gray-300" />
+          </div>
         </div>
+
+        <article class="changelog-entry-card">
+          <header class="changelog-entry-card-header">
+            <div class="h-7 w-32 animate-pulse rounded bg-gray-300" />
+            <div class="h-5 w-28 animate-pulse rounded bg-gray-300" />
+          </header>
+
+          <div class="space-y-4">
+            <div class="h-5 w-full animate-pulse rounded bg-gray-300" />
+            <div class="h-5 w-full animate-pulse rounded bg-gray-300" />
+            <div class="h-5 w-3/4 animate-pulse rounded bg-gray-300" />
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-6">
+              <div class="h-9 w-23 animate-pulse rounded bg-gray-300" />
+              <div class="h-5 min-w-0 flex-1 animate-pulse rounded bg-gray-300" />
+            </div>
+            <div class="flex items-center gap-6">
+              <div class="h-9 w-23 animate-pulse rounded bg-gray-300" />
+              <div class="h-5 min-w-0 flex-1 animate-pulse rounded bg-gray-300" />
+            </div>
+          </div>
+        </article>
       </div>
-    </div>
-  </div>
+    ))
+  }
 </div>

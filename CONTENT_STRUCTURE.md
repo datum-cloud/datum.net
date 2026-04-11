@@ -147,7 +147,7 @@ src/content/
 │       │   │   ├── alias.mdx
 │       │   │   └── index.mdx
 │       │   ├── index.mdx
-│       │   └── proxy.mdx
+│       │   └── ai-edge.mdx
 │       ├── tasks/
 │       │   └── index.mdx
 │       ├── tutorials/
@@ -363,7 +363,7 @@ Version changelog entries:
 
 ### Documentation (`docs/docs/`)
 
-Starlight-based documentation organized by topic:
+Documentation organized by topic:
 
 - **alt-cloud/** - Alternative cloud configurations
 - **api/** - API documentation (8 pages)
@@ -378,7 +378,7 @@ Starlight-based documentation organized by topic:
 - **overview/** - Platform overview and pricing
 - **platform/** - Platform features (auth, organizations, projects)
 - **quickstart/** - Getting started guides (6 pages)
-- **runtime/** - Runtime features (AI gateway, DNS with alias support, proxy)
+- **runtime/** - Runtime features (AI gateway, DNS with alias support, AI Edge)
 - **tasks/** - Task documentation
 - **tutorials/** - Step-by-step tutorials
 - **workflows/** - Workflow documentation (3 pages)

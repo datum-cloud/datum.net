@@ -8,11 +8,13 @@ authors: jacob
 meta:
   title: "System Components & Architecture - Datum Handbook"
   description: "Explore the building blocks of Datum. A technical breakdown of our system components, including the control plane, data plane, and edge infrastructure."
+  og:
+    title: "System Components & Architecture"
 ---
 
 There are four main components that we assemble to make Datum work for customers: infrastructure, platform, backend, cloud.
 
-**Infrastructure** - As a self-described "open network cloud", the infrastructure underneath our cloud this is a foundation of the value we provide. By operating a large, global multi-tenant network and associated compute infrastructure, we’re able to effectively interact with the broader internet, broker connections, and deliver packets. To match our current stage of development, we’ve decided to rent much of this capacity from global hosting providers including NetActuate, GCP and Vultr.
+**Infrastructure** - As a self-described "open network cloud", the infrastructure underneath our cloud is a foundation of the value we provide. By operating a large, global multi-tenant network and associated compute infrastructure, we’re able to effectively interact with the broader internet, broker connections, and deliver packets. To match our current stage of development, we’ve decided to rent much of this capacity from global hosting providers including NetActuate, GCP and Vultr.
 
 **Platform** - Transforming our physical infrastructure into a robust and secure platform for delivering software is the next step in the game. We use Talos Linux and a customized Kubernetes stack to orchestrate each of our PoPs across various providers. 
 

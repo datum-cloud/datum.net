@@ -6,8 +6,10 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: ""
-  description: ""
+  title: "Open source - Datum Handbook"
+  description: "Datum's Open Source Strategy - Our approach to building a sustainable open source company. Learn about Datum's commercial strategy, AGPLv3 licensing, and how we prioritize value for builders."
+  og:
+    title: "Open by default"
 ---
 
 Our strategy is centered around transparency, and the most important part of this is doing our work in the open. For many folks, this is a new muscle. 

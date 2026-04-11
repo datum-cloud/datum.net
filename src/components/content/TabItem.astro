@@ -1,0 +1,18 @@
+---
+// src/components/content/TabItem.astro
+
+interface TabItemProps {
+  label: string;
+  icon?: string;
+}
+
+const { label, icon } = Astro.props as TabItemProps;
+
+if (!label) {
+  throw new Error('Missing prop `label` on `<TabItem>` component.');
+}
+---
+
+<datum-tab-item data-label={label} data-icon={icon}>
+  <slot />
+</datum-tab-item>

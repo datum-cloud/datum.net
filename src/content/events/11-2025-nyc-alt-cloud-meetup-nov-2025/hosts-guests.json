@@ -1,0 +1,21 @@
+{
+  "hosts": [
+    {
+      "name": "Jacob Smith",
+      "avatarUrl": "9efa1d68-3718-420b-bca9-1b3c4181354f.jpg"
+    },
+    {
+      "name": "Silvia Olivares",
+      "avatarUrl": "29b73ecf-cb40-4d5f-804d-2fd3f23d56d5.jpg"
+    },
+    {
+      "name": "Alex Moskowitz",
+      "avatarUrl": "avatar_17.png"
+    },
+    {
+      "name": "Zoe Weinberg",
+      "avatarUrl": "avatar_7.png"
+    }
+  ],
+  "guests": []
+}

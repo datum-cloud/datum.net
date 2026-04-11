@@ -1,0 +1,42 @@
+---
+// src/components/roadmap/RoadmapStrapi.astro
+import { fetchStrapiRoadmaps, groupRoadmapsByDate } from '@libs/strapi';
+import RoadmapRow from './RoadmapRow.astro';
+
+const roadmaps = await fetchStrapiRoadmaps();
+const { upcoming, previous } = groupRoadmapsByDate(roadmaps);
+---
+
+{
+  upcoming.length > 0 && (
+    <section class="roadmap-section">
+      <h2 class="roadmap-section--title">Upcoming</h2>
+      <div class="roadmap-table">
+        {upcoming.map((roadmap) => (
+          <RoadmapRow roadmap={roadmap} variant="upcoming" />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+{
+  previous.length > 0 && (
+    <section class="roadmap-section">
+      <h2 class="roadmap-section--title">Previous milestones</h2>
+      <div class="roadmap-table">
+        {previous.map((roadmap) => (
+          <RoadmapRow roadmap={roadmap} variant="previous" />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+{
+  upcoming.length === 0 && previous.length === 0 && (
+    <section class="roadmap-section">
+      <p class="text-midnight-fjord opacity-60">No roadmap milestones available yet.</p>
+    </section>
+  )
+}

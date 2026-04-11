@@ -8,6 +8,8 @@ authors: jacob
 meta:
   title: "Working at Datum - key elements of our operating culture"
   description: "Join our mission to empower the next 1k clouds. Read about our engineering culture, collaborative environment, and the values guiding our work experience."
+  og:
+    title: "Life at Datum"
 ---
 
 We’re a company that believes in transparency and autonomy. Each team member is empowered to make decisions in their domain and drive projects forward.

@@ -51,13 +51,23 @@ export default defineConfig({
       },
     }),
     robotsTxt({
-      sitemap: false,
+      sitemap: 'https://www.datum.net/sitemap.xml',
       policy: [
+        // Explicit allow for major AI crawlers (no crawl delay)
+        { userAgent: 'GPTBot', allow: '/' },
+        { userAgent: 'OAI-SearchBot', allow: '/' },
+        { userAgent: 'ChatGPT-User', allow: '/' },
+        { userAgent: 'ClaudeBot', allow: '/' },
+        { userAgent: 'anthropic-ai', allow: '/' },
+        { userAgent: 'PerplexityBot', allow: '/' },
+        { userAgent: 'Amazonbot', allow: '/' },
+        { userAgent: 'Google-Extended', allow: '/' },
+        { userAgent: 'Bytespider', allow: '/' },
+        // Default policy for all other bots
         {
           userAgent: '*',
           allow: '/',
           disallow: ['/admin', '/api'],
-          crawlDelay: 10,
         },
       ],
     }),
@@ -71,8 +81,12 @@ export default defineConfig({
         '404',
         'auth/callback',
         'auth/login',
+        'auth/logout',
         'api/info',
+        'shop',
         'waitlist',
+        'dev/build',
+        'dev/info',
         'authors/jacob-smith/1',
         'authors/zac-smith/1',
       ],

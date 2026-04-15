@@ -1,19 +1,18 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
-import { extractDescription, buildUrl } from '@utils/llmsUtils';
+import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 import { fetchStrapiArticles } from '@libs/strapi';
 
 export const GET: APIRoute = async () => {
   try {
     // Get project info
-    const projectName = 'Datum Cloud Network Solutions';
     const siteUrl = site;
 
     // Base structure for llms.txt
-    let llmsContent = `# ${projectName} Documentation\n\n`;
+    let llmsContent = `# Datum\n\n`;
     llmsContent += `## About\n\n`;
-    llmsContent += `Datum provides enterprise-grade cloud network solutions. This document contains structured information about our documentation and blog posts.\n\n`;
+    llmsContent += `> Datum is an open source network cloud for AI, founded in 2024 and backed by $13.6M from Amplify Partners, CRV, Encoded Ventures, Cervin Ventures, Ex/Ante, Step Function, and Vine Ventures. Built for AI-native developers and alternative cloud providers, Datum provides an Envoy-based AI Edge across 17+ global regions, QUIC-based secure tunnels (Connectors), authoritative DNS, and programmatic domain management — all with a forever-free Builder tier. Core platform licensed AGPLv3. Founded by Zac Smith (ex-Equinix, Packet) and Jacob Smith.\n\n`;
 
     // Get all pages sorted, excluding home/* pages
     const pages = await getCollection('pages');
@@ -26,7 +25,8 @@ export const GET: APIRoute = async () => {
       const description: string =
         page.data.description || extractDescription(page.body, 'No description available');
       const pageUrl = buildUrl(page.id);
-      llmsContent += `- [${page.data.title}](${pageUrl}) - ${description}\n`;
+      const pageTitle = stripHtml(page.data.title);
+      llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }
 
     // Get all blog posts from Strapi sorted by date (newest first)

@@ -29,17 +29,54 @@ const organizationSchema = {
   name: 'Datum',
   legalName: 'Datum Technology, Inc.',
   url: 'https://www.datum.net',
-  logo: 'https://www.datum.net/logo-light.svg',
-  description: 'Open source network cloud for AI',
-  sameAs: [
-    'https://github.com/orgs/datum-cloud',
-    'https://www.youtube.com/@Datum-Cloud',
-    'https://discord.com/invite/AeA9XZu4Py',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://www.datum.net/datum-light.svg',
+  },
+  description:
+    'Datum is an open, neutral, global network cloud that is built for AI and focused on giving alternative cloud providers critical network infrastructure to compete at scale, no networking team required!',
+  foundingDate: '2024',
+  founder: [
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#zac-smith',
+      name: 'Zac Smith',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.datum.net/about/#jacob-smith',
+      name: 'Jacob Smith',
+    },
   ],
+  sameAs: [
+    'https://github.com/datum-cloud',
+    'https://www.youtube.com/@Datum-Cloud',
+    'https://www.linkedin.com/company/datum-cloud',
+    'https://twitter.com/datumcloud',
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    url: 'https://www.datum.net/contact/',
+    availableLanguage: 'English',
+  },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Datum Cloud',
-    description: 'Global network cloud platform for AI workloads',
+    description:
+      'Global network cloud platform for AI workloads — AI Edge, QUIC Connectors, DNS, Domains, VPC, and Kubernetes-native control plane.',
+  },
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://www.datum.net/#website',
+  url: 'https://www.datum.net',
+  name: 'Datum',
+  description: 'Open source network cloud for AI',
+  publisher: {
+    '@id': 'https://www.datum.net/#organization',
   },
 };
 
@@ -48,12 +85,23 @@ const isProduction = mode === 'production';
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const imageContent = image ? image : defaultOgImage;
 
+// Resolve an image src to an absolute URL for og:image / twitter:image
+const siteBase = Astro.site?.href ?? 'https://www.datum.net';
+const toAbsoluteUrl = (src: string): string => {
+  if (!src || src.startsWith('http')) return src;
+  return new URL(src, siteBase).href;
+};
+
 // Overwrite with meta
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
 const twitterImage =
   meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
+const ogImageUrl = toAbsoluteUrl(
+  meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src
+);
+const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
 ---
 
 <!doctype html>
@@ -116,7 +164,7 @@ const twitterImage =
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image: meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src,
+          image: ogImageUrl,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -140,7 +188,7 @@ const twitterImage =
         title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
         description:
           meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
-        image: twitterImage?.src,
+        image: twitterImageUrl,
       }}
       extend={{
         meta: [
@@ -156,6 +204,7 @@ const twitterImage =
     />
 
     <JsonLd data={organizationSchema} />
+    <JsonLd data={websiteSchema} />
     {jsonLd && <JsonLd data={jsonLd} />}
 
     {/* Analytics (Fathom) - Load early but defer execution */}

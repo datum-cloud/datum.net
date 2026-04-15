@@ -85,9 +85,8 @@ export const GET: APIRoute = async () => {
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
 
-    llmsContent += `\n## API\n\n`;
-    llmsContent += `For API documentation, please refer to the following endpoints:\n`;
-    llmsContent += `- ${siteUrl}/api/* - API endpoints\n`;
+    llmsContent += `\n## MCP\n\n`;
+    llmsContent += `- [Datum Docs MCP](${siteUrl}/docs/mcp) - MCP server for AI agents to search and read Datum documentation (JSON-RPC 2.0 over SSE). Tools: \`search_datum_cloud_docs\`, \`query_docs_filesystem_datum_cloud_docs\`.\n`;
 
     llmsContent += `\n## Optional\n\n`;
     llmsContent += `- Full site content at ${siteUrl}/llms-full.txt\n`;

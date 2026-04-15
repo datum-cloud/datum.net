@@ -11,7 +11,6 @@ import node from '@astrojs/node';
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 
@@ -75,21 +74,6 @@ export default defineConfig({
     mermaid({
       theme: 'forest',
       autoTheme: true,
-    }),
-    sitemap({
-      exclude: [
-        '404',
-        'auth/callback',
-        'auth/login',
-        'auth/logout',
-        'api/info',
-        'shop',
-        'waitlist',
-        'dev/build',
-        'dev/info',
-        'authors/jacob-smith/1',
-        'authors/zac-smith/1',
-      ],
     }),
     playformCompress({
       CSS: true,

@@ -11,7 +11,6 @@ import node from '@astrojs/node';
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 
@@ -51,13 +50,23 @@ export default defineConfig({
       },
     }),
     robotsTxt({
-      sitemap: false,
+      sitemap: 'https://www.datum.net/sitemap.xml',
       policy: [
+        // Explicit allow for major AI crawlers (no crawl delay)
+        { userAgent: 'GPTBot', allow: '/' },
+        { userAgent: 'OAI-SearchBot', allow: '/' },
+        { userAgent: 'ChatGPT-User', allow: '/' },
+        { userAgent: 'ClaudeBot', allow: '/' },
+        { userAgent: 'anthropic-ai', allow: '/' },
+        { userAgent: 'PerplexityBot', allow: '/' },
+        { userAgent: 'Amazonbot', allow: '/' },
+        { userAgent: 'Google-Extended', allow: '/' },
+        { userAgent: 'Bytespider', allow: '/' },
+        // Default policy for all other bots
         {
           userAgent: '*',
           allow: '/',
           disallow: ['/admin', '/api'],
-          crawlDelay: 10,
         },
       ],
     }),
@@ -65,17 +74,6 @@ export default defineConfig({
     mermaid({
       theme: 'forest',
       autoTheme: true,
-    }),
-    sitemap({
-      exclude: [
-        '404',
-        'auth/callback',
-        'auth/login',
-        'api/info',
-        'waitlist',
-        'authors/jacob-smith/1',
-        'authors/zac-smith/1',
-      ],
     }),
     playformCompress({
       CSS: true,

@@ -20,8 +20,11 @@ const STATIC_CONTENT = `# Datum — Everything an Agent Needs to Know
 ## How to consume Datum documentation
 1. Fetch https://datum.net/docs/llms.txt — this is the canonical index of all docs
 2. Fetch individual pages as .md (e.g., datum.net/docs/overview.md) for clean text
-3. For live platform state, use \`datumctl api-resources\` or the MCP \`apis\` tool
-4. Submit feedback on incorrect docs via POST to:
+3. Use the Datum Docs MCP server at https://www.datum.net/docs/mcp (JSON-RPC 2.0 over SSE)
+   - Tool: \`search_datum_cloud_docs\` — semantic search across all docs
+   - Tool: \`query_docs_filesystem_datum_cloud_docs\` — read/grep doc files by path (e.g., \`head -80 /quickstart.mdx\`)
+4. For live platform state, use \`datumctl api-resources\` or the MCP \`apis\` tool
+5. Submit feedback on incorrect docs via POST to:
    https://datum.net/docs/_mintlify/feedback/datum-4926dda5/agent-feedback
    Body: { "path": "/page-path", "feedback": "description of issue" }
 </AgentInstructions>

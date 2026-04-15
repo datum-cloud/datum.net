@@ -122,7 +122,8 @@
         { "text": "Handbook", "href": "/handbook/" },
         { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Events", "href": "/events/" },
-        { "text": "Brand Assets", "href": "/brand/" }
+        { "text": "Brand Assets", "href": "/brand/" },
+        { "text": "Contact", "href": "/contact/" }
       ]
     },
     {

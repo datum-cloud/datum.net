@@ -4,6 +4,9 @@ import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 import { fetchStrapiArticles } from '@libs/strapi';
 
+// Note: handbook entries intentionally excluded — internal company ops content
+// is not relevant to AI agents consuming platform documentation.
+
 export const GET: APIRoute = async () => {
   try {
     // Get project info
@@ -39,47 +42,10 @@ export const GET: APIRoute = async () => {
 
     llmsContent += `\n## Blog\n\n`;
 
-    for (const post of sortedPosts) {
+    for (const post of sortedPosts.slice(0, 10)) {
       const description = post.description || 'No description available';
       const postUrl = buildUrl(post.slug, 'blog');
       llmsContent += `- [${post.title}](${postUrl}) - ${description}\n`;
-    }
-
-    // Get all handbook entries
-    const handbooks = await getCollection('handbooks', ({ data }) => !data.draft);
-
-    // Group handbooks by category
-    const handbookCategories: { [key: string]: typeof handbooks } = {};
-
-    handbooks.forEach((handbook) => {
-      const category = handbook.id.split('/')[0];
-      if (!handbookCategories[category]) {
-        handbookCategories[category] = [];
-      }
-      handbookCategories[category].push(handbook);
-    });
-
-    llmsContent += `\n## Handbook\n\n`;
-
-    // Add handbook entries by category
-    for (const category in handbookCategories) {
-      const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      llmsContent += `\n### ${categoryName}\n\n`;
-
-      // Sort by sidebar order if available
-      const sortedHandbooks = handbookCategories[category].sort((a, b) => {
-        const orderA = a.data.sidebar?.order || 999;
-        const orderB = b.data.sidebar?.order || 999;
-        return orderA - orderB;
-      });
-
-      for (const handbook of sortedHandbooks) {
-        const description =
-          handbook.data.description ||
-          extractDescription(handbook.body, 'No description available');
-        const handbookUrl = buildUrl(handbook.id, 'handbook');
-        llmsContent += `- [${handbook.data.title}](${handbookUrl}) - ${description}\n`;
-      }
     }
 
     llmsContent += `\n## Docs\n\n`;

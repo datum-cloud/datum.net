@@ -1,7 +1,4 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import { cleanContent, formatDate, buildUrl, stripHtml } from '@utils/llmsUtils';
-import { fetchStrapiArticles } from '@libs/strapi';
 
 // ---------------------------------------------------------------------------
 // Static curated content — maintained by GTM / SEO team
@@ -313,84 +310,8 @@ datumctl delete httpproxy <name>
 
 `;
 
-// ---------------------------------------------------------------------------
-// Dynamic content — auto-generated from Strapi blog and handbook
-// ---------------------------------------------------------------------------
-export const GET: APIRoute = async () => {
-  try {
-    let dynamicContent = '';
-
-    // Blog posts from Strapi
-    const strapiArticles = await fetchStrapiArticles();
-    const sortedPosts = strapiArticles.sort((a, b) => {
-      const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
-      const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
-      return dateB - dateA;
-    });
-
-    dynamicContent += `---\n\n## Blog\n\n`;
-    for (const post of sortedPosts) {
-      dynamicContent += `### ${stripHtml(post.title)}\n\n`;
-      dynamicContent += `URL: ${buildUrl(post.slug, 'blog')}\n\n`;
-      if (post.originalPublishedAt) {
-        dynamicContent += `Date: ${formatDate(post.originalPublishedAt)}\n\n`;
-      }
-      if (post.description) {
-        dynamicContent += `Description: ${stripHtml(post.description)}\n\n`;
-      }
-      dynamicContent += '---\n\n';
-    }
-
-    // Handbook full content
-    const handbooks = await getCollection('handbooks', ({ data }) => !data.draft);
-
-    const handbookCategories: { [key: string]: typeof handbooks } = {};
-    handbooks.forEach((handbook) => {
-      const category = handbook.id.split('/')[0];
-      if (!handbookCategories[category]) {
-        handbookCategories[category] = [];
-      }
-      handbookCategories[category].push(handbook);
-    });
-
-    dynamicContent += `## Handbook\n\n`;
-
-    for (const category in handbookCategories) {
-      const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      dynamicContent += `### ${categoryName}\n\n`;
-
-      const sortedHandbooks = handbookCategories[category].sort((a, b) => {
-        const orderA = a.data.sidebar?.order || 999;
-        const orderB = b.data.sidebar?.order || 999;
-        return orderA - orderB;
-      });
-
-      for (const handbook of sortedHandbooks) {
-        dynamicContent += `#### ${stripHtml(handbook.data.title)}\n\n`;
-        dynamicContent += `URL: ${buildUrl(handbook.id, 'handbook')}\n\n`;
-
-        if (handbook.data.description) {
-          dynamicContent += `Description: ${stripHtml(handbook.data.description)}\n\n`;
-        }
-
-        if (handbook.data.lastModified) {
-          dynamicContent += `Updated: ${handbook.data.lastModified}\n\n`;
-        }
-
-        try {
-          dynamicContent += cleanContent(handbook.body) + '\n\n';
-        } catch (error) {
-          dynamicContent += `[Content processing error: ${error}]\n\n`;
-        }
-        dynamicContent += '---\n\n';
-      }
-    }
-
-    return new Response(STATIC_CONTENT + dynamicContent, {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-    });
-  } catch (error) {
-    console.error('Failed to generate llms-full.txt:', error);
-    return new Response(`Error generating llms-full.txt: ${error}`, { status: 500 });
-  }
+export const GET: APIRoute = () => {
+  return new Response(STATIC_CONTENT, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
 };

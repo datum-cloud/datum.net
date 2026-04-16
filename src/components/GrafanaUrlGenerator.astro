@@ -8,19 +8,29 @@
   <h4 class="grafana-generator__title">Grafana Cloud Connection URL Generator</h4>
   <form id="urlGenerator" class="grafana-generator__form">
     <div class="grafana-generator__field">
-      <label for="instanceUrl" class="grafana-generator__label">Grafana Cloud Instance URL:</label>
-      <input
-        type="url"
-        id="instanceUrl"
-        placeholder="https://play.grafana.net"
-        class="grafana-generator__input"
-      />
+      <label class="grafana-generator__label">
+        Grafana Cloud Instance URL:
+        <input
+          type="url"
+          id="instanceUrl"
+          placeholder="https://play.grafana.net"
+          class="grafana-generator__input"
+        />
+      </label>
     </div>
   </form>
   <div id="connectionUrl" class="grafana-generator__result">
     <p class="grafana-generator__result-label"><strong>Connection URL (for Step 3):</strong></p>
     <p class="grafana-generator__result-url">
-      <a id="generatedUrl" href="#" target="_blank" class="grafana-generator__link"></a>
+      <a
+        id="generatedUrl"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="grafana-generator__link"
+      >
+        <span id="generatedUrlText"></span>
+      </a>
     </p>
   </div>
 </div>
@@ -30,6 +40,7 @@
     const instanceUrlInput = document.getElementById('instanceUrl') as HTMLInputElement;
     const connectionUrlDiv = document.getElementById('connectionUrl') as HTMLElement;
     const generatedUrlLink = document.getElementById('generatedUrl') as HTMLAnchorElement;
+    const generatedUrlText = document.getElementById('generatedUrlText') as HTMLSpanElement;
 
     let instanceUrl = instanceUrlInput.value;
 
@@ -48,7 +59,9 @@
       const connectionUrl = `${url.origin}/connections/add-new-connection/hmInstancePromId?remoteWrite=direct`;
 
       generatedUrlLink.href = connectionUrl;
-      generatedUrlLink.textContent = connectionUrl;
+      if (generatedUrlText) {
+        generatedUrlText.textContent = connectionUrl;
+      }
       connectionUrlDiv.style.display = 'block';
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
@@ -93,6 +106,10 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: #374151;
+  }
+
+  .grafana-generator__label .grafana-generator__input {
+    margin-top: 0.25rem;
   }
 
   .grafana-generator__input {

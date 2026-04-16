@@ -3,6 +3,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -41,7 +42,14 @@ function verifyWebhookSecret(request: Request): boolean {
     return false;
   }
 
-  return receivedSecret === webhookSecret;
+  const expected = Buffer.from(webhookSecret);
+  const received = Buffer.from(receivedSecret);
+
+  if (expected.length !== received.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(expected, received);
 }
 
 /**

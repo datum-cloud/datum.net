@@ -214,70 +214,66 @@
   @apply text-(length:--text-11xl-canela-font-size);
 }
 
+/* Shared prose link and inheritance base — applied by all datum-prose-* variants */
+@utility datum-prose-base {
+  @apply prose max-w-none text-inherit;
+  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal;
+  @apply prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
+  @apply **:text-inherit;
+}
+
 @utility datum-prose-lg {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-text-lg;
-  @apply text-inherit;
 
   @apply prose-p:mt-0 prose-p:mb-(--text-lg-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--text-lg-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply **:text-inherit;
 }
 
 @utility datum-prose {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-text-base;
-  @apply text-inherit;
 
   @apply prose-p:mt-0 prose-p:mb-(--text-base-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--text-base-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-base prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-bold;
-  @apply **:text-inherit;
 }
 
 @utility datum-prose-docs-article {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-docs-article-body;
 
   @apply prose-p:mt-0 prose-p:mb-(--docs-article-body-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--docs-article-body-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-xl prose-h3:datum-text-lg prose-h4:datum-text-base prose-h5:datum-text-sm prose-h6:datum-text-sm;
   @apply prose-headings:mt-3 prose-headings:mb-4 prose-headings:font-bold;
   @apply prose-headings:pt-px prose-headings:inline-block;
-  @apply **:text-inherit;
 }
 
 @utility datum-prose-docs-article-alt {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-docs-article-body;
 
   @apply prose-p:mt-0 prose-p:mb-(--docs-article-body-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--docs-article-body-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-base;
   @apply prose-headings:my-4 prose-headings:font-bold;
   @apply prose-headings:pt-px prose-headings:inline-block prose-headings:w-full;
-  @apply **:text-inherit;
 }
 
 @utility datum-prose-longform {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-text-longform-body;
 
   @apply prose-p:mt-0 prose-p:mb-(--text-longform-body-paragraph-spacing) prose-p:last:mb-0;
   @apply prose-li:mt-0 prose-li:mb-(--text-longform-body-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-3xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-base;
   @apply prose-headings:font-semibold;
   @apply prose-headings:my-(--text-longform-body-paragraph-spacing);
   @apply prose-headings:mt-[1.5em];
-  @apply **:text-inherit;
 
   --tw-prose-body: var(--color-midnight-fjord);
   --tw-prose-bullets: var(--prose-bullets);
@@ -285,12 +281,11 @@
 }
 
 @utility datum-prose-article {
-  @apply prose max-w-none;
+  @apply datum-prose-base;
   @apply datum-text-article-body;
+
   @apply prose-p:mt-0 prose-p:mb-(--text-article-body-paragraph-spacing);
   @apply prose-li:mt-0 prose-li:mb-(--text-article-body-list-spacing);
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply prose-h2:datum-text-2xl prose-h3:datum-text-xl prose-h4:datum-text-lg prose-h5:datum-text-base prose-h6:datum-text-sm;
   @apply prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-bold;
-  @apply **:text-inherit;
 }

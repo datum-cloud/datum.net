@@ -1,3 +1,8 @@
+/*
+ * CSS custom properties (:root) for use in plain CSS rules and component-level styling.
+ * These mirror the @theme tokens in theme.css — keep both in sync when adding design tokens.
+ * For Tailwind classes, prefer the @theme equivalents in theme.css.
+ */
 :root {
   /* breakpoints */
   --breakpoint-xs: 30rem;

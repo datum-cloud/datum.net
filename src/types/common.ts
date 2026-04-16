@@ -113,7 +113,8 @@ export interface HandbookProps {
 
 export interface ButtonProps {
   class?: string;
-  text: string;
+  /** Button label text. When omitted, slot content is used instead. */
+  text?: string;
   title?: string;
   icon?: {
     name: string;

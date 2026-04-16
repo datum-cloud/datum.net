@@ -101,8 +101,8 @@ const response = JSON.stringify(
     },
     cookies: {
       _session: JSON.parse(Astro.cookies.get('_session')?.value || 'null'),
-      _refresh_token: Astro.cookies.get('_refresh_token')?.value,
-      _id_token: Astro.cookies.get('_id_token')?.value,
+      _refresh_token: Astro.cookies.has('_refresh_token') ? '[REDACTED]' : undefined,
+      _id_token: Astro.cookies.has('_id_token') ? '[REDACTED]' : undefined,
     },
     database: {
       info: psqlInfo || null,

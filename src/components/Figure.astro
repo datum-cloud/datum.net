@@ -45,7 +45,9 @@ const titleParts = title ? convertUrlsToLinks(title) : [];
       <figcaption>
         {titleParts.map((part) =>
           part.type === 'link' ? (
-            <a href={part.href} target="_blank" rel="noopener noreferrer" set:html={part.content} />
+            <a href={part.href} target="_blank" rel="noopener noreferrer">
+              {part.content}
+            </a>
           ) : (
             part.content
           )

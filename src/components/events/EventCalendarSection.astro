@@ -299,6 +299,8 @@ const eventsJson = JSON.stringify(eventsData);
                         <div class="event-series-card__speaker">
                           <template x-if="guest.avatarSrc">
                             <img
+                              src=""
+                              alt="Guest"
                               x-bind:src="guest.avatarSrc"
                               x-bind:alt="guest.name"
                               width="48"
@@ -324,7 +326,13 @@ const eventsJson = JSON.stringify(eventsData);
               <div class="event-calendar-list__expanded-sidebar">
                 <template x-if="event.cover_url">
                   <div class="event-calendar-list__expanded-cover">
-                    <img x-bind:src="event.cover_url" x-bind:alt="event.name" loading="lazy" />
+                    <img
+                      src=""
+                      alt="Event cover"
+                      x-bind:src="event.cover_url"
+                      x-bind:alt="event.name"
+                      loading="lazy"
+                    />
                   </div>
                 </template>
 

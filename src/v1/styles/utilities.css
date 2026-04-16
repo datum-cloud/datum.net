@@ -216,7 +216,7 @@
 
 /* Shared prose link and inheritance base — applied by all datum-prose-* variants */
 @utility datum-prose-base {
-  @apply prose max-w-none text-inherit;
+  @apply prose max-w-none;
   @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal;
   @apply prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply **:text-inherit;

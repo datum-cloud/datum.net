@@ -98,14 +98,15 @@ const hasAuthorHref = Boolean(authorHref && authorHref.length > 0);
 const authorAvatar = article?.author?.avatar
   ? getStrapiMediaUrl(article.author.avatar.url)
   : undefined;
-const authorBgColor = authorName ? await getAuthorBgColorFromStrapi(authorName) : undefined;
-
 // Get category data
 const categoryName = article?.category?.name || '';
 // const categorySlug = article?.category?.slug || '';
 
-// Get all articles for navigation (only needed for article pages)
-const allArticles: StrapiArticle[] = isPageNumber ? [] : await fetchStrapiArticles();
+// Parallelize independent data fetches to avoid sequential waterfall
+const [authorBgColor, allArticles] = await Promise.all([
+  authorName ? getAuthorBgColorFromStrapi(authorName) : Promise.resolve(undefined),
+  isPageNumber ? Promise.resolve([] as StrapiArticle[]) : fetchStrapiArticles(),
+]);
 
 // Sort by publication date (newest first)
 allArticles.sort((a, b) => {

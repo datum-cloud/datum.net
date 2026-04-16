@@ -1,3 +1,13 @@
+/*
+ * Design tokens for Tailwind v4 @theme layer.
+ * These tokens are the authoritative source for Tailwind utilities (e.g. bg-midnight-fjord, text-xl).
+ *
+ * Relationship with variables.css:
+ *   variables.css defines `:root` CSS custom properties for use in plain CSS rules.
+ *   @theme here maps the same values for Tailwind utility generation.
+ *   When adding new tokens, add to both files to keep them in sync.
+ *   Prefer using @theme tokens via Tailwind classes; use :root vars only where @apply is not viable.
+ */
 @theme {
   /* breakpoints */
   --breakpoint-sm: 40rem;
@@ -88,9 +98,9 @@
   --shadow-sm: 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
   --shadow-modal: 0 4px 16px 0 rgba(0, 0, 0, 0.05), 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
 
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 9px;
 
   --color-borderpanel: var(--color-glacier-mist-900);
 

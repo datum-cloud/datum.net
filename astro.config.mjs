@@ -51,6 +51,9 @@ export default defineConfig({
     }),
     robotsTxt({
       sitemap: 'https://www.datum.net/sitemap.xml',
+      transform(content) {
+        return `${content}\n# LLMs\nLLMs-txt: https://www.datum.net/llms.txt\nLLMs-full-txt: https://www.datum.net/llms-full.txt\n`;
+      },
       policy: [
         // Explicit allow for major AI crawlers (no crawl delay)
         { userAgent: 'GPTBot', allow: '/' },

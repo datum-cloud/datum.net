@@ -149,13 +149,13 @@ const eventsJson = JSON.stringify(eventsData);
           <template x-if="!isEventExpanded(event)">
             <div
               class="event-calendar-list__item-collapsed"
-              x-bind:class="{ 'event-calendar-list__item-collapsed--clickable': event.isDatumHosted }"
-              x-bind:role="event.isDatumHosted ? 'button' : false"
-              x-bind:tabindex="event.isDatumHosted ? 0 : false"
-              x-bind:aria-label="event.isDatumHosted ? 'Show full details for ' + event.name : false"
-              x-on:click="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.enter.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.space.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+              x-bind:class="{ 'event-calendar-list__item-collapsed--clickable': event.isDatumHosted || event.isExternal }"
+              x-bind:role="(event.isDatumHosted || event.isExternal) ? 'button' : false"
+              x-bind:tabindex="(event.isDatumHosted || event.isExternal) ? 0 : false"
+              x-bind:aria-label="(event.isDatumHosted || event.isExternal) ? 'Show full details for ' + event.name : false"
+              x-on:click="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.enter.prevent="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.space.prevent="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
             >
               <div class="event-calendar-list__item-header">
                 <p class="event-calendar-list__item-name" x-text="event.name"></p>
@@ -592,7 +592,9 @@ const eventsJson = JSON.stringify(eventsData);
 
       isEventExpanded: function (event) {
         return (
-          this.selectedDay && event.isDatumHosted && event.start_at.startsWith(this.selectedDay)
+          this.selectedDay &&
+          (event.isDatumHosted || event.isExternal) &&
+          event.start_at.startsWith(this.selectedDay)
         );
       },
 

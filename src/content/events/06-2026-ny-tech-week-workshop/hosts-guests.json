@@ -1,0 +1,14 @@
+{
+  "hosts": [
+    {
+      "name": "Datum"
+    },
+    {
+      "name": "Tetrate"
+    },
+    {
+      "name": "Unikraft"
+    }
+  ],
+  "guests": []
+}

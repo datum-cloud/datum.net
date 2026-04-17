@@ -131,7 +131,8 @@
       "items": [
         { "text": "Terms", "href": "/legal/terms/" },
         { "text": "Privacy", "href": "/legal/privacy/" },
-        { "text": "AUP", "href": "/legal/aup/" }
+        { "text": "AUP", "href": "/legal/aup/" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors/" }
       ]
     }
   ],
@@ -189,6 +190,7 @@
         { "text": "Terms of Service", "href": "/legal/terms/" },
         { "text": "Privacy Policy", "href": "/legal/privacy/" },
         { "text": "AUP", "href": "/legal/aup/" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors/" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

@@ -33,48 +33,62 @@ const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.d
 }
 
 <script>
-  // Check if TOC exists before running the script
   document.addEventListener('DOMContentLoaded', () => {
-    const tocLinks = document.querySelectorAll('.toc-link');
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
     if (tocLinks.length === 0) return;
 
-    // Add active link highlighting based on scroll position
-    function updateActiveTOCLink() {
-      const sections = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
-      let current = '';
-
-      sections.forEach((section) => {
-        const element = section as HTMLElement;
-        const sectionTop = element.offsetTop;
-        if (window.scrollY >= sectionTop - 200) {
-          current = section.getAttribute('id') || '';
-        }
-      });
-
+    function setActiveLink(slug: string | null) {
       tocLinks.forEach((link) => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', !!slug && href === `#${slug}`);
       });
     }
 
-    // Throttle scroll events
-    let ticking = false;
-    function requestTick() {
-      if (!ticking) {
-        requestAnimationFrame(updateActiveTOCLink);
-        ticking = true;
+    // Collect all heading elements referenced by TOC links
+    const headingElements: HTMLElement[] = [];
+    tocLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (href?.startsWith('#')) {
+        const el = document.getElementById(href.slice(1));
+        if (el) headingElements.push(el);
       }
+    });
+
+    // Track the topmost visible heading via IntersectionObserver
+    const visibleHeadings = new Set();
+
+    function pickActiveSlug(): string | null {
+      // Return the first heading (in document order) that is visible
+      for (const el of headingElements) {
+        if (visibleHeadings.has(el.id)) return el.id;
+      }
+      return null;
     }
 
-    function handleScroll() {
-      ticking = false;
-      requestTick();
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleHeadings.add(entry.target.id);
+          } else {
+            visibleHeadings.delete(entry.target.id);
+          }
+        });
+        setActiveLink(pickActiveSlug());
+      },
+      { rootMargin: '0px 0px 0% 0px', threshold: 0 }
+    );
 
-    // Initialize and add scroll listener
-    updateActiveTOCLink();
-    window.addEventListener('scroll', handleScroll);
+    headingElements.forEach((el) => observer.observe(el));
+
+    // Also sync when the hash changes (e.g. clicking a link)
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) setActiveLink(hash);
+    });
+
+    // Seed from current hash on load
+    const initialHash = window.location.hash.slice(1);
+    if (initialHash) setActiveLink(initialHash);
   });
 </script>

@@ -59,4 +59,31 @@
   .legal-on-this-page {
     @apply w-53.25 shrink-0 self-stretch;
   }
+
+  .legal-table-wrap {
+    @apply my-6 w-full overflow-x-auto;
+
+    table {
+      @apply w-full border-separate;
+      @apply bg-glacier-mist-900;
+      border-spacing: 1px;
+    }
+
+    thead th {
+      @apply bg-glacier-mist-800 text-midnight-fjord;
+      @apply font-dejavu text-left font-bold;
+      @apply datum-text-base;
+      @apply px-4! py-3! md:px-6! md:py-4!;
+    }
+
+    tbody td {
+      @apply bg-glacier-mist-700 text-midnight-fjord;
+      @apply datum-text-base;
+      @apply px-4! py-3! align-top md:px-6! md:py-4!;
+    }
+
+    tbody tr:hover td {
+      @apply bg-glacier-mist-800;
+    }
+  }
 }

@@ -14,7 +14,7 @@ type Props = {
 const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
 ---
 
-<nav class="nav--main" role="navigation">
+<nav class="nav--main" role="navigation" aria-label="Main navigation">
   {/* Logo */}
 
   <div class="nav-logo-container">
@@ -67,6 +67,8 @@ const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
     </Button>
   </div>
 
-  {/* Mobile Menu Component */}
-  <MobileMenu />
+  {/* Mobile Menu Component — hidden from crawlers, rendered client-side */}
+  <div aria-hidden="true">
+    <MobileMenu />
+  </div>
 </nav>

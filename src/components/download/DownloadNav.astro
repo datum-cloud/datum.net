@@ -54,8 +54,10 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
     aria-haspopup="listbox"
     type="button"
   >
-    <span class="download-nav-mobile-label">Select a platform:</span>
-    <span class="download-nav-mobile-selected">{activeLabel}</span>
+    <span class="download-nav-mobile-trigger-text">
+      <span class="download-nav-mobile-label">Select a platform</span>
+      <span class="download-nav-mobile-selected">{activeLabel}</span>
+    </span>
     <span
       class="download-nav-mobile-chevron"
       :class="{ 'download-nav-mobile-chevron--open': open }"
@@ -154,7 +156,6 @@ const activeLabel = activeItem?.label ?? 'Select a platform';
             })}
           </ul>
         </div>
-        <hr class="download-nav-divider" />
       </>
     ))
   }

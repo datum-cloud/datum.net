@@ -8,7 +8,9 @@
 
     &.dark {
       @apply bg-midnight-fjord text-white;
-
+      .nav--main-container {
+        @apply border-0;
+      }
       .nav--main {
         .nav-actions {
           .btn {
@@ -30,7 +32,9 @@
     }
     &.light {
       @apply bg-glacier-mist-700 text-midnight-fjord;
-
+      .nav--main-container {
+        @apply border-b;
+      }
       .nav--main {
         .nav-menu {
           @apply text-midnight-fjord;

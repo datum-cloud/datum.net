@@ -29,7 +29,7 @@ const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
 
 // Build ordered side nav (matching design order)
-const navOrder = ['terms', 'privacy', 'aup', 'dpa', 'subprocessors'];
+const navOrder = ['terms', 'privacy', 'aup', 'service-country-specific-terms', 'subprocessors'];
 const sortedLegal = [...allLegal].sort((a, b) => {
   const ai = navOrder.indexOf(a.id);
   const bi = navOrder.indexOf(b.id);

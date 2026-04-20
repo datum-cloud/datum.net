@@ -132,6 +132,7 @@
         { "text": "Terms", "href": "/legal/terms/" },
         { "text": "Privacy", "href": "/legal/privacy/" },
         { "text": "AUP", "href": "/legal/aup/" },
+        { "text": "CST", "href": "/legal/service-country-specific-terms/" },
         { "text": "Sub-Processors", "href": "/legal/subprocessors/" }
       ]
     }

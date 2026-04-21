@@ -27,7 +27,6 @@ import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
 // Additional imports for paginated blog listing
 import GlobalSection from '@components/GlobalSection.astro';
 import BlogStrapiPage from '@components/blog/BlogStrapi.astro';
-import BlogStrapiSkeleton from '@components/blog/BlogStrapiSkeleton.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import config from '@data/siteConfig.json';
 
@@ -292,9 +291,7 @@ const blogListingMeta = {
 
         <div class="section--block section--block--pad bg-midnight-fjord dark">
           <div class="max-width">
-            <BlogStrapiPage page={parsedPage} server:defer>
-              <BlogStrapiSkeleton slot="fallback" />
-            </BlogStrapiPage>
+            <BlogStrapiPage page={parsedPage} />
           </div>
         </div>
 

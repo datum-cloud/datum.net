@@ -144,6 +144,29 @@ if (fm?.title) {
 // Canonical page URL from config (SITE_URL) so copy/share works behind reverse proxy
 const pageCanonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 
+// SEO: derive description from Strapi seo fields, article description, or first block body
+const title = article?.seo?.metaTitle ?? fm?.title;
+
+const derivedDescription = (() => {
+  const explicit = article?.seo?.metaDescription ?? fm?.description;
+  if (explicit) return explicit;
+  const firstBodyText =
+    article?.blocks?.find((b: StrapiBlock) => b.__typename === 'ComponentSharedRichText' && b.body)
+      ?.body ?? '';
+  const plain = firstBodyText
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/[*_`>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (plain.length <= 160) return plain;
+  const cut = plain.slice(0, 157);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '...';
+})();
+
+const description = derivedDescription;
+
 // JSON-LD for article pages only
 const articleJsonLd =
   article && fm
@@ -162,7 +185,7 @@ const articleJsonLd =
             '@type': 'BlogPosting',
             '@id': `https://www.datum.net/blog/${slug}/#post`,
             headline: fm.title,
-            description: fm.description ?? '',
+            description: derivedDescription,
             url: `https://www.datum.net/blog/${slug}/`,
             datePublished: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
             dateModified: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
@@ -197,17 +220,13 @@ const articleJsonLd =
       }
     : null;
 
-// SEO: build meta from Strapi seo, same pattern as blog/[slug].astro
-const title = article?.seo?.metaTitle ?? fm?.title;
-const description = article?.seo?.metaDescription ?? fm?.description ?? '';
-
 const articleMeta = {
   title: article?.seo?.metaTitle ?? fm?.title,
-  description: article?.seo?.metaDescription ?? fm?.description ?? '',
+  description: derivedDescription,
   og: {
     image: defaultOgImage,
     title: article?.seo?.ogTitle ?? fm?.title,
-    description: article?.seo?.ogDescription ?? fm?.description ?? '',
+    description: article?.seo?.ogDescription ?? derivedDescription,
   },
 };
 

@@ -7,6 +7,7 @@ import { getCollectionEntry } from '@utils/collectionUtils';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import Card from '@components/events/Card.astro';
 
@@ -65,7 +66,18 @@ const jsonLd = {
 
 <Layout title={title} description={description} bodyClass="page-events" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
-    <Hero class="light pb-0" title={title} />
+    <Hero class="light content-alt pb-0" title={title} description={description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Event categories"
+        mobileLabel="Event category"
+        items={[
+          { label: 'All events', href: '/events/', exact: true },
+          { label: 'Community Huddles', href: '/events/community-huddles/' },
+          { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups/' },
+        ]}
+      />
+    </Hero>
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">

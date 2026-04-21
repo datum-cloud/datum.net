@@ -1,5 +1,6 @@
+/*
 @keyframes nav-indicator-slide {
-  /* 2.5s ease right → 2.5s ease back → 5s pause = 10s cycle */
+  // 2.5s ease right → 2.5s ease back → 5s pause = 10s cycle
   0% {
     left: 0;
     animation-timing-function: ease-in-out;
@@ -15,11 +16,16 @@
     left: 0;
   }
 }
+*/
 
 /* Navigation Component */
 @layer components {
+  .nav--main-container {
+    @apply w-full;
+    @apply border-glacier-mist-900;
+  }
   .nav--main {
-    @apply max-width relative z-80 m-auto flex w-full items-center justify-between py-2.5 md:grid md:grid-cols-12 md:py-6;
+    @apply max-width relative z-80 m-auto flex w-full items-center justify-between gap-5 py-2.5 md:gap-10 md:py-3.5 lg:gap-20;
 
     .nav-actions {
       @apply mr-3 ml-auto flex items-center gap-3 justify-self-end md:col-span-3 md:mr-0 md:gap-3.25;
@@ -43,26 +49,17 @@
     }
 
     .nav-menu {
-      @apply datum-text-base hidden items-center justify-center text-white md:flex md:gap-6 lg:gap-8 xl:gap-10;
+      @apply datum-text-base hidden items-center justify-start text-white md:flex md:gap-6 lg:gap-8 xl:gap-10;
     }
 
     .nav-menu-link.link--active {
       & > span {
         @apply relative;
 
-        &::before,
         &::after {
           content: '';
           @apply absolute bottom-0 left-0 h-0.5;
-        }
-
-        &::before {
-          @apply bg-blush-quartz w-full;
-        }
-
-        &::after {
-          @apply bg-midnight-fjord w-3;
-          animation: nav-indicator-slide 10s linear infinite;
+          @apply bg-midnight-fjord w-full;
         }
       }
     }
@@ -402,7 +399,7 @@
     --color-logo-text: var(--color-white);
 
     svg {
-      @apply w-9.75 md:w-13.5 lg:w-20.25;
+      @apply size-auto w-22 md:w-30;
     }
   }
 
@@ -460,11 +457,5 @@
     &:disabled {
       @apply cursor-not-allowed opacity-60;
     }
-  }
-}
-
-@layer utilities {
-  .nav-dropdown-link.link--active > span {
-    @apply decoration-midnight-fjord underline decoration-solid;
   }
 }

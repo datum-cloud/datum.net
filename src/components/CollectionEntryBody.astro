@@ -1,0 +1,31 @@
+---
+// src/components/CollectionEntryBody.astro
+import { render } from 'astro:content';
+import type { CollectionEntry, CollectionKey } from 'astro:content';
+import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
+
+/**
+ * Renders a content-collection entry body: `.md` via unified + expressive code
+ * (`set:html`), `.mdx` via `render()` + `<Content />`.
+ * Fenced code uses expressive-code from `markdown.rehypePlugins`; `syntaxHighlight` must be
+ * false in astro.config so Astro does not run Shiki first (which would emit `astro-code` instead).
+ */
+interface Props {
+  entry: CollectionEntry<CollectionKey>;
+}
+
+const { entry } = Astro.props as Props;
+
+const isMarkdownOnly = entry.filePath?.endsWith('.md') ?? false;
+
+let markdownHtml = '';
+let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
+
+if (isMarkdownOnly) {
+  markdownHtml = await renderMarkdownWithExpressiveCode(entry.body ?? '');
+} else {
+  ({ Content } = await render(entry));
+}
+---
+
+{isMarkdownOnly ? <div set:html={markdownHtml} /> : Content ? <Content /> : null}

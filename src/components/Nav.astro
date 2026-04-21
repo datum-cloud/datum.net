@@ -1,5 +1,5 @@
 ---
-import Logo from '@v1/assets/svgs/datum-logo.svg';
+import Logo from '@v1/assets/svgs/datum-logo-h.svg';
 import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
@@ -14,61 +14,63 @@ type Props = {
 const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
 ---
 
-<nav class="nav--main" role="navigation" aria-label="Main navigation">
-  {/* Logo */}
+<section class="nav--main-container">
+  <nav class="nav--main" role="navigation" aria-label="Main navigation">
+    {/* Logo */}
 
-  <div class="nav-logo-container">
-    <a href="/" class="nav-logo" id="logo-link" aria-label="Datum Logo" title="Datum Logo">
-      <Logo />
-    </a>
+    <div class="nav-logo-container">
+      <a href="/" class="nav-logo" id="logo-link" aria-label="Datum Logo" title="Datum Logo">
+        <Logo />
+      </a>
 
-    {/* Logo Download Dropdown */}
-    <LogoDropdown id="logo-dropdown" triggerElementId="logo-link" />
-  </div>
+      {/* Logo Download Dropdown */}
+      <LogoDropdown id="logo-dropdown" triggerElementId="logo-link" />
+    </div>
 
-  {/* Desktop Menu */}
-  <NavMenu />
+    {/* Desktop Menu */}
+    <NavMenu />
 
-  {/* Desktop Actions */}
-  <div class="nav-actions">
-    {
-      showGithubButton && (
-        <Button
-          class="btn gh-button btn--sm"
-          icon={{ name: 'github', size: 'md' }}
-          iconPosition="left"
-          iconClass="stroke-1.5"
-          target="_blank"
-          href="https://github.com/datum-cloud/datum/"
-        >
-          <GithubStargazerValue server:defer />
-        </Button>
-      )
-    }
+    {/* Desktop Actions */}
+    <div class="nav-actions">
+      {
+        showGithubButton && (
+          <Button
+            class="btn gh-button btn--sm"
+            icon={{ name: 'github', size: 'md' }}
+            iconPosition="left"
+            iconClass="stroke-1.5"
+            target="_blank"
+            href="https://github.com/datum-cloud/datum/"
+          >
+            <GithubStargazerValue server:defer />
+          </Button>
+        )
+      }
 
-    {
-      showLoginButton && (
-        <Button
-          class="btn btn--sm"
-          text="Sign in"
-          href="https://cloud.datum.net/"
-          data-fathom-event="Nav: Sign in"
-        />
-      )
-    }
+      {
+        showLoginButton && (
+          <Button
+            class="btn btn--sm"
+            text="Sign in"
+            href="https://cloud.datum.net/"
+            data-fathom-event="Nav: Sign in"
+          />
+        )
+      }
 
-    <Button
-      class="btn btn--sm"
-      target="_blank"
-      href="https://auth.datum.net/ui/v2/login/register"
-      data-fathom-event="Nav: Request Access"
-    >
-      Start for free
-    </Button>
-  </div>
+      <Button
+        class="btn btn--sm"
+        target="_blank"
+        href="https://auth.datum.net/ui/v2/login/register"
+        data-fathom-event="Nav: Request Access"
+      >
+        Start for free
+      </Button>
+    </div>
 
-  {/* Mobile Menu Component — hidden from crawlers, rendered client-side */}
-  <div aria-hidden="true">
-    <MobileMenu />
-  </div>
-</nav>
+    {/* Mobile Menu Component */}
+    <div aria-hidden="true">
+      <MobileMenu />
+    </div>
+  </nav>
+</section>

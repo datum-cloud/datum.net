@@ -4,35 +4,32 @@
   /* Download Container - Two Column Layout */
   .download-container {
     @apply grid gap-0;
-    @apply border-midnight-fjord border;
     @apply grid-cols-1 md:grid-cols-[256px_1fr];
   }
 
   /* Download Sidebar */
   .download-sidebar {
-    @apply border-midnight-fjord;
-    @apply border-b md:border-r md:border-b-0;
+    @apply mb-10;
   }
 
   /* Download Navigation */
   .download-nav {
     @apply hidden;
-    @apply md:flex md:h-full md:flex-col;
+    @apply gap-8 md:flex md:h-full md:flex-col;
   }
 
   .download-nav-section {
     @apply flex flex-col;
-    @apply py-4;
   }
 
   .download-nav-section-title {
-    @apply px-3 pt-1.75 pb-1.75;
+    @apply px-2 pb-2;
     @apply datum-docs-sidebar-headings;
     @apply text-app---dark---utility-4;
   }
 
   .download-nav-list {
-    @apply flex flex-col;
+    @apply flex flex-col gap-1;
   }
 
   .download-nav-item {
@@ -41,7 +38,7 @@
 
   .download-nav-link {
     @apply flex items-center gap-2;
-    @apply px-3 py-3.5;
+    @apply p-2;
     @apply datum-text-base;
     @apply text-midnight-fjord/80;
     @apply transition-colors duration-200;
@@ -49,11 +46,13 @@
   }
 
   .download-nav-link--active {
-    @apply bg-midnight-fjord text-white;
-    @apply hover:text-white;
+    /* Figma: Item → Link — glacier pill, midnight text, 8px pad, 6px radius */
+    @apply bg-glacier-mist-900 rounded-md p-2;
+    @apply text-midnight-fjord font-semibold;
+    @apply hover:bg-glacier-mist-900 hover:text-midnight-fjord;
 
     .download-nav-icon {
-      @apply text-white;
+      @apply text-midnight-fjord;
     }
   }
 
@@ -89,15 +88,13 @@
 
   /* Download Content Area */
   .download-content {
-    @apply relative bg-white;
-    @apply overflow-y-auto;
+    @apply relative overflow-y-auto;
   }
 
   /* Download Content Frame */
   .download-content-frame {
     @apply flex flex-col gap-4;
-    @apply bg-white;
-    @apply px-4 py-8 md:p-12 lg:p-16;
+    @apply px-0 md:px-12 lg:px-16;
   }
 
   .download-content-header {
@@ -113,7 +110,7 @@
   }
 
   .download-content-title-text {
-    @apply font-alliance text-4xl leading-[1.22] font-semibold tracking-[-0.008em];
+    @apply datum-text-4xl font-semibold;
     @apply text-midnight-fjord;
   }
 
@@ -148,7 +145,7 @@
 
     .note {
       @apply inline-flex w-full items-center gap-3;
-      @apply mb-6 p-5;
+      @apply mb-6 p-3 md:p-4;
       @apply border-l-5 border-(--color-aside-border);
       @apply [&>p:last-child]:mb-0;
       @apply mt-6 first:mt-0;
@@ -175,27 +172,27 @@
     @apply relative block md:hidden;
   }
 
+  /* Match brand assets mobile sidebar: `.brand-nav-mobile-toggle` + `.brand-nav-menu` (page-brand.css) */
   .download-nav-mobile-trigger {
-    @apply flex w-full items-center gap-3 p-4;
-    @apply bg-midnight-fjord;
-    @apply cursor-pointer text-left;
+    @apply mb-0 flex w-full cursor-pointer items-center justify-between border border-gray-200 bg-white p-3 text-left;
+    @apply transition-colors duration-200 hover:bg-gray-50;
+  }
+
+  .download-nav-mobile-trigger-text {
+    @apply flex min-w-0 flex-col gap-0.5;
   }
 
   .download-nav-mobile-label {
-    @apply flex-1;
-    @apply datum-text-base;
-    @apply text-app---dark---utility-5;
+    @apply datum-text-sm text-gray-600;
   }
 
   .download-nav-mobile-selected {
-    @apply shrink-0;
-    @apply datum-text-base font-semibold;
-    @apply text-white;
+    @apply truncate font-medium text-gray-900;
   }
 
   .download-nav-mobile-chevron {
     @apply flex h-2.5 w-2.5 shrink-0 items-center justify-center;
-    @apply text-white;
+    @apply text-midnight-fjord/60;
     @apply transition-transform duration-200;
 
     &--open {
@@ -205,44 +202,38 @@
 
   .download-nav-mobile-dropdown {
     @apply absolute top-full right-0 left-0 z-50;
-    @apply bg-white;
-    @apply border-midnight-fjord border border-t-0;
-    @apply pb-2 shadow-lg;
+    @apply w-full rounded-md border border-t-0 border-gray-200 bg-white;
+    @apply pt-0 pb-2;
   }
 
   .download-nav-mobile-section-title {
     @apply px-3 pt-4 pb-1;
     @apply datum-docs-sidebar-headings;
-    @apply text-app---dark---utility-4;
+    @apply text-gray-600;
   }
 
   .download-nav-mobile-list {
     @apply flex flex-col;
 
-    .download-nav-mobile-link--active {
-      @apply bg-midnight-fjord text-white;
-      @apply hover:text-white;
-
-      .download-nav-mobile-icon {
-        @apply text-white;
-      }
+    > li {
+      @apply list-none;
     }
   }
 
   .download-nav-mobile-link {
     @apply flex items-center gap-2;
-    @apply px-3 py-3.5;
+    @apply px-3 py-1;
     @apply datum-text-base;
-    @apply text-midnight-fjord/80;
-    @apply transition-colors duration-200;
-    @apply hover:text-midnight-fjord;
+    @apply text-midnight-fjord;
+    @apply transition-colors duration-300 ease-out;
+    @apply hover:text-canyon-clay---links;
 
     &--active {
-      @apply bg-midnight-fjord text-white;
-      @apply hover:text-white;
+      @apply text-canyon-clay---links font-semibold;
+      @apply hover:text-midnight-fjord;
 
       .download-nav-mobile-icon {
-        @apply text-white;
+        @apply text-canyon-clay---links;
       }
     }
 

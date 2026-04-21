@@ -13,7 +13,7 @@
   .handbook-content {
     @apply flex max-w-none grow flex-col;
 
-    @apply p-9 pr-0 pl-0 md:p-12 md:pr-10 md:pl-10 lg:p-16 xl:p-20;
+    @apply p-9 pr-0 pl-0 md:p-12 md:pr-10 md:pl-10 lg:p-16;
   }
 
   .article-header {
@@ -87,7 +87,7 @@
 
   .handbook-toc {
     @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
-    @apply pt-9 md:pt-12 lg:pt-16 xl:pt-20;
+    @apply pt-9 md:pt-12 lg:pt-16;
     @apply pr-0 md:pl-4 lg:pl-7;
 
     .article-aside {
@@ -101,7 +101,7 @@
 
   .handbook-sidebar {
     @apply relative w-full flex-col gap-y-0 md:max-w-55 md:min-w-55 md:gap-y-4 lg:max-w-64.75 lg:min-w-64.75;
-    @apply px-7 pt-5 pl-0 md:px-0 md:pt-12 lg:pt-16 xl:pt-20;
+    @apply px-7 pt-5 pl-0 md:px-0 md:pt-12 lg:pt-16;
     @apply pr-0 md:pr-4 lg:pr-7;
     @apply flex md:flex;
   }

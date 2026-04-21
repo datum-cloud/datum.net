@@ -6,7 +6,7 @@
   }
 
   .legal-sidenav {
-    @apply w-full shrink-0 self-start pt-6 pb-8 md:sticky md:top-0 md:w-64.75 md:overflow-auto md:pt-10 md:pr-7 md:pb-7 lg:pt-16 xl:pt-20;
+    @apply w-full shrink-0 self-start pb-8 md:sticky md:top-0 md:w-64.75 md:overflow-auto md:pr-7 md:pb-7;
 
     /* Mobile toggle button */
     .legal-sidenav-toggle {
@@ -53,7 +53,7 @@
   }
 
   .legal-content {
-    @apply flex-1 p-0 md:p-10 lg:p-16 xl:p-20;
+    @apply flex-1 p-0;
   }
 
   .legal-on-this-page {

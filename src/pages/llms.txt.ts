@@ -26,7 +26,9 @@ export const GET: APIRoute = async () => {
 
     for (const page of sortedPages) {
       const description: string =
-        page.data.description || extractDescription(page.body, 'No description available');
+        page.data.meta?.description ||
+        page.data.description ||
+        extractDescription(page.body, 'No description available');
       const pageUrl = buildUrl(page.id);
       const pageTitle = stripHtml(page.data.title);
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;

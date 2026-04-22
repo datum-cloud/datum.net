@@ -37,29 +37,9 @@ What do you want to improve or work on differently?
 
 Datum's compensation framework uses levels to reflect impact, and steps to reflect performance within that level.
 
-### Levels
-- Junior: Contributes to small or function-specific projects
-- Intermediate: Owns small to medium projects, including cross-functional work
-- Senior: Accountable for large projects and drives everything necessary to complete them
-- Lead: Consistently drives strategic projects that impact the company
-
-### Steps
-- Learning: Starting to match expectations
-- Established: Matching expectations
-- Thriving: Exceeding expectations
-- Expert: Exceeding expectations consistently
-
-### Reflecting on your current level and step
-
-Based on the definitions above, how do you see yourself performing at your current level? What examples demonstrate this?
-
-### How are you developing in your role? What skills are you building?
-
-### What would progression look like for you?
-
-Consider: Are you focused on deepening expertise at your current level (step progression) or expanding your impact scope (level progression)? What would that require?
-
-What support or resources would help you grow?
+- How do you see yourself performing at your current level? What examples demonstrate this?
+- How are you developing in your role? What skills are you building?
+- What would progression look like for you?
 
 ## 4. Collaboration & Input
 

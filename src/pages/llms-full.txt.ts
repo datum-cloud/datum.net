@@ -203,7 +203,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 | us-central-1   | Dallas              |
 | us-west-1      | San Jose, CA        |
 | ca-east-1      | Toronto             |
-| cl-central-1   | Chile               |
+| cl-central-1   | Santiago            |
 | br-east-1      | São Paolo           |
 | nl-west-1      | Amsterdam           |
 | de-central-1   | Frankfurt           |

@@ -28,7 +28,7 @@ interface StrapiWebhookPayload {
  * Verify webhook request authenticity
  */
 function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = import.meta.env.STRAPI_WEBHOOK_SECRET || process.env.STRAPI_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
 
   if (!webhookSecret) {
     console.warn('[Webhook] STRAPI_WEBHOOK_SECRET is not configured');

@@ -68,17 +68,7 @@ const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
       </Button>
     </div>
 
-    {
-      /* Mobile Menu Component — inside <template> so it is inert in static HTML and invisible to crawlers */
-    }
-    <template id="mobile-menu-template">
-      <MobileMenu />
-    </template>
-    <div id="mobile-menu-mount"></div>
-    <script>
-      const tpl = document.getElementById('mobile-menu-template') as HTMLTemplateElement;
-      const mount = document.getElementById('mobile-menu-mount');
-      if (tpl && mount) mount.appendChild(tpl.content.cloneNode(true));
-    </script>
+    {/* Mobile menu — deferred so it is never emitted into static HTML */}
+    <MobileMenu server:defer />
   </nav>
 </section>

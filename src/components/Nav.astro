@@ -1,10 +1,10 @@
 ---
 import Logo from '@v1/assets/svgs/datum-logo-h.svg';
-import MobileMenu from '@components/MobileMenu.astro';
 import GithubStargazerValue from '@components/GithubStargazerValue.astro';
 import Button from '@components/Button.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
+import navigation from '@data/navigation.json';
 
 type Props = {
   showGithubButton?: boolean;
@@ -12,6 +12,7 @@ type Props = {
 };
 
 const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
+const navJson = JSON.stringify(navigation.main);
 ---
 
 <section class="nav--main-container">
@@ -68,17 +69,174 @@ const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
       </Button>
     </div>
 
-    {
-      /* Mobile Menu Component — inside <template> so it is inert in static HTML and invisible to crawlers */
-    }
-    <template id="mobile-menu-template">
-      <MobileMenu />
-    </template>
+    {/* Mobile menu mount — populated entirely client-side so no nav links appear in static HTML */}
     <div id="mobile-menu-mount"></div>
-    <script>
-      const tpl = document.getElementById('mobile-menu-template') as HTMLTemplateElement;
-      const mount = document.getElementById('mobile-menu-mount');
-      if (tpl && mount) mount.appendChild(tpl.content.cloneNode(true));
+    <script is:inline define:vars={{ navJson }}>
+      (function () {
+        var nav = JSON.parse(navJson);
+
+        function esc(str) {
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+        }
+
+        function chevronDown() {
+          return '<svg class="mobile-menu-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
+        }
+
+        function arrowRight() {
+          return '<svg class="mobile-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>';
+        }
+
+        function externalLink() {
+          return '<svg class="nav-dropdown-external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>';
+        }
+
+        function buildNavItems() {
+          return nav
+            .map(function (item) {
+              if (item.children) {
+                var sections = item.children
+                  .map(function (section) {
+                    var title = section.title
+                      ? '<h3 class="mobile-dropdown-title">' + esc(section.title) + '</h3>'
+                      : '';
+                    var items = (section.items || [])
+                      .map(function (sub) {
+                        var ext = sub.isExternal
+                          ? ' target="_blank" rel="noopener noreferrer"'
+                          : '';
+                        var extIcon = sub.isExternal ? externalLink() : '';
+                        return (
+                          '<li class="mobile-dropdown-item">' +
+                          '<a href="' +
+                          esc(sub.href) +
+                          '" class="mobile-dropdown-link"' +
+                          ext +
+                          ' @click="closeMenu()">' +
+                          '<span>' +
+                          esc(sub.text) +
+                          '</span>' +
+                          extIcon +
+                          '</a></li>'
+                        );
+                      })
+                      .join('');
+                    return (
+                      '<div class="mobile-dropdown-section">' +
+                      title +
+                      '<ul class="mobile-dropdown-items">' +
+                      items +
+                      '</ul></div>'
+                    );
+                  })
+                  .join('');
+
+                return (
+                  '<li class="mobile-menu-item" x-data="{ open: false }">' +
+                  '<button class="mobile-menu-link" @click="open = !open" :aria-expanded="open" type="button">' +
+                  '<span>' +
+                  esc(item.text) +
+                  '</span>' +
+                  '<span class="mobile-menu-link-icon" :class="{ \'rotate-180\': open }">' +
+                  chevronDown() +
+                  '</span>' +
+                  '</button>' +
+                  '<div class="mobile-dropdown-content" x-show="open" x-collapse>' +
+                  sections +
+                  '</div>' +
+                  '</li>'
+                );
+              }
+              return (
+                '<li class="mobile-menu-item">' +
+                '<a href="' +
+                esc(item.href) +
+                '" class="mobile-menu-link" @click="closeMenu()" data-astro-prefetch="load">' +
+                '<span>' +
+                esc(item.text) +
+                '</span>' +
+                '<span class="mobile-menu-link-icon">' +
+                arrowRight() +
+                '</span>' +
+                '</a></li>'
+              );
+            })
+            .join('');
+        }
+
+        var html =
+          '<div class="mobile-menu-container"' +
+          ' x-data="{ isOpen: false,' +
+          "   toggleMenu() { this.isOpen = !this.isOpen; if (this.isOpen) { document.body.style.overflow='hidden'; document.body.classList.add('mobile-menu-open'); } else { this._closeWithDelay(); } }," +
+          '   closeMenu() { this.isOpen = false; this._closeWithDelay(); },' +
+          "   _closeWithDelay() { var self=this; setTimeout(function(){ if(!self.isOpen){ document.body.style.overflow=''; document.body.classList.remove('mobile-menu-open'); }},300); }" +
+          ' }"' +
+          ' x-init="' +
+          '   var self=this;' +
+          "   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&self.isOpen) self.closeMenu(); });" +
+          "   window.addEventListener('resize',function(){ if(window.innerWidth>=1024&&self.isOpen) self.closeMenu(); });" +
+          '">' +
+          '<button @click="toggleMenu()" class="mobile-menu-button" aria-label="Toggle mobile menu" :aria-expanded="isOpen">' +
+          '<svg class="mobile-menu-icon" :class="{\'mobile-menu-icon--open\':isOpen}" fill="none" stroke="currentColor" viewBox="0 0 30 30" aria-hidden="true">' +
+          '<path class="burger-top" d="M4 7h22" stroke-width="2.5" stroke-linecap="round"/>' +
+          '<path class="burger-mid" d="M4 15h22" stroke-width="2.5" stroke-linecap="round"/>' +
+          '<path class="burger-bot" d="M4 23h22" stroke-width="2.5" stroke-linecap="round"/>' +
+          '</svg></button>' +
+          '<div x-show="isOpen" x-cloak style="display:none"' +
+          ' x-transition:enter="transition-opacity ease-linear duration-300"' +
+          ' x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"' +
+          ' x-transition:leave="transition-opacity ease-linear duration-300"' +
+          ' x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"' +
+          ' @click="closeMenu()" class="mobile-menu-overlay"></div>' +
+          '<div x-show="isOpen" x-cloak style="display:none"' +
+          ' x-transition:enter="transition ease-in-out duration-300 transform"' +
+          ' x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"' +
+          ' x-transition:leave="transition ease-in-out duration-300 transform"' +
+          ' x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"' +
+          ' class="mobile-menu">' +
+          '<a href="/" class="mobile-menu-logo" @click="closeMenu()" id="mobile-menu-logo-link"></a>' +
+          '<div class="mobile-menu-content">' +
+          '<ul class="mobile-menu-list">' +
+          buildNavItems() +
+          '</ul>' +
+          '</div>' +
+          '<div class="mobile-menu-footer">' +
+          '<div class="mobile-menu-ctas">' +
+          '<a href="https://cloud.datum.net/" class="mobile-cta-secondary" @click="closeMenu()">Sign in ' +
+          arrowRight() +
+          '</a>' +
+          '<a href="https://auth.datum.net/ui/v2/login/register" class="mobile-cta-primary" target="_blank" @click="closeMenu()">Start for free ' +
+          arrowRight() +
+          '</a>' +
+          '</div>' +
+          '<div class="mobile-menu-social">' +
+          '<a href="https://link.datum.net/discord" class="mobile-social-link" target="_blank">Discord</a>' +
+          '<a href="https://github.com/datum-cloud/datum/" class="mobile-social-link" target="_blank">GitHub</a>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+
+        var mount = document.getElementById('mobile-menu-mount');
+        if (mount) {
+          mount.innerHTML = html;
+
+          // Clone logo SVG from the desktop nav so the mobile menu shows the real logo
+          var desktopLogo = document.querySelector('.nav-logo svg');
+          var mobileLogoLink = document.getElementById('mobile-menu-logo-link');
+          if (desktopLogo && mobileLogoLink) {
+            mobileLogoLink.appendChild(desktopLogo.cloneNode(true));
+          }
+
+          if (window.Alpine) {
+            window.Alpine.initTree(mount);
+          }
+        }
+      })();
     </script>
   </nav>
 </section>

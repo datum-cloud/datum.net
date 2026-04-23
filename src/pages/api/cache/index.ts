@@ -6,7 +6,7 @@ import type { APIRoute } from 'astro';
 import { getCacheViewerData } from '@libs/cacheViewer';
 
 function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = import.meta.env.STRAPI_WEBHOOK_SECRET || process.env.STRAPI_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
   if (!webhookSecret) return false;
   const receivedSecret = request.headers.get('X-Webhook-Secret');
   return receivedSecret === webhookSecret;

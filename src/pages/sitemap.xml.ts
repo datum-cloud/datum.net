@@ -6,9 +6,8 @@ import { getCollection } from 'astro:content';
 // ---------------------------------------------------------------------------
 const SITE_URL = 'https://www.datum.net';
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
-const STRAPI_URL =
-  import.meta.env?.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || '';
+const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
 
 // Known static routes (dedicated .astro files, not driven by content collections)
 const STATIC_ROUTES = [

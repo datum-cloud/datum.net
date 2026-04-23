@@ -1,0 +1,28 @@
+src/components/Nav.astro
+  h_be6412991b9fef 71-72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "29414cbf09e4855dd654cd8cabd9ecc03f693573",
+  "prompts": {
+    "d1e697113c5f1f25": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "4508a61f-f4a8-4edc-802e-2daad09536b1",
+        "model": "copilot/claude-sonnet-4.6"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 245,
+      "total_deletions": 171,
+      "accepted_lines": 74,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_be6412991b9fef": {
+      "author": "AriaEdo"
+    }
+  }
+}

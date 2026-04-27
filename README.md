@@ -68,7 +68,7 @@ npm run build
 npm run dev
 ```
 
-For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
+For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md).
 
 ### Commands
 
@@ -591,7 +591,7 @@ The setup uses a multi-stage Dockerfile:
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on our code of conduct, development setup, and the process for submitting pull requests.
+We welcome contributions! Please see our [Contributing Guide](./docs/CONTRIBUTING.md) for details on our code of conduct, development setup, and the process for submitting pull requests.
 
 ---
 
@@ -600,4 +600,4 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 - [Front Matter CMS Documentation](https://frontmatter.codes/docs)
 - [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
 - [Zod Schema Validation](https://zod.dev/)
-- [Project Content Structure](./CONTENT_STRUCTURE.md)
+- [Project Content Structure](./docs/CONTENT_STRUCTURE.md)

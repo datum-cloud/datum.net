@@ -2,7 +2,7 @@
 
 ## Stack
 
-- **Framework**: Astro 5.x + TypeScript strict mode
+- **Framework**: Astro 6.x + TypeScript strict mode
 - **Styling**: TailwindCSS v4 with CSS layers
 - **Interactivity**: Alpine.js
 - **Testing**: Playwright (E2E)

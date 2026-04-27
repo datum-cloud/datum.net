@@ -4,7 +4,7 @@
 
 This is the official Datum Inc. marketing website - an Astro-based static site with SSR capabilities, built with TypeScript, Tailwind CSS v4, and AlpineJS. The site serves multiple purposes: marketing pages, documentation, blog, handbook, changelog, and interactive features like roadmap voting.
 
-**Tech Stack:** Astro 5, TypeScript, Tailwind CSS v4, AlpineJS, Postgres, MDX
+**Tech Stack:** Astro 6, TypeScript, Tailwind CSS v4, AlpineJS, Postgres, MDX
 
 ## Architecture & Key Patterns
 

@@ -26,10 +26,9 @@
 ## Critical Rules
 
 1. **No inline styles** - All styles go in CSS files under `src/v1/styles/`
-2. **No inline Tailwind classes** - Put Tailwind in CSS with `@apply`
-3. **No arbitrary values** - Check `@theme` layer for variables
-4. **Start components with path comment** → `// src/components/Button.astro`
-5. **Use path aliases** → `@components/*`, `@utils/*`, `@libs/*`, `@types/*`, `@v1/*`
+2. **No arbitrary values** - Check `@theme` layer for variables
+3. **Start components with path comment** → `// src/components/Button.astro`
+4. **Use path aliases** → `@components/*`, `@utils/*`, `@libs/*`, `@types/*`, `@v1/*`
 
 ## CSS Organization
 

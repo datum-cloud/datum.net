@@ -1,0 +1,25 @@
+src/pages/api/cache/strapi.ts
+  3a554cbe8f65d17b 6,17-29
+src/pages/api/webhooks/strapi-content.ts
+  3a554cbe8f65d17b 9-11,135-165,238,245,252
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "90949b729a0ce1c6b707066f5023234ffbda13e0",
+  "prompts": {
+    "3a554cbe8f65d17b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b8bfd79b-2b62-49fb-b665-ed0b15625d1a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 51,
+      "total_deletions": 1,
+      "accepted_lines": 51,
+      "overriden_lines": 0
+    }
+  }
+}

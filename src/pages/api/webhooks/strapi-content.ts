@@ -10,12 +10,9 @@ import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/arti
 import { fetchStrapiAuthors } from '@libs/strapi/authors';
 import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
 
-// Cache at project root (cwd when running dev/build)
 const CACHE_DIR = path.resolve(process.cwd(), '.cache');
+const FALLBACK_CACHE_DIR = path.resolve(process.cwd(), '.cache/strapi-fallback');
 
-/**
- * Strapi webhook payload structure
- */
 interface StrapiWebhookPayload {
   event: 'entry.create' | 'entry.update' | 'entry.delete';
   model: string;
@@ -27,9 +24,6 @@ interface StrapiWebhookPayload {
   };
 }
 
-/**
- * Verify webhook request authenticity
- */
 function verifyWebhookSecret(request: Request): boolean {
   const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
 
@@ -55,237 +49,182 @@ function verifyWebhookSecret(request: Request): boolean {
   return crypto.timingSafeEqual(expected, received);
 }
 
-/**
- * Invalidate cache files by pattern
- */
-function invalidateCache(pattern: string): string[] {
-  const deletedFiles: string[] = [];
+function deleteCacheFilesInDir(dir: string, pattern: string): string[] {
+  const deleted: string[] = [];
 
   try {
-    if (!fs.existsSync(CACHE_DIR)) {
-      console.warn(`[Webhook] Cache directory does not exist: ${CACHE_DIR}`);
-      return deletedFiles;
-    }
+    if (!fs.existsSync(dir)) return deleted;
 
-    const files = fs.readdirSync(CACHE_DIR);
-
-    for (const file of files) {
-      // Match pattern (e.g., "strapi-articles", "strapi-article-{slug}")
+    for (const file of fs.readdirSync(dir)) {
       if (file.startsWith(pattern)) {
-        const filePath = path.join(CACHE_DIR, file);
         try {
-          fs.unlinkSync(filePath);
-          deletedFiles.push(file);
+          fs.unlinkSync(path.join(dir, file));
+          deleted.push(file);
         } catch (err) {
-          console.error(`[Webhook] Failed to delete file: ${file}`, err);
+          console.error(`[Webhook] Failed to delete ${file}:`, err);
         }
       }
     }
   } catch (err) {
-    console.error('[Webhook] Error reading cache directory:', err);
+    console.error(`[Webhook] Error reading cache dir ${dir}:`, err);
   }
 
-  return deletedFiles;
+  return deleted;
 }
 
 /**
- * Handle article cache invalidation
+ * Delete matching files from both main and fallback cache dirs.
+ * mainPattern  — prefix used in .cache/
+ * fallbackPattern — prefix used in .cache/strapi-fallback/ (differs from main)
  */
+function invalidateCache(mainPattern: string, fallbackPattern: string): string[] {
+  return [
+    ...deleteCacheFilesInDir(CACHE_DIR, mainPattern),
+    ...deleteCacheFilesInDir(FALLBACK_CACHE_DIR, fallbackPattern),
+  ];
+}
+
 function invalidateArticleCache(slug?: string): string[] {
-  const deletedFiles: string[] = [];
+  const deleted = [
+    // list caches: main "strapi-articles*", fallback "articles*"
+    ...invalidateCache('strapi-articles', 'articles'),
+  ];
 
-  // Always invalidate article list cache
-  const listFiles = invalidateCache('strapi-articles');
-  deletedFiles.push(...listFiles);
-
-  // If slug is provided, invalidate specific article cache
   if (slug) {
-    const articleFiles = invalidateCache(`strapi-article-${slug}`);
-    deletedFiles.push(...articleFiles);
+    // per-article: main "strapi-article-{slug}*", fallback "article-{slug}*"
+    deleted.push(...invalidateCache(`strapi-article-${slug}`, `article-${slug}`));
   }
 
-  return deletedFiles;
+  return deleted;
 }
 
-/**
- * Handle author & team members cache invalidation
- */
 function invalidateAuthorCache(): string[] {
-  const deletedFiles: string[] = [];
-
-  // Invalidate all author caches
-  deletedFiles.push(...invalidateCache('strapi-authors'));
-
-  // Invalidate team members cache (same underlying authors database)
-  deletedFiles.push(...invalidateCache('strapi-team-members'));
-
-  // Invalidate per-author slug cache (strapi-author-slug-*)
-  deletedFiles.push(...invalidateCache('strapi-author-slug-'));
-
-  return deletedFiles;
+  // Authors have no fallback cache — only clear main
+  return [
+    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-authors'),
+    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-team-members'),
+    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-author-slug-'),
+  ];
 }
 
-/**
- * Handle roadmap cache invalidation
- */
 function invalidateRoadmapCache(): string[] {
-  return invalidateCache('strapi-roadmaps');
+  // main "strapi-roadmaps*", fallback "roadmaps*"
+  return invalidateCache('strapi-roadmaps', 'roadmaps');
 }
 
 /**
- * Warm article cache after invalidation — runs non-blocking so webhook responds fast.
- * Re-fetching also updates the persistent fallback cache.
+ * Re-fetch and rewrite article caches after invalidation.
+ * On delete we skip re-fetching the individual article (it no longer exists in Strapi)
+ * so we don't accidentally promote the stale fallback entry back into the main cache.
  */
-async function warmArticleCacheAsync(slug?: string): Promise<void> {
+async function warmArticleCache(slug: string | undefined, isDelete: boolean): Promise<void> {
   try {
     await fetchStrapiArticles();
-    if (slug) {
-      await fetchStrapiArticleBySlug(slug);
-    }
   } catch (err) {
-    console.error('[Webhook] Cache warming failed for articles:', err);
+    console.error('[Webhook] Cache warm failed for article list:', err);
+  }
+
+  if (slug && !isDelete) {
+    try {
+      await fetchStrapiArticleBySlug(slug);
+    } catch (err) {
+      console.error(`[Webhook] Cache warm failed for article "${slug}":`, err);
+    }
   }
 }
 
-async function warmAuthorCacheAsync(): Promise<void> {
+async function warmAuthorCache(): Promise<void> {
   try {
     await fetchStrapiAuthors();
   } catch (err) {
-    console.error('[Webhook] Cache warming failed for authors:', err);
+    console.error('[Webhook] Cache warm failed for authors:', err);
   }
 }
 
-async function warmRoadmapCacheAsync(): Promise<void> {
+async function warmRoadmapCache(): Promise<void> {
   try {
     await fetchStrapiRoadmaps();
   } catch (err) {
-    console.error('[Webhook] Cache warming failed for roadmaps:', err);
+    console.error('[Webhook] Cache warm failed for roadmaps:', err);
   }
 }
 
-/**
- * POST handler for Strapi webhook
- */
 export const POST: APIRoute = async ({ request }) => {
   const startTime = Date.now();
 
   try {
-    // 1. Verify webhook secret
     if (!verifyWebhookSecret(request)) {
       console.error('[Webhook] Unauthorized webhook request');
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Unauthorized',
-        }),
-        {
-          status: 401,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    // 2. Parse payload
     let payload: StrapiWebhookPayload;
     try {
       payload = (await request.json()) as StrapiWebhookPayload;
-    } catch (err) {
-      console.error('[Webhook] Invalid JSON payload:', err);
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Invalid JSON payload',
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+    } catch {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid JSON payload' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const { event, model, entry } = payload;
 
-    // 3. Validate required fields
     if (!event || !model) {
-      console.error('[Webhook] Missing required fields (event, model)');
       return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Missing required fields: event, model',
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+        JSON.stringify({ success: false, error: 'Missing required fields: event, model' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`[Webhook] Received: ${event} on ${model}`, {
+    console.log(`[Webhook] ${event} on model "${model}"`, {
       id: entry?.id,
       slug: entry?.slug,
       name: entry?.name,
     });
 
-    // 4. Invalidate cache based on model
+    const isDelete = event === 'entry.delete';
     let deletedFiles: string[] = [];
 
     if (model === 'article') {
       deletedFiles = invalidateArticleCache(entry?.slug);
-      console.log(
-        `[Webhook] Invalidated article cache (${deletedFiles.length} files):`,
-        deletedFiles
-      );
-      void warmArticleCacheAsync(entry?.slug);
+      console.log(`[Webhook] Cleared ${deletedFiles.length} article cache files:`, deletedFiles);
+      void warmArticleCache(entry?.slug, isDelete);
     } else if (model === 'author') {
       deletedFiles = invalidateAuthorCache();
-      console.log(
-        `[Webhook] Invalidated author cache (${deletedFiles.length} files):`,
-        deletedFiles
-      );
-      void warmAuthorCacheAsync();
+      console.log(`[Webhook] Cleared ${deletedFiles.length} author cache files:`, deletedFiles);
+      void warmAuthorCache();
     } else if (model === 'roadmap') {
       deletedFiles = invalidateRoadmapCache();
-      console.log(
-        `[Webhook] Invalidated roadmap cache (${deletedFiles.length} files):`,
-        deletedFiles
-      );
-      void warmRoadmapCacheAsync();
+      console.log(`[Webhook] Cleared ${deletedFiles.length} roadmap cache files:`, deletedFiles);
+      void warmRoadmapCache();
     } else {
       console.warn(`[Webhook] Unknown model: ${model}`);
     }
 
-    const duration = Date.now() - startTime;
-
-    // 5. Return success response
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Cache invalidated successfully',
+        message: 'Cache cleared and refresh triggered',
         details: {
           event,
           model,
           entryId: entry?.id,
           slug: entry?.slug,
           deletedFiles,
-          duration: `${duration}ms`,
+          duration: `${Date.now() - startTime}ms`,
         },
       }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (err) {
     console.error('[Webhook] Unexpected error:', err);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'Internal server error',
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

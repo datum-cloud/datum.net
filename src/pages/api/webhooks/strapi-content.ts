@@ -6,6 +6,9 @@ import type { APIRoute } from 'astro';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/articles';
+import { fetchStrapiAuthors } from '@libs/strapi/authors';
+import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
 
 // Cache at project root (cwd when running dev/build)
 const CACHE_DIR = path.resolve(process.cwd(), '.cache');
@@ -130,6 +133,37 @@ function invalidateRoadmapCache(): string[] {
 }
 
 /**
+ * Warm article cache after invalidation — runs non-blocking so webhook responds fast.
+ * Re-fetching also updates the persistent fallback cache.
+ */
+async function warmArticleCacheAsync(slug?: string): Promise<void> {
+  try {
+    await fetchStrapiArticles();
+    if (slug) {
+      await fetchStrapiArticleBySlug(slug);
+    }
+  } catch (err) {
+    console.error('[Webhook] Cache warming failed for articles:', err);
+  }
+}
+
+async function warmAuthorCacheAsync(): Promise<void> {
+  try {
+    await fetchStrapiAuthors();
+  } catch (err) {
+    console.error('[Webhook] Cache warming failed for authors:', err);
+  }
+}
+
+async function warmRoadmapCacheAsync(): Promise<void> {
+  try {
+    await fetchStrapiRoadmaps();
+  } catch (err) {
+    console.error('[Webhook] Cache warming failed for roadmaps:', err);
+  }
+}
+
+/**
  * POST handler for Strapi webhook
  */
 export const POST: APIRoute = async ({ request }) => {
@@ -201,18 +235,21 @@ export const POST: APIRoute = async ({ request }) => {
         `[Webhook] Invalidated article cache (${deletedFiles.length} files):`,
         deletedFiles
       );
+      void warmArticleCacheAsync(entry?.slug);
     } else if (model === 'author') {
       deletedFiles = invalidateAuthorCache();
       console.log(
         `[Webhook] Invalidated author cache (${deletedFiles.length} files):`,
         deletedFiles
       );
+      void warmAuthorCacheAsync();
     } else if (model === 'roadmap') {
       deletedFiles = invalidateRoadmapCache();
       console.log(
         `[Webhook] Invalidated roadmap cache (${deletedFiles.length} files):`,
         deletedFiles
       );
+      void warmRoadmapCacheAsync();
     } else {
       console.warn(`[Webhook] Unknown model: ${model}`);
     }

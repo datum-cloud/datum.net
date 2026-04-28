@@ -3,6 +3,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import crypto from 'node:crypto';
 import { regenerateStrapiCacheIfMissing } from '@libs/strapi/regenerateCache';
 
 function verifyWebhookSecret(request: Request): boolean {
@@ -13,7 +14,19 @@ function verifyWebhookSecret(request: Request): boolean {
   }
 
   const receivedSecret = request.headers.get('X-Webhook-Secret');
-  return receivedSecret === webhookSecret;
+
+  if (!receivedSecret) {
+    return false;
+  }
+
+  const expected = Buffer.from(webhookSecret);
+  const received = Buffer.from(receivedSecret);
+
+  if (expected.length !== received.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(expected, received);
 }
 
 export const POST: APIRoute = async ({ request }) => {

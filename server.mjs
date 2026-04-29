@@ -472,6 +472,19 @@ const server = createServer((req, res) => {
     }
   }
 
+  // Enforce trailing slash (mirrors astro trailingSlash: 'always')
+  // Must run after proxy routes so /docs etc. are not affected
+  const hasExt = /\.[^/]+$/.test(url);
+  if (!hasExt && !url.endsWith('/')) {
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, {
+      Location: url + '/' + qs,
+      'Cache-Control': 'public, max-age=31536000',
+    });
+    res.end();
+    return;
+  }
+
   // Middleware order: compressed files → static files → Astro SSR handler
   serveCompressed(req, res, () => {
     staticServer(req, res, () => {

@@ -1,0 +1,23 @@
+server.mjs
+  0ca3481c11cdfbcb 475-487
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "bb67008a57aac4b4a59fccebcdfb8ced7b6eb1e0",
+  "prompts": {
+    "0ca3481c11cdfbcb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eadafeab-c88e-4c8b-a998-248e9ed151fe",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 13,
+      "total_deletions": 0,
+      "accepted_lines": 13,
+      "overriden_lines": 0
+    }
+  }
+}

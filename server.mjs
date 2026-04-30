@@ -61,26 +61,6 @@ const REDIRECTS = {
   '/team': { destination: '/about/', status: 302 },
   '/jobs/': { destination: '/careers/', status: 302 },
   '/community-huddle/': { destination: '/events/', status: 302 },
-  '/docs/roadmap': { destination: '/resources/roadmap/', status: 302 },
-  '/docs/tutorials/gateway': { destination: '/docs/tutorials/httpproxy/', status: 302 },
-  '/docs/get-started/datum-concepts/': {
-    destination: '/docs/quickstart/datum-concepts/',
-    status: 302,
-  },
-  '/docs/tasks/create-project/': { destination: '/docs/platform/projects/', status: 302 },
-  '/docs/tasks/developer-guide': { destination: '/docs/developer-guide/', status: 302 },
-  '/docs/task/tools/': { destination: '/docs/', status: 302 },
-  '/docs/tutorials/grafana/': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
-  '/docs/tutorials/httpproxy/': { destination: '/docs/runtime/ai-edge/', status: 302 },
-  '/docs/get-started/': { destination: '/docs/quickstart/', status: 302 },
-  '/docs/quickstart/datumctl': { destination: '/docs/datumctl/', status: 302 },
-  '/docs/quickstart/datumctl/': { destination: '/docs/datumctl/', status: 302 },
-  '/docs/contribution-guidelines/': { destination: '/docs/', status: 302 },
-  '/docs/guides/using-byoc/': { destination: '/docs/', status: 302 },
-  '/docs/workflows/': { destination: '/docs/', status: 302 },
-  '/docs/workflows/1-click-waf/': { destination: '/docs/runtime/ai-edge/', status: 302 },
-  '/docs/runtime/proxy/': { destination: '/docs/runtime/ai-edge/', status: 302 },
-  '/docs/runtime/proxy': { destination: '/docs/runtime/ai-edge/', status: 302 },
   '/handbook/engineering/rfc/': { destination: '/handbook/build/', status: 302 },
   '/handbook/company/what-we-believe/': { destination: '/handbook/about/purpose/', status: 302 },
   '/handbook/culture/anti-harassment-and-discrimination-policy/': {
@@ -126,32 +106,6 @@ const REDIRECTS = {
   '/resources/changelog/': { destination: '/changelog/', status: 302 },
   '/resources/roadmap/': { destination: '/roadmap/', status: 302 },
   '/resources/open-source/': { destination: '/open-source/', status: 302 },
-
-  // No-trailing-slash variants
-  '/docs/get-started': { destination: '/docs/quickstart/', status: 302 },
-  '/docs/get-started/datum-concepts': {
-    destination: '/docs/quickstart/datum-concepts/',
-    status: 302,
-  },
-  '/docs/tasks/create-project': { destination: '/docs/platform/projects/', status: 302 },
-  '/docs/tutorials/gateway/': { destination: '/docs/tutorials/httpproxy/', status: 302 },
-  '/docs/tutorials/httpproxy': { destination: '/docs/runtime/ai-edge/', status: 302 },
-  '/docs/tutorials/grafana': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
-  '/docs/contribution-guidelines': { destination: '/docs/', status: 302 },
-  '/docs/guides/using-byoc': { destination: '/docs/', status: 302 },
-
-  // Additional docs redirects
-  '/docs/developer-guide': { destination: '/docs/datumctl/developer/overview/', status: 302 },
-  '/docs/developer-guide/': { destination: '/docs/datumctl/developer/overview/', status: 302 },
-  '/docs/tasks/tools': { destination: '/docs/datumctl/', status: 302 },
-  '/docs/tasks/tools/': { destination: '/docs/datumctl/', status: 302 },
-  '/docs/tutorials/domains': { destination: '/docs/assets/domains/', status: 302 },
-  '/docs/tutorials/domains/': { destination: '/docs/assets/domains/', status: 302 },
-  '/docs/guides/contribution-guidelines.mdx': { destination: '/docs/guides/', status: 302 },
-  '/docs/workflows/grafana-cloud': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
-  '/docs/workflows/grafana-cloud/': { destination: '/docs/metrics/grafana-cloud/', status: 302 },
-  '/docs/changelog': { destination: '/resources/changelog/', status: 302 },
-  '/docs/changelog/': { destination: '/resources/changelog/', status: 302 },
 
   // Site page aliases
   '/about-us': { destination: '/about/', status: 302 },
@@ -516,6 +470,19 @@ const server = createServer((req, res) => {
       handleProxy(req, res, route.target, route.cache);
       return;
     }
+  }
+
+  // Enforce trailing slash (mirrors astro trailingSlash: 'always')
+  // Must run after proxy routes so /docs etc. are not affected
+  const hasExt = /\.[^/]+$/.test(url);
+  if (!hasExt && !url.endsWith('/')) {
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, {
+      Location: url + '/' + qs,
+      'Cache-Control': 'public, max-age=31536000',
+    });
+    res.end();
+    return;
   }
 
   // Middleware order: compressed files → static files → Astro SSR handler

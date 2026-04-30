@@ -216,18 +216,13 @@ Examples:
 
 ### Pre-commit Checks
 
-Before committing, ensure all checks pass:
+On `git commit`, Husky runs [lint-staged](https://github.com/lint-staged/lint-staged) (ESLint + Prettier on staged source, markdownlint on staged `.md` / `.mdx`). Run a full check manually when useful:
 
 ```bash
 npm run precommit
 ```
 
-This runs:
-
-- TypeScript type checking
-- ESLint linting
-- Markdown linting
-- Code formatting checks
+This runs typecheck, ESLint, and `lint:md` (content Markdown). It does not run Prettier on the whole tree; use `npm run format` / `format:check` for that.
 
 ### Manual Checks
 

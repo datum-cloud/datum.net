@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import { regenerateStrapiCacheIfMissing } from '@libs/strapi/regenerateCache';
 
 function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET || import.meta.env.STRAPI_WEBHOOK_SECRET;
 
   if (!webhookSecret) {
     return false;

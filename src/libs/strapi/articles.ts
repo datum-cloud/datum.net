@@ -92,13 +92,13 @@ async function graphqlQuery<T>(
 // Short-lived TTL cache (respects STRAPI_CACHE_ENABLED / STRAPI_CACHE_TTL)
 const cache = new Cache('.cache');
 const ARTICLES_CACHE_KEY = 'strapi-articles';
-const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+const ARTICLE_CACHE_PREFIX = 'strapi-articles-';
 
 // Persistent fallback cache — always written on success, never expires.
 // Serves stale data when Strapi is unreachable.
 const fallbackCache = new Cache('.cache/strapi-fallback');
 const FALLBACK_ARTICLES_KEY = 'articles';
-const FALLBACK_ARTICLE_PREFIX = 'article-';
+const FALLBACK_ARTICLE_PREFIX = 'articles-';
 
 /**
  * GraphQL query to fetch all articles (Strapi v5 format, with high limit)

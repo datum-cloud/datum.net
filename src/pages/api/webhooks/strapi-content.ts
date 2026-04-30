@@ -25,7 +25,7 @@ interface StrapiWebhookPayload {
 }
 
 function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET || import.meta.env.STRAPI_WEBHOOK_SECRET;
 
   if (!webhookSecret) {
     console.warn('[Webhook] STRAPI_WEBHOOK_SECRET is not configured');
@@ -91,8 +91,8 @@ function invalidateArticleCache(slug?: string): string[] {
   ];
 
   if (slug) {
-    // per-article: main "strapi-article-{slug}*", fallback "article-{slug}*"
-    deleted.push(...invalidateCache(`strapi-article-${slug}`, `article-${slug}`));
+    // per-article: main "strapi-articles-{slug}*", fallback "articles-{slug}*"
+    deleted.push(...invalidateCache(`strapi-articles-${slug}`, `articles-${slug}`));
   }
 
   return deleted;

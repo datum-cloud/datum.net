@@ -1,0 +1,33 @@
+src/pages/api/cache/strapi.ts
+  h_be6412991b9fef 10
+src/libs/strapi/articles.ts
+  449979e04ffe1c4e 95,101
+src/pages/api/webhooks/strapi-content.ts
+  449979e04ffe1c4e 94-95
+  h_be6412991b9fef 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "bc0ab354fbc91ea96c8bbc28c24b205ae627cea1",
+  "prompts": {
+    "449979e04ffe1c4e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d861167d-0c58-419a-afcc-adee58aa457f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 6,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_be6412991b9fef": {
+      "author": "AriaEdo"
+    }
+  }
+}

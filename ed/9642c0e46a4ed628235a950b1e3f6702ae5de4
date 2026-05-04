@@ -1,0 +1,140 @@
+src/components/blog/Latest.astro
+  9df7281a700fad2c 32,48,74,87
+src/components/handbook/ArticleBreadcrumb.astro
+  h_be6412991b9fef 64,68,114,118
+src/pages/llms-full.txt.ts
+  h_be6412991b9fef 275
+src/components/blog/BlogItemStrapi.astro
+  9df7281a700fad2c 13-14,16-17
+  h_be6412991b9fef 15
+src/content/handbook/operate/rhythms.md
+  9df7281a700fad2c 17
+src/content/handbook/policy/incident-response.md
+  9df7281a700fad2c 15,46
+src/components/handbook/PageNav.astro
+  h_be6412991b9fef 52,59
+src/pages/features.astro
+  h_be6412991b9fef 83-85,267,273,280,287
+src/content/changelog/index.md
+  9df7281a700fad2c 3
+src/data/navigation.json
+  h_be6412991b9fef 77,101,165-166
+  9df7281a700fad2c 5,14,20,25-26,40-41,62-66,73,93,97,109-112,121-126,132-136,144-145,151-157,172-175,181-185,191-194
+src/pages/about/index.astro
+  h_be6412991b9fef 32,41,46,58,63,74,79,82-83
+src/content/handbook/policy/testing.md
+  9df7281a700fad2c 23
+src/content/handbook/policy/information-classification.md
+  9df7281a700fad2c 26
+src/pages/blog/[slug].astro
+  h_be6412991b9fef 44,94,140,178-179,181,186,189,213,216,348
+src/components/career/Culture.astro
+  h_be6412991b9fef 68
+src/components/events/Card.astro
+  h_be6412991b9fef 36,45
+src/pages/events/community-huddles.astro
+  h_be6412991b9fef 34-36
+src/components/blog/BlogPagination.astro
+  h_be6412991b9fef 15,17
+src/pages/events/alt-cloud-meetups.astro
+  h_be6412991b9fef 33-35
+src/pages/authors.astro
+  9df7281a700fad2c 51
+src/components/forms/NewsletterModal.astro
+  h_be6412991b9fef 178
+src/components/handbook/Sidebar.astro
+  h_be6412991b9fef 99
+astro.config.mjs
+  h_be6412991b9fef 53
+  9df7281a700fad2c 27
+server.mjs
+  9df7281a700fad2c 58-65,67,71,74-75,77,80,87,90-93,97-108,475-487
+  h_be6412991b9fef 83,111-126,129-141,168-169
+src/pages/500.astro
+  h_be6412991b9fef 22
+src/components/career/JobList.astro
+  9df7281a700fad2c 42
+src/components/blog/FeaturedPostStrapi.astro
+  9df7281a700fad2c 27,47
+src/content/handbook/policy/data-retention.md
+  9df7281a700fad2c 39
+src/content/handbook/policy/disaster-recovery.md
+  9df7281a700fad2c 18,34
+src/content/handbook/eos/quarterly-conversations.md
+  9df7281a700fad2c 52
+src/pages/waitlist.astro
+  h_be6412991b9fef 38
+src/pages/rss.xml.js
+  h_be6412991b9fef 27
+src/pages/legal/[slug].astro
+  9df7281a700fad2c 105
+src/components/Footer.astro
+  h_be6412991b9fef 59,175-176
+src/content/pages/brand/index.mdx
+  9df7281a700fad2c 22,32,41,50,59,68,77,86
+src/content/handbook/operate/purchasing.md
+  9df7281a700fad2c 134
+src/content/handbook/policy/incident-disclosure.md
+  9df7281a700fad2c 21,36
+src/pages/essentials.astro
+  h_be6412991b9fef 28-29,38,86-88
+src/pages/pricing.astro
+  h_be6412991b9fef 163-165
+src/pages/sitemap.xml.ts
+  h_be6412991b9fef 15-31,100,127,149,157
+src/data/downloads.json
+  h_be6412991b9fef 9,15,22,32,38,50,57,64
+src/pages/events/index.astro
+  h_be6412991b9fef 76-77
+src/pages/download/[slug].astro
+  41ea611439732cd1 16-17
+  h_be6412991b9fef 45,51,53,55-56,61,67,69-70,74,80,82-83,87,93,95-96,100,106,108-109,113,118,125-126,130,135,142-143,147,152,159-160,171-172,175
+src/layouts/Layout.astro
+  h_be6412991b9fef 42,47,60
+src/pages/download/index.astro
+  h_be6412991b9fef 10-12
+src/components/blog/BlogStrapi.astro
+  h_be6412991b9fef 44-45
+src/content/handbook/product/pricing.md
+  9df7281a700fad2c 15
+src/pages/blog.astro
+  h_be6412991b9fef 40-41,51,55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "ed9642c0e46a4ed628235a950b1e3f6702ae5de4",
+  "prompts": {
+    "41ea611439732cd1": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "84d17ebb-2eec-40ca-b7d8-f48125c6d4a5",
+        "model": "copilot/auto"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 1,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "9df7281a700fad2c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0fc5028e-bc02-489f-866f-68402b5b8329",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo",
+      "messages": [],
+      "total_additions": 129,
+      "total_deletions": 116,
+      "accepted_lines": 132,
+      "overriden_lines": 1
+    }
+  },
+  "humans": {
+    "h_be6412991b9fef": {
+      "author": "AriaEdo"
+    }
+  }
+}

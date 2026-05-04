@@ -2,7 +2,7 @@
 title: "Using GitHub"
 sidebar:
   label: Using GitHub
-  order: 3
+  order: 4
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:

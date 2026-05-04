@@ -2,7 +2,7 @@
 title: "How we hire"
 sidebar:
   label: How we hire
-  order: 7
+  order: 8
 updatedDate: Feb 2, 2026
 authors: jacob
 meta:

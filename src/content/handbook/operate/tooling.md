@@ -2,7 +2,7 @@
 title: "Tooling"
 sidebar:
   label: Tooling
-  order: 6
+  order: 7
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

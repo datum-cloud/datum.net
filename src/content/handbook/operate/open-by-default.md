@@ -2,7 +2,7 @@
 title: "Open by default"
 sidebar:
   label: Open by default
-  order: 2
+  order: 3
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:

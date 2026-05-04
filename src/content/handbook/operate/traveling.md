@@ -2,7 +2,7 @@
 title: "Traveling"
 sidebar:
   label: Traveling
-  order: 5
+  order: 6
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:

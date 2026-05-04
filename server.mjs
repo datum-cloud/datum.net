@@ -55,90 +55,90 @@ const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
 
 // Redirect configuration with Cache-Control: no-cache
 const REDIRECTS = {
-  '/product': { destination: '/features/', status: 302 },
-  '/feature/': { destination: '/features/', status: 302 },
-  '/product/overview/overview': { destination: '/features/', status: 302 },
-  '/team': { destination: '/about/', status: 302 },
-  '/jobs/': { destination: '/careers/', status: 302 },
-  '/community-huddle/': { destination: '/events/', status: 302 },
-  '/handbook/engineering/rfc/': { destination: '/handbook/build/', status: 302 },
-  '/handbook/company/what-we-believe/': { destination: '/handbook/about/purpose/', status: 302 },
+  '/product': { destination: '/features', status: 302 },
+  '/feature/': { destination: '/features', status: 302 },
+  '/product/overview/overview': { destination: '/features', status: 302 },
+  '/team': { destination: '/about', status: 302 },
+  '/jobs/': { destination: '/careers', status: 302 },
+  '/community-huddle/': { destination: '/events', status: 302 },
+  '/handbook/engineering/rfc/': { destination: '/handbook/build', status: 302 },
+  '/handbook/company/what-we-believe/': { destination: '/handbook/about/purpose', status: 302 },
   '/handbook/culture/anti-harassment-and-discrimination-policy/': {
-    destination: '/handbook/policy/anti-harassment/',
+    destination: '/handbook/policy/anti-harassment',
     status: 302,
   },
   '/handbook/company/who-are-we-building-for/': {
-    destination: '/handbook/product/customers/',
+    destination: '/handbook/product/customers',
     status: 302,
   },
-  '/handbook/people/travel-policy/': { destination: '/handbook/operate/traveling/', status: 302 },
-  '/handbook/company/where-are-we-now/': { destination: '/handbook/about/strategy/', status: 302 },
+  '/handbook/people/travel-policy/': { destination: '/handbook/operate/traveling', status: 302 },
+  '/handbook/company/where-are-we-now/': { destination: '/handbook/about/strategy', status: 302 },
   '/handbook/go-to-market/keep-momentum/': {
-    destination: '/handbook/about/strategy/',
+    destination: '/handbook/about/strategy',
     status: 302,
   },
-  '/handbook/go-to-market/approach-gtm/': { destination: '/handbook/about/model/', status: 302 },
+  '/handbook/go-to-market/approach-gtm/': { destination: '/handbook/about/model', status: 302 },
   '/netzero/overview/overview': { destination: '/', status: 302 },
   '/api-reference/invite/deletes-a-invite-by-id': {
-    destination: '/docs/api/reference/',
+    destination: '/docs/api/reference',
     status: 302,
   },
   '/blog/internet-superpowers-for-every-builder/)_/': {
-    destination: '/blog/internet-superpowers-for-every-builder/',
+    destination: '/blog/internet-superpowers-for-every-builder',
     status: 302,
   },
-  '/legal/': { destination: '/legal/terms/', status: 302 },
-  '/privacy-policy/': { destination: '/legal/privacy/', status: 302 },
-  '/privacy/': { destination: '/legal/privacy/', status: 302 },
-  '/terms-of-service/': { destination: '/legal/terms/', status: 302 },
+  '/legal/': { destination: '/legal/terms', status: 302 },
+  '/privacy-policy/': { destination: '/legal/privacy', status: 302 },
+  '/privacy/': { destination: '/legal/privacy', status: 302 },
+  '/terms-of-service/': { destination: '/legal/terms', status: 302 },
   '/index.asp': { destination: '/', status: 302 },
   '/logon.html': { destination: 'https://auth.datum.net/ui/v2/login/loginname', status: 302 },
   '/public-slack/': { destination: 'https://link.datum.net/discord', status: 302 },
-  '/handbook/company/': { destination: '/handbook/about/', status: 302 },
-  '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
-  '/handbook/go-to-market/': { destination: '/handbook/about/', status: 302 },
-  '/downloads/': { destination: '/download/', status: 302 },
-  '/downloads/mac-os/': { destination: '/download/mac-os/', status: 302 },
-  '/downloads/windows/': { destination: '/download/windows/', status: 302 },
-  '/downloads/linux/': { destination: '/download/linux/', status: 302 },
-  '/downloads/datumctl/': { destination: '/download/datumctl/', status: 302 },
-  '/downloads/datum-mcp/': { destination: '/download/datum-mcp/', status: 302 },
-  '/resources/changelog/': { destination: '/changelog/', status: 302 },
-  '/resources/roadmap/': { destination: '/roadmap/', status: 302 },
-  '/resources/open-source/': { destination: '/open-source/', status: 302 },
+  '/handbook/company/': { destination: '/handbook/about', status: 302 },
+  '/handbook/engineering/': { destination: '/handbook/build', status: 302 },
+  '/handbook/go-to-market/': { destination: '/handbook/about', status: 302 },
+  '/downloads/': { destination: '/download', status: 302 },
+  '/downloads/mac-os/': { destination: '/download/mac-os', status: 302 },
+  '/downloads/windows/': { destination: '/download/windows', status: 302 },
+  '/downloads/linux/': { destination: '/download/linux', status: 302 },
+  '/downloads/datumctl/': { destination: '/download/datumctl', status: 302 },
+  '/downloads/datum-mcp/': { destination: '/download/datum-mcp', status: 302 },
+  '/resources/changelog/': { destination: '/changelog', status: 302 },
+  '/resources/roadmap/': { destination: '/roadmap', status: 302 },
+  '/resources/open-source/': { destination: '/open-source', status: 302 },
 
   // Site page aliases
-  '/about-us': { destination: '/about/', status: 302 },
-  '/about-us/': { destination: '/about/', status: 302 },
-  '/team/': { destination: '/about/', status: 302 },
-  '/leadership': { destination: '/about/', status: 302 },
-  '/leadership/': { destination: '/about/', status: 302 },
-  '/jobs': { destination: '/careers/', status: 302 },
-  '/feature': { destination: '/features/', status: 302 },
-  '/products': { destination: '/features/', status: 302 },
-  '/products/': { destination: '/features/', status: 302 },
-  '/product/vpc': { destination: '/features/', status: 302 },
-  '/design': { destination: '/brand/', status: 302 },
-  '/design/': { destination: '/brand/', status: 302 },
-  '/support': { destination: '/contact/', status: 302 },
-  '/support/': { destination: '/contact/', status: 302 },
-  '/overview/datum': { destination: '/docs/overview/why-datum/', status: 302 },
-  '/overview/datum/': { destination: '/docs/overview/why-datum/', status: 302 },
+  '/about-us': { destination: '/about', status: 302 },
+  '/about-us/': { destination: '/about', status: 302 },
+  '/team/': { destination: '/about', status: 302 },
+  '/leadership': { destination: '/about', status: 302 },
+  '/leadership/': { destination: '/about', status: 302 },
+  '/jobs': { destination: '/careers', status: 302 },
+  '/feature': { destination: '/features', status: 302 },
+  '/products': { destination: '/features', status: 302 },
+  '/products/': { destination: '/features', status: 302 },
+  '/product/vpc': { destination: '/features', status: 302 },
+  '/design': { destination: '/brand', status: 302 },
+  '/design/': { destination: '/brand', status: 302 },
+  '/support': { destination: '/contact', status: 302 },
+  '/support/': { destination: '/contact', status: 302 },
+  '/overview/datum': { destination: '/docs/overview/why-datum', status: 302 },
+  '/overview/datum/': { destination: '/docs/overview/why-datum', status: 302 },
 
   // Legal aliases and typos
-  '/privacy-policy': { destination: '/legal/privacy/', status: 302 },
-  '/privacy': { destination: '/legal/privacy/', status: 302 },
-  '/terms-of-service': { destination: '/legal/terms/', status: 302 },
-  '/legal/privacy-policy': { destination: '/legal/privacy/', status: 302 },
-  '/legal/privacy-policy/': { destination: '/legal/privacy/', status: 302 },
-  '/legal/pricavy': { destination: '/legal/privacy/', status: 302 },
-  '/legal/pricavy/': { destination: '/legal/privacy/', status: 302 },
-  '/legal/term': { destination: '/legal/terms/', status: 302 },
-  '/legal/term/': { destination: '/legal/terms/', status: 302 },
-  '/legal/trust': { destination: '/legal/privacy/', status: 302 },
-  '/legal/trust/': { destination: '/legal/privacy/', status: 302 },
-  '/legal/security': { destination: '/docs/overview/support/', status: 302 },
-  '/legal/security/': { destination: '/docs/overview/support/', status: 302 },
+  '/privacy-policy': { destination: '/legal/privacy', status: 302 },
+  '/privacy': { destination: '/legal/privacy', status: 302 },
+  '/terms-of-service': { destination: '/legal/terms', status: 302 },
+  '/legal/privacy-policy': { destination: '/legal/privacy', status: 302 },
+  '/legal/privacy-policy/': { destination: '/legal/privacy', status: 302 },
+  '/legal/pricavy': { destination: '/legal/privacy', status: 302 },
+  '/legal/pricavy/': { destination: '/legal/privacy', status: 302 },
+  '/legal/term': { destination: '/legal/terms', status: 302 },
+  '/legal/term/': { destination: '/legal/terms', status: 302 },
+  '/legal/trust': { destination: '/legal/privacy', status: 302 },
+  '/legal/trust/': { destination: '/legal/privacy', status: 302 },
+  '/legal/security': { destination: '/docs/overview/support', status: 302 },
+  '/legal/security/': { destination: '/docs/overview/support', status: 302 },
 };
 
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
@@ -165,8 +165,8 @@ const PROXY_ROUTES = [
 
 // Prefix-based redirects: source prefix → destination prefix (preserves the rest of the path)
 const PREFIX_REDIRECTS = [
-  { from: '/handbook/technical/', to: '/handbook/build/', status: 302 },
-  { from: '/handbook/culture/', to: '/handbook/operate/', status: 302 },
+  { from: '/handbook/technical/', to: '/handbook/build', status: 302 },
+  { from: '/handbook/culture/', to: '/handbook/operate', status: 302 },
 ];
 
 // File extensions that should trigger download instead of display
@@ -470,6 +470,19 @@ const server = createServer((req, res) => {
       handleProxy(req, res, route.target, route.cache);
       return;
     }
+  }
+
+  // Remove trailing slash (mirrors astro trailingSlash: 'never')
+  const hasExt = /\.[^/]+$/.test(url);
+  if (!hasExt && url !== '/' && url.endsWith('/')) {
+    const trimmed = url.replace(/\/+$/, '');
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    res.writeHead(301, {
+      Location: trimmed + qs,
+      'Cache-Control': 'public, max-age=31536000',
+    });
+    res.end();
+    return;
   }
 
   // Middleware order: compressed files → static files → Astro SSR handler

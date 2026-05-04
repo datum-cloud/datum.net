@@ -102,7 +102,7 @@ const sortedLegal = [...allLegal].sort((a, b) => {
               {
                 sortedLegal.map((entry) => (
                   <a
-                    href={`/legal/${entry.id}/`}
+                    href={`/legal/${entry.id}`}
                     class:list={[
                       'legal-sidenav-item',
                       { 'legal-sidenav-item--active': entry.id === page.id },

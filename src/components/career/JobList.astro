@@ -39,7 +39,7 @@ const totalJobs = fetchFailed ? 0 : jobs.length;
               <div class="space-y-4">
                 {(deptJobs as AshbyJob[]).map((job) => (
                   <a
-                    href={`/careers/?ashby_jid=${job.id}`}
+                    href={`/careers?ashby_jid=${job.id}`}
                     class="group block transition-colors"
                     target="_blank"
                   >

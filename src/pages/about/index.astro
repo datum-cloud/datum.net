@@ -29,7 +29,7 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'AboutPage',
-      '@id': 'https://www.datum.net/about/#webpage',
+      '@id': 'https://www.datum.net/about#webpage',
       url: 'https://www.datum.net/about/',
       name: 'About Datum – Open Network Cloud for AI',
       sameAs: [
@@ -38,12 +38,12 @@ const jsonLd = {
         'https://discord.com/invite/AeA9XZu4Py',
         'https://www.linkedin.com/company/datum-cloud',
       ],
-      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      isPartOf: { '@id': 'https://www.datum.net#organization' },
       inLanguage: 'en-US',
     },
     {
       '@type': 'Person',
-      '@id': 'https://www.datum.net/about/#zac-smith',
+      '@id': 'https://www.datum.net/about#zac-smith',
       name: 'Zac Smith',
       jobTitle: 'Co-Founder and CEO',
       description:
@@ -55,12 +55,12 @@ const jsonLd = {
         'alternative cloud providers',
         'AI infrastructure',
       ],
-      worksFor: { '@id': 'https://www.datum.net/#organization' },
+      worksFor: { '@id': 'https://www.datum.net#organization' },
       sameAs: ['https://www.linkedin.com/in/zsmith/'],
     },
     {
       '@type': 'Person',
-      '@id': 'https://www.datum.net/about/#jacob-smith',
+      '@id': 'https://www.datum.net/about#jacob-smith',
       name: 'Jacob Smith',
       jobTitle: 'Co-Founder, Head of Growth',
       description:
@@ -71,16 +71,16 @@ const jsonLd = {
         'open source business models',
         'network cloud',
       ],
-      worksFor: { '@id': 'https://www.datum.net/#organization' },
+      worksFor: { '@id': 'https://www.datum.net#organization' },
       sameAs: ['https://www.linkedin.com/in/jacobsmith79/'],
     },
     {
       '@type': 'Organization',
-      '@id': 'https://www.datum.net/#organization',
+      '@id': 'https://www.datum.net#organization',
       foundingDate: '2024',
       founder: [
-        { '@id': 'https://www.datum.net/about/#zac-smith' },
-        { '@id': 'https://www.datum.net/about/#jacob-smith' },
+        { '@id': 'https://www.datum.net/about#zac-smith' },
+        { '@id': 'https://www.datum.net/about#jacob-smith' },
       ],
       funder: [
         {

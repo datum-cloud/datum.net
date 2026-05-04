@@ -272,7 +272,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 # macOS via Homebrew
 brew install --cask datum-cloud/tap/desktop
 
-# Or download from: https://www.datum.net/download/
+# Or download from: https://www.datum.net/download
 \`\`\`
 
 **Auth:**

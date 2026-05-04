@@ -2,7 +2,7 @@
   "main": [
     {
       "text": "Product",
-      "href": "/features/",
+      "href": "/features",
       "children": [
         {
           "isCardLayout": true,
@@ -11,19 +11,19 @@
               "text": "Features",
               "image": "/images/nav/core-features.png",
               "desc": "Critical network services",
-              "href": "/features/"
+              "href": "/features"
             },
             {
               "text": "Essentials",
               "image": "/images/nav/essentials.png",
               "desc": "Enterprise-grade networking primitives",
-              "href": "/essentials/"
+              "href": "/essentials"
             },
             {
               "text": "Pricing",
               "image": "/images/nav/pricing.png",
-              "desc": "Pssssssst... It’s free",
-              "href": "/pricing/"
+              "desc": "Pssssssst... It's free",
+              "href": "/pricing"
             }
           ]
         }
@@ -37,8 +37,8 @@
         {
           "title": "Get started:",
           "items": [
-            { "text": "Locations", "href": "/locations/" },
-            { "text": "Blog", "href": "/blog/" },
+            { "text": "Locations", "href": "/locations" },
+            { "text": "Blog", "href": "/blog" },
             {
               "text": "Videos",
               "href": "https://www.youtube.com/@Datum-Cloud",
@@ -59,22 +59,22 @@
         {
           "title": "Get involved:",
           "items": [
-            { "text": "Changelog", "href": "/changelog/" },
-            { "text": "Roadmap", "href": "/roadmap/" },
-            { "text": "Events", "href": "/events/" },
-            { "text": "Careers", "href": "/careers/" },
-            { "text": "Handbook", "href": "/handbook/" }
+            { "text": "Changelog", "href": "/changelog" },
+            { "text": "Roadmap", "href": "/roadmap" },
+            { "text": "Events", "href": "/events" },
+            { "text": "Careers", "href": "/careers" },
+            { "text": "Handbook", "href": "/handbook" }
           ]
         }
       ]
     },
     {
       "text": "Download",
-      "href": "/download/"
+      "href": "/download"
     },
     {
       "text": "Docs",
-      "href": "/docs/"
+      "href": "/docs"
     }
   ],
   "right": [
@@ -90,15 +90,15 @@
       "items": [
         {
           "text": "Core features",
-          "href": "/features/"
+          "href": "/features"
         },
         {
           "text": "Pricing",
-          "href": "/pricing/"
+          "href": "/pricing"
         },
         {
           "text": "Docs",
-          "href": "/docs/"
+          "href": "/docs"
         },
         { "text": "Status", "href": "https://www.datumstatus.net/", "isExternal": true }
       ]
@@ -106,10 +106,10 @@
     {
       "title": "Resources",
       "items": [
-        { "text": "Blog", "href": "/blog/" },
-        { "text": "Changelog", "href": "/changelog/" },
-        { "text": "Roadmap", "href": "/roadmap/" },
-        { "text": "Open Source", "href": "/open-source/" },
+        { "text": "Blog", "href": "/blog" },
+        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Roadmap", "href": "/roadmap" },
+        { "text": "Open Source", "href": "/open-source" },
         { "text": "Discord", "href": "https://discord.com/invite/AeA9XZu4Py" },
         { "text": "GitHub", "href": "https://github.com/orgs/datum-cloud/discussions" },
         { "text": "Youtube", "href": "https://www.youtube.com/@Datum-Cloud" }
@@ -118,22 +118,22 @@
     {
       "title": "Company",
       "items": [
-        { "text": "About", "href": "/about/" },
-        { "text": "Handbook", "href": "/handbook/" },
-        { "text": "Careers", "href": "/careers/", "label": "New" },
-        { "text": "Events", "href": "/events/" },
-        { "text": "Brand Assets", "href": "/brand/" },
-        { "text": "Contact", "href": "/contact/" }
+        { "text": "About", "href": "/about" },
+        { "text": "Handbook", "href": "/handbook" },
+        { "text": "Careers", "href": "/careers", "label": "New" },
+        { "text": "Events", "href": "/events" },
+        { "text": "Brand Assets", "href": "/brand" },
+        { "text": "Contact", "href": "/contact" }
       ]
     },
     {
       "title": "Legal",
       "items": [
-        { "text": "Terms", "href": "/legal/terms/" },
-        { "text": "Privacy", "href": "/legal/privacy/" },
-        { "text": "AUP", "href": "/legal/aup/" },
-        { "text": "CST", "href": "/legal/service-country-specific-terms/" },
-        { "text": "Sub-Processors", "href": "/legal/subprocessors/" }
+        { "text": "Terms", "href": "/legal/terms" },
+        { "text": "Privacy", "href": "/legal/privacy" },
+        { "text": "AUP", "href": "/legal/aup" },
+        { "text": "CST", "href": "/legal/service-country-specific-terms" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors" }
       ]
     }
   ],
@@ -141,20 +141,20 @@
     {
       "title": "Brand Overview",
       "items": [
-        { "text": "Overview", "href": "/brand/" },
-        { "text": "Principles", "href": "/brand/principles/" }
+        { "text": "Overview", "href": "/brand" },
+        { "text": "Principles", "href": "/brand/principles" }
       ]
     },
     {
       "title": "Brand Assets",
       "items": [
-        { "text": "Typography", "href": "/brand/typography/" },
-        { "text": "Color", "href": "/brand/color/" },
-        { "text": "Logos", "href": "/brand/logos/" },
-        { "text": "Iconography", "href": "/brand/iconography/" },
-        { "text": "Illustration Suite", "href": "/brand/imagery/" },
-        { "text": "Social", "href": "/brand/social/" },
-        { "text": "Templates", "href": "/brand/templates/" }
+        { "text": "Typography", "href": "/brand/typography" },
+        { "text": "Color", "href": "/brand/color" },
+        { "text": "Logos", "href": "/brand/logos" },
+        { "text": "Iconography", "href": "/brand/iconography" },
+        { "text": "Illustration Suite", "href": "/brand/imagery" },
+        { "text": "Social", "href": "/brand/social" },
+        { "text": "Templates", "href": "/brand/templates" }
       ]
     }
   ],
@@ -162,36 +162,36 @@
     {
       "title": "Docs",
       "items": [
-        { "text": "Getting Started", "href": "/docs/" },
-        { "text": "API Reference", "href": "/docs/api/" }
+        { "text": "Getting Started", "href": "/docs" },
+        { "text": "API Reference", "href": "/docs/api" }
       ]
     },
     {
       "title": "Resources",
       "items": [
-        { "text": "Changelog", "href": "/changelog/" },
-        { "text": "Roadmap", "href": "/roadmap/" },
-        { "text": "Get In Touch", "href": "/contact/" },
-        { "text": "Open Source", "href": "/open-source/" }
+        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Roadmap", "href": "/roadmap" },
+        { "text": "Get In Touch", "href": "/contact" },
+        { "text": "Open Source", "href": "/open-source" }
       ]
     },
     {
       "title": "Company",
       "items": [
-        { "text": "About", "href": "/about/" },
-        { "text": "Handbook", "href": "/handbook/" },
-        { "text": "Careers", "href": "/careers/" },
-        { "text": "Blog", "href": "/blog/" },
-        { "text": "Design Assets", "href": "/brand/" }
+        { "text": "About", "href": "/about" },
+        { "text": "Handbook", "href": "/handbook" },
+        { "text": "Careers", "href": "/careers" },
+        { "text": "Blog", "href": "/blog" },
+        { "text": "Design Assets", "href": "/brand" }
       ]
     },
     {
       "title": "Trust Center",
       "items": [
-        { "text": "Terms of Service", "href": "/legal/terms/" },
-        { "text": "Privacy Policy", "href": "/legal/privacy/" },
-        { "text": "AUP", "href": "/legal/aup/" },
-        { "text": "Sub-Processors", "href": "/legal/subprocessors/" },
+        { "text": "Terms of Service", "href": "/legal/terms" },
+        { "text": "Privacy Policy", "href": "/legal/privacy" },
+        { "text": "AUP", "href": "/legal/aup" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

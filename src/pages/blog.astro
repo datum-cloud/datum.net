@@ -1,5 +1,6 @@
 ---
 // src/pages/blog.astro
+export const prerender = false;
 
 import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
@@ -36,8 +37,8 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://www.datum.net/blog/#webpage',
-      url: 'https://www.datum.net/blog/',
+      '@id': 'https://www.datum.net/blog#webpage',
+      url: 'https://www.datum.net/blog',
       name: 'Datum Blog – Updates on Alternative Cloud and AI Native Industry News',
       description:
         'Read the latest from the Datum team — product vision, engineering deep dives, open source strategy, and insights on the next wave of AI-native cloud platforms.',
@@ -47,11 +48,11 @@ const jsonLd = {
     },
     {
       '@type': 'Blog',
-      '@id': 'https://www.datum.net/blog/#blog',
+      '@id': 'https://www.datum.net/blog#blog',
       name: 'Datum Blog',
       description:
         'Thoughts and updates from the Datum team — covering alternative cloud, AI-native infrastructure, open source strategy, Kubernetes control planes, and product direction.',
-      url: 'https://www.datum.net/blog/',
+      url: 'https://www.datum.net/blog',
       publisher: { '@id': 'https://www.datum.net/#organization' },
       inLanguage: 'en-US',
     },

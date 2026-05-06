@@ -2,7 +2,7 @@
 title: "Spending money"
 sidebar:
   label: Spending money
-  order: 4
+  order: 5
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:

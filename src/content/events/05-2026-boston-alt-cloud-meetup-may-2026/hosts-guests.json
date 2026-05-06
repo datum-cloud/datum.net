@@ -20,18 +20,23 @@
   "guests": [
     {
       "name": "Tim Kraska",
-      "title": "Professor at MIT, formerly a director at AWS, Co-Founder of Einblick and Instancio",
+      "title": "Associate Professor at MIT and Director of Applied Science at AWS",
       "avatarUrl": "tim-kraska.jpg"
     },
     {
-      "name": "Matt Butcher",
-      "title": "Vice President of Product Management at Akamai Technologies",
-      "avatarUrl": "matt-butcher.jpg"
+      "name": "Nirmal Jingar",
+      "title": "Sr. Technology Leader in AI Platforms & Modernization at Wayfair",
+      "avatarUrl": "nirmal-jingar.jpg"
     },
     {
-      "name": "James Logan",
-      "title": "Scientific Engineer at Commonwealth Fusion Systems",
-      "avatarUrl": "james-logan.jpg"
+      "name": "Denis Knjazihhin",
+      "title": "CEO at DTwo AI. Which provides a security control for agents",
+      "avatarUrl": "denis-knjazihhin.jpg"
+    },
+    {
+      "name": "Tadashi Kamitaki",
+      "title": "Lead Threat Detection and Response at CarGurus",
+      "avatarUrl": "tadashi-kamitaki.jpg"
     }
   ]
 }

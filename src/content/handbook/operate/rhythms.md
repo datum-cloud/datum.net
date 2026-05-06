@@ -2,7 +2,7 @@
 title: "Rhythms"
 sidebar:
   label: Rhythms
-  order: 1
+  order: 2
 updatedDate: Dec 26, 2025
 authors: jacob
 meta:

@@ -344,6 +344,19 @@ function handleProxy(req, res, target, cache = false) {
     if (!cache) {
       headers['cache-control'] = 'no-cache, no-store, must-revalidate';
     }
+
+    // Allow cloud-portal to embed proxied Mintlify content as an iframe.
+    // Mintlify hard-codes `frame-ancestors 'self' https://dashboard.mintlify.com`
+    // and `X-Frame-Options: DENY`, with no docs.json knob to customize either.
+    delete headers['x-frame-options'];
+    const csp = headers['content-security-policy'];
+    if (typeof csp === 'string') {
+      headers['content-security-policy'] = csp.replace(
+        /frame-ancestors[^;]*/i,
+        "frame-ancestors 'self' https://dashboard.mintlify.com https://cloud.datum.net https://cloud.staging.env.datum.net"
+      );
+    }
+
     res.writeHead(proxyRes.statusCode, headers);
     proxyRes.pipe(res);
   });

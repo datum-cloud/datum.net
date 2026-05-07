@@ -7,51 +7,83 @@ updatedDate: May 7, 2026
 authors: drew
 meta:
   title: "GitHub Workflow - Datum Handbook"
-  description: "We don't have a code writing problem. The bottleneck is human judgment — connecting work to business context, surfacing assumptions, and making decisions that agents can't make for us."
+  description: "How we use GitHub at Datum — standards and procedures for issues, branches, pull requests, and code review so engineers spend their energy on the work, not the process."
   og:
     title: "GitHub workflow"
 ---
 
-We don't have a code writing velocity problem. Agents can write and review code. Technical excellence, in that sense, can be replicated. What can't be replicated is connection.
+This page covers how we use GitHub day-to-day — not what GitHub is, but how we work in it. Having shared standards means engineers spend less time deciding how to do something and more time doing it. It also means our work is legible to teammates who pick it up mid-stream, and to our future selves.
 
-At Datum we operate by a principle called [ABCD — Always Be Connecting Dots](https://www.threestacksfull.com/thinking/abcd-always-be-connecting-dots). It's a customer experience idea at its origin, but it describes exactly the highest-value thing a human brings to an engineering workflow: the ability to notice that a PR's underlying assumption conflicts with something a customer said last week, or that an architecture decision touches a compliance requirement coming down the pipe, or that two separate pieces of work are unknowingly solving the same problem from opposite directions. Those connections don't happen by accident. They happen because someone was paying attention to more than just the code.
-
-GitHub is where those connections should be recorded. Not as an audit trail, but as the actual medium of the work. An agent can scan the queue, draft the boilerplate, surface the context, and check the implementation. Your job is to find the dots worth connecting.
+One principle that runs through all of it: [ABCD — Always Be Connecting Dots](https://www.threestacksfull.com/thinking/abcd-always-be-connecting-dots). GitHub is where work gets recorded, but the people doing the recording are in a position to make connections that no agent can — between this PR and that customer conversation, between this architecture decision and something the platform team is quietly changing. The practices below are designed to make space for that.
 
 ## Issues
 
-An issue is a hypothesis before it's a task. The most valuable thing you can do before implementation starts is ask: *What is this assuming? Who else would have an opinion if they knew about it?*
+Every piece of work starts with a GitHub issue — including small changes. The issue is the trail: the reasoning, the constraints, the decisions made and discarded. Without it, someone (probably you, six months from now) has to reconstruct context from git blame and Slack history.
 
-Those questions are dot-connecting in practice. An issue that captures a technical spec but misses a business constraint that three other people on the team already know about is a dot sitting uncollected. Write what you know. Ask for what you don't. The discussion in an issue is often more valuable than the implementation that follows it.
+**Writing a good issue:**
+- State the problem before proposing the solution
+- Note the constraints and assumptions you're working with
+- Link to related issues, prior discussions, or relevant context
+- Explicitly note non-goals if scope is likely to creep
 
-Agents are good at drafting issues, researching prior art, and surfacing related work. What they can't do is know that the framing proposed here conflicts with a conversation that happened last week in a customer call, or that the assumption embedded in the design is something the platform team has already decided to move away from. That connection is yours to make.
+Before you start implementing, ask: *who else would have an opinion if they knew about this?* If the answer is anyone outside your immediate work, loop them into the issue before the PR. That's the cheapest time to surface a conflict.
+
+Agents are useful here for drafting, researching prior art, and finding related work across the org. Use them freely for that. The judgment call — whether the framing is right, whether the right people know about it — is yours.
+
+## Branches
+
+Branch from `main`. Name branches in the format `type/short-description`:
+
+- `feat/` — new functionality
+- `fix/` — bug fixes
+- `docs/` — documentation only
+- `chore/` — maintenance, dependency bumps, config changes
+- `refactor/` — code changes with no behavior change
+
+Keep branch names lowercase and hyphenated. Short is better than complete: `feat/oauth-pkce` not `feat/add-pkce-support-to-oauth-login-flow`.
 
 ## Pull requests
 
-A PR is a decision surface. The description is how you make your assumptions legible — not just what changed, but what you believed to be true when you made those choices. That's the raw material for dot-connecting by the reviewer.
+A PR is a proposal, not just a delivery. The description is how you make your reasoning legible to reviewers — what changed, why, and what you assumed when you made those choices. A description that only restates the diff is a tax on everyone who reads it.
 
-Use your agent to draft the boilerplate and summarize the diff. Then ask yourself: *What am I assuming here that someone else might challenge? What does this touch outside of this codebase?* Say it in the description. That's the invitation for the conversation worth having.
+**What a PR description should include:**
+- What problem this solves (link the issue — don't restate it)
+- Why you approached it this way, especially if alternatives exist
+- What a reviewer should pay close attention to
+- Any assumptions that haven't been validated yet
+
+Keep PRs small and focused. If you find yourself writing "also" more than once in a description, consider whether it's two PRs. Smaller PRs get faster, better reviews and are easier to revert if something goes wrong.
+
+Use [draft PRs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) when you want early feedback or are working something out in the open. Mark ready for review only when you'd be comfortable merging it.
+
+Agents are effective at drafting PR descriptions from a diff and a linked issue. Use them to get past the blank page, then edit for anything the description doesn't capture about your actual reasoning.
 
 ## Code review
 
-The code is probably fine. An agent can verify correctness, flag edge cases, and check conventions faster and more thoroughly than a human skimming a diff. That's not where your time belongs in a review.
+Require at least one approval before merging. For changes with a large blast radius — anything touching auth, billing, public APIs, or shared infrastructure — get two.
 
-What you're looking for is the connection the author couldn't have made alone: Does this approach conflict with something happening in another part of the business? Does it make a decision that should involve someone else? Is there an assumption here that hasn't been validated against the real world? Is this solving the stated problem, or a proxy for a different one?
+**As an author:**
+- Don't assign reviewers until the PR is genuinely ready
+- Respond to all comments before merging, even if just to acknowledge and defer
+- If a review conversation is going in circles, move it to a call and summarize the outcome in the PR
 
-This is ABCD applied to engineering: you're not just reviewing code, you're asking whether the dots the author collected have been connected to everything else you know. Often the most valuable comment in a PR isn't about the implementation at all — it's *"This assumes X — is that still where we're headed?"* or *"This touches the billing path — has the finance team seen this?"*
+**As a reviewer:**
+- Mark comments clearly: blocking (must be addressed before merge) or non-blocking (suggestion, take it or leave it)
+- Approval means you've actually read it — not a social courtesy
+- If you need more than a day to review, say so; don't leave a PR waiting silently
 
-To keep the review queue from becoming invisible, take a couple of hours in your week and hand the scanning to your agent: *"Find all the open PRs across datum-cloud and milo-os that need a reviewer — tell me the 3 highest value ones for me to look at right now."* Then spend your time on the conversation, not the queue management.
+The code will likely be fine — agents can check correctness and catch edge cases faster than a human skimming a diff. What you're looking for as a human reviewer is what the author couldn't have seen alone: a connection to work happening elsewhere, an assumption that conflicts with a recent decision, a scope question that should involve someone outside engineering. Those are the comments worth writing. Ask your agent to surface the queue: *"Find all open PRs across datum-cloud and milo-os that need a reviewer — what are the 3 highest value ones for me right now?"* Then spend your time on the conversation.
 
-## Raising the signal
+## Merging
 
-The failure mode isn't bad code. It's dots collected but never connected — decisions made by default inside implementation choices that looked routine. An assumption baked into a data model. A dependency added without a conversation. Scope that quietly expanded because nobody connected it to the roadmap.
+The PR author merges, once approved. Don't merge someone else's PR unless they've asked you to.
 
-When you find those in a review, surface them. Not as a blocking code comment, but as a question that opens the conversation. That's the output that only a human reviewer produces, and it's worth more than any number of style suggestions.
+Squash merge by default for feature branches to keep `main` history readable. Merge commits are fine for long-running branches where the individual commit history is meaningful.
 
-An agent can help you find where the signal has gone quiet: *"Are there open PRs or issues in this repo where discussion has stalled, or where there are unresolved questions that nobody has answered?"* Stale discussions are usually decisions that got deferred. They're worth a nudge.
+Delete the branch after merging. If the work is incomplete and the branch needs to live, leave a comment explaining why.
 
-## Milestones and releases
+## Milestones
 
-We ship on a [monthly release cadence](/handbook/operate/rhythms/). The interesting question at each milestone review isn't "what's done?" but "what did we assume going into this that turned out to be wrong, and who should know about it?"
+We ship on a [monthly release cadence](/handbook/operate/rhythms/) — everything bundles to the last Friday of the month. If work is scoped for the current release, it should be on the milestone. If it slips, move it explicitly; don't let milestones quietly go incomplete.
 
-After a release, ask your agent for a summary of what merged — not to audit the code, but to ask: *"Is there anything in here that should have triggered a conversation with someone outside engineering?"* Sometimes the answer is no. When it's yes, that's the dot worth connecting before the next cycle starts.
+When closing out a milestone, check whether anything that merged needs a changelog entry, a demo, or a heads-up to someone outside engineering. That last step is the one most likely to get skipped — and it's the one that makes shipped work actually land.

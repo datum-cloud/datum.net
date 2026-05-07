@@ -32,7 +32,7 @@ Agents are useful here for drafting, researching prior art, and finding related 
 
 ## Branches
 
-Branch from `main`. Name branches in the format `type/short-description`:
+Branch from `main`. Name branches in the format `type/short-description`, using the same types as [Conventional Commits](https://www.conventionalcommits.org/):
 
 - `feat/` — new functionality
 - `fix/` — bug fixes
@@ -41,6 +41,18 @@ Branch from `main`. Name branches in the format `type/short-description`:
 - `refactor/` — code changes with no behavior change
 
 Keep branch names lowercase and hyphenated. Short is better than complete: `feat/oauth-pkce` not `feat/add-pkce-support-to-oauth-login-flow`.
+
+## Commits
+
+Follow the [Conventional Commits](https://www.conventionalcommits.org/) standard for commit messages: `type(scope): description`. The same types apply as above. Scope is optional but helpful when the repo covers multiple areas.
+
+```
+feat(auth): add PKCE support to OAuth login flow
+fix(billing): correct proration calculation on mid-cycle upgrades
+docs(api): add rate limiting section to reference
+```
+
+A good commit message completes the sentence "if applied, this commit will…" Keep the description under 72 characters. Use the commit body for the *why* if it isn't obvious from the diff.
 
 ## Pull requests
 

@@ -302,6 +302,39 @@ datumctl delete httpproxy <name>
 
 ---
 
+## Agent Skills
+
+Datum maintains a [skills repository](https://github.com/datum-cloud/skills) — self-contained instruction sets that teach coding agents (Claude Code, Codex, Cursor, and others) how to interact with Datum Cloud APIs and infrastructure primitives.
+
+### Installation
+
+**Claude Code (plugin marketplace):**
+\`\`\`
+/plugin marketplace add datum-cloud/skills
+\`\`\`
+
+**npx skills CLI:**
+\`\`\`bash
+npx skills add https://github.com/datum-cloud/skills
+\`\`\`
+
+**Cursor:** Add via remote rule settings (point to \`https://github.com/datum-cloud/skills\`).
+
+### Available Skills
+
+| Skill | Purpose |
+|-------|---------|
+| \`ai-edge\` | Manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
+| \`client-traffic\` | Configure how edge gateways accept client connections — TLS termination, mTLS, HTTP/2, HTTP/3, timeouts, connection limits, real IP detection |
+| \`dns\` | Manage DNS zones and record sets (A, AAAA, CNAME, MX, TXT, ALIAS, CAA, SRV, SVCB, HTTPS, TLSA, etc.) |
+| \`domains\` | Attach and verify domain resources within a project |
+| \`httproute\` | Define HTTP routing rules — path/header/method matching, traffic splitting (canary/A/B/blue-green), redirects, URL rewrites, header manipulation, traffic mirroring |
+| \`metrics-export\` | Configure metrics export pipelines to Grafana Cloud and other observability platforms via Prometheus remote write |
+
+Each skill follows a consistent pattern: list/describe existing resources, create from YAML, apply idempotently, preview before applying, delete safely, and check permissions before acting.
+
+---
+
 ## Further Reading
 
 - Full documentation index: https://www.datum.net/docs/llms.txt

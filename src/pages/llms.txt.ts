@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
-import { fetchStrapiArticles } from '@libs/strapi';
 
 // Note: handbook entries intentionally excluded — internal company ops content
 // is not relevant to AI agents consuming platform documentation.
@@ -34,27 +33,14 @@ export const GET: APIRoute = async () => {
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }
 
-    // Get all blog posts from Strapi sorted by date (newest first)
-    const strapiArticles = await fetchStrapiArticles();
-    const sortedPosts = strapiArticles.sort((a, b) => {
-      const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
-      const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
-      return dateB - dateA;
-    });
-
-    llmsContent += `\n## Blog\n\n`;
-
-    for (const post of sortedPosts.slice(0, 10)) {
-      const description = post.description || 'No description available';
-      const postUrl = buildUrl(post.slug, 'blog');
-      llmsContent += `- [${post.title}](${postUrl}) - ${description}\n`;
-    }
-
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
 
     llmsContent += `\n## MCP\n\n`;
     llmsContent += `- [Datum Docs MCP](${siteUrl}/docs/mcp) - MCP server for AI agents to search and read Datum documentation (JSON-RPC 2.0 over SSE). Tools: \`search_datum_cloud_docs\`, \`query_docs_filesystem_datum_cloud_docs\`.\n`;
+
+    llmsContent += `\n## Skills\n\n`;
+    llmsContent += `- [Datum Cloud Skills](https://github.com/datum-cloud/skills) - Agent skills for working with Datum Cloud APIs and infrastructure primitives. Install via \`/plugin marketplace add datum-cloud/skills\` (Claude Code), \`npx skills add https://github.com/datum-cloud/skills\` (npx), or remote rule settings (Cursor). Available: ai-edge, client-traffic, dns, domains, httproute, metrics-export.\n`;
 
     llmsContent += `\n## Optional\n\n`;
     llmsContent += `- Full site content at ${siteUrl}/llms-full.txt\n`;

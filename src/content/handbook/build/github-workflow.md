@@ -18,7 +18,7 @@ At Datum we operate by a principle called [ABCD — Always Be Connecting Dots](h
 
 GitHub is where those connections should be recorded. Not as an audit trail, but as the actual medium of the work. An agent can scan the queue, draft the boilerplate, surface the context, and check the implementation. Your job is to find the dots worth connecting.
 
-<h3>Issues</h3>
+## Issues
 
 An issue is a hypothesis before it's a task. The most valuable thing you can do before implementation starts is ask: *What is this assuming? Who else would have an opinion if they knew about it?*
 
@@ -26,13 +26,13 @@ Those questions are dot-connecting in practice. An issue that captures a technic
 
 Agents are good at drafting issues, researching prior art, and surfacing related work. What they can't do is know that the framing proposed here conflicts with a conversation that happened last week in a customer call, or that the assumption embedded in the design is something the platform team has already decided to move away from. That connection is yours to make.
 
-<h3>Pull requests</h3>
+## Pull requests
 
 A PR is a decision surface. The description is how you make your assumptions legible — not just what changed, but what you believed to be true when you made those choices. That's the raw material for dot-connecting by the reviewer.
 
 Use your agent to draft the boilerplate and summarize the diff. Then ask yourself: *What am I assuming here that someone else might challenge? What does this touch outside of this codebase?* Say it in the description. That's the invitation for the conversation worth having.
 
-<h3>Code review</h3>
+## Code review
 
 The code is probably fine. An agent can verify correctness, flag edge cases, and check conventions faster and more thoroughly than a human skimming a diff. That's not where your time belongs in a review.
 
@@ -42,7 +42,7 @@ This is ABCD applied to engineering: you're not just reviewing code, you're aski
 
 To keep the review queue from becoming invisible, take a couple of hours in your week and hand the scanning to your agent: *"Find all the open PRs across datum-cloud and milo-os that need a reviewer — tell me the 3 highest value ones for me to look at right now."* Then spend your time on the conversation, not the queue management.
 
-<h3>Raising the signal</h3>
+## Raising the signal
 
 The failure mode isn't bad code. It's dots collected but never connected — decisions made by default inside implementation choices that looked routine. An assumption baked into a data model. A dependency added without a conversation. Scope that quietly expanded because nobody connected it to the roadmap.
 
@@ -50,7 +50,7 @@ When you find those in a review, surface them. Not as a blocking code comment, b
 
 An agent can help you find where the signal has gone quiet: *"Are there open PRs or issues in this repo where discussion has stalled, or where there are unresolved questions that nobody has answered?"* Stale discussions are usually decisions that got deferred. They're worth a nudge.
 
-<h3>Milestones and releases</h3>
+## Milestones and releases
 
 We ship on a [monthly release cadence](/handbook/operate/rhythms/). The interesting question at each milestone review isn't "what's done?" but "what did we assume going into this that turned out to be wrong, and who should know about it?"
 

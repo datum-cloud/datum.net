@@ -20,14 +20,24 @@
       "avatarUrl": "tony-perez.jpg"
     },
     {
-      "name": "Rob May",
-      "title": "CEO & Co-Founder of Neurometric",
-      "avatarUrl": "rob-may.jpg"
+      "name": "Alexander Petrovskiy",
+      "title": "Senior Product Manager at NVIDIA for DPU and DOCA (Datacenter on a Chip) products",
+      "avatarUrl": "alexander-petrovskiy.jpg"
     },
     {
-      "name": "Varun Talwar",
-      "title": "Co-Founder of Tetrate",
-      "avatarUrl": "varun-talwar.jpg"
+      "name": "David Wang",
+      "title": "Head of Product, Marketing and Customer Success at Tetrate",
+      "avatarUrl": "david-wang.jpg"
+    },
+    {
+      "name": "Erica Hughberg",
+      "title": "Technical leader, software engineer, and community advocate at Tetrate",
+      "avatarUrl": "erica-hughberg.jpg"
+    },
+    {
+      "name": "Alexa Griffith",
+      "title": "Senior Software Engineer building AI platforms at Red Hat",
+      "avatarUrl": "alexa-griffith.jpg"
     }
   ]
 }

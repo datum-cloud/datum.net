@@ -18,25 +18,40 @@ We define rocks as the critical things we prioritize (at the expense of other th
 
 A single person on the leadership team is accountable for each rock. While there is plenty of good debate about responsibility vs accountability, we prefer accountability in this context. Essentially, if you “own” a particular rock or metric, you are making a pledge to your colleagues that you will do what it takes (including asking for help, delegating key tasks, making hard trade-offs, etc) to get it done.    
 
-For Q1 2026 we’re focused on six big rocks, as well as a zillion pebbles and plenty of sand. Please note, we’ve slightly sanitized these
+# Q2 2026 Rocks
+For this quarter we’re focused on the following major initiatives (as well as plenty of pebbles and sand). Please note, we’ve slightly sanitized these for public consumption.
 
-## AI CDN Started with Roadmap (Zac)
-We will know this is done when we have started a formal engagement with a strategic partner, have an agreed technical/business roadmap, and initial machines deployed.
+## Design Win Partners Formally Engaged (Manish)
+We will know this is done when 2–3 design win partners are formally engaged with a defined use case, have access to Datum infrastructure, an active technical relationship in progress, and we have presented to 10+ qualified prospects to build the pipeline.
 
-## One “design win” partner committed (Manish)
-We will know this is done when we have a formal commitment to work with a magnetic partner (e.g. data, security, AI infrastructure) to release a capability in Q2 that is significant to Datum, provides validation in the market, and includes shared customers.
+## Performance Benchmarks Published (Drew)
+We will know this is done when each core Datum product (AI Edge, Inference, Compute, Galactic VPC) has a publicly accessible benchmark or test harness showing measurable performance and/or cost advantages versus a named alternative — with reproducible methodology, real numbers, and a place to find them (docs, blog post, or benchmark page). 
 
-## Hire and onboard the right engineers in Q1 (Drew)
-We know this will be done when we have 2+ new industry-leading engineers meaningfully contributing.
+## Datum Compute Live (Drew)
+We will know this is done when Datum Compute is live in production with real users running workloads, as defined by the acceptance criteria in [#682](https://github.com/datum-cloud/enhancements/issues/682).
 
-## Datum Cloud is live with 100+ active users (Drew)
-We know this will be done when we have 100+ users who are touching our platform every day with production workload (DNS, Tunnels, etc). 
+## AI Services Layer Live (Zac)
+We will know this is done when AI Edge (with top Built-on-Envoy extensions) and Agent Router are both live and accessible to users, as defined in [#610](https://github.com/datum-cloud/enhancements/issues/610).
 
-## Updated platform and product vision (Jacob)
-We will know this is done when we have a strategic, agreed-upon vision for releasing distinct products and features in a scalable way.
+## Galactic VPC Live (Drew)
+We will know this is done when Galactic VPC is live in production and users can provision and operate a VPC, as defined in [#594](https://github.com/datum-cloud/enhancements/issues/594).
 
-## Features & use cases in website and decks (Jacob)
-We will know this is done when our website includes conversion-oriented feature pages and 3-5 use cases, and our various decks have been refreshed.
+## Hardware & Backbone Ready (Drew)
+We will know this is done when Datum's new hardware stack and expanded global network backbone are deployed, operational, and capable of authentically supporting design win partner workloads.
 
-## Trust Center ready for implementation (Steve)
-We will know this is done when Milo’s per-org trust center feature (including compliance, DPA, agreements, etc) is designed, spec’d, and ready for implementation on Datum Cloud in Q2
+## Alt Cloud Accelerator Launched (Jacob)
+We will know this is done when the partners are secured, the program is publicly announced, the application process is live, and the first cohort of applicants can apply.
+
+## Developer Pipeline Activated (Jacob)
+We will know this is done when Datum has meaningfully grown top-of-funnel developer mindshare across key communities, measured by 500+ new users on the platform. 
+
+# Previous Rocks
+For context and history buffs, here are the rocks we worked on during Q1 2026:
+
+- AI CDN Started with Roadmap (Zac)
+- One “design win” partner committed (Manish)
+- Hire and onboard the right engineers in Q1 (Drew)
+- Datum Cloud is live with 100+ active users (Drew)
+- Updated platform and product vision (Jacob)
+- Features & use cases in website and decks (Jacob)
+- Trust Center ready for implementation (Steve)

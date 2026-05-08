@@ -1,0 +1,40 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://www.datum.net",
+      "service-doc": [
+        {
+          "href": "https://www.datum.net/docs/",
+          "type": "text/html"
+        }
+      ],
+      "api-catalog": [
+        {
+          "href": "https://www.datum.net/.well-known/api-catalog",
+          "type": "application/linkset+json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://api.datum.net",
+      "service-desc": [
+        {
+          "href": "https://www.datum.net/docs/api/reference/",
+          "type": "text/html"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://www.datum.net/docs/",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://www.datumstatus.net",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}

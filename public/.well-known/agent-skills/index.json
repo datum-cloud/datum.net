@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "datum-docs-search",
+      "type": "skill-md",
+      "description": "Search and retrieve Datum network cloud documentation, API references, and developer guides",
+      "url": "https://www.datum.net/.well-known/agent-skills/datum-docs/SKILL.md",
+      "digest": "sha256:58ae49b044760e924bc64b385f4e97e2ffb51fdcb8a444abfb255ada0cf4805f"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "resource": "https://api.datum.net",
+  "authorization_servers": [
+    "https://auth.datum.net"
+  ],
+  "scopes_supported": [
+    "openid",
+    "profile",
+    "email"
+  ]
+}

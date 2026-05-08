@@ -56,6 +56,34 @@ const handbookMeta = {
     ...meta?.og,
   },
 };
+
+// BreadcrumbList — derive from slug segments (e.g. "about/model" → Home > Handbook > About > title)
+const slugParts = (slug ?? '').split('/').filter(Boolean);
+const breadcrumbItems: { '@type': 'ListItem'; position: number; name: string; item: string }[] = [
+  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.datum.net/' },
+  { '@type': 'ListItem', position: 2, name: 'Handbook', item: 'https://www.datum.net/handbook/' },
+];
+if (slugParts.length > 1) {
+  const categoryName = slugParts[0].charAt(0).toUpperCase() + slugParts[0].slice(1);
+  breadcrumbItems.push({
+    '@type': 'ListItem',
+    position: 3,
+    name: categoryName,
+    item: `https://www.datum.net/handbook/${slugParts[0]}/`,
+  });
+}
+breadcrumbItems.push({
+  '@type': 'ListItem',
+  position: breadcrumbItems.length + 1,
+  name: title,
+  item: `https://www.datum.net/handbook/${slug}/`,
+});
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+};
 ---
 
 <Layout
@@ -63,6 +91,7 @@ const handbookMeta = {
   description={description}
   bodyClass={`page-handbook page-handbook--${slug}`}
   meta={handbookMeta}
+  jsonLd={breadcrumbJsonLd}
 >
   <section class="datum-container">
     <Hero class="light linear-gradient-light" title="Handbook" />

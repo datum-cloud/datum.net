@@ -122,7 +122,8 @@
         { "text": "Handbook", "href": "/handbook/" },
         { "text": "Careers", "href": "/careers/", "label": "New" },
         { "text": "Events", "href": "/events/" },
-        { "text": "Brand Assets", "href": "/brand/" }
+        { "text": "Brand Assets", "href": "/brand/" },
+        { "text": "Contact", "href": "/contact/" }
       ]
     },
     {
@@ -130,7 +131,9 @@
       "items": [
         { "text": "Terms", "href": "/legal/terms/" },
         { "text": "Privacy", "href": "/legal/privacy/" },
-        { "text": "AUP", "href": "/legal/aup/" }
+        { "text": "AUP", "href": "/legal/aup/" },
+        { "text": "CST", "href": "/legal/service-country-specific-terms/" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors/" }
       ]
     }
   ],
@@ -188,6 +191,7 @@
         { "text": "Terms of Service", "href": "/legal/terms/" },
         { "text": "Privacy Policy", "href": "/legal/privacy/" },
         { "text": "AUP", "href": "/legal/aup/" },
+        { "text": "Sub-Processors", "href": "/legal/subprocessors/" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

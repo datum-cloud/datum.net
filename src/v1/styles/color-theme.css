@@ -1,3 +1,15 @@
+/*
+ * Dark mode strategy:
+ *   - Global theming uses [data-theme='dark'] on the <html> element.
+ *     This is wired in Layout.astro via the `dataTheme` prop but is currently
+ *     unused by pages (dataTheme defaults to '').
+ *   - Section-level dark backgrounds use the `.dark` class on individual sections
+ *     (e.g. <Hero class="dark" />) — this is the active pattern on most routes.
+ *
+ * To enable global dark mode, pass dataTheme="dark" to <Layout />.
+ * To add new dark-section styles, use .section.dark or [data-theme='dark'] as appropriate.
+ * system prefers-color-scheme dark is intentionally disabled (see commented block below).
+ */
 @layer base {
   :root {
     --color-borderpanel: var(--color-glacier-mist-900);

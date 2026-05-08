@@ -1,5 +1,13 @@
 import { site } from 'astro:config/client';
 
+// Strip HTML tags from a string (for use in plain-text llms.txt output)
+export const stripHtml = (text: string): string => {
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 // Function to extract the frontmatter as text
 export const extractFrontmatter = (content: string | undefined): string => {
   if (!content) return '';

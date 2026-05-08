@@ -29,7 +29,7 @@ const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
 
 // Build ordered side nav (matching design order)
-const navOrder = ['terms', 'privacy', 'aup', 'dpa', 'subprocessors'];
+const navOrder = ['terms', 'privacy', 'aup', 'service-country-specific-terms', 'subprocessors'];
 const sortedLegal = [...allLegal].sort((a, b) => {
   const ai = navOrder.indexOf(a.id);
   const bi = navOrder.indexOf(b.id);
@@ -51,7 +51,7 @@ const sortedLegal = [...allLegal].sort((a, b) => {
       title="Privacy Policies and Security Practices"
     />
 
-    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+    <div class="section--block section--block--small-pad bg-glacier-mist-700">
       <div class="max-width">
         <div class="legal-layout">
           <!-- Side Nav -->

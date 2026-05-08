@@ -6,11 +6,8 @@
 import { Cache } from '@libs/cache';
 import type { StrapiRoadmap, StrapiRoadmapsResponse } from '../../types/strapi';
 
-const STRAPI_URL =
-  import.meta.env?.STRAPI_URL ||
-  process.env.STRAPI_URL ||
-  'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = import.meta.env?.STRAPI_TOKEN || process.env.STRAPI_TOKEN || '';
+const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
+const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
 const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
 const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
 

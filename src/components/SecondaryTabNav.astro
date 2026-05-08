@@ -1,6 +1,6 @@
 ---
 // src/components/SecondaryTabNav.astro
-// Pill-style secondary tabs; Alpine dropdown on small screens
+// Segmented secondary tabs (Figma Temp/Tablist); Alpine dropdown on small screens
 // Styles: import components-secondary-tab-nav.css from the page stylesheet (after base.css), e.g. page-event-series.css
 
 import Icon from '@components/Icon.astro';
@@ -63,6 +63,7 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
       x-show="open"
       @click.outside="open = false"
       x-cloak
+      style="display: none"
       role="listbox"
       aria-labelledby={mobileTriggerId}
     >
@@ -92,7 +93,7 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
 
   <ul class="secondary-tab-nav__list">
     {
-      items.map((item, index) => (
+      items.map((item) => (
         <li>
           <a
             href={item.href}
@@ -100,8 +101,6 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
               'secondary-tab-nav__tab',
               {
                 'secondary-tab-nav__tab--active': isItemActive(item, currentPath),
-                'secondary-tab-nav__tab--first': index === 0,
-                'secondary-tab-nav__tab--last': index === items.length - 1,
               },
             ]}
             aria-current={isItemActive(item, currentPath) ? 'page' : undefined}

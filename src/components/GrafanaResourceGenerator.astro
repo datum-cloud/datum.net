@@ -8,14 +8,14 @@
   <h4 class="grafana-resource-generator__title">Datum Resource Generator</h4>
 
   <div class="grafana-resource-generator__field">
-    <label for="prometheusConfig" class="grafana-resource-generator__label"
-      >Prometheus Configuration YAML:</label
-    >
-    <textarea
-      id="prometheusConfig"
-      rows="8"
-      placeholder="Paste your Prometheus remote_write configuration here..."
-      class="grafana-resource-generator__textarea"></textarea>
+    <label class="grafana-resource-generator__label">
+      Prometheus Configuration YAML:
+      <textarea
+        id="prometheusConfig"
+        rows="8"
+        placeholder="Paste your Prometheus remote_write configuration here..."
+        class="grafana-resource-generator__textarea"></textarea>
+    </label>
   </div>
 
   <div id="configWarning" class="grafana-resource-generator__warning" style="display: none">
@@ -26,13 +26,15 @@
     <div class="grafana-resource-generator__section">
       <h4 class="grafana-resource-generator__section-title">Secret</h4>
       <div class="grafana-resource-generator__field">
-        <label for="secretName" class="grafana-resource-generator__label">Name:</label>
-        <input
-          type="text"
-          id="secretName"
-          placeholder="grafana-cloud-credentials"
-          class="grafana-resource-generator__input"
-        />
+        <label class="grafana-resource-generator__label">
+          Name:
+          <input
+            type="text"
+            id="secretName"
+            placeholder="grafana-cloud-credentials"
+            class="grafana-resource-generator__input"
+          />
+        </label>
       </div>
       <p class="grafana-resource-generator__help">
         Provide your Prometheus configuration above to generate the Secret manifest
@@ -42,13 +44,15 @@
     <div class="grafana-resource-generator__section">
       <h4 class="grafana-resource-generator__section-title">ExportPolicy</h4>
       <div class="grafana-resource-generator__field">
-        <label for="exportPolicyName" class="grafana-resource-generator__label">Name:</label>
-        <input
-          type="text"
-          id="exportPolicyName"
-          placeholder="grafana-cloud-export"
-          class="grafana-resource-generator__input"
-        />
+        <label class="grafana-resource-generator__label">
+          Name:
+          <input
+            type="text"
+            id="exportPolicyName"
+            placeholder="grafana-cloud-export"
+            class="grafana-resource-generator__input"
+          />
+        </label>
       </div>
     </div>
   </div>
@@ -403,6 +407,11 @@ spec:
     font-size: 0.875rem;
     font-weight: 500;
     color: #374151;
+  }
+
+  .grafana-resource-generator__label .grafana-resource-generator__textarea,
+  .grafana-resource-generator__label .grafana-resource-generator__input {
+    margin-top: 0.25rem;
   }
 
   .grafana-resource-generator__textarea {

@@ -163,7 +163,6 @@ const { id = 'logo-dropdown', class: className = '', triggerElementId = 'logo-li
 
           // Get the outer HTML of the SVG
           const svgText = svg.outerHTML;
-          console.log('SVG content length:', svgText.length);
 
           // Copy to clipboard using the reliable execCommand method
           let copySuccess = false;
@@ -205,7 +204,6 @@ const { id = 'logo-dropdown', class: className = '', triggerElementId = 'logo-li
           }
 
           if (copySuccess) {
-            console.log('Copy successful');
             button.textContent = 'Copied!';
             setTimeout(() => {
               button.textContent = originalText;
@@ -238,7 +236,6 @@ const { id = 'logo-dropdown', class: className = '', triggerElementId = 'logo-li
 
           // Get the outer HTML of the SVG
           const svgText = svg.outerHTML;
-          console.log('SVG content length:', svgText.length);
 
           // Convert SVG text to a blob
           const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });

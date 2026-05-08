@@ -12,9 +12,10 @@ import node from '@astrojs/node';
 import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
 
-import sitemap from './src/plugins/sitemap.js';
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
+import rehypeExpressiveCode from 'rehype-expressive-code';
+import { expressiveCodeRehypeOptions } from './src/utils/expressiveCodeOptions.ts';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
@@ -86,6 +87,11 @@ export default defineConfig({
   }),
   markdown: {
     remarkPlugins: [remarkModifiedTime],
+    // Astro runs Shiki before user `rehypePlugins` on MDX; that emits `astro-code` and prevents
+    // expressive-code from taking over. Disable built-in highlighting so fenced blocks stay
+    // `pre > code` until `rehype-expressive-code` runs (same stack as `renderMarkdownWithExpressiveCode`).
+    syntaxHighlight: false,
+    rehypePlugins: [[rehypeExpressiveCode, expressiveCodeRehypeOptions]],
   },
   image: {
     layout: 'constrained',
@@ -107,17 +113,6 @@ export default defineConfig({
     mermaid({
       theme: 'forest',
       autoTheme: true,
-    }),
-    sitemap({
-      exclude: [
-        '404',
-        'auth/callback',
-        'auth/login',
-        'api/info',
-        'waitlist',
-        'authors/jacob-smith/1',
-        'authors/zac-smith/1',
-      ],
     }),
     playformCompress({
       CSS: true,

@@ -1,0 +1,89 @@
+---
+// src/components/FooterAiAgents.astro
+import Icon from '@components/Icon.astro';
+import claudeSvg from '@v1/assets/icons/ai/claude.svg?raw';
+import chatgptSvg from '@v1/assets/icons/ai/chatgpt.svg?raw';
+import geminiSvg from '@v1/assets/icons/ai/gemini.svg?raw';
+import perplexitySvg from '@v1/assets/icons/ai/perplexity.svg?raw';
+import promptRaw from '@data/ai-prompt.md?raw';
+
+const encodedPrompt = encodeURIComponent(promptRaw);
+
+const aiTools = [
+  {
+    name: 'Claude',
+    icon: claudeSvg,
+    href: `https://claude.ai/new?q=${encodedPrompt}`,
+  },
+  {
+    name: 'ChatGPT',
+    icon: chatgptSvg,
+    href: `https://chatgpt.com/?q=${encodedPrompt}`,
+  },
+  {
+    name: 'Gemini',
+    icon: geminiSvg,
+    // gemini.google.com does not natively support URL prompt prefilling;
+    // using AI Studio which supports ?prompt= natively
+    href: `https://aistudio.google.com/prompts/new_chat?prompt=${encodedPrompt}`,
+  },
+  {
+    name: 'Perplexity',
+    icon: perplexitySvg,
+    href: `https://www.perplexity.ai/search?q=${encodedPrompt}`,
+  },
+];
+---
+
+<div class="bg-midnight-fjord">
+  <div class="max-width">
+    <div
+      class="border-app---dark---utility-2 flex flex-col gap-5 border-t py-7 pb-12 md:flex-row md:items-center md:justify-between md:pb-16 lg:pb-20"
+    >
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+        <div class="flex shrink-0 flex-col gap-0.5">
+          <p class="datum-text-sm text-white">
+            Create a <strong class="font-semibold">summary of Datum</strong>
+          </p>
+          <p class="datum-text-xs text-white/60">Open a pre-filled prompt in your assistant</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          {
+            aiTools.map((tool) => (
+              <a
+                href={tool.href}
+                class="border-app---dark---utility-2 hover:border-app---dark---utility-3 flex h-9 items-center gap-2 rounded-md border px-3.5 text-xs font-medium whitespace-nowrap text-white transition-colors hover:bg-white/5"
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open ${tool.name} with a summary prompt`}
+              >
+                <span
+                  class="flex size-4 shrink-0 items-center justify-center [&_svg]:size-full"
+                  set:html={tool.icon}
+                />
+                <span>{tool.name}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <a
+        href="https://agents.datum.net"
+        class="datum-text-sm flex shrink-0 items-center gap-3 whitespace-nowrap text-white transition-opacity hover:opacity-80"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span
+          >Agents, use <strong class="font-semibold underline underline-offset-2"
+            >Agents.Datum.net</strong
+          ></span
+        >
+        <Icon
+          name="external-link"
+          size="md"
+          class="stroke-1.5 text-app---dark---utility-3 shrink-0"
+        />
+      </a>
+    </div>
+  </div>
+</div>

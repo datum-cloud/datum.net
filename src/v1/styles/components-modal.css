@@ -217,7 +217,11 @@
   }
 
   .newsletter-modal-consent {
-    @apply flex items-center gap-3.5;
+    @apply flex items-start gap-3.5;
+  }
+
+  .newsletter-modal-consent > label {
+    @apply flex cursor-pointer items-center gap-3.5;
   }
 
   .newsletter-modal-checkbox {

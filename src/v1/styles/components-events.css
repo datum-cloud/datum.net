@@ -458,6 +458,7 @@
   /* Overlay description (markdown); long URLs / tokens must wrap */
   .event-series-card__body-md {
     @apply text-midnight-fjord min-w-0 break-words;
+    @apply prose-li:text-pretty;
   }
 
   .event-series-card__section {

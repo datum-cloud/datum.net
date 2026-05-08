@@ -28,6 +28,16 @@
     @apply overflow-x-clip;
   }
 
+  /* Skip-to-content link for keyboard and screen reader accessibility */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only;
+    @apply focus:fixed focus:top-4 focus:left-4 focus:z-[9999];
+    @apply focus:bg-midnight-fjord focus:text-white;
+    @apply focus:rounded-md focus:px-4 focus:py-2;
+    @apply focus:ring-2 focus:ring-white focus:outline-none;
+    @apply font-alliance text-sm font-medium;
+  }
+
   .prose h1,
   .prose h2,
   .prose h3,

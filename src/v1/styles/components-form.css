@@ -24,7 +24,7 @@
   }
 
   .form--label {
-    @apply font-alliance text-left text-sm leading-[1.45] font-semibold text-white md:text-[15px];
+    @apply font-alliance flex flex-col items-stretch gap-2 text-left text-sm leading-[1.45] font-semibold text-white md:gap-[10px] md:text-[15px];
   }
 
   .form--input {
@@ -48,7 +48,7 @@
   }
 
   .form--checkbox-label {
-    @apply font-alliance text-left text-sm leading-[1.45] font-normal text-white md:text-[16px];
+    @apply font-alliance flex cursor-pointer flex-row items-center gap-3 text-left text-sm leading-[1.45] font-normal text-white md:h-[23px] md:gap-3 md:text-[16px];
   }
 
   .form--message {

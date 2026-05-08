@@ -33,7 +33,7 @@
     --text-xs-letter-spacing: var(--xl);
 
     --text-sm-font-family: var(--alliance);
-    --text-sm-font-size: var(--10px);
+    --text-sm-font-size: var(--12px);
     --text-sm-line-height: var(--14px);
     --text-sm-letter-spacing: var(--xl);
 
@@ -132,7 +132,7 @@
     --text-longform-intro-paragraph-spacing: var(--16px);
     --text-longform-intro-list-spacing: var(--10px);
   }
-
+  /* sm */
   @media (width >= 40rem) {
     :root {
       --breakpoint---internal: 21rem;
@@ -168,7 +168,7 @@
       --text-xs-letter-spacing: var(--xl);
 
       --text-sm-font-family: var(--alliance);
-      --text-sm-font-size: var(--10px);
+      --text-sm-font-size: var(--12px);
       --text-sm-line-height: var(--14px);
       --text-sm-letter-spacing: var(--xl);
 
@@ -268,7 +268,7 @@
       --text-longform-intro-list-spacing: var(--10px);
     }
   }
-
+  /* md */
   @media (width >= 48rem) {
     :root {
       --breakpoint---internal: 45.25rem;
@@ -304,7 +304,7 @@
       --text-xs-letter-spacing: var(--xl);
 
       --text-sm-font-family: var(--alliance);
-      --text-sm-font-size: var(--10px);
+      --text-sm-font-size: var(--13px);
       --text-sm-line-height: var(--14px);
       --text-sm-letter-spacing: var(--xl);
 
@@ -404,7 +404,7 @@
       --text-longform-intro-list-spacing: var(--10px);
     }
   }
-
+  /* lg */
   @media (width >= 64rem) {
     :root {
       --breakpoint---internal: 61rem;
@@ -440,7 +440,7 @@
       --text-xs-letter-spacing: var(--xl);
 
       --text-sm-font-family: var(--alliance);
-      --text-sm-font-size: var(--12px);
+      --text-sm-font-size: var(--13px);
       --text-sm-line-height: var(--18px);
       --text-sm-letter-spacing: var(--xl);
 
@@ -540,7 +540,7 @@
       --text-longform-intro-list-spacing: var(--12px);
     }
   }
-
+  /* xl */
   @media (width >= 80rem) {
     :root {
       --breakpoint---internal: 76.5rem;

@@ -68,28 +68,28 @@ npm run build
 npm run dev
 ```
 
-For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
+For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md).
 
 ### Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                                 |
-| :------------------------ | :----------------------------------------------------- |
-| `npm install`             | Installs dependencies                                  |
-| `npm run dev`             | Starts local dev server at `localhost:4321`            |
-| `npm run build`           | Build your production site to `./dist/`                |
-| `npm run preview`         | Preview your build locally, before deploying           |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`       |
-| `npm run astro -- --help` | Get help using the Astro CLI                           |
-| `npm run lint`            | Check for linting and formatting issues                |
-| `npm run lint:fix`        | Automatically fix linting and formatting issues        |
-| `npm run lint:md`         | Check for markdown linting issues                      |
-| `npm run lint:md:fix`     | Automatically fix markdown linting issues              |
-| `npm run format`          | Format all files using Prettier                        |
-| `npm run format:check`    | Check if files are formatted correctly                 |
-| `npm run typecheck`       | Astro typescript check                                 |
-| `npm run precommit`       | Run all checks (typecheck, lint, format) before commit |
+| Command                   | Action                                                                            |
+| :------------------------ | :-------------------------------------------------------------------------------- |
+| `npm install`             | Installs dependencies                                                             |
+| `npm run dev`             | Starts local dev server at `localhost:4321`                                       |
+| `npm run build`           | Build your production site to `./dist/`                                           |
+| `npm run preview`         | Preview your build locally, before deploying                                      |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                  |
+| `npm run astro -- --help` | Get help using the Astro CLI                                                      |
+| `npm run lint`            | Check for linting and formatting issues                                           |
+| `npm run lint:fix`        | Automatically fix linting and formatting issues                                   |
+| `npm run lint:md`         | Check for markdown linting issues                                                 |
+| `npm run lint:md:fix`     | Automatically fix markdown linting issues                                         |
+| `npm run format`          | Format all files using Prettier                                                   |
+| `npm run format:check`    | Check if files are formatted correctly                                            |
+| `npm run typecheck`       | Astro typescript check                                                            |
+| `npm run precommit`       | Typecheck, ESLint, and markdown lint (Husky formats/lints staged files on commit) |
 
 ---
 
@@ -591,7 +591,7 @@ The setup uses a multi-stage Dockerfile:
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on our code of conduct, development setup, and the process for submitting pull requests.
+We welcome contributions! Please see our [Contributing Guide](./docs/CONTRIBUTING.md) for details on our code of conduct, development setup, and the process for submitting pull requests.
 
 ---
 
@@ -600,4 +600,4 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 - [Front Matter CMS Documentation](https://frontmatter.codes/docs)
 - [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
 - [Zod Schema Validation](https://zod.dev/)
-- [Project Content Structure](./CONTENT_STRUCTURE.md)
+- [Project Content Structure](./docs/CONTENT_STRUCTURE.md)

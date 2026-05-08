@@ -1,19 +1,20 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
-import { extractDescription, buildUrl } from '@utils/llmsUtils';
-import { fetchStrapiArticles } from '@libs/strapi';
+import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
+
+// Note: handbook entries intentionally excluded — internal company ops content
+// is not relevant to AI agents consuming platform documentation.
 
 export const GET: APIRoute = async () => {
   try {
     // Get project info
-    const projectName = 'Datum Cloud Network Solutions';
     const siteUrl = site;
 
     // Base structure for llms.txt
-    let llmsContent = `# ${projectName} Documentation\n\n`;
+    let llmsContent = `# Datum\n\n`;
     llmsContent += `## About\n\n`;
-    llmsContent += `Datum provides enterprise-grade cloud network solutions. This document contains structured information about our documentation and blog posts.\n\n`;
+    llmsContent += `> Datum is an open source network cloud for AI, founded in 2024 and backed by $13.6M from Amplify Partners, CRV, Encoded Ventures, Cervin Ventures, Ex/Ante, Step Function, and Vine Ventures. Built for AI-native developers and alternative cloud providers, Datum provides an Envoy-based AI Edge across 17+ global regions, QUIC-based secure tunnels (Connectors), authoritative DNS, and programmatic domain management — all with a forever-free Builder tier. Core platform licensed AGPLv3. Founded by Zac Smith (ex-Equinix, Packet) and Jacob Smith.\n\n`;
 
     // Get all pages sorted, excluding home/* pages
     const pages = await getCollection('pages');
@@ -24,67 +25,26 @@ export const GET: APIRoute = async () => {
 
     for (const page of sortedPages) {
       const description: string =
-        page.data.description || extractDescription(page.body, 'No description available');
+        page.data.meta?.description ||
+        page.data.description ||
+        extractDescription(page.body, 'No description available');
       const pageUrl = buildUrl(page.id);
-      llmsContent += `- [${page.data.title}](${pageUrl}) - ${description}\n`;
+      const pageTitle = stripHtml(page.data.title);
+      llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }
 
-    // Get all blog posts from Strapi sorted by date (newest first)
-    const strapiArticles = await fetchStrapiArticles();
-    const sortedPosts = strapiArticles.sort((a, b) => {
-      const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
-      const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
-      return dateB - dateA;
-    });
+    llmsContent += `\n## Docs\n\n`;
+    llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
 
-    llmsContent += `\n## Blog\n\n`;
+    llmsContent += `\n## MCP\n\n`;
+    llmsContent += `- [Datum Docs MCP](${siteUrl}/docs/mcp) - MCP server for AI agents to search and read Datum documentation (JSON-RPC 2.0 over SSE). Tools: \`search_datum_cloud_docs\`, \`query_docs_filesystem_datum_cloud_docs\`.\n`;
 
-    for (const post of sortedPosts) {
-      const description = post.description || 'No description available';
-      const postUrl = buildUrl(post.slug, 'blog');
-      llmsContent += `- [${post.title}](${postUrl}) - ${description}\n`;
-    }
+    llmsContent += `\n## Skills\n\n`;
+    llmsContent += `- [Datum Cloud Skills](https://github.com/datum-cloud/skills) - Agent skills for working with Datum Cloud APIs and infrastructure primitives. Install via \`/plugin marketplace add datum-cloud/skills\` (Claude Code), \`npx skills add https://github.com/datum-cloud/skills\` (npx), or remote rule settings (Cursor). Available: ai-edge, client-traffic, dns, domains, httproute, metrics-export.\n`;
 
-    // Get all handbook entries
-    const handbooks = await getCollection('handbooks', ({ data }) => !data.draft);
-
-    // Group handbooks by category
-    const handbookCategories: { [key: string]: typeof handbooks } = {};
-
-    handbooks.forEach((handbook) => {
-      const category = handbook.id.split('/')[0];
-      if (!handbookCategories[category]) {
-        handbookCategories[category] = [];
-      }
-      handbookCategories[category].push(handbook);
-    });
-
-    llmsContent += `\n## Handbook\n\n`;
-
-    // Add handbook entries by category
-    for (const category in handbookCategories) {
-      const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      llmsContent += `\n### ${categoryName}\n\n`;
-
-      // Sort by sidebar order if available
-      const sortedHandbooks = handbookCategories[category].sort((a, b) => {
-        const orderA = a.data.sidebar?.order || 999;
-        const orderB = b.data.sidebar?.order || 999;
-        return orderA - orderB;
-      });
-
-      for (const handbook of sortedHandbooks) {
-        const description =
-          handbook.data.description ||
-          extractDescription(handbook.body, 'No description available');
-        const handbookUrl = buildUrl(handbook.id, 'handbook');
-        llmsContent += `- [${handbook.data.title}](${handbookUrl}) - ${description}\n`;
-      }
-    }
-
-    llmsContent += `\n## API\n\n`;
-    llmsContent += `For API documentation, please refer to the following endpoints:\n`;
-    llmsContent += `- ${siteUrl}/api/* - API endpoints\n`;
+    llmsContent += `\n## Optional\n\n`;
+    llmsContent += `- Full site content at ${siteUrl}/llms-full.txt\n`;
+    llmsContent += `- Full documentation content at ${siteUrl}/docs/llms-full.txt\n`;
 
     // Return the response as plain text
     return new Response(llmsContent, {

@@ -1,0 +1,36 @@
+---
+// src/pages/500.astro
+import '@v1/styles/global.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Button from '@components/Button.astro';
+
+const title = 'Something went wrong';
+const description = 'An unexpected error occurred. Our team has been notified.';
+---
+
+<Layout title={title} description={description} bodyClass="page-500" noindex={true}>
+  <section class="datum-container">
+    <Hero class="light" title={title} />
+
+    <div class="section--block bg-glacier-mist-700 pb-14 md:pb-20 lg:pb-28">
+      <main class="mx-auto max-w-391 px-6">
+        <article class="prose prose-xl mx-auto text-center">
+          <p class="mb-4 text-lg">We're sorry — an unexpected error occurred on our end.</p>
+          <p class="mb-12 opacity-70">
+            If the problem persists, please <a href="/contact/">contact our team</a>.
+          </p>
+          <Button
+            text="Return to homepage"
+            href="/"
+            class="btn btn--alpha mr-0 mb-4 md:mr-1 md:mb-0"
+            icon={{ name: 'arrow-right', size: 'md' }}
+          />
+        </article>
+      </main>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

@@ -28,11 +28,6 @@ class Tabs extends HTMLElement {
     this.tabs.forEach((tab, i) => {
       tab.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('[Tabs] tab click', {
-          index: i,
-          label: tab.textContent?.trim(),
-          href: tab.getAttribute('href'),
-        });
         const currentTab = tablist.querySelector('[aria-selected="true"]');
         if (e.currentTarget !== currentTab) {
           this.switchTab(e.currentTarget as HTMLAnchorElement, i);

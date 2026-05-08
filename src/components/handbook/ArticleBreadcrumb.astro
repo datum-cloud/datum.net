@@ -141,11 +141,7 @@ handbooks.forEach((collection) => {
     if (categories) {
       const indexBySlug = categories?.findIndex((cat) => cat.slug === categorySlug);
       if (indexBySlug === -1 || indexBySlug === undefined) {
-        console.log(
-          'Category:%s not found in list. Available categories:%O',
-          categorySlug,
-          categories
-        );
+        console.warn('Category "%s" not found in sidebar list.', categorySlug);
         return;
       }
       if (items[indexBySlug] && items[indexBySlug].childs) {
@@ -173,12 +169,7 @@ handbooks.forEach((collection) => {
             ],
           };
         } catch (error) {
-          console.log(
-            'Error creating category for slug:%s with index:%d',
-            categorySlug,
-            indexBySlug,
-            error
-          );
+          console.error('Error creating sidebar category for slug "%s":', categorySlug, error);
         }
       }
     }

@@ -18,8 +18,8 @@
       "@hosts/*": ["./src/content/events/images/hosts/*"],
       "@guests/*": ["./src/content/events/images/guests/*"],
       "@data/*": ["./src/data/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@styles/*": ["./src/v1/styles/*"],
+      "@assets/*": ["./src/v1/assets/*"]
     },
     "plugins": [
       {

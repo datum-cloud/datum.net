@@ -53,6 +53,20 @@ const CONTENT_TYPES = {
 
 const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
 
+// RFC 8288 Link headers for agent discovery on all HTML responses
+const AGENT_LINK_HEADERS = [
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</docs/>; rel="service-doc"',
+  '</.well-known/openid-configuration>; rel="openid-configuration"',
+  '</.well-known/mcp/server-card.json>; rel="describedby"',
+].join(', ');
+
+// Content-type overrides for .well-known files that have no file extension
+const WELL_KNOWN_CONTENT_TYPES = {
+  '/.well-known/api-catalog': 'application/linkset+json',
+  '/.well-known/oauth-protected-resource': 'application/json',
+};
+
 // Redirect configuration with Cache-Control: no-cache
 const REDIRECTS = {
   '/product': { destination: '/features/', status: 302 },
@@ -142,10 +156,14 @@ const REDIRECTS = {
 };
 
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
+const AUTH_TARGET = 'https://auth.datum.net';
 
 // Reverse proxy routes: requests matching prefix are forwarded to the target host.
 // Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy
 const PROXY_ROUTES = [
+  // OAuth/OIDC discovery — proxy to the auth server so agents can discover auth endpoints
+  { prefix: '/.well-known/openid-configuration', target: AUTH_TARGET, cache: false },
+  { prefix: '/.well-known/oauth-authorization-server', target: AUTH_TARGET, cache: false },
   // Mintlify static assets — long-lived cache allowed
   { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
   // Core docs path
@@ -270,8 +288,9 @@ function serveCompressed(req, res, next) {
 
       if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
 
+      const brContentType = getContentType(url);
       res.writeHead(200, {
-        'Content-Type': getContentType(url),
+        'Content-Type': brContentType,
         'Content-Encoding': 'br',
         'Content-Length': statSync(brPath).size,
         ETag: etag,
@@ -279,6 +298,7 @@ function serveCompressed(req, res, next) {
         Vary: 'Accept-Encoding',
         'Cache-Control': cacheControl,
         'X-Cache': 'MISS',
+        ...(brContentType.includes('text/html') && { Link: AGENT_LINK_HEADERS }),
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -299,8 +319,9 @@ function serveCompressed(req, res, next) {
 
       if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
 
+      const gzContentType = getContentType(url);
       res.writeHead(200, {
-        'Content-Type': getContentType(url),
+        'Content-Type': gzContentType,
         'Content-Encoding': 'gzip',
         'Content-Length': statSync(gzPath).size,
         ETag: etag,
@@ -308,6 +329,7 @@ function serveCompressed(req, res, next) {
         Vary: 'Accept-Encoding',
         'Cache-Control': cacheControl,
         'X-Cache': 'MISS',
+        ...(gzContentType.includes('text/html') && { Link: AGENT_LINK_HEADERS }),
       });
       if (req.method === 'HEAD') {
         res.end();
@@ -416,6 +438,10 @@ function handleSSR(req, res) {
       h['Cache-Control'] = 'no-cache';
     }
 
+    if (ct.includes('text/html') && !h['Link']) {
+      h['Link'] = AGENT_LINK_HEADERS;
+    }
+
     return origWriteHead(statusCode, h);
   };
 
@@ -446,11 +472,71 @@ const server = createServer((req, res) => {
 
   const url = req.url.split('?')[0];
 
+  // Inject Link headers on every successful HTML response regardless of which handler
+  // serves it (sirv, serveCompressed, or Astro SSR). Patching writeHead here ensures
+  // the header is present even when sirv builds its own headers object internally.
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    const _origWriteHead = res.writeHead.bind(res);
+    res.writeHead = function (statusCode, headersOrMessage, headersArg) {
+      let h;
+      let msg;
+      if (typeof headersOrMessage === 'string') {
+        msg = headersOrMessage;
+        h = headersArg ? { ...headersArg } : {};
+      } else {
+        h = headersOrMessage ? { ...headersOrMessage } : {};
+      }
+      const ct = String(h['content-type'] || h['Content-Type'] || '');
+      if (statusCode === 200 && ct.includes('text/html') && !h['link'] && !h['Link']) {
+        h['Link'] = AGENT_LINK_HEADERS;
+      }
+      return msg !== undefined ? _origWriteHead(statusCode, msg, h) : _origWriteHead(statusCode, h);
+    };
+  }
+
   // Health check endpoints for Kubernetes probes
   if (url === '/healthz' || url === '/livez' || url === '/readyz') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('OK');
     return;
+  }
+
+  // Markdown content negotiation (RFC-style: return text/markdown when Accept: text/markdown)
+  if (
+    (req.method === 'GET' || req.method === 'HEAD') &&
+    req.headers.accept?.includes('text/markdown')
+  ) {
+    const mdUrl = url.endsWith('/') ? url + 'index.md' : url + '.md';
+    const mdPath = join(CLIENT_DIR, mdUrl);
+    if (existsSync(mdPath)) {
+      const stat = statSync(mdPath);
+      res.writeHead(200, {
+        'Content-Type': 'text/markdown; charset=utf-8',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Content-Length': stat.size,
+        Link: AGENT_LINK_HEADERS,
+      });
+      if (req.method === 'HEAD') {
+        res.end();
+      } else {
+        createReadStream(mdPath).pipe(res);
+      }
+      return;
+    }
+  }
+
+  // Serve .well-known files without extensions with correct content-type
+  if (WELL_KNOWN_CONTENT_TYPES[url]) {
+    const filePath = join(CLIENT_DIR, url);
+    if (existsSync(filePath)) {
+      res.writeHead(200, {
+        'Content-Type': WELL_KNOWN_CONTENT_TYPES[url],
+        'Cache-Control': 'public, max-age=3600',
+        'Access-Control-Allow-Origin': '*',
+      });
+      createReadStream(filePath).pipe(res);
+      return;
+    }
   }
 
   // Handle exact redirects with Cache-Control: no-cache

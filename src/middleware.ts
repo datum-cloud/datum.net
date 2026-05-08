@@ -6,6 +6,13 @@ const PROTECTED_ROUTES = [/^\/dev($|\/.*)/];
 
 const DOCS_PATH_PREFIX = /^\/docs(\/|$)/;
 
+const AGENT_LINK_HEADERS = [
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</docs/>; rel="service-doc"',
+  '</.well-known/openid-configuration>; rel="openid-configuration"',
+  '</.well-known/mcp/server-card.json>; rel="describedby"',
+].join(', ');
+
 const isProtected = (path: string): boolean => {
   return PROTECTED_ROUTES.some((pattern) => pattern.test(path));
 };
@@ -50,4 +57,18 @@ export const docsHeaders: MiddlewareHandler = async ({ url }, next) => {
   return mutableResponse;
 };
 
-export const onRequest = sequence(routeGuard, baseMiddleware, docsHeaders);
+// Inject RFC 8288 Link headers on all HTML responses for agent discovery.
+// In production, server.mjs also injects these for static files served by sirv;
+// this handler covers the dev server and any SSR-rendered routes.
+const agentDiscovery: MiddlewareHandler = async (_context, next) => {
+  const response = await next();
+  const ct = response.headers.get('content-type') || '';
+  if (!ct.includes('text/html')) return response;
+  const mutable = new Response(response.body, response);
+  if (!mutable.headers.has('Link')) {
+    mutable.headers.set('Link', AGENT_LINK_HEADERS);
+  }
+  return mutable;
+};
+
+export const onRequest = sequence(routeGuard, agentDiscovery, baseMiddleware, docsHeaders);

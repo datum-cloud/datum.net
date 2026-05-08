@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Crawl-delay: 10
+Content-Signal: ai-train=no, search=yes, ai-input=no
+
+Sitemap: https://www.datum.net/sitemap.xml

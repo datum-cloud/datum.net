@@ -75,7 +75,6 @@ const siteUrl = process.env.SITE_URL || import.meta.env.SITE_URL || 'https://www
 const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
-  server: { allowedHosts: ['tiger-debut-q7wcw.datumproxy.net'] },
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'always',
   output: 'static',

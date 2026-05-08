@@ -65,6 +65,8 @@ const AGENT_LINK_HEADERS = [
 const WELL_KNOWN_CONTENT_TYPES = {
   '/.well-known/api-catalog': 'application/linkset+json',
   '/.well-known/oauth-protected-resource': 'application/json',
+  '/.well-known/openid-configuration': 'application/json',
+  '/.well-known/oauth-authorization-server': 'application/json',
 };
 
 // Redirect configuration with Cache-Control: no-cache
@@ -161,9 +163,6 @@ const AUTH_TARGET = 'https://auth.datum.net';
 // Reverse proxy routes: requests matching prefix are forwarded to the target host.
 // Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy
 const PROXY_ROUTES = [
-  // OAuth/OIDC discovery — proxy to the auth server so agents can discover auth endpoints
-  { prefix: '/.well-known/openid-configuration', target: AUTH_TARGET, cache: false },
-  { prefix: '/.well-known/oauth-authorization-server', target: AUTH_TARGET, cache: false },
   // Mintlify static assets — long-lived cache allowed
   { prefix: '/mintlify-assets/_next/static', target: MINTLIFY_TARGET, cache: true },
   // Core docs path

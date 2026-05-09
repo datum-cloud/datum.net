@@ -4,15 +4,14 @@
 
 import Icon from '@components/Icon.astro';
 import type { AnnouncementProps } from '@/src/types/common';
-import { announcementConfig } from '@/src/config/announcement';
+import announcementData from '@data/announcement.json';
 
-// Use props if provided, otherwise fall back to config
 const {
-  show = announcementConfig.show !== undefined ? announcementConfig.show : true,
-  label = announcementConfig.label,
-  text = announcementConfig.text,
-  href = announcementConfig.href,
-  icon = announcementConfig.icon,
+  show = announcementData.show ?? true,
+  label = announcementData.label,
+  text = announcementData.text,
+  href = announcementData.href,
+  icon = announcementData.icon,
 } = Astro.props as AnnouncementProps;
 
 const announcementId = 'announcement';

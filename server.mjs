@@ -70,6 +70,7 @@ const WELL_KNOWN_CONTENT_TYPES = {
 };
 
 // Redirect configuration with Cache-Control: no-cache
+const AUTH_TARGET = 'https://auth.datum.net';
 const REDIRECTS = {
   '/product': { destination: '/features/', status: 302 },
   '/feature/': { destination: '/features/', status: 302 },
@@ -108,7 +109,7 @@ const REDIRECTS = {
   '/privacy/': { destination: '/legal/privacy/', status: 302 },
   '/terms-of-service/': { destination: '/legal/terms/', status: 302 },
   '/index.asp': { destination: '/', status: 302 },
-  '/logon.html': { destination: 'https://auth.datum.net/ui/v2/login/loginname', status: 302 },
+  '/logon.html': { destination: `${AUTH_TARGET}/ui/v2/login/loginname`, status: 302 },
   '/public-slack/': { destination: 'https://link.datum.net/discord', status: 302 },
   '/handbook/company/': { destination: '/handbook/about/', status: 302 },
   '/handbook/engineering/': { destination: '/handbook/build/', status: 302 },
@@ -158,7 +159,6 @@ const REDIRECTS = {
 };
 
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
-const AUTH_TARGET = 'https://auth.datum.net';
 
 // Reverse proxy routes: requests matching prefix are forwarded to the target host.
 // Per Mintlify reverse-proxy docs: https://mintlify.com/docs/deploy/reverse-proxy

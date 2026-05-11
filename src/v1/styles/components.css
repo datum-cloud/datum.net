@@ -307,7 +307,7 @@
   }
 
   .toc-nav {
-    @apply border-glacier-mist-900 relative w-full border-l-2 border-dashed pl-4;
+    @apply border-glacier-mist-900 relative w-full border-l-2 border-dashed pb-9 pl-4 md:pb-12 lg:pb-16;
   }
 
   .toc-list {

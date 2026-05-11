@@ -123,9 +123,8 @@ async function fetchDocEntries(): Promise<SitemapEntry[]> {
 
     return locs.map((m, i) => {
       // Mintlify uses https://datum.net (no www) — normalise to www.datum.net
-      // and ensure trailing slash for consistency
-      let url = m[1].trim().replace('https://datum.net/', `${SITE_URL}`);
-      if (!url.endsWith('/')) url += '/';
+      const url = m[1].trim().replace('https://datum.net/', `${SITE_URL}/`);
+
       return {
         url,
         lastmod: lastmods[i]?.[1]?.trim(),

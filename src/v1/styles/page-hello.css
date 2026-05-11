@@ -1,0 +1,408 @@
+@import './base.css';
+
+@layer components {
+  /* Page-level container */
+  .page-hello {
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .hello-hero {
+    @apply bg-midnight-fjord relative py-10 md:py-14 lg:py-16;
+  }
+
+  .hello-hero-inner {
+    @apply flex flex-col items-center text-center;
+  }
+
+  .hello-hero-logo {
+    @apply mb-9 inline-flex items-center justify-center;
+  }
+
+  .hello-hero-logo-img {
+    @apply block h-16.25 w-auto;
+  }
+
+  .hello-hero-title {
+    @apply datum-text-10xl mb-7 text-white md:mb-8 lg:mb-10;
+  }
+
+  .hello-hero-newsletter {
+    @apply bg-app---dark---utility-1 mb-6 flex w-auto flex-col items-center justify-center gap-4 rounded-lg align-middle md:flex-row md:gap-8;
+    @apply px-5 py-4 md:px-6 md:py-5 lg:px-8 lg:py-5;
+  }
+
+  .hello-hero-newsletter-label {
+    @apply text-glacier-mist-700/90 flex-1 text-base md:text-left;
+  }
+
+  .hello-hero-newsletter-cta {
+    @apply text-aurora-moss cursor-pointer underline-offset-4 hover:underline;
+  }
+
+  .hello-hero-newsletter-field {
+    @apply border-app---dark---utility-2 flex items-center gap-2 md:min-w-60;
+  }
+
+  .hello-hero-newsletter-input {
+    @apply text-glacier-mist-700 placeholder:text-app---dark---utility-4 flex-1 border-0 bg-transparent py-2 text-base outline-none;
+  }
+
+  .hello-hero-newsletter-submit {
+    @apply text-app---dark---utility-4 hover:text-aurora-moss inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-1 transition-colors;
+  }
+
+  .hello-hero-socials {
+    @apply mt-1 flex list-none items-center justify-center gap-2.5 p-0 opacity-80;
+  }
+
+  .hello-hero-social-link {
+    @apply text-glacier-mist-700 hover:text-aurora-moss inline-flex items-center justify-center transition-colors;
+
+    & svg {
+      @apply h-7 w-7;
+    }
+  }
+
+  /* ── People section ───────────────────────────────────── */
+  .hello-people {
+    @apply border-app---dark---utility-2 relative border-t border-b bg-[#132336] py-10 md:py-14 lg:py-16;
+  }
+
+  /* ── Filter tabs ──────────────────────────────────────── */
+  .hello-filters-nav {
+    @apply mb-7 md:mb-8 lg:mb-10;
+  }
+
+  .hello-filters {
+    @apply mx-auto hidden w-fit max-w-full flex-wrap items-center justify-center md:flex;
+  }
+
+  .hello-filters-mobile {
+    @apply relative mx-auto block w-full max-w-lg md:hidden;
+  }
+
+  .hello-filter-mobile-trigger {
+    @apply border-app---dark---utility-2 relative z-10 flex w-full cursor-pointer items-center gap-3 rounded-md border bg-transparent px-4 py-2 text-left;
+    @apply hover:bg-app---dark---utility-2/40;
+
+    &:focus-visible {
+      @apply outline-aurora-moss outline-2 outline-offset-2;
+    }
+  }
+
+  .hello-filter-mobile-label {
+    @apply text-app---dark---utility-4 flex-1 text-sm font-medium;
+  }
+
+  .hello-filter-mobile-selected {
+    @apply datum-text-sm shrink-0 font-semibold whitespace-nowrap text-white;
+  }
+
+  .hello-filter-mobile-chevron {
+    @apply flex h-2.5 w-2.5 shrink-0 items-center justify-center text-white transition-transform duration-200;
+
+    &--open {
+      @apply rotate-180;
+    }
+  }
+
+  .hello-filter-mobile-dropdown {
+    @apply border-app---dark---utility-2 bg-app---dark---utility-1 absolute top-full right-0 left-0 z-50 mt-2 rounded-md border py-1 shadow-lg;
+  }
+
+  .hello-filter-mobile-list {
+    @apply m-0 flex list-none flex-col p-0;
+  }
+
+  .hello-filter-mobile-option {
+    @apply text-app---dark---utility-4 datum-text-sm relative z-10 flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-4 py-3 text-left font-medium;
+    @apply hover:bg-app---dark---utility-2/40 hover:text-white;
+
+    &:focus-visible {
+      @apply outline-aurora-moss outline-2 outline-offset-[-2px];
+    }
+
+    &--active {
+      @apply bg-app---dark---utility-2 text-white;
+      @apply hover:bg-app---dark---utility-2 hover:text-white;
+    }
+  }
+
+  .hello-filter-btn {
+    @apply border-app---dark---utility-2 -mr-px cursor-pointer border bg-transparent px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors;
+  }
+
+  .hello-filter-btn:first-child {
+    @apply rounded-l-md;
+  }
+
+  .hello-filter-btn:last-child {
+    @apply mr-0 rounded-r-md;
+  }
+
+  .hello-filter-btn:hover {
+    @apply bg-app---dark---utility-2/40;
+  }
+
+  .hello-filter-btn:focus-visible {
+    @apply outline-aurora-moss relative z-10 outline-2 outline-offset-2;
+  }
+
+  .hello-filter-btn--active {
+    @apply bg-app---dark---utility-2 text-white;
+  }
+
+  /* ── Card grid ────────────────────────────────────────── */
+  .hello-grid {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10;
+  }
+
+  /* ── Person card ──────────────────────────────────────── */
+  .hello-card {
+    @apply relative flex h-56 cursor-pointer overflow-hidden bg-[#334747];
+    @apply transition-transform duration-200 ease-in-out;
+    @apply hover:-translate-y-0.5;
+  }
+
+  .hello-card:focus-visible {
+    @apply outline-aurora-moss/60 outline-1 outline-offset-1;
+    @apply -translate-y-0.5;
+  }
+
+  .hello-card-info {
+    @apply z-10 flex flex-1 flex-col p-6;
+  }
+
+  .hello-card-name {
+    @apply datum-text-lg mb-1 font-semibold text-white;
+  }
+
+  .hello-card-title {
+    @apply datum-text-base mb-0 max-w-1/2 text-pretty text-white;
+  }
+
+  .hello-card-meta {
+    @apply mt-auto flex flex-col gap-2;
+  }
+
+  .hello-card-meta-row {
+    @apply datum-text-xs inline-flex items-center gap-2 text-white;
+  }
+
+  .hello-card-meta-icon {
+    @apply text-white;
+  }
+
+  .hello-card-time {
+    @apply tabular-nums;
+  }
+
+  .hello-card-avatar {
+    @apply pointer-events-none absolute right-0 bottom-0 z-0 h-full w-44 md:w-48 lg:w-52;
+  }
+
+  .hello-card-avatar img {
+    @apply h-full w-full object-contain object-bottom;
+  }
+
+  /* ── Special cards ────────────────────────────────────── */
+  .hello-card--support {
+    @apply bg-app---dark---utility-1 flex flex-col items-center justify-center px-6 py-8 text-center;
+  }
+
+  .hello-card--support-title {
+    @apply datum-text-2xl mb-3 font-semibold text-white;
+  }
+
+  .hello-card--support-accent {
+    @apply text-aurora-moss;
+  }
+
+  .hello-card--support-body {
+    @apply text-app---dark---utility-4 mb-0 text-base;
+  }
+
+  .hello-card--support-link {
+    @apply text-glacier-mist-700 underline underline-offset-4 hover:no-underline;
+  }
+
+  .hello-card--behind {
+    @apply border-app---dark---utility-1 relative isolate flex flex-col items-center justify-center overflow-hidden border px-6 py-8 text-center;
+    background-color: var(--color-midnight-fjord-muted);
+    background-image: url('../assets/images/bg-blur.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .hello-card--behind-title {
+    @apply datum-text-xl mb-2 font-medium text-white;
+  }
+
+  .hello-card--behind-body {
+    @apply text-app---dark---utility-4 mb-0 text-base;
+  }
+
+  .hello-card--behind-link {
+    @apply text-glacier-mist-700 underline underline-offset-4 hover:no-underline;
+  }
+
+  /* ── Hello Modal ──────────────────────────────────────── */
+  hello-modal {
+    @apply contents;
+  }
+
+  hello-modal dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max w-[90%] max-w-160;
+    @apply max-h-[calc(100vh-4rem)];
+    @apply bg-transparent;
+  }
+
+  hello-modal dialog[open] {
+    @apply flex;
+  }
+
+  hello-modal dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  .hello-modal--frame {
+    @apply shadow-modal relative max-h-[90dvh] w-full grow overflow-x-hidden overflow-y-auto rounded-lg bg-white md:max-h-none md:overflow-hidden;
+  }
+
+  .hello-modal--close {
+    @apply absolute top-3 right-3 z-20;
+    @apply text-midnight-fjord/60 inline-flex cursor-pointer items-center justify-center;
+    @apply hover:text-midnight-fjord/80 rounded-full border-0;
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  .hello-modal--close-icon {
+    @apply h-3.5! w-3.5!;
+  }
+
+  .hello-modal--content {
+    @apply text-midnight-fjord flex min-h-0 w-full flex-1 flex-col md:flex-row;
+  }
+
+  .hello-modal--left {
+    @apply flex min-h-0 flex-1 flex-col p-6 sm:p-8 md:p-12;
+  }
+
+  .hello-modal--header {
+    @apply border-glacier-mist-900 flex flex-col gap-5 border-b pb-6;
+  }
+
+  .hello-modal--avatar {
+    @apply flex h-20 w-20 items-center justify-center overflow-hidden rounded-sm;
+
+    img {
+      @apply h-full w-full object-cover;
+    }
+  }
+
+  .hello-modal--identity {
+    @apply datum-text-lg flex flex-col gap-1;
+  }
+
+  .hello-modal--name {
+    @apply m-0 font-semibold;
+  }
+
+  .hello-modal--title {
+    @apply m-0;
+  }
+
+  .hello-modal--meta {
+    @apply flex flex-wrap gap-6 pt-2.5;
+  }
+
+  .hello-modal--meta-row {
+    @apply datum-text-xs inline-flex items-center gap-2;
+
+    svg {
+      @apply h-5 w-5 shrink-0;
+    }
+  }
+
+  .hello-modal--time {
+    @apply tabular-nums;
+  }
+
+  .hello-modal--bio-wrap {
+    @apply border-glacier-mist-900 border-b py-4;
+  }
+
+  .hello-modal--bio {
+    @apply datum-text-base m-0 opacity-80;
+  }
+
+  .hello-modal--actions {
+    @apply flex flex-col gap-2 pt-12;
+  }
+
+  .hello-modal--btn-primary {
+    @apply bg-midnight-fjord text-glacier-mist-700 datum-text-xs inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md px-3.5 py-2.5 font-semibold no-underline transition-opacity;
+
+    &:hover {
+      @apply opacity-90;
+    }
+
+    svg {
+      @apply h-4 w-4 shrink-0;
+    }
+  }
+
+  .hello-modal--actions-row {
+    @apply flex w-full gap-2;
+  }
+
+  .hello-modal--btn-secondary {
+    @apply border-app---dark---utility-5 text-midnight-fjord datum-text-xs inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border bg-white px-3.5 py-2.5 font-semibold no-underline transition-colors;
+
+    &:hover {
+      @apply bg-glacier-mist-900/40;
+    }
+
+    svg {
+      @apply h-4 w-4 shrink-0;
+    }
+  }
+
+  .hello-modal--right {
+    @apply border-glacier-mist-900 flex w-full shrink-0 flex-col border-t md:h-auto md:w-[237px] md:self-stretch md:border-t-0 md:border-l;
+  }
+
+  .hello-modal--slider {
+    @apply bg-app---dark---utility-1 relative isolate aspect-[4/3] max-h-[30dvh] w-full overflow-hidden sm:aspect-[16/10] sm:max-h-[34dvh] md:aspect-auto md:h-full md:max-h-none md:min-h-[220px];
+  }
+
+  .hello-modal--slides {
+    @apply relative flex h-full;
+    width: calc(100% * var(--hello-slide-count, 1));
+    --hello-slider-index: 0;
+    --hello-slide-count: 1;
+    transform: translateX(calc(var(--hello-slider-index) * -100% / var(--hello-slide-count, 1)));
+    transition: transform 400ms ease;
+  }
+
+  .hello-modal--slide {
+    @apply relative h-full min-w-0 shrink-0;
+    flex: 0 0 calc(100% / var(--hello-slide-count, 1));
+
+    img {
+      @apply h-full w-full object-cover;
+    }
+  }
+
+  .hello-modal--slide-caption {
+    @apply absolute right-0 bottom-0 left-0 m-0 px-3 py-3 text-center text-xs text-white backdrop-blur-[5px];
+    background-color: rgba(56, 69, 85, 0.5);
+    mix-blend-mode: hard-light;
+  }
+
+  body[data-hello-modal-open] {
+    @apply overflow-clip;
+  }
+}

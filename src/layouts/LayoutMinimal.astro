@@ -1,0 +1,359 @@
+---
+import fontsCss from '@v1/styles/fonts.css?raw';
+import { SEO } from 'astro-seo';
+import config from '@data/siteConfig.json';
+import { formatISODate } from '@utils/dateUtils';
+import type { LayoutProps } from '@/src/types/common';
+import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
+import defaultOgImage from '@content/images/og/default.png';
+import { organizationSchema, websiteSchema } from '@data/schemaOrgSite';
+
+const {
+  title,
+  description,
+  image,
+  article,
+  publishDate,
+  author,
+  canonical,
+  dataTheme = '',
+  bodyClass = 'page-hello-minimal',
+  meta,
+  jsonLd,
+} = Astro.props as LayoutProps;
+
+const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
+const isProduction = mode === 'production';
+const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
+const imageContent = image ? image : defaultOgImage;
+
+const siteBase = Astro.site?.href ?? 'https://www.datum.net';
+const toAbsoluteUrl = (src: string): string => {
+  if (!src || src.startsWith('http')) return src;
+  return new URL(src, siteBase).href;
+};
+
+const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
+const descriptionValue =
+  meta && meta.description ? meta.description : description ? description : '';
+const twitterImage =
+  meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
+const ogImageUrl = toAbsoluteUrl(
+  meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src
+);
+const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
+---
+
+<!doctype html>
+<html lang="en" data-theme={dataTheme}>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="alternate" type="application/rss+xml" title="Datum RSS Feed" href="/rss.xml" />
+    <Favicons />
+
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://hyperping.com" />
+    <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
+
+    <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+    <link rel="preconnect" href="https://edge.marker.io" crossorigin />
+
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-regular-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-medium-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-semibold-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/canelatextlcweb-regular-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style is:inline set:html={fontsCss}></style>
+
+    <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
+    <SEO
+      title={titleValue}
+      description={descriptionValue}
+      canonical={canonical || pageUrl}
+      noindex={!isProduction}
+      nofollow={!isProduction}
+      openGraph={{
+        basic: {
+          title: meta && meta.og && meta.og.title ? meta.og.title : title,
+          type: article ? 'article' : 'website',
+          image: ogImageUrl,
+          url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
+        },
+        optional: {
+          description: meta && meta.og && meta.og.description ? meta.og.description : description,
+          siteName: 'Datum',
+          locale: 'en_US',
+        },
+        ...(article && publishDate
+          ? {
+              article: {
+                publishedTime: formatISODate(publishDate),
+                authors: [author || 'Datum Inc.'],
+              },
+            }
+          : {}),
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        site: config.socials.twitter.handle || '@datumcloud',
+        creator: config.socials.twitter.handle || '@datumcloud',
+        title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
+        description:
+          meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
+        image: twitterImageUrl,
+      }}
+      extend={{
+        meta: [
+          { name: 'twitter:url', content: canonical || pageUrl },
+          { name: 'theme-color', content: '#0b1a2c' },
+        ],
+        link: [
+          { rel: 'icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'mask-icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'apple-touch-icon', href: new URL('/apple-touch-icon.png', Astro.site).href },
+        ],
+      }}
+    />
+
+    <JsonLd data={organizationSchema} />
+    <JsonLd data={websiteSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
+
+    {
+      isProduction && (
+        <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
+      )
+    }
+  </head>
+  <body class={bodyClass}>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <main id="main-content">
+      <slot />
+    </main>
+    <script>
+      import '@v1/scripts/scroll-effects.js';
+    </script>
+
+    <script is:inline>
+      document.addEventListener('click', function (e) {
+        var el = e.target.closest('[data-fathom-event]');
+        if (el && window.fathom) {
+          window.fathom.trackEvent(el.getAttribute('data-fathom-event'));
+        }
+      });
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const beaconTriggers = document.querySelectorAll('.open-beacon');
+        beaconTriggers.forEach((trigger) => {
+          trigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            // @ts-expect-error Beacon is loaded from HelpScout script
+            if (window.Beacon) {
+              // @ts-expect-error Beacon is loaded from HelpScout script
+              window.Beacon('open');
+            }
+          });
+        });
+      });
+    </script>
+
+    <script is:inline>
+      /* eslint-disable no-undef */
+      (function () {
+        function initHyperping() {
+          var script = document.createElement('script');
+          script.src = 'https://hyperping.com/badge.js';
+          script.async = true;
+          script.onload = function () {
+            if (typeof Hyperping !== 'undefined') {
+              Hyperping.init({
+                statuspage: 'https://www.datumstatus.net',
+                border: 'none',
+                borderColor: '#30363D',
+                uptime: false,
+                dot: true,
+                dotSize: 10,
+                isNeutral: false,
+                dotOk: '#2BAC76',
+                dotIncident: '#FFAF36',
+                dotOutage: '#E95858',
+                dotMaintenance: '#0070F3',
+                dotNeutral: '#0070F3',
+                operational: 'All systems normal',
+                incident: 'Under investigation',
+                outage: 'System outage',
+                maintenance: 'Under maintenance',
+              });
+            }
+          };
+          document.body.appendChild(script);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(initHyperping, { timeout: 3000 });
+        } else {
+          setTimeout(initHyperping, 2000);
+        }
+      })();
+    </script>
+
+    <script is:inline data-production={isProduction ? 'true' : 'false'}>
+      (function () {
+        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
+        if (!isProduction) return;
+
+        function loadHelpScout() {
+          if (window.__helpScoutLoaded) return;
+          window.__helpScoutLoaded = true;
+
+          window.Beacon =
+            window.Beacon ||
+            function (method, options, data) {
+              window.Beacon.readyQueue = window.Beacon.readyQueue || [];
+              window.Beacon.readyQueue.push({ method: method, options: options, data: data });
+            };
+          window.Beacon.readyQueue = [];
+
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.async = true;
+          script.src = 'https://beacon-v2.helpscout.net';
+          script.onload = function () {
+            window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
+          };
+          document.body.appendChild(script);
+        }
+
+        var events = ['mousemove', 'touchstart', 'scroll', 'keydown'];
+        var loaded = false;
+
+        function onInteraction() {
+          if (loaded) return;
+          loaded = true;
+          events.forEach(function (e) {
+            document.removeEventListener(e, onInteraction);
+          });
+          loadHelpScout();
+        }
+
+        events.forEach(function (e) {
+          document.addEventListener(e, onInteraction, { once: true, passive: true });
+        });
+
+        setTimeout(function () {
+          if (!loaded) {
+            loaded = true;
+            loadHelpScout();
+          }
+        }, 5000);
+      })();
+    </script>
+
+    <script is:inline data-production={isProduction ? 'true' : 'false'}>
+      (function () {
+        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
+        if (!isProduction) return;
+
+        function loadMarker() {
+          var script = document.createElement('script');
+          script.src = '/scripts/markerio.js';
+          script.defer = true;
+          document.body.appendChild(script);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadMarker, { timeout: 4000 });
+        } else {
+          setTimeout(loadMarker, 3000);
+        }
+      })();
+    </script>
+
+    <script is:inline>
+      if (
+        'modelContext' in navigator &&
+        typeof navigator.modelContext.registerTool === 'function'
+      ) {
+        const controller = new AbortController();
+
+        navigator.modelContext.registerTool({
+          name: 'search_docs',
+          description:
+            'Search Datum documentation for information about network cloud features, configuration, and API usage',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              query: { type: 'string', description: 'Search query' },
+            },
+            required: ['query'],
+          },
+          execute: async ({ query }) => ({ url: '/docs/?q=' + encodeURIComponent(query) }),
+          signal: controller.signal,
+        });
+
+        navigator.modelContext.registerTool({
+          name: 'navigate',
+          description:
+            'Navigate to a page on the Datum website. Use paths like /docs/, /features/, /download/, /contact/, /changelog/, /blog/',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              path: { type: 'string', description: 'Site-relative path to navigate to' },
+            },
+            required: ['path'],
+          },
+          execute: async ({ path }) => {
+            window.location.href = path;
+            return { navigated: path };
+          },
+          signal: controller.signal,
+        });
+      }
+    </script>
+
+    <script>
+      (function initSectionLabels() {
+        const labels = document.querySelectorAll('.section-label, .mission-label');
+        for (const label of Array.from(labels) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                label.classList.add('highlight-animate');
+              }
+            },
+            { threshold: 0.8 }
+          );
+          obs.observe(label);
+        }
+      })();
+    </script>
+  </body>
+</html>

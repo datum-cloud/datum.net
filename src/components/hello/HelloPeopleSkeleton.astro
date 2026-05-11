@@ -1,0 +1,86 @@
+---
+// src/components/hello/HelloPeopleSkeleton.astro
+---
+
+<section class="hello-people">
+  <div class="max-width">
+    <div class="hello-filters">
+      {
+        ['All', 'Partnerships', 'Support', 'PR & events', 'Fundraising'].map((label, i) => (
+          <button
+            type="button"
+            class:list={['hello-filter-btn', i === 0 && 'hello-filter-btn--active']}
+            disabled
+          >
+            {label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="hello-grid">
+      {
+        [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+          <article class="hello-card hello-card--skeleton" data-index={i}>
+            <div class="hello-card-info">
+              <div class="hello-skeleton-box hello-skeleton-name" />
+              <div class="hello-skeleton-box hello-skeleton-title" />
+              <div class="hello-card-meta">
+                <div class="hello-skeleton-box hello-skeleton-meta" />
+                <div class="hello-skeleton-box hello-skeleton-meta" />
+              </div>
+            </div>
+            <div class="hello-skeleton-box hello-skeleton-avatar" />
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hello-skeleton-box {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: hello-skeleton-shimmer 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  .hello-skeleton-name {
+    height: 1.25rem;
+    width: 70%;
+    margin-bottom: 0.5rem;
+  }
+
+  .hello-skeleton-title {
+    height: 0.875rem;
+    width: 50%;
+    margin-bottom: 1.5rem;
+  }
+
+  .hello-skeleton-meta {
+    height: 0.75rem;
+    width: 40%;
+    margin-bottom: 0.5rem;
+  }
+
+  .hello-skeleton-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+  }
+
+  @keyframes hello-skeleton-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+</style>

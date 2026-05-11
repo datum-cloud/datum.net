@@ -4,7 +4,7 @@
  */
 
 import { Cache } from '@libs/cache';
-import type { StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
+import type { CardCategory, StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
@@ -74,7 +74,65 @@ async function graphqlQuery<T>(
 const cache = new Cache('.cache');
 const CACHE_KEY = 'strapi-authors';
 const TEAM_MEMBERS_CACHE_KEY = 'strapi-team-members';
+const CARD_MEMBERS_CACHE_KEY = 'strapi-card-members';
 const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
+
+const VALID_CARD_CATEGORIES = new Set<CardCategory>([
+  'partnerships',
+  'support',
+  'pr_events',
+  'fundraising',
+]);
+
+/** Normalize Author.cardCategories from Strapi (delimited string, JSON array, or legacy component rows). */
+function parseCardCategories(raw: unknown): CardCategory[] {
+  if (raw == null) {
+    return [];
+  }
+  if (typeof raw === 'string') {
+    const trimmed = raw.trim();
+    if (trimmed.startsWith('[')) {
+      try {
+        const parsed: unknown = JSON.parse(trimmed);
+        return parseCardCategories(parsed);
+      } catch {
+        /* fall through to delimiter split */
+      }
+    }
+    const parts = raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    return parts.filter((v): v is CardCategory => VALID_CARD_CATEGORIES.has(v as CardCategory));
+  }
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+  const first = raw[0];
+  if (
+    raw.length > 0 &&
+    first !== null &&
+    typeof first === 'object' &&
+    'topic' in first &&
+    typeof (first as { topic?: unknown }).topic === 'string'
+  ) {
+    return raw
+      .map((c) => (c as { topic?: string }).topic)
+      .filter(
+        (v): v is CardCategory =>
+          typeof v === 'string' && VALID_CARD_CATEGORIES.has(v as CardCategory)
+      );
+  }
+  return raw.filter(
+    (v): v is CardCategory => typeof v === 'string' && VALID_CARD_CATEGORIES.has(v as CardCategory)
+  );
+}
+
+type GraphQLAuthorRow = Omit<StrapiAuthorFull, 'cardCategories'> & { cardCategories?: unknown };
+
+function normalizeAuthorFromGraphQL(row: GraphQLAuthorRow): StrapiAuthorFull {
+  return { ...row, cardCategories: parseCardCategories(row.cardCategories) };
+}
 
 /**
  * Color palette that cycles through for team member avatars
@@ -92,11 +150,17 @@ export const AUTHORS_QUERY = `
       name
       title
       bio
+      helloBio
       isTeam
       team
       tick
       surprising
       weekends
+      isCard
+      cardCategories
+      location
+      timezone
+      calendly
       avatar {
         url
         alternativeText
@@ -105,6 +169,13 @@ export const AUTHORS_QUERY = `
         twitter
         linkedin
         github
+        discord
+        email
+      }
+      cardImages {
+        url
+        alternativeText
+        caption
       }
     }
   }
@@ -121,11 +192,17 @@ export const AUTHOR_BY_SLUG_QUERY = `
       name
       title
       bio
+      helloBio
       isTeam
       team
       tick
       surprising
       weekends
+      isCard
+      cardCategories
+      location
+      timezone
+      calendly
       avatar {
         url
         alternativeText
@@ -134,6 +211,13 @@ export const AUTHOR_BY_SLUG_QUERY = `
         twitter
         linkedin
         github
+        discord
+        email
+      }
+      cardImages {
+        url
+        alternativeText
+        caption
       }
     }
   }
@@ -262,7 +346,7 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
     return [];
   }
 
-  const authors = response.authors;
+  const authors = response.authors.map(normalizeAuthorFromGraphQL);
 
   if (CACHE_ENABLED) {
     await cache.set(CACHE_KEY, authors, CACHE_TTL);
@@ -311,7 +395,7 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
     return null;
   }
 
-  const author = response.authors[0];
+  const author = normalizeAuthorFromGraphQL(response.authors[0]);
 
   if (CACHE_ENABLED) {
     await cache.set(cacheKey, author, CACHE_TTL);
@@ -349,6 +433,35 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
   }
 
   return teamMembers;
+}
+
+/**
+ * Fetches all card members from Strapi (authors where isCard is true),
+ * sorted with founders first, then alphabetically by last name.
+ * Uses dedicated cache for card members.
+ * @returns Sorted array of Strapi card member entries
+ */
+export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
+  if (CACHE_ENABLED && (await cache.has(CARD_MEMBERS_CACHE_KEY))) {
+    const cached = await cache.get<StrapiAuthorFull[]>(CARD_MEMBERS_CACHE_KEY);
+    if (cached && isValidCachedAuthors(cached)) {
+      return cached;
+    }
+    if (cached) {
+      console.warn('Invalid cached Strapi card members data detected, fetching fresh data');
+    }
+  }
+
+  const authors = await fetchStrapiAuthors();
+  const cardMembers = authors
+    .filter((author) => author.isCard === true)
+    .sort(sortStrapiTeamMembers);
+
+  if (CACHE_ENABLED) {
+    await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, CACHE_TTL);
+  }
+
+  return cardMembers;
 }
 
 /**

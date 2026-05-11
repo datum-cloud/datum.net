@@ -1,0 +1,18 @@
+---
+// src/components/hello/HelloSupportCard.astro
+---
+
+<article
+  class="hello-card hello-card--support"
+  data-card-category="support"
+  x-show="filter === 'all' || filter === 'support'"
+>
+  <h3 class="hello-card--support-title">
+    Need <span class="hello-card--support-accent">support?</span>
+  </h3>
+  <p class="hello-card--support-body">
+    email <a href="mailto:support@datum.net" class="hello-card--support-link">support@datum.net</a>
+    <br />
+    We usually respond within a few hours
+  </p>
+</article>

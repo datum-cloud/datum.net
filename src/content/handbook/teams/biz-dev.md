@@ -1,7 +1,7 @@
 ---
 title: "Business Development"
 sidebar:
-  label: Business Development
+  label: Business development
   order: 4
 updatedDate: May 11, 2026
 authors: jacob

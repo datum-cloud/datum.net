@@ -1,7 +1,7 @@
 ---
 title: "Career Progression"
 sidebar:
-  label: Career Progression
+  label: Career progression
   order: 2
 updatedDate: May 11, 2026
 authors: jacob

@@ -1,0 +1,23 @@
+{
+  "serverInfo": {
+    "name": "datum-mcp",
+    "version": "1.0.0",
+    "description": "Datum MCP server exposing network cloud management tools for AI agents"
+  },
+  "endpoint": "https://mcp.datum.net/mcp",
+  "transport": "http",
+  "capabilities": [
+    "tools",
+    "resources"
+  ],
+  "tools": [
+    {
+      "name": "search_docs",
+      "description": "Search Datum documentation"
+    },
+    {
+      "name": "list_locations",
+      "description": "List available network cloud locations"
+    }
+  ]
+}

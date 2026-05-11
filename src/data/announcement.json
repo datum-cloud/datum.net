@@ -1,0 +1,10 @@
+{
+  "show": true,
+  "label": "Free Download",
+  "text": "Use 'datumctl console' to access a full interactive terminal UI + built in AI skills",
+  "href": "https://www.datum.net/download/datumctl/",
+  "icon": {
+    "name": "arrow-right",
+    "size": "md"
+  }
+}

@@ -20,8 +20,12 @@ contents:
     label: "What We’re Building"
   - slug: build
     label: How We Build and Run
+  - slug: teams
+    label: Teams  
   - slug: operate
     label: How We Operate
+  - slug: pay-perks
+    label: Pay & Perks
   - slug: "how-to-help"
     label: How You Can Help
   - slug: policy

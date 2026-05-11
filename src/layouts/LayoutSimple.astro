@@ -5,7 +5,9 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
 import defaultOgImage from '@content/images/og/default.png';
+import { organizationSchema, websiteSchema } from '@data/schemaOrgSite';
 
 const {
   title,
@@ -18,6 +20,7 @@ const {
   dataTheme = '',
   bodyClass = 'template',
   meta,
+  jsonLd,
 } = Astro.props as LayoutProps;
 
 const isProduction = import.meta.env.MODE === 'production';
@@ -126,6 +129,10 @@ const descriptionValue =
         ],
       }}
     />
+
+    <JsonLd data={organizationSchema} />
+    <JsonLd data={websiteSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
 
     {/* Analytics (Fathom) - Load early but defer execution */}
     {

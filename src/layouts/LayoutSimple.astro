@@ -42,6 +42,7 @@ const descriptionValue =
     <!-- DNS Prefetch for external domains (low priority hints) -->
     <link rel="dns-prefetch" href="https://api.github.com" />
     <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
+    <link rel="dns-prefetch" href="https://device.maxmind.com" />
 
     <!-- Preconnect to critical external domains (loads within ~5s) -->
     <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
@@ -233,6 +234,30 @@ const descriptionValue =
           requestIdleCallback(loadMarker, { timeout: 4000 });
         } else {
           setTimeout(loadMarker, 3000);
+        }
+      })();
+    </script>
+
+    {/* MaxMind minFraud device tracking - feeds fingerprint into signup fraud check */}
+    <script is:inline data-production={isProduction ? 'true' : 'false'} data-account-id="1313245">
+      (function () {
+        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
+        if (!isProduction) return;
+
+        var accountId = document.currentScript.getAttribute('data-account-id');
+        var mmapiws = (window.__mmapiws = window.__mmapiws || {});
+        mmapiws.accountId = accountId;
+
+        function loadMaxMind() {
+          var script = document.createElement('script');
+          script.src = 'https://device.maxmind.com/js/device.js';
+          script.async = true;
+          document.body.appendChild(script);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadMaxMind, { timeout: 4000 });
+        } else {
+          setTimeout(loadMaxMind, 3000);
         }
       })();
     </script>

@@ -29,7 +29,7 @@ const latestPosts = sortedArticles.slice(0, POSTS_TO_SHOW).map(normalizeArticle)
         <div class="col-span-4 flex flex-1 flex-col md:col-span-5 lg:col-span-6">
           {latestPosts[0].data.thumbnail && (
             <a
-              href={`/blog/${latestPosts[0].id}/`}
+              href={`/blog/${latestPosts[0].id}`}
               title={latestPosts[0].data.title}
               class="mb-6 w-full"
             >
@@ -45,7 +45,7 @@ const latestPosts = sortedArticles.slice(0, POSTS_TO_SHOW).map(normalizeArticle)
           )}
           <h3 class="datum-text-2xl mb-3 font-medium">
             <a
-              href={`/blog/${latestPosts[0].id}/`}
+              href={`/blog/${latestPosts[0].id}`}
               title={latestPosts[0].data.title}
               class="transition-opacity duration-200 hover:opacity-70"
             >
@@ -71,7 +71,7 @@ const latestPosts = sortedArticles.slice(0, POSTS_TO_SHOW).map(normalizeArticle)
         {latestPosts.slice(1).map((post) => (
           <div class="flex flex-1 flex-col">
             {post.data.thumbnail && (
-              <a href={`/blog/${post.id}/`} title={post.data.title} class="mb-6 w-full">
+              <a href={`/blog/${post.id}`} title={post.data.title} class="mb-6 w-full">
                 <img
                   src={post.data.thumbnail}
                   alt={post.data.title}
@@ -84,7 +84,7 @@ const latestPosts = sortedArticles.slice(0, POSTS_TO_SHOW).map(normalizeArticle)
             )}
             <h4 class="datum-text-xl mb-3 font-medium">
               <a
-                href={`/blog/${post.id}/`}
+                href={`/blog/${post.id}`}
                 title={post.data.title}
                 class="transition-opacity duration-200 hover:opacity-70"
               >

@@ -24,7 +24,7 @@ export async function GET(context) {
       title: article.title,
       pubDate: article.originalPublishedAt ? new Date(article.originalPublishedAt) : new Date(),
       description: article.description,
-      link: `/blog/${article.slug}/`,
+      link: `/blog/${article.slug}`,
     })),
     customData: `<language>en-us</language>`,
   });

@@ -41,7 +41,7 @@ const isPageNumber = !isNaN(parsedPage) && String(parsedPage) === slug && parsed
 
 // Redirect /blog/1 to canonical /blog/
 if (isPageNumber && parsedPage === 1) {
-  return Astro.redirect('/blog/', 301);
+  return Astro.redirect('/blog', 301);
 }
 
 // Render paginated blog listing for pages ≥ 2
@@ -91,7 +91,7 @@ const readingTime = {
 const authorName = article?.author?.name || '';
 const authorSlug = article?.author?.slug ?? article?.author?.documentId;
 const authorHref =
-  authorSlug && article?.author?.isTeam === true ? `/authors/${authorSlug}/` : undefined;
+  authorSlug && article?.author?.isTeam === true ? `/authors/${authorSlug}` : undefined;
 const hasAuthorHref = Boolean(authorHref && authorHref.length > 0);
 
 const authorAvatar = article?.author?.avatar
@@ -137,7 +137,7 @@ const breadcrumbData = [
 if (fm?.title) {
   breadcrumbData.push({
     text: truncateByWords(fm.title, 9),
-    href: `/blog/${slug}/`,
+    href: `/blog/${slug}`,
   });
 }
 
@@ -175,18 +175,18 @@ const articleJsonLd =
         '@graph': [
           {
             '@type': 'WebPage',
-            '@id': `https://www.datum.net/blog/${slug}/#webpage`,
-            url: `https://www.datum.net/blog/${slug}/`,
+            '@id': `https://www.datum.net/blog/${slug}#webpage`,
+            url: `https://www.datum.net/blog/${slug}`,
             name: fm.title,
-            isPartOf: { '@id': 'https://www.datum.net/blog/#blog' },
+            isPartOf: { '@id': 'https://www.datum.net/blog#blog' },
             inLanguage: 'en-US',
           },
           {
             '@type': 'BlogPosting',
-            '@id': `https://www.datum.net/blog/${slug}/#post`,
+            '@id': `https://www.datum.net/blog/${slug}#post`,
             headline: fm.title,
             description: derivedDescription,
-            url: `https://www.datum.net/blog/${slug}/`,
+            url: `https://www.datum.net/blog/${slug}`,
             datePublished: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
             dateModified: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
             ...(readingTime.minutes ? { timeRequired: `PT${readingTime.minutes}M` } : {}),
@@ -210,10 +210,10 @@ const articleJsonLd =
               ...(authorHref ? { url: `https://www.datum.net${authorHref}` } : {}),
             },
             publisher: { '@id': 'https://www.datum.net/#organization' },
-            isPartOf: { '@id': 'https://www.datum.net/blog/#blog' },
+            isPartOf: { '@id': 'https://www.datum.net/blog#blog' },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://www.datum.net/blog/${slug}/#webpage`,
+              '@id': `https://www.datum.net/blog/${slug}#webpage`,
             },
           },
         ],
@@ -345,7 +345,7 @@ const blogListingMeta = {
                   icon={{ name: 'arrow-left', size: 'md' }}
                   iconPosition="left"
                   iconClass="stroke-1.5"
-                  href="/blog/"
+                  href="/blog"
                 />
 
                 {/* Author Information */}

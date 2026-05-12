@@ -15,6 +15,7 @@ const {
   showCTA = true,
   showBackground = true,
   showIllustration = false,
+  showSignup = true,
 } = Astro.props as FooterProps;
 
 // Type-safe navigation data
@@ -57,7 +58,7 @@ const navData = navigation as NavData;
             <Button
               class="btn btn--alpha"
               text="Download local apps"
-              href="/download/"
+              href="/download"
               data-fathom-event="Pre-footer: Download local apps"
             />
           </div>
@@ -173,8 +174,8 @@ const navData = navigation as NavData;
             <!-- <p
               class="footer-copyright mb-2 w-full text-center text-nowrap md:text-right [&_a]:inline-block"
             >
-              <a href="/legal/terms/" class="footer-nav-link" tabindex="0">Terms of Service</a>,
-              <a href="/legal/privacy/" class="footer-nav-link" tabindex="0">Privacy Policy</a>
+              <a href="/legal/terms" class="footer-nav-link" tabindex="0">Terms of Service</a>,
+              <a href="/legal/privacy" class="footer-nav-link" tabindex="0">Privacy Policy</a>
             </p> -->
             <p class="footer-copyright">
               &copy; {new Date().getFullYear()} Datum Technology, Inc.
@@ -188,27 +189,29 @@ const navData = navigation as NavData;
     <FooterAiAgents />
   </div>
 
-  <div
-    id="footer-signup"
-    class="bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20"
-  >
-    <div
-      class="max-width flex w-full max-w-190 grow flex-col items-center gap-4 md:w-auto md:max-w-none md:gap-11 lg:gap-13.5"
-    >
-      <h4 class="datum-text-7xl mb-0">Let's stay connected, shall we?</h4>
+  {
+    showSignup && (
+      <div
+        id="footer-signup"
+        class="bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20"
+      >
+        <div class="max-width flex w-full max-w-190 grow flex-col items-center gap-4 md:w-auto md:max-w-none md:gap-11 lg:gap-13.5">
+          <h4 class="datum-text-7xl mb-0">Let's stay connected, shall we?</h4>
 
-      <div data-newsletter-trigger>
-        <Button
-          class="btn btn--alpha"
-          text="Get our monthly email"
-          icon={{ name: 'arrow-right', size: 'md' }}
-          iconPosition="right"
-          iconClass="stroke-1.5"
-          href="#"
-        />
+          <div data-newsletter-trigger>
+            <Button
+              class="btn btn--alpha"
+              text="Get our monthly email"
+              icon={{ name: 'arrow-right', size: 'md' }}
+              iconPosition="right"
+              iconClass="stroke-1.5"
+              href="#"
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    )
+  }
 
   <NewsletterModal />
 </footer>
@@ -273,17 +276,20 @@ const navData = navigation as NavData;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.querySelector('[data-newsletter-trigger]');
-    if (!trigger) return;
+    const triggers = document.querySelectorAll('[data-newsletter-trigger]');
+    if (!triggers.length) return;
     const openNewsletterModal = () => {
       if (window.NEWSLETTER_MODAL_OPEN_EVENT) {
         document.dispatchEvent(new CustomEvent(window.NEWSLETTER_MODAL_OPEN_EVENT));
       }
     };
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (window.fathom) window.fathom.trackEvent('Footer: Newsletter Signup');
-      openNewsletterModal();
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const label = trigger.getAttribute('data-newsletter-fathom') || 'Footer: Newsletter Signup';
+        if (window.fathom) window.fathom.trackEvent(label);
+        openNewsletterModal();
+      });
     });
   });
 </script>

@@ -96,7 +96,7 @@ const selectedLabel =
                         return (
                           <li class="menu-item">
                             <a
-                              href={`/handbook/${child.slug.endsWith('/') ? child.slug : child.slug + '/'}`}
+                              href={`/handbook/${child.slug.endsWith('/') ? child.slug : child.slug}`}
                               class={
                                 child.slug == selectedId
                                   ? 'menu-link menu-link--active'

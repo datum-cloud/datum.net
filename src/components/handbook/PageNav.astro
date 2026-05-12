@@ -49,14 +49,14 @@ const nextArticle =
       ? {
           id: previousArticle.id,
           title: previousArticle.data.title,
-          url: `/handbook/${previousArticle.id}/`,
+          url: `/handbook/${previousArticle.id}`,
         }
       : undefined}
     nextArticle={nextArticle
       ? {
           id: nextArticle.id,
           title: nextArticle.data.title,
-          url: `/handbook/${nextArticle.id}/`,
+          url: `/handbook/${nextArticle.id}`,
         }
       : undefined}
     class={className}

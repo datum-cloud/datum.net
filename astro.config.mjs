@@ -77,7 +77,7 @@ const port = parseInt(process.env.PORT || env.PORT || '4321');
 
 export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
-  trailingSlash: 'always',
+  trailingSlash: 'never',
   output: 'static',
   security: {
     checkOrigin: false,
@@ -103,7 +103,7 @@ export default defineConfig({
       show: true,
       label: 'Free download',
       text: 'Take your localhost global with our alpha http desktop app',
-      href: '/download/',
+      href: '/download',
       icon: {
         name: 'arrow-right',
         size: 'sm',

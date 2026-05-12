@@ -76,6 +76,7 @@ export type {
   NormalizedStrapiArticle,
   StrapiRoadmap,
   StrapiRoadmapsResponse,
+  CardCategory,
 } from '../../types/strapi';
 export { getStrapiMediaUrl, normalizeArticle, resolveMarkdownStrapiUrls } from '../../types/strapi';
 
@@ -87,6 +88,7 @@ export {
   fetchStrapiAuthorByDocumentId,
   fetchStrapiAuthorBySlug,
   getStrapiTeamMembers,
+  getStrapiCardMembers,
   getTeamBgColor,
   getAuthorBgColorFromStrapi,
 } from './authors';

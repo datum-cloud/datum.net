@@ -1,7 +1,7 @@
 ---
 title: "Time Off"
 sidebar:
-  label: Time Off
+  label: Time off
   order: 5
 updatedDate: May 11, 2026
 authors: jacob

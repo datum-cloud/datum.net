@@ -11,7 +11,8 @@
   }
 
   .people--card:focus-visible {
-    @apply outline-glacier-mist-700 rounded outline outline-offset-4;
+    @apply ring-midnight-fjord/40 relative z-10 ring-1 outline-none;
+    @apply -translate-y-0.5;
   }
 
   .people--card-avatar {

@@ -5,7 +5,10 @@ import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
 import type { LayoutProps } from '@/src/types/common';
 import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
 import defaultOgImage from '@content/images/og/default.png';
+import { organizationSchema, websiteSchema } from '@data/schemaOrgSite';
+import LayoutEmbedScripts from '@components/LayoutEmbedScripts.astro';
 
 const {
   title,
@@ -18,6 +21,7 @@ const {
   dataTheme = '',
   bodyClass = 'template',
   meta,
+  jsonLd,
 } = Astro.props as LayoutProps;
 
 const isProduction = import.meta.env.MODE === 'production';
@@ -127,6 +131,10 @@ const descriptionValue =
       }}
     />
 
+    <JsonLd data={organizationSchema} />
+    <JsonLd data={websiteSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
+
     {/* Analytics (Fathom) - Load early but defer execution */}
     {
       isProduction && (
@@ -144,122 +152,6 @@ const descriptionValue =
       import '@v1/scripts/scroll-effects.js';
     </script>
 
-    {/* HelpScout Beacon open trigger handler */}
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const beaconTriggers = document.querySelectorAll('.open-beacon');
-        beaconTriggers.forEach((trigger) => {
-          trigger.addEventListener('click', function (e) {
-            e.preventDefault();
-            // @ts-expect-error Beacon is loaded from HelpScout script
-            if (window.Beacon) {
-              // @ts-expect-error Beacon is loaded from HelpScout script
-              window.Beacon('open');
-            }
-          });
-        });
-      });
-    </script>
-
-    {/* HelpScout Beacon - Deferred loading on idle */}
-    <script is:inline data-production={isProduction ? 'true' : 'false'}>
-      (function () {
-        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
-        if (!isProduction) return;
-
-        function loadHelpScout() {
-          if (window.__helpScoutLoaded) return;
-          window.__helpScoutLoaded = true;
-
-          // Initialize Beacon stub
-          window.Beacon =
-            window.Beacon ||
-            function (method, options, data) {
-              window.Beacon.readyQueue = window.Beacon.readyQueue || [];
-              window.Beacon.readyQueue.push({ method: method, options: options, data: data });
-            };
-          window.Beacon.readyQueue = [];
-
-          // Load HelpScout script
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.async = true;
-          script.src = 'https://beacon-v2.helpscout.net';
-          script.onload = function () {
-            window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
-          };
-          document.body.appendChild(script);
-        }
-
-        // Load HelpScout on first user interaction or after 5s
-        var events = ['mousemove', 'touchstart', 'scroll', 'keydown'];
-        var loaded = false;
-
-        function onInteraction() {
-          if (loaded) return;
-          loaded = true;
-          events.forEach(function (e) {
-            document.removeEventListener(e, onInteraction);
-          });
-          loadHelpScout();
-        }
-
-        events.forEach(function (e) {
-          document.addEventListener(e, onInteraction, { once: true, passive: true });
-        });
-
-        // Fallback: load after 5 seconds if no interaction
-        setTimeout(function () {
-          if (!loaded) {
-            loaded = true;
-            loadHelpScout();
-          }
-        }, 5000);
-      })();
-    </script>
-
-    {/* Marker.io - Load on idle for feedback collection */}
-    <script is:inline data-production={isProduction ? 'true' : 'false'}>
-      (function () {
-        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
-        if (!isProduction) return;
-
-        function loadMarker() {
-          var script = document.createElement('script');
-          script.src = '/scripts/markerio.js';
-          script.defer = true;
-          document.body.appendChild(script);
-        }
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadMarker, { timeout: 4000 });
-        } else {
-          setTimeout(loadMarker, 3000);
-        }
-      })();
-    </script>
-
-    {/* MaxMind minFraud device tracking - feeds fingerprint into signup fraud check */}
-    <script is:inline data-production={isProduction ? 'true' : 'false'} data-account-id="1313245">
-      (function () {
-        var isProduction = document.currentScript.getAttribute('data-production') === 'true';
-        if (!isProduction) return;
-
-        var accountId = document.currentScript.getAttribute('data-account-id');
-        var mmapiws = (window.__mmapiws = window.__mmapiws || {});
-        mmapiws.accountId = accountId;
-
-        function loadMaxMind() {
-          var script = document.createElement('script');
-          script.src = 'https://device.maxmind.com/js/device.js';
-          script.async = true;
-          document.body.appendChild(script);
-        }
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadMaxMind, { timeout: 4000 });
-        } else {
-          setTimeout(loadMaxMind, 3000);
-        }
-      })();
-    </script>
+    <LayoutEmbedScripts isProduction={isProduction} />
   </body>
 </html>

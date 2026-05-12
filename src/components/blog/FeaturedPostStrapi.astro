@@ -24,7 +24,7 @@ const readingTimeText = `${readingTimeMinutes} minute read`;
   <div class="blog-featured--image">
     {
       post.data.thumbnail && (
-        <a href={`${baseUrl}/${post.id}/`} title={post.data.title}>
+        <a href={`${baseUrl}/${post.id}`} title={post.data.title}>
           <Image
             src={post.data.thumbnail}
             alt={post.data.title}
@@ -44,7 +44,7 @@ const readingTimeText = `${readingTimeMinutes} minute read`;
 
   <div class="blog-featured--text">
     <h1 class="blog-featured--title">
-      <a href={`${baseUrl}/${post.id}/`}>{post.data.title}</a>
+      <a href={`${baseUrl}/${post.id}`}>{post.data.title}</a>
     </h1>
 
     <p class="blog-featured--excerpt">

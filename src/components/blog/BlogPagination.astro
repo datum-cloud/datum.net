@@ -12,9 +12,9 @@ const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props as Pr
 
 function getPageUrl(page: number): string {
   if (page === 1) {
-    return `${baseUrl}/`;
+    return `${baseUrl}`;
   }
-  return `${baseUrl}/${page}/`;
+  return `${baseUrl}/${page}`;
 }
 ---
 

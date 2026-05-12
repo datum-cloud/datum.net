@@ -48,7 +48,7 @@ const authorsWithPosts = authors.filter(
                 const avatarUrl = author.avatar ? getStrapiMediaUrl(author.avatar.url) : undefined;
                 return (
                   <a
-                    href={`/authors/${authorSlug}/`}
+                    href={`/authors/${authorSlug}`}
                     class="entry-list-item entry-list-item--wrapper flex items-center gap-4 rounded-lg p-4 transition-colors hover:bg-white/5"
                     title={author.name}
                   >

@@ -6,20 +6,20 @@
         {
           "id": "mac-os",
           "label": "mac",
-          "href": "/download/mac-os/",
+          "href": "/download/mac-os",
           "icon": "apple"
         },
         {
           "id": "windows",
           "label": "Windows",
-          "href": "/download/windows/",
+          "href": "/download/windows",
           "icon": "windows"
         },
         {
           "id": "linux",
           "label": "Linux",
           "icon": "linux",
-          "href": "/download/linux/"
+          "href": "/download/linux"
         }
       ]
     },
@@ -29,13 +29,13 @@
         {
           "id": "datumctl",
           "label": "datumctl",
-          "href": "/download/datumctl/",
+          "href": "/download/datumctl",
           "icon": "terminal"
         },
         {
           "id": "datum-mcp",
           "label": "Datum MCP",
-          "href": "/download/datum-mcp/",
+          "href": "/download/datum-mcp",
           "icon": "workflow"
         }
       ]
@@ -47,21 +47,21 @@
           "id": "go",
           "label": "Go",
           "icon": "go",
-          "href": "/download/go/",
+          "href": "/download/go",
           "badge": "Coming"
         },
         {
           "id": "typescript",
           "label": "TypeScript",
           "icon": "ts",
-          "href": "/download/typescript/",
+          "href": "/download/typescript",
           "badge": "Coming"
         },
         {
           "id": "rust",
           "label": "Rust",
           "icon": "rust",
-          "href": "/download/rust/",
+          "href": "/download/rust",
           "badge": "Coming"
         }
       ]

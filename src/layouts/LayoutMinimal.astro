@@ -1,0 +1,185 @@
+---
+import fontsCss from '@v1/styles/fonts.css?raw';
+import { SEO } from 'astro-seo';
+import config from '@data/siteConfig.json';
+import { formatISODate } from '@utils/dateUtils';
+import type { LayoutProps } from '@/src/types/common';
+import Favicons from '@components/Favicons.astro';
+import JsonLd from '@components/JsonLd.astro';
+import defaultOgImage from '@content/images/og/default.png';
+import { organizationSchema, websiteSchema } from '@data/schemaOrgSite';
+import LayoutEmbedScripts from '@components/LayoutEmbedScripts.astro';
+
+const {
+  title,
+  description,
+  image,
+  article,
+  publishDate,
+  author,
+  canonical,
+  dataTheme = '',
+  bodyClass = 'page-hello-minimal',
+  meta,
+  jsonLd,
+} = Astro.props as LayoutProps;
+
+const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
+const isProduction = mode === 'production';
+const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
+const imageContent = image ? image : defaultOgImage;
+
+const siteBase = Astro.site?.href ?? 'https://www.datum.net';
+const toAbsoluteUrl = (src: string): string => {
+  if (!src || src.startsWith('http')) return src;
+  return new URL(src, siteBase).href;
+};
+
+const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
+const descriptionValue =
+  meta && meta.description ? meta.description : description ? description : '';
+const twitterImage =
+  meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
+const ogImageUrl = toAbsoluteUrl(
+  meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src
+);
+const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
+---
+
+<!doctype html>
+<html lang="en" data-theme={dataTheme}>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="alternate" type="application/rss+xml" title="Datum RSS Feed" href="/rss.xml" />
+    <Favicons />
+
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://hyperping.com" />
+    <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
+
+    <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+    <link rel="preconnect" href="https://edge.marker.io" crossorigin />
+
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-regular-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-medium-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/allianceno1-semibold-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/datum/canelatextlcweb-regular-webfont.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style is:inline set:html={fontsCss}></style>
+
+    <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
+    <SEO
+      title={titleValue}
+      description={descriptionValue}
+      canonical={canonical || pageUrl}
+      noindex={!isProduction}
+      nofollow={!isProduction}
+      openGraph={{
+        basic: {
+          title: meta && meta.og && meta.og.title ? meta.og.title : title,
+          type: article ? 'article' : 'website',
+          image: ogImageUrl,
+          url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
+        },
+        optional: {
+          description: meta && meta.og && meta.og.description ? meta.og.description : description,
+          siteName: 'Datum',
+          locale: 'en_US',
+        },
+        ...(article && publishDate
+          ? {
+              article: {
+                publishedTime: formatISODate(publishDate),
+                authors: [author || 'Datum Inc.'],
+              },
+            }
+          : {}),
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        site: config.socials.twitter.handle || '@datumcloud',
+        creator: config.socials.twitter.handle || '@datumcloud',
+        title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
+        description:
+          meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
+        image: twitterImageUrl,
+      }}
+      extend={{
+        meta: [
+          { name: 'twitter:url', content: canonical || pageUrl },
+          { name: 'theme-color', content: '#0b1a2c' },
+        ],
+        link: [
+          { rel: 'icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'mask-icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'apple-touch-icon', href: new URL('/apple-touch-icon.png', Astro.site).href },
+        ],
+      }}
+    />
+
+    <JsonLd data={organizationSchema} />
+    <JsonLd data={websiteSchema} />
+    {jsonLd && <JsonLd data={jsonLd} />}
+
+    {
+      isProduction && (
+        <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
+      )
+    }
+  </head>
+  <body class={bodyClass}>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <main id="main-content">
+      <slot />
+    </main>
+    <script>
+      import '@v1/scripts/scroll-effects.js';
+    </script>
+
+    <LayoutEmbedScripts isProduction={isProduction} />
+
+    <script>
+      (function initSectionLabels() {
+        const labels = document.querySelectorAll('.section-label, .mission-label');
+        for (const label of Array.from(labels) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                label.classList.add('highlight-animate');
+              }
+            },
+            { threshold: 0.8 }
+          );
+          obs.observe(label);
+        }
+      })();
+    </script>
+  </body>
+</html>

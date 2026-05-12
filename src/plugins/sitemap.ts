@@ -212,14 +212,12 @@ const createSitemapBuilderIntegration = (options?: SitemapOptions): AstroIntegra
               else fullPath += r.generate(r.pathname);
 
               const newUrl = new URL(fullPath, finalSiteUrl).href;
-              urls.push({ url: newUrl.endsWith('/') ? newUrl : newUrl + '/' });
+              urls.push({ url: newUrl.endsWith('/') ? newUrl : newUrl });
             }
             return urls;
           }, []);
 
-          const siteUrl = finalSiteUrl.href.endsWith('/')
-            ? finalSiteUrl.href
-            : finalSiteUrl.href + '/';
+          const siteUrl = finalSiteUrl.href.endsWith('/') ? finalSiteUrl.href : finalSiteUrl.href;
 
           // Fetch dynamic sources in parallel
           console.log(`%s  → Fetching blog posts from Strapi...`, infoPrefix);

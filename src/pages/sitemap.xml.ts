@@ -12,23 +12,23 @@ const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
 // Known static routes (dedicated .astro files, not driven by content collections)
 const STATIC_ROUTES = [
   '/',
-  '/about/',
-  '/authors/',
-  '/blog/',
-  '/brand/',
-  '/careers/',
-  '/changelog/',
-  '/contact/',
-  '/download/',
-  '/essentials/',
-  '/events/',
-  '/events/alt-cloud-meetups/',
-  '/events/community-huddles/',
-  '/features/',
-  '/handbook/',
-  '/locations/',
-  '/pricing/',
-  '/roadmap/',
+  '/about',
+  '/authors',
+  '/blog',
+  '/brand',
+  '/careers',
+  '/changelog',
+  '/contact',
+  '/download',
+  '/essentials',
+  '/events',
+  '/events/alt-cloud-meetups',
+  '/events/community-huddles',
+  '/features',
+  '/handbook',
+  '/locations',
+  '/pricing',
+  '/roadmap',
 ];
 
 // ---------------------------------------------------------------------------
@@ -97,7 +97,7 @@ async function fetchBlogEntries(): Promise<SitemapEntry[]> {
     return (json.data?.articles ?? [])
       .filter((a) => a.slug && isNaN(parseInt(a.slug, 10)))
       .map((a) => ({
-        url: `${SITE_URL}/blog/${a.slug}/`,
+        url: `${SITE_URL}/blog/${a.slug}`,
         lastmod: toISODate(a.originalPublishedAt),
       }));
   } catch {
@@ -123,9 +123,8 @@ async function fetchDocEntries(): Promise<SitemapEntry[]> {
 
     return locs.map((m, i) => {
       // Mintlify uses https://datum.net (no www) — normalise to www.datum.net
-      // and ensure trailing slash for consistency
-      let url = m[1].trim().replace('https://datum.net/', `${SITE_URL}/`);
-      if (!url.endsWith('/')) url += '/';
+      const url = m[1].trim().replace('https://datum.net/', `${SITE_URL}/`);
+
       return {
         url,
         lastmod: lastmods[i]?.[1]?.trim(),
@@ -146,7 +145,7 @@ async function fetchContentCollectionEntries(): Promise<SitemapEntry[]> {
   ]);
 
   const handbookEntries: SitemapEntry[] = handbooks.map((h) => ({
-    url: `${SITE_URL}/handbook/${h.id}/`,
+    url: `${SITE_URL}/handbook/${h.id}`,
     lastmod: toISODate(h.data.lastModified),
   }));
 
@@ -154,7 +153,7 @@ async function fetchContentCollectionEntries(): Promise<SitemapEntry[]> {
     url: `${SITE_URL}/legal/${l.id
       .replace(/\.(mdx?|md)$/, '')
       .split('/')
-      .pop()}/`,
+      .pop()}`,
   }));
 
   return [...handbookEntries, ...legalEntries];

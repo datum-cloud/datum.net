@@ -25,8 +25,8 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://www.datum.net/essentials/',
-      url: 'https://www.datum.net/essentials/',
+      '@id': 'https://www.datum.net/essentials',
+      url: 'https://www.datum.net/essentials',
       name: 'Batteries included – Enterprise-grade networking primitives',
       description: 'We think core cloud features are essential, not optional.',
       isPartOf: { '@id': 'https://www.datum.net/#organization' },
@@ -35,7 +35,7 @@ const jsonLd = {
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://www.datum.net/pricing/#faq',
+      '@id': 'https://www.datum.net/pricing#faq',
       mainEntity: [
         {
           '@type': 'Question',
@@ -83,9 +83,9 @@ const jsonLd = {
         ariaLabel="Product"
         mobileLabel="Product"
         items={[
-          { label: 'Features', href: '/features/', exact: true },
-          { label: 'Essentials', href: '/essentials/' },
-          { label: 'Pricing', href: '/pricing/' },
+          { label: 'Features', href: '/features', exact: true },
+          { label: 'Essentials', href: '/essentials' },
+          { label: 'Pricing', href: '/pricing' },
         ]}
       />
     </Hero>

@@ -80,9 +80,9 @@ const jsonLd = {
         ariaLabel="Product"
         mobileLabel="Product"
         items={[
-          { label: 'Features', href: '/features/', exact: true },
-          { label: 'Essentials', href: '/essentials/' },
-          { label: 'Pricing', href: '/pricing/' },
+          { label: 'Features', href: '/features', exact: true },
+          { label: 'Essentials', href: '/essentials' },
+          { label: 'Pricing', href: '/pricing' },
         ]}
       />
     </Hero>
@@ -264,32 +264,28 @@ const jsonLd = {
                 </div>
 
                 <p class="features-cta-description">
-                  Expose <a href="https://www.datum.net/download/">localhost</a> to the internet with
-                  our desktop apps:
+                  Expose <a href="download">localhost</a> to the internet with our desktop apps:
                 </p>
 
                 <div class="features-cta-links">
                   <div class="features-cta-link">
                     <Icon name="apple" size="md" />
-                    <a
-                      href="https://www.datum.net/download/mac-os/"
-                      data-fathom-event="Features page: Download Mac">mac</a
+                    <a href="/download/mac-os" data-fathom-event="Features page: Download Mac"
+                      >mac</a
                     >
                   </div>
 
                   <div class="features-cta-link">
                     <Icon name="windows" size="md" />
-                    <a
-                      href="https://www.datum.net/download/windows/"
-                      data-fathom-event="Features page: Download Windows">Windows</a
+                    <a href="/download/windows" data-fathom-event="Features page: Download Windows"
+                      >Windows</a
                     >
                   </div>
 
                   <div class="features-cta-link">
                     <Icon name="linux" size="md" />
-                    <a
-                      href="https://www.datum.net/download/linux/"
-                      data-fathom-event="Features page: Download Linux">Linux</a
+                    <a href="/download/linux" data-fathom-event="Features page: Download Linux"
+                      >Linux</a
                     >
                   </div>
                 </div>

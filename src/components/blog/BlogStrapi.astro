@@ -41,8 +41,8 @@ const listPosts = currentPage === 1 ? pageArticles.slice(3) : pageArticles;
 const baseUrl = '/blog';
 const prevPage = currentPage - 1;
 const prevUrl =
-  currentPage > 1 ? (prevPage === 1 ? `${baseUrl}/` : `${baseUrl}/${prevPage}/`) : undefined;
-const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}/` : undefined;
+  currentPage > 1 ? (prevPage === 1 ? `${baseUrl}` : `${baseUrl}/${prevPage}`) : undefined;
+const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : undefined;
 ---
 
 {

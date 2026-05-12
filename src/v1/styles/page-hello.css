@@ -339,7 +339,7 @@
   }
 
   .hello-modal--actions {
-    @apply flex flex-col gap-2 pt-12;
+    @apply flex flex-col gap-2 pt-8 md:pt-10 lg:pt-12;
   }
 
   .hello-modal--btn-primary {

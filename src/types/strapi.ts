@@ -12,6 +12,7 @@ export interface StrapiImageFormat {
 export interface StrapiImage {
   url: string;
   alternativeText?: string;
+  caption?: string;
   width?: number;
   height?: number;
   formats?: {
@@ -34,7 +35,11 @@ export interface StrapiSocial {
   twitter?: string;
   linkedin?: string;
   github?: string;
+  discord?: string;
+  email?: string;
 }
+
+export type CardCategory = 'partnerships' | 'support' | 'pr_events' | 'fundraising';
 
 export interface StrapiAuthorFull {
   documentId: string;
@@ -42,6 +47,8 @@ export interface StrapiAuthorFull {
   name: string;
   title?: string;
   bio?: string;
+  /** Short intro for the /hello profile modal only (About page still uses bio). */
+  helloBio?: string;
   isTeam?: boolean;
   team?: 'founders' | 'team';
   tick?: string;
@@ -49,6 +56,13 @@ export interface StrapiAuthorFull {
   weekends?: string;
   avatar?: StrapiImage;
   social?: StrapiSocial;
+  isCard?: boolean;
+  /** /hello tab keys: Strapi multiselect custom field stores a comma-separated string; normalized in authors fetch. */
+  cardCategories?: CardCategory[];
+  location?: string;
+  timezone?: string;
+  calendly?: string;
+  cardImages?: StrapiImage[];
 }
 
 export interface StrapiAuthorsResponse {
@@ -132,6 +146,13 @@ const STRAPI_BASE_URL =
     ? strapiUrl.replace(/\/$/, '')
     : 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 
+const strapiAssetsUrl = import.meta.env?.STRAPI_ASSETS_URL || process.env.STRAPI_ASSETS_URL;
+/** Base URL for relative upload paths; CDN/asset host when set, otherwise API origin */
+const STRAPI_MEDIA_BASE_URL =
+  typeof strapiAssetsUrl === 'string' && strapiAssetsUrl.trim()
+    ? strapiAssetsUrl.replace(/\/$/, '')
+    : STRAPI_BASE_URL;
+
 /**
  * Helper to get full image URL from Strapi
  */
@@ -141,8 +162,8 @@ export function getStrapiMediaUrl(url: string | undefined): string | undefined {
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
-  // Otherwise, prepend Strapi URL
-  return `${STRAPI_BASE_URL}${url}`;
+  // Relative paths: STRAPI_ASSETS_URL when set, else STRAPI_URL
+  return `${STRAPI_MEDIA_BASE_URL}${url}`;
 }
 
 /**
@@ -153,7 +174,7 @@ export function getStrapiMediaUrl(url: string | undefined): string | undefined {
 export function resolveMarkdownStrapiUrls(markdown: string): string {
   if (!markdown) return markdown;
   // Replace ](/uploads/ with ](STRAPI_URL/uploads/ (covers both [link](url) and ![img](url))
-  return markdown.replace(/\]\(\/uploads\//g, `](${STRAPI_BASE_URL}/uploads/`);
+  return markdown.replace(/\]\(\/uploads\//g, `](${STRAPI_MEDIA_BASE_URL}/uploads/`);
 }
 
 /**

@@ -1,0 +1,250 @@
+---
+// src/components/hello/HelloPeople.astro
+import Icon from '@components/Icon.astro';
+import { getStrapiCardMembers, getTeamBgColor } from '@libs/strapi';
+import type { CardCategory, StrapiAuthorFull } from '@libs/strapi';
+import { getStrapiMediaUrl } from '@/src/types/strapi';
+import HelloCard from './HelloCard.astro';
+import HelloModal from './HelloModal.astro';
+import HelloSupportCard from './HelloSupportCard.astro';
+import HelloBehindCard from './HelloBehindCard.astro';
+
+const cardMembers: StrapiAuthorFull[] = await getStrapiCardMembers();
+
+const helloMembersData = cardMembers.map((member, index) => ({
+  slug: member.slug || member.documentId,
+  index,
+  data: {
+    name: member.name,
+    title: member.title,
+    helloBio: member.helloBio?.trim() || undefined,
+    avatarBgColor: getTeamBgColor(index),
+    avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
+    location: member.location,
+    timezone: member.timezone,
+    calendly: member.calendly,
+    discord: member.social?.discord,
+    linkedin: member.social?.linkedin,
+    email: member.social?.email,
+    cardImages:
+      member.cardImages?.map((img) => ({
+        src: getStrapiMediaUrl(img.url),
+        caption: img.caption,
+        alt: img.alternativeText,
+      })) ?? [],
+  },
+}));
+
+interface FilterOption {
+  value: 'all' | CardCategory;
+  label: string;
+}
+
+const filters: FilterOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'partnerships', label: 'Partnerships' },
+  { value: 'support', label: 'Support' },
+  { value: 'pr_events', label: 'PR & events' },
+  { value: 'fundraising', label: 'Fundraising' },
+];
+
+const filterLabelsJson = JSON.stringify(Object.fromEntries(filters.map((f) => [f.value, f.label])));
+const helloFilterMobileMenuId = 'hello-people-filter-menu';
+const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
+---
+
+<section
+  class="hello-people"
+  x-data={`{ filter: 'all', mobileFilterOpen: false, filterLabels: ${filterLabelsJson} }`}
+>
+  <div class="max-width">
+    <nav class="hello-filters-nav" aria-label="Filter team by topic">
+      <div class="hello-filters-mobile">
+        <button
+          type="button"
+          id={helloFilterMobileTriggerId}
+          class="hello-filter-mobile-trigger"
+          @click="mobileFilterOpen = !mobileFilterOpen"
+          :aria-expanded="mobileFilterOpen.toString()"
+          aria-haspopup="listbox"
+          aria-controls={helloFilterMobileMenuId}
+        >
+          <span class="hello-filter-mobile-label">Topic</span>
+          <span class="hello-filter-mobile-selected" x-text="filterLabels[filter]"></span>
+          <span
+            class="hello-filter-mobile-chevron"
+            :class="{ 'hello-filter-mobile-chevron--open': mobileFilterOpen }"
+            aria-hidden="true"
+          >
+            <Icon name="chevron-down" size="sm" class="text-current" />
+          </span>
+        </button>
+        <div
+          id={helloFilterMobileMenuId}
+          class="hello-filter-mobile-dropdown"
+          x-show="mobileFilterOpen"
+          @click.outside="mobileFilterOpen = false"
+          x-cloak
+          style="display: none"
+          role="listbox"
+          aria-labelledby={helloFilterMobileTriggerId}
+        >
+          <ul class="hello-filter-mobile-list" role="presentation">
+            {
+              filters.map((f) => {
+                const activeOptionClass = `{ 'hello-filter-mobile-option--active': filter === '${f.value}' }`;
+                const selectedBinding = `filter === '${f.value}'`;
+                const selectBinding = `filter = '${f.value}'; mobileFilterOpen = false`;
+                return (
+                  <li role="presentation">
+                    <button
+                      type="button"
+                      class="hello-filter-mobile-option"
+                      x-bind:class={activeOptionClass}
+                      role="option"
+                      x-bind:aria-selected={selectedBinding}
+                      x-on:click={selectBinding}
+                    >
+                      <span>{f.label}</span>
+                    </button>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="hello-filters" role="tablist">
+        {
+          filters.map((f) => {
+            const classBinding = `{ 'hello-filter-btn--active': filter === '${f.value}' }`;
+            const selectedBinding = `filter === '${f.value}'`;
+            const clickBinding = `filter = '${f.value}'`;
+            return (
+              <button
+                type="button"
+                class="hello-filter-btn"
+                role="tab"
+                x-bind:class={classBinding}
+                x-bind:aria-selected={selectedBinding}
+                x-on:click={clickBinding}
+              >
+                {f.label}
+              </button>
+            );
+          })
+        }
+      </div>
+    </nav>
+
+    <div class="hello-grid" x-cloak>
+      {cardMembers.map((member, idx) => <HelloCard member={member} index={idx} />)}
+      <HelloSupportCard />
+      <HelloBehindCard />
+    </div>
+  </div>
+
+  <HelloModal />
+</section>
+
+<script is:inline>
+  (function () {
+    /**
+     * Strapi `timezone` must be an IANA zone (e.g. America/New_York) for live local time.
+     * Signed offsets like +09:00 / -05:30 work as fixed UTC offsets (no DST).
+     * Bare HH:mm is shown as static text (legacy); prefer IANA in CMS for correct clocks.
+     */
+    function parseUtcOffsetMinutes(tz) {
+      var trimmed = tz.trim();
+      var m = trimmed.match(/^([+-])(\d{1,2}):(\d{2})$/);
+      if (!m) return null;
+      var sign = m[1] === '+' ? 1 : -1;
+      var h = parseInt(m[2], 10);
+      var minutes = parseInt(m[3], 10);
+      if (minutes >= 60 || h > 14) return null;
+      return sign * (h * 60 + minutes);
+    }
+
+    function formatTimeFixedOffset(offsetMinutes) {
+      var d = new Date();
+      var total = d.getUTCHours() * 60 + d.getUTCMinutes() + offsetMinutes;
+      total = ((total % 1440) + 1440) % 1440;
+      var hh = Math.floor(total / 60);
+      var mm = total % 60;
+      return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    }
+
+    function formatTime(tz) {
+      if (!tz) return '--:--';
+      try {
+        return new Intl.DateTimeFormat('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: tz,
+        }).format(new Date());
+      } catch {
+        var offsetMin = parseUtcOffsetMinutes(tz);
+        if (offsetMin !== null) return formatTimeFixedOffset(offsetMin);
+        var bare = tz.trim().match(/^(\d{1,2}):(\d{2})$/);
+        if (bare) {
+          var bh = parseInt(bare[1], 10);
+          var bm = parseInt(bare[2], 10);
+          if (bm < 60) {
+            return String(bh).padStart(2, '0') + ':' + String(bm).padStart(2, '0');
+          }
+        }
+        return '--:--';
+      }
+    }
+    function updateAll() {
+      document.querySelectorAll('.hello-card-time[data-tz]').forEach((el) => {
+        const tz = el.getAttribute('data-tz');
+        if (tz) el.textContent = formatTime(tz);
+      });
+    }
+    updateAll();
+    setInterval(updateAll, 60000);
+  })();
+</script>
+
+<script is:inline define:vars={{ helloMembersData }}>
+  (function () {
+    const memberData = helloMembersData;
+
+    function dispatchOpen(member) {
+      if (!window.HELLO_MODAL_OPEN_EVENT) return;
+      document.dispatchEvent(
+        new CustomEvent(window.HELLO_MODAL_OPEN_EVENT, { detail: { member } })
+      );
+    }
+
+    function openFromTrigger(trigger) {
+      const index = parseInt(trigger.getAttribute('data-member-index') || '-1', 10);
+      if (index < 0 || index >= memberData.length) return;
+      dispatchOpen(memberData[index]);
+    }
+
+    function openBySlug(slug) {
+      if (!slug) return;
+      const member = memberData.find((m) => m.slug === slug);
+      if (member) dispatchOpen(member);
+    }
+
+    document.querySelectorAll('[data-hello-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => openFromTrigger(e.currentTarget));
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openFromTrigger(e.currentTarget);
+        }
+      });
+    });
+
+    customElements.whenDefined('hello-modal').then(() => {
+      const hash = window.location.hash.slice(1);
+      if (hash) openBySlug(hash);
+    });
+  })();
+</script>

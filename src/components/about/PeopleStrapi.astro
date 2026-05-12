@@ -54,7 +54,7 @@ const teamMembersData = teamMembers.map((member, index) => ({
                 data-member-trigger
                 data-member-index={index}
                 type="button"
-                tabindex={index + 1}
+                tabindex={0}
                 aria-label={`View ${member.name}'s profile`}
               >
                 {member.avatar && (

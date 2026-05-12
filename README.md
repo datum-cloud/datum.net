@@ -601,3 +601,4 @@ We welcome contributions! Please see our [Contributing Guide](./docs/CONTRIBUTIN
 - [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
 - [Zod Schema Validation](https://zod.dev/)
 - [Project Content Structure](./docs/CONTENT_STRUCTURE.md)
+- [Strapi cache API](./docs/STRAPI_CACHE_API.md)

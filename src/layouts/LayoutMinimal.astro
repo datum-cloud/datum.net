@@ -19,19 +19,31 @@ const {
   author,
   canonical,
   dataTheme = '',
-  bodyClass = 'template',
+  bodyClass = 'page-hello-minimal',
   meta,
   jsonLd,
 } = Astro.props as LayoutProps;
 
-const isProduction = import.meta.env.MODE === 'production';
+const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
+const isProduction = mode === 'production';
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const imageContent = image ? image : defaultOgImage;
 
-// Overwrite with meta
+const siteBase = Astro.site?.href ?? 'https://www.datum.net';
+const toAbsoluteUrl = (src: string): string => {
+  if (!src || src.startsWith('http')) return src;
+  return new URL(src, siteBase).href;
+};
+
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
+const twitterImage =
+  meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
+const ogImageUrl = toAbsoluteUrl(
+  meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src
+);
+const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
 ---
 
 <!doctype html>
@@ -43,16 +55,13 @@ const descriptionValue =
     <link rel="alternate" type="application/rss+xml" title="Datum RSS Feed" href="/rss.xml" />
     <Favicons />
 
-    <!-- DNS Prefetch for external domains (low priority hints) -->
     <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://hyperping.com" />
     <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
-    <link rel="dns-prefetch" href="https://device.maxmind.com" />
 
-    <!-- Preconnect to critical external domains (loads within ~5s) -->
     <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
     <link rel="preconnect" href="https://edge.marker.io" crossorigin />
 
-    <!-- Preload critical fonts (used above the fold) -->
     <link
       rel="preload"
       href="/fonts/datum/allianceno1-regular-webfont.woff2"
@@ -84,16 +93,17 @@ const descriptionValue =
     <style is:inline set:html={fontsCss}></style>
 
     <meta property="og:logo" content={new URL('/images/logo-datum.png', Astro.site).href} />
-
     <SEO
       title={titleValue}
       description={descriptionValue}
       canonical={canonical || pageUrl}
+      noindex={!isProduction}
+      nofollow={!isProduction}
       openGraph={{
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image: meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src,
+          image: ogImageUrl,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -114,19 +124,20 @@ const descriptionValue =
         card: 'summary_large_image',
         site: config.socials.twitter.handle || '@datumcloud',
         creator: config.socials.twitter.handle || '@datumcloud',
-        title: titleValue,
-        description: descriptionValue,
-        image: imageContent.src,
+        title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
+        description:
+          meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
+        image: twitterImageUrl,
       }}
       extend={{
         meta: [
           { name: 'twitter:url', content: canonical || pageUrl },
-          { name: 'theme-color', content: '#3b82f6' },
+          { name: 'theme-color', content: '#0b1a2c' },
         ],
         link: [
-          { rel: 'icon', href: '/favicon.png' },
-          { rel: 'mask-icon', href: '/favicon.png' },
-          { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+          { rel: 'icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'mask-icon', href: new URL('/favicon.png', Astro.site).href },
+          { rel: 'apple-touch-icon', href: new URL('/apple-touch-icon.png', Astro.site).href },
         ],
       }}
     />
@@ -135,7 +146,6 @@ const descriptionValue =
     <JsonLd data={websiteSchema} />
     {jsonLd && <JsonLd data={jsonLd} />}
 
-    {/* Analytics (Fathom) - Load early but defer execution */}
     {
       isProduction && (
         <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
@@ -147,11 +157,29 @@ const descriptionValue =
     <main id="main-content">
       <slot />
     </main>
-
     <script>
       import '@v1/scripts/scroll-effects.js';
     </script>
 
     <LayoutEmbedScripts isProduction={isProduction} />
+
+    <script>
+      (function initSectionLabels() {
+        const labels = document.querySelectorAll('.section-label, .mission-label');
+        for (const label of Array.from(labels) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                label.classList.add('highlight-animate');
+              }
+            },
+            { threshold: 0.8 }
+          );
+          obs.observe(label);
+        }
+      })();
+    </script>
   </body>
 </html>

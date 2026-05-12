@@ -1,0 +1,68 @@
+---
+// src/components/hello/HelloCard.astro
+import Icon from '@components/Icon.astro';
+import { getStrapiMediaUrl } from '@/src/types/strapi';
+import type { CardCategory, StrapiAuthorFull } from '@libs/strapi';
+
+interface Props {
+  member: StrapiAuthorFull;
+  index: number;
+}
+
+const { member, index } = Astro.props as Props;
+
+const categoryTopics: CardCategory[] = member.cardCategories ?? [];
+
+/** Visible when filter is "all" or any assigned topic matches the active tab. */
+const filterShowExpr =
+  categoryTopics.length > 0
+    ? `filter === 'all' || [${categoryTopics.map((t) => `'${t}'`).join(',')}].includes(filter)`
+    : `filter === 'all'`;
+
+const avatarUrl = member.avatar?.url ? getStrapiMediaUrl(member.avatar.url) : undefined;
+const timezone = member.timezone ?? '';
+---
+
+<article
+  class="hello-card"
+  data-member-index={index}
+  data-hello-trigger
+  tabindex="0"
+  role="button"
+  aria-label={`View ${member.name}'s profile`}
+  x-show={filterShowExpr}
+>
+  <div class="hello-card-info">
+    <h3 class="hello-card-name">{member.name}</h3>
+    {member.title && <p class="hello-card-title">{member.title}</p>}
+
+    <div class="hello-card-meta">
+      {
+        member.location && (
+          <span class="hello-card-meta-row">
+            <Icon name="map-pin" size="md" class="hello-card-meta-icon stroke-1" />
+            <span>{member.location}</span>
+          </span>
+        )
+      }
+      {
+        timezone && (
+          <span class="hello-card-meta-row">
+            <Icon name="clock" size="md" class="hello-card-meta-icon stroke-1" />
+            <span class="hello-card-time" data-tz={timezone}>
+              --:--
+            </span>
+          </span>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    avatarUrl && (
+      <div class="hello-card-avatar">
+        <img src={avatarUrl} alt={member.name} loading="lazy" decoding="async" />
+      </div>
+    )
+  }
+</article>

@@ -1,7 +1,7 @@
 ---
 title: "Leadership Team"
 sidebar:
-  label: Leadership Team
+  label: Leadership
   order: 1
 updatedDate: May 11, 2026
 authors: jacob
@@ -9,7 +9,7 @@ meta:
   title: "Leadership Team - Datum Handbook"
   description: "The Datum leadership team charts the company's direction and is accountable to investors, the board, and the broader organization."
   og:
-    title: "Leadership Team"
+    title: "Datum's Leadership Team"
     description: "Who leads Datum and what each leader is accountable for."
 ---
 
@@ -52,7 +52,7 @@ Basically, it's a formula: **Leadership + Management = Accountability**.
 - Global Community Activation
 - Revenue
 
-## Biz Dev: Manish Singh
+## Business Development: Manish Singh
 
 - LMA
 - Partner Management

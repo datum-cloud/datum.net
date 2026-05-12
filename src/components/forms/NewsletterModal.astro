@@ -383,6 +383,7 @@ import Icon from '@components/Icon.astro';
           window.location.pathname + window.location.search + NEWSLETTER_MODAL_HASH
         );
       }
+      window.addEventListener('click', this.onClick);
     }
 
     closeModal() {

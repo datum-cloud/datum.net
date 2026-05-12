@@ -378,7 +378,7 @@ const { class: className } = Astro.props as { class?: string };
           if (image.caption) {
             const caption = document.createElement('p');
             caption.className = 'hello-modal--slide-caption';
-            caption.textContent = `I love: ${image.caption}`;
+            caption.textContent = `${image.caption}`;
             slide.appendChild(caption);
           }
 

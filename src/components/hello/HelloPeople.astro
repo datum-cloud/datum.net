@@ -58,7 +58,7 @@ const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
   x-data={`{ filter: 'all', mobileFilterOpen: false, filterLabels: ${filterLabelsJson} }`}
 >
   <div class="max-width">
-    <nav class="hello-filters-nav" aria-label="Filter team by topic">
+    <nav class="hello-filters-nav" aria-label="Filter team by:">
       <div class="hello-filters-mobile">
         <button
           type="button"
@@ -69,7 +69,7 @@ const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
           aria-haspopup="listbox"
           aria-controls={helloFilterMobileMenuId}
         >
-          <span class="hello-filter-mobile-label">Topic</span>
+          <span class="hello-filter-mobile-label">Filter</span>
           <span class="hello-filter-mobile-selected" x-text="filterLabels[filter]"></span>
           <span
             class="hello-filter-mobile-chevron"

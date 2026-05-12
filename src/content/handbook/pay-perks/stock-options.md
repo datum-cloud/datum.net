@@ -1,7 +1,7 @@
 ---
 title: "Stock Options"
 sidebar:
-  label: Stock Options
+  label: Stock options
   order: 3
 updatedDate: May 11, 2026
 authors: jacob

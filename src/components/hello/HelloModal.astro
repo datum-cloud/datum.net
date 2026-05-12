@@ -1,0 +1,424 @@
+---
+// src/components/hello/HelloModal.astro
+import Icon from '@components/Icon.astro';
+
+const { class: className } = Astro.props as { class?: string };
+---
+
+<hello-modal class={className}>
+  <dialog aria-label="Team member profile">
+    <div class="hello-modal--frame">
+      <button data-close-modal class="hello-modal--close" aria-label="Close profile" type="button">
+        <Icon name="close" size="sm" class="hello-modal--close-icon" />
+      </button>
+      <div class="hello-modal--content" id="hello-modal-content">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </dialog>
+</hello-modal>
+
+<script>
+  const HELLO_MODAL_OPEN_EVENT = 'hello-modal-open';
+  const HELLO_MODAL_CLOSE_EVENT = 'hello-modal-close';
+
+  interface HelloMemberData {
+    index?: number;
+    slug?: string;
+    data: {
+      name: string;
+      title?: string;
+      helloBio?: string;
+      avatarBgColor?: string;
+      avatar?: { src: string };
+      location?: string;
+      timezone?: string;
+      calendly?: string;
+      discord?: string;
+      linkedin?: string;
+      email?: string;
+      cardImages?: { src: string; caption?: string; alt?: string }[];
+    };
+  }
+
+  declare global {
+    interface Window {
+      HELLO_MODAL_OPEN_EVENT: string;
+      HELLO_MODAL_CLOSE_EVENT: string;
+    }
+
+    interface CustomEventMap {
+      'hello-modal-open': CustomEvent<{ member: HelloMemberData }>;
+      'hello-modal-close': CustomEvent;
+    }
+  }
+
+  /**
+   * Strapi `timezone` must be an IANA zone (e.g. America/New_York) for live local time.
+   * Signed offsets like +09:00 / -05:30 work as fixed UTC offsets (no DST).
+   * Bare HH:mm is shown as static text (legacy).
+   */
+  function parseUtcOffsetMinutes(tz: string): number | null {
+    const trimmed = tz.trim();
+    const m = trimmed.match(/^([+-])(\d{1,2}):(\d{2})$/);
+    if (!m) return null;
+    const sign = m[1] === '+' ? 1 : -1;
+    const h = parseInt(m[2], 10);
+    const minutes = parseInt(m[3], 10);
+    if (minutes >= 60 || h > 14) return null;
+    return sign * (h * 60 + minutes);
+  }
+
+  function formatTimeFixedOffset(offsetMinutes: number): string {
+    const d = new Date();
+    let total = d.getUTCHours() * 60 + d.getUTCMinutes() + offsetMinutes;
+    total = ((total % 1440) + 1440) % 1440;
+    const hh = Math.floor(total / 60);
+    const mm = total % 60;
+    return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+  }
+
+  function formatTime(tz: string | undefined): string {
+    if (!tz) return '--:--';
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: tz,
+      }).format(new Date());
+    } catch {
+      const offsetMin = parseUtcOffsetMinutes(tz);
+      if (offsetMin !== null) return formatTimeFixedOffset(offsetMin);
+      const bare = tz.trim().match(/^(\d{1,2}):(\d{2})$/);
+      if (bare) {
+        const bh = parseInt(bare[1], 10);
+        const bm = parseInt(bare[2], 10);
+        if (bm < 60) {
+          return String(bh).padStart(2, '0') + ':' + String(bm).padStart(2, '0');
+        }
+      }
+      return '--:--';
+    }
+  }
+
+  const MAP_PIN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const CLOCK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+  const CALENDAR_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>`;
+  const DISCORD_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
+  const LINKEDIN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.063 2.063 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`;
+  const MAIL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/></svg>`;
+
+  class HelloModal extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    contentContainer: HTMLElement;
+    dialogOpenedAt: number = 0;
+    triggerElement: HTMLElement | null = null;
+    clockTimer: number | null = null;
+    slideAutoplayTimer: number | null = null;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.hello-modal--frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.contentContainer = this.querySelector<HTMLElement>('#hello-modal-content')!;
+
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      document.addEventListener(HELLO_MODAL_OPEN_EVENT, (e: Event) => {
+        const customEvent = e as CustomEvent<{ member: HelloMemberData }>;
+        this.openModal(customEvent.detail.member);
+      });
+
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-hello-modal-open', false);
+        window.removeEventListener('click', this.onClick);
+        this.stopClock();
+        this.stopSlideAutoplay();
+        document.dispatchEvent(new CustomEvent(HELLO_MODAL_CLOSE_EVENT));
+        this.triggerElement?.focus();
+        this.triggerElement = null;
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isInDialog = target.closest('dialog') !== null;
+      const isInDialogFrame = target.closest('.hello-modal--frame') !== null;
+      const isDialogBackdropClick = isInDialog && !isInDialogFrame;
+
+      const clickTime = Date.now();
+      const timeSinceOpen = clickTime - this.dialogOpenedAt;
+      const isTooSoon = timeSinceOpen < 300;
+
+      if (isDialogBackdropClick && !isTooSoon) {
+        this.closeModal();
+      }
+    };
+
+    openModal(member: HelloMemberData) {
+      this.triggerElement = document.activeElement as HTMLElement | null;
+      this.populateContent(member);
+
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-hello-modal-open', true);
+
+      if (member.slug) {
+        history.replaceState(null, '', '#' + member.slug);
+      }
+
+      this.dialogOpenedAt = Date.now();
+      this.startClock();
+
+      setTimeout(() => {
+        window.addEventListener('click', this.onClick);
+      }, 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+
+    startClock() {
+      this.updateClock();
+      this.clockTimer = window.setInterval(() => this.updateClock(), 60000);
+    }
+
+    stopClock() {
+      if (this.clockTimer !== null) {
+        window.clearInterval(this.clockTimer);
+        this.clockTimer = null;
+      }
+    }
+
+    stopSlideAutoplay() {
+      if (this.slideAutoplayTimer !== null) {
+        window.clearInterval(this.slideAutoplayTimer);
+        this.slideAutoplayTimer = null;
+      }
+    }
+
+    updateClock() {
+      const timeEl = this.contentContainer.querySelector<HTMLElement>(
+        '.hello-modal--time[data-tz]'
+      );
+      if (!timeEl) return;
+      const tz = timeEl.getAttribute('data-tz');
+      timeEl.textContent = formatTime(tz ?? undefined);
+    }
+
+    populateContent(member: HelloMemberData) {
+      const { data } = member;
+      this.stopSlideAutoplay();
+      this.contentContainer.textContent = '';
+
+      const left = document.createElement('div');
+      left.className = 'hello-modal--left';
+
+      // Header section (avatar + name + meta)
+      const header = document.createElement('div');
+      header.className = 'hello-modal--header';
+
+      if (data.avatar) {
+        const avatar = document.createElement('div');
+        avatar.className = 'hello-modal--avatar';
+        if (data.avatarBgColor) {
+          avatar.style.backgroundColor = data.avatarBgColor;
+        }
+        const img = document.createElement('img');
+        img.src = data.avatar.src;
+        img.alt = data.name;
+        avatar.appendChild(img);
+        header.appendChild(avatar);
+      }
+
+      const identity = document.createElement('div');
+      identity.className = 'hello-modal--identity';
+      const nameEl = document.createElement('p');
+      nameEl.className = 'hello-modal--name';
+      nameEl.textContent = data.name;
+      identity.appendChild(nameEl);
+      if (data.title) {
+        const titleEl = document.createElement('p');
+        titleEl.className = 'hello-modal--title';
+        titleEl.textContent = data.title;
+        identity.appendChild(titleEl);
+      }
+
+      // Meta row (location + time)
+      if (data.location || data.timezone) {
+        const meta = document.createElement('div');
+        meta.className = 'hello-modal--meta';
+        if (data.location) {
+          const row = document.createElement('span');
+          row.className = 'hello-modal--meta-row';
+          row.innerHTML = MAP_PIN_SVG;
+          const text = document.createElement('span');
+          text.textContent = data.location;
+          row.appendChild(text);
+          meta.appendChild(row);
+        }
+        if (data.timezone) {
+          const row = document.createElement('span');
+          row.className = 'hello-modal--meta-row';
+          row.innerHTML = CLOCK_SVG;
+          const text = document.createElement('span');
+          text.className = 'hello-modal--time';
+          text.setAttribute('data-tz', data.timezone);
+          text.textContent = '--:--';
+          row.appendChild(text);
+          meta.appendChild(row);
+        }
+        identity.appendChild(meta);
+      }
+      header.appendChild(identity);
+      left.appendChild(header);
+
+      // Bio section
+      if (data.helloBio) {
+        const bio = document.createElement('div');
+        bio.className = 'hello-modal--bio-wrap';
+        const p = document.createElement('p');
+        p.className = 'hello-modal--bio';
+        p.textContent = data.helloBio;
+        bio.appendChild(p);
+        left.appendChild(bio);
+      }
+
+      // Actions section
+      const hasAnyAction = data.calendly || data.discord || data.linkedin || data.email;
+      if (hasAnyAction) {
+        const actions = document.createElement('div');
+        actions.className = 'hello-modal--actions';
+
+        if (data.calendly) {
+          const a = document.createElement('a');
+          a.href = data.calendly;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.className = 'hello-modal--btn-primary';
+          a.innerHTML = `${CALENDAR_SVG}<span>Schedule a call</span>`;
+          actions.appendChild(a);
+        }
+
+        const secondary: { url?: string; label: string; svg: string }[] = [
+          { url: data.discord, label: 'Discord', svg: DISCORD_SVG },
+          { url: data.linkedin, label: 'LinkedIn', svg: LINKEDIN_SVG },
+          { url: data.email, label: 'Email', svg: MAIL_SVG },
+        ];
+        const presentSecondary = secondary.filter((s) => s.url);
+        if (presentSecondary.length > 0) {
+          const row = document.createElement('div');
+          row.className = 'hello-modal--actions-row';
+          for (const { url, label, svg } of presentSecondary) {
+            const a = document.createElement('a');
+            a.href = label === 'Email' ? `mailto:${url}` : url!;
+            if (label !== 'Email') {
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+            }
+            a.className = 'hello-modal--btn-secondary';
+            a.innerHTML = `${svg}<span>${label}</span>`;
+            row.appendChild(a);
+          }
+          actions.appendChild(row);
+        }
+
+        left.appendChild(actions);
+      }
+
+      this.contentContainer.appendChild(left);
+
+      // Right column: slideshow of card images
+      const images = data.cardImages ?? [];
+      if (images.length > 0) {
+        const right = document.createElement('div');
+        right.className = 'hello-modal--right';
+
+        const slider = document.createElement('div');
+        slider.className = 'hello-modal--slider';
+        slider.setAttribute('role', 'region');
+        slider.setAttribute('aria-roledescription', 'slideshow');
+        slider.setAttribute('aria-label', `${data.name} photos`);
+
+        const track = document.createElement('div');
+        track.className = 'hello-modal--slides';
+        track.style.setProperty('--hello-slide-count', String(images.length));
+        track.style.setProperty('--hello-slider-index', '0');
+        images.forEach((image, i) => {
+          const slide = document.createElement('div');
+          slide.className = 'hello-modal--slide';
+          slide.setAttribute('role', 'group');
+          slide.setAttribute('aria-roledescription', 'slide');
+          slide.setAttribute('aria-label', `${i + 1} of ${images.length}`);
+          slide.dataset.slideIndex = String(i);
+          if (i !== 0) slide.setAttribute('aria-hidden', 'true');
+
+          const img = document.createElement('img');
+          img.src = image.src;
+          img.alt = image.alt ?? '';
+          img.loading = i === 0 ? 'eager' : 'lazy';
+          slide.appendChild(img);
+
+          if (image.caption) {
+            const caption = document.createElement('p');
+            caption.className = 'hello-modal--slide-caption';
+            caption.textContent = `I love: ${image.caption}`;
+            slide.appendChild(caption);
+          }
+
+          track.appendChild(slide);
+        });
+        slider.appendChild(track);
+
+        if (images.length > 1) {
+          const SLIDE_AUTOPLAY_MS = 3500;
+          let activeIndex = 0;
+          const setActive = (next: number) => {
+            const total = images.length;
+            const normalized = ((next % total) + total) % total;
+            if (normalized === activeIndex) return;
+            const slides = track.querySelectorAll<HTMLElement>('.hello-modal--slide');
+            slides[activeIndex]?.setAttribute('aria-hidden', 'true');
+            slides[normalized]?.removeAttribute('aria-hidden');
+            track.style.setProperty('--hello-slider-index', String(normalized));
+            activeIndex = normalized;
+          };
+
+          const prefersReducedMotion =
+            typeof window !== 'undefined' &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          if (!prefersReducedMotion) {
+            this.slideAutoplayTimer = window.setInterval(() => {
+              setActive(activeIndex + 1);
+            }, SLIDE_AUTOPLAY_MS);
+          }
+        }
+
+        right.appendChild(slider);
+        this.contentContainer.appendChild(right);
+      }
+    }
+  }
+
+  customElements.define('hello-modal', HelloModal);
+
+  window.HELLO_MODAL_OPEN_EVENT = HELLO_MODAL_OPEN_EVENT;
+  window.HELLO_MODAL_CLOSE_EVENT = HELLO_MODAL_CLOSE_EVENT;
+</script>

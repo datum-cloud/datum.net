@@ -1,0 +1,79 @@
+---
+// src/components/hello/HelloHero.astro
+import Icon from '@components/Icon.astro';
+import navigation from '@data/navigation.json';
+import Button from '@components/Button.astro';
+import LogoDatumDark from '@v1/assets/download/logo-datum-dark.svg';
+
+const socials = (
+  navigation as {
+    social: Array<{ href: string; text: string; icon: string; isExternal?: boolean }>;
+  }
+).social;
+---
+
+<section class="hello-hero">
+  <div class="max-width hello-hero-inner">
+    <a href="/" class="hello-hero-logo" aria-label="Datum">
+      <LogoDatumDark class="hello-hero-logo-img" aria-hidden="true" />
+    </a>
+
+    <h1 class="hello-hero-title">Good to see ya!</h1>
+
+    <div class="hello-hero-newsletter">
+      <span class="hello-hero-newsletter-label">
+        Stay in the loop, <span class="hello-hero-newsletter-cta">subscribe</span> to our monthly newsletter
+      </span>
+      <div class="hello-hero-newsletter-field">
+        <div data-newsletter-trigger data-newsletter-fathom="Hello: Newsletter Signup">
+          <Button
+            class="btn"
+            text="Enter your details"
+            icon={{ name: 'arrow-right', size: 'md' }}
+            iconPosition="right"
+            iconClass="stroke-1.5"
+            href="#"
+          />
+        </div>
+      </div>
+    </div>
+
+    <ul class="hello-hero-socials" aria-label="Social links">
+      {
+        socials.map((item) => (
+          <li>
+            <a
+              class="hello-hero-social-link"
+              href={item.href}
+              target={item.isExternal ? '_blank' : '_self'}
+              rel={item.isExternal ? 'noopener noreferrer' : undefined}
+              aria-label={item.text}
+              title={item.text}
+            >
+              <Icon name={item.icon} size="lg" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const newsletter = document.querySelector('.hello-hero-newsletter');
+    if (!newsletter) return;
+    const openNewsletterModal = () => {
+      if (!window.NEWSLETTER_MODAL_OPEN_EVENT) return;
+      document.dispatchEvent(new CustomEvent(window.NEWSLETTER_MODAL_OPEN_EVENT));
+    };
+    const cta = newsletter.querySelector('.hello-hero-newsletter-cta');
+    if (cta) {
+      cta.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.fathom) window.fathom.trackEvent('Hello: Newsletter Signup');
+        openNewsletterModal();
+      });
+    }
+  });
+</script>

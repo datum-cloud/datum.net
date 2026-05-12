@@ -7,7 +7,11 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/articles';
-import { fetchStrapiAuthors } from '@libs/strapi/authors';
+import {
+  fetchStrapiAuthors,
+  getStrapiTeamMembers,
+  getStrapiCardMembers,
+} from '@libs/strapi/authors';
 import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
 
 const CACHE_DIR = path.resolve(process.cwd(), '.cache');
@@ -103,6 +107,7 @@ function invalidateAuthorCache(): string[] {
   return [
     ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-authors'),
     ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-team-members'),
+    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-card-members'),
     ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-author-slug-'),
   ];
 }
@@ -138,6 +143,19 @@ async function warmAuthorCache(): Promise<void> {
     await fetchStrapiAuthors();
   } catch (err) {
     console.error('[Webhook] Cache warm failed for authors:', err);
+  }
+
+  // Rebuild derived caches (team and card members) after the primary author list refresh
+  try {
+    await getStrapiTeamMembers();
+  } catch (err) {
+    console.error('[Webhook] Cache warm failed for team members:', err);
+  }
+
+  try {
+    await getStrapiCardMembers();
+  } catch (err) {
+    console.error('[Webhook] Cache warm failed for card members:', err);
   }
 }
 

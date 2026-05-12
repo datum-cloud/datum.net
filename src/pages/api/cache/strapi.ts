@@ -4,7 +4,11 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import crypto from 'node:crypto';
-import { regenerateStrapiCacheIfMissing } from '@libs/strapi/regenerateCache';
+import {
+  regenerateStrapiCacheIfMissing,
+  forceRegenerateStrapiCache,
+  validateStrapiForceRegenerateRequest,
+} from '@libs/strapi/regenerateCache';
 
 function verifyWebhookSecret(request: Request): boolean {
   const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
@@ -45,6 +49,77 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
+    const contentType = request.headers.get('Content-Type') ?? '';
+    const isJsonBody = contentType.includes('application/json');
+    let body: unknown = null;
+
+    if (isJsonBody) {
+      const text = await request.text();
+      if (text.trim()) {
+        try {
+          body = JSON.parse(text) as unknown;
+        } catch {
+          return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      }
+    }
+
+    if (body && typeof body === 'object' && 'names' in body) {
+      const rawNames = (body as { names?: unknown }).names;
+      if (!Array.isArray(rawNames)) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: 'Invalid body: "names" must be an array of strings',
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
+
+      const namesFromBody = rawNames.filter((x): x is string => typeof x === 'string');
+      const validationErrors = validateStrapiForceRegenerateRequest(namesFromBody);
+      if (validationErrors.length > 0) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: 'Validation failed',
+            details: validationErrors,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
+
+      const result = await forceRegenerateStrapiCache(namesFromBody);
+
+      return new Response(
+        JSON.stringify({
+          success: result.errors.length === 0,
+          message: 'Strapi cache force regeneration completed',
+          details: {
+            mode: 'force',
+            regenerated: result.regenerated,
+            skipped: result.skipped,
+            errors: result.errors,
+            regeneratedCount: result.regenerated.length,
+            skippedCount: result.skipped.length,
+          },
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     const result = await regenerateStrapiCacheIfMissing();
 
     return new Response(

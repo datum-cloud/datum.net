@@ -33,15 +33,12 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
   AUTHORS_CACHE_KEY,
   TEAM_MEMBERS_CACHE_KEY,
   CARD_MEMBERS_CACHE_KEY,
+  ROADMAPS_CACHE_KEY,
 ] as const;
 
 const FIXED_FORCE_KEYS = new Set<string>(STRAPI_FORCE_REGENERATE_KEYS);
 
-function isArticleCacheKey(name: string): boolean {
-  if (!name.startsWith(ARTICLE_CACHE_PREFIX)) {
-    return false;
-  }
-  const slug = name.slice(ARTICLE_CACHE_PREFIX.length).trim();
+function isSafeSlugSegment(slug: string): boolean {
   if (!slug || slug.includes('/') || slug.includes('\\')) {
     return false;
   }
@@ -51,8 +48,22 @@ function isArticleCacheKey(name: string): boolean {
   return true;
 }
 
+function isArticleCacheKey(name: string): boolean {
+  if (!name.startsWith(ARTICLE_CACHE_PREFIX)) {
+    return false;
+  }
+  return isSafeSlugSegment(name.slice(ARTICLE_CACHE_PREFIX.length).trim());
+}
+
+function isAuthorSlugCacheKey(name: string): boolean {
+  if (!name.startsWith(AUTHOR_SLUG_CACHE_PREFIX)) {
+    return false;
+  }
+  return isSafeSlugSegment(name.slice(AUTHOR_SLUG_CACHE_PREFIX.length).trim());
+}
+
 /**
- * @param name - Full cache key (e.g. strapi-articles or strapi-article-my-post)
+ * @param name - Full cache key (e.g. strapi-articles, strapi-article-my-post, strapi-author-slug-jane)
  * @returns Error message when invalid, otherwise null
  */
 export function validateStrapiForceRegenerateName(name: string): string | null {
@@ -66,7 +77,12 @@ export function validateStrapiForceRegenerateName(name: string): string | null {
   if (isArticleCacheKey(trimmed)) {
     return null;
   }
-  return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(', ')} or ${ARTICLE_CACHE_PREFIX}{slug}`;
+  if (isAuthorSlugCacheKey(trimmed)) {
+    return null;
+  }
+  return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(
+    ', '
+  )}, ${ARTICLE_CACHE_PREFIX}{slug}, or ${AUTHOR_SLUG_CACHE_PREFIX}{slug}`;
 }
 
 /**
@@ -123,12 +139,24 @@ export async function forceRegenerateStrapiCache(
           await getStrapiCardMembers();
           regenerated.push(name);
           break;
+        case ROADMAPS_CACHE_KEY:
+          await fetchStrapiRoadmaps();
+          regenerated.push(name);
+          break;
         default: {
           if (isArticleCacheKey(name)) {
             const slug = name.slice(ARTICLE_CACHE_PREFIX.length).trim();
             const article = await fetchStrapiArticleBySlug(slug);
             if (!article) {
               errors.push(`${name}: Article not found or Strapi unavailable`);
+            } else {
+              regenerated.push(name);
+            }
+          } else if (isAuthorSlugCacheKey(name)) {
+            const slug = name.slice(AUTHOR_SLUG_CACHE_PREFIX.length).trim();
+            const author = await fetchStrapiAuthorBySlug(slug);
+            if (!author) {
+              errors.push(`${name}: Author not found or Strapi unavailable`);
             } else {
               regenerated.push(name);
             }

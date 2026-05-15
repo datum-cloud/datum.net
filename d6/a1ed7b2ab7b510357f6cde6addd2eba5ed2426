@@ -1,0 +1,14 @@
+src/content/events/05-2026-may-datum-monthly-community-huddle/index.mdx
+  h_c7951bc64db670 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "d6a1ed7b2ab7b510357f6cde6addd2eba5ed2426",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

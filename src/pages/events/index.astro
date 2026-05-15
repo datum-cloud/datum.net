@@ -25,7 +25,7 @@ const jsonLd = {
     {
       '@type': 'WebPage',
       '@id': 'https://www.datum.net/events/#webpage',
-      url: 'https://www.datum.net/events/',
+      url: 'https://www.datum.net/events',
       name: 'Datum Events – Meetups, Conferences & Community Gatherings',
       description:
         'Datum holds regular community events throughout the US and online, covering Datum Cloud, alternative cloud infrastructure, and AI-native networking technologies.',
@@ -44,7 +44,7 @@ const jsonLd = {
       location: [
         {
           '@type': 'VirtualLocation',
-          url: 'https://www.datum.net/events/',
+          url: 'https://www.datum.net/events',
         },
         {
           '@type': 'Place',
@@ -72,7 +72,7 @@ const jsonLd = {
         ariaLabel="Event categories"
         mobileLabel="Event category"
         items={[
-          { label: 'All events', href: '/events/', exact: true },
+          { label: 'All events', href: '/events', exact: true },
           { label: 'Community Huddles', href: '/events/community-huddles' },
           { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups' },
         ]}

@@ -1,0 +1,11 @@
+src/content/events/06-2026-june-datum-monthly-community-huddle/index.mdx
+  ai_agent 12,15-17
+src/pages/events/index.astro
+  ai_agent 28,47,75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "8232baf1d04e885ae8a4d89926f8f41e2a1f0110",
+  "prompts": {}
+}

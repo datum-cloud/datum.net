@@ -50,12 +50,45 @@
     @apply text-midnight-fjord flex w-full flex-1 flex-col items-start gap-0 lg:w-full lg:flex-initial;
   }
 
+  .roadmap-content--text--upcoming {
+    @apply gap-4;
+
+    .roadmap-content--title {
+      @apply font-semibold;
+    }
+
+    .roadmap-content--description {
+      @apply datum-text-sm;
+    }
+  }
+
   .roadmap-content--title {
     @apply font-alliance datum-text-xl w-full;
   }
 
   .roadmap-content--description {
     @apply font-alliance datum-text-base w-full opacity-60;
+  }
+
+  .roadmap-content--summary {
+    @apply font-alliance datum-text-sm text-midnight-fjord/60 w-full;
+
+    ul {
+      @apply list-disc pl-5;
+    }
+
+    li {
+      @apply mb-1.5 last:mb-0;
+    }
+
+    a,
+    strong {
+      @apply text-midnight-fjord font-semibold underline;
+    }
+
+    a strong {
+      @apply no-underline;
+    }
   }
 
   .roadmap-link {

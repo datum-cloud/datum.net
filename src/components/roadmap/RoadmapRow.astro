@@ -3,6 +3,7 @@
 import Icon from '@components/Icon.astro';
 import type { StrapiRoadmap } from '@libs/strapi';
 import { getMonthAbbreviation } from '@libs/strapi';
+import { marked } from 'marked';
 
 interface Props {
   roadmap: StrapiRoadmap;
@@ -11,6 +12,8 @@ interface Props {
 
 const { roadmap, variant } = Astro.props as Props;
 const monthClass = variant === 'upcoming' ? 'roadmap-month--upcoming' : 'roadmap-month--previous';
+const showSummary = variant === 'upcoming' && Boolean(roadmap.summary);
+const summaryHtml = showSummary ? marked.parse(roadmap.summary as string) : '';
 ---
 
 <article class="roadmap-row">
@@ -18,9 +21,15 @@ const monthClass = variant === 'upcoming' ? 'roadmap-month--upcoming' : 'roadmap
     <span class="roadmap-month--text">{getMonthAbbreviation(roadmap.releaseDate)}</span>
   </div>
   <a href={roadmap.githubUrl} target="_blank" rel="noopener noreferrer" class="roadmap-content">
-    <div class="roadmap-content--text">
+    <div
+      class:list={[
+        'roadmap-content--text',
+        variant === 'upcoming' && 'roadmap-content--text--upcoming',
+      ]}
+    >
       <h3 class="roadmap-content--title">{roadmap.title}</h3>
       {roadmap.description && <p class="roadmap-content--description">{roadmap.description}</p>}
+      {showSummary && <div class="roadmap-content--summary" set:html={summaryHtml} />}
     </div>
     {
       roadmap.githubUrl && (

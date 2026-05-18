@@ -1,0 +1,21 @@
+src/components/roadmap/RoadmapRow.astro
+  s_95415fc88327ae::t_511a4b6ded8abe 24
+src/v1/styles/components-roadmap.css
+  s_95415fc88327ae::t_040c8e562b0f64 54,58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "5ea43f05dc8b768aed06e8ecddccca12dc1d7c84",
+  "prompts": {},
+  "sessions": {
+    "s_95415fc88327ae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58766599-cc68-4be7-857c-8d5721fa8517",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

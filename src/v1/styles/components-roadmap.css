@@ -47,27 +47,15 @@
   }
 
   .roadmap-content--text {
-    @apply text-midnight-fjord flex w-full flex-1 flex-col items-start gap-0 lg:w-full lg:flex-initial;
-  }
-
-  .roadmap-content--text--upcoming {
-    @apply gap-4;
-
-    .roadmap-content--title {
-      @apply font-semibold;
-    }
-
-    .roadmap-content--description {
-      @apply datum-text-sm;
-    }
+    @apply text-midnight-fjord flex w-full flex-1 flex-col items-start gap-4 lg:w-full lg:flex-initial;
   }
 
   .roadmap-content--title {
-    @apply font-alliance datum-text-xl w-full;
+    @apply font-alliance datum-text-xl w-full font-semibold;
   }
 
   .roadmap-content--description {
-    @apply font-alliance datum-text-base w-full opacity-60;
+    @apply font-alliance datum-text-sm w-full opacity-60;
   }
 
   .roadmap-content--summary {

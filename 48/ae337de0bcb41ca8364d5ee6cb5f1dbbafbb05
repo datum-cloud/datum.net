@@ -1,0 +1,23 @@
+src/types/strapi.ts
+  s_31b9952e82a463::t_add084abb20e5d 118
+src/components/roadmap/RoadmapRow.astro
+  s_31b9952e82a463::t_87981b0effacfb 24-28
+src/libs/strapi/roadmaps.ts
+  s_31b9952e82a463::t_902228e2f0ae78 108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "48ae337de0bcb41ca8364d5ee6cb5f1dbbafbb05",
+  "prompts": {},
+  "sessions": {
+    "s_31b9952e82a463": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b9948814-f43b-448c-af21-f2fdb2cd692e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

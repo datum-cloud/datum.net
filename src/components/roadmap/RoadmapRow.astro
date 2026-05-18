@@ -21,12 +21,7 @@ const summaryHtml = showSummary ? marked.parse(roadmap.summary as string) : '';
     <span class="roadmap-month--text">{getMonthAbbreviation(roadmap.releaseDate)}</span>
   </div>
   <a href={roadmap.githubUrl} target="_blank" rel="noopener noreferrer" class="roadmap-content">
-    <div
-      class:list={[
-        'roadmap-content--text',
-        variant === 'upcoming' && 'roadmap-content--text--upcoming',
-      ]}
-    >
+    <div class="roadmap-content--text">
       <h3 class="roadmap-content--title">{roadmap.title}</h3>
       {roadmap.description && <p class="roadmap-content--description">{roadmap.description}</p>}
       {showSummary && <div class="roadmap-content--summary" set:html={summaryHtml} />}

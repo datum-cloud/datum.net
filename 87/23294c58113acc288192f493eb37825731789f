@@ -1,0 +1,36 @@
+src/libs/strapi/roadmaps.ts
+  s_31b9952e82a463::t_902228e2f0ae78 108
+src/v1/styles/components-roadmap.css
+  s_31b9952e82a463::t_24193d90ab2849 73-93
+  s_f21b7641d83ba2::t_60040127e030a7 53-64
+src/components/roadmap/RoadmapRow.astro
+  s_31b9952e82a463::t_0d89e5ff119981 32
+  s_f21b7641d83ba2::t_83fc0d3236f724 24-29
+  s_31b9952e82a463::t_4551756d8b58ce 6,15-16
+src/types/strapi.ts
+  s_31b9952e82a463::t_add084abb20e5d 118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "8723294c58113acc288192f493eb37825731789f",
+  "prompts": {},
+  "sessions": {
+    "s_31b9952e82a463": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b9948814-f43b-448c-af21-f2fdb2cd692e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_f21b7641d83ba2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "732f2207-e054-46f3-a00c-59dbcc418fb4",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

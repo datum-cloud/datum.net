@@ -105,6 +105,7 @@ export const ROADMAPS_QUERY = `
       documentId
       title
       description
+      summary
       releaseDate
       githubUrl
     }

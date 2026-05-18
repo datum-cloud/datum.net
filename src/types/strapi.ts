@@ -115,6 +115,7 @@ export interface StrapiRoadmap {
   documentId: string;
   title: string;
   description?: string;
+  summary?: string;
   releaseDate: string;
   githubUrl?: string;
 }

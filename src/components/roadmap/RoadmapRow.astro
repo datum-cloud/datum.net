@@ -26,7 +26,9 @@ const summaryHtml = rawSummaryHtml.replace(
   </div>
   <div class="roadmap-content">
     <div class="roadmap-content--text">
-      <h3 class="roadmap-content--title">{roadmap.title}</h3>
+      <h3 class="roadmap-content--title">
+        <a href={roadmap.githubUrl} target="_blank" rel="noopener noreferrer">{roadmap.title}</a>
+      </h3>
       {roadmap.description && <p class="roadmap-content--description">{roadmap.description}</p>}
       {showSummary && <div class="roadmap-content--summary" set:html={summaryHtml} />}
     </div>

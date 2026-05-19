@@ -38,12 +38,6 @@
 
   .roadmap-content {
     @apply flex w-full flex-1 flex-col items-start justify-around gap-4 px-4 py-6 lg:flex-row lg:items-center lg:gap-10 lg:px-8 lg:py-8;
-
-    &:hover {
-      .roadmap-link {
-        @apply text-midnight-fjord;
-      }
-    }
   }
 
   .roadmap-content--text {
@@ -52,14 +46,22 @@
 
   .roadmap-content--title {
     @apply font-alliance datum-text-xl w-full font-semibold;
+
+    a {
+      @apply transition-colors duration-200;
+    }
+
+    a:hover {
+      @apply text-canyon-clay---links;
+    }
   }
 
   .roadmap-content--description {
-    @apply font-alliance datum-text-sm w-full opacity-60;
+    @apply font-alliance datum-text-base w-full opacity-60;
   }
 
   .roadmap-content--summary {
-    @apply font-alliance datum-text-sm text-midnight-fjord/60 w-full;
+    @apply font-alliance datum-text-base text-midnight-fjord/60 w-full;
 
     ul {
       @apply list-disc pl-5;
@@ -74,6 +76,15 @@
       @apply text-midnight-fjord font-semibold underline;
     }
 
+    a {
+      @apply transition-colors duration-200;
+    }
+
+    a:hover,
+    a:hover strong {
+      @apply text-canyon-clay---links;
+    }
+
     a strong {
       @apply no-underline;
     }
@@ -84,6 +95,10 @@
 
     svg {
       @apply stroke-1;
+    }
+
+    &:hover {
+      @apply underline underline-offset-4;
     }
   }
 

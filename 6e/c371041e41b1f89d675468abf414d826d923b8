@@ -1,0 +1,14 @@
+src/components/roadmap/RoadmapRow.astro
+  h_c7951bc64db670 16-20,27,35,38,41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "6ec371041e41b1f89d675468abf414d826d923b8",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

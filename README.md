@@ -30,6 +30,7 @@ This is the official website for Datum Inc., built with Astro.
   - [Docker Configuration Details](#docker-configuration-details)
   - [Network Configuration](#network-configuration)
   - [Troubleshooting](#troubleshooting)
+- [Third-party Integrations](#third-party-integrations)
 - [Contributing](#contributing)
 - [Resources](#resources)
 
@@ -39,7 +40,7 @@ This is the official website for Datum Inc., built with Astro.
 
 ### Prerequisites
 
-- Node.js (version specified in package.json)
+- Node.js 24.15+ (matches the version pinned in [`Dockerfile`](./Dockerfile))
 
 ### Installation
 
@@ -56,13 +57,7 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
-3. Build file in dev mode:
-
-```bash
-npm run build
-```
-
-4. Start the development server:
+3. Start the development server:
 
 ```bash
 npm run dev
@@ -79,7 +74,9 @@ All commands are run from the root of the project, from a terminal:
 | `npm install`             | Installs dependencies                                                             |
 | `npm run dev`             | Starts local dev server at `localhost:4321`                                       |
 | `npm run build`           | Build your production site to `./dist/`                                           |
+| `npm run build:cache`     | Warm up the Strapi cache (see `docs/STRAPI_CACHE_API.md`)                         |
 | `npm run preview`         | Preview your build locally, before deploying                                      |
+| `npm run start`           | Run the production Node server entry (`./server.mjs`)                             |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                  |
 | `npm run astro -- --help` | Get help using the Astro CLI                                                      |
 | `npm run lint`            | Check for linting and formatting issues                                           |
@@ -90,6 +87,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run format:check`    | Check if files are formatted correctly                                            |
 | `npm run typecheck`       | Astro typescript check                                                            |
 | `npm run precommit`       | Typecheck, ESLint, and markdown lint (Husky formats/lints staged files on commit) |
+| `npm run test:e2e`        | Run Playwright E2E tests in headless mode                                         |
 
 ---
 
@@ -119,7 +117,7 @@ All commands are run from the root of the project, from a terminal:
    ```
 
    This will:
-   - Build the development image using Node.js 22 Alpine
+   - Build the development image using Node.js 24.15 Alpine (see [`Dockerfile`](./Dockerfile))
    - Mount your local codebase for hot-reloading
    - Make the app available at http://localhost:4321
 
@@ -138,7 +136,11 @@ All commands are run from the root of the project, from a terminal:
 minikube start
 ```
 
-2. Create secret.yaml file separated with this source. Value:
+2. Create `secret.yaml` with the data keys required by the deployment.
+   See [`.env.example`](./.env.example) for the full list of environment
+   variables the app expects (OIDC, Strapi, Postgres, GitHub App credentials,
+   etc.). Minimum baseline shown below — extend with whatever your local
+   deployment needs:
 
 ```yaml
 apiVersion: v1
@@ -153,6 +155,7 @@ data:
   APP_ID:
   APP_INSTALLATION_ID:
   APP_PRIVATE_KEY:
+  # Add additional keys from .env.example as needed
 ```
 
 3. Then apply with command:
@@ -246,19 +249,23 @@ This project uses [Front Matter CMS](https://frontmatter.codes/) - a powerful he
 
 #### Available Content Types
 
-| Content Type | Description         | Location                  |
-| ------------ | ------------------- | ------------------------- |
-| `docs`       | Documentation pages | `src/content/docs/`       |
-| `blog`       | Blog posts          | `src/content/blog/`       |
-| `authors`    | Author profiles     | `src/content/authors/`    |
-| `handbook`   | Company handbook    | `src/content/handbook/`   |
-| `changelog`  | Version changelogs  | `src/content/changelog/`  |
-| `features`   | Product features    | `src/content/features/`   |
-| `faq`        | FAQ entries         | `src/content/faq/`        |
-| `categories` | Blog categories     | `src/content/categories/` |
-| `pages`      | Marketing pages     | `src/content/pages/`      |
-| `about`      | About pages         | `src/content/about/`      |
-| `legal`      | Legal documents     | `src/content/legal/`      |
+| Content Type | Description           | Location                  |
+| ------------ | --------------------- | ------------------------- |
+| `docs`       | Documentation pages   | `src/content/docs/`       |
+| `blog`       | Blog posts            | `src/content/blog/`       |
+| `authors`    | Author profiles       | `src/content/authors/`    |
+| `handbook`   | Company handbook      | `src/content/handbook/`   |
+| `changelog`  | Version changelogs    | `src/content/changelog/`  |
+| `features`   | Product features      | `src/content/features/`   |
+| `faq`        | FAQ entries           | `src/content/faq/`        |
+| `categories` | Blog categories       | `src/content/categories/` |
+| `pages`      | Marketing pages       | `src/content/pages/`      |
+| `about`      | About pages           | `src/content/about/`      |
+| `legal`      | Legal documents       | `src/content/legal/`      |
+| `careers`    | Open roles / careers  | `src/content/careers/`    |
+| `events`     | Events                | `src/content/events/`     |
+| `pricing`    | Pricing copy          | `src/content/pricing/`    |
+| `download`   | Download landing copy | `src/content/download/`   |
 
 #### Field Groups
 
@@ -286,6 +293,8 @@ If the Front Matter panel is not showing:
 ---
 
 ## API Documentation
+
+> ⚠️ **Currently disabled.** The `npm run generate:api-docs` script is no longer present in `package.json` and the previously generated `src/content/docs/docs/api/reference.mdx` is not in the tree. The pipeline below describes the historical setup and is kept for reference until it is either restored or formally retired. File an issue if you need API reference docs regenerated.
 
 The API reference documentation is auto-generated from the CRD (Custom Resource Definition) source code in the operator repositories.
 
@@ -533,8 +542,8 @@ These files ignore:
 
 The setup uses a multi-stage Dockerfile:
 
-1. Base stage (`node:22-alpine`)
-   - Minimal Alpine Linux with Node.js 22
+1. Base stage (`node:24.15.0-alpine3.22`)
+   - Minimal Alpine Linux with Node.js 24.15
    - Common workspace setup
 
 2. Development stage
@@ -586,6 +595,46 @@ The setup uses a multi-stage Dockerfile:
    # Remove volumes too
    docker compose down -v
    ```
+
+---
+
+## Third-party Integrations
+
+All browser-side third-party scripts are loaded from
+[`src/components/LayoutEmbedScripts.astro`](./src/components/LayoutEmbedScripts.astro).
+Most are gated to production (`NODE_ENV=production`) so they do not run during
+`npm run dev` or local preview without the flag set.
+
+| Service   | Purpose                                     | Loader file                  | Production-only |
+| --------- | ------------------------------------------- | ---------------------------- | --------------- |
+| Fathom    | Privacy-friendly analytics + event tracking | `LayoutEmbedScripts.astro`   | No              |
+| Plain     | Live chat / customer support widget         | `LayoutEmbedScripts.astro`   | Yes             |
+| Hyperping | Status badge on the site footer             | `LayoutEmbedScripts.astro`   | No              |
+| Marker.io | In-page bug / feedback capture              | `public/scripts/markerio.js` | Yes             |
+| MaxMind   | Device fingerprint for signup fraud signal  | `LayoutEmbedScripts.astro`   | Yes             |
+| WebMCP    | Exposes site tools to AI agents via WebMCP  | `LayoutEmbedScripts.astro`   | No              |
+
+### Plain chat
+
+- App ID is configured in `LayoutEmbedScripts.astro`.
+- Any `<a>` (or other element) with `class="open-plain-chat"` will open the
+  chat widget when clicked.
+- When the Plain widget is open, the Marker.io launcher is hidden to avoid
+  overlapping Plain's close button. Closing the chat restores Marker.
+
+### Testing third-party widgets locally
+
+Production-gated widgets do not load on `npm run dev`. Two ways to verify:
+
+```bash
+# Full prod simulation (build then preview)
+npm run build
+NODE_ENV=production npm run preview
+```
+
+or temporarily flip the `if (!isProduction) return;` guard in
+`LayoutEmbedScripts.astro` for the widget you are testing (remember to revert
+before committing).
 
 ---
 

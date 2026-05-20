@@ -113,7 +113,8 @@
       "prettier --write"
     ],
     "*.{md,mdx}": [
-      "npx markdownlint-cli --fix"
+      "npx markdownlint-cli --fix",
+      "prettier --write"
     ],
     "*.{json,css,scss}": [
       "prettier --write"

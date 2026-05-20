@@ -1,6 +1,6 @@
 ---
 // src/components/LayoutEmbedScripts.astro
-/** Third-party embed loaders: Fathom events, HelpScout, Hyperping, Marker.io, MaxMind, WebMCP. */
+/** Third-party embed loaders: Fathom events, Plain, Hyperping, Marker.io, MaxMind, WebMCP. */
 
 interface LayoutEmbedScriptsProps {
   isProduction: boolean;
@@ -19,17 +19,17 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
   });
 </script>
 
-{/* HelpScout Beacon open trigger handler */}
+{/* Plain chat open trigger handler */}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const beaconTriggers = document.querySelectorAll('.open-beacon');
-    beaconTriggers.forEach((trigger) => {
+    const chatTriggers = document.querySelectorAll('.open-plain-chat');
+    chatTriggers.forEach((trigger) => {
       trigger.addEventListener('click', function (e) {
         e.preventDefault();
-        // @ts-expect-error Beacon is loaded from HelpScout script
-        if (window.Beacon) {
-          // @ts-expect-error Beacon is loaded from HelpScout script
-          window.Beacon('open');
+        // @ts-expect-error Plain is loaded from chat.cdn-plain.com script
+        if (window.Plain) {
+          // @ts-expect-error Plain is loaded from chat.cdn-plain.com script
+          window.Plain.open();
         }
       });
     });
@@ -77,37 +77,29 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
   })();
 </script>
 
-{/* HelpScout Beacon - Deferred loading on idle */}
+{/* Plain chat widget - Deferred loading on first interaction or 5s timeout */}
 <script is:inline data-production={isProduction ? 'true' : 'false'}>
   (function () {
     var isProduction = document.currentScript.getAttribute('data-production') === 'true';
     if (!isProduction) return;
 
-    function loadHelpScout() {
-      if (window.__helpScoutLoaded) return;
-      window.__helpScoutLoaded = true;
+    function loadPlain() {
+      if (window.__plainLoaded) return;
+      window.__plainLoaded = true;
 
-      // Initialize Beacon stub
-      window.Beacon =
-        window.Beacon ||
-        function (method, options, data) {
-          window.Beacon.readyQueue = window.Beacon.readyQueue || [];
-          window.Beacon.readyQueue.push({ method: method, options: options, data: data });
-        };
-      window.Beacon.readyQueue = [];
-
-      // Load HelpScout script
       var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = 'https://beacon-v2.helpscout.net';
+      script.async = false;
+      script.src = 'https://chat.cdn-plain.com/index.js';
       script.onload = function () {
-        window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
+        if (window.Plain) {
+          window.Plain.init({
+            appId: 'liveChatApp_01KRXXHP8PFCMFR1AWJ7QHCXNS',
+          });
+        }
       };
-      document.body.appendChild(script);
+      document.head.appendChild(script);
     }
 
-    // Load HelpScout on first user interaction or after 5s
     var events = ['mousemove', 'touchstart', 'scroll', 'keydown'];
     var loaded = false;
 
@@ -117,18 +109,17 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
       events.forEach(function (e) {
         document.removeEventListener(e, onInteraction);
       });
-      loadHelpScout();
+      loadPlain();
     }
 
     events.forEach(function (e) {
       document.addEventListener(e, onInteraction, { once: true, passive: true });
     });
 
-    // Fallback: load after 5 seconds if no interaction
     setTimeout(function () {
       if (!loaded) {
         loaded = true;
-        loadHelpScout();
+        loadPlain();
       }
     }, 5000);
   })();

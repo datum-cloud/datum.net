@@ -91,11 +91,20 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
       script.async = false;
       script.src = 'https://chat.cdn-plain.com/index.js';
       script.onload = function () {
-        if (window.Plain) {
-          window.Plain.init({
-            appId: 'liveChatApp_01KRXXHP8PFCMFR1AWJ7QHCXNS',
-          });
-        }
+        if (!window.Plain) return;
+        window.Plain.init({
+          appId: 'liveChatApp_01KRXXHP8PFCMFR1AWJ7QHCXNS',
+        });
+        // Hide the Marker.io launcher while the Plain chat is open so it does
+        // not overlap Plain's close button. Marker exposes hide/show via its
+        // shim queue, so these calls are safe even before Marker has finished
+        // loading.
+        window.Plain.onOpen(function () {
+          if (window.Marker) window.Marker.hide();
+        });
+        window.Plain.onClose(function () {
+          if (window.Marker) window.Marker.show();
+        });
       };
       document.head.appendChild(script);
     }

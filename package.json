@@ -104,9 +104,6 @@
   "overrides": {
     "vite": "^8.0.13"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "4.60.4"
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
       "eslint --fix",

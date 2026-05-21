@@ -1,0 +1,32 @@
+scripts/seo-review.mjs
+  s_b85d558a719294::t_55aa69db883faf 247-249,253-255,262-263,266-267,269-271,274,278-301,303,305-313
+  s_b85d558a719294::t_aabf964ab0505a 26-28
+  s_b85d558a719294::t_569cb4f103a719 317
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_426b2c895f4863 45-47,49,51,53,64
+  s_b85d558a719294::t_6811bba735d888 66
+  s_b85d558a719294::t_4e1d7da8d1547f 90-92
+  s_b85d558a719294::t_47a2bc2c3e8f20 162
+  ai_agent 81-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "b7c67dc5e566a039a6cc05eae1c9c77064713569",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

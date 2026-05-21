@@ -25,18 +25,20 @@ flowchart TD
     E --> F[scripts/seo-review.mjs]
     F --> G{Mode?}
     G -->|changed-only| H[Filter to changed pages]
-    G -->|full / fallback| I[Scan all built HTML]
+    G -->|full| I[Scan all built HTML<br/>+ broken-link + redirect-chain]
     H --> J[Cheerio extracts<br/>title, meta, OG, JSON-LD, alt, h1]
     I --> J
-    J --> K[POST to Anthropic API<br/>claude-sonnet-4-5]
+    J --> K[POST to Anthropic API<br/>claude-sonnet-4-6]
     K --> L[Write .tmp/seo-review.md]
-    L --> M([Sticky PR comment<br/>header: seo-review-bot])
+    L --> M{Trigger?}
+    M -->|pull_request| N([Sticky PR comment<br/>header: seo-review-bot])
+    M -->|schedule / dispatch| O([GitHub Issue<br/>label: seo-audit])
 
     classDef io fill:#e8f4ff,stroke:#3b82f6,color:#0b3b8c;
     classDef step fill:#f5f5f5,stroke:#888,color:#222;
     classDef decision fill:#fff7e0,stroke:#d97706,color:#7a4a00;
-    class A,M io;
-    class G decision;
+    class A,N,O io;
+    class G,M decision;
     class B,C,D,E,F,H,I,J,K,L step;
 ```
 
@@ -93,7 +95,7 @@ The script walks `dist/client`, applies the exclusion config, then picks pages b
 | `skipped-no-pages`      | No `src/pages` or `src/content` files in the diff — review skipped                          |
 | `skipped-no-changes`    | `changed-only` mode without `CHANGED_FILES` — review skipped                                |
 
-> **Single switch:** the previous `CHANGED_ONLY` + `DISABLE_FULL_SCAN` pair was collapsed into one `SCAN_MODE` env var. PR runs set `SCAN_MODE=changed-only` to keep the hot path fast. The weekly cron sets `SCAN_MODE=full` for site-wide analysis.
+> A single `SCAN_MODE` env drives behaviour. PR runs set `SCAN_MODE=changed-only` to keep the hot path fast. The weekly cron and `workflow_dispatch` set `SCAN_MODE=full` for site-wide analysis.
 
 Broad-change detector (triggers skip in `changed-only` mode only):
 
@@ -121,7 +123,7 @@ For every selected HTML file, the script extracts:
 
 ### 5. Claude review
 
-The JSON array is sent to the Anthropic Messages API (`claude-sonnet-4-5` by default) with a system prompt that asks for a concise PR comment structured as:
+The JSON array is sent to the Anthropic Messages API (`claude-sonnet-4-6` by default) with a system prompt that asks for a concise PR comment structured as:
 
 1. **Summary** — overall verdict, worst-issue count
 2. **Critical issues** — missing/duplicated title, description, canonical, h1; noindex on prod; title >70 chars; description outside 70–160 chars; missing `og:image`; broken JSON-LD
@@ -167,7 +169,7 @@ Override the config file location with `SEO_CONFIG=path/to/file.json`.
 | Variable            | Required | Default                          | Purpose                                                                                                                            |
 | ------------------- | -------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `ANTHROPIC_API_KEY` | ✅       | —                                | Anthropic API key (CI: repo secret)                                                                                                |
-| `ANTHROPIC_MODEL`   |          | `claude-sonnet-4-5`              | Override the model                                                                                                                 |
+| `ANTHROPIC_MODEL`   |          | `claude-sonnet-4-6`              | Override the model                                                                                                                 |
 | `DIST_DIR`          |          | `dist/client`                    | Build output to scan                                                                                                               |
 | `MAX_PAGES`         |          | `25`                             | Hard cap on pages sent to Claude                                                                                                   |
 | `MAX_INPUT_CHARS`   |          | `640000`                         | Char cap on `user` content (~160K tokens, headroom for 200K Claude limit). If exceeded, the script drops tail pages until it fits. |
@@ -218,18 +220,23 @@ Wrote .tmp/seo-review.md (4550 bytes, 25 pages).
 - **Extend extracted signals** — modify `extractMeta()` in `scripts/seo-review.mjs`. The Claude prompt receives whatever fields you emit, so add the field and (optionally) mention it in the system prompt.
 - **Change review tone / structure** — edit the `system` string in `callClaude()`.
 - **Bump the model** — set `ANTHROPIC_MODEL` env in the workflow.
+- **Change weekly cadence** — edit the `cron:` expression in `.github/workflows/seo-review.yml` (default `0 6 * * 1` = Monday 06:00 UTC).
+- **Run an audit on demand** — Actions → _SEO Review_ → _Run workflow_, pick `full` (default) or `changed-only`.
 - **Disable on a PR** — temporarily skip by closing/reopening with `paths-ignore` matching, or remove `ANTHROPIC_API_KEY` (the step will fail and the comment won't be posted).
+- **Reduce broken-link noise** — absolute `https://` links are skipped by design. If a relative path resolves at runtime (proxy, edge rewrite, etc.), add a stub `src/pages/<path>.astro` or change the link to absolute so the audit treats it as external.
 
 ---
 
 ## Troubleshooting
 
-| Symptom                                        | Likely cause / fix                                                               |
-| ---------------------------------------------- | -------------------------------------------------------------------------------- |
-| Step fails with `ANTHROPIC_API_KEY is not set` | Repo secret missing, or running locally without exporting it                     |
-| `Build dir not found: dist/client`             | `npm run build` was skipped or failed; check earlier step logs                   |
-| Mode always `full` despite small PRs           | Diff includes a broad file (layout/component/config). See broad-change detector. |
-| Mode `changed-only-no-match`                   | Page renamed/moved, or content collection slug differs from filename — confirm   |
-| Excluded page still appears                    | Exclusion lives at walk time; verify config file path and JSON is valid          |
-| Comment not appearing on PR                    | `permissions: pull-requests: write` missing, or job failed before sticky step    |
-| Claude returns 429 / 529                       | Rate-limited or overloaded — rerun the job                                       |
+| Symptom                                                        | Likely cause / fix                                                                                           |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Step fails with `ANTHROPIC_API_KEY is not set`                 | Repo secret missing, or running locally without exporting it                                                 |
+| `Build dir not found: dist/client`                             | `npm run build` was skipped or failed; check earlier step logs                                               |
+| PR comment says `skipped-broad-change`                         | Diff includes a layout/component/style/config file. Trigger `workflow_dispatch` with `full` for a one-off.   |
+| Mode `skipped-no-match`                                        | Page renamed/moved, or content collection slug differs from filename — confirm against `dist/client/**`      |
+| Excluded page still appears                                    | Exclusion lives at walk time; verify config file path and JSON is valid                                      |
+| PR comment not appearing                                       | `permissions: pull-requests: write` missing, or job failed before sticky step                                |
+| Weekly Issue not opening                                       | `permissions: issues: write` missing, `GITHUB_TOKEN` lacks scope, or schedule trigger disabled in repo       |
+| Broken-link audit reports SSR routes (e.g. `/blog/`) as broken | The route exists under `src/pages` but the script missed it — check matcher, or move route under `src/pages` |
+| Claude returns 429 / 529                                       | Rate-limited or overloaded — rerun the job                                                                   |

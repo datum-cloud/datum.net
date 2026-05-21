@@ -1,0 +1,26 @@
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_7da46cda2756c3 125
+.github/workflows/seo-review.yml
+  s_b85d558a719294::t_b76a7fa2d7055a 66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "ee501610f0b668868b7f45fcc7bb6cb80044a798",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

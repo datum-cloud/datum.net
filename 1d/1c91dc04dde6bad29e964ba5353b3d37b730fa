@@ -1,0 +1,45 @@
+.github/workflows/seo-review.yml
+  s_b85d558a719294::t_9606b27130c969 9-21,24-25,30,44,58-59,70-80,84,92,97-116
+scripts/seo-review.mjs
+  s_b85d558a719294::t_3df6caee4e4271 166-210
+  s_b85d558a719294::t_177148366c7b62 29-37
+  s_b85d558a719294::t_84b8d96ea35b22 122-127,131-133,135-165,212-218,222-247
+  s_b85d558a719294::t_8a76d9f6ff9b59 315,319-327,334,336,340-343
+  s_b85d558a719294::t_fb35acb197b076 439-441,446
+  s_b85d558a719294::t_35f915ecee5850 474-475
+  s_b85d558a719294::t_cf2c2194d677bb 9-11,14-15
+  s_b85d558a719294::t_afcc915977c582 494
+  s_b85d558a719294::t_87208a0f6ecfec 396-402,405,408-410,414-418,429,434,455-457,460-473,476-479,482-490,496
+  s_b85d558a719294::t_b764da2465693f 121,128-130,134
+  s_b85d558a719294::t_991860eb9ca65c 211,219-221
+  s_b85d558a719294::t_a65f27e0a8c9f2 293,296-300,302-306,308-312
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_5646422bc00522 176-178
+  s_b85d558a719294::t_d00ffe5ba2afc4 47-57,61-63,69-70
+  s_b85d558a719294::t_7bdc7bcdaf87fc 87-88,90-94
+  s_b85d558a719294::t_b1d53b65879003 131-141,143
+  s_b85d558a719294::t_b907b4582b7b70 3-6
+  s_b85d558a719294::t_14bfe90f4cd09a 191-192,194,196,207-210
+  s_b85d558a719294::t_7536f6223ca74b 85,89,96,98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "1d1c91dc04dde6bad29e964ba5353b3d37b730fa",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+.env.example
+  h_c7951bc64db670 47
+  s_d478b05d843c25::t_97c05226d9306d 1,7-16,18,20-21,23-26,28-29,31-35,37-45
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_8b15763cb2bc63 126
+  s_b85d558a719294::t_61941069eb71d0 28,31,33-35
+  s_b85d558a719294::t_610a1c8da10fb2 223-224
+  s_b85d558a719294::t_0143f60cf44285 172
+  ai_agent 232-242
+  s_b85d558a719294::t_db14e2997e08b9 226
+  s_b85d558a719294::t_0456bf851408a5 40-41
+  s_b85d558a719294::t_27074b11bf32a2 98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "7572b64d395890888312ea60b7e1a54848e2ceab",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_d478b05d843c25": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "25459ca6-a8b0-4800-85ee-734badf9f7ba",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

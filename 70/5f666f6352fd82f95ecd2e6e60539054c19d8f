@@ -1,0 +1,24 @@
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_9dc93f6004902f 125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "705f666f6352fd82f95ecd2e6e60539054c19d8f",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

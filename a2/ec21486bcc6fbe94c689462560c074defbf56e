@@ -1,0 +1,52 @@
+.github/workflows/seo-review.yml
+  s_b85d558a719294::t_f43c358e94c406 1-58,60-61,63-68
+  s_b85d558a719294::t_05195343db76d5 62,69
+  s_b85d558a719294::t_16d276072a0a43 59
+scripts/seo-review.config.json
+  s_b85d558a719294::t_4c4a9715880abf 1,4-5
+  ai_agent 2-3
+scripts/seo-review.mjs
+  s_b85d558a719294::t_69a3954430e17f 20
+  s_b85d558a719294::t_61335814e4beb8 296
+  s_b85d558a719294::t_6e7a1f33de59d8 116-146,149
+  s_b85d558a719294::t_e2e1668921b29d 21
+  s_b85d558a719294::t_9bba88639760f7 52,60
+  s_b85d558a719294::t_03c4606b66b784 154-171,188-191,194-197,200-201
+  s_b85d558a719294::t_fa72eab9e127cf 239-269
+  s_b85d558a719294::t_5e074f3f383ebc 45-51,53,57-59,61
+  h_c7951bc64db670 11,22,28,192-193,198-199
+  s_b85d558a719294::t_d20b5e0d48704e 1-10,12-14,16-19,44,54-56,62-115,147-148,150-153,172-187,202-232,235-238,270-282,284-295,297-304
+  s_b85d558a719294::t_fcc415670aad2b 233-234
+  s_b85d558a719294::t_a8ef5746531a8a 283
+  s_b85d558a719294::t_ad1b5cbd325d46 15
+  s_b85d558a719294::t_95131c9325f21b 23-25
+  s_b85d558a719294::t_a4f797b1999636 26-27,29-43
+docs/SEO_REVIEW_WORKFLOW.md
+  s_b85d558a719294::t_efbad6b84548f1 97
+  s_b85d558a719294::t_ffcb9e93bb9c5b 14-27,29-37,39-53,55-67
+  s_b85d558a719294::t_9321de2a291234 54
+  s_b85d558a719294::t_f4c0e2456dc325 82-88,149-159,206-214
+  s_b85d558a719294::t_e6f1468b729ffe 1-13,38,68-81,89-96,98-148,160-205
+  s_b85d558a719294::t_e2dad588de7054 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "a2ec21486bcc6fbe94c689462560c074defbf56e",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b85d558a719294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "262de94c-2d93-4b96-a034-567af4afc74a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

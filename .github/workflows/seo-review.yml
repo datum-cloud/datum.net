@@ -1,0 +1,116 @@
+name: SEO Review
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'env.example'
+      - '.vscode/**'
+  schedule:
+    # Weekly full-site audit at 06:00 UTC on Mondays
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Scan mode'
+        required: false
+        type: choice
+        default: 'full'
+        options:
+          - changed-only
+          - full
+
+concurrency:
+  group: seo-review-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  seo-review:
+    name: SEO & Meta Review
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+      HUSKY: 0
+      ASTRO_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Collect changed page files (PR only)
+        if: github.event_name == 'pull_request'
+        id: changed
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          {
+            echo 'files<<EOF'
+            git diff --name-only "$base" "$head" -- 'src/pages/**' 'src/content/**' || true
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Resolve scan mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "value=changed-only" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=full" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run SEO review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCAN_MODE: ${{ steps.mode.outputs.value }}
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          DIST_DIR: dist/client
+          MAX_PAGES: '25'
+          OUTPUT_FILE: .tmp/seo-review.md
+        run: node scripts/seo-review.mjs
+
+      - name: Post or update PR comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: seo-review-bot
+          path: .tmp/seo-review.md
+
+      - name: Open weekly audit issue
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          DATE="$(date -u +%Y-%m-%d)"
+          TITLE="SEO Audit — ${DATE}"
+          BODY_FILE=".tmp/seo-review.md"
+          # Ensure label exists (idempotent).
+          gh label create seo-audit --color BFD4F2 --description "Weekly SEO audit reports" 2>/dev/null || true
+          # Close any older open audit issues to keep the list tidy.
+          gh issue list --label seo-audit --state open --json number,title \
+            --jq '.[] | select(.title != "'"$TITLE"'") | .number' \
+            | xargs -I{} gh issue close {} --comment "Superseded by ${TITLE}." || true
+          gh issue create \
+            --title "$TITLE" \
+            --label seo-audit \
+            --body-file "$BODY_FILE"

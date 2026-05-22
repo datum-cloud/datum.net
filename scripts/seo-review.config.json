@@ -1,0 +1,5 @@
+{
+  "excludePaths": ["/dev/build", "/dev", "/preview", "/draft", "/_astro", "/admin", "/fonts"],
+  "excludeFiles": ["404.html", "500.html", "error.html", "offline.html", "maintenance.html"],
+  "excludeFilePatterns": ["^\\d{3}\\.html$"]
+}

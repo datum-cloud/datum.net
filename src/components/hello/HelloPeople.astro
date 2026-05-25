@@ -212,12 +212,29 @@ const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
 <script is:inline define:vars={{ helloMembersData }}>
   (function () {
     const memberData = helloMembersData;
+    const HELLO_PROFILE_PATH = /^\/hello\/([^/]+)\/?$/;
+
+    function getSlugFromPath() {
+      return location.pathname.match(HELLO_PROFILE_PATH)?.[1] ?? '';
+    }
+
+    function helloProfilePath(slug) {
+      return '/hello/' + slug;
+    }
 
     function dispatchOpen(member) {
       if (!window.HELLO_MODAL_OPEN_EVENT) return;
       document.dispatchEvent(
         new CustomEvent(window.HELLO_MODAL_OPEN_EVENT, { detail: { member } })
       );
+    }
+
+    function closeModalIfOpen() {
+      const modal = document.querySelector('hello-modal');
+      const dialog = modal?.querySelector('dialog');
+      if (dialog?.open) {
+        dialog.close();
+      }
     }
 
     function openFromTrigger(trigger) {
@@ -232,6 +249,28 @@ const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
       if (member) dispatchOpen(member);
     }
 
+    function tryOpenFromUrl() {
+      const legacyHash = location.hash.slice(1);
+      if (legacyHash && location.pathname === '/hello') {
+        history.replaceState(null, '', helloProfilePath(legacyHash));
+        openBySlug(legacyHash);
+        return;
+      }
+
+      const slug = getSlugFromPath();
+      if (!slug) {
+        closeModalIfOpen();
+        return;
+      }
+
+      const member = memberData.find((m) => m.slug === slug);
+      if (member) {
+        dispatchOpen(member);
+      } else {
+        history.replaceState(null, '', '/hello');
+      }
+    }
+
     document.querySelectorAll('[data-hello-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', (e) => openFromTrigger(e.currentTarget));
       trigger.addEventListener('keydown', (e) => {
@@ -242,9 +281,13 @@ const helloFilterMobileTriggerId = 'hello-people-filter-trigger';
       });
     });
 
-    customElements.whenDefined('hello-modal').then(() => {
-      const hash = window.location.hash.slice(1);
-      if (hash) openBySlug(hash);
+    customElements.whenDefined('hello-modal').then(tryOpenFromUrl);
+    window.addEventListener('popstate', tryOpenFromUrl);
+
+    document.addEventListener(window.HELLO_MODAL_CLOSE_EVENT || 'hello-modal-close', () => {
+      if (getSlugFromPath()) {
+        history.replaceState(null, '', '/hello');
+      }
     });
   })();
 </script>

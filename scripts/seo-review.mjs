@@ -184,7 +184,12 @@ async function buildSourceRouteSet(pagesDir = 'src/pages') {
         // Skip dynamic segments — they can't be validated by exact path.
         if (/\[.*?\]/.test(url)) {
           // record the parent prefix so anything under it is considered "may exist"
-          const prefix = '/' + url.split('/').filter((s) => !/\[.*?\]/.test(s)).join('/');
+          const prefix =
+            '/' +
+            url
+              .split('/')
+              .filter((s) => !/\[.*?\]/.test(s))
+              .join('/');
           set.add(normalizeUrlPath(prefix.replace(/\/+/g, '/')) + '*');
         } else {
           set.add(normalizeUrlPath(url));
@@ -279,15 +284,6 @@ function filterByChanged(files, root, slugs) {
       return url === slug || url.startsWith(slug + '/');
     });
   });
-}
-
-function prioritize(files, root, slugs) {
-  if (!slugs?.length) return files;
-  const score = (f) => {
-    const url = toUrlPath(f, root);
-    return slugs.some((s) => url.includes(s)) ? 0 : 1;
-  };
-  return [...files].sort((a, b) => score(a) - score(b));
 }
 
 function buildUserContent(payload, total) {
@@ -433,7 +429,7 @@ async function main() {
   console.log(
     `SCAN_MODE=${SCAN_MODE} → mode: ${mode} — ${candidates.length} candidate(s), analyzing ${picked.length}.${
       skipReason ? ` Reason: ${skipReason}` : ''
-    }`,
+    }`
   );
 
   const isFull = SCAN_MODE === 'full';
@@ -475,7 +471,7 @@ async function main() {
       brokenLinks = findBrokenLinks(linkMap, builtSet, srcSet);
       redirectChains = findRedirectChains(refreshMap);
       console.log(
-        `Audits — broken internal links: ${brokenLinks.length}, redirect chains: ${redirectChains.length}.`,
+        `Audits — broken internal links: ${brokenLinks.length}, redirect chains: ${redirectChains.length}.`
       );
     }
 

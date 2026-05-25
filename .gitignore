@@ -41,4 +41,5 @@ Dockerfile.bak
 
 # Cache files
 .cache/
-config.bat
+.env
+.env.local

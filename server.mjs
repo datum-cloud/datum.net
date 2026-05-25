@@ -493,30 +493,6 @@ const server = createServer((req, res) => {
     };
   }
 
-  // Hidden/disabled routes — serve the Astro 404 page with a 404 status
-  if (url === '/hello' || url === '/hello/') {
-    const notFoundPath = join(CLIENT_DIR, '404.html');
-    if (existsSync(notFoundPath)) {
-      const stat = statSync(notFoundPath);
-      res.writeHead(404, {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'no-store',
-        'X-Robots-Tag': 'noindex, nofollow',
-        'Content-Length': stat.size,
-        Link: AGENT_LINK_HEADERS,
-      });
-      if (req.method === 'HEAD') {
-        res.end();
-      } else {
-        createReadStream(notFoundPath).pipe(res);
-      }
-      return;
-    }
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('Not Found');
-    return;
-  }
-
   // Health check endpoints for Kubernetes probes
   if (url === '/healthz' || url === '/livez' || url === '/readyz') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -605,6 +581,13 @@ const server = createServer((req, res) => {
     });
     res.end();
     return;
+  }
+
+  // /hello/:slug → serve same SSR page as /hello (popup deep links)
+  const helloProfileMatch = url.match(/^\/hello\/([^/]+)$/);
+  if (helloProfileMatch) {
+    const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    req.url = '/hello' + qs;
   }
 
   // Middleware order: compressed files → static files → Astro SSR handler

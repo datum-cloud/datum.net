@@ -4,6 +4,16 @@ import type { MiddlewareHandler } from 'astro';
 
 const PROTECTED_ROUTES = [/^\/dev($|\/.*)/];
 
+const HELLO_PROFILE_PATH = /^\/hello\/([^/]+)$/;
+
+const helloProfileRewrite: MiddlewareHandler = (context, next) => {
+  const pathName = new URL(context.url).pathname;
+  if (HELLO_PROFILE_PATH.test(pathName)) {
+    return context.rewrite(new URL('/hello', context.url));
+  }
+  return next();
+};
+
 const DOCS_PATH_PREFIX = /^\/docs(\/|$)/;
 
 const AGENT_LINK_HEADERS = [
@@ -71,4 +81,10 @@ const agentDiscovery: MiddlewareHandler = async (_context, next) => {
   return mutable;
 };
 
-export const onRequest = sequence(routeGuard, agentDiscovery, baseMiddleware, docsHeaders);
+export const onRequest = sequence(
+  helloProfileRewrite,
+  routeGuard,
+  agentDiscovery,
+  baseMiddleware,
+  docsHeaders
+);

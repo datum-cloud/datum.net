@@ -159,12 +159,15 @@
 
   /* ── Person card ──────────────────────────────────────── */
   .hello-card {
-    @apply relative flex h-56 cursor-pointer overflow-hidden bg-[#334747];
-    @apply transition-transform duration-200 ease-in-out;
+    @apply relative flex h-56 overflow-hidden bg-[#334747];
+  }
+
+  .hello-card[data-hello-trigger] {
+    @apply cursor-pointer transition-transform duration-200 ease-in-out;
     @apply hover:-translate-y-0.5;
   }
 
-  .hello-card:focus-visible {
+  .hello-card[data-hello-trigger]:focus-visible {
     @apply outline-aurora-moss/60 outline-1 outline-offset-1;
     @apply -translate-y-0.5;
   }

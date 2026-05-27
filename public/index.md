@@ -1,37 +1,63 @@
-# Datum — Open Source Network Cloud for AI
+# Internet superpowers for every agent
 
-Internet superpowers for every agent. You build the future, we help you connect it. No network team required.
+You build the future, we help you connect it. No network team required.
 
-## Overview
+Datum is an open, neutral, global network cloud that is built for AI and focused on giving alternative cloud providers critical network infrastructure to compete at scale.
 
-Datum is an open, neutral, global network cloud built for AI workloads. We give alternative cloud providers critical network infrastructure to compete at scale—no networking team required.
+## Why Datum?
 
-## Key Features
+Datum exists to **upgrade the internet** for a world accelerated by AI.
 
-- **AI Edge Runtime** — Deploy and run AI workloads at the network edge
-- **Global Network** — Neutral, multi-cloud connectivity spanning continents
-- **datumctl** — CLI for managing your network cloud resources
-- **Open Source** — Built in the open at github.com/datum-cloud
+In the future we're building, any company, app or agent can interact **privately** and **deterministically** with whatever it needs.
 
-## Quick Links
+**Our thesis is simple:** even the most ambitious AI-native teams lack the knowledge, people, time, and tools to participate in the internet at scale "the old way."
 
-- [Documentation](/docs/)
-- [Quickstart](/docs/quickstart/)
-- [API Reference](/docs/api/reference/)
-- [Download datumctl](/download/datumctl/)
-- [Download Datum MCP](/download/datum-mcp/)
-- [Changelog](/changelog/)
-- [Roadmap](/roadmap/)
-- [Blog](/blog/)
-- [Contact](/contact/)
+The old way is too **obscure**.
+It's too **manual**.
+Too **telco**.
 
-## Developer Resources
+## Why now?
 
-- **API Catalog:** [/.well-known/api-catalog](/.well-known/api-catalog)
-- **MCP Server:** [/.well-known/mcp/server-card.json](/.well-known/mcp/server-card.json)
-- **Agent Skills:** [/.well-known/agent-skills/index.json](/.well-known/agent-skills/index.json)
-- **Status:** [https://www.datumstatus.net](https://www.datumstatus.net)
+1. Software (and its data) is going **everywhere**.
+2. A new class of providers is **exploding**.
+3. The splinternet has **arrived**.
 
-## Authentication
+## Our vision
 
-Datum uses OpenID Connect for authentication. Discovery metadata is available at [/.well-known/openid-configuration](/.well-known/openid-configuration).
+- An open, neutral, **global network cloud**
+- Built for **AI**
+- Focused on **providers**
+
+So, **that's** what we're building. Care to join us?
+
+## What's under the hood
+
+- **Runtime** - DNS, Proxies, Gateways
+- **Connections** - Galactic VPCs, Tunnels
+- **Metrics** - Real-time observability
+- **Assets** - Domains, Secrets, Certs
+- **Experience** - Datum MCP, datumctl
+
+Unlike existing alternatives, our open network cloud is built specifically for modern service providers, can be shipped anywhere, and is backed by an AGPLv3 open source license.
+
+## Explore
+
+- [Features](/features/) - AI Edge, Connectors, Galactic VPC, UFO, foundations
+- [Essentials](/essentials/) - Enterprise-grade primitives included free
+- [Pricing](/pricing/) - Builder ($0), Scaler ($20/mo + usage), Provider (custom)
+- [Locations](/locations/) - 17+ global regions across NA, LATAM, EU, MEA, APAC
+- [Roadmap](/roadmap/) - What we're shipping next
+- [About](/about/) - Mission, team, and investors
+- [Blog](/blog/) - Product updates and engineering deep-dives
+- [Contact](/contact/) - Talk to a founder
+
+## For agents and developers
+
+- [Documentation](/docs/) - Quickstart and API reference
+- [Download datumctl](/download/datumctl/) - CLI for managing your network cloud
+- [Download Datum MCP](/download/datum-mcp/) - MCP server for AI tools
+- [GitHub](https://github.com/datum-cloud) - Open source under AGPLv3
+
+---
+
+Source: <https://www.datum.net/>

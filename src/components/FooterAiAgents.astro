@@ -1,13 +1,18 @@
 ---
 // src/components/FooterAiAgents.astro
 import Icon from '@components/Icon.astro';
+import MarkdownLightbox from '@components/MarkdownLightbox.astro';
 import claudeSvg from '@v1/assets/icons/ai/claude.svg?raw';
 import chatgptSvg from '@v1/assets/icons/ai/chatgpt.svg?raw';
 import geminiSvg from '@v1/assets/icons/ai/gemini.svg?raw';
 import perplexitySvg from '@v1/assets/icons/ai/perplexity.svg?raw';
 import promptRaw from '@data/ai-prompt.md?raw';
+import { resolveMarkdownUrl } from '@utils/markdownExport';
 
 const encodedPrompt = encodeURIComponent(promptRaw);
+
+// Resolve the current page's raw markdown URL (null when no source exists).
+const markdownUrl = await resolveMarkdownUrl(Astro.url.pathname);
 
 const aiTools = [
   {
@@ -67,23 +72,43 @@ const aiTools = [
           }
         </div>
       </div>
-      <a
-        href="https://agents.datum.net"
-        class="datum-text-sm flex shrink-0 items-center gap-3 whitespace-nowrap text-white transition-opacity hover:opacity-80"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span
-          >Agents, use <strong class="font-semibold underline underline-offset-2"
-            >Agents.Datum.net</strong
-          ></span
+      <div class="flex shrink-0 flex-col items-start gap-0 md:items-end">
+        {
+          markdownUrl && (
+            <a
+              href={markdownUrl}
+              data-markdown-trigger
+              data-md-title={`cat ${markdownUrl}`}
+              class="markdown-lightbox-trigger"
+              aria-label="Read this page as Markdown"
+            >
+              <span class="markdown-lightbox-trigger__label">
+                Read as <strong>Markdown</strong>
+              </span>
+              <Icon name="file-text" size="md" class="markdown-lightbox-trigger__icon" />
+            </a>
+          )
+        }
+        <a
+          href="https://agents.datum.net"
+          class="datum-text-sm flex shrink-0 items-center gap-3 whitespace-nowrap text-white transition-opacity hover:opacity-80"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-        <Icon
-          name="external-link"
-          size="md"
-          class="stroke-1.5 text-app---dark---utility-3 shrink-0"
-        />
-      </a>
+          <span
+            >Agents, use <strong class="font-semibold underline underline-offset-2"
+              >Agents.Datum.net</strong
+            ></span
+          >
+          <Icon
+            name="external-link"
+            size="md"
+            class="stroke-1.5 text-app---dark---utility-3 shrink-0"
+          />
+        </a>
+      </div>
     </div>
   </div>
 </div>
+
+<MarkdownLightbox />

@@ -9,7 +9,7 @@ interface HandbookSection {
 
 export const GET: APIRoute = async () => {
   try {
-    const index = await getEntry('handbooks', 'index').catch(() => null);
+    const index = await getEntry('handbooks', 'index');
     const data = (index?.data ?? {}) as { title?: string; contents?: HandbookSection[] };
 
     const sections: string[] = [];

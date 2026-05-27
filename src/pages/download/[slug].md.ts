@@ -8,16 +8,14 @@ import { getEntry, getCollection } from 'astro:content';
 import { renderEntryMarkdown } from '@utils/pageMarkdown';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const entries = await getCollection('download' as any);
+  const entries = (await getCollection('download')) as Array<{ id: string }>;
   return entries.map((e) => ({ params: { slug: e.id }, props: { entryId: e.id } }));
 };
 
 export const GET: APIRoute = async ({ props }) => {
   const { entryId } = props as { entryId: string };
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const entry = await getEntry('download' as any, entryId);
+    const entry = await getEntry('download', entryId);
     if (!entry) return new Response('Not found', { status: 404 });
     const body = renderEntryMarkdown(entry, {
       demoteHeadings: true,

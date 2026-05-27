@@ -56,7 +56,6 @@ import Icon from '@components/Icon.astro';
 
   class MarkdownLightbox extends HTMLElement {
     private dialog!: HTMLDialogElement;
-    private frame!: HTMLElement;
     private closeBtn!: HTMLButtonElement;
     private titleEl!: HTMLElement;
     private rawLink!: HTMLAnchorElement;
@@ -67,7 +66,6 @@ import Icon from '@components/Icon.astro';
 
     connectedCallback() {
       this.dialog = this.querySelector('dialog')!;
-      this.frame = this.querySelector('.markdown-lightbox__frame')!;
       this.closeBtn = this.querySelector<HTMLButtonElement>('[data-md-close]')!;
       this.titleEl = this.querySelector<HTMLElement>('[data-md-title]')!;
       this.rawLink = this.querySelector<HTMLAnchorElement>('[data-md-raw-link]')!;

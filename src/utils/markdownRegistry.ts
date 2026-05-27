@@ -127,8 +127,9 @@ export async function getMarkdownRegistry(): Promise<Map<string, MarkdownSource>
 
   for (const { collection, pathFor } of COLLECTION_PATTERNS) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const entries = await getCollection(collection as any);
+      const entries = (await getCollection(
+        collection as Parameters<typeof getCollection>[0]
+      )) as Array<{ id: string }>;
       for (const entry of entries) {
         const path = pathFor(entry.id);
         if (path) registry.set(path, { collection, entryId: entry.id });

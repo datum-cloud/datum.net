@@ -31,8 +31,10 @@ export const GET: APIRoute = async ({ props }) => {
     urlPath: string;
   };
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const entry = await getEntry(collection as any, entryId);
+    const entry = await getEntry(
+      collection as Parameters<typeof getEntry>[0],
+      entryId as Parameters<typeof getEntry>[1]
+    );
     if (!entry) return new Response('Not found', { status: 404 });
 
     const body = renderEntryMarkdown(entry, {

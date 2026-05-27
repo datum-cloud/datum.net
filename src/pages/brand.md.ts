@@ -9,7 +9,7 @@ interface BrandSection {
 
 export const GET: APIRoute = async () => {
   try {
-    const page = await getEntry('pages', 'brand').catch(() => null);
+    const page = await getEntry('pages', 'brand');
     const all = (await getCollection('pages')) as unknown as BrandSection[];
     const sections = all
       .filter((e) => e.id.startsWith('brand/') && e.id !== 'brand/index')

@@ -608,19 +608,17 @@ Most are gated to production (`NODE_ENV=production`) so they do not run during
 | Service   | Purpose                                     | Loader file                  | Production-only |
 | --------- | ------------------------------------------- | ---------------------------- | --------------- |
 | Fathom    | Privacy-friendly analytics + event tracking | `LayoutEmbedScripts.astro`   | No              |
-| Plain     | Live chat / customer support widget         | `LayoutEmbedScripts.astro`   | Yes             |
+| HelpScout | Live chat / customer support widget         | `LayoutEmbedScripts.astro`   | Yes             |
 | Hyperping | Status badge on the site footer             | `LayoutEmbedScripts.astro`   | No              |
 | Marker.io | In-page bug / feedback capture              | `public/scripts/markerio.js` | Yes             |
 | MaxMind   | Device fingerprint for signup fraud signal  | `LayoutEmbedScripts.astro`   | Yes             |
 | WebMCP    | Exposes site tools to AI agents via WebMCP  | `LayoutEmbedScripts.astro`   | No              |
 
-### Plain chat
+### HelpScout Beacon
 
-- App ID is configured in `LayoutEmbedScripts.astro`.
-- Any `<a>` (or other element) with `class="open-plain-chat"` will open the
-  chat widget when clicked.
-- When the Plain widget is open, the Marker.io launcher is hidden to avoid
-  overlapping Plain's close button. Closing the chat restores Marker.
+- Beacon ID is configured in `LayoutEmbedScripts.astro`.
+- Any `<a>` (or other element) with `class="open-beacon"` will open the
+  Beacon widget when clicked.
 
 ### Testing third-party widgets locally
 

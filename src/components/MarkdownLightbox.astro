@@ -1,0 +1,187 @@
+---
+// src/components/MarkdownLightbox.astro
+//
+// Native <dialog>-based lightbox for viewing a page as raw markdown. Mirrors
+// the agents.datum.net "TerminalLightbox" behaviour but uses the codebase's
+// idiomatic custom-element + <dialog> pattern (see VideoModal.astro) instead
+// of React or Alpine.
+//
+// Triggered by any anchor with `data-markdown-trigger` attribute — its `href`
+// is the raw markdown URL that gets fetched and displayed.
+//
+// Modifier-key clicks, middle-clicks, and right-clicks bypass the modal so
+// "Open in new tab", "Save link as…", and AI crawlers reach the raw URL.
+import Icon from '@components/Icon.astro';
+---
+
+<markdown-lightbox>
+  <dialog aria-label="Page markdown">
+    <div class="markdown-lightbox__frame">
+      <div class="markdown-lightbox__titlebar">
+        <span class="markdown-lightbox__prompt" aria-hidden="true">$</span>
+        <span class="markdown-lightbox__command">
+          <span class="markdown-lightbox__title" data-md-title>cat</span>
+          <span class="markdown-lightbox__cursor" aria-hidden="true"></span>
+        </span>
+        <a
+          data-md-raw-link
+          href="#"
+          class="markdown-lightbox__rawlink"
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="Open the raw markdown in a new tab"
+        >
+          raw
+          <Icon name="external-link" size="sm" class="markdown-lightbox__rawlink-icon stroke-1.5" />
+        </a>
+        <button type="button" data-md-close aria-label="Close" class="markdown-lightbox__close">
+          esc
+        </button>
+      </div>
+      <div class="markdown-lightbox__body" tabindex="0">
+        <pre class="markdown-lightbox__output" data-md-output>Loading&hellip;</pre>
+      </div>
+    </div>
+  </dialog>
+</markdown-lightbox>
+
+<script>
+  const MARKDOWN_LIGHTBOX_OPEN_EVENT = 'markdown-lightbox-open';
+
+  declare global {
+    interface CustomEventMap {
+      'markdown-lightbox-open': CustomEvent<{ href: string; title?: string }>;
+    }
+  }
+
+  class MarkdownLightbox extends HTMLElement {
+    private dialog!: HTMLDialogElement;
+    private closeBtn!: HTMLButtonElement;
+    private titleEl!: HTMLElement;
+    private rawLink!: HTMLAnchorElement;
+    private output!: HTMLElement;
+    private dialogOpenedAt = 0;
+    private currentHref: string | null = null;
+    private fetchCache: Map<string, string> = new Map();
+
+    connectedCallback() {
+      this.dialog = this.querySelector('dialog')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('[data-md-close]')!;
+      this.titleEl = this.querySelector<HTMLElement>('[data-md-title]')!;
+      this.rawLink = this.querySelector<HTMLAnchorElement>('[data-md-raw-link]')!;
+      this.output = this.querySelector<HTMLElement>('[data-md-output]')!;
+
+      this.setupEventListeners();
+    }
+
+    private setupEventListeners() {
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-markdown-lightbox-open', false);
+        window.removeEventListener('click', this.onWindowClick);
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    private onWindowClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const inDialog = target.closest('dialog') !== null;
+      const inFrame = target.closest('.markdown-lightbox__frame') !== null;
+      const isBackdropClick = inDialog && !inFrame;
+
+      const tooSoon = Date.now() - this.dialogOpenedAt < 300;
+      if (isBackdropClick && !tooSoon) this.closeModal();
+    };
+
+    openModal(detail: { href: string; title?: string }) {
+      const { href, title } = detail;
+      if (!href) return;
+
+      this.currentHref = href;
+      this.rawLink.href = href;
+      this.titleEl.textContent = title ?? `cat ${href}`;
+      this.output.textContent = 'Loading…';
+
+      this.dialog.showModal();
+      this.dialogOpenedAt = Date.now();
+      document.body.toggleAttribute('data-markdown-lightbox-open', true);
+
+      // Defer the global click listener so the click that opened the modal
+      // does not immediately close it via the backdrop handler.
+      setTimeout(() => window.addEventListener('click', this.onWindowClick), 100);
+
+      this.fetchContent(href);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+
+    private async fetchContent(href: string) {
+      const cached = this.fetchCache.get(href);
+      if (cached !== undefined) {
+        if (this.currentHref === href) this.output.textContent = cached;
+        return;
+      }
+      try {
+        const res = await fetch(href, {
+          headers: { Accept: 'text/plain,text/markdown,*/*' },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        this.fetchCache.set(href, text);
+        if (this.currentHref === href) this.output.textContent = text;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'fetch failed';
+        if (this.currentHref === href) {
+          this.output.textContent = `Could not load ${href} — ${msg}`;
+        }
+      }
+    }
+  }
+
+  if (!customElements.get('markdown-lightbox')) {
+    customElements.define('markdown-lightbox', MarkdownLightbox);
+  }
+
+  function firstLightbox(): MarkdownLightbox | null {
+    return document.querySelector('markdown-lightbox');
+  }
+
+  // Global trigger handler — any anchor with `data-markdown-trigger` opens
+  // the lightbox on plain click. Modifier-key / non-primary clicks fall
+  // through to native browser behaviour (open in new tab, save as, etc.).
+  type GlobalHooks = { __markdownLightboxHooks?: boolean };
+  if (!(globalThis as GlobalHooks).__markdownLightboxHooks) {
+    (globalThis as GlobalHooks).__markdownLightboxHooks = true;
+
+    document.addEventListener('click', (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const anchor = target?.closest('a[data-markdown-trigger]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (e.button !== 0) return;
+
+      const href = anchor.getAttribute('href');
+      if (!href) return;
+      e.preventDefault();
+
+      const title = anchor.getAttribute('data-md-title') ?? `cat ${href}`;
+      document.dispatchEvent(
+        new CustomEvent(MARKDOWN_LIGHTBOX_OPEN_EVENT, { detail: { href, title } })
+      );
+    });
+
+    document.addEventListener(MARKDOWN_LIGHTBOX_OPEN_EVENT, (ev: Event) => {
+      const detail = (ev as CustomEvent<{ href: string; title?: string }>).detail;
+      firstLightbox()?.openModal(detail);
+    });
+  }
+</script>

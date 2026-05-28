@@ -231,4 +231,119 @@
   .newsletter-modal-actions {
     @apply flex justify-center;
   }
+
+  /* Markdown Lightbox — "Read as Markdown" viewer used in FooterAiAgents.
+   * Uses the same dark surface as the footer so the modal feels embedded
+   * in the bottom dark band where the trigger lives. */
+  markdown-lightbox {
+    @apply contents;
+  }
+
+  markdown-lightbox dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max w-[92%] max-w-[56rem];
+    @apply max-h-[calc(100vh-4rem)];
+    @apply bg-transparent;
+  }
+
+  markdown-lightbox dialog[open] {
+    @apply flex;
+  }
+
+  markdown-lightbox dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  .markdown-lightbox__frame {
+    @apply bg-midnight-fjord border-app---dark---utility-2 shadow-modal relative flex w-full grow flex-col overflow-hidden rounded-lg border border-solid text-white;
+  }
+
+  .markdown-lightbox__titlebar {
+    @apply border-app---dark---utility-2 datum-text-xs flex items-center gap-3 border-b px-3.5 py-2.5;
+    @apply font-mono leading-none;
+    @apply text-app---dark---utility-3;
+  }
+
+  .markdown-lightbox__prompt {
+    @apply text-aurora-moss font-semibold;
+  }
+
+  .markdown-lightbox__command {
+    @apply flex min-w-0 flex-1 items-center gap-1.5;
+  }
+
+  .markdown-lightbox__title {
+    @apply min-w-0 truncate text-white;
+  }
+
+  .markdown-lightbox__cursor {
+    @apply bg-aurora-moss inline-block h-[0.85em] w-[0.5em] shrink-0 align-[-0.05em];
+    animation: markdown-lightbox-blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes markdown-lightbox-blink {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .markdown-lightbox__cursor {
+      animation: none;
+    }
+  }
+
+  .markdown-lightbox__rawlink {
+    @apply text-app---dark---utility-3 inline-flex items-center gap-1.5 rounded px-2 py-1 no-underline;
+    @apply transition-colors duration-150 hover:bg-white/5 hover:text-white;
+    @apply focus-visible:bg-white/5 focus-visible:text-white focus-visible:outline-none;
+  }
+
+  .markdown-lightbox__rawlink-icon {
+    @apply h-3.5! w-3.5! shrink-0;
+  }
+
+  .markdown-lightbox__close {
+    @apply border-app---dark---utility-2 text-app---dark---utility-3 cursor-pointer rounded border bg-transparent px-2 py-1;
+    @apply transition-colors duration-150 hover:border-white/40 hover:text-white;
+    @apply focus-visible:border-white/40 focus-visible:text-white focus-visible:outline-none;
+    @apply font-mono text-xs leading-none;
+  }
+
+  .markdown-lightbox__body {
+    @apply min-h-0 flex-1 overflow-auto px-6 py-5;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .markdown-lightbox__body:focus-visible {
+    @apply outline-1 -outline-offset-4 outline-white/30;
+  }
+
+  .markdown-lightbox__output {
+    @apply m-0 font-mono text-[0.8125rem] leading-relaxed text-white;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  body[data-markdown-lightbox-open] {
+    @apply overflow-clip;
+  }
+
+  /* Trigger link styling in the dark footer band — mirrors the existing
+   * agents link styling but with a subtle code/markdown affordance. */
+  .markdown-lightbox-trigger {
+    @apply datum-text-sm inline-flex shrink-0 items-center gap-3 whitespace-nowrap text-white no-underline transition-opacity hover:opacity-80;
+  }
+
+  .markdown-lightbox-trigger__label {
+    @apply text-white;
+  }
+
+  .markdown-lightbox-trigger__label strong {
+    @apply font-semibold underline underline-offset-2;
+  }
+
+  .markdown-lightbox-trigger__icon {
+    @apply text-app---dark---utility-3 shrink-0;
+  }
 }

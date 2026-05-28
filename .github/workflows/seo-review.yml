@@ -78,14 +78,29 @@ jobs:
             echo "value=full" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Fetch previous weekly audit body (for trend arrows)
+        if: github.event_name != 'pull_request'
+        id: prev
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Most recent seo-audit issue in any state (closed by next run, but could still be open).
+          prev_body="$(gh issue list --label seo-audit --state all --limit 1 --json body --jq '.[0].body // ""' || echo '')"
+          {
+            echo 'body<<SEOPREV_EOF'
+            printf '%s\n' "$prev_body"
+            echo 'SEOPREV_EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - name: Run SEO review
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCAN_MODE: ${{ steps.mode.outputs.value }}
           CHANGED_FILES: ${{ steps.changed.outputs.files }}
           DIST_DIR: dist/client
-          MAX_PAGES: '25'
           OUTPUT_FILE: .tmp/seo-review.md
+          PREVIOUS_AUDIT_BODY: ${{ steps.prev.outputs.body }}
         run: node scripts/seo-review.mjs
 
       - name: Post or update PR comment

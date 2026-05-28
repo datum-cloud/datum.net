@@ -10,7 +10,10 @@
  *                       adds broken-link + redirect-chain audits over all built pages)
  *   CHANGED_FILES       newline list of changed src/pages|src/content files (changed-only mode)
  *   DIST_DIR            default: dist/client
- *   MAX_PAGES           default: 25
+ *   MAX_PAGES           default: unlimited (set to a positive integer to cap; 0/unset = no cap).
+ *                       Note: AI review payload is still capped by MAX_INPUT_CHARS — extra
+ *                       pages may be dropped from the Claude prompt but always count in the
+ *                       deterministic score table and broken-link audit.
  *   OUTPUT_FILE         default: .tmp/seo-review.md
  *   SITE_URL            default: https://www.datum.net (host used to recognise internal links)
  */
@@ -20,7 +23,9 @@ import path from 'node:path';
 import { load } from 'cheerio';
 
 const DIST_DIR = process.env.DIST_DIR || 'dist/client';
-const MAX_PAGES = parseInt(process.env.MAX_PAGES || '25', 10);
+// 0 / unset / non-positive = unlimited. Cap exists only as an escape hatch.
+const MAX_PAGES_RAW = parseInt(process.env.MAX_PAGES || '0', 10);
+const MAX_PAGES = Number.isFinite(MAX_PAGES_RAW) && MAX_PAGES_RAW > 0 ? MAX_PAGES_RAW : Infinity;
 const OUTPUT_FILE = process.env.OUTPUT_FILE || '.tmp/seo-review.md';
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6'; // or 'claude-2' for faster, cheaper reviews with less insight
 // Claude input limit is 200K tokens (~800K chars at 4 chars/token).
@@ -75,9 +80,10 @@ async function walk(dir, root, cfg) {
   return out;
 }
 
-function extractMeta(html, urlPath) {
-  const $ = load(html);
+function extractMeta($, urlPath) {
   const get = (sel, attr = 'content') => $(sel).attr(attr)?.trim() || null;
+  const title = $('title').first().text().trim() || null;
+  const description = get('meta[name="description"]');
 
   const h1s = $('h1')
     .map((_, el) => $(el).text().trim())
@@ -85,12 +91,24 @@ function extractMeta(html, urlPath) {
   const imgs = $('img').toArray();
   const imgsMissingAlt = imgs.filter((el) => !($(el).attr('alt') || '').trim()).length;
 
+  const jsonLdNodes = $('script[type="application/ld+json"]');
+  const jsonLdTypes = jsonLdNodes
+    .map((_, el) => {
+      try {
+        const j = JSON.parse($(el).contents().text());
+        return Array.isArray(j) ? j.map((x) => x['@type']).join(',') : j['@type'];
+      } catch {
+        return 'invalid';
+      }
+    })
+    .get();
+
   return {
     url: urlPath,
-    title: $('title').first().text().trim() || null,
-    titleLen: ($('title').first().text().trim() || '').length,
-    description: get('meta[name="description"]'),
-    descriptionLen: (get('meta[name="description"]') || '').length,
+    title,
+    titleLen: title?.length ?? 0,
+    description,
+    descriptionLen: description?.length ?? 0,
     canonical: get('link[rel="canonical"]', 'href'),
     robots: get('meta[name="robots"]'),
     lang: $('html').attr('lang') || null,
@@ -104,21 +122,137 @@ function extractMeta(html, urlPath) {
     h1First: h1s[0] || null,
     imgCount: imgs.length,
     imgsMissingAlt,
-    hasJsonLd: $('script[type="application/ld+json"]').length > 0,
-    jsonLdTypes: $('script[type="application/ld+json"]')
-      .map((_, el) => {
-        try {
-          const j = JSON.parse($(el).contents().text());
-          return Array.isArray(j) ? j.map((x) => x['@type']).join(',') : j['@type'];
-        } catch {
-          return 'invalid';
-        }
-      })
-      .get(),
+    hasJsonLd: jsonLdNodes.length > 0,
+    jsonLdTypes,
   };
 }
 
-function extractLinksAndRefresh($, urlPath /* , siteHost */) {
+function parsePreviousScores(body) {
+  if (!body) return null;
+  const m = body.match(/<!--\s*seo-scores:\s*(\{[\s\S]*?\})\s*-->/);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[1]);
+  } catch {
+    return null;
+  }
+}
+
+// For "issues" metrics, lower is better — arrow flips accordingly.
+function trendArrow(current, previous, { higherIsBetter }) {
+  if (previous == null || Number.isNaN(previous)) return '';
+  const delta = current - previous;
+  if (delta === 0) return ' ▬ 0';
+  const sign = delta > 0 ? '+' : '';
+  const improved = higherIsBetter ? delta > 0 : delta < 0;
+  const arrow = improved ? '▲' : '▼';
+  return ` ${arrow} ${sign}${delta}`;
+}
+
+function computeScoreSummary(report, brokenLinks, redirectChains, previous) {
+  const total = report.length;
+  const tally = {
+    titleIssues: 0,
+    descIssues: 0,
+    canonicalMissing: 0,
+    h1Issues: 0,
+    noindex: 0,
+    ogImageMissing: 0,
+    jsonLdBroken: 0,
+    altMissing: 0,
+  };
+  for (const p of report) {
+    if (!p.title || p.titleLen > 70) tally.titleIssues++;
+    if (!p.description || p.descriptionLen < 70 || p.descriptionLen > 160) tally.descIssues++;
+    if (!p.canonical) tally.canonicalMissing++;
+    if (p.h1Count !== 1) tally.h1Issues++;
+    if ((p.robots || '').toLowerCase().includes('noindex')) tally.noindex++;
+    if (!p.ogImage) tally.ogImageMissing++;
+    if ((p.jsonLdTypes || []).includes('invalid')) tally.jsonLdBroken++;
+    if (p.imgsMissingAlt > 0) tally.altMissing++;
+  }
+
+  const brokenCount = brokenLinks?.length ?? 0;
+  const chainCount = redirectChains?.length ?? 0;
+
+  // Score: 100 - weighted penalty. Per-page checks normalize by total pages.
+  const pageIssueRate =
+    (tally.titleIssues +
+      tally.descIssues +
+      tally.canonicalMissing +
+      tally.h1Issues +
+      tally.noindex +
+      tally.ogImageMissing +
+      tally.jsonLdBroken +
+      tally.altMissing) /
+    Math.max(total * 8, 1);
+  const penalty = Math.min(100, pageIssueRate * 80 + brokenCount * 2 + chainCount * 1);
+  const score = Math.max(0, Math.round(100 - penalty));
+  const grade = score >= 90 ? '🟢' : score >= 70 ? '🟡' : '🔴';
+
+  const status = (n) => (n === 0 ? '✅' : n <= 2 ? '🟡' : '🔴');
+  const prev = previous || {};
+  const prevTally = prev.tally || {};
+  const tr = (key, current, higherIsBetter = false) =>
+    trendArrow(current, key === 'score' ? prev.score : prevTally[key], { higherIsBetter });
+
+  const rows = [
+    ['Overall score', `${grade} **${score} / 100**${tr('score', score, true)}`],
+    ['Pages analyzed', String(total)],
+    [
+      'Title issues (missing or >70 chars)',
+      `${status(tally.titleIssues)} ${tally.titleIssues}${tr('titleIssues', tally.titleIssues)}`,
+    ],
+    [
+      'Description issues (length out of 70–160)',
+      `${status(tally.descIssues)} ${tally.descIssues}${tr('descIssues', tally.descIssues)}`,
+    ],
+    [
+      'Canonical missing',
+      `${status(tally.canonicalMissing)} ${tally.canonicalMissing}${tr('canonicalMissing', tally.canonicalMissing)}`,
+    ],
+    [
+      'H1 issues (0 or >1)',
+      `${status(tally.h1Issues)} ${tally.h1Issues}${tr('h1Issues', tally.h1Issues)}`,
+    ],
+    [
+      'Noindex on built pages',
+      `${status(tally.noindex)} ${tally.noindex}${tr('noindex', tally.noindex)}`,
+    ],
+    [
+      'og:image missing',
+      `${status(tally.ogImageMissing)} ${tally.ogImageMissing}${tr('ogImageMissing', tally.ogImageMissing)}`,
+    ],
+    [
+      'JSON-LD invalid',
+      `${status(tally.jsonLdBroken)} ${tally.jsonLdBroken}${tr('jsonLdBroken', tally.jsonLdBroken)}`,
+    ],
+    [
+      'Pages with missing alt text',
+      `${status(tally.altMissing)} ${tally.altMissing}${tr('altMissing', tally.altMissing)}`,
+    ],
+    [
+      'Broken internal links',
+      `${status(brokenCount)} ${brokenCount}${trendArrow(brokenCount, prev.brokenCount, { higherIsBetter: false })}`,
+    ],
+    [
+      'Redirect chains',
+      `${status(chainCount)} ${chainCount}${trendArrow(chainCount, prev.chainCount, { higherIsBetter: false })}`,
+    ],
+  ];
+  const header = '| Metric | Value |\n| --- | --- |';
+  const body = rows.map(([k, v]) => `| ${k} | ${v} |`).join('\n');
+
+  const capturedAt = new Date().toISOString().slice(0, 10);
+  const machine = `<!-- seo-scores: ${JSON.stringify({ score, tally, brokenCount, chainCount, capturedAt })} -->`;
+  const legend = previous
+    ? `_Trend vs previous audit (${prev.capturedAt || 'last run'}): ▲ improved · ▼ worsened · ▬ unchanged._`
+    : '_No previous audit found — trend will appear next run._';
+
+  return { table: `${header}\n${body}`, machine, legend };
+}
+
+function extractLinksAndRefresh($, urlPath) {
   const refs = [];
   $('a[href]').each((_, el) => {
     const href = ($(el).attr('href') || '').trim();
@@ -232,20 +366,20 @@ function findBrokenLinks(linkMap, builtSet, srcSet) {
 function findRedirectChains(refreshMap) {
   const chains = [];
   for (const start of refreshMap.keys()) {
-    const path = [start];
-    const seen = new Set(path);
+    const chain = [start];
+    const seen = new Set(chain);
     let cur = start;
     while (refreshMap.has(cur)) {
       const next = normalizeUrlPath(refreshMap.get(cur));
       if (seen.has(next)) {
-        path.push(next + ' (loop)');
+        chain.push(next + ' (loop)');
         break;
       }
-      path.push(next);
+      chain.push(next);
       seen.add(next);
       cur = next;
     }
-    if (path.length > 2) chains.push(path); // >=2 hops = chain
+    if (chain.length > 2) chains.push(chain); // >=2 hops = chain
   }
   return chains;
 }
@@ -286,71 +420,34 @@ function filterByChanged(files, root, slugs) {
   });
 }
 
-function buildUserContent(payload, total) {
-  const header = (count) => `Pages analyzed: ${count} of ${total}\n\nData:\n\n`;
-  // Use compact JSON (no indent) — fits more pages within MAX_INPUT_CHARS.
-  const render = (obj) => `${header(obj.pages.length)}\`\`\`json\n${JSON.stringify(obj)}\n\`\`\``;
-  let content = render(payload);
-  if (content.length <= MAX_INPUT_CHARS) {
-    return { content, sent: payload.pages.length, dropped: 0 };
+// Greedy pack: split pages into batches where each batch's serialized JSON
+// fits under `budget` chars (with safety margin for prompt scaffolding).
+function chunkPagesByCharBudget(pages, budget) {
+  const OVERHEAD = 4000; // header + JSON wrapper + safety margin
+  const effective = Math.max(budget - OVERHEAD, 10000);
+  const batches = [];
+  let cur = [];
+  let curSize = 0;
+  for (const page of pages) {
+    const size = JSON.stringify(page).length + 1; // +1 for separating comma
+    if (cur.length > 0 && curSize + size > effective) {
+      batches.push(cur);
+      cur = [];
+      curSize = 0;
+    }
+    cur.push(page);
+    curSize += size;
   }
-
-  // Trim pages from the tail (lower priority); keep brokenLinks/redirectChains.
-  const trimmed = { ...payload, pages: [...payload.pages] };
-  while (trimmed.pages.length > 1 && content.length > MAX_INPUT_CHARS) {
-    trimmed.pages.pop();
-    content = render(trimmed);
-  }
-  return {
-    content,
-    sent: trimmed.pages.length,
-    dropped: payload.pages.length - trimmed.pages.length,
-  };
+  if (cur.length) batches.push(cur);
+  return batches;
 }
 
-async function callClaude(report, extras = {}) {
+// Aggregates token usage across all Claude calls within a single run.
+const tokenTotals = { input: 0, output: 0, cacheRead: 0, cacheCreate: 0, calls: 0 };
+
+async function postClaude({ system, userContent }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY is not set');
-
-  const extrasSection =
-    extras.brokenLinks || extras.redirectChains
-      ? `
-
-Additionally, you'll receive:
-- \`brokenLinks\`: internal anchor hrefs whose target URL does not exist as a built page. Call these out as critical.
-- \`redirectChains\`: redirect hops (2+) discovered via \`<meta http-equiv="refresh">\`. Recommend collapsing to a single hop.`
-      : '';
-
-  const system = `You are an SEO and meta-data reviewer for an Astro static site.
-You will receive a JSON array of pages with extracted SEO signals.
-Return a concise markdown review for a GitHub PR comment.
-
-Structure:
-1. **Summary** (2-3 lines: overall verdict + worst issues count)
-2. **Critical issues** (missing/duplicated title, description, canonical, h1; noindex on prod pages; >70-char titles; >160-char or <70-char descriptions; missing og:image; broken JSON-LD${extras.brokenLinks ? '; broken internal links' : ''}${extras.redirectChains ? '; redirect chains' : ''})
-3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
-4. **Per-page notes** — only include pages with issues, bulleted with the URL path.${extrasSection}
-
-Be terse and actionable. Don't restate compliant pages. Don't invent metrics.`;
-
-  const payload = { pages: report };
-  if (extras.brokenLinks) payload.brokenLinks = extras.brokenLinks;
-  if (extras.redirectChains) payload.redirectChains = extras.redirectChains;
-  const { content: userContent, sent, dropped } = buildUserContent(payload, report.length);
-  if (dropped > 0) {
-    console.log(
-      `User content trimmed: dropped ${dropped} page(s) to stay under ${MAX_INPUT_CHARS} chars (~${Math.round(
-        MAX_INPUT_CHARS / 4
-      )} tokens). Sent ${sent}.`
-    );
-  } else {
-    console.log(
-      `User content size: ${userContent.length} chars (~${Math.round(
-        userContent.length / 4
-      )} tokens), under cap ${MAX_INPUT_CHARS}.`
-    );
-  }
-
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -360,18 +457,156 @@ Be terse and actionable. Don't restate compliant pages. Don't invent metrics.`;
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 2048,
+      max_tokens: 4096, //8192,
       system,
       messages: [{ role: 'user', content: userContent }],
     }),
   });
-
   if (!res.ok) {
     const txt = await res.text();
     throw new Error(`Claude API ${res.status}: ${txt}`);
   }
   const data = await res.json();
+  const u = data.usage || {};
+  const inTok = u.input_tokens || 0;
+  const outTok = u.output_tokens || 0;
+  const cacheR = u.cache_read_input_tokens || 0;
+  const cacheC = u.cache_creation_input_tokens || 0;
+  tokenTotals.input += inTok;
+  tokenTotals.output += outTok;
+  tokenTotals.cacheRead += cacheR;
+  tokenTotals.cacheCreate += cacheC;
+  tokenTotals.calls += 1;
+  console.log(
+    `Tokens — call #${tokenTotals.calls}: in=${inTok} out=${outTok}` +
+      (cacheR || cacheC ? ` (cache read=${cacheR} create=${cacheC})` : '')
+  );
   return data.content?.map((b) => b.text).join('\n') || '_No content returned._';
+}
+
+function buildFullSystemPrompt(extras) {
+  const extrasSection =
+    extras.brokenLinks || extras.redirectChains
+      ? `
+
+Additionally, you'll receive:
+- \`brokenLinks\`: internal anchor hrefs whose target URL does not exist as a built page. Call these out as critical.
+- \`redirectChains\`: redirect hops (2+) discovered via \`<meta http-equiv="refresh">\`. Recommend collapsing to a single hop.`
+      : '';
+  return `You are an SEO and meta-data reviewer for an Astro static site.
+You will receive a JSON array of pages with extracted SEO signals.
+Return a concise markdown review for a GitHub PR comment.
+
+Structure:
+1. **Summary** (2-3 lines: overall verdict + worst issues count)
+2. **Critical issues** (missing/duplicated title, description, canonical, h1; noindex on prod pages; >70-char titles; >160-char or <70-char descriptions; missing og:image; broken JSON-LD${extras.brokenLinks ? '; broken internal links' : ''}${extras.redirectChains ? '; redirect chains' : ''})
+3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
+4. **Per-page notes** — only include pages with issues, bulleted with the URL path.${extrasSection}
+
+For EVERY issue listed (Critical, Improvements, and Per-page notes) you MUST include a concrete fix.
+Format each issue as:
+  - <description of issue, citing data from the JSON>
+    - 💡 *Fix:* <specific actionable suggestion — what to change, where, and how>
+
+Examples of good fixes:
+  - "Trim title to ≤60 chars; suggested: \`Datum — Decentralized Network Cloud\` (37 chars)."
+  - "Rewrite description to 130–155 chars including primary keyword 'private connectivity'."
+  - "Set og:image to absolute URL: \`https://www.datum.net/_astro/handbook.X.png\`."
+  - "Fix shared layout in \`src/layouts/Handbook.astro\` so only one \`<h1>\` is rendered (currently emits both sidebar title and article title)."
+
+When the same fix applies to many pages, group them and propose a single template-level fix instead of repeating per page.
+Be terse and actionable. Don't restate compliant pages. Don't invent metrics or speculate beyond the data.`;
+}
+
+async function callClaudeSingle(pages, extras, totalPages) {
+  const payload = { pages };
+  if (extras.brokenLinks) payload.brokenLinks = extras.brokenLinks;
+  if (extras.redirectChains) payload.redirectChains = extras.redirectChains;
+  const userContent = `Pages analyzed: ${pages.length} of ${totalPages}\n\nData:\n\n\`\`\`json\n${JSON.stringify(payload)}\n\`\`\``;
+  console.log(
+    `Single-call: ${userContent.length} chars (~${Math.round(userContent.length / 4)} tokens).`
+  );
+  return postClaude({ system: buildFullSystemPrompt(extras), userContent });
+}
+
+async function callClaudeBatch(pages, batchIndex, batchCount, totalPages) {
+  const system = `You are an SEO reviewer auditing batch ${batchIndex} of ${batchCount} for an Astro static site.
+You will receive a JSON array of pages with extracted SEO signals.
+
+Output ONLY per-page issue bullets — no summary, no headings, no preamble.
+For EACH page with issues, output:
+- \`<url>\` — comma-separated issues (missing title/description/canonical/h1, length out of range, noindex, missing og:image, broken JSON-LD, missing alt text)
+  - 💡 *Fix:* <specific actionable suggestion citing the exact data point>
+
+Skip pages with no issues. Be terse. Don't invent metrics. Don't restate compliant pages.`;
+  const userContent = `Batch ${batchIndex}/${batchCount} — ${pages.length} of ${totalPages} pages.\n\nData:\n\n\`\`\`json\n${JSON.stringify({ pages })}\n\`\`\``;
+  console.log(
+    `Batch ${batchIndex}/${batchCount}: ${pages.length} pages, ${userContent.length} chars (~${Math.round(userContent.length / 4)} tokens).`
+  );
+  return postClaude({ system, userContent });
+}
+
+async function callClaudeSynthesis(batchNotes, extras, totalPages) {
+  const system = `You are an SEO reviewer synthesizing a final report for an Astro static site.
+You will receive per-page issue bullets (each with a Fix line) collected from multiple batches, plus optional global audit data.
+
+Produce a concise markdown review for a GitHub PR comment with this structure:
+1. **Summary** (2-3 lines: overall verdict + worst issues count across all batches)
+2. **Critical issues** (group recurring issues; cite counts; flag broken JSON-LD${extras.brokenLinks ? ', broken internal links' : ''}${extras.redirectChains ? ', redirect chains' : ''})
+3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
+4. **Per-page notes** — deduplicated, bulleted with the URL path. Keep this section if useful; collapse to "see batch notes above" only if the list would exceed ~50 entries.
+
+For EVERY issue in Critical/Improvements/Per-page sections you MUST include a fix line:
+  - <issue>
+    - 💡 *Fix:* <specific actionable suggestion>
+
+When many pages share the same issue, propose ONE template/layout-level fix (cite the suspected source file) instead of repeating per page.
+Be terse and actionable. Don't invent metrics. Preserve fix suggestions from the batch notes where possible.`;
+
+  const parts = [`Total pages: ${totalPages} across ${batchNotes.length} batches.`];
+  parts.push('\nBatch notes:\n');
+  batchNotes.forEach((notes, i) => {
+    parts.push(`### Batch ${i + 1}\n${notes.trim()}\n`);
+  });
+  if (extras.brokenLinks) {
+    parts.push(
+      `\nbrokenLinks (${extras.brokenLinks.length}):\n\`\`\`json\n${JSON.stringify(extras.brokenLinks)}\n\`\`\``
+    );
+  }
+  if (extras.redirectChains) {
+    parts.push(
+      `\nredirectChains (${extras.redirectChains.length}):\n\`\`\`json\n${JSON.stringify(extras.redirectChains)}\n\`\`\``
+    );
+  }
+  const userContent = parts.join('\n');
+  console.log(
+    `Synthesis: ${userContent.length} chars (~${Math.round(userContent.length / 4)} tokens).`
+  );
+  return postClaude({ system, userContent });
+}
+
+async function callClaude(report, extras = {}) {
+  const batches = chunkPagesByCharBudget(report, MAX_INPUT_CHARS);
+  if (batches.length <= 1) {
+    return callClaudeSingle(report, extras, report.length);
+  }
+  console.log(`Splitting ${report.length} pages into ${batches.length} batches.`);
+  const batchNotes = [];
+  for (let i = 0; i < batches.length; i++) {
+    const notes = await callClaudeBatch(batches[i], i + 1, batches.length, report.length);
+    batchNotes.push(notes);
+  }
+  // If synthesis would itself exceed the cap, fall back to deterministic concat.
+  const totalNoteChars = batchNotes.reduce((n, s) => n + s.length, 0);
+  if (totalNoteChars > MAX_INPUT_CHARS - 8000) {
+    console.log(
+      `Skipping synthesis call (combined notes ${totalNoteChars} chars near cap); concatenating batches.`
+    );
+    return batchNotes
+      .map((notes, i) => `### Batch ${i + 1}/${batches.length}\n\n${notes.trim()}`)
+      .join('\n\n');
+  }
+  return callClaudeSynthesis(batchNotes, extras, report.length);
 }
 
 async function main() {
@@ -389,13 +624,6 @@ async function main() {
     .filter(Boolean);
   const slugs = mapChangedToSlugs(changed);
   const broad = hasBroadChange(changed);
-  const siteHost = (() => {
-    try {
-      return new URL(SITE_URL).host;
-    } catch {
-      return 'www.datum.net';
-    }
-  })();
 
   let candidates = [];
   let mode = SCAN_MODE === 'full' ? 'full' : 'skipped-no-changes';
@@ -447,19 +675,27 @@ async function main() {
       '',
     ].join('\n');
   } else {
+    // Read + parse in parallel. Page count is capped by MAX_PAGES,
+    // so an unbounded Promise.all is fine here — no need for a concurrency pool.
+    const perPage = await Promise.all(
+      picked.map(async (file) => {
+        const html = await readFile(file, 'utf8');
+        const $ = load(html);
+        const url = toUrlPath(file, DIST_DIR);
+        const meta = extractMeta($, url);
+        const links = isFull ? extractLinksAndRefresh($, url) : null;
+        return { url, meta, links };
+      })
+    );
+
     const report = [];
     const linkMap = new Map();
     const refreshMap = new Map();
-
-    for (const file of picked) {
-      const html = await readFile(file, 'utf8');
-      const url = toUrlPath(file, DIST_DIR);
-      report.push(extractMeta(html, url));
-      if (SCAN_MODE === 'full') {
-        const $ = load(html);
-        const { refs, refresh } = extractLinksAndRefresh($, url, siteHost);
-        if (refs.length) linkMap.set(url, refs);
-        if (refresh) refreshMap.set(normalizeUrlPath(url), normalizeUrlPath(refresh));
+    for (const { url, meta, links } of perPage) {
+      report.push(meta);
+      if (links) {
+        if (links.refs.length) linkMap.set(url, links.refs);
+        if (links.refresh) refreshMap.set(normalizeUrlPath(url), normalizeUrlPath(links.refresh));
       }
     }
 
@@ -485,11 +721,27 @@ async function main() {
         ? `\n_Audits: ${brokenLinks.length} broken internal link(s), ${redirectChains.length} redirect chain(s)._`
         : '';
 
+    const previousScores = parsePreviousScores(process.env.PREVIOUS_AUDIT_BODY);
+    const {
+      table: scoreTable,
+      machine: scoreMachine,
+      legend: trendLegend,
+    } = computeScoreSummary(report, brokenLinks, redirectChains, previousScores);
+
     body = [
       '<!-- seo-review-bot -->',
+      scoreMachine,
       heading,
       '',
       `_Analyzed ${report.length} of ${all.length} built HTML pages (mode: \`${mode}\`)._${auditLine}`,
+      '',
+      '### 📊 Score summary',
+      '',
+      scoreTable,
+      '',
+      trendLegend,
+      '',
+      '---',
       '',
       review,
     ].join('\n');
@@ -498,6 +750,16 @@ async function main() {
   await mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
   await writeFile(OUTPUT_FILE, body, 'utf8');
   console.log(`Wrote ${OUTPUT_FILE} (${body.length} bytes, ${picked.length} pages).`);
+
+  if (tokenTotals.calls > 0) {
+    const totalIn = tokenTotals.input + tokenTotals.cacheRead + tokenTotals.cacheCreate;
+    const totalOut = tokenTotals.output;
+    console.log(
+      `Token usage — ${tokenTotals.calls} call(s): ` +
+        `input=${totalIn} (uncached=${tokenTotals.input}, cache_read=${tokenTotals.cacheRead}, cache_create=${tokenTotals.cacheCreate}), ` +
+        `output=${totalOut}, total=${totalIn + totalOut}.`
+    );
+  }
 }
 
 main().catch((err) => {

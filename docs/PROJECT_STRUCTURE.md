@@ -221,7 +221,7 @@ Page components and routing (file-based routing):
 - `api/` - API routes
 - `api/auth/login.ts` - Login API endpoint
 - `api/user.ts` - User API endpoint
-- `api/cache/index.ts` / `api/cache/strapi.ts` - Cache inspection (**GET**) and Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
+- `api/cache/index.ts` / `api/cache/[name].ts` / `api/cache/strapi.ts` - Cache inventory (**GET**), single-key JSON (**GET** `/api/cache/:name`), Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
 - `auth/` - Authentication pages
 - `auth/callback.astro` - OAuth callback
 - `auth/login.astro` - Login page

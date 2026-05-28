@@ -1,4 +1,4 @@
-# Internet superpowers for every agent
+# Connected infrastructure for AI
 
 You build the future, we help you connect it. No network team required.
 

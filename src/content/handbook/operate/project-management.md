@@ -41,7 +41,7 @@ This applies to any shipped feature, product, or significant change. It's not a 
 
 ### Discoverable
 - Documented — users can find and understand it without asking anyone
-- Added to the [Changelog](/changelog/)
+- Added to the [Changelog](/changelog)
 - Socialized internally (team demo, kickoff mention, or equivalent)
 - Ready to present at a community huddle or meetup
 

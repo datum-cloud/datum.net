@@ -12,9 +12,9 @@ meta:
     title: "Incident response policy"
 ---
 
-Datum’s customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum’s business in many ways](/handbook/technical/incidents).
+Datum's customers are dependent on our services operating as expected. Proper detection and response to incidents that may impact the integrity, confidentiality or availability of services and data is [critical to Datum's business in many ways](/handbook/build/incidents).
 
-The following minimum standards apply to Datum’s assets as managed by employees, contractors and vendors. These recommendations represent the recommended minimum efforts necessary for incident detection and response.
+The following minimum standards apply to Datum's assets as managed by employees, contractors and vendors. These recommendations represent the recommended minimum efforts necessary for incident detection and response.
 
 ## Incident Detection
 

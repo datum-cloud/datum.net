@@ -131,7 +131,7 @@ Ask for access in [#onboarding-tool-requests](https://datum-inc.slack.com/archiv
 
 ## Travel
 
-If you need to travel on Datum’s behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](/handbook/culture/traveling).
+If you need to travel on Datum's behalf for in-person onboarding, meeting customers, and offsites, again please spend money in the best interests of the company. [See our travel expense policy for more details](/handbook/operate/traveling).
 
 ## Budget for working together/socializing
 

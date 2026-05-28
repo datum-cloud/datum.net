@@ -22,9 +22,9 @@ Services are always imperfect. What we ask of them should reflect where they are
 
 - **Minimum** — The baseline for any service in production. Things like basic alerting, troubleshooting documentation, access for on-call engineers, and a deployment runbook. These aren't optional: if something is missing here, it's a blocker.
 - **Moderate** — Highly recommended but not strictly required to launch. Automated testing, disaster recovery documentation, health checks, load testing, and structured logging. Most production services should reach this level over time.
-- **High** — The bar for our most critical services. Autoscaling, full non-production test environments, formal SLIs, and a public status page. [Tier 0 and Tier 1 services](/handbook/build/service-tiers/) should aim here.
+- **High** — The bar for our most critical services. Autoscaling, full non-production test environments, formal SLIs, and a public status page. [Tier 0 and Tier 1 services](/handbook/build/service-tiers) should aim here.
 
-The right level for a service follows from its [tier](/handbook/build/service-tiers/). Don't apply Tier 0 standards to an internal utility that a handful of engineers use. Do apply them to anything that touches every customer.
+The right level for a service follows from its [tier](/handbook/build/service-tiers). Don't apply Tier 0 standards to an internal utility that a handful of engineers use. Do apply them to anything that touches every customer.
 
 ## Start early
 

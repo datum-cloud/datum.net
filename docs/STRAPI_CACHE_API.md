@@ -41,6 +41,64 @@ Response is pretty-printed JSON with top-level `entries` and `bySource` (`strapi
 
 ---
 
+## Get cache entry by name
+
+### `GET /api/cache/:name`
+
+Returns the **full parsed JSON** for a single cache key (for example `strapi-authors`, `strapi-card-members`, `article-my-slug`).
+
+**Authentication:** Header `X-Webhook-Secret: <secret>` (same as other cache APIs).
+
+**Implementation:** [`src/pages/api/cache/[name].ts`](../src/pages/api/cache/[name].ts), [`src/libs/cacheViewer.ts`](../src/libs/cacheViewer.ts), [`src/libs/cacheApiAuth.ts`](../src/libs/cacheApiAuth.ts).
+
+**Query parameters:**
+
+| Parameter | Values                     | Default | Meaning                           |
+| --------- | -------------------------- | ------- | --------------------------------- |
+| `source`  | `main`, `fallback`, `auto` | `auto`  | Main `.cache/`, fallback, or both |
+
+**Examples:**
+
+```bash
+curl -sS "${ORIGIN}/api/cache/strapi-authors" \
+  -H "X-Webhook-Secret: ${STRAPI_WEBHOOK_SECRET}"
+
+curl -sS "${ORIGIN}/api/cache/article-my-post?source=fallback" \
+  -H "X-Webhook-Secret: ${STRAPI_WEBHOOK_SECRET}"
+```
+
+**Success response (200):**
+
+```json
+{
+  "success": true,
+  "key": "strapi-authors",
+  "source": "strapi",
+  "expiresAt": "May 28, 2026, 3:45 PM",
+  "expired": false,
+  "size": "12.4 KB",
+  "data": []
+}
+```
+
+**HTTP status codes:**
+
+| Status  | When                                                     |
+| ------- | -------------------------------------------------------- |
+| **200** | Entry found and JSON parsed                              |
+| **400** | Invalid cache name or invalid `source` query             |
+| **401** | Missing or wrong `X-Webhook-Secret`                      |
+| **404** | No `.json` file for that key in the searched location(s) |
+| **405** | Method other than GET                                    |
+| **500** | File exists but JSON is corrupt                          |
+
+**Notes:**
+
+- Reads **raw filesystem** files. Expired TTL entries are returned with `"expired": true` and are **not** deleted (unlike `Cache.get()` used at runtime).
+- Cache names must match safe key rules (alphanumeric start; letters, digits, `.`, `_`, `-` only; no path segments).
+
+---
+
 ## Regenerate Strapi cache (`POST /api/cache/strapi`)
 
 Rebuilds cache entries using the same Strapi GraphQL helpers as the site (`fetchStrapiArticles`, `fetchStrapiAuthors`, `getStrapiTeamMembers`, `getStrapiCardMembers`, `fetchStrapiArticleBySlug`).
@@ -274,3 +332,4 @@ If you invoke this logic from tooling or scripts **inside this codebase**:
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `POST /api/webhooks/strapi-content` | Strapi CMS webhook: deletes cache slices (including fallbacks where applicable) and selectively warms article-related caches |
 | `GET /api/cache`                    | Inspect cache filenames and TTL metadata                                                                                     |
+| `GET /api/cache/:name`              | Full JSON for one cache key (`source` query: main, fallback, auto)                                                           |

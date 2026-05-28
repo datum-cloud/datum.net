@@ -3,35 +3,12 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import crypto from 'node:crypto';
+import { verifyCacheApiSecret } from '@libs/cacheApiAuth';
 import {
   regenerateStrapiCacheIfMissing,
   forceRegenerateStrapiCache,
   validateStrapiForceRegenerateRequest,
 } from '@libs/strapi/regenerateCache';
-
-function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
-
-  if (!webhookSecret) {
-    return false;
-  }
-
-  const receivedSecret = request.headers.get('X-Webhook-Secret');
-
-  if (!receivedSecret) {
-    return false;
-  }
-
-  const expected = Buffer.from(webhookSecret);
-  const received = Buffer.from(receivedSecret);
-
-  if (expected.length !== received.length) {
-    return false;
-  }
-
-  return crypto.timingSafeEqual(expected, received);
-}
 
 export const POST: APIRoute = async ({ request }) => {
   if (request.method !== 'POST') {
@@ -41,7 +18,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  if (!verifyWebhookSecret(request)) {
+  if (!verifyCacheApiSecret(request)) {
     return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },

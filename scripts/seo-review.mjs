@@ -40,6 +40,12 @@ const MAX_INPUT_CHARS = parseInt(process.env.MAX_INPUT_CHARS || '640000', 10);
 const RAW_SCAN_MODE = (process.env.SCAN_MODE || 'changed-only').toLowerCase();
 const SCAN_MODE = RAW_SCAN_MODE === 'full' ? 'full' : 'changed-only';
 const SITE_URL = process.env.SITE_URL || 'https://www.datum.net';
+let SITE_ORIGIN;
+try {
+  SITE_ORIGIN = new URL(SITE_URL).origin;
+} catch {
+  SITE_ORIGIN = 'https://www.datum.net';
+}
 const CONFIG_FILE =
   process.env.SEO_CONFIG ||
   path.join(path.dirname(new URL(import.meta.url).pathname), '/seo-review.config.json');
@@ -259,7 +265,17 @@ function extractLinksAndRefresh($, urlPath) {
     if (!href) return;
     if (/^(#|mailto:|tel:|javascript:|data:)/i.test(href)) return;
     if (href.startsWith('//')) return; // protocol-relative external
-    if (/^https?:\/\//i.test(href)) return; // absolute — treat as external, don't validate against dist
+    if (/^https?:\/\//i.test(href)) {
+      try {
+        const u = new URL(href);
+        if (u.origin === SITE_ORIGIN) {
+          refs.push(u.pathname);
+        }
+      } catch {
+        /* ignore malformed absolute URLs */
+      }
+      return;
+    }
     let pathname = null;
     if (href.startsWith('/')) {
       pathname = href.split('#')[0].split('?')[0];

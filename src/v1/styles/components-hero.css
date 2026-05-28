@@ -14,6 +14,8 @@
       .nav--main {
         .nav-actions {
           .btn {
+            @apply bg-midnight-fjord/30 backdrop-blur-md;
+
             svg {
               @apply text-potted-olive;
             }

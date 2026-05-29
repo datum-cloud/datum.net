@@ -113,7 +113,12 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
-          description: meta && meta.og && meta.og.description ? meta.og.description : description,
+          description:
+            meta && meta.og && meta.og.description
+              ? meta.og.description
+              : meta && meta.description
+                ? meta.description
+                : description,
           siteName: 'Datum',
           locale: 'en_US',
         },

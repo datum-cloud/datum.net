@@ -258,6 +258,12 @@ function computeScoreSummary(report, brokenLinks, redirectChains, previous) {
   return { table: `${header}\n${body}`, machine, legend };
 }
 
+function normalizePath(p) {
+  if (!p) return p;
+  if (p === '/') return '/';
+  return p.replace(/\/+$/, '');
+}
+
 function extractLinksAndRefresh($, urlPath) {
   const refs = [];
   $('a[href]').each((_, el) => {
@@ -269,7 +275,7 @@ function extractLinksAndRefresh($, urlPath) {
       try {
         const u = new URL(href);
         if (u.origin === SITE_ORIGIN) {
-          refs.push(u.pathname);
+          refs.push(normalizePath(u.pathname));
         }
       } catch {
         /* ignore malformed absolute URLs */
@@ -287,7 +293,7 @@ function extractLinksAndRefresh($, urlPath) {
         return;
       }
     }
-    if (pathname) refs.push(pathname);
+    if (pathname) refs.push(normalizePath(pathname));
   });
 
   let refresh = null;
@@ -402,8 +408,8 @@ function findRedirectChains(refreshMap) {
 
 function toUrlPath(file, root) {
   const rel = path.relative(root, file).replace(/\\/g, '/');
-  if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'index.html'.length);
   if (rel === 'index.html') return '/';
+  if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'/index.html'.length);
   return '/' + rel;
 }
 
@@ -519,6 +525,8 @@ Structure:
 3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
 4. **Per-page notes** — only include pages with issues, bulleted with the URL path.${extrasSection}
 
+When referencing a page URL path (e.g. \`/about\`, \`/blog/post\`), render it as a markdown link: \`[/about](${SITE_URL}/about)\`. Apply this to every path in Critical issues, Improvements, Per-page notes, brokenLinks, and redirectChains sections. The root path \`/\` links to \`${SITE_URL}/\`.
+
 For EVERY issue listed (Critical, Improvements, and Per-page notes) you MUST include a concrete fix.
 Format each issue as:
   - <description of issue, citing data from the JSON>
@@ -550,8 +558,8 @@ async function callClaudeBatch(pages, batchIndex, batchCount, totalPages) {
 You will receive a JSON array of pages with extracted SEO signals.
 
 Output ONLY per-page issue bullets — no summary, no headings, no preamble.
-For EACH page with issues, output:
-- \`<url>\` — comma-separated issues (missing title/description/canonical/h1, length out of range, noindex, missing og:image, broken JSON-LD, missing alt text)
+For EACH page with issues, output the URL path as a markdown link to \`${SITE_URL}<path>\` (root \`/\` → \`${SITE_URL}/\`):
+- [<url>](${SITE_URL}<url>) — comma-separated issues (missing title/description/canonical/h1, length out of range, noindex, missing og:image, broken JSON-LD, missing alt text)
   - 💡 *Fix:* <specific actionable suggestion citing the exact data point>
 
 Skip pages with no issues. Be terse. Don't invent metrics. Don't restate compliant pages.`;
@@ -571,6 +579,8 @@ Produce a concise markdown review for a GitHub PR comment with this structure:
 2. **Critical issues** (group recurring issues; cite counts; flag broken JSON-LD${extras.brokenLinks ? ', broken internal links' : ''}${extras.redirectChains ? ', redirect chains' : ''})
 3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
 4. **Per-page notes** — deduplicated, bulleted with the URL path. Keep this section if useful; collapse to "see batch notes above" only if the list would exceed ~50 entries.
+
+Render every URL path as a markdown link: \`[/path](${SITE_URL}/path)\` (root \`/\` → \`${SITE_URL}/\`). Preserve any existing links from the batch notes.
 
 For EVERY issue in Critical/Improvements/Per-page sections you MUST include a fix line:
   - <issue>

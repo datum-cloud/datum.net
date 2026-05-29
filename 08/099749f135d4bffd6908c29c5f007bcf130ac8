@@ -1,0 +1,30 @@
+src/pages/contact.astro
+  s_8b4920d6d08d17::t_032042b20a77eb 29
+src/layouts/Layout.astro
+  s_8b4920d6d08d17::t_b03c37389cab0a 116-121
+.github/workflows/seo-review.yml
+  s_8b4920d6d08d17::t_3a574ee87e3ef9 56-60
+src/content/changelog/index.md
+  s_8b4920d6d08d17::t_1015d69a8b9b6c 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "08099749f135d4bffd6908c29c5f007bcf130ac8",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8b4920d6d08d17": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "02c615f3-3ef4-42bf-8300-ab8c63622225",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

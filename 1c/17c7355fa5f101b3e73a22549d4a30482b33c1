@@ -1,0 +1,28 @@
+src/v1/styles/components-changelog.css
+  s_722b285cdd9eb0::t_7ac1675accb7cf 97
+  s_722b285cdd9eb0::t_5a5b69637fce72 96,98-99
+src/components/changelog/Card.astro
+  s_722b285cdd9eb0::t_19ff14efe7a2b2 60-63
+  s_722b285cdd9eb0::t_65347e7179b0cf 9-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "1c17c7355fa5f101b3e73a22549d4a30482b33c1",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_722b285cdd9eb0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "21fd94a5-a1ae-443a-adf0-cbe3a2b03941",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

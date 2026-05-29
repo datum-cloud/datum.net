@@ -53,6 +53,11 @@ jobs:
         run: npm ci
 
       - name: Build site
+        # Audit the production output: NODE_ENV=production matches the deploy
+        # build (Dockerfile) so indexability/analytics reflect the live site
+        # instead of being forced to noindex by the dev-mode default.
+        env:
+          NODE_ENV: production
         run: npm run build
 
       - name: Collect changed page files (PR only)

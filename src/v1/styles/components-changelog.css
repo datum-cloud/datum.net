@@ -93,6 +93,10 @@
       @apply border-app---dark---utility-4 mb-3 max-w-full border shadow-sm;
     }
 
+    video {
+      @apply border-app---dark---utility-4 mb-3 h-auto max-h-[500px] w-full max-w-full border shadow-sm;
+    }
+
     pre {
       @apply bg-glacier-mist-700 border-glacier-mist-900 mb-5 max-w-full overflow-auto rounded-lg border p-4;
 

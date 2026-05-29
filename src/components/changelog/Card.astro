@@ -6,6 +6,18 @@ import Icon from '@components/Icon.astro';
 import { changelogs, type ChangelogProps } from '@/src/libs/datum';
 
 const entries = await changelogs();
+
+// GitHub renders bare media URLs (uploaded via the issue/discussion editor) as
+// inline video players. `marked` only autolinks them, so we convert those
+// anchors into <video> players. Images stay as <img> tags and are untouched,
+// since only bare URLs — not the `![alt](...)`/`<img>` syntax — match here.
+function embedGithubVideos(html: string): string {
+  return html.replace(
+    /<a href="(https:\/\/github\.com\/user-attachments\/assets\/[a-f0-9-]+|https?:\/\/[^"]+\.(?:mp4|mov|webm|ogv|ogg))"[^>]*>[^<]*<\/a>/gi,
+    (_match, url: string) =>
+      `<video class="changelog-entry-card-video" controls preload="metadata" playsinline src="${url}"></video>`
+  );
+}
 ---
 
 <div class="changelog-list">
@@ -45,7 +57,10 @@ const entries = await changelogs();
         </div>
 
         <article class="changelog-entry-card">
-          <div class="changelog-entry-card-body" set:html={marked.parse(entry.body)} />
+          <div
+            class="changelog-entry-card-body"
+            set:html={embedGithubVideos(marked.parse(entry.body) as string)}
+          />
 
           {entry.labels && entry.labels.nodes.length > 0 && (
             <div class="changelog-entry-card-tags">

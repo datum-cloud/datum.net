@@ -9,6 +9,12 @@ import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
+
+// Hero device art is height-constrained; ~592px wide at common desktop sizes.
+const deviceWidth = 592;
+const deviceHeight = 588;
+const deviceWidths = [400, 592, 800, 1182];
+const deviceSizes = '(max-width: 768px) 45vw, (max-width: 1280px) 592px, 1182px';
 ---
 
 <header id="hero-header" class:list={['hero--main relative z-11', className]}>
@@ -96,6 +102,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     <Image
       id="hero-device-off"
       src={DeviceOff}
+      width={deviceWidth}
+      height={deviceHeight}
+      widths={deviceWidths}
+      sizes={deviceSizes}
       layout="constrained"
       loading="eager"
       fetchpriority="high"
@@ -108,6 +118,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     <Image
       id="hero-device-on"
       src={DeviceOn}
+      width={deviceWidth}
+      height={deviceHeight}
+      widths={deviceWidths}
+      sizes={deviceSizes}
       layout="constrained"
       loading="eager"
       fetchpriority="high"

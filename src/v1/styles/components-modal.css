@@ -293,13 +293,19 @@
     }
   }
 
+  .markdown-lightbox__copy {
+    @apply text-app---dark---utility-3 inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-2 py-1;
+    @apply transition-colors duration-150 hover:bg-white/5 hover:text-white;
+    @apply focus-visible:bg-white/5 focus-visible:text-white focus-visible:outline-none;
+  }
+
   .markdown-lightbox__rawlink {
     @apply text-app---dark---utility-3 inline-flex items-center gap-1.5 rounded px-2 py-1 no-underline;
     @apply transition-colors duration-150 hover:bg-white/5 hover:text-white;
     @apply focus-visible:bg-white/5 focus-visible:text-white focus-visible:outline-none;
   }
 
-  .markdown-lightbox__rawlink-icon {
+  .markdown-lightbox__action-icon {
     @apply h-3.5! w-3.5! shrink-0;
   }
 

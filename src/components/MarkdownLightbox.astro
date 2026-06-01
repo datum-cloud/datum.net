@@ -32,8 +32,16 @@ import Icon from '@components/Icon.astro';
           aria-label="Open the raw markdown in a new tab"
         >
           raw
-          <Icon name="external-link" size="sm" class="markdown-lightbox__rawlink-icon stroke-1.5" />
+          <Icon name="external-link" size="sm" class="markdown-lightbox__action-icon stroke-1.5" />
         </a>
+        <button
+          type="button"
+          data-md-copy
+          class="markdown-lightbox__copy"
+          aria-label="Copy markdown to clipboard"
+        >
+          <Icon name="copy" size="sm" class="markdown-lightbox__action-icon stroke-1.5" />
+        </button>
         <button type="button" data-md-close aria-label="Close" class="markdown-lightbox__close">
           esc
         </button>
@@ -57,6 +65,7 @@ import Icon from '@components/Icon.astro';
   class MarkdownLightbox extends HTMLElement {
     private dialog!: HTMLDialogElement;
     private closeBtn!: HTMLButtonElement;
+    private copyBtn!: HTMLButtonElement;
     private titleEl!: HTMLElement;
     private rawLink!: HTMLAnchorElement;
     private output!: HTMLElement;
@@ -67,6 +76,7 @@ import Icon from '@components/Icon.astro';
     connectedCallback() {
       this.dialog = this.querySelector('dialog')!;
       this.closeBtn = this.querySelector<HTMLButtonElement>('[data-md-close]')!;
+      this.copyBtn = this.querySelector<HTMLButtonElement>('[data-md-copy]')!;
       this.titleEl = this.querySelector<HTMLElement>('[data-md-title]')!;
       this.rawLink = this.querySelector<HTMLAnchorElement>('[data-md-raw-link]')!;
       this.output = this.querySelector<HTMLElement>('[data-md-output]')!;
@@ -76,6 +86,7 @@ import Icon from '@components/Icon.astro';
 
     private setupEventListeners() {
       this.closeBtn.addEventListener('click', () => this.closeModal());
+      this.copyBtn.addEventListener('click', () => this.copyMarkdown());
 
       this.dialog.addEventListener('close', () => {
         document.body.toggleAttribute('data-markdown-lightbox-open', false);
@@ -122,6 +133,32 @@ import Icon from '@components/Icon.astro';
 
     closeModal() {
       this.dialog.close();
+    }
+
+    private getMarkdownText(): string | null {
+      if (!this.currentHref) return null;
+
+      const cached = this.fetchCache.get(this.currentHref);
+      const text = cached ?? this.output.textContent;
+      if (!text || text === 'Loading…' || text.startsWith('Could not load')) return null;
+
+      return text;
+    }
+
+    private async copyMarkdown() {
+      const text = this.getMarkdownText();
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalLabel = this.copyBtn.getAttribute('aria-label');
+        this.copyBtn.setAttribute('aria-label', 'Copied');
+        window.setTimeout(() => {
+          if (originalLabel) this.copyBtn.setAttribute('aria-label', originalLabel);
+        }, 2000);
+      } catch {
+        // Clipboard access may be denied outside secure contexts.
+      }
     }
 
     private async fetchContent(href: string) {

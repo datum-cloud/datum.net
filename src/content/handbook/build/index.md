@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Engineering & Design Principles - Datum Handbook"
-  description: "How we work - As an operator-led culture, we put a lot of emphasis on our global infrastructure, open source components, and the engineering principles behind our neutral platform."
+  description: "Datum's engineering culture: global infrastructure, open-source components, and the principles behind our neutral, operator-led platform."
   og:
     title: "How we work"
 ---

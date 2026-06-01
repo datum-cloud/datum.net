@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Feb 15, 2026
 authors: jacob
 meta:
-  title: "Datum's Product Strategy - Vision, Values, and Rituals - Datum Handbook"
+  title: "Datum Product Strategy – Vision, Values & Rituals"
   description: "The nuts and bolts about how Datum is working to unlock internet superpowers for every agent, builder, and developer."
   og:
     title: "Product vision, values, and rituals"

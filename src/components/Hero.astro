@@ -11,12 +11,15 @@ import type { HeroProps } from '@/src/types/common';
 const {
   iconName = '',
   title = '',
+  titleTag = 'h1',
   subtitle = '',
   description = '',
   class: className,
   imagePath,
   hideContent = false,
 } = Astro.props as HeroProps;
+
+const TitleTag = titleTag;
 ---
 
 <header class:list={['hero--main', className]}>
@@ -48,7 +51,9 @@ const {
               </div>
             ) : null}
 
-            {title && <h1 class="hero--main-content-title" set:html={marked.parseInline(title)} />}
+            {title && (
+              <TitleTag class="hero--main-content-title" set:html={marked.parseInline(title)} />
+            )}
             {description && (
               <p
                 class="hero--main-content-description"

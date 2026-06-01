@@ -7,10 +7,10 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "Vision / Traction Organizer - Datum Handbook"
-  description: "Our business values, purpose and long-term vision"
+  description: "Datum's Vision/Traction Organizer: our business values, core purpose, and long-term company vision as defined by our EOS framework."
   og:
     title: "Understanding our Vision / Traction Organizer"
-    description: "Our business values, purpose and long-term vision"
+    description: "Datum's Vision/Traction Organizer: our business values, core purpose, and long-term company vision as defined by our EOS framework."
 ---
 
 The “Vision / Traction Organizer” captures the core DNA of our business: our values, purpose, and long-term vision. As a team we review this document once per year to ensure it still fits.

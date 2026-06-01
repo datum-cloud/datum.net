@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Datum Disaster Recovery Policy - RTO & RPO Standards - Datum Handbook"
-  description: "Ensuring platform availability. Learn about our disaster recovery strategies, including failover testing, backup restoration, and maintaining resilience for your workloads."
+  description: "Datum's disaster recovery strategies: failover testing, backup restoration, and resilience standards to maintain platform availability."
   og:
     title: "Disaster recovery policy"
 ---

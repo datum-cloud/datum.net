@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Incident Post-Mortems & RCAs at Datum - Datum Handbook"
-  description: "How we define incidents, respond to incidents to mitigate customer impact through following our incident reporting procedure to problem solve and prevent reoccuring incidents"
+  description: "How Datum defines and responds to incidents — from initial detection to post-mortem — to protect customers and prevent recurrence."
   og:
     title: "Incidents"
 ---

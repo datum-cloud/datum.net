@@ -28,10 +28,24 @@ const isProduction = import.meta.env.MODE === 'production';
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const imageContent = image ? image : defaultOgImage;
 
+// Resolve an image src to an absolute URL for og:image / twitter:image.
+// Facebook/LinkedIn OG scrapers require absolute URLs; relative paths get dropped.
+const siteBase = Astro.site?.href ?? 'https://www.datum.net';
+const toAbsoluteUrl = (src: string): string => {
+  if (!src || src.startsWith('http')) return src;
+  return new URL(src, siteBase).href;
+};
+
 // Overwrite with meta
 const titleValue = (meta && meta.title ? meta.title : title).replace(/<[^>]*>/g, '');
 const descriptionValue =
   meta && meta.description ? meta.description : description ? description : '';
+const twitterImage =
+  meta && meta.og && meta.og.image ? meta.og.image : defaultOgImage ? defaultOgImage : image;
+const ogImageUrl = toAbsoluteUrl(
+  meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src
+);
+const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
 ---
 
 <!doctype html>
@@ -92,7 +106,7 @@ const descriptionValue =
         basic: {
           title: meta && meta.og && meta.og.title ? meta.og.title : title,
           type: article ? 'article' : 'website',
-          image: meta && meta.og && meta.og.image ? meta.og.image.src : imageContent.src,
+          image: ogImageUrl,
           url: meta && meta.og && meta.og.url ? meta.og.url : canonical || pageUrl,
         },
         optional: {
@@ -113,9 +127,10 @@ const descriptionValue =
         card: 'summary_large_image',
         site: config.socials.twitter.handle || '@datumcloud',
         creator: config.socials.twitter.handle || '@datumcloud',
-        title: titleValue,
-        description: descriptionValue,
-        image: imageContent.src,
+        title: meta && meta.og && meta.og.title ? meta.og.title : titleValue,
+        description:
+          meta && meta.og && meta.og.description ? meta.og.description : descriptionValue,
+        image: twitterImageUrl,
       }}
       extend={{
         meta: [

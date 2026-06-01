@@ -18,7 +18,7 @@ We define rocks as the critical things we prioritize (at the expense of other th
 
 A single person on the leadership team is accountable for each rock. While there is plenty of good debate about responsibility vs accountability, we prefer accountability in this context. Essentially, if you “own” a particular rock or metric, you are making a pledge to your colleagues that you will do what it takes (including asking for help, delegating key tasks, making hard trade-offs, etc) to get it done.    
 
-# Q2 2026 Rocks
+## Q2 2026 Rocks
 For this quarter we’re focused on the following major initiatives (as well as plenty of pebbles and sand). Please note, we’ve slightly sanitized these for public consumption.
 
 ## Design Win Partners Formally Engaged (Manish)
@@ -45,7 +45,7 @@ We will know this is done when the partners are secured, the program is publicly
 ## Developer Pipeline Activated (Jacob)
 We will know this is done when Datum has meaningfully grown top-of-funnel developer mindshare across key communities, measured by 500+ new users on the platform. 
 
-# Previous Rocks
+## Previous Rocks
 For context and history buffs, here are the rocks we worked on during Q1 2026:
 
 - AI CDN Started with Roadmap (Zac)

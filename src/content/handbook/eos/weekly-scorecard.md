@@ -7,7 +7,7 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "Weekly Scorecard - Datum Handbook"
-  description: "How Datum Operates - Keeping track of our weekly metrics"
+  description: "How Datum tracks weekly metrics using our EOS scorecard — keeping the team accountable, aligned, and focused on measurable goals."
   og:
     title: "Weekly Scorecard"
 ---

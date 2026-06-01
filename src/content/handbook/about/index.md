@@ -8,7 +8,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Datum Company Overview - Our Mission & Strategy"
-  description: "Learn about Datum's purpose and strategy. We are upgrading the internet with a neutral, open source interconnection system to give every builder access to core internet capabilities."
+  description: "Datum's purpose and strategy: upgrading the internet with a neutral, open-source interconnection system to give every builder core internet capabilities."
   og:
     title: "Why Datum"
 ---

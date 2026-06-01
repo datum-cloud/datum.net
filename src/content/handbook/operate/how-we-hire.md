@@ -7,7 +7,7 @@ updatedDate: Feb 2, 2026
 authors: jacob
 meta:
   title: "How we hire - Datum Careers"
-  description: "Understand the interview process and how we hire for open roles"
+  description: "A guide to Datum's hiring process: from applications and interviews to offers, so you know what to expect at every stage."
   og:
       title: "How we approach hiring for open roles"
       description: "Learn about our hiring process: from applications to interviews"

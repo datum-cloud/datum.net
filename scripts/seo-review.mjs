@@ -95,7 +95,17 @@ function extractMeta($, urlPath) {
     .map((_, el) => $(el).text().trim())
     .get();
   const imgs = $('img').toArray();
-  const imgsMissingAlt = imgs.filter((el) => !($(el).attr('alt') || '').trim()).length;
+  // An image is "missing alt" only if it has no `alt` attribute and is not marked decorative.
+  // `alt=""` is the canonical way to mark decorative images; aria-hidden="true" and role=presentation/none
+  // also explicitly exempt an image from needing alt text.
+  const imgsMissingAlt = imgs.filter((el) => {
+    const $el = $(el);
+    if ($el.attr('alt') !== undefined) return false; // empty or non-empty alt: not missing
+    const ariaHidden = ($el.attr('aria-hidden') || '').toLowerCase() === 'true';
+    const role = ($el.attr('role') || '').toLowerCase();
+    if (ariaHidden || role === 'presentation' || role === 'none') return false;
+    return true;
+  }).length;
 
   const jsonLdNodes = $('script[type="application/ld+json"]');
   const jsonLdTypes = jsonLdNodes

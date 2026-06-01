@@ -5,6 +5,6 @@ meta:
   title: "Datum Changelog: Feature Releases and Product Updates"
   description: "Stay up-to-date with Datum's latest feature releases, bug fixes, and improvements for our AI-native solutions, Edge Networking platform, and open source cloud."
   og:
-    title: What we shipped
+    title: "Datum Changelog: What we shipped"
     description: Stay up to date and in the know about product improvements and launches.
 ---

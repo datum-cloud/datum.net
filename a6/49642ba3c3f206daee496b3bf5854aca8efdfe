@@ -1,0 +1,34 @@
+.secretlintrc.json
+  s_5fb7217e481e46::t_15d31c130dfc22 1-7
+package-lock.json
+  ai_agent 58,79,342-358,3047-3245,3696-3811,4233-4239,4979-4988,5469-5484,5537-5543,7104-7120,9452-9464,10125-10142,10242-10260,10798-10804,10818-10824,12985-12997,13364-13373,13841-13853,13868-13972,14765-14787,15604-15613,15661-15703,15786-15912,15967-15983,16017-16039,16893-16905,17394-17404
+package.json
+  s_5fb7217e481e46::t_378e87b6cf85ad 79,100
+  s_5fb7217e481e46::t_cfabc6e563ae4e 113-115
+.github/workflows/secret-scan.yml
+  s_5fb7217e481e46::t_91261c2a8d69e5 1-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a649642ba3c3f206daee496b3bf5854aca8efdfe",
+  "prompts": {},
+  "humans": {
+    "h_be6412991b9fef": {
+      "author": "AriaEdo"
+    },
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_5fb7217e481e46": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "53813dda-5af0-446f-ac0d-4cdd448457d8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

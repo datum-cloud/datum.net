@@ -1,6 +1,6 @@
 ---
 // src/components/LayoutEmbedScripts.astro
-/** Third-party embed loaders: Fathom events, HelpScout, Hyperping, Marker.io, MaxMind, WebMCP. */
+/** Third-party embed loaders: Fathom events, HelpScout, Hyperping, MaxMind, WebMCP. */
 
 interface LayoutEmbedScriptsProps {
   isProduction: boolean;
@@ -129,26 +129,6 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
         loadHelpScout();
       }
     }, 5000);
-  })();
-</script>
-
-{/* Marker.io - Load on idle for feedback collection */}
-<script is:inline data-production={isProduction ? 'true' : 'false'}>
-  (function () {
-    var isProduction = document.currentScript.getAttribute('data-production') === 'true';
-    if (!isProduction) return;
-
-    function loadMarker() {
-      var script = document.createElement('script');
-      script.src = '/scripts/markerio.js';
-      script.defer = true;
-      document.body.appendChild(script);
-    }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadMarker, { timeout: 4000 });
-    } else {
-      setTimeout(loadMarker, 3000);
-    }
   })();
 </script>
 

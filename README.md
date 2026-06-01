@@ -605,14 +605,13 @@ All browser-side third-party scripts are loaded from
 Most are gated to production (`NODE_ENV=production`) so they do not run during
 `npm run dev` or local preview without the flag set.
 
-| Service   | Purpose                                     | Loader file                  | Production-only |
-| --------- | ------------------------------------------- | ---------------------------- | --------------- |
-| Fathom    | Privacy-friendly analytics + event tracking | `LayoutEmbedScripts.astro`   | No              |
-| HelpScout | Live chat / customer support widget         | `LayoutEmbedScripts.astro`   | Yes             |
-| Hyperping | Status badge on the site footer             | `LayoutEmbedScripts.astro`   | No              |
-| Marker.io | In-page bug / feedback capture              | `public/scripts/markerio.js` | Yes             |
-| MaxMind   | Device fingerprint for signup fraud signal  | `LayoutEmbedScripts.astro`   | Yes             |
-| WebMCP    | Exposes site tools to AI agents via WebMCP  | `LayoutEmbedScripts.astro`   | No              |
+| Service   | Purpose                                     | Loader file                | Production-only |
+| --------- | ------------------------------------------- | -------------------------- | --------------- |
+| Fathom    | Privacy-friendly analytics + event tracking | `LayoutEmbedScripts.astro` | No              |
+| HelpScout | Live chat / customer support widget         | `LayoutEmbedScripts.astro` | Yes             |
+| Hyperping | Status badge on the site footer             | `LayoutEmbedScripts.astro` | No              |
+| MaxMind   | Device fingerprint for signup fraud signal  | `LayoutEmbedScripts.astro` | Yes             |
+| WebMCP    | Exposes site tools to AI agents via WebMCP  | `LayoutEmbedScripts.astro` | No              |
 
 ### HelpScout Beacon
 

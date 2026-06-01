@@ -123,6 +123,7 @@ const navData = navigation as NavData;
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
+                        title={item.text}
                         tabindex="0"
                       >
                         {item.text.toLowerCase() === 'github' ? (

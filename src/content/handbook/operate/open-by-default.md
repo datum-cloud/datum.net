@@ -7,7 +7,7 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "Open source - Datum Handbook"
-  description: "Datum's open source strategy: AGPLv3 licensing, commercial COSS model, and how we prioritize value for builders and the community."
+  description: "Datum's open source strategy: AGPLv3 licensing, commercial COSS model, and prioritizing value for builders and the community."
   og:
     title: "Open by default"
 ---

@@ -113,7 +113,7 @@ const navData = navigation as NavData;
           {
             navData.footer.map((section) => (
               <div class="footer-nav-section">
-                <h4 class="footer-nav-header">{section.title}</h4>
+                <p class="footer-nav-header">{section.title}</p>
                 <ul class="footer-nav-list">
                   {section.items.map((item: NavItem) => (
                     <li>
@@ -123,6 +123,7 @@ const navData = navigation as NavData;
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
+                        title={item.text}
                         tabindex="0"
                       >
                         {item.text.toLowerCase() === 'github' ? (
@@ -196,7 +197,7 @@ const navData = navigation as NavData;
         class="bg-blush-quartz text-midnight-fjord py-9 md:py-10 lg:py-12 xl:py-20"
       >
         <div class="max-width flex w-full max-w-190 grow flex-col items-center gap-4 md:w-auto md:max-w-none md:gap-11 lg:gap-13.5">
-          <h4 class="datum-text-7xl mb-0">Let's stay connected, shall we?</h4>
+          <h3 class="datum-text-7xl mb-0">Let's stay connected, shall we?</h3>
 
           <div data-newsletter-trigger>
             <Button

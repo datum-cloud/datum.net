@@ -9,6 +9,12 @@ import Announcement from '@components/Announcement.astro';
 import type { HeroProps } from '@/src/types/common';
 
 const { title = '', description = '', class: className } = Astro.props as HeroProps;
+
+// Hero device art is height-constrained; ~592px wide at common desktop sizes.
+const deviceWidth = 592;
+const deviceHeight = 588;
+const deviceWidths = [400, 592, 800, 1182];
+const deviceSizes = '(max-width: 768px) 100vw, (max-width: 1280px) 592px, 1182px';
 ---
 
 <header id="hero-header" class:list={['hero--main relative z-11', className]}>
@@ -96,6 +102,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     <Image
       id="hero-device-off"
       src={DeviceOff}
+      width={deviceWidth}
+      height={deviceHeight}
+      widths={deviceWidths}
+      sizes={deviceSizes}
       layout="constrained"
       loading="eager"
       fetchpriority="high"
@@ -108,6 +118,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
     <Image
       id="hero-device-on"
       src={DeviceOn}
+      width={deviceWidth}
+      height={deviceHeight}
+      widths={deviceWidths}
+      sizes={deviceSizes}
       layout="constrained"
       loading="eager"
       fetchpriority="high"
@@ -126,9 +140,13 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
   //                                            device occasionally misbehaves
   // ──────────────────────────────────────────────────────────────────────────
 
-  const LASER_DELAY = 2304; // ms before startup
+  const LASER_DELAY = 200; // ms before startup — kept short so the LCP image paints early
   const FLICKER_DUR = 8888; // ms of struggling flicker phase
   const RESTART_DELAY = 30000; // ms of alive time before cycling back to startup
+
+  // Tiny opacity floor applied once the flicker begins so the (LCP) device-on
+  // image is painted promptly instead of held at 0, avoiding LCP render delay.
+  const LCP_OPACITY_FLOOR = 0.04;
 
   const imgOff = document.getElementById('hero-device-off') as HTMLElement | null;
   const imgOn = document.getElementById('hero-device-on') as HTMLElement | null;
@@ -303,7 +321,10 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
         Math.sin(sec * 3.3) * 0.15 +
         Math.sin(sec * 61.1) * 0.1;
 
-      const alpha = Math.max(0, Math.min(1, Math.pow(pct, 0.65) * 0.8 + noise * pct * 0.55));
+      const alpha = Math.max(
+        LCP_OPACITY_FLOOR,
+        Math.min(1, Math.pow(pct, 0.65) * 0.8 + noise * pct * 0.55)
+      );
 
       imgOn!.style.opacity = String(alpha);
 

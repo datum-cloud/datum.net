@@ -338,7 +338,7 @@
   /* Trigger link styling in the dark footer band — mirrors the existing
    * agents link styling but with a subtle code/markdown affordance. */
   .markdown-lightbox-trigger {
-    @apply datum-text-sm inline-flex shrink-0 items-center gap-3 whitespace-nowrap text-white no-underline transition-opacity hover:opacity-80;
+    @apply datum-text-sm inline-flex min-h-6 shrink-0 items-center gap-3 whitespace-nowrap text-white no-underline transition-opacity hover:opacity-80;
   }
 
   .markdown-lightbox-trigger__label {

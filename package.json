@@ -112,7 +112,7 @@
   },
   "lint-staged": {
     "*": [
-      "secretlint --maskSecrets --secretlintignore .gitignore"
+      "secretlint --maskSecrets"
     ],
     "*.{js,jsx,ts,tsx,astro}": [
       "eslint --fix",

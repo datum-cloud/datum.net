@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Customer Segments & Market Focus at Datum - Datum Handbook"
-  description: "Empowering the builders. Read about the user personas driving our product decisions — from network architects to developers needing programmable infrastructure."
+  description: "Empowering the builders. Discover the user personas driving our product decisions — from network architects to developers who need programmable infrastructure."
   og:
     title: "Who we are building for"
 ---

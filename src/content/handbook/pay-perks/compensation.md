@@ -10,7 +10,6 @@ meta:
   description: "Explore how Datum structures salary, levels, steps, benchmarking, and pay reviews as part of our commitment to transparency."
   og:
     title: "Compensation at Datum"
-    description: "How salary, levels, and pay reviews work at Datum."
 ---
 
 ## How it works

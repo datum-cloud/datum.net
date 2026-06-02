@@ -66,9 +66,15 @@ jobs:
         run: |
           base="${{ github.event.pull_request.base.sha }}"
           head="${{ github.event.pull_request.head.sha }}"
+          # The PR merge-ref checkout does not always contain base.sha, so a bare
+          # `git diff "$base"` dies with "fatal: bad object". Fetch both commits
+          # explicitly, then diff with merge-base (three-dot) semantics. No `|| true`:
+          # a broken diff must fail the job, not silently report "no changes".
+          git fetch --no-tags --quiet origin "$base" "$head"
+          changed="$(git diff --name-only "$base...$head" -- 'src/pages/**' 'src/content/**')"
           {
             echo 'files<<EOF'
-            git diff --name-only "$base" "$head" -- 'src/pages/**' 'src/content/**' || true
+            printf '%s\n' "$changed"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 

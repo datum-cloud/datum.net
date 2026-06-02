@@ -7,9 +7,9 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Milo - Datum's Open Source Business Operating System"
-  description: "Automate your operations. A technical guide to Milo, the open source backend that unifies identity, metering, and policy management for modern service providers."
+  description: "A technical guide to Milo, the open source backend unifying identity, metering, and policy management for modern service providers. Automate your operations."
   og:
-    title: "Milo"
+    title: "Milo — Datum's Open Source Business Operating System"
 ---
 
 [Milo is an open source](https://www.milo-os.com/) ‘system of action’ for product-led, B2B companies. Think of it as a business control plane designed specifically for cloud service providers, helping them innovate faster and scale better with less toil.

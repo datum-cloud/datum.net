@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Datum Product to Market Fit Philosophy - Datum Handbook"
-  description: "Where Datum fits in the cloud ecosystem. Our perspective on Product-Market Fit (PMF), distinguishing our open network cloud from hyperscalers and traditional ISPs."
+  description: "Where Datum fits in the cloud ecosystem: our take on PMF and how our open network cloud differs from hyperscalers and traditional ISPs."
   og:
     title: "How we fit"
 ---

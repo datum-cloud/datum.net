@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Datum Incident Disclosure Policy - Datum Handbook"
-  description: "We believe in radical transparency. Explore Datum's policy on disclosing security incidents and vulnerabilities to customers, partners, and the open source community."
+  description: "Datum's radical-transparency incident disclosure policy: how we notify customers, partners, and the open source community of security vulnerabilities."
   og:
     title: "Incident disclosure policy"
 ---

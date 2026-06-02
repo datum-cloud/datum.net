@@ -7,6 +7,10 @@ import Article from '@components/handbook/Article.astro';
 import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollection, render } from 'astro:content';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 // const currentPostIndex = handbooks.findIndex((post) => post.id == Astro.params.slug);
 export async function getStaticPaths() {
@@ -46,7 +50,7 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { entry } = Astro.props;
-const { title, description, meta } = entry.data;
+const { title, description, meta, updatedDate, authors } = entry.data;
 
 // Set default handbook OG image if not specified in frontmatter
 const handbookMeta = {
@@ -79,10 +83,38 @@ breadcrumbItems.push({
   item: `https://www.datum.net/handbook/${slug}/`,
 });
 
-const breadcrumbJsonLd = {
+// Article JSON-LD — `updatedDate` is authored as a human-readable string ("Nov 13, 2025");
+// fall back to undefined when missing so we don't emit invalid dates.
+const parsedUpdated = updatedDate ? dayjs(updatedDate, 'MMM D, YYYY') : null;
+const updatedIso = parsedUpdated && parsedUpdated.isValid() ? parsedUpdated.toISOString() : null;
+const pageUrl = `https://www.datum.net/handbook/${slug}`;
+
+const articleDescription = description || meta?.description;
+
+const articleJsonLd: Record<string, unknown> = {
+  '@type': 'TechArticle',
+  headline: title,
+  ...(articleDescription ? { description: articleDescription } : {}),
+  url: pageUrl,
+  mainEntityOfPage: pageUrl,
+  inLanguage: 'en',
+  isPartOf: { '@type': 'WebSite', name: 'Datum Handbook', url: 'https://www.datum.net/handbook/' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Datum',
+    url: 'https://www.datum.net/',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.datum.net/images/logo-datum.png',
+    },
+  },
+  ...(updatedIso ? { datePublished: updatedIso, dateModified: updatedIso } : {}),
+  ...(authors ? { author: { '@type': 'Person', name: authors } } : {}),
+};
+
+const handbookJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbItems,
+  '@graph': [{ '@type': 'BreadcrumbList', itemListElement: breadcrumbItems }, articleJsonLd],
 };
 ---
 
@@ -91,7 +123,7 @@ const breadcrumbJsonLd = {
   description={description}
   bodyClass={`page-handbook page-handbook--${slug}`}
   meta={handbookMeta}
-  jsonLd={breadcrumbJsonLd}
+  jsonLd={handbookJsonLd}
 >
   <section class="datum-container">
     <Hero class="light linear-gradient-light" title="Handbook" titleTag="h2" />

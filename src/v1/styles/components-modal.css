@@ -1,24 +1,4 @@
 @layer components {
-  /* Video Modal Styles */
-  video-modal {
-    @apply contents;
-  }
-
-  video-modal dialog {
-    @apply m-0 h-full max-h-full w-full border-0 p-0;
-    @apply max-width mx-auto my-auto h-max min-h-80 w-[90%] max-w-246.5;
-    @apply max-h-[calc(100vh-8rem)];
-    @apply bg-transparent;
-  }
-
-  video-modal dialog[open] {
-    @apply flex;
-  }
-
-  video-modal dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur;
-  }
-
   .modal-frame {
     @apply shadow-modal relative flex w-full grow flex-col overflow-hidden rounded-lg bg-white p-10;
   }
@@ -51,8 +31,53 @@
     @apply absolute inset-0 h-full w-full border-0;
   }
 
+  /* Media lightbox — images and YouTube embeds */
+  media-lightbox {
+    @apply contents;
+  }
+
+  media-lightbox dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max min-h-80 w-[90%] max-w-246.5;
+    @apply max-h-[calc(100vh-8rem)];
+    @apply bg-transparent;
+  }
+
+  media-lightbox dialog[open] {
+    @apply flex;
+  }
+
+  media-lightbox dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur;
+  }
+
+  .media-lightbox-frame {
+    @apply items-center justify-center;
+  }
+
+  .media-lightbox-content {
+    @apply m-0 min-h-0 items-center justify-center gap-3;
+  }
+
+  .media-lightbox-img {
+    @apply max-h-[calc(100vh-12rem)] w-auto max-w-full rounded-md object-contain;
+  }
+
+  .media-lightbox-caption {
+    @apply datum-text-sm text-midnight-fjord/60 text-center;
+  }
+
+  /* Clickable content/featured images that open the lightbox */
+  .is-lightbox-trigger {
+    @apply cursor-zoom-in transition-opacity duration-200 ease-in-out hover:opacity-90;
+  }
+
+  .is-lightbox-trigger:focus-visible {
+    @apply outline-aurora-moss outline-2 outline-offset-2;
+  }
+
   /* Prevent page scroll when modal is open */
-  body[data-video-modal-open],
+  body[data-media-lightbox-open],
   body[data-newsletter-modal-open],
   body[data-event-modal-open] {
     @apply overflow-clip;
@@ -161,7 +186,7 @@
     @apply text-canyon-clay---links datum-text-sm underline decoration-solid;
   }
 
-  /* Newsletter Modal (same dialog pattern as video-modal) */
+  /* Newsletter Modal (same dialog pattern as media-lightbox) */
   newsletter-modal {
     @apply contents;
   }

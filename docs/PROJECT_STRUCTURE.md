@@ -141,7 +141,7 @@ Reusable UI components organized by feature:
 - `FirstSection.astro` - First section component
 - `SecondSection.astro` - Second section component
 - `Video.astro` - Video component
-- `VideoModal.astro` - Video modal component
+- `MediaLightbox.astro` - Image and video modal lightbox
 
 **Roadmap** (`roadmap/`)
 

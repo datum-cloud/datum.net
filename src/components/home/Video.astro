@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from '@components/Icon.astro';
-import VideoModal from './VideoModal.astro';
+import MediaLightbox from '@components/MediaLightbox.astro';
 import ImageVideo from '@v1/assets/images/zac-video.png';
 import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
 ---
@@ -9,6 +9,7 @@ import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
 <div
   class="bg-midnight-fjord flex flex-row items-center gap-4 rounded-md p-2.5 pr-5 shadow-sm transition-opacity duration-300 hover:cursor-pointer hover:opacity-95 md:gap-5 hover:[&_button]:opacity-80"
   data-video-trigger
+  data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
 >
   <div>
     <button
@@ -38,32 +39,4 @@ import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
     <span class="datum-text-xs opacity-60">3 minute watch</span>
   </div>
 </div>
-<VideoModal />
-<script is:inline define:vars={{ homepageFeatureEmbedUrl: HOMEPAGE_FEATURE_VIDEO_EMBED_URL }}>
-  document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.querySelector('[data-video-trigger]');
-    if (!trigger) return;
-
-    const openVideoModal = () => {
-      if (window.VIDEO_MODAL_OPEN_EVENT) {
-        document.dispatchEvent(
-          new CustomEvent(window.VIDEO_MODAL_OPEN_EVENT, {
-            detail: { embedUrl: homepageFeatureEmbedUrl },
-          })
-        );
-      }
-    };
-
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      openVideoModal();
-    });
-
-    trigger.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openVideoModal();
-      }
-    });
-  });
-</script>
+<MediaLightbox selector="" />

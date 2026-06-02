@@ -10,6 +10,7 @@ import Footer from '@components/Footer.astro';
 import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
+import MediaLightbox from '@components/MediaLightbox.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import {
   getStrapiMediaUrl,
@@ -558,6 +559,11 @@ const blogListingMeta = {
               />
             </article>
           </div>
+
+          <MediaLightbox
+            selector=".blog-article-content img, .blog-article-image img"
+            videoSelector=""
+          />
 
           <Footer />
         </section>

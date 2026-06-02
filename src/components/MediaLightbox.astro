@@ -1,0 +1,204 @@
+---
+// src/components/MediaLightbox.astro
+import Icon from '@components/Icon.astro';
+
+interface MediaLightboxProps {
+  /** CSS selector for images that should open in the lightbox. */
+  selector?: string;
+  /**
+   * CSS selector for video triggers. Each matching element must expose a
+   * `data-embed-url` attribute holding a YouTube embed URL.
+   */
+  videoSelector?: string;
+  class?: string;
+}
+
+const {
+  selector = '.blog-article-content img',
+  videoSelector = '[data-video-trigger], [data-video-recording-trigger]',
+  class: className,
+} = Astro.props as MediaLightboxProps;
+---
+
+<media-lightbox class={className} data-selector={selector} data-video-selector={videoSelector}>
+  <dialog aria-label="Media viewer">
+    <div class="modal-frame media-lightbox-frame">
+      <button data-close-modal class="modal-close" aria-label="Close" type="button">
+        <Icon name="close" size="sm" class="modal-close-icon" />
+      </button>
+      <div class="modal-content media-lightbox-content">
+        <figure class="media-lightbox-figure" data-lightbox-image hidden>
+          <img class="media-lightbox-img" src="" alt="" />
+          <figcaption class="media-lightbox-caption" hidden></figcaption>
+        </figure>
+        <div class="modal-embed-wrapper media-lightbox-embed" data-lightbox-video hidden></div>
+      </div>
+    </div>
+  </dialog>
+</media-lightbox>
+
+<script>
+  import { sanitizeYoutubeEmbedUrlForIframe } from '@utils/youtube';
+
+  class MediaLightbox extends HTMLElement {
+    dialog: HTMLDialogElement;
+    dialogFrame: HTMLElement;
+    closeBtn: HTMLButtonElement;
+    figure: HTMLElement;
+    image: HTMLImageElement;
+    caption: HTMLElement;
+    embed: HTMLElement;
+    dialogOpenedAt = 0;
+
+    constructor() {
+      super();
+      this.dialog = this.querySelector('dialog')!;
+      this.dialogFrame = this.querySelector('.media-lightbox-frame')!;
+      this.closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      this.figure = this.querySelector<HTMLElement>('[data-lightbox-image]')!;
+      this.image = this.querySelector<HTMLImageElement>('.media-lightbox-img')!;
+      this.caption = this.querySelector<HTMLElement>('.media-lightbox-caption')!;
+      this.embed = this.querySelector<HTMLElement>('[data-lightbox-video]')!;
+    }
+
+    connectedCallback() {
+      this.bindImageTriggers();
+      this.bindVideoTriggers();
+      this.setupEventListeners();
+    }
+
+    bindImageTriggers() {
+      const sel = this.dataset.selector;
+      if (!sel) return;
+      const triggers = document.querySelectorAll<HTMLImageElement>(sel);
+      triggers.forEach((img) => {
+        if (img.closest('media-lightbox')) return;
+        if (img.dataset.lightboxBound === 'true') return;
+        img.dataset.lightboxBound = 'true';
+        img.classList.add('is-lightbox-trigger');
+        img.setAttribute('role', 'button');
+        img.setAttribute('tabindex', '0');
+        if (!img.getAttribute('aria-label')) {
+          img.setAttribute('aria-label', `Open image${img.alt ? `: ${img.alt}` : ''}`);
+        }
+        img.addEventListener('click', () => this.openImage(img.currentSrc || img.src, img.alt));
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.openImage(img.currentSrc || img.src, img.alt);
+          }
+        });
+      });
+    }
+
+    bindVideoTriggers() {
+      const sel = this.dataset.videoSelector;
+      if (!sel) return;
+      const triggers = document.querySelectorAll<HTMLElement>(sel);
+      triggers.forEach((el) => {
+        if (el.closest('media-lightbox')) return;
+        if (el.dataset.lightboxBound === 'true') return;
+        const embed = el.getAttribute('data-embed-url');
+        if (!embed) return;
+        el.dataset.lightboxBound = 'true';
+        const isNativelyFocusable =
+          el instanceof HTMLAnchorElement || el instanceof HTMLButtonElement;
+        if (!isNativelyFocusable && !el.hasAttribute('tabindex')) {
+          el.setAttribute('tabindex', '0');
+        }
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.openVideo(embed);
+        });
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.openVideo(embed);
+          }
+        });
+      });
+    }
+
+    setupEventListeners() {
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+
+      this.dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-media-lightbox-open', false);
+        window.removeEventListener('click', this.onClick);
+        this.embed.innerHTML = '';
+        this.embed.hidden = true;
+        this.figure.hidden = true;
+        this.image.src = '';
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.dialog.open) {
+          this.closeModal();
+          e.preventDefault();
+        }
+      });
+    }
+
+    onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isInDialog = target.closest('dialog') !== null;
+      const isInFrame = target.closest('.media-lightbox-frame') !== null;
+      const isBackdropClick = isInDialog && !isInFrame;
+      const isTooSoon = Date.now() - this.dialogOpenedAt < 300;
+      if (isBackdropClick && !isTooSoon) this.closeModal();
+    };
+
+    openImage(src: string, alt: string) {
+      if (!src) return;
+      this.embed.hidden = true;
+      this.embed.innerHTML = '';
+      this.figure.hidden = false;
+      this.image.src = src;
+      this.image.alt = alt || '';
+      if (alt) {
+        this.caption.textContent = alt;
+        this.caption.hidden = false;
+      } else {
+        this.caption.textContent = '';
+        this.caption.hidden = true;
+      }
+      this.show();
+    }
+
+    openVideo(embedUrl: string) {
+      const safe = sanitizeYoutubeEmbedUrlForIframe(embedUrl);
+      if (!safe) return;
+      this.figure.hidden = true;
+      this.image.src = '';
+      this.embed.hidden = false;
+      this.embed.innerHTML = `
+        <iframe
+          width="560"
+          height="315"
+          src="${safe.replace(/"/g, '&quot;')}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      `;
+      this.show();
+    }
+
+    show() {
+      this.dialog.showModal();
+      document.body.toggleAttribute('data-media-lightbox-open', true);
+      this.dialogOpenedAt = Date.now();
+      setTimeout(() => window.addEventListener('click', this.onClick), 100);
+    }
+
+    closeModal() {
+      this.dialog.close();
+    }
+  }
+
+  if (!customElements.get('media-lightbox')) {
+    customElements.define('media-lightbox', MediaLightbox);
+  }
+</script>

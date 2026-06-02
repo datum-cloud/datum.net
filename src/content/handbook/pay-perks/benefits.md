@@ -7,7 +7,7 @@ updatedDate: May 11, 2026
 authors: jacob
 meta:
   title: "Employee Benefits: Health, Equipment & PTO - Datum Handbook"
-  description: "Explore the benefits at Datum beyond equity: time off, equipment budgets, health care, retirement, and country-specific programs."
+  description: "Explore the benefits at Datum beyond equity: paid time off, equipment budgets, comprehensive health care, retirement, and country-specific programs."
   og:
     title: "Employee Benefits at Datum"
 ---

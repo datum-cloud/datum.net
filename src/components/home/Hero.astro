@@ -14,7 +14,7 @@ const { title = '', description = '', class: className } = Astro.props as HeroPr
 const deviceWidth = 592;
 const deviceHeight = 588;
 const deviceWidths = [400, 592, 800, 1182];
-const deviceSizes = '(max-width: 768px) 45vw, (max-width: 1280px) 592px, 1182px';
+const deviceSizes = '(max-width: 768px) 100vw, (max-width: 1280px) 592px, 1182px';
 ---
 
 <header id="hero-header" class:list={['hero--main relative z-11', className]}>

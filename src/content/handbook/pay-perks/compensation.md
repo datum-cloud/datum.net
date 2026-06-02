@@ -7,10 +7,9 @@ updatedDate: May 11, 2026
 authors: jacob
 meta:
   title: "Salary, Levels & Pay Reviews - Datum Handbook"
-  description: "Explore how Datum structures salary, levels, steps, benchmarking, and pay reviews as part of our commitment to transparency."
+  description: "Explore how Datum structures salary, levels, steps, benchmarking, and pay reviews as part of our commitment to transparency around total compensation."
   og:
     title: "Compensation at Datum"
-    description: "How salary, levels, and pay reviews work at Datum."
 ---
 
 ## How it works

@@ -9,7 +9,7 @@ meta:
   title: "Datum Product to Market Fit Philosophy - Datum Handbook"
   description: "Where Datum fits in the cloud ecosystem: our take on PMF and how our open network cloud differs from hyperscalers and traditional ISPs."
   og:
-    title: "How we fit"
+    title: "How Datum Fits in the Cloud Ecosystem"
 ---
 
 We like to say that the most interesting thing about Datum isn’t __what__ we’re building, but __who__ we’re building it for: 

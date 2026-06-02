@@ -7,7 +7,7 @@ updatedDate: May 11, 2026
 authors: jacob
 meta:
   title: "Benefits - Datum Handbook"
-  description: "Benefits at Datum: equipment budgets, health care, retirement, and country-specific programs."
+  description: "Explore the benefits at Datum beyond equity: time off, equipment budgets, health care, retirement, and country-specific programs."
   og:
     title: "Benefits at Datum"
     description: "What Datum offers beyond salary and equity."

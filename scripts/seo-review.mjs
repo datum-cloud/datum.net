@@ -489,7 +489,7 @@ async function postClaude({ system, userContent }) {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 4096, //8192,
+      max_tokens: 8192,
       system,
       messages: [{ role: 'user', content: userContent }],
     }),
@@ -513,7 +513,20 @@ async function postClaude({ system, userContent }) {
     `Tokens — call #${tokenTotals.calls}: in=${inTok} out=${outTok}` +
       (cacheR || cacheC ? ` (cache read=${cacheR} create=${cacheC})` : '')
   );
-  return data.content?.map((b) => b.text).join('\n') || '_No content returned._';
+  let text = data.content?.map((b) => b.text).join('\n') || '_No content returned._';
+  // Fail loud on truncation: when the model hits max_tokens the response is cut
+  // off mid-section (the last "Per-page Notes" section is the first casualty),
+  // and the script would otherwise write the partial text as if complete.
+  if (data.stop_reason === 'max_tokens') {
+    console.warn(
+      `WARNING: call #${tokenTotals.calls} hit max_tokens (${outTok} tokens) — output is TRUNCATED.`
+    );
+    text +=
+      '\n\n> ⚠️ **Report truncated** — the model hit its output-token limit before finishing. ' +
+      'Sections after this point (e.g. Per-page Notes) are missing. ' +
+      'Raise `max_tokens` in `scripts/seo-review.mjs` or reduce the page set.';
+  }
+  return text;
 }
 
 function buildFullSystemPrompt(extras) {
@@ -531,15 +544,17 @@ Return a concise markdown review for a GitHub PR comment.
 
 Structure:
 1. **Summary** (2-3 lines: overall verdict + worst issues count)
-2. **Critical issues** (missing/duplicated title, description, canonical, h1; noindex on prod pages; >70-char titles; >160-char or <70-char descriptions; missing og:image; broken JSON-LD${extras.brokenLinks ? '; broken internal links' : ''}${extras.redirectChains ? '; redirect chains' : ''})
-3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
-4. **Per-page notes** — only include pages with issues, bulleted with the URL path.${extrasSection}
+2. **Critical issues** — summarize by ISSUE TYPE only (missing/duplicated title, description, canonical, h1; noindex on prod pages; >70-char titles; >160-char or <70-char descriptions; missing og:image; broken JSON-LD${extras.brokenLinks ? '; broken internal links' : ''}${extras.redirectChains ? '; redirect chains' : ''}). For each type, give the count of affected pages and — where a shared root cause exists — ONE template-level fix citing the suspected source file. Do NOT enumerate individual pages here; that is section 4's job.
+3. **Improvements** — same thematic treatment (alt text gaps, JSON-LD coverage, og/twitter consistency): counts + template-level fixes, no per-page enumeration.
+4. **Per-page notes** (MANDATORY — always output this heading, last; it is the ONLY section that lists individual pages). One bullet per affected page with the URL path as a markdown link, its specific issues (citing the JSON data), and a fix line. List EVERY affected page exactly once; do not omit, collapse, or summarize. If and only if no page has any issue, write the single line \`_No per-page issues._\` under the heading.${extrasSection}
+
+Avoid duplication: a concrete page-level issue and its fix appear ONCE, in section 4. Sections 2-3 are thematic roll-ups (counts + template fixes) and must not repeat the per-page list.
 
 When referencing a page URL path (e.g. \`/about\`, \`/blog/post\`), render it as a markdown link: \`[/about](${SITE_URL}/about)\`. Apply this to every path in Critical issues, Improvements, Per-page notes, brokenLinks, and redirectChains sections. The root path \`/\` links to \`${SITE_URL}/\`.
 
-For EVERY issue listed (Critical, Improvements, and Per-page notes) you MUST include a concrete fix.
-Format each issue as:
-  - <description of issue, citing data from the JSON>
+Every per-page entry in section 4 MUST carry a concrete fix; template-level fixes in sections 2-3 must too.
+Format each per-page entry (section 4) as:
+  - [<url>](${SITE_URL}<url>) — <description of issue, citing data from the JSON>
     - 💡 *Fix:* <specific actionable suggestion — what to change, where, and how>
 
 Examples of good fixes:
@@ -548,7 +563,7 @@ Examples of good fixes:
   - "Set og:image to absolute URL: \`https://www.datum.net/_astro/handbook.X.png\`."
   - "Fix shared layout in \`src/layouts/Handbook.astro\` so only one \`<h1>\` is rendered (currently emits both sidebar title and article title)."
 
-When the same fix applies to many pages, group them and propose a single template-level fix instead of repeating per page.
+When a shared root cause affects many pages, propose the single template-level fix in section 2 or 3; still list each affected page once in section 4 (referencing that fix, not repeating its full text).
 Be terse and actionable. Don't restate compliant pages. Don't invent metrics or speculate beyond the data.`;
 }
 
@@ -586,9 +601,11 @@ You will receive per-page issue bullets (each with a Fix line) collected from mu
 
 Produce a concise markdown review for a GitHub PR comment with this structure:
 1. **Summary** (2-3 lines: overall verdict + worst issues count across all batches)
-2. **Critical issues** (group recurring issues; cite counts; flag broken JSON-LD${extras.brokenLinks ? ', broken internal links' : ''}${extras.redirectChains ? ', redirect chains' : ''})
-3. **Improvements** (alt text gaps, JSON-LD coverage, social tags)
-4. **Per-page notes** — deduplicated, bulleted with the URL path. Keep this section if useful; collapse to "see batch notes above" only if the list would exceed ~50 entries.
+2. **Critical issues** — by ISSUE TYPE only: group recurring issues, cite counts, give template-level fixes (cite the suspected source file); flag broken JSON-LD${extras.brokenLinks ? ', broken internal links' : ''}${extras.redirectChains ? ', redirect chains' : ''}. Do NOT enumerate individual pages here.
+3. **Improvements** — same thematic treatment (alt text gaps, JSON-LD coverage, social tags): counts + template-level fixes, no per-page enumeration.
+4. **Per-page notes** (MANDATORY — always output this heading; it is the ONLY section that lists individual pages). Deduplicate across batches and list EVERY affected page exactly once, bulleted with the URL path as a markdown link plus its issues and a fix line. Do not collapse or summarize. If and only if no page has any issue, write \`_No per-page issues._\` under the heading.
+
+Avoid duplication: a concrete page-level issue and its fix appear ONCE, in section 4; sections 2-3 are thematic roll-ups and must not repeat the per-page list.
 
 Render every URL path as a markdown link: \`[/path](${SITE_URL}/path)\` (root \`/\` → \`${SITE_URL}/\`). Preserve any existing links from the batch notes.
 

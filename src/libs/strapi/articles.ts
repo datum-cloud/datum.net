@@ -18,6 +18,12 @@ import type { StrapiArticlesResponse, StrapiArticle } from '../../types/strapi';
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+// Pre-migration fallback keys. The package's CacheManager mirrors fallback under
+// the same key as primary, so new writes land at `strapi-articles` / `strapi-article-*`.
+// Read these legacy keys as a backstop so deploys don't lose access to existing
+// stale data if Strapi happens to be unreachable during the cutover.
+const LEGACY_FALLBACK_LIST_KEY = 'articles';
+const LEGACY_FALLBACK_DETAIL_PREFIX = 'article-';
 
 /** GraphQL query: every published article, newest first. */
 export const ARTICLES_QUERY = `
@@ -209,7 +215,9 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
 
   if (!response?.articles) {
     console.warn('Strapi unavailable — checking persistent fallback cache for articles');
-    const fallback = await cache.getFallback<StrapiArticle[]>(ARTICLES_CACHE_KEY);
+    const fallback =
+      (await cache.getFallback<StrapiArticle[]>(ARTICLES_CACHE_KEY)) ??
+      (await cache.getFallback<StrapiArticle[]>(LEGACY_FALLBACK_LIST_KEY));
     if (fallback && isValidCachedArticles(fallback)) {
       console.warn(`Serving ${fallback.length} articles from stale fallback cache`);
       return fallback;
@@ -242,7 +250,9 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
 
   if (!response?.articles || response.articles.length === 0) {
     console.warn(`Strapi unavailable — checking persistent fallback cache for article "${slug}"`);
-    const fallback = await cache.getFallback<StrapiArticle>(cacheKey);
+    const fallback =
+      (await cache.getFallback<StrapiArticle>(cacheKey)) ??
+      (await cache.getFallback<StrapiArticle>(`${LEGACY_FALLBACK_DETAIL_PREFIX}${slug}`));
     if (fallback && isValidStrapiArticle(fallback)) {
       console.warn(`Serving article "${slug}" from stale fallback cache`);
       return fallback;

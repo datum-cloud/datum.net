@@ -11,6 +11,9 @@ import { cache, client } from './_runtime';
 import type { StrapiRoadmap, StrapiRoadmapsResponse } from '../../types/strapi';
 
 const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
+// Pre-migration fallback key; read as a backstop so deploys preserve access to
+// existing stale data if Strapi happens to be unreachable during the cutover.
+const LEGACY_FALLBACK_KEY = 'roadmaps';
 
 export const ROADMAPS_QUERY = `
   query GetRoadmaps {
@@ -50,7 +53,9 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
 
   if (!response?.roadmaps) {
     console.warn('Strapi unavailable — checking persistent fallback cache for roadmaps');
-    const fallback = await cache.getFallback<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
+    const fallback =
+      (await cache.getFallback<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY)) ??
+      (await cache.getFallback<StrapiRoadmap[]>(LEGACY_FALLBACK_KEY));
     if (fallback && isValidCachedRoadmaps(fallback)) {
       console.warn(`Serving ${fallback.length} roadmaps from stale fallback cache`);
       return fallback;

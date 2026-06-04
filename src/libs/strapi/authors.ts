@@ -1,78 +1,24 @@
 // src/libs/strapi/authors.ts
 /**
- * Strapi Authors module with caching support
+ * Strapi Authors module.
+ *
+ * GraphQL + cache duties live in `_runtime.ts` (via `@datum-cloud/strapi-revalidate`).
+ * This file owns datum-specific concerns: cardCategories normalization, team
+ * sorting (founders first, CEO at top, then alphabetical by last name), and
+ * the bg-color helpers used by team avatars.
+ *
+ * Cache keys are unchanged from the pre-package layout:
+ *   `strapi-authors`              — full author list
+ *   `strapi-team-members`         — `isTeam === true`, sorted
+ *   `strapi-card-members`         — `isCard === true`, sorted
+ *   `strapi-author-slug-<slug>`   — single author by slug
+ * All entries are tagged `authors`, so one webhook clears every derived view.
  */
 
-import { Cache } from '@libs/cache';
+import { cache, client } from './_runtime';
 import type { CardCategory, StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
-const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
-const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
-const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
-
-const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
-const envTtlSec = parseInt(
-  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
-  10
-);
-const CACHE_TTL =
-  Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
-
-interface GraphQLResponse<T> {
-  data: T;
-  errors?: Array<{ message: string }>;
-}
-
-/**
- * Execute a GraphQL query against Strapi (local version to avoid circular import)
- */
-async function graphqlQuery<T>(
-  query: string,
-  variables: Record<string, unknown> = {}
-): Promise<T | null> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-
-  if (STRAPI_TOKEN) {
-    headers['Authorization'] = `Bearer ${STRAPI_TOKEN}`;
-  }
-
-  const url = `${STRAPI_URL}/graphql`;
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        query,
-        variables,
-      }),
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      console.error(`Strapi GraphQL error: ${response.status} ${response.statusText}`, text);
-      return null;
-    }
-
-    const result: GraphQLResponse<T> = await response.json();
-
-    if (result.errors) {
-      console.error('Strapi GraphQL errors:', result.errors);
-      return null;
-    }
-
-    return result.data;
-  } catch (error) {
-    console.error('Error fetching from Strapi:', error);
-    return null;
-  }
-}
-
-const cache = new Cache('.cache');
-const CACHE_KEY = 'strapi-authors';
+const AUTHORS_CACHE_KEY = 'strapi-authors';
 const TEAM_MEMBERS_CACHE_KEY = 'strapi-team-members';
 const CARD_MEMBERS_CACHE_KEY = 'strapi-card-members';
 const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
@@ -86,9 +32,8 @@ const VALID_CARD_CATEGORIES = new Set<CardCategory>([
 
 /** Normalize Author.cardCategories from Strapi (delimited string, JSON array, or legacy component rows). */
 function parseCardCategories(raw: unknown): CardCategory[] {
-  if (raw == null) {
-    return [];
-  }
+  if (raw == null) return [];
+
   if (typeof raw === 'string') {
     const trimmed = raw.trim();
     if (trimmed.startsWith('[')) {
@@ -105,9 +50,9 @@ function parseCardCategories(raw: unknown): CardCategory[] {
       .filter(Boolean);
     return parts.filter((v): v is CardCategory => VALID_CARD_CATEGORIES.has(v as CardCategory));
   }
-  if (!Array.isArray(raw)) {
-    return [];
-  }
+
+  if (!Array.isArray(raw)) return [];
+
   const first = raw[0];
   if (
     raw.length > 0 &&
@@ -134,14 +79,8 @@ function normalizeAuthorFromGraphQL(row: GraphQLAuthorRow): StrapiAuthorFull {
   return { ...row, cardCategories: parseCardCategories(row.cardCategories) };
 }
 
-/**
- * Color palette that cycles through for team member avatars
- */
 const TEAM_BG_COLORS = ['#5F735E', '#BF9595', '#D1CDC0'] as const;
 
-/**
- * GraphQL query to fetch all authors (with high limit to get all)
- */
 export const AUTHORS_QUERY = `
   query GetAuthors {
     authors(pagination: { limit: 100 }) {
@@ -181,9 +120,6 @@ export const AUTHORS_QUERY = `
   }
 `;
 
-/**
- * GraphQL query to fetch a single author by slug
- */
 export const AUTHOR_BY_SLUG_QUERY = `
   query GetAuthorBySlug($slug: String!) {
     authors(filters: { slug: { eq: $slug } }) {
@@ -223,143 +159,86 @@ export const AUTHOR_BY_SLUG_QUERY = `
   }
 `;
 
-/**
- * Validates that an object is a valid StrapiAuthorFull
- * @param obj - The object to validate
- * @returns True if the object is a valid StrapiAuthorFull
- */
 function isValidStrapiAuthor(obj: unknown): obj is StrapiAuthorFull {
-  if (!obj || typeof obj !== 'object') {
-    return false;
-  }
-
+  if (!obj || typeof obj !== 'object') return false;
   const author = obj as Record<string, unknown>;
   return typeof author.documentId === 'string' && typeof author.name === 'string';
 }
 
-/**
- * Validates that cached data has the correct structure with StrapiAuthorFull objects
- * @param data - The cached data to validate
- * @returns True if the data structure is valid
- */
 function isValidCachedAuthors(data: unknown): data is StrapiAuthorFull[] {
-  if (!Array.isArray(data)) {
-    return false;
-  }
-
-  return data.every(isValidStrapiAuthor);
+  return Array.isArray(data) && data.every(isValidStrapiAuthor);
 }
 
-/**
- * Extracts the last name from a full name string
- */
 function getLastName(name: string): string {
   const parts = name.trim().split(/\s+/);
   return parts[parts.length - 1].toLowerCase();
 }
 
-/**
- * Extracts the first name from a full name string
- */
 function getFirstName(name: string): string {
   return name.trim().split(/\s+/)[0].toLowerCase();
 }
 
-/**
- * Gets background color based on index, cycling through the color palette
- * @param index - The index of the team member
- * @returns The background color hex code
- */
+/** Background color for team avatars, cycling through the palette. */
 export function getTeamBgColor(index: number): string {
   return TEAM_BG_COLORS[index % TEAM_BG_COLORS.length];
 }
 
-/**
- * Simple hash function to convert string to number
- * @param str - The string to hash
- * @returns A positive integer hash
- */
 function hashString(str: string): number {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32bit integer
+    hash = hash & hash;
   }
   return Math.abs(hash);
 }
 
-/**
- * Gets a consistent background color for an author based on their name (fallback)
- * @param authorName - The name of the author
- * @returns The background color hex code
- */
 function getAuthorBgColorByName(authorName: string): string {
   const hash = hashString(authorName);
   return TEAM_BG_COLORS[hash % TEAM_BG_COLORS.length];
 }
 
-/**
- * Sort function for Strapi team members
- * Founders first (CEO at top), then alphabetically by last name
- */
+/** Founders first (CEO at the top), then alphabetical by last name. */
 function sortStrapiTeamMembers(a: StrapiAuthorFull, b: StrapiAuthorFull): number {
   const aIsFounder = a.team === 'founders';
   const bIsFounder = b.team === 'founders';
 
-  // Founders always come first
   if (aIsFounder && !bIsFounder) return -1;
   if (!aIsFounder && bIsFounder) return 1;
 
-  // Among founders, sort by title so CEO comes first
   if (aIsFounder && bIsFounder) {
     const aIsCeo = a.title?.includes('CEO') ? 0 : 1;
     const bIsCeo = b.title?.includes('CEO') ? 0 : 1;
     if (aIsCeo !== bIsCeo) return aIsCeo - bIsCeo;
   }
 
-  // Within the same group, sort by last name, then first name
   const lastNameCmp = getLastName(a.name).localeCompare(getLastName(b.name));
   if (lastNameCmp !== 0) return lastNameCmp;
   return getFirstName(a.name).localeCompare(getFirstName(b.name));
 }
 
-/**
- * Fetch all authors from Strapi with caching
- * @returns Array of all Strapi authors
- */
 export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
-  if (CACHE_ENABLED && (await cache.has(CACHE_KEY))) {
-    const cached = await cache.get<StrapiAuthorFull[]>(CACHE_KEY);
-    if (cached && isValidCachedAuthors(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn('Invalid cached Strapi authors data detected, fetching fresh data from API');
-    }
+  const cached = await cache.get<StrapiAuthorFull[]>(AUTHORS_CACHE_KEY);
+  if (cached && isValidCachedAuthors(cached)) return cached;
+  if (cached) {
+    console.warn('Invalid cached Strapi authors data detected, fetching fresh data from API');
   }
 
-  const response = await graphqlQuery<StrapiAuthorsResponse>(AUTHORS_QUERY);
-
+  const response = await client.query<StrapiAuthorsResponse>(AUTHORS_QUERY);
   if (!response?.authors) {
     console.warn('No authors returned from Strapi API');
     return [];
   }
 
   const authors = response.authors.map(normalizeAuthorFromGraphQL);
-
-  if (CACHE_ENABLED) {
-    await cache.set(CACHE_KEY, authors, CACHE_TTL);
-  }
-
+  await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
   return authors;
 }
 
 /**
- * Fetch single author by documentId.
- * Uses strapi-authors list (already includes documentId); no separate cache needed.
- * @param documentId - Author documentId (used as slug in URL for backwards compat)
- * @returns The author or null if not found
+ * documentId lookup. Reads the cached authors list rather than maintaining a
+ * dedicated cache — `fetchStrapiAuthors()` is already memoized via the
+ * package's cache manager.
  */
 export async function fetchStrapiAuthorByDocumentId(
   documentId: string
@@ -368,58 +247,35 @@ export async function fetchStrapiAuthorByDocumentId(
   return authors.find((a) => a.documentId === documentId) ?? null;
 }
 
-/**
- * Fetch single author by slug.
- * Caches each author separately (per-author cache by slug).
- * @param slug - Author slug (used in URL, e.g. /authors/john-doe/)
- * @returns The author or null if not found
- */
 export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAuthorFull | null> {
   const cacheKey = `${AUTHOR_SLUG_CACHE_PREFIX}${slug}`;
 
-  if (CACHE_ENABLED && (await cache.has(cacheKey))) {
-    const cached = await cache.get<StrapiAuthorFull>(cacheKey);
-    if (cached && isValidStrapiAuthor(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn(
-        `Invalid cached Strapi author data detected for slug "${slug}", fetching fresh data from API`
-      );
-    }
+  const cached = await cache.get<StrapiAuthorFull>(cacheKey);
+  if (cached && isValidStrapiAuthor(cached)) return cached;
+  if (cached) {
+    console.warn(
+      `Invalid cached Strapi author data detected for slug "${slug}", fetching fresh data from API`
+    );
   }
 
-  const response = await graphqlQuery<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
-
-  if (!response?.authors || response.authors.length === 0) {
-    return null;
-  }
+  const response = await client.query<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
+  if (!response?.authors || response.authors.length === 0) return null;
 
   const author = normalizeAuthorFromGraphQL(response.authors[0]);
-
-  if (CACHE_ENABLED) {
-    await cache.set(cacheKey, author, CACHE_TTL);
-  }
-
+  await cache.set(cacheKey, author, { tags: ['authors', `author:${slug}`] });
   return author;
 }
 
 /**
- * Fetches all team members from Strapi (authors where isTeam is true),
- * sorted with founders first, then alphabetically by last name.
- * Uses dedicated cache for team members.
- * @returns Sorted array of Strapi team member entries
+ * Team members (`isTeam === true`), sorted with founders first, then
+ * alphabetically by last name. Cached separately so the sort/filter happens
+ * once per author publish, not on every page render.
  */
 export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
-  // Check dedicated team members cache first
-  if (CACHE_ENABLED && (await cache.has(TEAM_MEMBERS_CACHE_KEY))) {
-    const cached = await cache.get<StrapiAuthorFull[]>(TEAM_MEMBERS_CACHE_KEY);
-    if (cached && isValidCachedAuthors(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn('Invalid cached Strapi team members data detected, fetching fresh data');
-    }
+  const cached = await cache.get<StrapiAuthorFull[]>(TEAM_MEMBERS_CACHE_KEY);
+  if (cached && isValidCachedAuthors(cached)) return cached;
+  if (cached) {
+    console.warn('Invalid cached Strapi team members data detected, fetching fresh data');
   }
 
   const authors = await fetchStrapiAuthors();
@@ -427,29 +283,19 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isTeam === true)
     .sort(sortStrapiTeamMembers);
 
-  // Cache the sorted team members
-  if (CACHE_ENABLED) {
-    await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, CACHE_TTL);
-  }
-
+  await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
   return teamMembers;
 }
 
 /**
- * Fetches all card members from Strapi (authors where isCard is true),
- * sorted with founders first, then alphabetically by last name.
- * Uses dedicated cache for card members.
- * @returns Sorted array of Strapi card member entries
+ * Card members (`isCard === true`), sorted with founders first. Same caching
+ * pattern as team members.
  */
 export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
-  if (CACHE_ENABLED && (await cache.has(CARD_MEMBERS_CACHE_KEY))) {
-    const cached = await cache.get<StrapiAuthorFull[]>(CARD_MEMBERS_CACHE_KEY);
-    if (cached && isValidCachedAuthors(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn('Invalid cached Strapi card members data detected, fetching fresh data');
-    }
+  const cached = await cache.get<StrapiAuthorFull[]>(CARD_MEMBERS_CACHE_KEY);
+  if (cached && isValidCachedAuthors(cached)) return cached;
+  if (cached) {
+    console.warn('Invalid cached Strapi card members data detected, fetching fresh data');
   }
 
   const authors = await fetchStrapiAuthors();
@@ -457,27 +303,18 @@ export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isCard === true)
     .sort(sortStrapiTeamMembers);
 
-  if (CACHE_ENABLED) {
-    await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, CACHE_TTL);
-  }
-
+  await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
   return cardMembers;
 }
 
 /**
- * Gets the background color for a Strapi author based on their position in the team members list
- * Falls back to hash-based color if author is not found in the team list
- * @param authorName - The name of the author
- * @returns The background color hex code
+ * Background color for an author, derived from their position in the sorted
+ * team list. Falls back to a name-hash color when the author isn't on the team.
  */
 export async function getAuthorBgColorFromStrapi(authorName: string): Promise<string> {
   const teamMembers = await getStrapiTeamMembers();
   const authorIndex = teamMembers.findIndex((member) => member.name === authorName);
 
-  if (authorIndex >= 0) {
-    return getTeamBgColor(authorIndex);
-  }
-
-  // Fallback to hash-based color if author not in team list
+  if (authorIndex >= 0) return getTeamBgColor(authorIndex);
   return getAuthorBgColorByName(authorName);
 }

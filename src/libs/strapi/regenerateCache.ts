@@ -14,6 +14,7 @@ import {
   getStrapiCardMembers,
 } from './authors';
 import { fetchStrapiRoadmaps } from './roadmaps';
+import { cache as revalidateCache } from './revalidate';
 import type { StrapiArticle } from '../../types/strapi';
 
 const CACHE_DIR = path.resolve(process.cwd(), '.cache');
@@ -119,7 +120,11 @@ export async function forceRegenerateStrapiCache(
   const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
 
   for (const name of unique) {
-    await cache.clear(name);
+    if (name === ROADMAPS_CACHE_KEY) {
+      await revalidateCache.delete(name);
+    } else {
+      await cache.clear(name);
+    }
 
     try {
       switch (name) {
@@ -213,8 +218,8 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
     skipped.push(AUTHORS_CACHE_KEY);
   }
 
-  // 3. strapi-roadmaps
-  if (!(await cache.has(ROADMAPS_CACHE_KEY))) {
+  // 3. strapi-roadmaps (managed by @datum-cloud/strapi-revalidate)
+  if ((await revalidateCache.get(ROADMAPS_CACHE_KEY)) === null) {
     try {
       await fetchStrapiRoadmaps();
       regenerated.push(ROADMAPS_CACHE_KEY);

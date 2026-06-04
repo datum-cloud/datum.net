@@ -49,8 +49,8 @@ async function warmup(): Promise<void> {
       fetchStrapiArticleBySlug,
       fetchStrapiAuthors,
       getStrapiTeamMembers,
-      fetchStrapiRoadmaps,
     } = await import('../src/libs/strapi/index');
+    const { fetchStrapiRoadmaps } = await import('../src/libs/strapi/roadmaps');
 
     const articles = await fetchStrapiArticles();
     console.log(`[warmup-cache] Strapi: ${articles.length} articles`);

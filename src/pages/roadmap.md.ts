@@ -5,7 +5,11 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { fetchStrapiRoadmaps, groupRoadmapsByDate, getMonthAbbreviation } from '@libs/strapi';
+import {
+  fetchStrapiRoadmaps,
+  groupRoadmapsByDate,
+  getMonthAbbreviation,
+} from '@libs/strapi/roadmaps';
 import type { StrapiRoadmap } from '@libs/strapi';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 

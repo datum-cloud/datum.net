@@ -102,11 +102,5 @@ export {
   fetchStrapiArticleBySlug,
 } from './articles';
 
-// Re-export roadmaps module
-export {
-  ROADMAPS_QUERY,
-  fetchStrapiRoadmaps,
-  groupRoadmapsByDate,
-  getMonthAbbreviation,
-  type GroupedRoadmaps,
-} from './roadmaps';
+// Roadmaps live in ./roadmaps (uses strapi-revalidate). Import from '@libs/strapi/roadmaps'
+// so routes like rss.xml do not load the revalidate bundle at build time.

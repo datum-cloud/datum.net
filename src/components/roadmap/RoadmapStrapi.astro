@@ -1,6 +1,6 @@
 ---
 // src/components/roadmap/RoadmapStrapi.astro
-import { fetchStrapiRoadmaps, groupRoadmapsByDate } from '@libs/strapi';
+import { fetchStrapiRoadmaps, groupRoadmapsByDate } from '@libs/strapi/roadmaps';
 import RoadmapRow from './RoadmapRow.astro';
 
 const roadmaps = await fetchStrapiRoadmaps();

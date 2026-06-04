@@ -12,20 +12,53 @@ import {
   getStrapiTeamMembers,
   getStrapiCardMembers,
 } from '@libs/strapi/authors';
-import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
+import { webhook as revalidateWebhook } from '@libs/strapi/revalidate';
 
 const CACHE_DIR = path.resolve(process.cwd(), '.cache');
 const FALLBACK_CACHE_DIR = path.resolve(process.cwd(), '.cache/strapi-fallback');
 
 interface StrapiWebhookPayload {
-  event: 'entry.create' | 'entry.update' | 'entry.delete';
+  event: 'entry.create' | 'entry.update' | 'entry.delete' | string;
   model: string;
+  /** Strapi v5 UID, e.g. `api::roadmap.roadmap`. Required by strapi-revalidate. */
+  uid?: string;
   entry: {
     id: number;
+    documentId?: string;
     slug?: string;
     name?: string;
     [key: string]: unknown;
   };
+}
+
+/**
+ * Dispatch a (already-parsed) Strapi payload to the `strapi-revalidate`
+ * library handler. The library reads the body via `req.json()` — we feed it
+ * the parsed payload so we don't double-consume the request stream.
+ *
+ * Auth is intentionally bypassed at the library level (`headers.get → null`)
+ * because the outer endpoint has already verified `X-Webhook-Secret`.
+ */
+async function dispatchToRevalidate(payload: StrapiWebhookPayload): Promise<{
+  status: number;
+  body: unknown;
+}> {
+  let status = 200;
+  let body: unknown = { ok: true };
+  const req = {
+    method: 'POST',
+    headers: { get: () => null },
+    json: async () => payload,
+  };
+  await revalidateWebhook(req, {
+    status: (code) => {
+      status = code;
+    },
+    json: (value) => {
+      body = value;
+    },
+  });
+  return { status, body };
 }
 
 function verifyWebhookSecret(request: Request): boolean {
@@ -112,11 +145,6 @@ function invalidateAuthorCache(): string[] {
   ];
 }
 
-function invalidateRoadmapCache(): string[] {
-  // main "strapi-roadmaps*", fallback "roadmaps*"
-  return invalidateCache('strapi-roadmaps', 'roadmaps');
-}
-
 /**
  * Re-fetch and rewrite article caches after invalidation.
  * On delete we skip re-fetching the individual article (it no longer exists in Strapi)
@@ -156,14 +184,6 @@ async function warmAuthorCache(): Promise<void> {
     await getStrapiCardMembers();
   } catch (err) {
     console.error('[Webhook] Cache warm failed for card members:', err);
-  }
-}
-
-async function warmRoadmapCache(): Promise<void> {
-  try {
-    await fetchStrapiRoadmaps();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for roadmaps:', err);
   }
 }
 
@@ -216,9 +236,11 @@ export const POST: APIRoute = async ({ request }) => {
       console.log(`[Webhook] Cleared ${deletedFiles.length} author cache files:`, deletedFiles);
       void warmAuthorCache();
     } else if (model === 'roadmap') {
-      deletedFiles = invalidateRoadmapCache();
-      console.log(`[Webhook] Cleared ${deletedFiles.length} roadmap cache files:`, deletedFiles);
-      void warmRoadmapCache();
+      const result = await dispatchToRevalidate(payload);
+      console.log(
+        `[Webhook] roadmap dispatched to strapi-revalidate → ${result.status}`,
+        result.body
+      );
     } else {
       console.warn(`[Webhook] Unknown model: ${model}`);
     }

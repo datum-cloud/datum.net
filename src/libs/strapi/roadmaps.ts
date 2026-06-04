@@ -1,100 +1,18 @@
 // src/libs/strapi/roadmaps.ts
 /**
- * Strapi Roadmaps module with caching support
+ * Strapi roadmaps fetcher.
+ *
+ * Uses the shared `@datum-cloud/strapi-revalidate` bundle for caching and
+ * GraphQL transport. The library handles primary + fallback persistence and
+ * tag-based webhook invalidation; this module only owns the query and the
+ * roadmap-specific grouping helpers.
  */
 
-import { Cache } from '@libs/cache';
+import { cache, client } from './revalidate';
 import type { StrapiRoadmap, StrapiRoadmapsResponse } from '../../types/strapi';
 
-const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
-const cacheEnabledRaw = import.meta.env?.STRAPI_CACHE_ENABLED || process.env.STRAPI_CACHE_ENABLED;
-const CACHE_ENABLED = cacheEnabledRaw === 'true' || cacheEnabledRaw === '1';
-
-const DEFAULT_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
-const envTtlSec = parseInt(
-  import.meta.env?.STRAPI_CACHE_TTL ?? process.env.STRAPI_CACHE_TTL ?? '2592000',
-  10
-);
-const ROADMAPS_CACHE_TTL =
-  Number.isNaN(envTtlSec) || envTtlSec <= 0 ? DEFAULT_CACHE_TTL_MS : envTtlSec * 1000;
-
-const envTimeoutSec = parseInt(
-  import.meta.env?.STRAPI_TIMEOUT ?? process.env.STRAPI_TIMEOUT ?? '10',
-  10
-);
-const FETCH_TIMEOUT_MS =
-  Number.isNaN(envTimeoutSec) || envTimeoutSec <= 0 ? 10_000 : envTimeoutSec * 1000;
-
-interface GraphQLResponse<T> {
-  data: T;
-  errors?: Array<{ message: string }>;
-}
-
-/**
- * Execute a GraphQL query against Strapi
- */
-async function graphqlQuery<T>(
-  query: string,
-  variables: Record<string, unknown> = {}
-): Promise<T | null> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-
-  if (STRAPI_TOKEN) {
-    headers['Authorization'] = `Bearer ${STRAPI_TOKEN}`;
-  }
-
-  const url = `${STRAPI_URL}/graphql`;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        query,
-        variables,
-      }),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      console.error(`Strapi GraphQL error: ${response.status} ${response.statusText}`, text);
-      return null;
-    }
-
-    const result: GraphQLResponse<T> = await response.json();
-
-    if (result.errors) {
-      console.error('Strapi GraphQL errors:', result.errors);
-      return null;
-    }
-
-    return result.data;
-  } catch (error) {
-    if (error instanceof Error && error.name === 'AbortError') {
-      console.warn(`Strapi request timed out after ${FETCH_TIMEOUT_MS}ms`);
-    } else {
-      console.warn(
-        'Strapi unreachable (using fallback cache if available):',
-        (error as Error).message
-      );
-    }
-    return null;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-const cache = new Cache('.cache');
 const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
-
-const fallbackCache = new Cache('.cache/strapi-fallback');
-const FALLBACK_ROADMAPS_KEY = 'roadmaps';
+const ROADMAPS_TAG = 'roadmaps';
 
 /**
  * GraphQL query to fetch all roadmap milestones
@@ -141,21 +59,19 @@ function isValidCachedRoadmaps(data: unknown): data is StrapiRoadmap[] {
  * @returns Array of all Strapi roadmap milestones
  */
 export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
-  if (CACHE_ENABLED && (await cache.has(ROADMAPS_CACHE_KEY))) {
-    const cached = await cache.get<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
-    if (cached && isValidCachedRoadmaps(cached)) {
-      return cached;
-    }
-    if (cached) {
-      console.warn('Invalid cached Strapi roadmaps data detected, fetching fresh data from API');
-    }
+  const cached = await cache.get<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
+  if (cached && isValidCachedRoadmaps(cached)) {
+    return cached;
+  }
+  if (cached) {
+    console.warn('Invalid cached Strapi roadmaps data detected, fetching fresh data from API');
   }
 
-  const response = await graphqlQuery<StrapiRoadmapsResponse>(ROADMAPS_QUERY);
+  const response = await client.query<StrapiRoadmapsResponse>(ROADMAPS_QUERY);
 
   if (!response?.roadmaps) {
     console.warn('Strapi unavailable — checking persistent fallback cache for roadmaps');
-    const fallback = await fallbackCache.get<StrapiRoadmap[]>(FALLBACK_ROADMAPS_KEY);
+    const fallback = await cache.getFallback<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY);
     if (fallback && isValidCachedRoadmaps(fallback)) {
       console.warn(`Serving ${fallback.length} roadmaps from stale fallback cache`);
       return fallback;
@@ -164,15 +80,9 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
     return [];
   }
 
-  const roadmaps = response.roadmaps;
+  await cache.set(ROADMAPS_CACHE_KEY, response.roadmaps, { tags: [ROADMAPS_TAG] });
 
-  if (CACHE_ENABLED) {
-    await cache.set(ROADMAPS_CACHE_KEY, roadmaps, ROADMAPS_CACHE_TTL);
-  }
-
-  await fallbackCache.set(FALLBACK_ROADMAPS_KEY, roadmaps);
-
-  return roadmaps;
+  return response.roadmaps;
 }
 
 /**

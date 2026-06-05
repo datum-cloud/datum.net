@@ -9,7 +9,7 @@
  *
  * Cache keys are unchanged from the pre-package layout:
  *   `strapi-articles`           — full list (tagged `articles`)
- *   `strapi-article-<slug>`     — single article (tagged `articles` + `article:<slug>`)
+ *   `strapi-article-<slug>`     — single article (tagged `article:<slug>` only)
  */
 
 import { getReadingTimeMinutesFromContent } from '@libs/string';
@@ -255,7 +255,7 @@ async function pullArticleDetailFromApi(slug: string): Promise<StrapiArticle | n
 
   const article = withReadingTime(response.articles[0]);
   const cacheKey = `${ARTICLE_CACHE_PREFIX}${slug}`;
-  await cache.set(cacheKey, article, { tags: ['articles', `article:${slug}`] });
+  await cache.set(cacheKey, article, { tags: [`article:${slug}`] });
   return article;
 }
 

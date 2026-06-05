@@ -23,7 +23,7 @@ import type { RevalidateConfig } from '@datum-cloud/strapi-revalidate';
 
 const DEFAULT_STRAPI_URL = 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 const DEFAULT_CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
-const DEFAULT_TIMEOUT_SECONDS = 3;
+const DEFAULT_TIMEOUT_SECONDS = 6;
 
 function readEnv(name: string): string | undefined {
   const value = process.env[name];

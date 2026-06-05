@@ -55,17 +55,10 @@ async function warmup(): Promise<void> {
     const articles = await fetchStrapiArticles();
     console.log(`[warmup-cache] Strapi: ${articles.length} articles`);
 
-    const latest = [...articles]
-      .sort((a, b) => {
-        const da = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
-        const db = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
-        return db - da;
-      })
-      .slice(0, 5);
-    for (const a of latest) {
+    for (const a of articles) {
       await fetchStrapiArticleBySlug(a.slug);
     }
-    console.log(`[warmup-cache] Strapi: cached 5 latest article details`);
+    console.log(`[warmup-cache] Strapi: cached ${articles.length} article details`);
 
     await fetchStrapiAuthors();
     await getStrapiTeamMembers();

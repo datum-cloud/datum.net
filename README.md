@@ -15,6 +15,7 @@ This is the official website for Datum Inc., built with Astro.
   - [Handbook](#handbook)
   - [Images](#images)
   - [Content Management with Front Matter CMS](#content-management-with-front-matter-cms)
+  - [Strapi-backed content](#strapi-backed-content)
 - [API Documentation](#api-documentation)
   - [Generating API Documentation](#generating-api-documentation)
   - [Configuration](#configuration)
@@ -289,6 +290,38 @@ If the Front Matter panel is not showing:
 1. Ensure you have a content file open
 2. Check the file is in `src/content/` directory
 3. Try reloading VS Code: `Developer: Reload Window`
+
+### Strapi-backed content
+
+Blog posts, authors, and roadmap milestones are sourced from a Strapi v5 CMS
+and cached on the SSR server via [`@datum-cloud/strapi-revalidate`](https://www.npmjs.com/package/@datum-cloud/strapi-revalidate).
+The package owns the GraphQL client, the tag-aware filesystem cache, and the
+webhook handler; datum-specific transforms (article block stripping, top-3
+cover preservation, reading-time calculation, author team sorting, card-category
+normalization) live alongside the fetchers in [`src/libs/strapi/`](./src/libs/strapi/).
+
+| Concern                             | Lives in                                                                                                   |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Shared client + cache               | [`src/libs/strapi/_runtime.ts`](./src/libs/strapi/_runtime.ts)                                             |
+| Article / author / roadmap fetchers | [`src/libs/strapi/`](./src/libs/strapi/)                                                                   |
+| Inbound webhook                     | [`src/pages/api/webhooks/strapi-content.ts`](./src/pages/api/webhooks/strapi-content.ts)                   |
+| Admin cache API + force-regen       | [`src/pages/api/cache/`](./src/pages/api/cache/), [`docs/STRAPI_CACHE_API.md`](./docs/STRAPI_CACHE_API.md) |
+
+Relevant environment variables (full set in [`.env.example`](./.env.example)):
+
+| Variable                | Purpose                                                                  |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `STRAPI_URL`            | Strapi base URL                                                          |
+| `STRAPI_TOKEN`          | API token, sent as `Authorization: Bearer …`                             |
+| `STRAPI_WEBHOOK_SECRET` | Shared secret for inbound webhooks **and** the cache admin API           |
+| `STRAPI_CACHE_TTL`      | Primary cache TTL in seconds (default `2592000` = 30 days)               |
+| `STRAPI_TIMEOUT`        | Per-request timeout in seconds (default `3`)                             |
+| `STRAPI_DEBUG`          | `"true"` to log cache hit/miss and GraphQL retry decisions (default off) |
+
+**Webhook header note:** the Strapi Cloud webhook must be configured to send
+the secret as `Authorization: Bearer <secret>` (or `strapi-webhook-secret: <secret>`).
+The package does not accept the legacy `X-Webhook-Secret` header that
+`/api/cache/*` admin endpoints still use.
 
 ---
 

@@ -100,6 +100,7 @@ export {
   ARTICLES_BY_CATEGORY_QUERY,
   fetchStrapiArticles,
   fetchStrapiArticleBySlug,
+  ensureStrapiArticleDetail,
 } from './articles';
 
 // Re-export roadmaps module

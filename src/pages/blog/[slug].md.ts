@@ -6,7 +6,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { fetchStrapiArticleBySlug } from '@libs/strapi';
+import { ensureStrapiArticleDetail } from '@libs/strapi';
 
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ params }) => {
   }
 
   try {
-    const article = await fetchStrapiArticleBySlug(slug);
+    const article = await ensureStrapiArticleDetail(slug);
     if (!article) {
       return new Response('Not found', { status: 404 });
     }

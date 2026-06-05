@@ -1,0 +1,28 @@
+src/content/pages/brand/index.mdx
+  h_c7951bc64db670 93-97,99-101
+  s_7ea92b3c06de00::t_954a9ff8aeb82c 98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "55b47cd30cad5fd2674f8a729f54d36ae6e57b66",
+  "prompts": {},
+  "humans": {
+    "h_be6412991b9fef": {
+      "author": "AriaEdo"
+    },
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_7ea92b3c06de00": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b46edd4e-f0a7-41fd-8b28-3efc83228824",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

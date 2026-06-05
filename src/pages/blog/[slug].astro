@@ -16,7 +16,7 @@ import {
   getStrapiMediaUrl,
   resolveMarkdownStrapiUrls,
   fetchStrapiArticles,
-  fetchStrapiArticleBySlug,
+  ensureStrapiArticleDetail,
 } from '@libs/strapi';
 import type { StrapiArticle, StrapiBlock } from '@libs/strapi';
 import { formatShortDate, estimateReadingTime } from '@utils/dateUtils';
@@ -58,7 +58,7 @@ if (isPageNumber) {
 }
 
 // Article rendering (only when not a pagination page)
-const article = !isPageNumber ? await fetchStrapiArticleBySlug(slug as string) : null;
+const article = !isPageNumber ? await ensureStrapiArticleDetail(slug as string) : null;
 if (!isPageNumber && !article) {
   return Astro.redirect('/404');
 }

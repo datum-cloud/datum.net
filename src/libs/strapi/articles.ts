@@ -230,6 +230,35 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
   return articles;
 }
 
+function withReadingTime(article: StrapiArticle): StrapiArticle {
+  if (article.readingTimeMinutes || !article.blocks) return article;
+  const bodyContent = article.blocks
+    .map((block) => block.body || '')
+    .filter(Boolean)
+    .join('\n\n');
+  article.readingTimeMinutes = getReadingTimeMinutesFromContent(bodyContent);
+  return article;
+}
+
+async function readArticleDetailFallback(slug: string): Promise<StrapiArticle | null> {
+  const cacheKey = `${ARTICLE_CACHE_PREFIX}${slug}`;
+  const fallback =
+    (await cache.getFallback<StrapiArticle>(cacheKey)) ??
+    (await cache.getFallback<StrapiArticle>(`${LEGACY_FALLBACK_DETAIL_PREFIX}${slug}`));
+  return fallback && isValidStrapiArticle(fallback) ? fallback : null;
+}
+
+/** Fetch full article detail from Strapi and persist to the per-slug cache file. */
+async function pullArticleDetailFromApi(slug: string): Promise<StrapiArticle | null> {
+  const response = await client.query<StrapiArticlesResponse>(ARTICLE_BY_SLUG_QUERY, { slug });
+  if (!response?.articles?.length) return null;
+
+  const article = withReadingTime(response.articles[0]);
+  const cacheKey = `${ARTICLE_CACHE_PREFIX}${slug}`;
+  await cache.set(cacheKey, article, { tags: ['articles', `article:${slug}`] });
+  return article;
+}
+
 /**
  * Fetch a single article by slug. Cached per slug; falls back to stale data
  * when Strapi is unreachable. Reading time is computed lazily so cache misses
@@ -246,30 +275,41 @@ export async function fetchStrapiArticleBySlug(slug: string): Promise<StrapiArti
     );
   }
 
-  const response = await client.query<StrapiArticlesResponse>(ARTICLE_BY_SLUG_QUERY, { slug });
+  const fromApi = await pullArticleDetailFromApi(slug);
+  if (fromApi) return fromApi;
 
-  if (!response?.articles || response.articles.length === 0) {
-    console.warn(`Strapi unavailable — checking persistent fallback cache for article "${slug}"`);
-    const fallback =
-      (await cache.getFallback<StrapiArticle>(cacheKey)) ??
-      (await cache.getFallback<StrapiArticle>(`${LEGACY_FALLBACK_DETAIL_PREFIX}${slug}`));
-    if (fallback && isValidStrapiArticle(fallback)) {
-      console.warn(`Serving article "${slug}" from stale fallback cache`);
-      return fallback;
-    }
-    return null;
+  console.warn(`Strapi unavailable — checking persistent fallback cache for article "${slug}"`);
+  const fallback = await readArticleDetailFallback(slug);
+  if (fallback) {
+    console.warn(`Serving article "${slug}" from stale fallback cache`);
+    return fallback;
   }
+  return null;
+}
 
-  const article = response.articles[0];
+/**
+ * Load article detail for a published slug, creating `.cache/strapi-article-<slug>.json`
+ * on a cache miss before giving up. Use for SSR blog routes instead of redirecting
+ * to 404 when the list cache already contains the slug.
+ */
+export async function ensureStrapiArticleDetail(slug: string): Promise<StrapiArticle | null> {
+  const article = await fetchStrapiArticleBySlug(slug);
+  if (article) return article;
 
-  if (!article.readingTimeMinutes && article.blocks) {
-    const bodyContent = article.blocks
-      .map((block) => block.body || '')
-      .filter(Boolean)
-      .join('\n\n');
-    article.readingTimeMinutes = getReadingTimeMinutesFromContent(bodyContent);
-  }
+  const articles = await fetchStrapiArticles();
+  if (!articles.some((entry) => entry.slug === slug)) return null;
 
-  await cache.set(cacheKey, article, { tags: ['articles', `article:${slug}`] });
-  return article;
+  const cacheKey = `${ARTICLE_CACHE_PREFIX}${slug}`;
+  await cache.delete(cacheKey);
+
+  const fromApi = await pullArticleDetailFromApi(slug);
+  if (fromApi) return fromApi;
+
+  const fallback = await readArticleDetailFallback(slug);
+  if (fallback) return fallback;
+
+  console.error(
+    `[strapi] Article "${slug}" is in the list cache but detail could not be loaded from Strapi`
+  );
+  return null;
 }

@@ -16,6 +16,8 @@
  *  - STRAPI_DEBUG            "true" to enable verbose cache/client logging
  */
 
+import { cwd } from 'node:process';
+import { loadEnv } from 'vite';
 import { createStrapiRevalidate } from '@datum-cloud/strapi-revalidate';
 import type { RevalidateConfig } from '@datum-cloud/strapi-revalidate';
 
@@ -27,6 +29,12 @@ function readEnv(name: string): string | undefined {
   const value = process.env[name];
   if (typeof value === 'string' && value.length > 0) return value;
   return undefined;
+}
+
+// Local dev loads .env into import.meta.env; merge into process.env when secrets are unset
+// so SSR routes can reach Strapi without inlining tokens into build output.
+if (!readEnv('STRAPI_TOKEN')) {
+  Object.assign(process.env, loadEnv(process.env.NODE_ENV ?? 'development', cwd(), ''));
 }
 
 function readSeconds(name: string, fallback: number): number {

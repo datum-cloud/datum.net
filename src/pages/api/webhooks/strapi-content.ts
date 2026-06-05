@@ -74,6 +74,17 @@ export const POST: APIRoute = async ({ request }) => {
   let status = 200;
   let body: unknown = {};
 
+  // Fail closed: the package handler skips verification entirely when no secret is
+  // configured, which would leave this cache-purge endpoint open to anyone. Reject
+  // before delegating so a missing `STRAPI_WEBHOOK_SECRET` can never disable auth.
+  if (!config.webhook?.secret) {
+    console.error('[Webhook] STRAPI_WEBHOOK_SECRET is not configured — rejecting request');
+    return new Response(JSON.stringify({ ok: false, error: 'Webhook secret not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // Adapt Astro's `Request` to the package's lowest-common-denominator shape.
   // Fetch `Headers` doesn't have a string index signature so the package's
   // `WebhookRequest` rejects it at the type level, even though `.get()` works

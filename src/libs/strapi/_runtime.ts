@@ -6,7 +6,8 @@
  * module load. Every Strapi fetcher and the webhook route import from here so
  * timeouts, retries, cache directories, and tag conventions stay in one place.
  *
- * Env vars (read from `import.meta.env` when available, then `process.env`):
+ * Env vars (read from `process.env` at runtime — never `import.meta.env`, so secrets
+ * are not inlined into server bundles at build time):
  *  - STRAPI_URL              Strapi base URL
  *  - STRAPI_TOKEN            API token (sent as `Authorization: Bearer …`)
  *  - STRAPI_CACHE_TTL        Primary cache TTL in seconds (default 2592000 = 30d)
@@ -23,13 +24,8 @@ const DEFAULT_CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
 const DEFAULT_TIMEOUT_SECONDS = 3;
 
 function readEnv(name: string): string | undefined {
-  const viteValue =
-    typeof import.meta !== 'undefined' && import.meta.env
-      ? (import.meta.env as Record<string, unknown>)[name]
-      : undefined;
-  if (typeof viteValue === 'string' && viteValue.length > 0) return viteValue;
-  const nodeValue = process.env[name];
-  if (typeof nodeValue === 'string' && nodeValue.length > 0) return nodeValue;
+  const value = process.env[name];
+  if (typeof value === 'string' && value.length > 0) return value;
   return undefined;
 }
 

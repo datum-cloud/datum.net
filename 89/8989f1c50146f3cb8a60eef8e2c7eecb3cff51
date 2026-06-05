@@ -1,0 +1,14 @@
+src/content/pages/brand/index.mdx
+  h_c7951bc64db670 99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "898989f1c50146f3cb8a60eef8e2c7eecb3cff51",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

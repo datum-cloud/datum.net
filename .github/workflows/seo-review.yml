@@ -32,6 +32,9 @@ permissions:
 jobs:
   seo-review:
     name: SEO & Meta Review
+    # Skip for bot-authored PRs (renovate, dependabot, etc.); scheduled and
+    # manual runs always proceed.
+    if: github.event_name != 'pull_request' || github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     env:
       NODE_ENV: development

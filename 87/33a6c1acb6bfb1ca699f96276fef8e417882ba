@@ -1,0 +1,25 @@
+.github/workflows/seo-review.yml
+  s_27a6174f71aa12::t_0b7de6bf007009 11
+  h_c7951bc64db670 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "8733a6c1acb6bfb1ca699f96276fef8e417882ba",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_27a6174f71aa12": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "ee3811c2-73d7-4d48-b5fe-252baf610308",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

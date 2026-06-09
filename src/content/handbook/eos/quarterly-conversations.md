@@ -7,7 +7,7 @@ updatedDate: Jan 23, 2026
 authors: jacob
 meta:
   title: "Quarterly Conversations - Datum Handbook"
-  description: "Datum prioritizes growth and development. This is how we guide meanintful quarterly conversations to encourage open communication and enable growth."
+  description: "Datum prioritizes growth and development. This is how we guide meaningful quarterly conversations to encourage open communication and enable growth."
   og:
     title: "Quarterly Conversations"
 ---

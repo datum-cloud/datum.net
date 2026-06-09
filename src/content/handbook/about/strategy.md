@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Datum Corporate Strategy - Open Source & Neutrality"
-  description: "Read about Datum's strategic vision. We combine a commercial open source (COSS) model with a neutral, federated architecture to empower the next generation of clouds."
+  description: "Datum's strategic vision: a commercial open source (COSS) model with neutral, federated architecture to empower the next generation of clouds."
   og:
     title: "Our strategy"
 ---

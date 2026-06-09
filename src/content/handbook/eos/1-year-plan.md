@@ -7,7 +7,7 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "1 Year Plan - Datum Handbook"
-  description: "Learn about Datum's 1-year plan broken down by measurable revenue, organizations on the Datum Cloud platform, Builders on the Datum Cloud Platform and active ecosystem connections."
+  description: "Datum's 1-year plan: measurable revenue targets, organizations and builders on the Datum Cloud Platform, and active ecosystem connections."
   og:
     title: "1 Year Plan"
 ---

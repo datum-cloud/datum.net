@@ -86,6 +86,8 @@ export default defineConfig({
     mode: 'middleware',
   }),
   markdown: {
+    gfm: true,
+    smartypants: true,
     remarkPlugins: [remarkModifiedTime],
     // Astro runs Shiki before user `rehypePlugins` on MDX; that emits `astro-code` and prevents
     // expressive-code from taking over. Disable built-in highlighting so fenced blocks stay

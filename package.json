@@ -9,6 +9,7 @@
     "build": "npm run build:astro",
     "build:cache": "tsx scripts/warmup-cache.ts",
     "start": "node ./server.mjs",
+    "start:dev": "node --env-file=.env ./server.mjs",
     "start:original": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro",

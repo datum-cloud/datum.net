@@ -15,7 +15,7 @@
  * All entries are tagged `authors`, so one webhook clears every derived view.
  */
 
-import { cache, client, hasStrapiToken, STRAPI_GRAPHQL_URL } from './_runtime';
+import { cache, client } from './_runtime';
 import type { CardCategory, StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const AUTHORS_CACHE_KEY = 'strapi-authors';
@@ -217,52 +217,29 @@ function sortStrapiTeamMembers(a: StrapiAuthorFull, b: StrapiAuthorFull): number
   return getFirstName(a.name).localeCompare(getFirstName(b.name));
 }
 
-/**
- * Execute a GraphQL query against Strapi. When no real token is configured
- * the package client sends a placeholder that triggers a 401, so we fall back
- * to an unauthenticated request (works for publicly-readable Strapi content).
- */
-async function strapiQuery<T>(
-  query: string,
-  variables?: Record<string, unknown>
-): Promise<T | null> {
-  const result = await client.query<T>(query, variables);
-  if (result !== null || hasStrapiToken) return result;
-
-  try {
-    const res = await fetch(STRAPI_GRAPHQL_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, variables }),
-    });
-    if (!res.ok) return null;
-    const json = (await res.json()) as { data?: T };
-    return json.data ?? null;
-  } catch {
-    return null;
-  }
-}
-
 export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
   const cached = await cache.get<StrapiAuthorFull[]>(AUTHORS_CACHE_KEY);
-  if (cached && isValidCachedAuthors(cached)) return cached;
   if (cached) {
-    console.warn('Invalid cached Strapi authors data detected, fetching fresh data from API');
+    if (isValidCachedAuthors(cached)) return cached;
+    console.warn('Invalid cached Strapi authors data detected, clearing and refetching');
+    await cache.delete(AUTHORS_CACHE_KEY);
   }
 
-  const response = await strapiQuery<StrapiAuthorsResponse>(AUTHORS_QUERY);
-  if (!response?.authors) {
-    console.warn('No authors returned from Strapi API, trying fallback cache');
-    const fallback = await cache.getFallback<StrapiAuthorFull[]>(AUTHORS_CACHE_KEY);
-    if (fallback && isValidCachedAuthors(fallback)) return fallback;
-    return [];
-  }
+  const result = await cache.getWithFallback<StrapiAuthorFull[]>(
+    AUTHORS_CACHE_KEY,
+    async () => {
+      const response = await client.query<StrapiAuthorsResponse>(AUTHORS_QUERY);
+      if (!response?.authors) {
+        console.warn('No authors returned from Strapi API');
+        return null;
+      }
+      const authors = response.authors.map(normalizeAuthorFromGraphQL);
+      return authors.length > 0 ? authors : null;
+    },
+    { tags: ['authors'] }
+  );
 
-  const authors = response.authors.map(normalizeAuthorFromGraphQL);
-  if (authors.length > 0) {
-    await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
-  }
-  return authors;
+  return result ?? [];
 }
 
 /**
@@ -281,19 +258,21 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
   const cacheKey = `${AUTHOR_SLUG_CACHE_PREFIX}${slug}`;
 
   const cached = await cache.get<StrapiAuthorFull>(cacheKey);
-  if (cached && isValidStrapiAuthor(cached)) return cached;
   if (cached) {
-    console.warn(
-      `Invalid cached Strapi author data detected for slug "${slug}", fetching fresh data from API`
-    );
+    if (isValidStrapiAuthor(cached)) return cached;
+    console.warn(`Invalid cached Strapi author data for slug "${slug}", clearing and refetching`);
+    await cache.delete(cacheKey);
   }
 
-  const response = await strapiQuery<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
-  if (!response?.authors || response.authors.length === 0) return null;
-
-  const author = normalizeAuthorFromGraphQL(response.authors[0]);
-  await cache.set(cacheKey, author, { tags: ['authors', `author:${slug}`] });
-  return author;
+  return cache.getWithFallback<StrapiAuthorFull>(
+    cacheKey,
+    async () => {
+      const response = await client.query<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
+      if (!response?.authors?.length) return null;
+      return normalizeAuthorFromGraphQL(response.authors[0]);
+    },
+    { tags: ['authors', `author:${slug}`] }
+  );
 }
 
 /**
@@ -303,20 +282,24 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
  */
 export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
   const cached = await cache.get<StrapiAuthorFull[]>(TEAM_MEMBERS_CACHE_KEY);
-  if (cached && isValidCachedAuthors(cached)) return cached;
   if (cached) {
-    console.warn('Invalid cached Strapi team members data detected, fetching fresh data');
+    if (isValidCachedAuthors(cached)) return cached;
+    await cache.delete(TEAM_MEMBERS_CACHE_KEY);
   }
 
-  const authors = await fetchStrapiAuthors();
-  const teamMembers = authors
-    .filter((author) => author.isTeam === true)
-    .sort(sortStrapiTeamMembers);
+  const result = await cache.getWithFallback<StrapiAuthorFull[]>(
+    TEAM_MEMBERS_CACHE_KEY,
+    async () => {
+      const authors = await fetchStrapiAuthors();
+      const teamMembers = authors
+        .filter((author) => author.isTeam === true)
+        .sort(sortStrapiTeamMembers);
+      return teamMembers.length > 0 ? teamMembers : null;
+    },
+    { tags: ['authors'] }
+  );
 
-  if (teamMembers.length > 0) {
-    await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
-  }
-  return teamMembers;
+  return result ?? [];
 }
 
 /**
@@ -325,20 +308,24 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
  */
 export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
   const cached = await cache.get<StrapiAuthorFull[]>(CARD_MEMBERS_CACHE_KEY);
-  if (cached && isValidCachedAuthors(cached)) return cached;
   if (cached) {
-    console.warn('Invalid cached Strapi card members data detected, fetching fresh data');
+    if (isValidCachedAuthors(cached)) return cached;
+    await cache.delete(CARD_MEMBERS_CACHE_KEY);
   }
 
-  const authors = await fetchStrapiAuthors();
-  const cardMembers = authors
-    .filter((author) => author.isCard === true)
-    .sort(sortStrapiTeamMembers);
+  const result = await cache.getWithFallback<StrapiAuthorFull[]>(
+    CARD_MEMBERS_CACHE_KEY,
+    async () => {
+      const authors = await fetchStrapiAuthors();
+      const cardMembers = authors
+        .filter((author) => author.isCard === true)
+        .sort(sortStrapiTeamMembers);
+      return cardMembers.length > 0 ? cardMembers : null;
+    },
+    { tags: ['authors'] }
+  );
 
-  if (cardMembers.length > 0) {
-    await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
-  }
-  return cardMembers;
+  return result ?? [];
 }
 
 /**

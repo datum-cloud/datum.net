@@ -45,15 +45,9 @@ function readSeconds(name: string, fallback: number): number {
 }
 
 const url = readEnv('STRAPI_URL') ?? DEFAULT_STRAPI_URL;
-// The package's zod schema requires a non-empty token. Fresh-clone builds without
-// secrets fall back to stale cache anyway, so a placeholder keeps init succeeding
-// — Strapi simply 401s and we serve from `.cache/strapi-fallback/`.
-const token = readEnv('STRAPI_TOKEN') ?? 'placeholder-no-token';
-
-/** True only when a real STRAPI_TOKEN is configured. */
-export const hasStrapiToken = !!readEnv('STRAPI_TOKEN');
-/** Full GraphQL endpoint URL, pre-built so fetchers don't repeat the string math. */
-export const STRAPI_GRAPHQL_URL = `${url.replace(/\/$/, '')}/graphql`;
+// Token is optional in 0.2.0+: omitting it skips the Authorization header,
+// allowing unauthenticated requests to publicly-readable Strapi endpoints.
+const token = readEnv('STRAPI_TOKEN');
 const debug = readEnv('STRAPI_DEBUG') === 'true' || readEnv('STRAPI_DEBUG') === '1';
 
 const strapiRevalidate = createStrapiRevalidate({

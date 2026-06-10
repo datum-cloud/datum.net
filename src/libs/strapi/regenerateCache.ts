@@ -197,6 +197,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   await tryWarm(AUTHORS_CACHE_KEY, fetchStrapiAuthors);
   await tryWarm(ROADMAPS_CACHE_KEY, fetchStrapiRoadmaps);
   await tryWarm(TEAM_MEMBERS_CACHE_KEY, getStrapiTeamMembers);
+  await tryWarm(CARD_MEMBERS_CACHE_KEY, getStrapiCardMembers);
 
   // Per-article cache (depends on the article list)
   const articles: StrapiArticle[] = await fetchStrapiArticles();

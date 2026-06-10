@@ -15,7 +15,7 @@
  * All entries are tagged `authors`, so one webhook clears every derived view.
  */
 
-import { cache, client } from './_runtime';
+import { cache, client, hasStrapiToken, STRAPI_GRAPHQL_URL } from './_runtime';
 import type { CardCategory, StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const AUTHORS_CACHE_KEY = 'strapi-authors';
@@ -166,7 +166,7 @@ function isValidStrapiAuthor(obj: unknown): obj is StrapiAuthorFull {
 }
 
 function isValidCachedAuthors(data: unknown): data is StrapiAuthorFull[] {
-  return Array.isArray(data) && data.every(isValidStrapiAuthor);
+  return Array.isArray(data) && data.length > 0 && data.every(isValidStrapiAuthor);
 }
 
 function getLastName(name: string): string {
@@ -217,6 +217,32 @@ function sortStrapiTeamMembers(a: StrapiAuthorFull, b: StrapiAuthorFull): number
   return getFirstName(a.name).localeCompare(getFirstName(b.name));
 }
 
+/**
+ * Execute a GraphQL query against Strapi. When no real token is configured
+ * the package client sends a placeholder that triggers a 401, so we fall back
+ * to an unauthenticated request (works for publicly-readable Strapi content).
+ */
+async function strapiQuery<T>(
+  query: string,
+  variables?: Record<string, unknown>
+): Promise<T | null> {
+  const result = await client.query<T>(query, variables);
+  if (result !== null || hasStrapiToken) return result;
+
+  try {
+    const res = await fetch(STRAPI_GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { data?: T };
+    return json.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
   const cached = await cache.get<StrapiAuthorFull[]>(AUTHORS_CACHE_KEY);
   if (cached && isValidCachedAuthors(cached)) return cached;
@@ -224,14 +250,18 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
     console.warn('Invalid cached Strapi authors data detected, fetching fresh data from API');
   }
 
-  const response = await client.query<StrapiAuthorsResponse>(AUTHORS_QUERY);
+  const response = await strapiQuery<StrapiAuthorsResponse>(AUTHORS_QUERY);
   if (!response?.authors) {
-    console.warn('No authors returned from Strapi API');
+    console.warn('No authors returned from Strapi API, trying fallback cache');
+    const fallback = await cache.getFallback<StrapiAuthorFull[]>(AUTHORS_CACHE_KEY);
+    if (fallback && isValidCachedAuthors(fallback)) return fallback;
     return [];
   }
 
   const authors = response.authors.map(normalizeAuthorFromGraphQL);
-  await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
+  if (authors.length > 0) {
+    await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
+  }
   return authors;
 }
 
@@ -258,7 +288,7 @@ export async function fetchStrapiAuthorBySlug(slug: string): Promise<StrapiAutho
     );
   }
 
-  const response = await client.query<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
+  const response = await strapiQuery<StrapiAuthorsResponse>(AUTHOR_BY_SLUG_QUERY, { slug });
   if (!response?.authors || response.authors.length === 0) return null;
 
   const author = normalizeAuthorFromGraphQL(response.authors[0]);
@@ -283,7 +313,9 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isTeam === true)
     .sort(sortStrapiTeamMembers);
 
-  await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
+  if (teamMembers.length > 0) {
+    await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
+  }
   return teamMembers;
 }
 
@@ -303,7 +335,9 @@ export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isCard === true)
     .sort(sortStrapiTeamMembers);
 
-  await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
+  if (cardMembers.length > 0) {
+    await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
+  }
   return cardMembers;
 }
 

@@ -49,6 +49,11 @@ const url = readEnv('STRAPI_URL') ?? DEFAULT_STRAPI_URL;
 // secrets fall back to stale cache anyway, so a placeholder keeps init succeeding
 // — Strapi simply 401s and we serve from `.cache/strapi-fallback/`.
 const token = readEnv('STRAPI_TOKEN') ?? 'placeholder-no-token';
+
+/** True only when a real STRAPI_TOKEN is configured. */
+export const hasStrapiToken = !!readEnv('STRAPI_TOKEN');
+/** Full GraphQL endpoint URL, pre-built so fetchers don't repeat the string math. */
+export const STRAPI_GRAPHQL_URL = `${url.replace(/\/$/, '')}/graphql`;
 const debug = readEnv('STRAPI_DEBUG') === 'true' || readEnv('STRAPI_DEBUG') === '1';
 
 const strapiRevalidate = createStrapiRevalidate({

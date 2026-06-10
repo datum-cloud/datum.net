@@ -166,7 +166,7 @@ function isValidStrapiAuthor(obj: unknown): obj is StrapiAuthorFull {
 }
 
 function isValidCachedAuthors(data: unknown): data is StrapiAuthorFull[] {
-  return Array.isArray(data) && data.every(isValidStrapiAuthor);
+  return Array.isArray(data) && data.length > 0 && data.every(isValidStrapiAuthor);
 }
 
 function getLastName(name: string): string {
@@ -231,7 +231,9 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
   }
 
   const authors = response.authors.map(normalizeAuthorFromGraphQL);
-  await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
+  if (authors.length > 0) {
+    await cache.set(AUTHORS_CACHE_KEY, authors, { tags: ['authors'] });
+  }
   return authors;
 }
 
@@ -283,7 +285,9 @@ export async function getStrapiTeamMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isTeam === true)
     .sort(sortStrapiTeamMembers);
 
-  await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
+  if (teamMembers.length > 0) {
+    await cache.set(TEAM_MEMBERS_CACHE_KEY, teamMembers, { tags: ['authors'] });
+  }
   return teamMembers;
 }
 
@@ -303,7 +307,9 @@ export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
     .filter((author) => author.isCard === true)
     .sort(sortStrapiTeamMembers);
 
-  await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
+  if (cardMembers.length > 0) {
+    await cache.set(CARD_MEMBERS_CACHE_KEY, cardMembers, { tags: ['authors'] });
+  }
   return cardMembers;
 }
 

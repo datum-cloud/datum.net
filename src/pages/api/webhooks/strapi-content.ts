@@ -8,10 +8,10 @@
  * shared fetchers (which use the same `cache` manager, so the next request
  * after a publish serves fresh data without a cold trip to Strapi).
  *
- * Header note: the package accepts `Authorization: Bearer <secret>`,
- * `X-Strapi-Signature`, or `strapi-webhook-secret`. Strapi Cloud must be
- * configured to send one of these (not the legacy `X-Webhook-Secret`) or
- * every request will 401.
+ * Header note: `@datum-cloud/strapi-revalidate` accepts `Authorization: Bearer
+ * <secret>`, `X-Strapi-Signature`, or `strapi-webhook-secret`. Strapi Admin
+ * (datum.net-cms docs) sends `X-Webhook-Secret` — the adapter below maps that
+ * legacy header before delegating to the package.
  */
 
 export const prerender = false;
@@ -30,6 +30,65 @@ import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
 
 /** Strapi events that mean "the entry no longer exists" — skip the per-slug warm. */
 const DELETE_EVENTS = new Set(['entry.delete', 'entry.unpublish']);
+
+const WEBHOOK_AUTH_HEADERS = [
+  'authorization',
+  'x-strapi-signature',
+  'strapi-webhook-secret',
+  'x-webhook-secret',
+] as const;
+
+/**
+ * Map Strapi Admin's `X-Webhook-Secret` to headers the revalidate package reads.
+ */
+function getWebhookHeader(request: Request, name: string): string | null {
+  const lower = name.toLowerCase();
+
+  if (lower === 'authorization') {
+    const auth = request.headers.get('authorization');
+    if (auth) return auth;
+    const legacy = request.headers.get('x-webhook-secret');
+    return legacy ? `Bearer ${legacy}` : null;
+  }
+
+  if (lower === 'strapi-webhook-secret') {
+    return request.headers.get('strapi-webhook-secret') ?? request.headers.get('x-webhook-secret');
+  }
+
+  return request.headers.get(lower) ?? request.headers.get(name);
+}
+
+/** Log inbound webhook details when `STRAPI_DEBUG=true` (secrets redacted). */
+function logWebhookRequest(request: Request, rawBody: string): void {
+  if (!config.debug) return;
+
+  const headers: Record<string, string> = {};
+  for (const name of WEBHOOK_AUTH_HEADERS) {
+    const value = request.headers.get(name);
+    if (value) headers[name] = '[redacted]';
+  }
+  const contentType = request.headers.get('content-type');
+  if (contentType) headers['content-type'] = contentType;
+
+  let parsedBody: unknown = rawBody;
+  if (rawBody.length > 0) {
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch {
+      // Keep raw string when body isn't JSON.
+    }
+  }
+
+  console.log('[Webhook] Incoming request', {
+    headers,
+    body: parsedBody,
+  });
+}
+
+function logWebhookResponse(status: number, body: unknown): void {
+  if (!config.debug) return;
+  console.log('[Webhook] Response', { status, body });
+}
 
 async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
   const isDelete = DELETE_EVENTS.has(event.event);
@@ -85,6 +144,10 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  // Read body once — Request streams are single-use, and we log the payload in debug mode.
+  const rawBody = await request.text();
+  logWebhookRequest(request, rawBody);
+
   // Adapt Astro's `Request` to the package's lowest-common-denominator shape.
   // Fetch `Headers` doesn't have a string index signature so the package's
   // `WebhookRequest` rejects it at the type level, even though `.get()` works
@@ -92,10 +155,10 @@ export const POST: APIRoute = async ({ request }) => {
   const webhookReq = {
     method: request.method,
     headers: {
-      get: (name: string): string | null => request.headers.get(name),
+      get: (name: string): string | null => getWebhookHeader(request, name),
     },
-    text: () => request.text(),
-    json: () => request.json(),
+    text: () => Promise.resolve(rawBody),
+    json: () => Promise.resolve(JSON.parse(rawBody.length > 0 ? rawBody : '{}')),
   };
 
   try {
@@ -116,6 +179,8 @@ export const POST: APIRoute = async ({ request }) => {
   if (body && typeof body === 'object' && status === 200) {
     (body as Record<string, unknown>).duration = `${Date.now() - startTime}ms`;
   }
+
+  logWebhookResponse(status, body);
 
   return new Response(JSON.stringify(body), {
     status,

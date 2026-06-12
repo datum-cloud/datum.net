@@ -1,0 +1,14 @@
+src/data/navigation.json
+  h_c7951bc64db670 157-158
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "9a2613ddf9e438fda33117eab020cdbac1a047f2",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

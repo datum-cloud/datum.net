@@ -154,7 +154,8 @@
         { "text": "Iconography", "href": "/brand/iconography" },
         { "text": "Illustration Suite", "href": "/brand/imagery" },
         { "text": "Social", "href": "/brand/social" },
-        { "text": "Templates", "href": "/brand/templates" }
+        { "text": "Templates", "href": "/brand/templates" },
+        { "text": "UI Guidelines", "href": "https://storybook.datum.net/" }
       ]
     }
   ],

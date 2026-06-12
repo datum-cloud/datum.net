@@ -1,0 +1,29 @@
+docs/SEO_REVIEW_WORKFLOW.md
+  s_3a76c2979a849a::t_ef5c64f47fa09d 191-199,204-206,209-210,212
+  s_3a76c2979a849a::t_eb95de299655dc 63
+  s_3a76c2979a849a::t_9145711bdd7ef5 232-234
+  s_3a76c2979a849a::t_a0ff201365a1d3 27
+  s_3a76c2979a849a::t_3c5125498448ec 23
+  s_3a76c2979a849a::t_84344995fb3a98 109
+  s_3a76c2979a849a::t_3264da7ff95bc6 173-178
+  s_3a76c2979a849a::t_52fa18c35c21e3 167-169,171,179-181
+  s_3a76c2979a849a::t_750a93702af30e 9-10,13
+.github/workflows/seo-review.yml
+  s_3a76c2979a849a::t_11ac871e04bf06 64-65,67-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e3bc8a69bbf72632dd1271a6841da5eacfca6b72",
+  "prompts": {},
+  "sessions": {
+    "s_3a76c2979a849a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1b7d38e2-96c4-4cb5-8005-3826e91325c9",
+        "model": "claude-fable-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

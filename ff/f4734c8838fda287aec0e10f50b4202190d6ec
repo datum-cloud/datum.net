@@ -1,0 +1,24 @@
+src/libs/strapi/_runtime.ts
+  s_0802b3b66fdae3::t_88b1d7bde01d17 97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "fff4734c8838fda287aec0e10f50b4202190d6ec",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0802b3b66fdae3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77036501-4b40-4f30-869a-2c84f6a0ea46",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

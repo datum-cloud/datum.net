@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "ac3966902b4df711f2e59911bfe0460fb1b21ef9",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

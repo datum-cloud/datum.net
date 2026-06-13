@@ -1,0 +1,34 @@
+src/libs/strapi/drivers/redis.ts
+  s_0802b3b66fdae3::t_a8e3f57d331881 1-85
+config/base/deployment.yaml
+  s_0802b3b66fdae3::t_6be4761cd3ad76 46-47
+package.json
+  s_0802b3b66fdae3::t_d9dc6900d9f68f 56
+config/base/kustomization.yaml
+  s_0802b3b66fdae3::t_a88462f9cd1048 5
+config/base/redis.yaml
+  s_0802b3b66fdae3::t_aa04a60fcc6994 1-62
+src/libs/strapi/_runtime.ts
+  s_0802b3b66fdae3::t_2d67166ae0d199 3,5-7,9-12,14,16,19-20,25-33,45-46,61,63,66,69,78-92,94-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "2eea24fc0673e529c2ab815cf04101839a502362",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0802b3b66fdae3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77036501-4b40-4f30-869a-2c84f6a0ea46",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

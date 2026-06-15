@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "1 Year Plan - Datum Handbook"
+  title: "1-Year Revenue & Growth Plan - Datum Handbook"
   description: "Datum's 1-year plan: measurable revenue targets, organizations and builders on the Datum Cloud Platform, and active ecosystem connections."
   og:
     title: "1 Year Plan"

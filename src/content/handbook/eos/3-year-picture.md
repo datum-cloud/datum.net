@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "3 Year Picture - Datum Handbook"
+  title: "3-Year Company Vision & Milestones - Datum Handbook"
   description: "Datum's 3-year vision: where we aim to be as an open network cloud company and the milestones guiding our growth and strategy."
   og:
     title: "3 Year Picture"

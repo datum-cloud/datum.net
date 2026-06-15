@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Engineering Team - Datum Handbook"
+  title: "Engineering Team: Roles & Responsibilities - Datum Handbook"
   description: "Engineering builds and runs Datum's products, from software and release cycles to physical and logical capacity, security, and operations."
   og:
     title: "Engineering at Datum"

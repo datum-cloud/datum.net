@@ -10,7 +10,7 @@ meta:
   description: "How career growth works at Datum: impact over ladder-climbing, real autonomy, and an open-source portfolio that speaks for itself."
   og:
     title: "Career Progression at Datum"
-    description: "How to grow your career at Datum."
+    description: "How career growth works at Datum: impact over ladder-climbing, real autonomy, and an open-source portfolio that speaks for itself."
 ---
 
 **TLDR:** Helping Datum succeed helps you succeed. The best way to progress your career at Datum is to understand your team's and the company's objectives, then:

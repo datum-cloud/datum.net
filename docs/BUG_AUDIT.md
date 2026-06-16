@@ -84,15 +84,17 @@ title={post.data.title + `fdas`}
 
 ---
 
-### 5. Category pages bypass cache layer entirely
+### 5. ~~Category pages bypass cache layer entirely~~ ✅ RESOLVED
 
-**File:** `src/pages/blog/category/[slug].astro`
+**Status:** Resolved 2026-06-16 — category pages use `fetchStrapiArticlesByCategory()`, which filters the cached `fetchStrapiArticles()` list.
 
-Uses legacy `graphql()` directly — no primary cache, no fallback, no webhook tag alignment, no timeout.
+**File:** `src/pages/blog/category/[slug].astro`, `src/pages/blog/category/[slug]/[page].astro`
+
+**Original problem:** Used legacy `graphql()` directly — no primary cache, no fallback, no webhook tag alignment, no timeout.
 
 **Impact:** Strapi outage → empty response → 404, even when cached blog data exists elsewhere.
 
-**Fix:** Route category queries through cached fetchers in `articles.ts`.
+**Resolution:** Added `fetchStrapiArticlesByCategory()` in `articles.ts`; both category routes call it instead of `ARTICLES_BY_CATEGORY_QUERY` via `graphql()`.
 
 ---
 
@@ -221,7 +223,7 @@ flowchart TD
 3. ~~Webhook warm failures return 502~~ ✅ done via `@datum-cloud/strapi-revalidate@0.3.0` + `onRevalidate` in `strapi-content.ts`
 4. ~~Fix Windows download path (`/download/windows`)~~ ✅ done
 5. Add redirect URI validation (security)
-6. Route category pages through cached fetchers
+6. ~~Route category pages through cached fetchers~~ ✅ done
 7. Strapi lifecycle for `previousSlug` on rename (completes #6)
 8. Fix 404 redirect semantics across SSR routes
 

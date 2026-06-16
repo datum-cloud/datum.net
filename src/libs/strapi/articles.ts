@@ -230,6 +230,17 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
   return articles;
 }
 
+/**
+ * Articles in a category, derived from the cached full list so Strapi outages
+ * serve stale data and webhook invalidation stays aligned with the `articles` tag.
+ */
+export async function fetchStrapiArticlesByCategory(
+  categorySlug: string
+): Promise<StrapiArticle[]> {
+  const articles = await fetchStrapiArticles();
+  return articles.filter((article) => article.category?.slug === categorySlug);
+}
+
 function withReadingTime(article: StrapiArticle): StrapiArticle {
   if (article.readingTimeMinutes || !article.blocks) return article;
   const bodyContent = article.blocks

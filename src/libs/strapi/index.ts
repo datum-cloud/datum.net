@@ -99,6 +99,7 @@ export {
   ARTICLE_BY_SLUG_QUERY,
   ARTICLES_BY_CATEGORY_QUERY,
   fetchStrapiArticles,
+  fetchStrapiArticlesByCategory,
   fetchStrapiArticleBySlug,
   ensureStrapiArticleDetail,
 } from './articles';

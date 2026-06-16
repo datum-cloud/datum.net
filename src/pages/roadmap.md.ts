@@ -7,6 +7,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { fetchStrapiRoadmaps, groupRoadmapsByDate, getMonthAbbreviation } from '@libs/strapi';
 import type { StrapiRoadmap } from '@libs/strapi';
+import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 
 function renderMilestone(roadmap: StrapiRoadmap, includeSummary: boolean): string {
@@ -73,7 +74,7 @@ export const GET: APIRoute = async () => {
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
-        'Cache-Control': 'public, max-age=300, stale-while-revalidate=3600',
+        'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
       },
     });
   } catch (error) {

@@ -61,6 +61,8 @@ export async function graphql<T>(
   }
 }
 
+export { STRAPI_SSR_CACHE_CONTROL } from './httpCache';
+
 // Re-export types and utilities from types/strapi.ts for convenience
 export type {
   StrapiImage,

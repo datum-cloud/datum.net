@@ -8,7 +8,7 @@
 
 ~~The most urgent issue is a **runtime crash in author fetching** (`cache.getWithFallback` missing in `@datum-cloud/strapi-revalidate@0.1.1`).~~ **Resolved** — upgraded to `@datum-cloud/strapi-revalidate@0.2.0`; `getWithFallback()` is implemented and typecheck passes.
 
-Remaining top priority: debug string in `BlogItemStrapi.astro` (critical #2) and open-redirect risk (high #9). ESLint passes. E2E coverage is minimal (homepage only).
+~~Remaining top priority: debug string in `BlogItemStrapi.astro` (critical #2) and open-redirect risk (high #9).~~ Critical #2 and high #3 are **resolved** on branch `bugs`. Next top priority: open-redirect risk (high #9). Requires `@datum-cloud/strapi-revalidate@0.3.0` publish before deploy (currently linked locally). ESLint passes. E2E coverage is minimal (homepage only).
 
 ---
 
@@ -20,7 +20,7 @@ Remaining top priority: debug string in `BlogItemStrapi.astro` (critical #2) and
 | `npm run lint`      | Pass                                 | Pass                          |
 | `npm run build`     | **Blocked** by typecheck             | Unblocked (typecheck passes)  |
 | E2E tests           | 1 spec (`tests/e2e/home.spec.ts`)    | unchanged                     |
-| Installed package   | 0.1.1                                | 0.2.0                         |
+| Installed package   | 0.1.1                                | 0.3.0 (npm pending)           |
 
 ---
 
@@ -38,31 +38,35 @@ Remaining top priority: debug string in `BlogItemStrapi.astro` (critical #2) and
 
 ---
 
-### 2. Debug string shipped in production UI
+### 2. ~~Debug string shipped in production UI~~ ✅ RESOLVED
+
+**Status:** Resolved 2026-06-16 — removed stray `fdas` suffix from `BlogItemStrapi.astro` link `title` attribute.
 
 **File:** `src/components/blog/BlogItemStrapi.astro:15`
+
+**Original problem:**
 
 ```astro
 title={post.data.title + `fdas`}
 ```
 
-**Impact:** Every Strapi blog list item shows `"Article Titlefdas"` in tooltips and accessibility text.
+**Impact:** Every Strapi blog list item showed `"Article Titlefdas"` in tooltips and accessibility text.
 
-**Fix:** `title={post.data.title}`
+**Resolution:** `title={post.data.title}`
 
 ---
 
 ## High
 
-### 3. Author webhook warm fails silently → 200 OK anyway
+### 3. ~~Author webhook warm fails silently → 200 OK anyway~~ ✅ RESOLVED
+
+**Status:** Resolved 2026-06-16 — `@datum-cloud/strapi-revalidate@0.3.0` adds `webhook.failOnWarmError` (default `true`); warm failures return **502** with `{ ok: false, invalidated: true }`. datum.net passes `onRevalidate: warmAfterRevalidate` directly to `createWebhookHandler` (post-handler warm workaround removed).
 
 **Files:** `src/pages/api/webhooks/strapi-content.ts`, `@datum-cloud/strapi-revalidate` webhook handler
 
-After invalidation, `warmAfterRevalidate` calls `fetchStrapiAuthors()`. Previously this hit critical #1 (`getWithFallback` missing); that root cause is **resolved** in 0.2.0.
+**Original problem:** Package caught `onRevalidate` errors, logged them, and returned `{ ok: true }`. Strapi timeouts/network errors during warm looked successful to the CMS.
 
-**Remaining concern:** The package still catches `onRevalidate` errors, logs them, and returns `{ ok: true }`. Other warm failures (Strapi timeout, network) would still be silent to the webhook caller.
-
-**Impact:** CMS publish can look successful while cache warm partially fails for non-#1 reasons.
+**Resolution:** Package returns 502 on warm failure; datum.net warm logic throws via `assertPrimaryCache()` when primary cache is not repopulated after invalidation.
 
 ---
 
@@ -90,13 +94,15 @@ Uses legacy `graphql()` directly — no primary cache, no fallback, no webhook t
 
 ---
 
-### 6. Slug change leaves orphaned per-slug cache entries
+### 6. ~~Slug change leaves orphaned per-slug cache entries~~ ✅ PARTIALLY RESOLVED
+
+**Status:** Partially resolved 2026-06-16 in `@datum-cloud/strapi-revalidate@0.3.0` — `mapModelToTags()` now invalidates slug tags for `previousSlug`, `oldSlug`, and `previous_slug` when present on the webhook entry. Strapi must supply a prior slug field (e.g. via lifecycle hook); renames without that field still leave orphaned per-slug cache.
 
 **File:** `strapi-revalidate/src/webhook/tags.ts`
 
-Tags are derived from the **current** slug only. Renaming `old-slug` → `new-slug` never invalidates `article:old-slug`. Stale article detail can persist for up to 30 days (TTL).
+**Original problem:** Tags derived from the **current** slug only. Renaming `old-slug` → `new-slug` never invalidated `article:old-slug`.
 
-**Fix:** Include `previousSlug` in webhook handling, or invalidate all keys with prefix `strapi-article-` on any article event.
+**Remaining fix (optional):** Strapi lifecycle to populate `previousSlug` on publish, or prefix invalidation for all `strapi-article-*` keys on any article event.
 
 ---
 
@@ -179,7 +185,7 @@ Purely numeric slugs (e.g. `"2"`) are treated as pagination pages, not articles.
 - **`isValidCachedAuthors`** rejects empty arrays — valid empty CMS never caches (`authors.ts:168-169`)
 - **Hidden debug spans** on blog article page (`blog/[slug].astro:447-455`)
 - **Career job links** use `target="_blank"` for internal Ashby URLs (`JobList.astro`)
-- **Docs vs code mismatch** on webhook headers (`docs/STRAPI_CACHE_API.md` vs `strapi-content.ts`)
+- **Docs vs code mismatch** on webhook headers (`docs/STRAPI_CACHE_API.md` vs `strapi-content.ts`) — package now accepts `X-Webhook-Secret` natively (0.3.0)
 - **`cacheApiAuth`** leaks secret length before constant-time compare (`cacheApiAuth.ts`)
 - **`FirstSection.astro`** logo cycling with empty columns can hit `% 0` → `NaN` (component unused on current home page)
 
@@ -191,30 +197,31 @@ Purely numeric slugs (e.g. `"2"`) are treated as pagination pages, not articles.
 flowchart TD
     A[Strapi publish] --> B[POST /api/webhooks/strapi-content]
     B --> C[Invalidate cache tags]
-    C --> D[warmAfterRevalidate]
+    C --> D[onRevalidate / warmAfterRevalidate]
     D --> E{Model?}
     E -->|article| F[fetchStrapiArticles]
     E -->|author| G[fetchStrapiAuthors via getWithFallback]
-    G --> H{Fetch OK?}
+    G --> H{Primary cache repopulated?}
     F --> H
-    H -->|yes| I[Cache warmed]
-    H -->|no| J[Error logged; still 200 ok]
-    J --> K[Fallback cache may serve stale data]
+    H -->|yes| I[200 ok: true]
+    H -->|no| J[502 ok: false, invalidated: true]
+    J --> K[Fallback cache may serve stale data on next request]
 ```
 
-> **Note:** Author path via `getWithFallback()` was broken on 0.1.1 (critical #1); fixed in 0.2.0.
+> **Note:** Author path via `getWithFallback()` was broken on 0.1.1 (critical #1); fixed in 0.2.0. Warm failures surfaced as 502 since 0.3.0.
 
 ---
 
 ## Recommended fix order
 
 1. ~~Fix `authors.ts` cache pattern (unblocks build + webhook warm)~~ ✅ done via `@datum-cloud/strapi-revalidate@0.2.0`
-2. Remove `fdas` debug string in `BlogItemStrapi.astro`
-3. Fix Windows download path (`/download/windows`)
-4. Add redirect URI validation (security)
-5. Route category pages through cached fetchers
-6. Address slug-change cache invalidation
-7. Fix 404 redirect semantics across SSR routes
+2. ~~Remove `fdas` debug string in `BlogItemStrapi.astro`~~ ✅ done
+3. ~~Webhook warm failures return 502~~ ✅ done via `@datum-cloud/strapi-revalidate@0.3.0` + `onRevalidate` in `strapi-content.ts`
+4. Fix Windows download path (`/download/windows`)
+5. Add redirect URI validation (security)
+6. Route category pages through cached fetchers
+7. Strapi lifecycle for `previousSlug` on rename (completes #6)
+8. Fix 404 redirect semantics across SSR routes
 
 ---
 

@@ -2,16 +2,14 @@
 /**
  * Strapi → datum.net webhook endpoint.
  *
- * Delegates secret verification, payload parsing, and tag-based cache
- * invalidation to `@datum-cloud/strapi-revalidate`'s `createWebhookHandler`.
- * The `onRevalidate` callback re-warms the affected caches by calling the
- * shared fetchers (which use the same `cache` manager, so the next request
- * after a publish serves fresh data without a cold trip to Strapi).
+ * Delegates secret verification, payload parsing, tag-based cache invalidation,
+ * and cache warm to `@datum-cloud/strapi-revalidate`'s `createWebhookHandler`.
+ * Warm failures propagate as HTTP 502 via `webhook.failOnWarmError` (0.3.0+).
  *
- * Header note: `@datum-cloud/strapi-revalidate` accepts `Authorization: Bearer
- * <secret>`, `X-Strapi-Signature`, or `strapi-webhook-secret`. Strapi Admin
- * (datum.net-cms docs) sends `X-Webhook-Secret` — the adapter below maps that
- * legacy header before delegating to the package.
+ * Header note: the package accepts `Authorization: Bearer <secret>`,
+ * `X-Strapi-Signature`, `strapi-webhook-secret`, and `X-Webhook-Secret`.
+ * The adapter below still maps `X-Webhook-Secret` → `Authorization: Bearer`
+ * for callers that only check the Authorization header.
  */
 
 export const prerender = false;
@@ -27,6 +25,12 @@ import {
   getStrapiCardMembers,
 } from '@libs/strapi/authors';
 import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
+
+/** Primary cache keys — must stay aligned with the Strapi fetcher modules. */
+const ARTICLES_CACHE_KEY = 'strapi-articles';
+const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+const AUTHORS_CACHE_KEY = 'strapi-authors';
+const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
 
 /** Strapi events that mean "the entry no longer exists" — skip the per-slug warm. */
 const DELETE_EVENTS = new Set(['entry.delete', 'entry.unpublish']);
@@ -90,27 +94,47 @@ function logWebhookResponse(status: number, body: unknown): void {
   console.log('[Webhook] Response', { status, body });
 }
 
+async function assertPrimaryCache(key: string, label: string): Promise<void> {
+  const value = await cache.get(key);
+  if (value === null) {
+    throw new Error(`Cache warm failed: primary cache miss for ${label} (${key})`);
+  }
+}
+
 async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
   const isDelete = DELETE_EVENTS.has(event.event);
 
   switch (event.model) {
-    case 'article':
-      await Promise.allSettled([
-        fetchStrapiArticles(),
-        event.slug && !isDelete ? fetchStrapiArticleBySlug(event.slug) : Promise.resolve(null),
-      ]);
+    case 'article': {
+      const tasks: Promise<void>[] = [
+        fetchStrapiArticles().then(() => assertPrimaryCache(ARTICLES_CACHE_KEY, 'articles list')),
+      ];
+
+      if (event.slug && !isDelete) {
+        const slug = event.slug;
+        tasks.push(
+          fetchStrapiArticleBySlug(slug).then(async (article) => {
+            if (!article) {
+              throw new Error(`Cache warm failed: could not load article "${slug}"`);
+            }
+            await assertPrimaryCache(`${ARTICLE_CACHE_PREFIX}${slug}`, `article "${slug}"`);
+          })
+        );
+      }
+
+      await Promise.all(tasks);
       break;
+    }
     case 'author':
-      await Promise.allSettled([
-        // Order matters: refresh the source list first so derived caches are
-        // computed from fresh data when getStrapiTeamMembers/getStrapiCardMembers run.
-        fetchStrapiAuthors().then(() =>
-          Promise.allSettled([getStrapiTeamMembers(), getStrapiCardMembers()])
-        ),
-      ]);
+      // Order matters: refresh the source list first so derived caches are
+      // computed from fresh data when getStrapiTeamMembers/getStrapiCardMembers run.
+      await fetchStrapiAuthors();
+      await Promise.all([getStrapiTeamMembers(), getStrapiCardMembers()]);
+      await assertPrimaryCache(AUTHORS_CACHE_KEY, 'authors list');
       break;
     case 'roadmap':
       await fetchStrapiRoadmaps();
+      await assertPrimaryCache(ROADMAPS_CACHE_KEY, 'roadmaps list');
       break;
     default:
       console.warn(`[Webhook] No warm strategy for model "${event.model}"`);
@@ -122,6 +146,7 @@ const handle = createWebhookHandler({
     ...config,
     webhook: {
       ...config.webhook,
+      failOnWarmError: true,
       onRevalidate: warmAfterRevalidate,
     },
   },
@@ -176,7 +201,7 @@ export const POST: APIRoute = async ({ request }) => {
     body = { ok: false, error: 'Internal server error' };
   }
 
-  if (body && typeof body === 'object' && status === 200) {
+  if (body && typeof body === 'object' && (status === 200 || status === 502)) {
     (body as Record<string, unknown>).duration = `${Date.now() - startTime}ms`;
   }
 

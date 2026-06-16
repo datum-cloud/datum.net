@@ -98,10 +98,13 @@ export {
   ARTICLES_QUERY,
   ARTICLE_BY_SLUG_QUERY,
   ARTICLES_BY_CATEGORY_QUERY,
+  ARTICLE_SITEMAP_QUERY,
   fetchStrapiArticles,
   fetchStrapiArticlesByCategory,
   fetchStrapiArticleBySlug,
+  fetchStrapiArticleSitemapRows,
   ensureStrapiArticleDetail,
+  type StrapiArticleSitemapRow,
 } from './articles';
 
 // Re-export roadmaps module

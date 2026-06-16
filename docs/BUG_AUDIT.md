@@ -110,13 +110,22 @@ title={post.data.title + `fdas`}
 
 ---
 
-### 7. GraphQL pagination capped at 100
+### 7. ~~GraphQL pagination capped at 100~~ ✅ RESOLVED
 
-**Files:** `src/libs/strapi/articles.ts`, `authors.ts`, `roadmaps.ts`
+**Status:** Resolved 2026-06-16 — `fetchAllGraphQLPages()` in `graphqlPagination.ts` loops with `start`/`limit` until a short page; applied to articles, authors, and roadmaps. Sitemap builders use the same paginated `fetchStrapiArticleSitemapRows()`.
 
-Hard `limit: 100` silently drops content beyond the first page. Sitemap uses 500 — inconsistent.
+**Files:** `src/libs/strapi/graphqlPagination.ts`, `articles.ts`, `authors.ts`, `roadmaps.ts`, `src/pages/sitemap.xml.ts`, `src/plugins/sitemap.ts`
 
-**Fix:** Paginate until empty, or raise limit and align with sitemap.
+**Original problem:** Hard `limit: 100` silently dropped content beyond the first page. Sitemap used 500 — inconsistent.
+
+**Architecture note (why `graphqlPagination.ts` lives in datum.net, not only in the package):**
+
+- `@datum-cloud/strapi-revalidate` is used here for **infrastructure**: `CacheManager`, `createStrapiClient`, and `createWebhookHandler` (via `_runtime.ts`).
+- datum.net does **not** use the package's generic `content/*` fetchers — app-specific transforms stay in `src/libs/strapi/` (reading time, top-3 cover stripping, author/card sorting, cache keys/tags).
+- The package **does not yet export a pagination helper**; its own `content/articles.ts` and `content/authors.ts` still hardcode `limit: 100`.
+- `graphqlPagination.ts` is a thin loop over the package's `client` — it fills that gap locally, it does not replace the package.
+
+**Follow-up (optional):** Move `fetchAllGraphQLPages()` into `@datum-cloud/strapi-revalidate`, use it in package content fetchers and datum.net, then delete the local file.
 
 ---
 

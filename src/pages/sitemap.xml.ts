@@ -1,13 +1,12 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { fetchStrapiArticleSitemapRows } from '@libs/strapi/articles';
 
 // ---------------------------------------------------------------------------
 // Configuration
 // ---------------------------------------------------------------------------
 const SITE_URL = 'https://www.datum.net';
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
-const STRAPI_URL = process.env.STRAPI_URL ?? 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-const STRAPI_TOKEN = process.env.STRAPI_TOKEN ?? '';
 
 // Known static routes (dedicated .astro files, not driven by content collections)
 const STATIC_ROUTES = [
@@ -68,33 +67,9 @@ function buildXml(entries: SitemapEntry[]): string {
 // Strapi: fetch all published blog post slugs
 // ---------------------------------------------------------------------------
 async function fetchBlogEntries(): Promise<SitemapEntry[]> {
-  const query = `
-    query {
-      articles(pagination: { limit: 500 }, sort: ["originalPublishedAt:desc"]) {
-        slug
-        originalPublishedAt
-      }
-    }
-  `;
-
   try {
-    const headers: HeadersInit = { 'Content-Type': 'application/json' };
-    if (STRAPI_TOKEN) headers['Authorization'] = `Bearer ${STRAPI_TOKEN}`;
-
-    const res = await fetch(`${STRAPI_URL}/graphql`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query }),
-      signal: AbortSignal.timeout(10_000),
-    });
-
-    if (!res.ok) return [];
-
-    const json = (await res.json()) as {
-      data?: { articles?: Array<{ slug: string; originalPublishedAt?: string }> };
-    };
-
-    return (json.data?.articles ?? [])
+    const articles = await fetchStrapiArticleSitemapRows();
+    return articles
       .filter((a) => a.slug && isNaN(parseInt(a.slug, 10)))
       .map((a) => ({
         url: `${SITE_URL}/blog/${a.slug}`,

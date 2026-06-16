@@ -16,6 +16,7 @@
  */
 
 import { cache, client } from './_runtime';
+import { fetchAllGraphQLPages } from './graphqlPagination';
 import type { CardCategory, StrapiAuthorsResponse, StrapiAuthorFull } from '../../types/strapi';
 
 const AUTHORS_CACHE_KEY = 'strapi-authors';
@@ -82,8 +83,8 @@ function normalizeAuthorFromGraphQL(row: GraphQLAuthorRow): StrapiAuthorFull {
 const TEAM_BG_COLORS = ['#5F735E', '#BF9595', '#D1CDC0'] as const;
 
 export const AUTHORS_QUERY = `
-  query GetAuthors {
-    authors(pagination: { limit: 100 }) {
+  query GetAuthors($start: Int!, $limit: Int!) {
+    authors(pagination: { start: $start, limit: $limit }) {
       documentId
       slug
       name
@@ -228,12 +229,15 @@ export async function fetchStrapiAuthors(): Promise<StrapiAuthorFull[]> {
   const result = await cache.getWithFallback<StrapiAuthorFull[]>(
     AUTHORS_CACHE_KEY,
     async () => {
-      const response = await client.query<StrapiAuthorsResponse>(AUTHORS_QUERY);
-      if (!response?.authors) {
+      const authorsRaw = await fetchAllGraphQLPages(async (start, limit) => {
+        const response = await client.query<StrapiAuthorsResponse>(AUTHORS_QUERY, { start, limit });
+        return response?.authors ?? null;
+      });
+      if (!authorsRaw) {
         console.warn('No authors returned from Strapi API');
         return null;
       }
-      const authors = response.authors.map(normalizeAuthorFromGraphQL);
+      const authors = authorsRaw.map(normalizeAuthorFromGraphQL);
       return authors.length > 0 ? authors : null;
     },
     { tags: ['authors'] }

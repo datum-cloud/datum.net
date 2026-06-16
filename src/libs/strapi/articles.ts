@@ -14,6 +14,7 @@
 
 import { getReadingTimeMinutesFromContent } from '@libs/string';
 import { cache, client } from './_runtime';
+import { fetchAllGraphQLPages } from './graphqlPagination';
 import type { StrapiArticlesResponse, StrapiArticle } from '../../types/strapi';
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
@@ -27,8 +28,8 @@ const LEGACY_FALLBACK_DETAIL_PREFIX = 'article-';
 
 /** GraphQL query: every published article, newest first. */
 export const ARTICLES_QUERY = `
-  query GetArticles {
-    articles(pagination: { limit: 100 }, sort: ["originalPublishedAt:desc"]) {
+  query GetArticles($start: Int!, $limit: Int!) {
+    articles(pagination: { start: $start, limit: $limit }, sort: ["originalPublishedAt:desc"]) {
       documentId
       title
       slug
@@ -65,6 +66,21 @@ export const ARTICLES_QUERY = `
     }
   }
 `;
+
+/** GraphQL query: article slug + publish date for sitemap generation. */
+export const ARTICLE_SITEMAP_QUERY = `
+  query GetArticleSlugs($start: Int!, $limit: Int!) {
+    articles(pagination: { start: $start, limit: $limit }, sort: ["originalPublishedAt:desc"]) {
+      slug
+      originalPublishedAt
+    }
+  }
+`;
+
+export interface StrapiArticleSitemapRow {
+  slug: string;
+  originalPublishedAt?: string;
+}
 
 /** GraphQL query: a single article by slug, including SEO and quote blocks. */
 export const ARTICLE_BY_SLUG_QUERY = `
@@ -211,9 +227,12 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
     console.warn('Invalid cached Strapi articles data detected, fetching fresh data from API');
   }
 
-  const response = await client.query<StrapiArticlesResponse>(ARTICLES_QUERY);
+  const articlesRaw = await fetchAllGraphQLPages(async (start, limit) => {
+    const response = await client.query<StrapiArticlesResponse>(ARTICLES_QUERY, { start, limit });
+    return response?.articles ?? null;
+  });
 
-  if (!response?.articles) {
+  if (!articlesRaw) {
     console.warn('Strapi unavailable — checking persistent fallback cache for articles');
     const fallback =
       (await cache.getFallback<StrapiArticle[]>(ARTICLES_CACHE_KEY)) ??
@@ -225,7 +244,7 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
     return [];
   }
 
-  const articles = transformArticleList(response.articles);
+  const articles = transformArticleList(articlesRaw);
   await cache.set(ARTICLES_CACHE_KEY, articles, { tags: ['articles'] });
   return articles;
 }
@@ -234,6 +253,18 @@ export async function fetchStrapiArticles(): Promise<StrapiArticle[]> {
  * Articles in a category, derived from the cached full list so Strapi outages
  * serve stale data and webhook invalidation stays aligned with the `articles` tag.
  */
+/** Every published article slug + date for sitemap builders. */
+export async function fetchStrapiArticleSitemapRows(): Promise<StrapiArticleSitemapRow[]> {
+  const rows = await fetchAllGraphQLPages(async (start, limit) => {
+    const response = await client.query<{ articles: StrapiArticleSitemapRow[] }>(
+      ARTICLE_SITEMAP_QUERY,
+      { start, limit }
+    );
+    return response?.articles ?? null;
+  });
+  return rows ?? [];
+}
+
 export async function fetchStrapiArticlesByCategory(
   categorySlug: string
 ): Promise<StrapiArticle[]> {

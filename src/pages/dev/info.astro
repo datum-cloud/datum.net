@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 import { dbConnect } from '@libs/postgres';
+import Redis from 'ioredis';
 
 const mode = process.env.MODE || import.meta.env.MODE;
 
@@ -18,6 +19,46 @@ try {
   psqlInfo = await sql`SELECT version()`;
 } catch {
   psqlInfo = null;
+}
+
+/**
+ * Redis testing
+ */
+type RedisInfo =
+  | { status: 'ok'; ping: string; roundtrip: boolean; url: string }
+  | { status: 'error'; error: string }
+  | { status: 'not_configured' };
+
+let redisInfo: RedisInfo;
+const redisUrl = process.env.REDIS_URL;
+
+if (!redisUrl) {
+  redisInfo = { status: 'not_configured' };
+} else {
+  const testClient = new Redis(redisUrl, {
+    lazyConnect: true,
+    enableReadyCheck: false,
+    connectTimeout: 3000,
+  });
+  try {
+    await testClient.connect();
+    const ping = await testClient.ping();
+    const testKey = '__dev_info_test__';
+    const testVal = 'ok';
+    await testClient.set(testKey, testVal, 'EX', 10);
+    const got = await testClient.get(testKey);
+    await testClient.del(testKey);
+    redisInfo = {
+      status: 'ok',
+      ping,
+      roundtrip: got === testVal,
+      url: redisUrl.replace(/\/\/.*@/, '//***@'),
+    };
+  } catch (err) {
+    redisInfo = { status: 'error', error: err instanceof Error ? err.message : String(err) };
+  } finally {
+    testClient.disconnect();
+  }
 }
 
 type EnvValue = string | number | boolean | undefined;
@@ -107,6 +148,7 @@ const response = JSON.stringify(
     database: {
       info: psqlInfo || null,
     },
+    redis: redisInfo,
   },
   null,
   2

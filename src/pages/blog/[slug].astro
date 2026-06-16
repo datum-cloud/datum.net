@@ -541,7 +541,7 @@ const blogListingMeta = {
                     ? {
                         id: previousArticle.slug,
                         title: previousArticle.title,
-                        url: `/blog/${previousArticle.slug}/`,
+                        url: `/blog/${previousArticle.slug}`,
                         navLabel: 'Next article',
                       }
                     : undefined
@@ -551,7 +551,7 @@ const blogListingMeta = {
                     ? {
                         id: nextArticle.slug,
                         title: nextArticle.title,
-                        url: `/blog/${nextArticle.slug}/`,
+                        url: `/blog/${nextArticle.slug}`,
                         navLabel: 'Previous article',
                       }
                     : undefined

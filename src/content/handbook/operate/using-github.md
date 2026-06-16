@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "How we operate - Datum Handbook"
+  title: "Using GitHub for Engineering Workflows - Datum Handbook"
   description: "GitHub is a critical piece of infrastructure and a daily working environment for everyone at Datum; we organize our work in releases, enhancements and issues."
   og:
     title: "Using GitHub"

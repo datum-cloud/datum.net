@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "Purchasing - Datum Handbook"
+  title: "Purchasing & Expense Policy - Datum Handbook"
   description: "Our philosophy on company spending. We trust you to spend responsibly. Read the Datum purchasing guidelines for travel, procurement, and reimbursements."
   og:
     title: "Spending money"

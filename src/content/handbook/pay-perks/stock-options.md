@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Stock Options - Datum Handbook"
+  title: "Stock Options & Equity Vesting - Datum Handbook"
   description: "How Datum's stock option program works, including vesting, exercise windows, tax considerations, and what happens when you leave."
   og:
     title: "Stock Options at Datum"

@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 4, 2026
 authors: jacob
 meta:
-  title: "Service Tiers - Datum Handbook"
+  title: "Service Tier Classification & Reliability - Datum Handbook"
   description: "How Datum classifies services by criticality — and why that shared language matters for reliability, incident response, and engineering decisions."
   og:
     title: "Service tiers"

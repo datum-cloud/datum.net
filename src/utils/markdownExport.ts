@@ -11,7 +11,9 @@
 //      roadmap, events, handbook, brand, pricing, locations).
 //   3. Auto-derived catch-all [...mdslug].md.ts driven by markdownRegistry.
 
+import { ensureStrapiArticleDetail } from '@libs/strapi';
 import { hasMarkdownForPath } from '@utils/markdownRegistry';
+import { isNumericBlogSlug } from '@utils/blogPagination';
 
 /** Normalises a pathname: strips trailing slashes (except for root). */
 function normalisePath(pathname: string): string {
@@ -37,11 +39,15 @@ export async function resolveMarkdownUrl(pathname: string): Promise<string | nul
 
   if (path === '/') return '/index.md';
 
-  // Strapi-backed blog articles: /blog/<slug>. Numeric slugs are paginated
-  // listing pages, not articles.
+  // Strapi-backed blog articles: /blog/<slug>. Numeric slugs may be pagination
+  // unless a published article uses that slug — same rule as [slug].astro.
   if (path.startsWith('/blog/')) {
     const slug = path.slice('/blog/'.length);
-    if (!slug || /^\d+$/.test(slug)) return null;
+    if (!slug) return null;
+    if (isNumericBlogSlug(slug)) {
+      const article = await ensureStrapiArticleDetail(slug);
+      if (!article) return null;
+    }
     return `${path}.md`;
   }
 

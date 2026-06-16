@@ -18,12 +18,14 @@ import {
   fetchStrapiArticles,
   ensureStrapiArticleDetail,
 } from '@libs/strapi';
-import type { StrapiArticle, StrapiBlock } from '@libs/strapi';
+import type { StrapiBlock } from '@libs/strapi';
 import { formatShortDate, estimateReadingTime } from '@utils/dateUtils';
 import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
 import { truncateByWords } from '@libs/string';
 import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
+import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
+import { getBlogListingPageFromNumericSlug, isNumericBlogSlug } from '@utils/blogPagination';
 
 // Additional imports for paginated blog listing
 import GlobalSection from '@components/GlobalSection.astro';
@@ -31,39 +33,42 @@ import BlogStrapiPage from '@components/blog/BlogStrapi.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import config from '@data/siteConfig.json';
 
-// Strapi content — cache with stale-while-revalidate; webhook invalidates when content changes
-Astro.response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+// Strapi content — server cache invalidates on webhook; keep CDN/browser TTLs short
+Astro.response.headers.set('Cache-Control', STRAPI_SSR_CACHE_CONTROL);
 
 const { slug } = Astro.params;
+const slugStr = slug as string;
+const listingPageFromSlug = getBlogListingPageFromNumericSlug(slugStr);
 
-// Detect pagination: numeric slugs (≥ 2) are page numbers, not article slugs
-const parsedPage = parseInt(slug as string, 10);
-const isPageNumber = !isNaN(parsedPage) && String(parsedPage) === slug && parsedPage >= 1;
-
-// Redirect /blog/1 to canonical /blog/
-if (isPageNumber && parsedPage === 1) {
+if (isNumericBlogSlug(slugStr) && slugStr === '1') {
   return Astro.redirect('/blog', 301);
 }
 
-// Render paginated blog listing for pages ≥ 2
+let isPageNumber = false;
+let article: Awaited<ReturnType<typeof ensureStrapiArticleDetail>> = null;
 let blogPage: Awaited<ReturnType<typeof getCollectionEntry>> | null = null;
-if (isPageNumber) {
-  // Validate the page number against available articles
-  const allArticles = await fetchStrapiArticles();
-  const totalPages = Math.ceil(allArticles.length / config.pageSize);
-  if (parsedPage > totalPages || parsedPage < 1) {
+
+if (listingPageFromSlug !== null) {
+  article = await ensureStrapiArticleDetail(slugStr);
+  if (!article) {
+    isPageNumber = true;
+    const allArticles = await fetchStrapiArticles();
+    const totalPages = Math.ceil(allArticles.length / config.pageSize);
+    if (listingPageFromSlug > totalPages) {
+      return Astro.redirect('/404');
+    }
+    blogPage = await getCollectionEntry('pages', 'blog');
+  }
+} else {
+  article = await ensureStrapiArticleDetail(slugStr);
+  if (!article) {
     return Astro.redirect('/404');
   }
-  blogPage = await getCollectionEntry('pages', 'blog');
 }
 
-// Article rendering (only when not a pagination page)
-const article = !isPageNumber ? await ensureStrapiArticleDetail(slug as string) : null;
-if (!isPageNumber && !article) {
-  return Astro.redirect('/404');
-}
+const parsedPage = listingPageFromSlug ?? 0;
 
-// Article-specific data — all guarded so they're safe when article is null (pagination pages)
+// Article-specific data — guarded when rendering a paginated listing
 const fm = article
   ? {
       title: article.title,
@@ -105,7 +110,7 @@ const categoryName = article?.category?.name || '';
 // Parallelize independent data fetches to avoid sequential waterfall
 const [authorBgColor, allArticles] = await Promise.all([
   authorName ? getAuthorBgColorFromStrapi(authorName) : Promise.resolve(undefined),
-  isPageNumber ? Promise.resolve([] as StrapiArticle[]) : fetchStrapiArticles(),
+  isPageNumber ? Promise.resolve([]) : fetchStrapiArticles(),
 ]);
 
 // Sort by publication date (newest first)
@@ -138,7 +143,7 @@ const breadcrumbData = [
 if (fm?.title) {
   breadcrumbData.push({
     text: truncateByWords(fm.title, 9),
-    href: `/blog/${slug}`,
+    href: `/blog/${slugStr}`,
   });
 }
 
@@ -176,18 +181,18 @@ const articleJsonLd =
         '@graph': [
           {
             '@type': 'WebPage',
-            '@id': `https://www.datum.net/blog/${slug}#webpage`,
-            url: `https://www.datum.net/blog/${slug}`,
+            '@id': `https://www.datum.net/blog/${slugStr}#webpage`,
+            url: `https://www.datum.net/blog/${slugStr}`,
             name: fm.title,
             isPartOf: { '@id': 'https://www.datum.net/blog#blog' },
             inLanguage: 'en-US',
           },
           {
             '@type': 'BlogPosting',
-            '@id': `https://www.datum.net/blog/${slug}#post`,
+            '@id': `https://www.datum.net/blog/${slugStr}#post`,
             headline: fm.title,
             description: derivedDescription,
-            url: `https://www.datum.net/blog/${slug}`,
+            url: `https://www.datum.net/blog/${slugStr}`,
             datePublished: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
             dateModified: fm.date ? new Date(fm.date).toISOString().split('T')[0] : undefined,
             ...(readingTime.minutes ? { timeRequired: `PT${readingTime.minutes}M` } : {}),
@@ -214,7 +219,7 @@ const articleJsonLd =
             isPartOf: { '@id': 'https://www.datum.net/blog#blog' },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://www.datum.net/blog/${slug}#webpage`,
+              '@id': `https://www.datum.net/blog/${slugStr}#webpage`,
             },
           },
         ],
@@ -284,21 +289,15 @@ const processedBlocks: ProcessedBlock[] =
         )
       ).filter((block): block is ProcessedBlock => block !== null)
     : [];
-
-// Blog listing meta (used when rendering a paginated blog page)
-const blogListingMeta = {
-  og: { image: defaultOgImage },
-};
 ---
 
 {
   isPageNumber ? (
-    /* ── Paginated blog listing (e.g. /blog/2, /blog/3) ── */
     <Layout
       title={`Blog — Page ${parsedPage}`}
       description={blogPage?.data?.description ?? ''}
       bodyClass="page-blog"
-      meta={blogListingMeta}
+      meta={{ og: { image: defaultOgImage } }}
     >
       <section class="datum-container">
         <Hero
@@ -321,7 +320,6 @@ const blogListingMeta = {
       </section>
     </Layout>
   ) : (
-    /* ── Article detail ── */
     <Layout
       title={title}
       description={description}
@@ -329,7 +327,7 @@ const blogListingMeta = {
       article={true}
       publishDate={fm?.date}
       author={fm?.author}
-      bodyClass={`page-blog page-blog--strapi-${slug}`}
+      bodyClass={`page-blog page-blog--strapi-${slugStr}`}
       meta={articleMeta}
       jsonLd={articleJsonLd ?? undefined}
     >
@@ -445,7 +443,8 @@ const blogListingMeta = {
 
             <article class="blog-article">
               <span class="hidden" style="display: none;">
-                post
+                {' '}
+                post{' '}
               </span>
               <span class="hidden" style="display: none;">
                 {authorName}

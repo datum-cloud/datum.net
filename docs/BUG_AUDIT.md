@@ -70,15 +70,17 @@ title={post.data.title + `fdas`}
 
 ---
 
-### 4. Windows download redirect uses wrong path
+### 4. ~~Windows download redirect uses wrong path~~ ✅ RESOLVED
+
+**Status:** Resolved 2026-06-16 — Windows UA redirect now uses `/download/windows` (matches Linux/macOS and canonical routes).
 
 **File:** `src/pages/download/index.astro:10`
 
-Windows UA redirect goes to `/downloads/windows`; canonical routes are `/download/windows`. Linux/macOS correctly use `/download/...`.
+**Original problem:** Windows UA redirect went to `/downloads/windows`; canonical routes are `/download/windows`. Linux/macOS correctly used `/download/...`.
 
 **Impact:** 404 in dev/preview or any environment without `server.mjs` redirect rules.
 
-**Fix:** Change to `/download/windows`.
+**Resolution:** Changed redirect target to `/download/windows`.
 
 ---
 
@@ -217,7 +219,7 @@ flowchart TD
 1. ~~Fix `authors.ts` cache pattern (unblocks build + webhook warm)~~ ✅ done via `@datum-cloud/strapi-revalidate@0.2.0`
 2. ~~Remove `fdas` debug string in `BlogItemStrapi.astro`~~ ✅ done
 3. ~~Webhook warm failures return 502~~ ✅ done via `@datum-cloud/strapi-revalidate@0.3.0` + `onRevalidate` in `strapi-content.ts`
-4. Fix Windows download path (`/download/windows`)
+4. ~~Fix Windows download path (`/download/windows`)~~ ✅ done
 5. Add redirect URI validation (security)
 6. Route category pages through cached fetchers
 7. Strapi lifecycle for `previousSlug` on rename (completes #6)

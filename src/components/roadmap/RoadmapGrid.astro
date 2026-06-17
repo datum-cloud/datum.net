@@ -1,0 +1,34 @@
+---
+// src/components/roadmap/RoadmapGrid.astro
+import type { StrapiRoadmap } from '@libs/strapi';
+import { getRoadmapMonthKey } from '@libs/strapi';
+import RoadmapCard from './RoadmapCard.astro';
+
+interface Props {
+  roadmaps: StrapiRoadmap[];
+  /** Year to display (defaults to current year). */
+  year?: number;
+}
+
+const { roadmaps, year = new Date().getFullYear() } = Astro.props as Props;
+
+// Build a lookup: "YYYY-MM" → StrapiRoadmap (grid slot by release month)
+const roadmapByMonth = new Map<string, StrapiRoadmap>();
+for (const r of roadmaps) {
+  roadmapByMonth.set(getRoadmapMonthKey(r.releaseDate), r);
+}
+
+// Generate all 12 month slots for the given year
+const months = Array.from({ length: 12 }, (_, i) => {
+  const monthNum = i + 1;
+  const monthKey = `${year}-${String(monthNum).padStart(2, '0')}`;
+  const isoDate = `${monthKey}-01`;
+  return { monthKey, isoDate, roadmap: roadmapByMonth.get(monthKey) };
+});
+---
+
+<section aria-label="Roadmap releases">
+  <ul class="roadmap-grid">
+    {months.map((month) => <RoadmapCard monthDate={month.isoDate} roadmap={month.roadmap} />)}
+  </ul>
+</section>

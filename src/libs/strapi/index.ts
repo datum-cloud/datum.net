@@ -113,7 +113,12 @@ export {
 export {
   ROADMAPS_QUERY,
   fetchStrapiRoadmaps,
+  fetchStrapiRoadmapBySlug,
   groupRoadmapsByDate,
   getMonthAbbreviation,
+  getRoadmapMonthKey,
+  getRoadmapSlug,
+  getDaysUntilRelease,
+  getRoadmapCoverUrl,
   type GroupedRoadmaps,
 } from './roadmaps';

@@ -24,14 +24,12 @@ import {
   getStrapiTeamMembers,
   getStrapiCardMembers,
 } from '@libs/strapi/authors';
-import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
+import { fetchStrapiRoadmaps, ROADMAPS_CACHE_KEY } from '@libs/strapi/roadmaps';
 
 /** Primary cache keys — must stay aligned with the Strapi fetcher modules. */
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 const ARTICLE_CACHE_PREFIX = 'strapi-article-';
 const AUTHORS_CACHE_KEY = 'strapi-authors';
-const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
-
 /** Strapi events that mean "the entry no longer exists" — skip the per-slug warm. */
 const DELETE_EVENTS = new Set(['entry.delete', 'entry.unpublish']);
 

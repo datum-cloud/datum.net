@@ -80,10 +80,21 @@ const fallback = new FileCacheDriver({ dir: '.cache/strapi-fallback' });
 const redisUrl = readEnv('REDIS_URL');
 const keyPrefix = readEnv('REDIS_KEY_PREFIX') ?? 'strapi:';
 
+/**
+ * Shared raw ioredis client. `null` when Redis is not configured (local dev).
+ * Import this in other libs (e.g. githubBacklog.ts) to reuse the same connection
+ * instead of opening a second ioredis socket.
+ */
+export const redisClient: Redis | null = redisUrl
+  ? new Redis(redisUrl, { lazyConnect: true, enableReadyCheck: false })
+  : null;
+
+/** Key prefix used for all Redis keys in this app (default "strapi:"). */
+export const redisKeyPrefix = keyPrefix;
+
 let primary: FileCacheDriver | RedisCacheDriver;
 
-if (redisUrl) {
-  const redisClient = new Redis(redisUrl, { lazyConnect: true, enableReadyCheck: false });
+if (redisClient) {
   primary = new RedisCacheDriver(redisClient, keyPrefix);
   if (debug) console.debug('[strapi-runtime] Primary cache: Redis at', redisUrl);
 } else {
@@ -92,6 +103,23 @@ if (redisUrl) {
 }
 
 export const cache = new CacheManager({ primary, fallback, defaultTtl: ttl, debug });
+
+/**
+ * Delete all primary-cache keys whose names start with `prefix`.
+ * Fallback entries are preserved (same semantics as `cache.delete`).
+ * @returns Deleted key names
+ */
+export async function deletePrimaryCacheByPrefix(prefix: string): Promise<string[]> {
+  const keys = await primary.keys(prefix);
+  await Promise.all(keys.map((key) => cache.delete(key)));
+  if (debug && keys.length > 0) {
+    console.debug(
+      `[strapi-runtime] deleted ${keys.length} primary cache key(s) with prefix "${prefix}"`
+    );
+  }
+  return keys;
+}
+
 export const client = createStrapiClient(config);
 export const webhook = createWebhookHandler({ config, cache });
 export { config };

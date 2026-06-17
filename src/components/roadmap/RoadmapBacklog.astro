@@ -1,0 +1,29 @@
+---
+// src/components/roadmap/RoadmapBacklog.astro
+import type { GitHubBacklogItem } from '@libs/githubBacklog';
+import RoadmapBacklogRow from './RoadmapBacklogRow.astro';
+
+interface Props {
+  items: GitHubBacklogItem[];
+}
+
+const { items } = Astro.props as Props;
+---
+
+<section aria-label="Roadmap backlog">
+  {
+    items.length === 0 ? (
+      <p class="datum-text-base text-midnight-fjord/60 py-8 text-center">
+        No backlog items available at this time.
+      </p>
+    ) : (
+      <ul class="roadmap-backlog-list">
+        {items.map((item) => (
+          <li>
+            <RoadmapBacklogRow item={item} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

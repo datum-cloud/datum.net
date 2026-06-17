@@ -114,10 +114,12 @@ export interface StrapiArticleResponse {
 export interface StrapiRoadmap {
   documentId: string;
   title: string;
+  slug?: string;
   description?: string;
   summary?: string;
   releaseDate: string;
   githubUrl?: string;
+  cover?: StrapiImage;
 }
 
 export interface StrapiRoadmapsResponse {
@@ -148,20 +150,34 @@ const STRAPI_BASE_URL =
     : 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 
 const strapiAssetsUrl = import.meta.env?.STRAPI_ASSETS_URL || process.env.STRAPI_ASSETS_URL;
+
+/** Map Docker-internal hostnames to browser-reachable URLs in local dev. */
+function resolveBrowserAccessibleStrapiBase(base: string): string {
+  try {
+    const url = new URL(base);
+    if (url.hostname === 'host.docker.internal') {
+      url.hostname = 'localhost';
+      return url.toString().replace(/\/$/, '');
+    }
+  } catch {
+    // ignore invalid URL values
+  }
+  return base.replace(/\/$/, '');
+}
+
 /** Base URL for relative upload paths; CDN/asset host when set, otherwise API origin */
-const STRAPI_MEDIA_BASE_URL =
-  typeof strapiAssetsUrl === 'string' && strapiAssetsUrl.trim()
-    ? strapiAssetsUrl.replace(/\/$/, '')
-    : STRAPI_BASE_URL;
+const STRAPI_MEDIA_BASE_URL = resolveBrowserAccessibleStrapiBase(
+  typeof strapiAssetsUrl === 'string' && strapiAssetsUrl.trim() ? strapiAssetsUrl : STRAPI_BASE_URL
+);
 
 /**
  * Helper to get full image URL from Strapi
  */
 export function getStrapiMediaUrl(url: string | undefined): string | undefined {
   if (!url) return undefined;
-  // If URL is already absolute, return as-is
+  // If URL is already absolute, return as-is (rewriting Docker-internal hosts for the browser)
   if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url;
+    return resolveBrowserAccessibleStrapiBase(url);
   }
   // Relative paths: STRAPI_ASSETS_URL when set, else STRAPI_URL
   return `${STRAPI_MEDIA_BASE_URL}${url}`;

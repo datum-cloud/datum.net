@@ -21,7 +21,18 @@ import {
   getStrapiTeamMembers,
   getStrapiCardMembers,
 } from './authors';
-import { fetchStrapiRoadmaps } from './roadmaps';
+import {
+  GITHUB_BACKLOG_CACHE_KEY,
+  forceRegenerateGitHubBacklog,
+  fetchGitHubBacklog,
+  isGitHubBacklogCached,
+} from '../githubBacklog';
+import {
+  fetchStrapiRoadmaps,
+  clearRoadmapDetailCaches,
+  ROADMAPS_CACHE_KEY,
+  LEGACY_ROADMAPS_CACHE_KEY,
+} from './roadmaps';
 import type { StrapiArticle } from '../../types/strapi';
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
@@ -30,8 +41,6 @@ const AUTHORS_CACHE_KEY = 'strapi-authors';
 const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
 const TEAM_MEMBERS_CACHE_KEY = 'strapi-team-members';
 const CARD_MEMBERS_CACHE_KEY = 'strapi-card-members';
-const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
-
 /** Allowed exact Strapi cache key names for force regeneration (excluding per-article keys). */
 export const STRAPI_FORCE_REGENERATE_KEYS = [
   ARTICLES_CACHE_KEY,
@@ -39,9 +48,21 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
   TEAM_MEMBERS_CACHE_KEY,
   CARD_MEMBERS_CACHE_KEY,
   ROADMAPS_CACHE_KEY,
+  GITHUB_BACKLOG_CACHE_KEY,
 ] as const;
 
 const FIXED_FORCE_KEYS = new Set<string>(STRAPI_FORCE_REGENERATE_KEYS);
+
+function normalizeForceRegenerateName(name: string): string {
+  return name === LEGACY_ROADMAPS_CACHE_KEY ? ROADMAPS_CACHE_KEY : name;
+}
+
+async function clearRoadmapsCache(): Promise<string[]> {
+  const clearedDetails = await clearRoadmapDetailCaches();
+  await cache.delete(ROADMAPS_CACHE_KEY);
+  await cache.delete(LEGACY_ROADMAPS_CACHE_KEY);
+  return clearedDetails;
+}
 
 function isSafeSlugSegment(slug: string): boolean {
   if (!slug || slug.includes('/') || slug.includes('\\')) return false;
@@ -71,7 +92,7 @@ async function isCached(key: string): Promise<boolean> {
 export function validateStrapiForceRegenerateName(name: string): string | null {
   const trimmed = name.trim();
   if (!trimmed) return 'Empty cache name';
-  if (FIXED_FORCE_KEYS.has(trimmed)) return null;
+  if (FIXED_FORCE_KEYS.has(trimmed) || trimmed === LEGACY_ROADMAPS_CACHE_KEY) return null;
   if (isArticleCacheKey(trimmed)) return null;
   if (isAuthorSlugCacheKey(trimmed)) return null;
   return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(
@@ -99,6 +120,8 @@ export interface RegenerateResult {
   regenerated: string[];
   skipped: string[];
   errors: string[];
+  /** Per-slug roadmap keys cleared during list force-regen (`strapi-roadmap-*`). */
+  clearedDetails: string[];
 }
 
 /**
@@ -112,11 +135,18 @@ export async function forceRegenerateStrapiCache(
   const regenerated: string[] = [];
   const skipped: string[] = [];
   const errors: string[] = [];
+  const clearedDetails: string[] = [];
 
-  const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
+  const unique = [
+    ...new Set(
+      names.map((n) => normalizeForceRegenerateName(n.trim())).filter((n) => n.length > 0)
+    ),
+  ];
 
   for (const name of unique) {
-    await cache.delete(name);
+    if (name !== ROADMAPS_CACHE_KEY && name !== GITHUB_BACKLOG_CACHE_KEY) {
+      await cache.delete(name);
+    }
 
     try {
       switch (name) {
@@ -136,8 +166,15 @@ export async function forceRegenerateStrapiCache(
           await getStrapiCardMembers();
           regenerated.push(name);
           break;
-        case ROADMAPS_CACHE_KEY:
+        case ROADMAPS_CACHE_KEY: {
+          const cleared = await clearRoadmapsCache();
+          clearedDetails.push(...cleared);
           await fetchStrapiRoadmaps();
+          regenerated.push(name);
+          break;
+        }
+        case GITHUB_BACKLOG_CACHE_KEY:
+          await forceRegenerateGitHubBacklog();
           regenerated.push(name);
           break;
         default: {
@@ -167,7 +204,7 @@ export async function forceRegenerateStrapiCache(
     }
   }
 
-  return { regenerated, skipped, errors };
+  return { regenerated, skipped, errors, clearedDetails };
 }
 
 /**
@@ -199,6 +236,19 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   await tryWarm(TEAM_MEMBERS_CACHE_KEY, getStrapiTeamMembers);
   await tryWarm(CARD_MEMBERS_CACHE_KEY, getStrapiCardMembers);
 
+  if (await isGitHubBacklogCached()) {
+    skipped.push(GITHUB_BACKLOG_CACHE_KEY);
+  } else {
+    try {
+      await fetchGitHubBacklog();
+      regenerated.push(GITHUB_BACKLOG_CACHE_KEY);
+    } catch (err) {
+      errors.push(
+        `${GITHUB_BACKLOG_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
+  }
+
   // Per-article cache (depends on the article list)
   const articles: StrapiArticle[] = await fetchStrapiArticles();
   const authorIdsWithArticles = new Set(
@@ -218,5 +268,5 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
     await tryWarm(slugKey, () => fetchStrapiAuthorBySlug(author.slug as string));
   }
 
-  return { regenerated, skipped, errors };
+  return { regenerated, skipped, errors, clearedDetails: [] };
 }

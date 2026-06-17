@@ -1,0 +1,105 @@
+---
+// src/components/roadmap/RoadmapDetailContent.astro
+import { marked } from 'marked';
+import type { StrapiRoadmap } from '@libs/strapi';
+import { getRoadmapCoverUrl } from '@libs/strapi';
+import Button from '@components/Button.astro';
+
+interface Props {
+  roadmap: StrapiRoadmap;
+}
+
+const { roadmap } = Astro.props as Props;
+
+// Display format: "30 Jan 2026"
+const releaseDate = new Date(roadmap.releaseDate);
+const formattedDate = releaseDate.toLocaleString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+
+// Parse title: "Name: Version" or just "Name"
+const titleParts = roadmap.title.split(':');
+const releaseVersion = titleParts[0]?.trim() ?? roadmap.title;
+const releaseName = titleParts[1]?.trim();
+
+const coverUrl = getRoadmapCoverUrl(roadmap.cover);
+const coverAlt = roadmap.cover?.alternativeText || roadmap.title;
+const honorName = roadmap.cover?.caption?.trim() || releaseName;
+
+const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : undefined;
+---
+
+<div class="roadmap-detail">
+  <!-- Left column: content -->
+  <div class="roadmap-detail--content">
+    <header class="roadmap-detail--header">
+      <Button
+        class="btn btn--alpha mb-11 max-w-fit"
+        text="Back to Roadmap"
+        icon={{ name: 'arrow-left', size: 'md' }}
+        iconPosition="left"
+        iconClass="stroke-1.5"
+        href="/roadmap"
+      />
+
+      <h2 class="roadmap-detail--title">{releaseName}</h2>
+      <p class="roadmap-detail--meta">
+        {releaseVersion && <span>{releaseVersion}</span>}<br />
+        <time datetime={roadmap.releaseDate}>{formattedDate}</time>
+      </p>
+    </header>
+
+    {summaryHtml && <div class="roadmap-detail--sections datum-prose-lg" set:html={summaryHtml} />}
+  </div>
+
+  <!-- Right column: sidebar -->
+  <aside class="roadmap-detail--sidebar">
+    {
+      coverUrl && (
+        <div class="roadmap-detail--sidebar-image">
+          <img src={coverUrl} alt={coverAlt} loading="eager" decoding="async" />
+        </div>
+      )
+    }
+
+    {
+      roadmap.description && (
+        <div class="roadmap-detail--attribution">
+          <h3>This release is named to honor {honorName}</h3>
+          <p>{roadmap.description}</p>
+        </div>
+      )
+    }
+
+    {
+      roadmap.githubUrl && (
+        <a
+          href={roadmap.githubUrl}
+          class="roadmap-detail--github-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on GitHub
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+        </a>
+      )
+    }
+  </aside>
+</div>

@@ -1,4 +1,191 @@
 @layer components {
+  /* ─────────────────────────────────────────────────────────────────────────
+   * Roadmap v2 — advent-calendar grid layout
+   * ───────────────────────────────────────────────────────────────────────── */
+
+  /* Tab navigation — Temp/Tablist (Figma 14077:77614) */
+  .roadmap-tab-nav {
+    @apply isolate mb-8 flex items-start md:mb-12 lg:mb-16;
+  }
+
+  .roadmap-tab-nav--item {
+    @apply border-glacier-mist-900 datum-docs-article-body relative z-3 flex h-[33px] shrink-0 flex-col items-start border-b pr-3.5 no-underline;
+
+    &.roadmap-tab-nav--item--standard {
+      @apply z-2 px-3.5;
+    }
+  }
+
+  .roadmap-tab-nav--content {
+    @apply datum-text-base text-app---dark---utility-4 flex h-[33px] items-end justify-center py-3 whitespace-nowrap;
+
+    &.roadmap-tab-nav--content--active {
+      @apply border-midnight-fjord text-midnight-fjord border-b;
+    }
+  }
+
+  .roadmap-tab-nav--spacer {
+    @apply border-glacier-mist-900 relative z-1 h-[33px] min-w-0 flex-1 border-b;
+  }
+
+  /* Grid */
+  .roadmap-grid {
+    @apply grid grid-cols-1 gap-x-13 gap-y-13 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  /* Card */
+  .roadmap-card {
+    @apply flex flex-col gap-2;
+  }
+
+  .roadmap-card--image-wrap {
+    @apply relative block w-full cursor-pointer overflow-clip transition-opacity duration-150 hover:opacity-90;
+    aspect-ratio: 1 / 1;
+  }
+
+  .roadmap-card--image {
+    @apply absolute inset-0 size-full object-cover;
+  }
+
+  .roadmap-card--placeholder {
+    @apply flex aspect-square w-full flex-col items-center justify-center overflow-clip;
+    background-color: #d6ddd7;
+  }
+
+  .roadmap-card--placeholder-month {
+    @apply datum-text-11xl text-midnight-fjord uppercase opacity-20;
+  }
+
+  .roadmap-card--label {
+    @apply datum-text-base text-midnight-fjord flex items-start justify-between whitespace-nowrap;
+  }
+
+  .roadmap-card--label-name {
+    @apply truncate;
+
+    strong {
+      @apply font-semibold;
+    }
+  }
+
+  .roadmap-card--label-date {
+    @apply shrink-0 opacity-60;
+  }
+
+  .roadmap-card--countdown {
+    @apply datum-text-base text-midnight-fjord;
+
+    strong {
+      @apply font-semibold;
+    }
+  }
+
+  /* Detail page */
+  .roadmap-detail {
+    @apply flex flex-col gap-16 lg:flex-row;
+  }
+
+  .roadmap-detail--content {
+    @apply border-midnight-fjord flex flex-1 flex-col gap-12 lg:border-r lg:pr-16;
+  }
+
+  .roadmap-detail--header {
+    @apply text-midnight-fjord flex flex-col gap-2;
+  }
+
+  .roadmap-detail--title {
+    @apply datum-text-8xl text-midnight-fjord;
+  }
+
+  .roadmap-detail--meta {
+    @apply datum-text-base text-midnight-fjord opacity-80;
+  }
+
+  .roadmap-detail--sections {
+    @apply flex flex-col gap-10;
+  }
+
+  .roadmap-detail--section {
+    @apply text-midnight-fjord flex flex-col gap-2.5;
+
+    h3 {
+      @apply datum-text-xl font-semibold;
+    }
+
+    p {
+      @apply datum-text-base opacity-80;
+    }
+  }
+
+  .roadmap-detail--sidebar {
+    @apply flex flex-col gap-4 lg:w-[373px] lg:shrink-0;
+  }
+
+  .roadmap-detail--sidebar-image {
+    @apply relative w-full overflow-clip;
+    aspect-ratio: 1 / 1;
+
+    img {
+      @apply absolute inset-0 size-full object-cover;
+    }
+  }
+
+  .roadmap-detail--attribution {
+    @apply text-midnight-fjord flex flex-col gap-4;
+
+    h3 {
+      @apply datum-text-base font-semibold;
+    }
+
+    p {
+      @apply datum-text-base opacity-80;
+    }
+  }
+
+  .roadmap-detail--github-link {
+    @apply text-canyon-clay---links datum-text-sm flex items-center gap-2.5 transition-colors duration-150 hover:underline hover:underline-offset-4;
+  }
+
+  /* Backlog list */
+  .roadmap-backlog-list {
+    @apply border-app---dark---utility-1 flex flex-col border-t;
+  }
+
+  .roadmap-backlog-row {
+    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-b py-8 no-underline lg:flex-row lg:items-center lg:gap-10;
+  }
+
+  .roadmap-backlog-number {
+    @apply text-app---dark---utility-4 datum-text-xl w-14 shrink-0 font-mono leading-6 tabular-nums transition-opacity duration-150 lg:w-16;
+  }
+
+  .roadmap-backlog-title {
+    @apply datum-text-xl text-midnight-fjord min-w-0 flex-1 font-semibold transition-opacity duration-150;
+  }
+
+  .roadmap-backlog-labels {
+    @apply flex shrink-0 flex-wrap gap-2;
+  }
+
+  .roadmap-backlog-badge {
+    @apply text-app---dark---utility-4 datum-app-body rounded-lg border border-current/30 px-1.5 py-0.5 transition-opacity duration-150;
+  }
+
+  .roadmap-backlog-link {
+    @apply text-canyon-clay---links datum-text-sm flex shrink-0 items-center gap-2.5 whitespace-nowrap transition-opacity duration-150;
+  }
+
+  .roadmap-backlog-row:hover .roadmap-backlog-number,
+  .roadmap-backlog-row:hover .roadmap-backlog-title,
+  .roadmap-backlog-row:hover .roadmap-backlog-badge,
+  .roadmap-backlog-row:hover .roadmap-backlog-link {
+    @apply opacity-70;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
+   * Roadmap v1 — legacy table layout (kept for backwards compatibility)
+   * ───────────────────────────────────────────────────────────────────────── */
+
   .roadmap-container {
     @apply flex w-full flex-col items-center gap-20;
   }

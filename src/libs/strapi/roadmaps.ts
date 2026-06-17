@@ -8,6 +8,7 @@
  */
 
 import { cache, client } from './_runtime';
+import { fetchAllGraphQLPages } from './graphqlPagination';
 import type { StrapiRoadmap, StrapiRoadmapsResponse } from '../../types/strapi';
 
 const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
@@ -16,8 +17,8 @@ const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
 const LEGACY_FALLBACK_KEY = 'roadmaps';
 
 export const ROADMAPS_QUERY = `
-  query GetRoadmaps {
-    roadmaps(pagination: { limit: 100 }, sort: "releaseDate:desc") {
+  query GetRoadmaps($start: Int!, $limit: Int!) {
+    roadmaps(pagination: { start: $start, limit: $limit }, sort: "releaseDate:desc") {
       documentId
       title
       description
@@ -49,9 +50,12 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
     console.warn('Invalid cached Strapi roadmaps data detected, fetching fresh data from API');
   }
 
-  const response = await client.query<StrapiRoadmapsResponse>(ROADMAPS_QUERY);
+  const roadmapsRaw = await fetchAllGraphQLPages(async (start, limit) => {
+    const response = await client.query<StrapiRoadmapsResponse>(ROADMAPS_QUERY, { start, limit });
+    return response?.roadmaps ?? null;
+  });
 
-  if (!response?.roadmaps) {
+  if (!roadmapsRaw) {
     console.warn('Strapi unavailable — checking persistent fallback cache for roadmaps');
     const fallback =
       (await cache.getFallback<StrapiRoadmap[]>(ROADMAPS_CACHE_KEY)) ??
@@ -63,8 +67,8 @@ export async function fetchStrapiRoadmaps(): Promise<StrapiRoadmap[]> {
     return [];
   }
 
-  await cache.set(ROADMAPS_CACHE_KEY, response.roadmaps, { tags: ['roadmaps'] });
-  return response.roadmaps;
+  await cache.set(ROADMAPS_CACHE_KEY, roadmapsRaw, { tags: ['roadmaps'] });
+  return roadmapsRaw;
 }
 
 export interface GroupedRoadmaps {

@@ -61,6 +61,8 @@ export async function graphql<T>(
   }
 }
 
+export { STRAPI_SSR_CACHE_CONTROL } from './httpCache';
+
 // Re-export types and utilities from types/strapi.ts for convenience
 export type {
   StrapiImage,
@@ -98,9 +100,13 @@ export {
   ARTICLES_QUERY,
   ARTICLE_BY_SLUG_QUERY,
   ARTICLES_BY_CATEGORY_QUERY,
+  ARTICLE_SITEMAP_QUERY,
   fetchStrapiArticles,
+  fetchStrapiArticlesByCategory,
   fetchStrapiArticleBySlug,
+  fetchStrapiArticleSitemapRows,
   ensureStrapiArticleDetail,
+  type StrapiArticleSitemapRow,
 } from './articles';
 
 // Re-export roadmaps module

@@ -8,6 +8,7 @@ import {
   fetchStrapiRoadmaps,
   getRoadmapMonthKey,
   getRoadmapSlug,
+  getRoadmapCoverUrl,
 } from '@libs/strapi';
 
 import Layout from '@layouts/Layout.astro';
@@ -26,6 +27,10 @@ if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
   );
 
   if (legacyMatch) {
+    if (!getRoadmapCoverUrl(legacyMatch.cover)) {
+      return Astro.redirect('/roadmap', 302);
+    }
+
     const canonicalSlug = getRoadmapSlug(legacyMatch);
     if (canonicalSlug !== slug) {
       return Astro.redirect(`/roadmap/${canonicalSlug}`, 301);
@@ -35,6 +40,10 @@ if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
 }
 
 if (!roadmap) {
+  return Astro.redirect('/roadmap', 302);
+}
+
+if (!getRoadmapCoverUrl(roadmap.cover)) {
   return Astro.redirect('/roadmap', 302);
 }
 

@@ -1,0 +1,82 @@
+---
+// src/components/roadmap/RoadmapCard.astro
+import type { StrapiRoadmap } from '@libs/strapi';
+import {
+  getRoadmapSlug,
+  getDaysUntilRelease,
+  getMonthAbbreviation,
+  getRoadmapCoverUrl,
+} from '@libs/strapi';
+
+interface Props {
+  roadmap?: StrapiRoadmap;
+  /** ISO date string for this card's month slot (e.g. "2026-07-01"). */
+  monthDate: string;
+}
+
+const { roadmap, monthDate } = Astro.props as Props;
+
+const monthAbbr = getMonthAbbreviation(monthDate);
+const slug = roadmap ? getRoadmapSlug(roadmap) : null;
+const hasRoadmap = Boolean(roadmap && slug);
+const coverUrl = roadmap ? getRoadmapCoverUrl(roadmap.cover) : undefined;
+const hasCover = Boolean(coverUrl);
+const detailHref = slug ? `/roadmap/${slug}` : undefined;
+const showDetailLink = hasRoadmap && hasCover && detailHref;
+const daysUntil = roadmap ? getDaysUntilRelease(roadmap.releaseDate) : null;
+
+const coverAlt =
+  roadmap?.cover?.alternativeText || roadmap?.title || `${monthAbbr} roadmap release`;
+const detailLabel = roadmap?.title
+  ? `View ${roadmap.title} roadmap release`
+  : `View ${monthAbbr} roadmap release`;
+
+// Parse "Name: Version" from title (e.g. "Mary Elizabeth: 1.1")
+const titleParts = roadmap?.title?.split(':') ?? [];
+const releaseName = titleParts[0]?.trim() ?? roadmap?.title ?? '';
+const releaseVersion = titleParts[1]?.trim() ?? '';
+---
+
+<li class="roadmap-card">
+  {
+    showDetailLink ? (
+      <>
+        <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
+          <img
+            src={coverUrl}
+            alt={coverAlt}
+            class="roadmap-card--image"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <div class="roadmap-card--label">
+          <a href={detailHref} class="roadmap-card--label-name">
+            <strong>{releaseName}:</strong>
+            {releaseVersion ? ` ${releaseVersion}` : ''}
+          </a>
+          <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
+            {monthAbbr.slice(0, 3).charAt(0) + monthAbbr.slice(0, 3).slice(1).toLowerCase()}
+          </time>
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="roadmap-card--placeholder" aria-hidden="true">
+          <time datetime={monthDate} class="roadmap-card--placeholder-month">
+            {monthAbbr}
+          </time>
+        </div>
+        {daysUntil !== null && daysUntil > 0 ? (
+          <p class="roadmap-card--countdown">
+            Released in <strong>{daysUntil}</strong> days
+          </p>
+        ) : (
+          <p class="roadmap-card--countdown">
+            <time datetime={monthDate}>{monthAbbr}</time>
+          </p>
+        )}
+      </>
+    )
+  }
+</li>

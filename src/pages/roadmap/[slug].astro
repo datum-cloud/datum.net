@@ -1,0 +1,69 @@
+---
+// src/pages/roadmap/[slug].astro
+export const prerender = false;
+
+import '@v1/styles/page-roadmap.css';
+import {
+  fetchStrapiRoadmapBySlug,
+  fetchStrapiRoadmaps,
+  getRoadmapMonthKey,
+  getRoadmapSlug,
+  getRoadmapCoverUrl,
+} from '@libs/strapi';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import RoadmapDetailContent from '@components/roadmap/RoadmapDetailContent.astro';
+
+const { slug } = Astro.params as { slug: string };
+
+let roadmap = await fetchStrapiRoadmapBySlug(slug);
+
+// Legacy URLs used YYYY-MM; redirect to the canonical Strapi slug when possible.
+if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
+  const legacyMatch = (await fetchStrapiRoadmaps()).find(
+    (entry) => getRoadmapMonthKey(entry.releaseDate) === slug
+  );
+
+  if (legacyMatch) {
+    if (!getRoadmapCoverUrl(legacyMatch.cover)) {
+      return Astro.redirect('/roadmap', 302);
+    }
+
+    const canonicalSlug = getRoadmapSlug(legacyMatch);
+    if (canonicalSlug !== slug) {
+      return Astro.redirect(`/roadmap/${canonicalSlug}`, 301);
+    }
+    roadmap = legacyMatch;
+  }
+}
+
+if (!roadmap) {
+  return Astro.redirect('/roadmap', 302);
+}
+
+if (!getRoadmapCoverUrl(roadmap.cover)) {
+  return Astro.redirect('/roadmap', 302);
+}
+
+const releaseDate = new Date(roadmap.releaseDate);
+const formattedDate = releaseDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+const pageTitle = `${roadmap.title} — ${formattedDate} Roadmap`;
+const pageDescription = roadmap.description ?? `Datum roadmap for ${formattedDate}.`;
+---
+
+<Layout title={pageTitle} description={pageDescription} bodyClass="page-roadmap">
+  <section class="datum-container">
+    <Hero class="light" hideContent={true} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700">
+      <div class="max-width">
+        <RoadmapDetailContent roadmap={roadmap} />
+      </div>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

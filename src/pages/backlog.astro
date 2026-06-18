@@ -1,0 +1,45 @@
+---
+// src/pages/backlog.astro
+export const prerender = false;
+
+import '@v1/styles/page-roadmap.css';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { fetchGitHubBacklog } from '@libs/githubBacklog';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import RoadmapTabNav from '@components/roadmap/RoadmapTabNav.astro';
+import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
+
+const roadmapPage = await getCollectionEntry('pages', 'roadmap');
+const backlogPage = await getCollectionEntry('pages', 'backlog');
+
+const roadmapMeta = roadmapPage.data.meta || {};
+const backlogMeta = backlogPage.data.meta || {};
+const meta = { ...roadmapMeta, ...backlogMeta };
+
+const heroYear = new Date().getFullYear();
+const heroTitle = `${heroYear} Roadmap`;
+const heroDescription = roadmapPage.data.description;
+
+const layoutTitle = backlogMeta.title ?? 'Datum Product Backlog';
+const layoutDescription = backlogMeta.description ?? backlogPage.data.description;
+
+const backlogItems = await fetchGitHubBacklog();
+---
+
+<Layout title={layoutTitle} description={layoutDescription} bodyClass="page-backlog" meta={meta}>
+  <section class="datum-container">
+    <Hero class="light content-alt" title={heroTitle} description={heroDescription} />
+
+    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+      <div class="max-width">
+        <RoadmapTabNav activeTab="backlog" />
+        <RoadmapBacklog items={backlogItems} />
+      </div>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

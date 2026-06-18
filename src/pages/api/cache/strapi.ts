@@ -86,8 +86,10 @@ export const POST: APIRoute = async ({ request }) => {
             regenerated: result.regenerated,
             skipped: result.skipped,
             errors: result.errors,
+            clearedDetails: result.clearedDetails,
             regeneratedCount: result.regenerated.length,
             skippedCount: result.skipped.length,
+            clearedDetailsCount: result.clearedDetails.length,
           },
         }),
         {
@@ -107,8 +109,10 @@ export const POST: APIRoute = async ({ request }) => {
           regenerated: result.regenerated,
           skipped: result.skipped,
           errors: result.errors,
+          clearedDetails: result.clearedDetails,
           regeneratedCount: result.regenerated.length,
           skippedCount: result.skipped.length,
+          clearedDetailsCount: result.clearedDetails.length,
         },
       }),
       {

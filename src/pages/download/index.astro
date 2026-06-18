@@ -7,7 +7,7 @@ Astro.response.headers.set('Vary', 'User-Agent');
 return Astro.redirect(
   (() => {
     const ua = Astro.request.headers.get('user-agent') ?? '';
-    if (/Windows/i.test(ua)) return '/downloads/windows';
+    if (/Windows/i.test(ua)) return '/download/windows';
     if (/Linux/i.test(ua) && !/Android/i.test(ua)) return '/download/linux';
     return '/download/mac-os';
   })(),

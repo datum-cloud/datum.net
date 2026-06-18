@@ -8,6 +8,7 @@ import { getEntry } from 'astro:content';
 import { fetchStrapiArticles } from '@libs/strapi';
 import type { StrapiArticle } from '@libs/strapi';
 import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 
 function formatDate(d?: string): string {
   if (!d) return '';
@@ -41,7 +42,7 @@ export const GET: APIRoute = async () => {
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
-        'Cache-Control': 'public, max-age=300, stale-while-revalidate=3600',
+        'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
       },
     });
   } catch (error) {

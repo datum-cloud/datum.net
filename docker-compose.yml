@@ -1,18 +1,33 @@
 services:
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    networks:
+      - datum-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   dev:
     build:
       context: .
       target: development
     ports:
-      - '4321:4321'
+      - "4321:4321"
     volumes:
       - .:/app
       - /app/node_modules
       - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
     env_file:
       - .env
+    depends_on:
+      redis:
+        condition: service_healthy
     networks:
       - datum-network
     command: npm run dev --
@@ -22,7 +37,7 @@ services:
       context: .
       target: production
     ports:
-      - '4321:4321'
+      - "4321:4321"
     volumes:
       - persistent-data:/app/.persistent
     environment:

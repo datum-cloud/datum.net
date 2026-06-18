@@ -6,8 +6,7 @@ import '@v1/styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import { graphql, ARTICLES_BY_CATEGORY_QUERY } from '@libs/strapi';
-import type { StrapiArticlesResponse, StrapiArticle } from '@libs/strapi';
+import { fetchStrapiArticlesByCategory } from '@libs/strapi';
 import { normalizeArticle } from '@/src/types/strapi';
 import BlogItemStrapi from '@components/blog/BlogItemStrapi.astro';
 import BlogPagination from '@components/blog/BlogPagination.astro';
@@ -15,29 +14,14 @@ import config from '@data/siteConfig.json';
 
 const { slug } = Astro.params;
 
-// Fetch articles for this category
-const response = await graphql<StrapiArticlesResponse>(ARTICLES_BY_CATEGORY_QUERY, {
-  categorySlug: slug,
-});
+const rawArticles = await fetchStrapiArticlesByCategory(slug as string);
 
-// Extract articles
-const rawArticles: StrapiArticle[] = response?.articles || [];
-
-// Get category name from first article (all have same category)
 const categoryName = rawArticles[0]?.category?.name || (slug as string);
 
 if (rawArticles.length === 0) {
   return Astro.redirect('/404');
 }
 
-// Sort by publication date (newest first)
-rawArticles.sort((a: StrapiArticle, b: StrapiArticle) => {
-  const dateA = a.originalPublishedAt ? new Date(a.originalPublishedAt).getTime() : 0;
-  const dateB = b.originalPublishedAt ? new Date(b.originalPublishedAt).getTime() : 0;
-  return dateB - dateA;
-});
-
-// Normalize articles
 const posts = rawArticles.map(normalizeArticle);
 
 // Set up pagination

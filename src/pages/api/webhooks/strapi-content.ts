@@ -1,11 +1,23 @@
 // src/pages/api/webhooks/strapi-content.ts
+/**
+ * Strapi → datum.net webhook endpoint.
+ *
+ * Delegates secret verification, payload parsing, tag-based cache invalidation,
+ * and cache warm to `@datum-cloud/strapi-revalidate`'s `createWebhookHandler`.
+ * Warm failures propagate as HTTP 502 via `webhook.failOnWarmError` (0.3.0+).
+ *
+ * Header note: the package accepts `Authorization: Bearer <secret>`,
+ * `X-Strapi-Signature`, `strapi-webhook-secret`, and `X-Webhook-Secret`.
+ * The adapter below still maps `X-Webhook-Secret` → `Authorization: Bearer`
+ * for callers that only check the Authorization header.
+ */
 
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import crypto from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
+import { createWebhookHandler } from '@datum-cloud/strapi-revalidate';
+import type { WebhookEvent } from '@datum-cloud/strapi-revalidate';
+import { cache, config } from '@libs/strapi/_runtime';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/articles';
 import {
   fetchStrapiAuthors,
@@ -14,235 +26,189 @@ import {
 } from '@libs/strapi/authors';
 import { fetchStrapiRoadmaps } from '@libs/strapi/roadmaps';
 
-const CACHE_DIR = path.resolve(process.cwd(), '.cache');
-const FALLBACK_CACHE_DIR = path.resolve(process.cwd(), '.cache/strapi-fallback');
+/** Primary cache keys — must stay aligned with the Strapi fetcher modules. */
+const ARTICLES_CACHE_KEY = 'strapi-articles';
+const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+const AUTHORS_CACHE_KEY = 'strapi-authors';
+const ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
 
-interface StrapiWebhookPayload {
-  event: 'entry.create' | 'entry.update' | 'entry.delete';
-  model: string;
-  entry: {
-    id: number;
-    slug?: string;
-    name?: string;
-    [key: string]: unknown;
-  };
-}
+/** Strapi events that mean "the entry no longer exists" — skip the per-slug warm. */
+const DELETE_EVENTS = new Set(['entry.delete', 'entry.unpublish']);
 
-function verifyWebhookSecret(request: Request): boolean {
-  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
-
-  if (!webhookSecret) {
-    console.warn('[Webhook] STRAPI_WEBHOOK_SECRET is not configured');
-    return false;
-  }
-
-  const receivedSecret = request.headers.get('X-Webhook-Secret');
-
-  if (!receivedSecret) {
-    console.warn('[Webhook] Missing X-Webhook-Secret header');
-    return false;
-  }
-
-  const expected = Buffer.from(webhookSecret);
-  const received = Buffer.from(receivedSecret);
-
-  if (expected.length !== received.length) {
-    return false;
-  }
-
-  return crypto.timingSafeEqual(expected, received);
-}
-
-function deleteCacheFilesInDir(dir: string, pattern: string): string[] {
-  const deleted: string[] = [];
-
-  try {
-    if (!fs.existsSync(dir)) return deleted;
-
-    for (const file of fs.readdirSync(dir)) {
-      if (file.startsWith(pattern)) {
-        try {
-          fs.unlinkSync(path.join(dir, file));
-          deleted.push(file);
-        } catch (err) {
-          console.error(`[Webhook] Failed to delete ${file}:`, err);
-        }
-      }
-    }
-  } catch (err) {
-    console.error(`[Webhook] Error reading cache dir ${dir}:`, err);
-  }
-
-  return deleted;
-}
+const WEBHOOK_AUTH_HEADERS = [
+  'authorization',
+  'x-strapi-signature',
+  'strapi-webhook-secret',
+  'x-webhook-secret',
+] as const;
 
 /**
- * Delete matching files from both main and fallback cache dirs.
- * mainPattern  — prefix used in .cache/
- * fallbackPattern — prefix used in .cache/strapi-fallback/ (differs from main)
+ * Map Strapi Admin's `X-Webhook-Secret` to headers the revalidate package reads.
  */
-function invalidateCache(mainPattern: string, fallbackPattern: string): string[] {
-  return [
-    ...deleteCacheFilesInDir(CACHE_DIR, mainPattern),
-    ...deleteCacheFilesInDir(FALLBACK_CACHE_DIR, fallbackPattern),
-  ];
-}
+function getWebhookHeader(request: Request, name: string): string | null {
+  const lower = name.toLowerCase();
 
-function invalidateArticleCache(slug?: string): string[] {
-  const deleted = [
-    // list caches: main "strapi-articles*", fallback "articles*"
-    ...invalidateCache('strapi-articles', 'articles'),
-  ];
-
-  if (slug) {
-    // per-article: main "strapi-article-{slug}*", fallback "article-{slug}*"
-    deleted.push(...invalidateCache(`strapi-article-${slug}`, `article-${slug}`));
+  if (lower === 'authorization') {
+    const auth = request.headers.get('authorization');
+    if (auth) return auth;
+    const legacy = request.headers.get('x-webhook-secret');
+    return legacy ? `Bearer ${legacy}` : null;
   }
 
-  return deleted;
-}
-
-function invalidateAuthorCache(): string[] {
-  // Authors have no fallback cache — only clear main
-  return [
-    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-authors'),
-    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-team-members'),
-    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-card-members'),
-    ...deleteCacheFilesInDir(CACHE_DIR, 'strapi-author-slug-'),
-  ];
-}
-
-function invalidateRoadmapCache(): string[] {
-  // main "strapi-roadmaps*", fallback "roadmaps*"
-  return invalidateCache('strapi-roadmaps', 'roadmaps');
-}
-
-/**
- * Re-fetch and rewrite article caches after invalidation.
- * On delete we skip re-fetching the individual article (it no longer exists in Strapi)
- * so we don't accidentally promote the stale fallback entry back into the main cache.
- */
-async function warmArticleCache(slug: string | undefined, isDelete: boolean): Promise<void> {
-  try {
-    await fetchStrapiArticles();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for article list:', err);
+  if (lower === 'strapi-webhook-secret') {
+    return request.headers.get('strapi-webhook-secret') ?? request.headers.get('x-webhook-secret');
   }
 
-  if (slug && !isDelete) {
+  return request.headers.get(lower) ?? request.headers.get(name);
+}
+
+/** Log inbound webhook details when `STRAPI_DEBUG=true` (secrets redacted). */
+function logWebhookRequest(request: Request, rawBody: string): void {
+  if (!config.debug) return;
+
+  const headers: Record<string, string> = {};
+  for (const name of WEBHOOK_AUTH_HEADERS) {
+    const value = request.headers.get(name);
+    if (value) headers[name] = '[redacted]';
+  }
+  const contentType = request.headers.get('content-type');
+  if (contentType) headers['content-type'] = contentType;
+
+  let parsedBody: unknown = rawBody;
+  if (rawBody.length > 0) {
     try {
-      await fetchStrapiArticleBySlug(slug);
-    } catch (err) {
-      console.error(`[Webhook] Cache warm failed for article "${slug}":`, err);
+      parsedBody = JSON.parse(rawBody);
+    } catch {
+      // Keep raw string when body isn't JSON.
     }
   }
+
+  console.log('[Webhook] Incoming request', {
+    headers,
+    body: parsedBody,
+  });
 }
 
-async function warmAuthorCache(): Promise<void> {
-  try {
-    await fetchStrapiAuthors();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for authors:', err);
-  }
+function logWebhookResponse(status: number, body: unknown): void {
+  if (!config.debug) return;
+  console.log('[Webhook] Response', { status, body });
+}
 
-  // Rebuild derived caches (team and card members) after the primary author list refresh
-  try {
-    await getStrapiTeamMembers();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for team members:', err);
-  }
-
-  try {
-    await getStrapiCardMembers();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for card members:', err);
+async function assertPrimaryCache(key: string, label: string): Promise<void> {
+  const value = await cache.get(key);
+  if (value === null) {
+    throw new Error(`Cache warm failed: primary cache miss for ${label} (${key})`);
   }
 }
 
-async function warmRoadmapCache(): Promise<void> {
-  try {
-    await fetchStrapiRoadmaps();
-  } catch (err) {
-    console.error('[Webhook] Cache warm failed for roadmaps:', err);
+async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
+  const isDelete = DELETE_EVENTS.has(event.event);
+
+  switch (event.model) {
+    case 'article': {
+      const tasks: Promise<void>[] = [
+        fetchStrapiArticles().then(() => assertPrimaryCache(ARTICLES_CACHE_KEY, 'articles list')),
+      ];
+
+      if (event.slug && !isDelete) {
+        const slug = event.slug;
+        tasks.push(
+          fetchStrapiArticleBySlug(slug).then(async (article) => {
+            if (!article) {
+              throw new Error(`Cache warm failed: could not load article "${slug}"`);
+            }
+            await assertPrimaryCache(`${ARTICLE_CACHE_PREFIX}${slug}`, `article "${slug}"`);
+          })
+        );
+      }
+
+      await Promise.all(tasks);
+      break;
+    }
+    case 'author':
+      // Order matters: refresh the source list first so derived caches are
+      // computed from fresh data when getStrapiTeamMembers/getStrapiCardMembers run.
+      await fetchStrapiAuthors();
+      await Promise.all([getStrapiTeamMembers(), getStrapiCardMembers()]);
+      await assertPrimaryCache(AUTHORS_CACHE_KEY, 'authors list');
+      break;
+    case 'roadmap':
+      await fetchStrapiRoadmaps();
+      await assertPrimaryCache(ROADMAPS_CACHE_KEY, 'roadmaps list');
+      break;
+    default:
+      console.warn(`[Webhook] No warm strategy for model "${event.model}"`);
   }
 }
+
+const handle = createWebhookHandler({
+  config: {
+    ...config,
+    webhook: {
+      ...config.webhook,
+      failOnWarmError: true,
+      onRevalidate: warmAfterRevalidate,
+    },
+  },
+  cache,
+});
 
 export const POST: APIRoute = async ({ request }) => {
   const startTime = Date.now();
+  let status = 200;
+  let body: unknown = {};
 
-  try {
-    if (!verifyWebhookSecret(request)) {
-      console.error('[Webhook] Unauthorized webhook request');
-      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    let payload: StrapiWebhookPayload;
-    try {
-      payload = (await request.json()) as StrapiWebhookPayload;
-    } catch {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid JSON payload' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const { event, model, entry } = payload;
-
-    if (!event || !model) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Missing required fields: event, model' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    console.log(`[Webhook] ${event} on model "${model}"`, {
-      id: entry?.id,
-      slug: entry?.slug,
-      name: entry?.name,
-    });
-
-    const isDelete = event === 'entry.delete';
-    let deletedFiles: string[] = [];
-
-    if (model === 'article') {
-      deletedFiles = invalidateArticleCache(entry?.slug);
-      console.log(`[Webhook] Cleared ${deletedFiles.length} article cache files:`, deletedFiles);
-      void warmArticleCache(entry?.slug, isDelete);
-    } else if (model === 'author') {
-      deletedFiles = invalidateAuthorCache();
-      console.log(`[Webhook] Cleared ${deletedFiles.length} author cache files:`, deletedFiles);
-      void warmAuthorCache();
-    } else if (model === 'roadmap') {
-      deletedFiles = invalidateRoadmapCache();
-      console.log(`[Webhook] Cleared ${deletedFiles.length} roadmap cache files:`, deletedFiles);
-      void warmRoadmapCache();
-    } else {
-      console.warn(`[Webhook] Unknown model: ${model}`);
-    }
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Cache cleared and refresh triggered',
-        details: {
-          event,
-          model,
-          entryId: entry?.id,
-          slug: entry?.slug,
-          deletedFiles,
-          duration: `${Date.now() - startTime}ms`,
-        },
-      }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
-  } catch (err) {
-    console.error('[Webhook] Unexpected error:', err);
-    return new Response(JSON.stringify({ success: false, error: 'Internal server error' }), {
-      status: 500,
+  // Fail closed: the package handler skips verification entirely when no secret is
+  // configured, which would leave this cache-purge endpoint open to anyone. Reject
+  // before delegating so a missing `STRAPI_WEBHOOK_SECRET` can never disable auth.
+  if (!config.webhook?.secret) {
+    console.error('[Webhook] STRAPI_WEBHOOK_SECRET is not configured — rejecting request');
+    return new Response(JSON.stringify({ ok: false, error: 'Webhook secret not configured' }), {
+      status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  // Read body once — Request streams are single-use, and we log the payload in debug mode.
+  const rawBody = await request.text();
+  logWebhookRequest(request, rawBody);
+
+  // Adapt Astro's `Request` to the package's lowest-common-denominator shape.
+  // Fetch `Headers` doesn't have a string index signature so the package's
+  // `WebhookRequest` rejects it at the type level, even though `.get()` works
+  // at runtime — wrap it so only the methods the handler needs are exposed.
+  const webhookReq = {
+    method: request.method,
+    headers: {
+      get: (name: string): string | null => getWebhookHeader(request, name),
+    },
+    text: () => Promise.resolve(rawBody),
+    json: () => Promise.resolve(JSON.parse(rawBody.length > 0 ? rawBody : '{}')),
+  };
+
+  try {
+    await handle(webhookReq, {
+      status: (code) => {
+        status = code;
+      },
+      json: (value) => {
+        body = value;
+      },
+    });
+  } catch (err) {
+    console.error('[Webhook] Unexpected error from package handler:', err);
+    status = 500;
+    body = { ok: false, error: 'Internal server error' };
+  }
+
+  if (body && typeof body === 'object' && (status === 200 || status === 502)) {
+    (body as Record<string, unknown>).duration = `${Date.now() - startTime}ms`;
+  }
+
+  logWebhookResponse(status, body);
+
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };

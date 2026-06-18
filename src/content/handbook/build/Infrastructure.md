@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Infrastructure - Datum Handbook"
+  title: "Global Infrastructure Footprint - Datum Handbook"
   description: "Datum is available in 17+ global locations. This article is focused on how we think about our global infrastructure footprint."
   og:
     title: "Infrastructure"

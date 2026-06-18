@@ -5,6 +5,7 @@ import type {
   IntegrationResolvedRoute,
   AstroIntegrationLogger,
 } from 'astro';
+import { fetchStrapiArticleSitemapRows } from '../libs/strapi/articles';
 
 const errorPrefix = '\x1b[31m';
 const infoPrefix = '\x1b[32m';
@@ -56,40 +57,8 @@ const writeSitemapFile = (filePath: string, entries: SitemapEntry[]) => {
  * Uses the same GraphQL endpoint as the rest of the site.
  */
 async function fetchStrapiSitemapEntries(siteUrl: string): Promise<SitemapEntry[]> {
-  const strapiUrl =
-    process.env.STRAPI_URL || 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
-  const strapiToken = process.env.STRAPI_TOKEN || '';
-
-  const query = `
-    query GetArticleSlugs {
-      articles(pagination: { limit: 500 }, sort: ["originalPublishedAt:desc"]) {
-        slug
-        originalPublishedAt
-      }
-    }
-  `;
-
   try {
-    const headers: HeadersInit = { 'Content-Type': 'application/json' };
-    if (strapiToken) headers['Authorization'] = `Bearer ${strapiToken}`;
-
-    const response = await fetch(`${strapiUrl}/graphql`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query }),
-      signal: AbortSignal.timeout(10_000),
-    });
-
-    if (!response.ok) {
-      console.log(`%sStrapi sitemap fetch failed: ${response.status}%s`, warnPrefix, resetPrefix);
-      return [];
-    }
-
-    const result = (await response.json()) as {
-      data?: { articles?: Array<{ slug: string; originalPublishedAt?: string }> };
-    };
-
-    const articles = result.data?.articles ?? [];
+    const articles = await fetchStrapiArticleSitemapRows();
     return articles
       .filter((a) => a.slug && !Number.isInteger(parseInt(a.slug, 10)))
       .map((a) => ({

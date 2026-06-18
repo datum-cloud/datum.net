@@ -64,7 +64,7 @@
   }
 
   .media-lightbox-caption {
-    @apply datum-text-sm text-midnight-fjord/60 text-center;
+    @apply datum-text-sm text-midnight-fjord/60 pt-2 text-center;
   }
 
   /* Clickable content/featured images that open the lightbox */

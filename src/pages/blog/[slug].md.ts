@@ -6,7 +6,8 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { fetchStrapiArticleBySlug } from '@libs/strapi';
+import { ensureStrapiArticleDetail } from '@libs/strapi';
+import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
@@ -14,13 +15,8 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response('Not found', { status: 404 });
   }
 
-  // Numeric slugs are paginated listing pages, not articles — no markdown.
-  if (/^\d+$/.test(slug)) {
-    return new Response('Not found', { status: 404 });
-  }
-
   try {
-    const article = await fetchStrapiArticleBySlug(slug);
+    const article = await ensureStrapiArticleDetail(slug);
     if (!article) {
       return new Response('Not found', { status: 404 });
     }
@@ -36,7 +32,7 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response(`${title}${description}${body}`, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
-        'Cache-Control': 'public, max-age=300, stale-while-revalidate=3600',
+        'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
       },
     });
   } catch (error) {

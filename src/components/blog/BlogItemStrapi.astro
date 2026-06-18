@@ -10,11 +10,7 @@ const { post, baseUrl = '/blog' } = Astro.props as {
 ---
 
 <div class="entry-list-item">
-  <a
-    href={`${baseUrl}/${post.id}`}
-    title={post.data.title + `fdas`}
-    class="entry-list-item--wrapper"
-  >
+  <a href={`${baseUrl}/${post.id}`} title={post.data.title} class="entry-list-item--wrapper">
     <p class="entry-list-item--title">{post.data.title}</p>
 
     <div class="entry-list-item--meta">

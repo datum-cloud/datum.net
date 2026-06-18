@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Time Off - Datum Handbook"
+  title: "Time Off & Leave Policies - Datum Handbook"
   description: "Datum's approach to unlimited time off, holidays, flexible working, sick leave, maternity leave, and other leave policies."
   og:
     title: "Time Off at Datum"

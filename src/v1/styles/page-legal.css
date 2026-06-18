@@ -54,17 +54,9 @@
 
   .legal-content {
     @apply flex-1 p-0;
-  }
-
-  .legal-on-this-page {
-    @apply w-53.25 shrink-0 self-stretch;
-  }
-
-  .legal-table-wrap {
-    @apply my-6 w-full overflow-x-auto;
 
     table {
-      @apply w-full border-separate;
+      @apply my-6 w-full border-separate;
       @apply bg-glacier-mist-900;
       border-spacing: 1px;
     }
@@ -85,5 +77,9 @@
     tbody tr:hover td {
       @apply bg-glacier-mist-800;
     }
+  }
+
+  .legal-on-this-page {
+    @apply w-53.25 shrink-0 self-stretch;
   }
 }

@@ -1,11 +1,19 @@
 // src/libs/strapi/regenerateCache.ts
 /**
- * Regenerate Strapi cache entries only when the cache file does not exist.
- * Uses the same cache keys and fetch methods as articles, authors, and roadmaps.
+ * Regenerate Strapi cache entries on demand.
+ *
+ * Two modes serve the `/api/cache/strapi` admin endpoint:
+ *   - `regenerateStrapiCacheIfMissing()` — fills only the entries whose primary
+ *     cache file is absent (or expired). Used as the safe default.
+ *   - `forceRegenerateStrapiCache(names)` — explicitly clears the listed entries
+ *     and refetches every one, regardless of current state.
+ *
+ * Cache reads/writes go through the shared `cache` manager from `_runtime.ts`
+ * so tag membership and the fallback mirror stay consistent with the rest of
+ * the Strapi module.
  */
 
-import path from 'node:path';
-import { Cache } from '@libs/cache';
+import { cache } from './_runtime';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from './articles';
 import {
   fetchStrapiAuthors,
@@ -15,9 +23,6 @@ import {
 } from './authors';
 import { fetchStrapiRoadmaps } from './roadmaps';
 import type { StrapiArticle } from '../../types/strapi';
-
-const CACHE_DIR = path.resolve(process.cwd(), '.cache');
-const cache = new Cache(CACHE_DIR);
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 export const ARTICLE_CACHE_PREFIX = 'strapi-article-';
@@ -39,27 +44,24 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
 const FIXED_FORCE_KEYS = new Set<string>(STRAPI_FORCE_REGENERATE_KEYS);
 
 function isSafeSlugSegment(slug: string): boolean {
-  if (!slug || slug.includes('/') || slug.includes('\\')) {
-    return false;
-  }
-  if (slug === '.' || slug === '..') {
-    return false;
-  }
+  if (!slug || slug.includes('/') || slug.includes('\\')) return false;
+  if (slug === '.' || slug === '..') return false;
   return true;
 }
 
 function isArticleCacheKey(name: string): boolean {
-  if (!name.startsWith(ARTICLE_CACHE_PREFIX)) {
-    return false;
-  }
+  if (!name.startsWith(ARTICLE_CACHE_PREFIX)) return false;
   return isSafeSlugSegment(name.slice(ARTICLE_CACHE_PREFIX.length).trim());
 }
 
 function isAuthorSlugCacheKey(name: string): boolean {
-  if (!name.startsWith(AUTHOR_SLUG_CACHE_PREFIX)) {
-    return false;
-  }
+  if (!name.startsWith(AUTHOR_SLUG_CACHE_PREFIX)) return false;
   return isSafeSlugSegment(name.slice(AUTHOR_SLUG_CACHE_PREFIX.length).trim());
+}
+
+/** Primary cache hit check — returns true when the key has a valid, non-expired entry. */
+async function isCached(key: string): Promise<boolean> {
+  return (await cache.get<unknown>(key)) !== null;
 }
 
 /**
@@ -68,18 +70,10 @@ function isAuthorSlugCacheKey(name: string): boolean {
  */
 export function validateStrapiForceRegenerateName(name: string): string | null {
   const trimmed = name.trim();
-  if (!trimmed) {
-    return 'Empty cache name';
-  }
-  if (FIXED_FORCE_KEYS.has(trimmed)) {
-    return null;
-  }
-  if (isArticleCacheKey(trimmed)) {
-    return null;
-  }
-  if (isAuthorSlugCacheKey(trimmed)) {
-    return null;
-  }
+  if (!trimmed) return 'Empty cache name';
+  if (FIXED_FORCE_KEYS.has(trimmed)) return null;
+  if (isArticleCacheKey(trimmed)) return null;
+  if (isAuthorSlugCacheKey(trimmed)) return null;
   return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(
     ', '
   )}, ${ARTICLE_CACHE_PREFIX}{slug}, or ${AUTHOR_SLUG_CACHE_PREFIX}{slug}`;
@@ -91,23 +85,26 @@ export function validateStrapiForceRegenerateName(name: string): string | null {
  */
 export function validateStrapiForceRegenerateRequest(names: readonly string[]): string[] {
   const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
-  if (unique.length === 0) {
-    return ['At least one cache name is required'];
-  }
+  if (unique.length === 0) return ['At least one cache name is required'];
 
   const errors: string[] = [];
   for (const name of unique) {
     const message = validateStrapiForceRegenerateName(name);
-    if (message) {
-      errors.push(`${name}: ${message}`);
-    }
+    if (message) errors.push(`${name}: ${message}`);
   }
   return errors;
 }
 
+export interface RegenerateResult {
+  regenerated: string[];
+  skipped: string[];
+  errors: string[];
+}
+
 /**
- * Clears the given Strapi cache keys and repopulates from the API where possible.
- * @param names - Validated cache key names only
+ * Clear the given Strapi cache keys and repopulate them from the API.
+ * @param names - Already-validated cache key names (caller should run
+ *   `validateStrapiForceRegenerateRequest` first).
  */
 export async function forceRegenerateStrapiCache(
   names: readonly string[]
@@ -119,7 +116,7 @@ export async function forceRegenerateStrapiCache(
   const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
 
   for (const name of unique) {
-    await cache.clear(name);
+    await cache.delete(name);
 
     try {
       switch (name) {
@@ -173,71 +170,36 @@ export async function forceRegenerateStrapiCache(
   return { regenerated, skipped, errors };
 }
 
-export interface RegenerateResult {
-  regenerated: string[];
-  skipped: string[];
-  errors: string[];
-}
-
 /**
- * Regenerate all strapi-* cache entries that do not yet exist.
- * Only populates cache when the JSON file is missing.
- * @returns Summary of regenerated keys, skipped keys, and any errors
+ * Regenerate every well-known Strapi cache entry that is currently missing.
+ * Populated entries are reported as skipped — useful as a post-deploy warm-up
+ * that won't thrash Strapi when the cache is already hot.
  */
 export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult> {
   const regenerated: string[] = [];
   const skipped: string[] = [];
   const errors: string[] = [];
 
-  // 1. strapi-articles
-  if (!(await cache.has(ARTICLES_CACHE_KEY))) {
-    try {
-      await fetchStrapiArticles();
-      regenerated.push(ARTICLES_CACHE_KEY);
-    } catch (err) {
-      errors.push(`${ARTICLES_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`);
+  const tryWarm = async (key: string, warm: () => Promise<unknown>): Promise<void> => {
+    if (await isCached(key)) {
+      skipped.push(key);
+      return;
     }
-  } else {
-    skipped.push(ARTICLES_CACHE_KEY);
-  }
-
-  // 2. strapi-authors
-  if (!(await cache.has(AUTHORS_CACHE_KEY))) {
     try {
-      await fetchStrapiAuthors();
-      regenerated.push(AUTHORS_CACHE_KEY);
+      await warm();
+      regenerated.push(key);
     } catch (err) {
-      errors.push(`${AUTHORS_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`);
+      errors.push(`${key}: ${err instanceof Error ? err.message : String(err)}`);
     }
-  } else {
-    skipped.push(AUTHORS_CACHE_KEY);
-  }
+  };
 
-  // 3. strapi-roadmaps
-  if (!(await cache.has(ROADMAPS_CACHE_KEY))) {
-    try {
-      await fetchStrapiRoadmaps();
-      regenerated.push(ROADMAPS_CACHE_KEY);
-    } catch (err) {
-      errors.push(`${ROADMAPS_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  } else {
-    skipped.push(ROADMAPS_CACHE_KEY);
-  }
+  await tryWarm(ARTICLES_CACHE_KEY, fetchStrapiArticles);
+  await tryWarm(AUTHORS_CACHE_KEY, fetchStrapiAuthors);
+  await tryWarm(ROADMAPS_CACHE_KEY, fetchStrapiRoadmaps);
+  await tryWarm(TEAM_MEMBERS_CACHE_KEY, getStrapiTeamMembers);
+  await tryWarm(CARD_MEMBERS_CACHE_KEY, getStrapiCardMembers);
 
-  // 4. strapi-team-members (depends on authors)
-  if (!(await cache.has(TEAM_MEMBERS_CACHE_KEY))) {
-    try {
-      await getStrapiTeamMembers();
-      regenerated.push(TEAM_MEMBERS_CACHE_KEY);
-    } catch (err) {
-      errors.push(`${TEAM_MEMBERS_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  } else {
-    skipped.push(TEAM_MEMBERS_CACHE_KEY);
-  }
-
-  // 5. Per-article cache (strapi-article-{slug})
+  // Per-article cache (depends on the article list)
   const articles: StrapiArticle[] = await fetchStrapiArticles();
   const authorIdsWithArticles = new Set(
     articles.map((a) => a.author?.documentId).filter((id): id is string => Boolean(id))
@@ -245,37 +207,15 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
 
   for (const article of articles) {
     const key = `${ARTICLE_CACHE_PREFIX}${article.slug}`;
-    if (!(await cache.has(key))) {
-      try {
-        await fetchStrapiArticleBySlug(article.slug);
-        regenerated.push(key);
-      } catch (err) {
-        errors.push(`${key}: ${err instanceof Error ? err.message : String(err)}`);
-      }
-    } else {
-      skipped.push(key);
-    }
+    await tryWarm(key, () => fetchStrapiArticleBySlug(article.slug));
   }
 
-  // 6. Per-author cache (strapi-author-slug-{slug}) — documentId lookup uses strapi-authors list
-  // Only for authors that have at least one article
+  // Per-author cache, restricted to authors who have at least one article
   const authors = await fetchStrapiAuthors();
   for (const author of authors) {
-    if (!authorIdsWithArticles.has(author.documentId) || !author.slug) {
-      continue;
-    }
-
+    if (!authorIdsWithArticles.has(author.documentId) || !author.slug) continue;
     const slugKey = `${AUTHOR_SLUG_CACHE_PREFIX}${author.slug}`;
-    if (!(await cache.has(slugKey))) {
-      try {
-        await fetchStrapiAuthorBySlug(author.slug);
-        regenerated.push(slugKey);
-      } catch (err) {
-        errors.push(`${slugKey}: ${err instanceof Error ? err.message : String(err)}`);
-      }
-    } else {
-      skipped.push(slugKey);
-    }
+    await tryWarm(slugKey, () => fetchStrapiAuthorBySlug(author.slug as string));
   }
 
   return { regenerated, skipped, errors };

@@ -48,8 +48,7 @@
   }
 
   .roadmap-card--placeholder {
-    @apply flex aspect-square w-full flex-col items-center justify-center overflow-clip;
-    background-color: #d6ddd7;
+    @apply bg-sage-mist flex aspect-square w-full flex-col items-center justify-center overflow-clip;
   }
 
   .roadmap-card--placeholder-month {
@@ -102,6 +101,7 @@
   }
 
   .roadmap-detail--sections {
+    @apply text-midnight-fjord;
     @apply flex flex-col gap-10;
   }
 
@@ -152,11 +152,11 @@
   }
 
   .roadmap-backlog-row {
-    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-b py-8 no-underline lg:flex-row lg:items-center lg:gap-10;
+    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-b py-8 no-underline md:gap-8 lg:flex-row lg:items-center lg:gap-10;
   }
 
   .roadmap-backlog-number {
-    @apply text-app---dark---utility-4 datum-text-xl w-14 shrink-0 font-mono leading-6 tabular-nums transition-opacity duration-150 lg:w-16;
+    @apply text-app---dark---utility-4 datum-text-base w-12 shrink-0 font-mono leading-6 tabular-nums transition-opacity duration-150;
   }
 
   .roadmap-backlog-title {
@@ -179,7 +179,7 @@
   .roadmap-backlog-row:hover .roadmap-backlog-title,
   .roadmap-backlog-row:hover .roadmap-backlog-badge,
   .roadmap-backlog-row:hover .roadmap-backlog-link {
-    @apply opacity-70;
+    @apply opacity-80;
   }
 
   /* ─────────────────────────────────────────────────────────────────────────

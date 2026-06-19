@@ -69,7 +69,7 @@
   /* Footer Components */
 
   .footer-illustration-container {
-    @apply bg-aurora-moss relative;
+    @apply bg-sage-mist relative;
     @apply relative z-9 pt-5 lg:pt-1;
 
     &:before {

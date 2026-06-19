@@ -48,8 +48,7 @@
   }
 
   .roadmap-card--placeholder {
-    @apply flex aspect-square w-full flex-col items-center justify-center overflow-clip;
-    background-color: #d6ddd7;
+    @apply bg-sage-mist flex aspect-square w-full flex-col items-center justify-center overflow-clip;
   }
 
   .roadmap-card--placeholder-month {

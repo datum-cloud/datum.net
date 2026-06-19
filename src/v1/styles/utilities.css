@@ -216,10 +216,13 @@
 
 /* Shared prose link and inheritance base — applied by all datum-prose-* variants */
 @utility datum-prose-base {
+  --tw-prose-links: var(--color-canyon-clay---links);
+  --tw-prose-links-hover: var(--color-canyon-clay---links/80);
+
   @apply prose max-w-none;
-  @apply prose-a:text-canyon-clay---links/70 prose-a:font-normal;
-  @apply prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links;
   @apply **:text-inherit;
+  @apply prose-a:font-normal prose-a:text-canyon-clay---links prose-a:underline prose-a:decoration-canyon-clay---links;
+  @apply prose-a:hover:no-underline prose-a:hover:text-canyon-clay---links/80;
 }
 
 @utility datum-prose-lg {

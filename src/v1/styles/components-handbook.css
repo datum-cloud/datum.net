@@ -111,7 +111,7 @@
     @apply transition-colors duration-200 hover:bg-gray-50;
 
     .sidebar-mobile-toggle--text {
-      @apply text-midnight-fjord datum-text-base;
+      @apply text-canyon-clay---links datum-text-base font-semibold;
     }
 
     .sidebar-mobile-toggle--icon {
@@ -179,11 +179,12 @@
   }
 
   .handbook-sidebar .menu-link {
-    @apply text-midnight-fjord/80 hover:text-midnight-fjord datum-text-sm transition-colors duration-200 ease-out;
-    @apply inline-block w-full px-2 py-1;
+    @apply datum-text-sm text-midnight-fjord/60 inline-block w-full rounded-md p-2 font-medium transition-colors duration-150;
+    @apply hover:text-midnight-fjord/80;
   }
 
   .handbook-sidebar .menu-link--active {
-    @apply bg-glacier-mist-800 text-midnight-fjord font-semibold;
+    @apply text-canyon-clay---links bg-white font-semibold;
+    @apply hover:text-canyon-clay---links hover:bg-white;
   }
 }

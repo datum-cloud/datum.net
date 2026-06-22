@@ -28,25 +28,27 @@
   }
 
   .legal-sidenav-item {
-    @apply datum-text-sm text-midnight-fjord/60 hover:text-midnight-fjord block rounded-md px-2 py-2 font-medium transition-colors duration-150;
+    @apply datum-text-sm text-midnight-fjord/60 block rounded-md p-2 font-medium transition-colors duration-150;
+    @apply hover:text-midnight-fjord/80;
 
     &.legal-sidenav-item--active {
-      @apply bg-glacier-mist-800 text-midnight-fjord font-semibold opacity-100;
+      @apply text-canyon-clay---links bg-white font-semibold;
+      @apply hover:text-canyon-clay---links hover:bg-white;
     }
 
     /* Mobile only: match brand nav dropdown style */
     @media (max-width: 767px) {
-      @apply datum-text-base text-midnight-fjord rounded-none px-3 py-1;
+      @apply datum-text-base text-midnight-fjord/60 rounded-md px-3 py-2;
 
       &:hover {
-        @apply text-canyon-clay---links;
+        @apply text-midnight-fjord/80;
       }
 
       &.legal-sidenav-item--active {
-        @apply text-canyon-clay---links bg-transparent;
+        @apply text-canyon-clay---links bg-white font-semibold;
 
         &:hover {
-          @apply text-midnight-fjord;
+          @apply text-canyon-clay---links bg-white;
         }
       }
     }

@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Finance Team - Datum Handbook"
+  title: "Datum Finance Team: Payroll, Contracts & Governance"
   description: "The Finance team keeps Datum running cleanly so the rest of the company can move fast: payroll, contracts, vendors, governance, and reporting."
   og:
     title: "Finance at Datum"

@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Leadership Team - Datum Handbook"
+  title: "Datum Leadership Team: Founders, Roles & Accountability"
   description: "The Datum leadership team charts the company's direction and is accountable to investors, the board, and the broader organization."
   og:
     title: "Datum's Leadership Team"

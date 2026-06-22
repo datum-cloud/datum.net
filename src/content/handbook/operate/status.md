@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 4, 2026
 authors: jacob
 meta:
-  title: "Status Updates - Datum Handbook"
+  title: "Async Status Updates: How Datum Keeps Teams Aligned"
   description: "How we communicate progress at Datum — asynchronous status updates that keep the whole team aligned without drowning anyone in noise."
   og:
     title: "Status updates"

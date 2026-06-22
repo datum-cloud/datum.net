@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Business Development - Datum Handbook"
+  title: "Business Development Team: Partnerships & Ecosystem — Datum"
   description: "Datum's Business Development team focuses on building an open, vendor-neutral ecosystem through partnerships, design wins, and community."
   og:
     title: "Business Development at Datum"

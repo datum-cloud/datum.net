@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Jan 21, 2026
 authors: jacob
 meta:
-  title: "Quarterly Rocks - Datum Handbook"
+  title: "Quarterly Rocks: Q1 & Q2 2026 Priorities — Datum Handbook"
   description: "Datum defines Rocks as the critical projects we prioritize. This is our public acknowledgement of our Q1 and Q2 2026 commitments"
   og:
     title: "Quarterly Rocks"

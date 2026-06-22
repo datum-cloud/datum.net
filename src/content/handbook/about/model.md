@@ -6,7 +6,7 @@ sidebar:
 updatedDate: Nov 13, 2025
 authors: jacob
 meta:
-  title: "Our Business Model - Datum Handbook"
+  title: "Datum's Business Model: Revenue Through Network Cloud Usage"
   description: "Datum's economic model uses consumption-based usage of our network cloud infrastructure — designed to align with customer success."
   og:
     title: "How we make money"

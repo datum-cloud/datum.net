@@ -44,10 +44,10 @@
 
 /* Target .expressive-code directly to match EC's own selector specificity */
 .expressive-code {
-  --ec-frm-inlBtnFg: var(--color-pine-forge);
-  --ec-code-background: var(--glacier-mist-700);
-  --ec-codeBg: var(--glacier-mist-700);
-  --ec-frm-edBg: var(--glacier-mist-700);
+  --ec-frm-inlBtnFg: var(--color-canyon-clay---links);
+  --ec-code-background: var(--glacier-mist-800);
+  --ec-codeBg: var(--glacier-mist-800);
+  --ec-frm-edBg: var(--glacier-mist-800);
   --ec-code-header-background: color-mix(in srgb, var(--color-glacier-mist-800) 40%, transparent);
 }
 

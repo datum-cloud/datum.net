@@ -22,7 +22,7 @@
   }
 
   .secondary-tab-nav-mobile-selected {
-    @apply datum-text-sm text-midnight-fjord shrink-0 font-semibold;
+    @apply datum-text-sm text-canyon-clay---links shrink-0 font-semibold;
   }
 
   .secondary-tab-nav-mobile-chevron {
@@ -42,31 +42,32 @@
   }
 
   .secondary-tab-nav-mobile-link {
-    @apply datum-text-sm text-midnight-fjord/60 mx-2 flex items-center gap-2 rounded-sm px-4 py-3 font-medium no-underline;
-    @apply hover:bg-glacier-mist-700/50 hover:text-midnight-fjord/80;
+    @apply datum-text-sm text-midnight-fjord/60 mx-2 flex items-center gap-2 rounded-md px-4 py-3 font-medium no-underline;
+    @apply hover:text-midnight-fjord/80;
 
     &--active {
-      @apply bg-glacier-mist-900 text-midnight-fjord font-semibold;
-      @apply hover:bg-glacier-mist-900 hover:text-midnight-fjord;
+      @apply text-canyon-clay---links bg-white font-semibold;
+      @apply hover:text-canyon-clay---links hover:bg-white;
     }
   }
 
-  /* Track color on the list avoids a white→gray flash before tab backgrounds paint */
   .secondary-tab-nav__list {
-    @apply md:border-glacier-mist-900 md:bg-glacier-mist-700 m-0 hidden list-none p-0 md:inline-flex md:overflow-hidden md:rounded-md md:border;
+    @apply bg-glacier-mist-800 m-0 hidden list-none gap-0 p-0.5 md:inline-flex md:overflow-hidden md:rounded-lg;
+
     li {
-      @apply last:[&>a]:border-r-0;
+      @apply m-0 p-0;
     }
   }
 
   .secondary-tab-nav__tab {
-    @apply datum-text-sm text-midnight-fjord/60 border-glacier-mist-900 inline-flex items-center justify-center border-r bg-transparent px-6 py-1.25 font-medium no-underline;
-    @apply hover:bg-glacier-mist-700/40 hover:text-midnight-fjord/75;
+    @apply datum-text-sm text-midnight-fjord/60 inline-flex items-center justify-center rounded-md bg-transparent font-medium no-underline;
+    @apply hover:text-midnight-fjord/80;
     @apply focus-visible:ring-midnight-fjord/30 focus-visible:relative focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset;
+    @apply px-6 py-1.5;
   }
 
   .secondary-tab-nav__tab--active {
-    @apply bg-glacier-mist-900 text-midnight-fjord font-semibold;
-    @apply hover:bg-glacier-mist-900 hover:text-midnight-fjord;
+    @apply text-canyon-clay---links bg-white font-semibold;
+    @apply hover:text-canyon-clay---links hover:bg-white;
   }
 }

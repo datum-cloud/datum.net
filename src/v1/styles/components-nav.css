@@ -60,7 +60,7 @@
       @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 hover:opacity-80;
 
       &.link--active {
-        @apply text-canyon-clay---links rounded-md bg-white opacity-100 hover:opacity-80;
+        @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100 hover:opacity-80;
       }
     }
   }

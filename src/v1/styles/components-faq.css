@@ -1,7 +1,7 @@
 /* FAQ Component Styles */
 
 .faq-list {
-  @apply flex flex-col gap-2 md:gap-4 lg:gap-5;
+  @apply flex flex-col gap-2 md:gap-4;
 }
 
 .faq-item {

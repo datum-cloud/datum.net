@@ -9,7 +9,7 @@ import { fetchGitHubBacklog } from '@libs/githubBacklog';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import RoadmapTabNav from '@components/roadmap/RoadmapTabNav.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
 
 const roadmapPage = await getCollectionEntry('pages', 'roadmap');
@@ -35,7 +35,16 @@ const backlogItems = await fetchGitHubBacklog();
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">
-        <RoadmapTabNav activeTab="backlog" />
+        <div class="mb-8 md:mb-13 lg:mb-18">
+          <SecondaryTabNav
+            ariaLabel="Roadmap sections"
+            mobileLabel="Roadmap section"
+            items={[
+              { label: 'Releases', href: '/roadmap', exact: true },
+              { label: 'Backlog', href: '/backlog' },
+            ]}
+          />
+        </div>
         <RoadmapBacklog items={backlogItems} />
       </div>
     </div>

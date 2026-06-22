@@ -37,22 +37,18 @@
   }
 
   .download-nav-link {
-    @apply flex items-center gap-2;
-    @apply p-2;
-    @apply datum-text-base;
-    @apply text-midnight-fjord/80;
+    @apply flex items-center gap-2 rounded-md p-2;
+    @apply datum-text-sm text-midnight-fjord/60 font-medium;
     @apply transition-colors duration-200;
-    @apply hover:text-midnight-fjord;
+    @apply hover:text-midnight-fjord/80;
   }
 
   .download-nav-link--active {
-    /* Figma: Item → Link — glacier pill, midnight text, 8px pad, 6px radius */
-    @apply bg-glacier-mist-900 rounded-md p-2;
-    @apply text-midnight-fjord font-semibold;
-    @apply hover:bg-glacier-mist-900 hover:text-midnight-fjord;
+    @apply text-canyon-clay---links bg-white font-semibold;
+    @apply hover:text-canyon-clay---links hover:bg-white;
 
     .download-nav-icon {
-      @apply text-midnight-fjord;
+      @apply text-canyon-clay---links;
     }
   }
 
@@ -187,7 +183,7 @@
   }
 
   .download-nav-mobile-selected {
-    @apply truncate font-medium text-gray-900;
+    @apply text-canyon-clay---links truncate font-semibold;
   }
 
   .download-nav-mobile-chevron {
@@ -221,16 +217,14 @@
   }
 
   .download-nav-mobile-link {
-    @apply flex items-center gap-2;
-    @apply px-3 py-1;
-    @apply datum-text-base;
-    @apply text-midnight-fjord;
+    @apply flex items-center gap-2 rounded-md px-3 py-1;
+    @apply datum-text-sm text-midnight-fjord/60 font-medium;
     @apply transition-colors duration-300 ease-out;
-    @apply hover:text-canyon-clay---links;
+    @apply hover:text-midnight-fjord/80;
 
     &--active {
-      @apply text-canyon-clay---links font-semibold;
-      @apply hover:text-midnight-fjord;
+      @apply text-canyon-clay---links bg-white font-semibold;
+      @apply hover:text-canyon-clay---links hover:bg-white;
 
       .download-nav-mobile-icon {
         @apply text-canyon-clay---links;

@@ -76,7 +76,7 @@
 
   .nav-dropdown:hover .nav-dropdown-arrow,
   .nav-dropdown:focus-within .nav-dropdown-arrow {
-    @apply rotate-180;
+    @apply mt-0 rotate-180;
   }
 
   .nav-dropdown-menu {
@@ -156,7 +156,7 @@
   }
 
   .nav-dropdown-menu.nav-dropdown-parent--product {
-    @apply -left-[250%]! p-3;
+    @apply -left-[170%]! p-3;
   }
 
   .nav-dropdown-cards {

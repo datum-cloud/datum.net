@@ -9,7 +9,7 @@ import { fetchStrapiRoadmaps } from '@libs/strapi';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import RoadmapTabNav from '@components/roadmap/RoadmapTabNav.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
 
 if (Astro.url.searchParams.get('tab') === 'backlog') {
@@ -32,7 +32,16 @@ const roadmaps = await fetchStrapiRoadmaps();
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
       <div class="max-width">
-        <RoadmapTabNav activeTab="releases" />
+        <div class="mb-8 md:mb-13 lg:mb-18">
+          <SecondaryTabNav
+            ariaLabel="Roadmap sections"
+            mobileLabel="Roadmap section"
+            items={[
+              { label: 'Releases', href: '/roadmap', exact: true },
+              { label: 'Backlog', href: '/backlog' },
+            ]}
+          />
+        </div>
         <RoadmapGrid roadmaps={roadmaps} />
       </div>
     </div>

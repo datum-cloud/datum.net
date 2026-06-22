@@ -27,5 +27,11 @@
         }
       }
     }
+
+    .nav--main {
+      .nav-menu-link {
+        @apply text-glacier-mist-700 opacity-100 hover:opacity-80;
+      }
+    }
   }
 }

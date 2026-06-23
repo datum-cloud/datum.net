@@ -6,6 +6,7 @@ import {
   getDaysUntilRelease,
   getMonthAbbreviation,
   getRoadmapCoverUrl,
+  isRoadmapShipped,
 } from '@libs/strapi';
 import { formatDate } from '@utils/dateUtils';
 
@@ -22,10 +23,10 @@ const slug = roadmap ? getRoadmapSlug(roadmap) : null;
 const hasRoadmap = Boolean(roadmap && slug);
 const coverUrl = roadmap ? getRoadmapCoverUrl(roadmap.cover) : undefined;
 const hasCover = Boolean(coverUrl);
-const hasSummary = Boolean(roadmap?.summary?.trim());
+const shipped = roadmap ? isRoadmapShipped(roadmap) : false;
 const detailHref = slug ? `/roadmap/${slug}` : undefined;
-const showDetailLink = hasRoadmap && hasCover && detailHref && hasSummary;
-const showPreviewModal = hasRoadmap && hasCover && !hasSummary;
+const showDetailLink = hasRoadmap && hasCover && detailHref && shipped;
+const showPreviewModal = hasRoadmap && hasCover && !shipped;
 const showCoverCard = showDetailLink || showPreviewModal;
 const daysUntil = roadmap ? getDaysUntilRelease(roadmap.releaseDate) : null;
 
@@ -56,7 +57,11 @@ const previewPayload = showPreviewModal
   : undefined;
 ---
 
-<li class="roadmap-card" data-roadmap-slug={showPreviewModal ? slug : undefined}>
+<li
+  class="roadmap-card"
+  data-roadmap-slug={showPreviewModal ? slug : undefined}
+  data-roadmap-shipped={roadmap != null ? String(isRoadmapShipped(roadmap)) : undefined}
+>
   {
     showCoverCard ? (
       <>

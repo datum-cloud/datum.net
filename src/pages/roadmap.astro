@@ -12,6 +12,7 @@ import Footer from '@components/Footer.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
 import RoadmapEmptyModal from '@components/roadmap/RoadmapEmptyModal.astro';
+import RoadmapViewFilter from '@components/roadmap/RoadmapViewFilter.astro';
 
 if (Astro.url.searchParams.get('tab') === 'backlog') {
   return Astro.redirect('/backlog', 301);
@@ -45,6 +46,7 @@ const roadmaps = await fetchStrapiRoadmaps();
           />
         </div>
         <RoadmapGrid roadmaps={roadmaps} />
+        <RoadmapViewFilter />
         <RoadmapEmptyModal />
       </div>
     </div>

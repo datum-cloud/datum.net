@@ -26,10 +26,6 @@
             }
           }
         }
-
-        .link--active {
-          @apply [&>span]:border-white/70;
-        }
       }
     }
     &.light {
@@ -51,10 +47,6 @@
               @apply text-canyon-clay;
             }
           }
-        }
-
-        .link--active {
-          @apply [&>span]:border-midnight-fjord/70;
         }
       }
 

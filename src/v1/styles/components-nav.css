@@ -57,11 +57,23 @@
     }
 
     .nav-menu-link {
-      @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 hover:opacity-80;
+      @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 transition-colors duration-150;
 
       &.link--active {
-        @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100 hover:opacity-80;
+        @apply font-semibold;
       }
+    }
+
+    /* Pill: hover preview (normal weight) vs route-active pill (semibold) */
+    .nav-menu-item:hover > .nav-menu-link:not(.link--active),
+    .nav-dropdown:focus-within > .nav-menu-link:not(.link--active) {
+      @apply text-canyon-clay---links rounded-md bg-white font-normal opacity-100;
+    }
+
+    .nav-menu:not(:has(.nav-menu-item:hover)) .nav-menu-link.link--active,
+    .nav-menu-item:hover > .nav-menu-link.link--active,
+    .nav-dropdown:focus-within > .nav-menu-link.link--active {
+      @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100;
     }
   }
 

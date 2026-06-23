@@ -166,7 +166,7 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
 </nav>
 
 <script>
-  function normalizeTabPath(path) {
+  function normalizeTabPath(path: string): string {
     const trimmed = path.replace(/\/+$/, '');
     return trimmed === '' ? '/' : trimmed;
   }
@@ -176,7 +176,7 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
     const currentHash = window.location.hash.slice(1);
 
     document.querySelectorAll('[data-hash-tabs]').forEach((nav) => {
-      const links = nav.querySelectorAll('[data-secondary-tab-path]');
+      const links = nav.querySelectorAll<HTMLAnchorElement>('[data-secondary-tab-path]');
       const tabHashes = Array.from(links)
         .map((link) => link.dataset.secondaryTabHash ?? '')
         .filter((hash) => hash !== '');
@@ -216,8 +216,12 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
     });
   }
 
-  if (!globalThis.__secondaryTabNavHashHook) {
-    globalThis.__secondaryTabNavHashHook = true;
+  const globalHook = globalThis as typeof globalThis & {
+    __secondaryTabNavHashHook?: boolean;
+  };
+
+  if (!globalHook.__secondaryTabNavHashHook) {
+    globalHook.__secondaryTabNavHashHook = true;
     syncSecondaryTabNavHashState();
     window.addEventListener('hashchange', syncSecondaryTabNavHashState);
   }

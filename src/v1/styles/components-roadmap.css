@@ -46,6 +46,59 @@
     }
   }
 
+  .roadmap-card--preview-trigger {
+    @apply text-midnight-fjord cursor-pointer border-0 bg-transparent p-0 text-left;
+    font: inherit;
+  }
+
+  button.roadmap-card--preview-trigger.roadmap-card--image-wrap {
+    @apply block w-full;
+  }
+
+  /* Empty release modal — Figma node 14497:55490 */
+  roadmap-empty-modal {
+    @apply contents;
+  }
+
+  .roadmap-empty-modal__dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max min-h-0 w-[92%] max-w-md;
+    @apply max-h-[calc(100vh-4rem)];
+    @apply bg-transparent;
+  }
+
+  .roadmap-empty-modal__dialog[open] {
+    @apply flex;
+  }
+
+  .roadmap-empty-modal__dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur-[9px];
+  }
+
+  .roadmap-empty-modal__frame {
+    @apply border-app---dark---utility-5 shadow-modal max-h-[calc(100vh-5rem)] overflow-y-auto rounded-lg border border-solid p-6 md:p-10;
+  }
+
+  .roadmap-empty-modal__content {
+    @apply text-midnight-fjord flex flex-col gap-6 text-center;
+  }
+
+  .roadmap-empty-modal__header {
+    @apply flex w-full flex-col gap-1.5;
+  }
+
+  .roadmap-empty-modal__date {
+    @apply datum-text-base w-full font-medium;
+  }
+
+  .roadmap-empty-modal__title {
+    @apply datum-text-7xl w-full;
+  }
+
+  .roadmap-empty-modal__message {
+    @apply datum-text-base w-full opacity-80;
+  }
+
   .roadmap-card--countdown {
     @apply datum-text-base text-midnight-fjord;
 

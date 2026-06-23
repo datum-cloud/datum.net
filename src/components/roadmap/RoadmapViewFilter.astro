@@ -1,0 +1,65 @@
+---
+// src/components/roadmap/RoadmapViewFilter.astro
+// Client-side filter for /roadmap#shipped vs default releases view.
+---
+
+<script>
+  const SHIPPED_HASH = 'shipped';
+
+  function isShippedView(): boolean {
+    return window.location.hash.slice(1) === SHIPPED_HASH;
+  }
+
+  function applyRoadmapViewFilter() {
+    const shippedView = isShippedView();
+    const cards = document.querySelectorAll<HTMLElement>('.roadmap-card');
+
+    cards.forEach((card) => {
+      if (!shippedView) {
+        card.hidden = false;
+        return;
+      }
+
+      const shippedAttr = card.dataset.roadmapShipped;
+      if (shippedAttr === undefined) {
+        card.hidden = true;
+        return;
+      }
+      card.hidden = shippedAttr !== 'true';
+    });
+  }
+
+  function setRoadmapHash(hash: string) {
+    const nextUrl = hash ? `/roadmap#${hash}` : '/roadmap';
+    if (`${window.location.pathname}${window.location.hash}` === nextUrl) return;
+    history.replaceState(null, '', nextUrl);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  }
+
+  function onRoadmapTabClick(event: MouseEvent) {
+    if (window.location.pathname.replace(/\/+$/, '') !== '/roadmap') return;
+
+    const link = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>(
+      'a[href="/roadmap"], a[href="/roadmap#shipped"]'
+    );
+    if (!link) return;
+
+    event.preventDefault();
+
+    const href = link.getAttribute('href') ?? '';
+    if (href === '/roadmap#shipped') {
+      setRoadmapHash(SHIPPED_HASH);
+      return;
+    }
+    if (href === '/roadmap') {
+      setRoadmapHash('');
+    }
+  }
+
+  if (!(globalThis as { __roadmapViewFilterHook?: boolean }).__roadmapViewFilterHook) {
+    (globalThis as { __roadmapViewFilterHook?: boolean }).__roadmapViewFilterHook = true;
+    applyRoadmapViewFilter();
+    window.addEventListener('hashchange', applyRoadmapViewFilter);
+    document.addEventListener('click', onRoadmapTabClick);
+  }
+</script>

@@ -79,7 +79,8 @@
   /* Prevent page scroll when modal is open */
   body[data-media-lightbox-open],
   body[data-newsletter-modal-open],
-  body[data-event-modal-open] {
+  body[data-event-modal-open],
+  body[data-roadmap-empty-modal-open] {
     @apply overflow-clip;
   }
 

@@ -19,24 +19,60 @@ function normalizePath(p: string): string {
   return trimmed === '' ? '/' : trimmed;
 }
 
-function isItemActive(item: SecondaryTabNavItem, pathname: string): boolean {
-  const path = normalizePath(pathname);
-  const base = normalizePath(item.href);
-  if (item.exact) {
-    return path === base;
+function parseTabHref(href: string): { path: string; hash: string } {
+  const hashIndex = href.indexOf('#');
+  if (hashIndex === -1) {
+    return { path: normalizePath(href), hash: '' };
   }
-  return path === base || path.startsWith(`${base}/`);
+  return {
+    path: normalizePath(href.slice(0, hashIndex)),
+    hash: href.slice(hashIndex + 1),
+  };
+}
+
+function getTabHashesOnPath(navItems: SecondaryTabNavItem[], itemPath: string): string[] {
+  return navItems
+    .map((item) => parseTabHref(item.href))
+    .filter(({ path, hash }) => path === itemPath && hash !== '')
+    .map(({ hash }) => hash);
+}
+
+function isItemActive(
+  item: SecondaryTabNavItem,
+  pathname: string,
+  currentHash: string,
+  navItems: SecondaryTabNavItem[]
+): boolean {
+  const { path: itemPath, hash: itemHash } = parseTabHref(item.href);
+  const path = normalizePath(pathname);
+
+  if (item.exact) {
+    if (path !== itemPath) return false;
+  } else if (path !== itemPath && !path.startsWith(`${itemPath}/`)) {
+    return false;
+  }
+
+  if (itemHash) {
+    return currentHash === itemHash;
+  }
+
+  const tabHashes = getTabHashesOnPath(navItems, itemPath);
+  if (tabHashes.length === 0) {
+    return true;
+  }
+  return !tabHashes.includes(currentHash);
 }
 
 const currentPath = Astro.url.pathname;
-const activeItem = items.find((item) => isItemActive(item, currentPath)) ?? items[0];
+const activeItem = items.find((item) => isItemActive(item, currentPath, '', items)) ?? items[0];
 const activeLabel = activeItem.label;
 
 const mobileMenuId = `${idPrefix}-mobile-menu`;
 const mobileTriggerId = `${idPrefix}-mobile-trigger`;
+const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
 ---
 
-<nav class="secondary-tab-nav" aria-label={ariaLabel}>
+<nav class="secondary-tab-nav" aria-label={ariaLabel} data-hash-tabs={hasHashTabs || undefined}>
   <div class="secondary-tab-nav-mobile md:hidden" x-data="{ open: false }">
     <button
       type="button"
@@ -48,7 +84,9 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
       aria-controls={mobileMenuId}
     >
       <span class="secondary-tab-nav-mobile-label">{mobileLabel}</span>
-      <span class="secondary-tab-nav-mobile-selected">{activeLabel}</span>
+      <span class="secondary-tab-nav-mobile-selected" data-secondary-tab-mobile-selected
+        >{activeLabel}</span
+      >
       <span
         class="secondary-tab-nav-mobile-chevron"
         :class="{ 'secondary-tab-nav-mobile-chevron--open': open }"
@@ -69,23 +107,30 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
     >
       <ul class="secondary-tab-nav-mobile-list" role="presentation">
         {
-          items.map((item) => (
-            <li role="presentation">
-              <a
-                href={item.href}
-                class:list={[
-                  'secondary-tab-nav-mobile-link',
-                  { 'secondary-tab-nav-mobile-link--active': isItemActive(item, currentPath) },
-                ]}
-                role="option"
-                aria-selected={isItemActive(item, currentPath) ? 'true' : 'false'}
-                @click="open = false"
-                data-astro-prefetch="hover"
-              >
-                <span>{item.label}</span>
-              </a>
-            </li>
-          ))
+          items.map((item) => {
+            const { path: tabPath, hash: tabHash } = parseTabHref(item.href);
+            const active = isItemActive(item, currentPath, '', items);
+            return (
+              <li role="presentation">
+                <a
+                  href={item.href}
+                  class:list={[
+                    'secondary-tab-nav-mobile-link',
+                    { 'secondary-tab-nav-mobile-link--active': active },
+                  ]}
+                  role="option"
+                  aria-selected={active ? 'true' : 'false'}
+                  data-secondary-tab-path={tabPath}
+                  data-secondary-tab-hash={tabHash}
+                  data-secondary-tab-label={item.label}
+                  @click="open = false"
+                  data-astro-prefetch="hover"
+                >
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            );
+          })
         }
       </ul>
     </div>
@@ -93,22 +138,91 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
 
   <ul class="secondary-tab-nav__list">
     {
-      items.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class:list={[
-              'secondary-tab-nav__tab',
-              {
-                'secondary-tab-nav__tab--active': isItemActive(item, currentPath),
-              },
-            ]}
-            aria-current={isItemActive(item, currentPath) ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))
+      items.map((item) => {
+        const { path: tabPath, hash: tabHash } = parseTabHref(item.href);
+        const active = isItemActive(item, currentPath, '', items);
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'secondary-tab-nav__tab',
+                {
+                  'secondary-tab-nav__tab--active': active,
+                },
+              ]}
+              aria-current={active ? 'page' : undefined}
+              data-secondary-tab-path={tabPath}
+              data-secondary-tab-hash={tabHash}
+              data-secondary-tab-label={item.label}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })
     }
   </ul>
 </nav>
+
+<script>
+  function normalizeTabPath(path: string): string {
+    const trimmed = path.replace(/\/+$/, '');
+    return trimmed === '' ? '/' : trimmed;
+  }
+
+  function syncSecondaryTabNavHashState() {
+    const currentPath = normalizeTabPath(window.location.pathname);
+    const currentHash = window.location.hash.slice(1);
+
+    document.querySelectorAll('[data-hash-tabs]').forEach((nav) => {
+      const links = nav.querySelectorAll<HTMLAnchorElement>('[data-secondary-tab-path]');
+      const tabHashes = Array.from(links)
+        .map((link) => link.dataset.secondaryTabHash ?? '')
+        .filter((hash) => hash !== '');
+
+      let activeLabel = '';
+
+      links.forEach((link) => {
+        const tabPath = link.dataset.secondaryTabPath ?? '';
+        const tabHash = link.dataset.secondaryTabHash ?? '';
+        if (tabPath !== currentPath) return;
+
+        const isActive = tabHash
+          ? currentHash === tabHash
+          : tabHashes.length === 0 || !tabHashes.includes(currentHash);
+
+        link.classList.toggle('secondary-tab-nav__tab--active', isActive);
+        link.classList.toggle('secondary-tab-nav-mobile-link--active', isActive);
+
+        if (link.classList.contains('secondary-tab-nav__tab')) {
+          if (isActive) {
+            link.setAttribute('aria-current', 'page');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        } else {
+          link.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        }
+        if (isActive) {
+          activeLabel = link.dataset.secondaryTabLabel ?? link.textContent?.trim() ?? '';
+        }
+      });
+
+      const selected = nav.querySelector('[data-secondary-tab-mobile-selected]');
+      if (selected && activeLabel) {
+        selected.textContent = activeLabel;
+      }
+    });
+  }
+
+  const globalHook = globalThis as typeof globalThis & {
+    __secondaryTabNavHashHook?: boolean;
+  };
+
+  if (!globalHook.__secondaryTabNavHashHook) {
+    globalHook.__secondaryTabNavHashHook = true;
+    syncSecondaryTabNavHashState();
+    window.addEventListener('hashchange', syncSecondaryTabNavHashState);
+  }
+</script>

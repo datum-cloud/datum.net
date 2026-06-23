@@ -7,6 +7,7 @@ import {
   getMonthAbbreviation,
   getRoadmapCoverUrl,
 } from '@libs/strapi';
+import { formatDate } from '@utils/dateUtils';
 
 interface Props {
   roadmap?: StrapiRoadmap;
@@ -35,6 +36,9 @@ const detailLabel = roadmap?.title
 const titleParts = roadmap?.title?.split(':') ?? [];
 const releaseName = titleParts[0]?.trim() ?? roadmap?.title ?? '';
 const releaseVersion = titleParts[1]?.trim() ?? '';
+const releaseMonthYear = roadmap
+  ? formatDate(roadmap.releaseDate, 'en-US', { month: 'short', year: 'numeric' })
+  : '';
 ---
 
 <li class="roadmap-card">
@@ -51,13 +55,13 @@ const releaseVersion = titleParts[1]?.trim() ?? '';
           />
         </a>
         <div class="roadmap-card--label">
+          <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
+            {releaseMonthYear}
+          </time>
           <a href={detailHref} class="roadmap-card--label-name">
             <strong>{releaseName}:</strong>
             {releaseVersion ? ` ${releaseVersion}` : ''}
           </a>
-          <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
-            {monthAbbr.slice(0, 3).charAt(0) + monthAbbr.slice(0, 3).slice(1).toLowerCase()}
-          </time>
         </div>
       </>
     ) : (

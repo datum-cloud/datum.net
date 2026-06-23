@@ -31,7 +31,11 @@
   }
 
   .roadmap-card--label {
-    @apply datum-text-base text-midnight-fjord flex items-start justify-between whitespace-nowrap;
+    @apply datum-text-base text-midnight-fjord flex items-start gap-1.5 whitespace-nowrap;
+  }
+
+  .roadmap-card--label-date {
+    @apply shrink-0 opacity-60;
   }
 
   .roadmap-card--label-name {
@@ -40,10 +44,6 @@
     strong {
       @apply font-semibold;
     }
-  }
-
-  .roadmap-card--label-date {
-    @apply shrink-0 opacity-60;
   }
 
   .roadmap-card--countdown {

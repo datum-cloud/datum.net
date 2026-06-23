@@ -20,10 +20,10 @@
               "href": "/essentials"
             },
             {
-              "text": "Pricing",
-              "image": "/images/nav/pricing.png",
-              "desc": "Pssssssst... It's free",
-              "href": "/pricing"
+              "text": "Locations",
+              "image": "/images/nav/world-map.png",
+              "desc": "Deploy at the global edge",
+              "href": "/locations"
             }
           ]
         }
@@ -37,7 +37,6 @@
         {
           "title": "Get started:",
           "items": [
-            { "text": "Locations", "href": "/locations" },
             { "text": "Blog", "href": "/blog" },
             {
               "text": "Videos",

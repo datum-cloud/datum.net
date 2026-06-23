@@ -30,7 +30,22 @@
 
     .nav--main {
       .nav-menu-link {
-        @apply text-glacier-mist-700 opacity-100 hover:opacity-80;
+        @apply text-glacier-mist-700 opacity-100;
+
+        &.link--active {
+          @apply font-semibold;
+        }
+      }
+
+      .nav-menu-item:hover > .nav-menu-link:not(.link--active),
+      .nav-dropdown:focus-within > .nav-menu-link:not(.link--active) {
+        @apply text-canyon-clay---links bg-white font-normal opacity-100;
+      }
+
+      .nav-menu:not(:has(.nav-menu-item:hover)) .nav-menu-link.link--active,
+      .nav-menu-item:hover > .nav-menu-link.link--active,
+      .nav-dropdown:focus-within > .nav-menu-link.link--active {
+        @apply text-canyon-clay---links bg-white font-semibold opacity-100;
       }
     }
   }

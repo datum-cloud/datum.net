@@ -7,7 +7,7 @@ updatedDate: Nov 13, 2025
 authors: jacob
 meta:
   title: "Vendor Management & Onboarding - Datum Policy"
-  description: "Securing our ecosystem. Learn about Datum's rigorous process for assessing vendors and ensuring third-party compliance with our security and privacy standards."
+  description: "Securing our ecosystem. Learn about Datum's rigorous process for assessing vendors and ensuring third-party compliance with our security standards."
   og:
     title: "Third party vendor review policy"
 ---

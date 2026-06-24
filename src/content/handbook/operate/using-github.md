@@ -7,7 +7,7 @@ updatedDate: Jan 21, 2026
 authors: jacob
 meta:
   title: "Using GitHub for Engineering Workflows - Datum Handbook"
-  description: "GitHub is a critical piece of infrastructure and a daily working environment for everyone at Datum; we organize our work in releases, enhancements and issues."
+  description: "GitHub is a critical piece of infrastructure and a daily working environment for everyone at Datum, organized around releases, enhancements, and issues."
   og:
     title: "Using GitHub"
 ---

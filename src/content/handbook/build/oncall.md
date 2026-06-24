@@ -6,8 +6,8 @@ sidebar:
 updatedDate: May 4, 2026
 authors: jacob
 meta:
-  title: "On-Call Rotations - Datum Handbook"
-  description: "How Datum runs on-call rotations to serve customers, improve our services, and protect engineers from burnout."
+  title: "On-Call Rotations & Well-Being Policy — Datum Handbook"
+  description: "How Datum runs on-call rotations to serve customers, improve services, and protect engineers from burnout with PagerDuty and blameless reviews."
   og:
     title: "On-call"
 ---

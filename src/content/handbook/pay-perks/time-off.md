@@ -10,7 +10,7 @@ meta:
   description: "Datum's approach to unlimited time off, holidays, flexible working, sick leave, maternity leave, and other leave policies."
   og:
     title: "Time Off at Datum"
-    description: "How time off works at Datum."
+    description: "Datum's approach to unlimited time off, holidays, flexible working, sick leave, maternity leave, and other leave policies."
 ---
 
 We offer unlimited time off with no accrual of vacation days. We expect everyone to take sufficient time off to recharge throughout the year — there is no maximum. Your manager may check in with you if it seems like you have not been taking adequate breaks.

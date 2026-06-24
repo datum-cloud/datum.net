@@ -6,7 +6,7 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Career Progression - Datum Handbook"
+  title: "Career Progression at Datum: Growth, Impact & Autonomy"
   description: "How career growth works at Datum: impact over ladder-climbing, real autonomy, and an open-source portfolio that speaks for itself."
   og:
     title: "Career Progression at Datum"

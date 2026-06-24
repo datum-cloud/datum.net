@@ -6,8 +6,8 @@ sidebar:
 updatedDate: May 4, 2026
 authors: jacob
 meta:
-  title: "Project Management - Datum Handbook"
-  description: "How Datum runs projects — from goal-setting and status updates to a shared definition of what 'done' actually means."
+  title: "Project Management at Datum: Goal-Setting & Done Criteria"
+  description: "How Datum runs projects — from goal-setting and status updates to a shared definition of what 'done' actually means, in an async-first, distributed team."
   og:
     title: "Project management"
 ---

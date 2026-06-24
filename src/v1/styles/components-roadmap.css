@@ -3,31 +3,6 @@
    * Roadmap v2 — advent-calendar grid layout
    * ───────────────────────────────────────────────────────────────────────── */
 
-  /* Tab navigation — Temp/Tablist (Figma 14077:77614) */
-  .roadmap-tab-nav {
-    @apply isolate mb-8 flex items-start md:mb-12 lg:mb-16;
-  }
-
-  .roadmap-tab-nav--item {
-    @apply border-glacier-mist-900 datum-docs-article-body relative z-3 flex h-[33px] shrink-0 flex-col items-start border-b pr-3.5 no-underline;
-
-    &.roadmap-tab-nav--item--standard {
-      @apply z-2 px-3.5;
-    }
-  }
-
-  .roadmap-tab-nav--content {
-    @apply datum-text-base text-app---dark---utility-4 flex h-[33px] items-end justify-center py-3 whitespace-nowrap;
-
-    &.roadmap-tab-nav--content--active {
-      @apply border-midnight-fjord text-midnight-fjord border-b;
-    }
-  }
-
-  .roadmap-tab-nav--spacer {
-    @apply border-glacier-mist-900 relative z-1 h-[33px] min-w-0 flex-1 border-b;
-  }
-
   /* Grid */
   .roadmap-grid {
     @apply grid grid-cols-1 gap-x-13 gap-y-13 sm:grid-cols-2 lg:grid-cols-3;
@@ -56,7 +31,11 @@
   }
 
   .roadmap-card--label {
-    @apply datum-text-base text-midnight-fjord flex items-start justify-between whitespace-nowrap;
+    @apply datum-text-base text-midnight-fjord flex items-start gap-1.5 whitespace-nowrap;
+  }
+
+  .roadmap-card--label-date {
+    @apply shrink-0 opacity-60;
   }
 
   .roadmap-card--label-name {
@@ -67,8 +46,57 @@
     }
   }
 
-  .roadmap-card--label-date {
-    @apply shrink-0 opacity-60;
+  .roadmap-card--preview-trigger {
+    @apply text-midnight-fjord cursor-pointer border-0 bg-transparent p-0 text-left;
+    font: inherit;
+  }
+
+  button.roadmap-card--preview-trigger.roadmap-card--image-wrap {
+    @apply block w-full;
+  }
+
+  /* Empty release modal — Figma node 14497:55490 */
+  roadmap-empty-modal {
+    @apply contents;
+  }
+
+  .roadmap-empty-modal__dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max min-h-0 w-[92%] max-w-md;
+    @apply max-h-[calc(100vh-4rem)];
+    @apply bg-transparent;
+  }
+
+  .roadmap-empty-modal__dialog[open] {
+    @apply flex;
+  }
+
+  .roadmap-empty-modal__dialog::backdrop {
+    @apply bg-glacier-mist-900/80 backdrop-blur-[9px];
+  }
+
+  .roadmap-empty-modal__frame {
+    @apply border-app---dark---utility-5 shadow-modal max-h-[calc(100vh-5rem)] overflow-y-auto rounded-lg border border-solid p-6 md:p-10;
+  }
+
+  .roadmap-empty-modal__content {
+    @apply text-midnight-fjord flex flex-col gap-6 text-center;
+  }
+
+  .roadmap-empty-modal__header {
+    @apply flex w-full flex-col gap-1.5;
+  }
+
+  .roadmap-empty-modal__date {
+    @apply datum-text-base w-full font-medium;
+  }
+
+  .roadmap-empty-modal__title {
+    @apply datum-text-7xl w-full;
+  }
+
+  .roadmap-empty-modal__message {
+    @apply datum-text-base w-full opacity-80;
   }
 
   .roadmap-card--countdown {
@@ -148,11 +176,11 @@
 
   /* Backlog list */
   .roadmap-backlog-list {
-    @apply border-app---dark---utility-1 flex flex-col border-t;
+    @apply flex flex-col;
   }
 
   .roadmap-backlog-row {
-    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-b py-8 no-underline md:gap-8 lg:flex-row lg:items-center lg:gap-10;
+    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-t py-8 no-underline md:gap-8 lg:flex-row lg:items-center lg:gap-10;
   }
 
   .roadmap-backlog-number {

@@ -120,5 +120,6 @@ export {
   getRoadmapSlug,
   getDaysUntilRelease,
   getRoadmapCoverUrl,
+  isRoadmapShipped,
   type GroupedRoadmaps,
 } from './roadmaps';

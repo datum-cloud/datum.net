@@ -3,7 +3,7 @@
  * Strapi Roadmaps module.
  *
  * GraphQL + cache duties live in `_runtime.ts` (via `@datum-cloud/strapi-revalidate`).
- * Cache key `strapi-roadmaps-v2` is tagged `roadmaps`; the webhook tag map in
+ * Cache key `strapi-roadmaps-v5` is tagged `roadmaps`; the webhook tag map in
  * `_runtime.ts` routes `api::roadmap.roadmap` events to this tag.
  *
  * Per-slug detail cache:
@@ -15,8 +15,8 @@ import { fetchAllGraphQLPages } from './graphqlPagination';
 import type { StrapiRoadmap, StrapiRoadmapsResponse, StrapiImage } from '../../types/strapi';
 import { getStrapiMediaUrl } from '../../types/strapi';
 
-/** Primary list cache key (v2 schema: slug + cover). */
-export const ROADMAPS_CACHE_KEY = 'strapi-roadmaps-v2';
+/** Primary list cache key (v5 schema: shipped boolean). */
+export const ROADMAPS_CACHE_KEY = 'strapi-roadmaps-v5';
 /** Pre-v2 key; still accepted by admin force-regen for backward compatibility. */
 export const LEGACY_ROADMAPS_CACHE_KEY = 'strapi-roadmaps';
 /** Per-slug detail cache prefix (`strapi-roadmap-{slug}`). */
@@ -34,6 +34,7 @@ export const ROADMAPS_QUERY = `
       description
       summary
       releaseDate
+      shipped
       githubUrl
       cover {
         url
@@ -131,6 +132,10 @@ export async function fetchStrapiRoadmapBySlug(slug: string): Promise<StrapiRoad
 export interface GroupedRoadmaps {
   upcoming: StrapiRoadmap[];
   previous: StrapiRoadmap[];
+}
+
+export function isRoadmapShipped(roadmap: Pick<StrapiRoadmap, 'shipped'>): boolean {
+  return roadmap.shipped === true;
 }
 
 /**

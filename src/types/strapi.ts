@@ -119,6 +119,8 @@ export interface StrapiRoadmap {
   summary?: string;
   releaseDate: string;
   githubUrl?: string;
+  /** When true, milestone appears in the Shipped roadmap filter. */
+  shipped?: boolean;
   cover?: StrapiImage;
 }
 

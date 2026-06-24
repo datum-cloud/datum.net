@@ -53,15 +53,27 @@
     }
 
     .nav-menu-item {
-      @apply flex items-center gap-2 py-3;
+      @apply flex cursor-pointer items-center gap-2 py-3;
     }
 
     .nav-menu-link {
-      @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 hover:opacity-80;
+      @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 transition-colors duration-150;
 
       &.link--active {
-        @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100 hover:opacity-80;
+        @apply font-semibold;
       }
+    }
+
+    /* Pill: hover preview (normal weight) vs route-active pill (semibold) */
+    .nav-menu-item:hover > .nav-menu-link:not(.link--active),
+    .nav-dropdown:focus-within > .nav-menu-link:not(.link--active) {
+      @apply text-canyon-clay---links rounded-md bg-white font-normal opacity-100;
+    }
+
+    .nav-menu:not(:has(.nav-menu-item:hover)) .nav-menu-link.link--active,
+    .nav-menu-item:hover > .nav-menu-link.link--active,
+    .nav-dropdown:focus-within > .nav-menu-link.link--active {
+      @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100;
     }
   }
 
@@ -76,11 +88,11 @@
 
   .nav-dropdown:hover .nav-dropdown-arrow,
   .nav-dropdown:focus-within .nav-dropdown-arrow {
-    @apply rotate-180;
+    @apply mt-0 rotate-180;
   }
 
   .nav-dropdown-menu {
-    @apply shadow-modal pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
+    @apply shadow-modal pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu,
@@ -155,8 +167,8 @@
     @apply -left-[150%] p-3;
   }
 
-  .nav-dropdown-menu.nav-dropdown-parent--product {
-    @apply -left-[250%]! p-3;
+  .nav-dropdown-menu.nav-dropdown-parent--platform {
+    @apply -left-[170%]! p-3;
   }
 
   .nav-dropdown-cards {

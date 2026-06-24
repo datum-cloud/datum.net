@@ -1,7 +1,7 @@
 {
   "main": [
     {
-      "text": "Product",
+      "text": "Platform",
       "href": "/features",
       "children": [
         {
@@ -35,41 +35,22 @@
       "isMegaDropdown": true,
       "children": [
         {
-          "title": "Get started:",
+          "title": "Get Started:",
           "items": [
-            { "text": "Blog", "href": "/blog" },
-            {
-              "text": "Videos",
-              "href": "https://www.youtube.com/@Datum-Cloud",
-              "isExternal": true
-            },
-            {
-              "text": "GitHub Discussions",
-              "href": "https://github.com/orgs/datum-cloud/discussions",
-              "isExternal": true
-            },
-            {
-              "text": "Discord",
-              "href": "https://discord.com/invite/AeA9XZu4Py",
-              "isExternal": true
-            }
+            { "text": "Changelog", "href": "/changelog" },
+            { "text": "Download", "href": "/download" },
+            { "text": "Roadmap", "href": "/roadmap" }
           ]
         },
         {
-          "title": "Get involved:",
+          "title": "About Us:",
           "items": [
-            { "text": "Changelog", "href": "/changelog" },
-            { "text": "Roadmap", "href": "/roadmap" },
-            { "text": "Events", "href": "/events" },
             { "text": "Careers", "href": "/careers" },
-            { "text": "Handbook", "href": "/handbook" }
+            { "text": "Blog", "href": "/blog" },
+            { "text": "Events", "href": "/events" }
           ]
         }
       ]
-    },
-    {
-      "text": "Download",
-      "href": "/download"
     },
     {
       "text": "Docs",

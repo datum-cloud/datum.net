@@ -167,7 +167,7 @@
     @apply -left-[150%] p-3;
   }
 
-  .nav-dropdown-menu.nav-dropdown-parent--product {
+  .nav-dropdown-menu.nav-dropdown-parent--platform {
     @apply -left-[170%]! p-3;
   }
 

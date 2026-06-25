@@ -5,6 +5,7 @@ export const prerender = false;
 import '@v1/styles/page-roadmap.css';
 import { getCollectionEntry } from '@utils/collectionUtils';
 import { fetchGitHubBacklog } from '@libs/githubBacklog';
+import { fetchStrapiRoadmaps, isRoadmapShipped } from '@libs/strapi';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -26,7 +27,14 @@ const heroDescription = roadmapPage.data.description;
 const layoutTitle = backlogMeta.title ?? 'Datum Product Backlog';
 const layoutDescription = backlogMeta.description ?? backlogPage.data.description;
 
-const backlogItems = await fetchGitHubBacklog();
+const [backlogItems, roadmaps] = await Promise.all([fetchGitHubBacklog(), fetchStrapiRoadmaps()]);
+const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
+
+const tabItems = [
+  ...(hasUpcoming ? [{ label: 'Upcoming', href: '/roadmap', exact: true as const }] : []),
+  { label: 'Shipped', href: '/roadmap#shipped' },
+  { label: 'Backlog', href: '/roadmap/backlog', exact: true as const },
+];
 ---
 
 <Layout title={layoutTitle} description={layoutDescription} bodyClass="page-backlog" meta={meta}>
@@ -39,11 +47,7 @@ const backlogItems = await fetchGitHubBacklog();
           <SecondaryTabNav
             ariaLabel="Roadmap sections"
             mobileLabel="Roadmap section"
-            items={[
-              { label: 'Releases', href: '/roadmap', exact: true },
-              { label: 'Shipped', href: '/roadmap#shipped' },
-              { label: 'Backlog', href: '/roadmap/backlog', exact: true },
-            ]}
+            items={tabItems}
           />
         </div>
         <RoadmapBacklog items={backlogItems} />

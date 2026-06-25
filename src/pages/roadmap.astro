@@ -4,7 +4,7 @@ export const prerender = false;
 
 import '@v1/styles/page-roadmap.css';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { fetchStrapiRoadmaps } from '@libs/strapi';
+import { fetchStrapiRoadmaps, isRoadmapShipped } from '@libs/strapi';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -25,6 +25,13 @@ const heroYear = new Date().getFullYear();
 const heroTitle = `${heroYear} Roadmap`;
 
 const roadmaps = await fetchStrapiRoadmaps();
+const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
+
+const tabItems = [
+  ...(hasUpcoming ? [{ label: 'Upcoming', href: '/roadmap', exact: true as const }] : []),
+  { label: 'Shipped', href: '/roadmap#shipped' },
+  { label: 'Backlog', href: '/roadmap/backlog' },
+];
 ---
 
 <Layout title={heroTitle} description={description} bodyClass="page-roadmap" meta={meta}>
@@ -37,11 +44,7 @@ const roadmaps = await fetchStrapiRoadmaps();
           <SecondaryTabNav
             ariaLabel="Roadmap sections"
             mobileLabel="Roadmap section"
-            items={[
-              { label: 'Releases', href: '/roadmap', exact: true },
-              { label: 'Shipped', href: '/roadmap#shipped' },
-              { label: 'Backlog', href: '/roadmap/backlog' },
-            ]}
+            items={tabItems}
           />
         </div>
         <RoadmapGrid roadmaps={roadmaps} />

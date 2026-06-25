@@ -83,12 +83,12 @@
   }
 
   .nav-dropdown-arrow {
-    @apply -mt-1 transition-transform duration-200 ease-in-out;
+    @apply transition-transform duration-200 ease-in-out;
   }
 
   .nav-dropdown:hover .nav-dropdown-arrow,
   .nav-dropdown:focus-within .nav-dropdown-arrow {
-    @apply mt-0 rotate-180;
+    @apply rotate-180;
   }
 
   .nav-dropdown-menu {

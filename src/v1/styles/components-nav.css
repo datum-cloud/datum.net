@@ -92,12 +92,25 @@
   }
 
   .nav-dropdown-menu {
-    @apply shadow-modal pointer-events-none invisible absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-[var(--radius-lg)] bg-white p-6 opacity-0 transition-all duration-200 ease-in-out;
+    @apply shadow-modal absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-[var(--radius-lg)] bg-white p-6;
+    opacity: 0;
+    visibility: hidden;
+    /* Close: 300ms hold, then 200ms fade-out, then hide. Using visibility (not
+       pointer-events-none) so the dropdown stays interactive during the hold —
+       moving back into it re-activates :hover on the parent. */
+    transition:
+      opacity 200ms ease-in-out 150ms,
+      visibility 0s 350ms;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu,
   .nav-dropdown:focus-within .nav-dropdown-menu {
-    @apply pointer-events-auto visible opacity-100;
+    opacity: 1;
+    visibility: visible;
+    /* Open: no delay — show immediately, fade in fast. */
+    transition:
+      opacity 200ms ease-in-out,
+      visibility 0s;
   }
 
   .nav-dropdown-items {

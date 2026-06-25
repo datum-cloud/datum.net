@@ -5,22 +5,31 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { fetchStrapiRoadmaps, groupRoadmapsByDate, getMonthAbbreviation } from '@libs/strapi';
+import {
+  fetchStrapiRoadmaps,
+  groupRoadmapsByDate,
+  getMonthAbbreviation,
+  getRoadmapSlug,
+} from '@libs/strapi';
 import type { StrapiRoadmap } from '@libs/strapi';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 
-function renderMilestone(roadmap: StrapiRoadmap, includeSummary: boolean): string {
+function renderMilestone(roadmap: StrapiRoadmap, includeDetail: boolean): string {
   const month = getMonthAbbreviation(roadmap.releaseDate);
   const lines: string[] = [`### ${month} - ${roadmap.title}`];
   if (roadmap.description) {
     lines.push('', roadmap.description);
   }
-  if (includeSummary && roadmap.summary) {
+  if (includeDetail && roadmap.summary) {
     lines.push('', roadmap.summary);
   }
   if (roadmap.githubUrl) {
     lines.push('', `[GitHub](${roadmap.githubUrl})`);
+  }
+  if (includeDetail) {
+    const slug = getRoadmapSlug(roadmap);
+    lines.push('', `[Full details](/roadmap/${slug}.md)`);
   }
   return lines.join('\n');
 }
@@ -36,6 +45,8 @@ export const GET: APIRoute = async () => {
       "We plan and ship in monthly cycles. Each cycle is named for a cultural, literary or scientific pioneer whose story connects to the work we're doing.",
       '',
       "Here's a view of the road ahead. Vote for your favorites, or [request a new feature on GitHub](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests).",
+      '',
+      'See also: [Product Backlog](/roadmap/backlog.md) - features planned but not yet assigned to a release.',
     ];
 
     if (upcoming.length > 0) {

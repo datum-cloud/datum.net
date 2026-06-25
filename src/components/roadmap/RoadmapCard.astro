@@ -37,7 +37,6 @@ const detailLabel = roadmap?.title
 // Parse "Name: Version" from title (e.g. "Mary Elizabeth: 1.1")
 const titleParts = roadmap?.title?.split(':') ?? [];
 const releaseName = titleParts[0]?.trim() ?? roadmap?.title ?? '';
-const releaseVersion = titleParts[1]?.trim() ?? '';
 const releaseMonthYear = roadmap
   ? formatDate(roadmap.releaseDate, 'en-US', { month: 'long', year: 'numeric' })
   : '';
@@ -64,8 +63,7 @@ const releaseMonthYear = roadmap
             {releaseMonthYear}
           </time>
           <a href={detailHref} class="roadmap-card--label-name">
-            <strong>{releaseName}:</strong>
-            {releaseVersion ? ` ${releaseVersion}` : ''}
+            <strong>"{releaseName}"</strong>
           </a>
         </div>
       </>

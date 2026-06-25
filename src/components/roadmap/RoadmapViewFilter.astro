@@ -1,6 +1,6 @@
 ---
 // src/components/roadmap/RoadmapViewFilter.astro
-// Client-side filter for /roadmap#shipped vs default releases view.
+// Client-side filter for /roadmap#shipped vs default upcoming view.
 ---
 
 <script>
@@ -15,12 +15,13 @@
     const cards = document.querySelectorAll<HTMLElement>('.roadmap-card');
 
     cards.forEach((card) => {
+      const shippedAttr = card.dataset.roadmapShipped;
+
       if (!shippedView) {
-        card.hidden = false;
+        card.hidden = shippedAttr === 'true';
         return;
       }
 
-      const shippedAttr = card.dataset.roadmapShipped;
       if (shippedAttr === undefined) {
         card.hidden = true;
         return;

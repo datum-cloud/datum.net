@@ -179,6 +179,12 @@
   ],
   "social": [
     {
+      "href": "https://github.com/datum-cloud/",
+      "text": "GitHub",
+      "icon": "github",
+      "isExternal": true
+    },
+    {
       "href": "https://link.datum.net/discord",
       "text": "Discord",
       "icon": "discord",

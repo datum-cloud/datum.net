@@ -6,6 +6,7 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import LocationsMap from '@components/locations/LocationsMap.astro';
 import LocationsList from '@components/locations/LocationsList.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -36,7 +37,18 @@ const jsonLd = {
 
 <Layout bodyClass="page-locations" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container overflow-clip">
-    <Hero class="light" title={title} />
+    <Hero class="light content-alt pb-0" title={title} description={fm.description}>
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={[
+          { label: 'Features', href: '/features', exact: true },
+          { label: 'Essentials', href: '/essentials' },
+          { label: 'Locations', href: '/locations' },
+        ]}
+      />
+    </Hero>
 
     <div class="section--block section--block--pad bg-glacier-mist-700 pt-0 pb-0">
       <div class="max-width">

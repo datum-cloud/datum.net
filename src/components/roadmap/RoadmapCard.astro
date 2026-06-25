@@ -23,11 +23,9 @@ const slug = roadmap ? getRoadmapSlug(roadmap) : null;
 const hasRoadmap = Boolean(roadmap && slug);
 const coverUrl = roadmap ? getRoadmapCoverUrl(roadmap.cover) : undefined;
 const hasCover = Boolean(coverUrl);
-const shipped = roadmap ? isRoadmapShipped(roadmap) : false;
 const detailHref = slug ? `/roadmap/${slug}` : undefined;
-const showDetailLink = hasRoadmap && hasCover && detailHref && shipped;
-const showPreviewModal = hasRoadmap && hasCover && !shipped;
-const showCoverCard = showDetailLink || showPreviewModal;
+const showDetailLink = hasRoadmap && hasCover && detailHref;
+const showCoverCard = showDetailLink;
 const daysUntil = roadmap ? getDaysUntilRelease(roadmap.releaseDate) : null;
 
 const coverAlt =
@@ -35,94 +33,40 @@ const coverAlt =
 const detailLabel = roadmap?.title
   ? `View ${roadmap.title} roadmap release`
   : `View ${monthAbbr} roadmap release`;
-const previewLabel = roadmap?.title
-  ? `Preview ${roadmap.title} roadmap release`
-  : `Preview ${monthAbbr} roadmap release`;
 
 // Parse "Name: Version" from title (e.g. "Mary Elizabeth: 1.1")
 const titleParts = roadmap?.title?.split(':') ?? [];
 const releaseName = titleParts[0]?.trim() ?? roadmap?.title ?? '';
 const releaseVersion = titleParts[1]?.trim() ?? '';
 const releaseMonthYear = roadmap
-  ? formatDate(roadmap.releaseDate, 'en-US', { month: 'short', year: 'numeric' })
+  ? formatDate(roadmap.releaseDate, 'en-US', { month: 'long', year: 'numeric' })
   : '';
-
-const previewPayload = showPreviewModal
-  ? JSON.stringify({
-      slug,
-      date: releaseMonthYear,
-      name: releaseName,
-      version: releaseVersion || undefined,
-    })
-  : undefined;
 ---
 
 <li
   class="roadmap-card"
-  data-roadmap-slug={showPreviewModal ? slug : undefined}
   data-roadmap-shipped={roadmap != null ? String(isRoadmapShipped(roadmap)) : undefined}
 >
   {
     showCoverCard ? (
       <>
-        {showDetailLink ? (
-          <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
-            <img
-              src={coverUrl}
-              alt={coverAlt}
-              class="roadmap-card--image"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        ) : (
-          <button
-            type="button"
-            class="roadmap-card--image-wrap roadmap-card--preview-trigger"
-            data-roadmap-empty-open={previewPayload}
-            aria-label={previewLabel}
-          >
-            <img
-              src={coverUrl}
-              alt={coverAlt}
-              class="roadmap-card--image"
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
-        )}
+        <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
+          <img
+            src={coverUrl}
+            alt={coverAlt}
+            class="roadmap-card--image"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
         <div class="roadmap-card--label">
-          {showDetailLink ? (
-            <>
-              <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
-                {releaseMonthYear}
-              </time>
-              <a href={detailHref} class="roadmap-card--label-name">
-                <strong>{releaseName}:</strong>
-                {releaseVersion ? ` ${releaseVersion}` : ''}
-              </a>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                class="roadmap-card--label-date roadmap-card--preview-trigger"
-                data-roadmap-empty-open={previewPayload}
-                aria-label={previewLabel}
-              >
-                {releaseMonthYear}
-              </button>
-              <button
-                type="button"
-                class="roadmap-card--label-name roadmap-card--preview-trigger"
-                data-roadmap-empty-open={previewPayload}
-                aria-label={previewLabel}
-              >
-                <strong>{releaseName}:</strong>
-                {releaseVersion ? ` ${releaseVersion}` : ''}
-              </button>
-            </>
-          )}
+          <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
+            {releaseMonthYear}
+          </time>
+          <a href={detailHref} class="roadmap-card--label-name">
+            <strong>{releaseName}:</strong>
+            {releaseVersion ? ` ${releaseVersion}` : ''}
+          </a>
         </div>
       </>
     ) : (

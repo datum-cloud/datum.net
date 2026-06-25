@@ -1,5 +1,5 @@
 ---
-// src/pages/backlog.astro
+// src/pages/roadmap/backlog.astro
 export const prerender = false;
 
 import '@v1/styles/page-roadmap.css';
@@ -42,7 +42,7 @@ const backlogItems = await fetchGitHubBacklog();
             items={[
               { label: 'Releases', href: '/roadmap', exact: true },
               { label: 'Shipped', href: '/roadmap#shipped' },
-              { label: 'Backlog', href: '/backlog' },
+              { label: 'Backlog', href: '/roadmap/backlog', exact: true },
             ]}
           />
         </div>

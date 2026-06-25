@@ -4,6 +4,7 @@ import { marked } from 'marked';
 import type { StrapiRoadmap } from '@libs/strapi';
 import { getRoadmapCoverUrl } from '@libs/strapi';
 import Button from '@components/Button.astro';
+import { formatDate } from '@utils/dateUtils';
 
 interface Props {
   roadmap: StrapiRoadmap;
@@ -11,18 +12,14 @@ interface Props {
 
 const { roadmap } = Astro.props as Props;
 
-// Display format: "30 Jan 2026"
-const releaseDate = new Date(roadmap.releaseDate);
-const formattedDate = releaseDate.toLocaleString('en-GB', {
-  day: 'numeric',
-  month: 'short',
+const formattedDate = formatDate(roadmap.releaseDate, 'en-US', {
+  month: 'long',
   year: 'numeric',
 });
 
 // Parse title: "Name: Version" or just "Name"
 const titleParts = roadmap.title.split(':');
-const releaseVersion = titleParts[0]?.trim() ?? roadmap.title;
-const releaseName = titleParts[1]?.trim();
+const releaseName = titleParts[0]?.trim() ?? roadmap.title;
 
 const coverUrl = getRoadmapCoverUrl(roadmap.cover);
 const coverAlt = roadmap.cover?.alternativeText || roadmap.title;
@@ -46,12 +43,19 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
 
       <h2 class="roadmap-detail--title">{releaseName}</h2>
       <p class="roadmap-detail--meta">
-        {releaseVersion && <span>{releaseVersion}</span>}<br />
         <time datetime={roadmap.releaseDate}>{formattedDate}</time>
       </p>
     </header>
 
-    {summaryHtml && <div class="roadmap-detail--sections datum-prose-lg" set:html={summaryHtml} />}
+    {
+      summaryHtml ? (
+        <div class="roadmap-detail--sections datum-prose-lg" set:html={summaryHtml} />
+      ) : (
+        <p class="roadmap-detail--placeholder">
+          Looks like this one's still being populated! Check back later.
+        </p>
+      )
+    }
   </div>
 
   <!-- Right column: sidebar -->

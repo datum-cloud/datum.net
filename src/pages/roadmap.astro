@@ -11,11 +11,10 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
-import RoadmapEmptyModal from '@components/roadmap/RoadmapEmptyModal.astro';
 import RoadmapViewFilter from '@components/roadmap/RoadmapViewFilter.astro';
 
 if (Astro.url.searchParams.get('tab') === 'backlog') {
-  return Astro.redirect('/backlog', 301);
+  return Astro.redirect('/roadmap/backlog', 301);
 }
 
 const page = await getCollectionEntry('pages', 'roadmap');
@@ -41,13 +40,12 @@ const roadmaps = await fetchStrapiRoadmaps();
             items={[
               { label: 'Releases', href: '/roadmap', exact: true },
               { label: 'Shipped', href: '/roadmap#shipped' },
-              { label: 'Backlog', href: '/backlog' },
+              { label: 'Backlog', href: '/roadmap/backlog' },
             ]}
           />
         </div>
         <RoadmapGrid roadmaps={roadmaps} />
         <RoadmapViewFilter />
-        <RoadmapEmptyModal />
       </div>
     </div>
 

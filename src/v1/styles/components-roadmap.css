@@ -150,6 +150,22 @@
     @apply text-app---dark---utility-4 datum-app-body rounded-lg border border-current/30 px-1.5 py-0.5 transition-opacity duration-150;
   }
 
+  .roadmap-backlog-status {
+    @apply text-app---dark---utility-4 datum-app-body shrink-0 rounded-lg border border-current/30 px-1.5 py-0.5 transition-opacity duration-150;
+  }
+
+  .roadmap-backlog-status--in-progress {
+    @apply border-canyon-clay---links/40 text-canyon-clay---links;
+  }
+
+  .roadmap-backlog-status--planned {
+    @apply border-midnight-fjord/30 text-midnight-fjord;
+  }
+
+  .roadmap-backlog-status--backlog {
+    @apply border-app---dark---utility-4/30 text-app---dark---utility-4;
+  }
+
   .roadmap-backlog-link {
     @apply text-canyon-clay---links datum-text-sm flex shrink-0 items-center gap-2.5 whitespace-nowrap transition-opacity duration-150;
   }
@@ -157,6 +173,7 @@
   .roadmap-backlog-row:hover .roadmap-backlog-number,
   .roadmap-backlog-row:hover .roadmap-backlog-title,
   .roadmap-backlog-row:hover .roadmap-backlog-badge,
+  .roadmap-backlog-row:hover .roadmap-backlog-status,
   .roadmap-backlog-row:hover .roadmap-backlog-link {
     @apply opacity-80;
   }

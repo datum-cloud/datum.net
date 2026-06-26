@@ -2,9 +2,9 @@
 /**
  * GitHub Projects backlog fetcher.
  *
- * Fetches issues in the "Backlog" status column from the datum-cloud
- * GitHub Projects board (project #22, org `datum-cloud`) via the
- * GraphQL Projects v2 API.
+ * Fetches issues in the "In progress", "Planned", and "Backlog" status
+ * columns from the datum-cloud GitHub Projects board (project #22, org
+ * `datum-cloud`) via the GraphQL Projects v2 API.
  *
  * Cache strategy:
  *  - Redis (when REDIS_URL is set): key `${redisKeyPrefix}github:backlog`, TTL 24 h
@@ -17,16 +17,24 @@
 import { graph } from './github';
 import { redisClient, redisKeyPrefix } from './strapi/_runtime';
 
+export type GitHubBacklogStatus = 'Backlog' | 'Planned' | 'In progress';
+
+export const INCLUDED_BACKLOG_STATUSES: GitHubBacklogStatus[] = [
+  'In progress',
+  'Planned',
+  'Backlog',
+];
+
 export interface GitHubBacklogItem {
   number: number;
   title: string;
   url: string;
   labels: string[];
+  status: GitHubBacklogStatus;
 }
 
 const GITHUB_ORG = 'datum-cloud';
 const GITHUB_PROJECT_NUMBER = 22;
-const BACKLOG_STATUS = 'Backlog';
 const CACHE_TTL_SECONDS = 24 * 60 * 60; // 24 hours
 
 const REDIS_CACHE_KEY = `${redisKeyPrefix}github:backlog`;
@@ -103,13 +111,47 @@ interface GitHubProjectResponse {
   };
 }
 
+function isGitHubBacklogStatus(value: string | undefined): value is GitHubBacklogStatus {
+  return INCLUDED_BACKLOG_STATUSES.includes(value as GitHubBacklogStatus);
+}
+
+function isValidCachedBacklogItem(item: unknown): item is GitHubBacklogItem {
+  if (!item || typeof item !== 'object') return false;
+  const record = item as Record<string, unknown>;
+  return (
+    typeof record.number === 'number' &&
+    typeof record.title === 'string' &&
+    typeof record.url === 'string' &&
+    Array.isArray(record.labels) &&
+    isGitHubBacklogStatus(record.status as string | undefined)
+  );
+}
+
+function isValidCachedBacklog(items: unknown): items is GitHubBacklogItem[] {
+  return Array.isArray(items) && items.every(isValidCachedBacklogItem);
+}
+
+function sortBacklogItems(items: GitHubBacklogItem[]): GitHubBacklogItem[] {
+  return [...items].sort((a, b) => {
+    const statusDiff =
+      INCLUDED_BACKLOG_STATUSES.indexOf(a.status) - INCLUDED_BACKLOG_STATUSES.indexOf(b.status);
+    if (statusDiff !== 0) return statusDiff;
+    return a.number - b.number;
+  });
+}
+
 /** Read cached backlog from Redis. Returns null on miss or error. */
 async function readFromRedis(): Promise<GitHubBacklogItem[] | null> {
   if (!redisClient) return null;
   try {
     const raw = await redisClient.get(REDIS_CACHE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as GitHubBacklogItem[];
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isValidCachedBacklog(parsed)) {
+      console.warn('[githubBacklog] Invalid cached backlog data detected, refetching');
+      return null;
+    }
+    return parsed;
   } catch (err) {
     console.warn('[githubBacklog] Redis read error:', err);
     return null;
@@ -151,16 +193,19 @@ async function fetchFromGitHub(): Promise<GitHubBacklogItem[]> {
     if (!page) break;
 
     for (const node of page.nodes) {
-      const isBacklog = node.fieldValueByName?.name === BACKLOG_STATUS;
+      const status = node.fieldValueByName?.name;
       const content = node.content;
 
-      if (!isBacklog || !content || typeof content.number !== 'number') continue;
+      if (!isGitHubBacklogStatus(status) || !content || typeof content.number !== 'number') {
+        continue;
+      }
 
       items.push({
         number: content.number,
         title: content.title ?? '',
         url: content.url ?? `https://github.com/${GITHUB_ORG}`,
         labels: (content.labels?.nodes ?? []).map((l) => l.name),
+        status,
       });
     }
 
@@ -168,7 +213,7 @@ async function fetchFromGitHub(): Promise<GitHubBacklogItem[]> {
     cursor = page.pageInfo.endCursor;
   }
 
-  return items;
+  return sortBacklogItems(items);
 }
 
 /** Returns true when a non-expired backlog cache entry exists. */
@@ -214,7 +259,7 @@ export async function forceRegenerateGitHubBacklog(): Promise<GitHubBacklogItem[
 }
 
 /**
- * Fetch the "Backlog" items from the datum-cloud GitHub Projects board.
+ * Fetch In progress, Planned, and Backlog items from the datum-cloud GitHub Projects board.
  *
  * Cache read order:
  *  1. Redis (if configured) — 24-h TTL
@@ -229,7 +274,12 @@ export async function fetchGitHubBacklog(): Promise<GitHubBacklogItem[]> {
   if (cached) return cached;
 
   // 2. Try in-memory (local dev / no Redis)
-  if (!redisClient && memCache.data && Date.now() < memCache.expiresAt) {
+  if (
+    !redisClient &&
+    memCache.data &&
+    Date.now() < memCache.expiresAt &&
+    isValidCachedBacklog(memCache.data)
+  ) {
     return memCache.data;
   }
 

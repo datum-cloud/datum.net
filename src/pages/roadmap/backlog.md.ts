@@ -11,7 +11,7 @@ import { toAsciiMarkdown } from '@utils/markdownExport';
 
 function renderItem(item: GitHubBacklogItem): string {
   const labels = item.labels.length > 0 ? ` _(${item.labels.join(', ')})_` : '';
-  return `- [#${item.number} ${item.title}](${item.url})${labels}`;
+  return `- **[${item.status}]** [#${item.number} ${item.title}](${item.url})${labels}`;
 }
 
 export const GET: APIRoute = async () => {
@@ -35,11 +35,11 @@ export const GET: APIRoute = async () => {
       '',
       description,
       '',
-      `_${items.length} item${items.length === 1 ? '' : 's'} in the backlog._`,
+      `_${items.length} item${items.length === 1 ? '' : 's'} in progress, planned, or backlog._`,
     ];
 
     if (items.length === 0) {
-      sections.push('', 'No backlog items available at this time.');
+      sections.push('', 'No items available at this time.');
     } else {
       // Flat list matching the order the page renders — no grouping.
       sections.push('');

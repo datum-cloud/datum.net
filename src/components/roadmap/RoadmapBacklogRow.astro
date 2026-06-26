@@ -1,13 +1,22 @@
 ---
 // src/components/roadmap/RoadmapBacklogRow.astro
 import Icon from '@components/Icon.astro';
-import type { GitHubBacklogItem } from '@libs/githubBacklog';
+import type { GitHubBacklogItem, GitHubBacklogStatus } from '@libs/githubBacklog';
 
 interface Props {
   item: GitHubBacklogItem;
 }
 
 const { item } = Astro.props as Props;
+
+/** Temporarily hide status badges on the backlog list; set true to show again. */
+const SHOW_BACKLOG_STATUS = false;
+
+const statusClassMap: Record<GitHubBacklogStatus, string> = {
+  'In progress': 'roadmap-backlog-status--in-progress',
+  Planned: 'roadmap-backlog-status--planned',
+  Backlog: 'roadmap-backlog-status--backlog',
+};
 ---
 
 <a
@@ -18,6 +27,14 @@ const { item } = Astro.props as Props;
   aria-label={`View issue #${item.number}: ${item.title} on GitHub`}
 >
   <span class="roadmap-backlog-number">#{item.number}</span>
+
+  {
+    SHOW_BACKLOG_STATUS && (
+      <span class:list={['roadmap-backlog-status', statusClassMap[item.status]]}>
+        {item.status}
+      </span>
+    )
+  }
 
   <h3 class="roadmap-backlog-title">{item.title}</h3>
 

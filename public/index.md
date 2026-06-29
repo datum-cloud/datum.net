@@ -42,7 +42,7 @@ Unlike existing alternatives, our open network cloud is built specifically for m
 
 ## Explore
 
-- [Features](/features/) - AI Edge, Connectors, Galactic VPC, UFO, foundations
+- [Features](/features/) - AI Edge, Connectors, Galactic VPC, Datum Compute, foundations
 - [Essentials](/essentials/) - Enterprise-grade primitives included free
 - [Pricing](/pricing/) - Builder ($0), Scaler ($20/mo + usage), Provider (custom)
 - [Locations](/locations/) - 17+ global regions across NA, LATAM, EU, MEA, APAC

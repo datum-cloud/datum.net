@@ -28,7 +28,7 @@ Route traffic where you want it.
 - **Fully Programmable** - Declarative VPC topology via Datum's Kubernetes-native control plane.
 - **Optimized for Private Paths** - Direct interconnect to AWS, GCP, and other clouds.
 
-## UFO (coming soon)
+## Datum Compute (coming soon)
 
 Isolated, cold-start compute.
 

@@ -180,7 +180,7 @@ A global virtual private backbone service built using **Segment Routing over IPv
 
 ---
 
-### 6. UFO — Unikernel Function Offload (Coming Soon)
+### 6. Datum Compute (Coming Soon)
 
 Edge compute layer built in partnership with **Unikraft**.
 

@@ -40,7 +40,7 @@ We're working toward a more interconnected internet for AI, both in terms of net
 We seek partnerships with "best of breed" technology creators, and we're currently focused on companies that include a strong open-source ethos. Current examples include:
 
 - **Tetrate** — Envoy and the AI Gateway that powers our Internet Edge
-- **Unikraft** — the unikernel runtime behind UFOs, our edge compute units
+- **Unikraft** — the unikernel runtime behind Datum Compute, our edge compute product
 - **Iroh** — secure, QUIC-based tunnels behind our Connectors
 
 ### Design wins

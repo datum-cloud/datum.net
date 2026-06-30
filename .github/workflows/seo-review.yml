@@ -126,6 +126,7 @@ jobs:
 
       - name: Open weekly audit issue
         if: github.event_name != 'pull_request'
+        id: audit-issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -139,7 +140,20 @@ jobs:
           gh issue list --label seo-audit --state open --json number,title \
             --jq '.[] | select(.title != "'"$TITLE"'") | .number' \
             | xargs -I{} gh issue close {} --comment "Superseded by ${TITLE}." || true
-          gh issue create \
+          ISSUE_URL="$(gh issue create \
             --title "$TITLE" \
             --label seo-audit \
-            --body-file "$BODY_FILE"
+            --body-file "$BODY_FILE")"
+          echo "url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Notify Slack
+        if: github.event_name != 'pull_request' && secrets.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          ISSUE_URL: ${{ steps.audit-issue.outputs.url }}
+        run: |
+          set -euo pipefail
+          DATE="$(date -u +%Y-%m-%d)"
+          curl -s -f -X POST "$SLACK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{\"text\":\"*SEO Audit — ${DATE}* :mag:\n<${ISSUE_URL}|View full report on GitHub>\"}"

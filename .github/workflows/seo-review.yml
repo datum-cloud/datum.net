@@ -40,6 +40,7 @@ jobs:
       NODE_ENV: development
       HUSKY: 0
       ASTRO_TELEMETRY_DISABLED: 1
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -147,7 +148,7 @@ jobs:
           echo "url=$ISSUE_URL" >> "$GITHUB_OUTPUT"
 
       - name: Notify Slack
-        if: github.event_name != 'pull_request' && secrets.SLACK_WEBHOOK_URL != ''
+        if: github.event_name != 'pull_request' && env.SLACK_WEBHOOK_URL != ''
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           ISSUE_URL: ${{ steps.audit-issue.outputs.url }}

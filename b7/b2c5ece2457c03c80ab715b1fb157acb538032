@@ -1,0 +1,57 @@
+src/pages/roadmap.md.ts
+  s_321d90de9ff115::t_f166ea12e93814 71,82,91
+  s_321d90de9ff115::t_660df3ab80e9cf 17
+public/robots.txt
+  s_321d90de9ff115::t_12046572e79924 5-6
+src/pages/handbook.md.ts
+  s_321d90de9ff115::t_464ba18b53fb82 3
+  s_321d90de9ff115::t_df03aa010704bf 24,27,33
+src/pages/roadmap/backlog.md.ts
+  s_321d90de9ff115::t_f42757450f47e7 11
+  s_321d90de9ff115::t_d3a1a6905f2f13 52,59,69
+src/pages/blog/[slug].md.ts
+  s_321d90de9ff115::t_a92f6138ae6a54 33,38
+  s_321d90de9ff115::t_744f0b75f569e0 11
+src/pages/blog.md.ts
+  s_321d90de9ff115::t_b66f12e286b245 10
+  s_321d90de9ff115::t_d689b452764089 38,41,47
+src/utils/pageMarkdown.ts
+  s_321d90de9ff115::t_1f57e407b46fc1 27-39
+  s_321d90de9ff115::t_57c9f19bd0c081 140
+src/pages/roadmap/[slug].md.ts
+  s_321d90de9ff115::t_b9bef32ec671c9 70-71,78
+  s_321d90de9ff115::t_6a938e18ab271f 15
+src/pages/events.md.ts
+  s_321d90de9ff115::t_b317b99c15d0a1 3
+  s_321d90de9ff115::t_8b9aa8b6be1757 64,67,73
+src/pages/brand.md.ts
+  s_321d90de9ff115::t_b3784f148a1392 25,29,35
+  s_321d90de9ff115::t_bb50d55ae91ded 3
+src/pages/locations.md.ts
+  s_321d90de9ff115::t_fe083e1319f6eb 7
+  s_321d90de9ff115::t_3ad75d3ae715c5 69,78,87
+src/pages/[...mdslug].md.ts
+  s_321d90de9ff115::t_3191e8495cef6b 15,40,46,52
+src/pages/changelog.md.ts
+  s_321d90de9ff115::t_0b48aa8e8f6126 3,41,44,50
+src/pages/download/[slug].md.ts
+  s_321d90de9ff115::t_1b7290b4d76ed0 8,20,23,29
+src/pages/pricing.md.ts
+  s_321d90de9ff115::t_fc435bea2fcf9e 10,96-97,104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "b7b2c5ece2457c03c80ab715b1fb157acb538032",
+  "prompts": {},
+  "sessions": {
+    "s_321d90de9ff115": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8593df6a-7c5d-48d1-bf44-6f6684cfa066",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

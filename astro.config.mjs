@@ -4,6 +4,7 @@ import { join } from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import alpinejs from '@astrojs/alpinejs';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import mermaid from 'astro-mermaid';
 
 import { loadEnv } from 'vite';
@@ -85,15 +86,18 @@ export default defineConfig({
   adapter: node({
     mode: 'middleware',
   }),
+  compressHTML: true,
   markdown: {
-    gfm: true,
-    smartypants: true,
-    remarkPlugins: [remarkModifiedTime],
-    // Astro runs Shiki before user `rehypePlugins` on MDX; that emits `astro-code` and prevents
-    // expressive-code from taking over. Disable built-in highlighting so fenced blocks stay
-    // `pre > code` until `rehype-expressive-code` runs (same stack as `renderMarkdownWithExpressiveCode`).
+    processor: unified({
+      gfm: true,
+      smartypants: true,
+      remarkPlugins: [remarkModifiedTime],
+      // Astro runs Shiki before user `rehypePlugins` on MDX; that emits `astro-code` and prevents
+      // expressive-code from taking over. Disable built-in highlighting so fenced blocks stay
+      // `pre > code` until `rehype-expressive-code` runs (same stack as `renderMarkdownWithExpressiveCode`).
+      rehypePlugins: [[rehypeExpressiveCode, expressiveCodeRehypeOptions]],
+    }),
     syntaxHighlight: false,
-    rehypePlugins: [[rehypeExpressiveCode, expressiveCodeRehypeOptions]],
   },
   image: {
     layout: 'constrained',

@@ -91,9 +91,7 @@ export type CacheEntryByName = {
 };
 
 export type GetCacheEntryResult =
-  | { status: 'ok'; entry: CacheEntryByName }
-  | { status: 'not_found' }
-  | { status: 'invalid_json' };
+  { status: 'ok'; entry: CacheEntryByName } | { status: 'not_found' } | { status: 'invalid_json' };
 
 /**
  * Validates a cache key is safe for filesystem lookup (no path traversal).

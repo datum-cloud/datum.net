@@ -12,6 +12,7 @@ import {
 } from '@libs/strapi';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
@@ -66,13 +67,15 @@ export const GET: APIRoute = async ({ params }) => {
       sections.push(`[View on GitHub](${roadmap.githubUrl})`, '');
     }
 
-    sections.push('---', '', `Source: <https://www.datum.net/roadmap/${slug}/>`, '');
+    const canonicalUrl = `https://www.datum.net/roadmap/${slug}/`;
+    sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

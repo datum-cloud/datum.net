@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 interface EventEntry {
   id: string;
@@ -61,14 +61,16 @@ export const GET: APIRoute = async () => {
       '- [Alt Cloud Meetups](/events/alt-cloud-meetups/)'
     );
 
+    const canonicalUrl = 'https://www.datum.net/events/';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Events' } }, {
       trailingSections: [sections.join('\n')],
-      sourceUrl: 'https://www.datum.net/events/',
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

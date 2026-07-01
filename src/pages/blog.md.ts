@@ -7,7 +7,7 @@ import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
 import { fetchStrapiArticles } from '@libs/strapi';
 import type { StrapiArticle } from '@libs/strapi';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 
 function formatDate(d?: string): string {
@@ -35,14 +35,16 @@ export const GET: APIRoute = async () => {
       list.push(`- [${a.title}](${url})${meta}${a.description ? ` - ${a.description}` : ''}`);
     }
 
+    const canonicalUrl = 'https://www.datum.net/blog/';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Blog' } }, {
       trailingSections: [list.join('\n')],
-      sourceUrl: 'https://www.datum.net/blog/',
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

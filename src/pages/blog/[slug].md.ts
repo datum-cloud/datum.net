@@ -8,6 +8,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { ensureStrapiArticleDetail } from '@libs/strapi';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 export const GET: APIRoute = async ({ params }) => {
   const slug = params.slug;
@@ -29,10 +30,12 @@ export const GET: APIRoute = async ({ params }) => {
     const title = article.title ? `# ${article.title}\n\n` : '';
     const description = article.description ? `> ${article.description}\n\n` : '';
 
+    const canonicalUrl = `https://www.datum.net/blog/${slug}/`;
     return new Response(`${title}${description}${body}`, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

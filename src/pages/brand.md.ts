@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 interface BrandSection {
   id: string;
@@ -22,15 +22,17 @@ export const GET: APIRoute = async () => {
       list.push(`- [${s.data.title ?? slug}](/brand/${slug}/)${desc}`);
     }
 
+    const canonicalUrl = 'https://www.datum.net/brand/';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Brand' } }, {
       skipBody: true,
       trailingSections: sections.length ? [list.join('\n')] : [],
-      sourceUrl: 'https://www.datum.net/brand/',
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

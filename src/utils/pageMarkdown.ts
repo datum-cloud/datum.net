@@ -24,6 +24,19 @@ export function stripMdxToMarkdown(body: string): string {
     .trim();
 }
 
+/**
+ * Response headers marking a `.md` endpoint as a non-canonical alternate of
+ * its HTML page: `X-Robots-Tag: noindex` keeps it out of the search index,
+ * and the `Link` canonical header points crawlers back at the HTML version.
+ * Without these, search engines index `.md` and HTML as duplicate content.
+ */
+export function markdownSeoHeaders(canonicalUrl: string): HeadersInit {
+  return {
+    'X-Robots-Tag': 'noindex',
+    Link: `<${canonicalUrl}>; rel="canonical"`,
+  };
+}
+
 interface RenderOptions {
   /** Optional override for the H1. Defaults to entry.data.title. */
   title?: string;
@@ -124,6 +137,7 @@ export function makeEntryMarkdownRoute(
         headers: {
           'Content-Type': 'text/markdown; charset=utf-8',
           'Cache-Control': 'public, max-age=300, s-maxage=300',
+          ...(opts.sourceUrl ? markdownSeoHeaders(opts.sourceUrl) : {}),
         },
       });
     } catch (error) {

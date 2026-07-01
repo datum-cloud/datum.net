@@ -14,6 +14,7 @@ import {
 import type { StrapiRoadmap } from '@libs/strapi';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 function renderMilestone(roadmap: StrapiRoadmap, includeDetail: boolean): string {
   const month = getMonthAbbreviation(roadmap.releaseDate);
@@ -67,6 +68,7 @@ export const GET: APIRoute = async () => {
       sections.push('', 'No roadmap milestones available yet.');
     }
 
+    const canonicalUrl = 'https://www.datum.net/roadmap/';
     sections.push(
       '',
       '## How we plan',
@@ -77,7 +79,7 @@ export const GET: APIRoute = async () => {
       '',
       '---',
       '',
-      'Source: <https://www.datum.net/roadmap/>',
+      `Source: <${canonicalUrl}>`,
       ''
     );
 
@@ -86,6 +88,7 @@ export const GET: APIRoute = async () => {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

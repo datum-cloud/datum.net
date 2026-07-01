@@ -5,7 +5,7 @@
 // route the ".md" variant specifically.
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getEntry, getCollection } from 'astro:content';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const entries = (await getCollection('download')) as Array<{ id: string }>;
@@ -17,14 +17,16 @@ export const GET: APIRoute = async ({ props }) => {
   try {
     const entry = await getEntry('download', entryId);
     if (!entry) return new Response('Not found', { status: 404 });
+    const canonicalUrl = `https://www.datum.net/download/${entryId}/`;
     const body = renderEntryMarkdown(entry, {
       demoteHeadings: true,
-      sourceUrl: `https://www.datum.net/download/${entryId}/`,
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (err) {

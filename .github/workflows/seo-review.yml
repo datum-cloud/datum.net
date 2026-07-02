@@ -109,6 +109,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Run SEO review
+        id: seo-review
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCAN_MODE: ${{ steps.mode.outputs.value }}
@@ -119,7 +120,7 @@ jobs:
         run: node scripts/seo-review.mjs
 
       - name: Post or update PR comment
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.seo-review.outputs.mode != 'skipped-no-changes'
         uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: seo-review-bot

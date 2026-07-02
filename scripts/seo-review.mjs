@@ -18,7 +18,7 @@
  *   SITE_URL            default: https://www.datum.net (host used to recognise internal links)
  */
 
-import { readFile, writeFile, readdir, stat, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, appendFile, readdir, stat, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { load } from 'cheerio';
 
@@ -803,6 +803,10 @@ async function main() {
   await mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
   await writeFile(OUTPUT_FILE, body, 'utf8');
   console.log(`Wrote ${OUTPUT_FILE} (${body.length} bytes, ${picked.length} pages).`);
+
+  if (process.env.GITHUB_OUTPUT) {
+    await appendFile(process.env.GITHUB_OUTPUT, `mode=${mode}\n`, 'utf8');
+  }
 
   if (tokenTotals.calls > 0) {
     const totalIn = tokenTotals.input + tokenTotals.cacheRead + tokenTotals.cacheCreate;

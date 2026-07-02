@@ -1,0 +1,28 @@
+server.mjs
+  s_43cf4a8b60062d::t_677e8a6e5815ea 467-468,474-478
+  s_77e2f22f7be736::t_7c73c3cbf72778 479-480
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "5b29485330589c8d6af1607c42504c90408ffab3",
+  "prompts": {},
+  "sessions": {
+    "s_43cf4a8b60062d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "82e348b7-98e4-490d-8019-38742c4fa9e3",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_77e2f22f7be736": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "464cf89a-edec-444c-8435-db1fff4d78b3",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

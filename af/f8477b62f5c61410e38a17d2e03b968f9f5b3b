@@ -1,0 +1,19 @@
+server.mjs
+  s_bdd09be0e63e24::t_68de9f080ee3ad 387-390
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "aff8477b62f5c61410e38a17d2e03b968f9f5b3b",
+  "prompts": {},
+  "sessions": {
+    "s_bdd09be0e63e24": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "967a58e4-4c65-4b11-9d0a-0d3181f153a6",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

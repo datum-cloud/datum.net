@@ -384,6 +384,10 @@ function handleProxy(req, res, target, cache = false) {
 
   proxyReq.on('error', (err) => {
     console.error('Proxy error:', err);
+    if (res.headersSent) {
+      res.destroy(err);
+      return;
+    }
     res.writeHead(502);
     res.end('Bad Gateway');
   });

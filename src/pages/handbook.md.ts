@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 interface HandbookSection {
   slug: string;
@@ -21,14 +21,16 @@ export const GET: APIRoute = async () => {
       }
     }
 
+    const canonicalUrl = 'https://www.datum.net/handbook/';
     const body = renderEntryMarkdown(index ?? { data: { title: 'Handbook' } }, {
       trailingSections: sections.length ? [sections.join('\n')] : [],
-      sourceUrl: 'https://www.datum.net/handbook/',
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

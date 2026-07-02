@@ -8,6 +8,7 @@ import { getCollectionEntry } from '@utils/collectionUtils';
 import { fetchGitHubBacklog } from '@libs/githubBacklog';
 import type { GitHubBacklogItem } from '@libs/githubBacklog';
 import { toAsciiMarkdown } from '@utils/markdownExport';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 function renderItem(item: GitHubBacklogItem): string {
   const labels = item.labels.length > 0 ? ` _(${item.labels.join(', ')})_` : '';
@@ -48,13 +49,14 @@ export const GET: APIRoute = async () => {
       }
     }
 
+    const canonicalUrl = 'https://www.datum.net/roadmap/backlog/';
     sections.push(
       '',
       '---',
       '',
       'Want to propose a new feature? [Start a discussion on GitHub](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests).',
       '',
-      'Source: <https://www.datum.net/roadmap/backlog/>',
+      `Source: <${canonicalUrl}>`,
       ''
     );
 
@@ -64,6 +66,7 @@ export const GET: APIRoute = async () => {
         'Content-Type': 'text/markdown; charset=utf-8',
         // Backlog is cached for 24 h on GitHub's side; match that TTL.
         'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

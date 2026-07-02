@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
-import { renderEntryMarkdown, stripMdxToMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown, stripMdxToMarkdown } from '@utils/pageMarkdown';
 
 interface ChangelogEntry {
   data: { title?: string; description?: string; date?: string | Date };
@@ -38,14 +38,16 @@ export const GET: APIRoute = async () => {
       sections.push('');
     }
 
+    const canonicalUrl = 'https://www.datum.net/changelog/';
     const body = renderEntryMarkdown(index ?? { data: { title: 'Changelog' } }, {
       trailingSections: sections.length ? [sections.join('\n').trim()] : [],
-      sourceUrl: 'https://www.datum.net/changelog/',
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

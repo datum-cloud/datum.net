@@ -12,7 +12,7 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getEntry } from 'astro:content';
 import { getMarkdownRegistry } from '@utils/markdownRegistry';
-import { renderEntryMarkdown } from '@utils/pageMarkdown';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const registry = await getMarkdownRegistry();
@@ -37,17 +37,19 @@ export const GET: APIRoute = async ({ props }) => {
     );
     if (!entry) return new Response('Not found', { status: 404 });
 
+    const canonicalUrl = `https://www.datum.net${urlPath}/`;
     const body = renderEntryMarkdown(entry, {
       // Demote body headings so a body-level H1 doesn't compete with the
       // frontmatter title. Safe for all pages — pages without a body H1
       // are unaffected.
       demoteHeadings: true,
-      sourceUrl: `https://www.datum.net${urlPath}/`,
+      sourceUrl: canonicalUrl,
     });
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

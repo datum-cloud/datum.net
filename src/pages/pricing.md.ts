@@ -7,6 +7,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { toAsciiMarkdown } from '@utils/markdownExport';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 interface PricingTier {
   title: string;
@@ -92,13 +93,15 @@ export const GET: APIRoute = async () => {
       }
     }
 
-    sections.push('', '---', '', 'Source: <https://www.datum.net/pricing/>', '');
+    const canonicalUrl = 'https://www.datum.net/pricing/';
+    sections.push('', '---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

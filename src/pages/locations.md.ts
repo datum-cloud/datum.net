@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
 import locations from '@data/locations.json';
 import { toAsciiMarkdown } from '@utils/markdownExport';
+import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
 interface Location {
   regionCode: string;
@@ -65,6 +66,7 @@ export const GET: APIRoute = async () => {
       }
     }
 
+    const canonicalUrl = 'https://www.datum.net/locations/';
     sections.push(
       '',
       '## Why these cities',
@@ -73,7 +75,7 @@ export const GET: APIRoute = async () => {
       '',
       '---',
       '',
-      'Source: <https://www.datum.net/locations/>',
+      `Source: <${canonicalUrl}>`,
       ''
     );
 
@@ -82,6 +84,7 @@ export const GET: APIRoute = async () => {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
+        ...markdownSeoHeaders(canonicalUrl),
       },
     });
   } catch (error) {

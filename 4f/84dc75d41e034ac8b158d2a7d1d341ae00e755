@@ -1,0 +1,28 @@
+scripts/seo-review.mjs
+  s_8bd1680c23c977::t_dcddb2f798f4fb 807-810
+  s_8bd1680c23c977::t_f55e00569240de 21
+.github/workflows/seo-review.yml
+  s_8bd1680c23c977::t_08b688a98dd058 123
+  s_8bd1680c23c977::t_55162589155883 112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "4f84dc75d41e034ac8b158d2a7d1d341ae00e755",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8bd1680c23c977": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "51edb90d-607f-4a00-b99e-848e9f0bc35a",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

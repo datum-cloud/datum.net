@@ -6,11 +6,11 @@ sidebar:
 updatedDate: May 11, 2026
 authors: jacob
 meta:
-  title: "Go-to-Market Team - Datum Handbook"
+  title: "Go-to-Market Team: Sales, Marketing & Community — Datum"
   description: "The GTM team is accountable for setting Datum's promise to the market and delivering on it across marketing, sales, customer success, and community."
   og:
     title: "Go-to-Market at Datum"
-    description: "How the GTM team works and what it's accountable for."
+    description: "The GTM team is accountable for setting Datum's promise to the market — spanning marketing, sales, customer success, and community."
 ---
 
 The go-to-market team is accountable for setting the company's promise to the market, and then delivering on that promise.

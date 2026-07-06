@@ -10,7 +10,7 @@ meta:
   description: "A shift to AI-native is changing infrastructure. Read about the explosion of specialized AI services and alt clouds that inform Datum's founding principles."
   og:
       title: Trends in Cloud Infrastructure
-      description: "3 Trends that are shaping the way we work at Datum"
+      description: "A shift to AI-native is changing infrastructure — explore the alt clouds and cloud infrastructure trends that inform Datum's founding principles."
 ---
 
 As we look around us, here are some of the big trends that inform our approach

@@ -468,9 +468,18 @@ function handleSSR(req, res) {
   handler(req, res);
 }
 
+const ALLOWED_METHODS = new Set(['GET', 'HEAD', 'POST', 'OPTIONS']);
+
 const server = createServer((req, res) => {
   if (process.env.NODE_ENV !== 'production') {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  }
+
+  // Reject TRACE and other unsupported methods (prevents Cross-Site Tracing / XST)
+  if (!ALLOWED_METHODS.has(req.method)) {
+    res.writeHead(405, { Allow: [...ALLOWED_METHODS].join(', ') });
+    res.end();
+    return;
   }
 
   const url = req.url.split('?')[0];

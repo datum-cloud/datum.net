@@ -303,9 +303,9 @@ Utility functions:
 - `roadmap.ts` - Roadmap utilities
 - `string.ts` - String utilities
 
-### Legacy (`src/v1/`)
+### Static (`src/static/`)
 
-Legacy v1 assets and styles:
+Legacy static assets and styles:
 
 - `assets/` - Legacy images, SVGs, and other assets
 - `scripts/` - Legacy JavaScript files

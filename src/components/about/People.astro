@@ -3,7 +3,7 @@
 import ProfileModal from './ProfileModal.astro';
 import { getTeamMembers, getTeamBgColor } from '@utils/authorUtils';
 import { getStrapiMediaUrl } from '@libs/strapi';
-import '@v1/styles/page-about.css';
+import '@styles/page-about.css';
 
 // Fetch all authors where isTeam is true and sort by order
 const teamMembers = await getTeamMembers();

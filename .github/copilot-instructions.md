@@ -34,7 +34,7 @@ Always use path aliases for imports:
 - `@libs/*` - Library code (datum, github, postgres, oidc)
 - `@content/*` - Content files
 - `@data/*` - JSON data files
-- `@v1/*` - Legacy styles/components
+- `@styles/*`, `@assets/*` - Legacy styles/assets (`src/static/`)
 
 ### Component Patterns
 
@@ -160,7 +160,7 @@ npm run test:e2e         # Playwright E2E tests
 ### Styling
 
 - **Tailwind CSS v4:** Vite plugin `@tailwindcss/vite` in `astro.config.mjs`
-- Custom styles in `src/v1/styles/`
+- Custom styles in `src/static/styles/`
 
 ## Docker & Deployment
 

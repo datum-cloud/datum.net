@@ -25,15 +25,15 @@
 
 ## Critical Rules
 
-1. **No inline styles** - All styles go in CSS files under `src/v1/styles/`
+1. **No inline styles** - All styles go in CSS files under `src/static/styles/`
 2. **No arbitrary values** - Check `@theme` layer for variables
 3. **Start components with path comment** → `// src/components/Button.astro`
-4. **Use path aliases** → `@components/*`, `@utils/*`, `@libs/*`, `@types/*`, `@v1/*`
+4. **Use path aliases** → `@components/*`, `@utils/*`, `@libs/*`, `@types/*`, `@styles/*`, `@assets/*`
 
 ## CSS Organization
 
 ```
-src/v1/styles/
+src/static/styles/
   base.css          # Base styles
   theme.css         # Theme variables
   variables.css     # CSS custom properties

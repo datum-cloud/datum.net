@@ -123,7 +123,7 @@ export default defineConfig({
     playformCompress({
       // CSS minification disabled: csso@5 (bundled by @playform/compress) drops
       // MQ Level 4 range syntax `@media (width >= 40rem)`, used by Tailwind v4's
-      // responsive variants and by src/v1/styles/variables-breakpoints.css.
+      // responsive variants and by src/static/styles/variables-breakpoints.css.
       // Tailwind v4 already minifies CSS via lightningcss, so this is redundant.
       CSS: false,
       HTML: true,

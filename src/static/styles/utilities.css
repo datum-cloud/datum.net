@@ -217,7 +217,7 @@
 /* Shared prose link and inheritance base — applied by all datum-prose-* variants */
 @utility datum-prose-base {
   --tw-prose-links: var(--color-canyon-clay---links);
-  --tw-prose-links-hover: var(--color-canyon-clay---links/80);
+  --tw-prose-links-hover: color-mix(in srgb, var(--color-canyon-clay---links) 80%, transparent);
 
   @apply prose max-w-none;
   @apply **:text-inherit;

@@ -26,11 +26,11 @@ import Redis from 'ioredis';
 import {
   CacheManager,
   FileCacheDriver,
-  createStrapiClient,
   createWebhookHandler,
   revalidateConfigSchema,
 } from '@datum-cloud/strapi-revalidate';
 import { RedisCacheDriver } from './drivers/redis';
+import { createResilientStrapiClient } from './resilientGraphqlClient';
 
 const DEFAULT_STRAPI_URL = 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 const DEFAULT_CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
@@ -152,7 +152,13 @@ export async function deletePrimaryCacheByPrefix(prefix: string): Promise<string
   return keys;
 }
 
-export const client = createStrapiClient(config);
+export const client = createResilientStrapiClient({
+  url: config.url,
+  token: config.token,
+  timeout: config.timeout,
+  retry: config.retry,
+  debug,
+});
 export const webhook = createWebhookHandler({ config, cache });
 export { config };
 export type { RevalidateConfig } from '@datum-cloud/strapi-revalidate';

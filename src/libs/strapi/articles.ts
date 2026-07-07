@@ -262,7 +262,14 @@ export async function fetchStrapiArticleSitemapRows(): Promise<StrapiArticleSite
     );
     return response?.articles ?? null;
   });
-  return rows ?? [];
+
+  if (rows) return rows;
+
+  const articles = await fetchStrapiArticles();
+  return articles.map((article) => ({
+    slug: article.slug,
+    originalPublishedAt: article.originalPublishedAt,
+  }));
 }
 
 export async function fetchStrapiArticlesByCategory(

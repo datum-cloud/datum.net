@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   ArrowLeft,
+  ArrowRightToLine,
   Backpack,
   Blend,
   BookImage,
@@ -57,6 +58,7 @@ import {
   MapPinHouse,
   House,
   Link,
+  ListCheck,
   ListRestart,
   Lock,
   LockOpen,
@@ -108,6 +110,7 @@ import {
 const iconMap = {
   'arrow-left': ArrowLeft,
   'arrow-right': ArrowRight,
+  'arrow-right-to-line': ArrowRightToLine,
   backpack: Backpack,
   blend: Blend,
   'book-image': BookImage,
@@ -162,6 +165,7 @@ const iconMap = {
   key: Key,
   'key-round': KeyRound,
   link: Link,
+  'list-check': ListCheck,
   'list-restart': ListRestart,
   lock: Lock,
   'lock-open': LockOpen,

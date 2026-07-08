@@ -3,36 +3,61 @@
     {
       "text": "Platform",
       "href": "/features",
+      "theme": "dark",
       "children": [
         {
-          "isCardLayout": true,
+          "title": "Deliver",
           "items": [
-            {
-              "text": "Features",
-              "image": "/images/nav/core-features.png",
-              "desc": "Critical network services",
-              "href": "/features"
-            },
-            {
-              "text": "Essentials",
-              "image": "/images/nav/essentials.png",
-              "desc": "Enterprise-grade networking primitives",
-              "href": "/essentials"
-            },
-            {
-              "text": "Locations",
-              "image": "/images/nav/world-map.png",
-              "desc": "Deploy at the global edge",
-              "href": "/locations"
-            }
+            { "text": "Global Load Balancer", "href": "/features" },
+            { "text": "Application Load Balancer", "href": "/features" },
+            { "text": "DNS", "href": "/docs" }
+          ]
+        },
+        {
+          "title": "Build",
+          "items": [
+            { "text": "Compute", "href": "/features" },
+            { "text": "Object Storage", "href": "/features" },
+            { "text": "Edge Apps", "href": "/features", "label": "Soon" }
+          ]
+        },
+        {
+          "title": "Connect",
+          "items": [
+            { "text": "Galactic VPC", "href": "/features" },
+            { "text": "Zero Trust", "href": "/features" },
+            { "text": "Interconnect", "href": "/essentials", "label": "Soon" }
           ]
         }
+      ],
+      "asideCards": [
+        {
+          "text": "Locations",
+          "desc": "NVIDIA Bluefield optimized hardware in 20+ global metros.",
+          "href": "/locations",
+          "icon": "globe"
+        },
+        {
+          "text": "Essentials",
+          "desc": "From our CLI and audit logs to robust IAM, we have you covered.",
+          "href": "/essentials",
+          "icon": "list-check"
+        }
       ]
+    },
+    {
+      "text": "Dedicated",
+      "href": "/pricing#provider"
+    },
+    {
+      "text": "Use cases",
+      "href": "#"
     },
     {
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
+      "theme": "dark",
       "children": [
         {
           "title": "Get Started:",
@@ -53,8 +78,8 @@
       ]
     },
     {
-      "text": "Docs",
-      "href": "/docs"
+      "text": "Pricing",
+      "href": "/pricing"
     }
   ],
   "right": [

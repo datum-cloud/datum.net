@@ -21,43 +21,29 @@
 /* Navigation Component */
 @layer components {
   .nav--main-container {
-    @apply w-full;
-    @apply border-glacier-mist-900;
+    @apply border-silver-mist w-full border-b bg-white;
   }
   .nav--main {
-    @apply max-width relative z-80 m-auto flex w-full items-center justify-between gap-5 py-2.5 md:gap-10 md:py-3.5 lg:gap-16;
+    @apply max-width relative z-80 m-auto flex h-16 w-full items-center justify-between gap-5 md:gap-10 lg:h-20 lg:gap-16;
 
     .nav-actions {
-      @apply mr-3 ml-auto flex items-center gap-3 justify-self-end md:col-span-3 md:mr-0 md:gap-3.25;
-
-      .btn {
-        svg {
-          @apply text-blush-quartz;
-        }
-      }
-
-      .btn.gh-button {
-        /* @apply border-0 md:border; */
-        span {
-          @apply hidden md:inline-block;
-        }
-      }
+      @apply ml-auto hidden h-full items-stretch justify-self-end md:flex;
     }
 
     .nav-menu-wrapper {
-      @apply hidden justify-center md:col-span-7 md:inline-block;
+      @apply hidden h-full justify-center md:flex md:items-center;
     }
 
     .nav-menu {
-      @apply datum-text-base hidden items-center justify-start text-white md:flex md:gap-3 lg:gap-5;
+      @apply text-midnight-fjord hidden h-full items-center justify-start md:flex md:gap-1 lg:gap-2;
     }
 
     .nav-menu-item {
-      @apply flex cursor-pointer items-center gap-2 py-3;
+      @apply flex h-full cursor-pointer items-center gap-2;
     }
 
     .nav-menu-link {
-      @apply flex items-center gap-2 px-3 py-1.5 font-normal opacity-60 transition-colors duration-150;
+      @apply font-alliance flex h-9 items-center gap-2 rounded-sm px-3 text-(length:--14px) leading-(--21px) font-normal opacity-80 transition-colors duration-150;
 
       &.link--active {
         @apply font-semibold;
@@ -67,19 +53,40 @@
     /* Pill: hover preview (normal weight) vs route-active pill (semibold) */
     .nav-menu-item:hover > .nav-menu-link:not(.link--active),
     .nav-dropdown:focus-within > .nav-menu-link:not(.link--active) {
-      @apply text-canyon-clay---links rounded-md bg-white font-normal opacity-100;
+      @apply bg-glacier-mist-800 font-normal;
     }
 
     .nav-menu:not(:has(.nav-menu-item:hover)) .nav-menu-link.link--active,
     .nav-menu-item:hover > .nav-menu-link.link--active,
     .nav-dropdown:focus-within > .nav-menu-link.link--active {
-      @apply text-canyon-clay---links rounded-md bg-white font-semibold opacity-100;
+      @apply bg-glacier-mist-800 font-semibold;
+    }
+  }
+
+  /* Desktop Actions: Sign in + Book a demo */
+  .nav-cta-signin {
+    @apply border-silver-mist text-midnight-fjord flex h-full items-center justify-center gap-3 border-x px-7 font-medium whitespace-nowrap transition-colors duration-150;
+    @apply hover:bg-glacier-mist-800;
+  }
+
+  .nav-cta-demo {
+    @apply bg-midnight-fjord text-glacier-mist-700 flex h-full items-center justify-center gap-3 px-7 font-medium whitespace-nowrap transition-colors duration-150;
+    @apply hover:bg-midnight-fjord/90;
+
+    svg {
+      @apply text-aurora-moss;
     }
   }
 
   /* Dropdown Styles */
   .nav-dropdown {
     @apply relative;
+  }
+
+  /* Platform's dark mega-dropdown (with aside cards) breaks out to sit flush
+     with the nav bar's left edge instead of under its own trigger. */
+  .nav-dropdown:has(.nav-dropdown-parent--platform) {
+    @apply static;
   }
 
   .nav-dropdown-arrow {
@@ -113,6 +120,19 @@
       visibility 0s;
   }
 
+  /* Dark mega-menu panel (Platform, Resources) */
+  .nav-dropdown-menu--dark {
+    @apply bg-midnight-fjord rounded-t-none rounded-b-lg p-10;
+  }
+
+  .nav-dropdown-has-aside {
+    @apply flex items-start gap-4;
+  }
+
+  .nav-dropdown-columns {
+    @apply flex flex-col gap-4;
+  }
+
   .nav-dropdown-items {
     @apply flex flex-col gap-7.5;
     .nav-dropdown-item {
@@ -120,7 +140,7 @@
   }
 
   .nav-dropdown-link {
-    @apply text-midnight-fjord hover:text-midnight-fjord/80 hover:[&>span]:border-midnight-fjord/70 flex items-center gap-5 transition-colors duration-200 [&>span]:border-b-2 [&>span]:border-b-transparent hover:[&>span]:transition-all hover:[&>span]:duration-200;
+    @apply text-midnight-fjord datum-text-sm hover:text-midnight-fjord/80 hover:[&>span:not(.nav-dropdown-badge)]:border-midnight-fjord/70 flex items-center gap-5 transition-colors duration-200 [&>span:not(.nav-dropdown-badge)]:border-b-2 [&>span:not(.nav-dropdown-badge)]:border-b-transparent hover:[&>span:not(.nav-dropdown-badge)]:transition-all hover:[&>span:not(.nav-dropdown-badge)]:duration-200;
   }
 
   .nav-dropdown-icon {
@@ -131,8 +151,8 @@
     @apply text-midnight-fjord/30;
   }
 
-  .nav-dropdown-link span {
-    @apply datum-text-lg font-medium;
+  .nav-dropdown-badge {
+    @apply border-steel-blue/70 bg-steel-blue/20 text-steel-blue ml-2 inline-flex h-[17px] items-center rounded-sm border px-1.5 text-[9px] leading-none font-medium tracking-[0.3px] uppercase;
   }
 
   .nav-dropdown-section {
@@ -144,12 +164,12 @@
   }
 
   /* Mega Dropdown Styles */
-  .nav-dropdown-mega {
-    @apply -left-[120%] grid grid-cols-2 gap-4 p-3;
+  .nav-dropdown-mega .nav-dropdown-columns {
+    @apply flex-row;
   }
 
   .nav-dropdown-mega-section {
-    @apply mb-0 flex min-w-[260px] flex-col gap-3;
+    @apply mb-0 flex w-[206px] shrink-0 flex-col gap-3;
   }
 
   .nav-dropdown-mega-items {
@@ -163,25 +183,42 @@
   .nav-dropdown-mega .nav-dropdown-title {
     @apply mb-0 px-4;
     span {
-      @apply text-midnight-fjord/50 border-app---dark---utility-5 inline-block w-full border-b pt-4 pb-2.5 text-xs font-normal tracking-normal normal-case;
+      @apply text-app---dark---utility-4 font-dejavu border-app---dark---utility-2 block w-full border-b pt-0 pb-4 text-(length:--12px) leading-normal font-normal whitespace-nowrap uppercase;
     }
   }
 
   .nav-dropdown-mega .nav-dropdown-link {
-    @apply hover:bg-aurora-moss hover:text-midnight-fjord gap-0 rounded-md px-4 py-2.5 hover:bg-[url('../assets/images/bg-hover-nav.png')] hover:bg-contain hover:bg-right hover:bg-no-repeat [&>span]:border-b-0;
+    @apply hover:bg-app---dark---utility-1 gap-0 rounded-md px-4 py-2.5 text-white hover:text-white [&>span:not(.nav-dropdown-badge)]:border-b-0;
   }
 
-  .nav-dropdown-mega .nav-dropdown-link span {
-    @apply datum-text-base font-semibold;
+  /* Aside feature cards (e.g. Locations, Essentials in the Platform dropdown) */
+  .nav-dropdown-aside {
+    @apply flex w-64 shrink-0 flex-col gap-4;
+  }
+
+  .nav-dropdown-aside-link {
+    @apply border-app---dark---utility-2 bg-deep-navy flex items-center gap-3.5 rounded-md border px-4 py-2.5 transition-colors duration-150 hover:border-white/40;
+  }
+
+  .nav-dropdown-aside-icon {
+    @apply text-aurora-moss h-4 w-4 shrink-0;
+  }
+
+  .nav-dropdown-aside-content {
+    @apply flex flex-1 flex-col gap-1;
+  }
+
+  .nav-dropdown-aside-title {
+    @apply font-alliance text-(length:--14px) leading-(--21px) font-normal text-white;
+  }
+
+  .nav-dropdown-aside-desc {
+    @apply font-alliance text-(length:--12px) leading-(--16px) text-white/60;
   }
 
   /* Card Dropdown Styles (Product) */
   .nav-dropdown-cards-wrapper {
-    @apply -left-[150%] p-3;
-  }
-
-  .nav-dropdown-menu.nav-dropdown-parent--platform {
-    @apply -left-[170%]! p-3;
+    @apply p-3;
   }
 
   .nav-dropdown-cards {
@@ -227,7 +264,7 @@
     @apply flex w-8 justify-self-end md:hidden;
   }
   .mobile-menu-button {
-    @apply relative z-90 ml-auto text-white transition-colors duration-200 hover:cursor-pointer hover:text-white/80 md:hidden;
+    @apply text-midnight-fjord hover:text-midnight-fjord/80 relative z-90 ml-auto transition-colors duration-200 hover:cursor-pointer md:hidden;
 
     .mobile-menu-icon {
       @apply h-7.5 w-7.5;
@@ -405,8 +442,8 @@
   .nav-logo {
     @apply flex items-center gap-2;
 
-    --color-logo-object: var(--color-aurora-moss);
-    --color-logo-text: var(--color-white);
+    --color-logo-object: var(--color-canyon-clay);
+    --color-logo-text: var(--color-midnight-fjord);
 
     svg {
       @apply size-auto w-22 md:w-30;

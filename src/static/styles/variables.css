@@ -13,6 +13,13 @@
   --breakpoint-2xl: 96rem;
   --breakpoint-3xl: 120rem;
 
+  /* width */
+  --datum-max-width: 1926px;
+  --datum-max-width-container: 1372px;
+  --datum-section-width: 155px;
+  --max-width-8xl: 1372px;
+  --width-8xl: 1372px;
+
   /* colors */
   --app---dark---utility-1: #223143;
   --app---dark---utility-2: #384555;
@@ -24,6 +31,8 @@
   --blush-quartz: #ecd0d0;
   --canyon-clay: #bf9595;
   --canyon-clay---links: #9c7979;
+  --deep-navy: #152538;
+  --steel-blue: #8ab2ca;
   --glacier-mist-700: #f6f6f5;
   --glacier-mist-800: #efefed;
   --glacier-mist-900: #e8e7e4;

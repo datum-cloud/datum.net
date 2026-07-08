@@ -80,84 +80,116 @@ function navDropdownParentClass(text: string): string {
               {item.children && <Arrow class="nav-dropdown-arrow" />}
             </a>
             {item.children && (
-              <ul
-                class={`nav-dropdown-menu ${navDropdownParentClass(item.text)} ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''}`}
+              <div
+                class={`nav-dropdown-menu ${navDropdownParentClass(item.text)} ${item.theme === 'dark' ? 'nav-dropdown-menu--dark' : ''} ${item.children.some((s) => s.isCardLayout) ? 'nav-dropdown-cards-wrapper' : ''} ${item.children.length > 1 ? 'nav-dropdown-mega' : ''} ${item.asideCards ? 'nav-dropdown-has-aside' : ''}`}
               >
-                {item.children.map((section) => (
-                  <li
-                    class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
-                  >
-                    {'title' in section && section.title && (
-                      <h3 class="nav-dropdown-title">
-                        <span>{section.title}</span>
-                      </h3>
-                    )}
-                    <ul
-                      class={
-                        section.isCardLayout
-                          ? 'nav-dropdown-cards'
-                          : `nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`
-                      }
+                <ul class="nav-dropdown-columns">
+                  {item.children.map((section) => (
+                    <li
+                      class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
                     >
-                      {section.items?.map((subItem) => {
-                        const isSubItemActive = isActivePath(subItem.href, currentPath);
+                      {'title' in section && section.title && (
+                        <h3 class="nav-dropdown-title">
+                          <span>{section.title}</span>
+                        </h3>
+                      )}
+                      <ul
+                        class={
+                          section.isCardLayout
+                            ? 'nav-dropdown-cards'
+                            : `nav-dropdown-items ${item.children!.length > 1 ? 'nav-dropdown-mega-items' : ''}`
+                        }
+                      >
+                        {section.items?.map((subItem) => {
+                          const isSubItemActive = isActivePath(subItem.href, currentPath);
 
-                        return section.isCardLayout ? (
-                          <li
-                            class={`nav-dropdown-card-item ${isSubItemActive ? 'item--active' : ''}`}
-                          >
-                            <a
-                              href={subItem.href}
-                              class={`nav-dropdown-card-link ${isSubItemActive ? 'item--active' : ''}`}
-                              style={
-                                'image' in subItem && subItem.image
-                                  ? `--nav-card-image: url('${subItem.image}')`
-                                  : undefined
-                              }
-                              target={subItem.isExternal ? '_blank' : undefined}
-                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
-                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
-                              tabindex="0"
+                          return section.isCardLayout ? (
+                            <li
+                              class={`nav-dropdown-card-item ${isSubItemActive ? 'item--active' : ''}`}
                             >
-                              <span class="nav-dropdown-card-title">{subItem.text}</span>
-                              {'desc' in subItem && subItem.desc && (
-                                <span class="nav-dropdown-card-desc">{subItem.desc}</span>
-                              )}
-                            </a>
-                          </li>
-                        ) : (
-                          <li class={`nav-dropdown-item ${isSubItemActive ? 'item--active' : ''}`}>
-                            <a
-                              href={subItem.href}
-                              class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
-                              target={subItem.isExternal ? '_blank' : undefined}
-                              rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
-                              data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
-                              tabindex="0"
-                            >
-                              {'icon' in subItem && subItem.icon && (
-                                <div class="nav-dropdown-icon">
-                                  <Icon name={subItem.icon} size="md" />
-                                </div>
-                              )}
-                              <span class="inline-flex items-center gap-1.5">
-                                {subItem.text}
-                                {subItem.isExternal && (
-                                  <Icon
-                                    name="external-link"
-                                    size="sm"
-                                    class="nav-dropdown-external-icon"
-                                  />
+                              <a
+                                href={subItem.href}
+                                class={`nav-dropdown-card-link ${isSubItemActive ? 'item--active' : ''}`}
+                                style={
+                                  'image' in subItem && subItem.image
+                                    ? `--nav-card-image: url('${subItem.image}')`
+                                    : undefined
+                                }
+                                target={subItem.isExternal ? '_blank' : undefined}
+                                rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                                data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
+                                tabindex="0"
+                              >
+                                <span class="nav-dropdown-card-title">{subItem.text}</span>
+                                {'desc' in subItem && subItem.desc && (
+                                  <span class="nav-dropdown-card-desc">{subItem.desc}</span>
                                 )}
-                              </span>
-                            </a>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
+                              </a>
+                            </li>
+                          ) : (
+                            <li
+                              class={`nav-dropdown-item ${isSubItemActive ? 'item--active' : ''}`}
+                            >
+                              <a
+                                href={subItem.href}
+                                class={`nav-dropdown-link ${isSubItemActive ? 'link--active' : ''}`}
+                                target={subItem.isExternal ? '_blank' : undefined}
+                                rel={subItem.isExternal ? 'noopener noreferrer' : undefined}
+                                data-astro-prefetch={subItem.isExternal ? undefined : 'hover'}
+                                tabindex="0"
+                              >
+                                {'icon' in subItem && subItem.icon && (
+                                  <div class="nav-dropdown-icon">
+                                    <Icon name={subItem.icon} size="md" />
+                                  </div>
+                                )}
+                                <span class="inline-flex items-center gap-1.5">
+                                  {subItem.text}
+                                  {subItem.isExternal && (
+                                    <Icon
+                                      name="external-link"
+                                      size="sm"
+                                      class="nav-dropdown-external-icon"
+                                    />
+                                  )}
+                                </span>
+                                {subItem.label && (
+                                  <span class="nav-dropdown-badge">{subItem.label}</span>
+                                )}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+
+                {item.asideCards && (
+                  <ul class="nav-dropdown-aside">
+                    {item.asideCards.map((card) => (
+                      <li class="nav-dropdown-aside-item">
+                        <a
+                          href={card.href}
+                          class="nav-dropdown-aside-link"
+                          target={card.isExternal ? '_blank' : undefined}
+                          rel={card.isExternal ? 'noopener noreferrer' : undefined}
+                          data-astro-prefetch={card.isExternal ? undefined : 'hover'}
+                          tabindex="0"
+                        >
+                          {card.icon && (
+                            <Icon name={card.icon} size="sm" class="nav-dropdown-aside-icon" />
+                          )}
+                          <span class="nav-dropdown-aside-content">
+                            <span class="nav-dropdown-aside-title">{card.text}</span>
+                            {card.desc && <span class="nav-dropdown-aside-desc">{card.desc}</span>}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             )}
           </li>
         );

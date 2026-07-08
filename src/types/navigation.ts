@@ -25,6 +25,10 @@ export interface NavMainItem {
   href: string;
   isExternal?: boolean;
   isMegaDropdown?: boolean;
+  /** Visual theme for the dropdown panel. 'dark' renders the midnight-fjord mega-menu. */
+  theme?: 'dark';
+  /** Feature cards shown alongside the dropdown's section columns (e.g. Locations, Essentials). */
+  asideCards?: NavItem[];
   children?: NavSection[];
 }
 

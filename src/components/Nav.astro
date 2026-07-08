@@ -1,17 +1,9 @@
 ---
 import Logo from '@assets/svgs/datum-logo-h.svg';
 import MobileMenu from '@components/MobileMenu.astro';
-import GithubStargazerValue from '@components/GithubStargazerValue.astro';
-import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
-
-type Props = {
-  showGithubButton?: boolean;
-  showLoginButton?: boolean;
-};
-
-const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
 ---
 
 <section class="nav--main-container">
@@ -32,40 +24,20 @@ const { showGithubButton = true, showLoginButton = false }: Props = Astro.props;
 
     {/* Desktop Actions */}
     <div class="nav-actions">
-      {
-        showGithubButton && (
-          <Button
-            class="btn gh-button btn--sm"
-            icon={{ name: 'github', size: 'md' }}
-            iconPosition="left"
-            iconClass="stroke-1.5"
-            target="_blank"
-            href="https://github.com/datum-cloud/datum/"
-          >
-            <GithubStargazerValue server:defer />
-          </Button>
-        )
-      }
+      <a href="https://cloud.datum.net/" class="nav-cta-signin" data-fathom-event="Nav: Sign in">
+        Sign in
+        <Icon name="arrow-right-to-line" size="lg" />
+      </a>
 
-      {
-        showLoginButton && (
-          <Button
-            class="btn btn--sm"
-            text="Sign in"
-            href="https://cloud.datum.net/"
-            data-fathom-event="Nav: Sign in"
-          />
-        )
-      }
-
-      <Button
-        class="btn btn--sm"
-        target="_blank"
+      <a
         href="https://auth.datum.net/ui/v2/login/register"
-        data-fathom-event="Nav: Request Access"
+        class="nav-cta-demo"
+        target="_blank"
+        data-fathom-event="Nav: Book a demo"
       >
-        Start for free
-      </Button>
+        Book a demo
+        <Icon name="calendar" size="lg" />
+      </a>
     </div>
 
     {/* Mobile menu — deferred so it is never emitted into static HTML */}

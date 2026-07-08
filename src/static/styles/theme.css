@@ -19,7 +19,10 @@
 
   /* Custom width */
   --datum-max-width: 1926px;
+  --datum-max-width-container: 1372px;
   --datum-section-width: 155px;
+  --max-width-8xl: var(--datum-max-width-container);
+  --width-8xl: var(--datum-max-width-container);
 
   --color-logo-object: #e8e7e4;
   --color-logo-text: #ffffff;
@@ -49,6 +52,8 @@
   --color-misty-rose: #fde2e2;
   --color-platinum: #e2e9e3;
   --color-silver-mist: #c3c6c9;
+  --color-deep-navy: #152538;
+  --color-steel-blue: #8ab2ca;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;

@@ -22,7 +22,7 @@
         "Connectors (QUIC tunnels, more soon)",
         "DNS, Domains",
         "OTel Metrics Export",
-        "Secrets, Teams, RBAC, Machine Accounts"
+        "Secrets, Teams, RBAC, Service accounts"
       ]
     }
   ]

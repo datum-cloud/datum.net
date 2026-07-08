@@ -162,7 +162,7 @@ Secure tunnels built on the **Iroh protocol** (Rust-based, QUIC-based P2P networ
 
 - **Secrets:** Create and manage secret resources within projects
 - **Teams & RBAC:** Fine-grained roles (Owner, Editor, Viewer) at org and project level
-- **Machine Accounts:** Non-human identities for agent/automation use cases
+- **Service accounts:** Non-human identities for agent/automation use cases
 - **OTel Metrics Export:** Export OpenTelemetry metrics to Grafana Cloud via ExportPolicies with MetricSQL filtering; prebuilt Grafana dashboards (IDs: \`23939\` — Datum Overview, \`24261\` — Datum Proxy)
 - **Activity Logs:** Audit log of all resource changes using the \`activity.miloapis.com\` API; filterable via portal or \`datumctl\` with CEL expressions; default window is last 24 hours
 - **Programmatic edge tracing:** \`https://edge.datum.net/api/edge-info\` (JSON) or \`https://edge.datum.net/api/trace\` (plaintext)
@@ -230,7 +230,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 - Connectors (QUIC Tunnels)
 - DNS and Domains
 - OTel Metrics Export
-- Secrets, Teams, RBAC, Machine Accounts
+- Secrets, Teams, RBAC, Service accounts
 
 **Scaler tier adds (coming H1 2026):**
 - Galactic VPC
@@ -249,7 +249,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 4. A **Personal Org** is created for you automatically as a sandbox
 5. To collaborate, **create a Standard Organization** and invite team members
 
-> **For agents/automation:** Use Machine Accounts for non-human identities. Machine Accounts support RBAC and can be scoped to projects or organizations. For headless auth, set \`DATUM_TOKEN\` environment variable to bypass browser login.
+> **For agents/automation:** Use Service accounts for non-human identities. Service accounts support RBAC and can be scoped to projects or organizations. For headless auth, set \`DATUM_TOKEN\` environment variable to bypass browser login.
 
 ---
 

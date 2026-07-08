@@ -43,7 +43,7 @@ Enterprise-grade primitives included free of charge:
 - Authoritative DNS
 - Domains and certificate management
 - OTel Metrics Export
-- Audit logs, RBAC, SSO, Machine Accounts
+- Audit logs, RBAC, SSO, Service accounts
 - Open source (AGPLv3) and Kubernetes-native
 
 ## Get started

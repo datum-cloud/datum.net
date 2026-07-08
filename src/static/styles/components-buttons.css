@@ -54,4 +54,8 @@
   .btn--outline {
     @apply text-midnight-fjord hover:bg-canyon-clay/10 border-[var(--app---dark---utility-5)] bg-none;
   }
+
+  .btn--glow-aurora {
+    @apply shadow-(--shadow-glow-aurora);
+  }
 }

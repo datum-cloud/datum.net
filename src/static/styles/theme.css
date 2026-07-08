@@ -48,6 +48,7 @@
   --color-pale-yellow: #fffbc5;
   --color-misty-rose: #fde2e2;
   --color-platinum: #e2e9e3;
+  --color-silver-mist: #c3c6c9;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
@@ -98,6 +99,7 @@
 
   --shadow-sm: 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
   --shadow-modal: 0 4px 16px 0 rgba(0, 0, 0, 0.05), 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
+  --shadow-glow-aurora: 0 0 4px 0 var(--color-aurora-moss);
 
   --radius-sm: 3px;
   --radius-md: 6px;

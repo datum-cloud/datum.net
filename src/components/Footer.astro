@@ -32,18 +32,43 @@ const navData = navigation as NavData;
   {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="text-midnight-fjord bg-sage-mist relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
+      <div class="footer-prefooter">
+        <div class="footer-prefooter-label" aria-hidden="true">
+          <span class="footer-prefooter-label-line" />
+          <span class="footer-prefooter-label-text">
+            <span>Get started</span>
+          </span>
+        </div>
+        <div class="footer-prefooter-grid" aria-hidden="true">
+          <svg
+            viewBox="0 0 256 785.5"
+            fill="none"
+            class="h-full w-full"
+            preserveAspectRatio="xMaxYMin slice"
+          >
+            <rect x="135" y="161" width="80" height="80" fill="#e6f59f" />
+            <rect x="16" y="201" width="40" height="40" fill="#e6f59f" />
+            <rect x="136" y="321" width="40" height="40" fill="#e6f59f" />
+            <path d="M215 0V200" stroke="var(--color-silver-mist)" />
+            <path d="M136 121V360" stroke="var(--color-silver-mist)" />
+            <path d="M56 201V240" stroke="var(--color-silver-mist)" />
+            <path d="M96 320H176" stroke="var(--color-silver-mist)" />
+            <path d="M0 240H176" stroke="var(--color-silver-mist)" />
+            <path d="M96 160H255" stroke="var(--color-silver-mist)" />
+            <path d="M137 785H256" stroke="var(--color-silver-mist)" />
+          </svg>
+        </div>
         <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
           <h2 class="datum-text-11xl">
             <span class="text-pine-forge">Less talk,</span> more building
           </h2>
-          <p class="datum-text-xl max-w-186 text-pretty">
+          <p class="datum-text-xl max-w-186 text-pretty opacity-80">
             Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
             exposing localhost to the internet, with more on the way.
           </p>
           <div class="flex items-center justify-center gap-4">
             <Button
-              class="btn btn--midnight-fjord"
+              class="btn btn--midnight-fjord btn--glow-aurora"
               text="Get started"
               icon={{ name: 'arrow-right', size: 'md' }}
               iconPosition="right"

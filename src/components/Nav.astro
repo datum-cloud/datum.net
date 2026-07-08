@@ -43,4 +43,6 @@ import NavMenu from '@components/NavMenu.astro';
     {/* Mobile menu — deferred so it is never emitted into static HTML */}
     <MobileMenu server:defer />
   </nav>
+
+  <div class="nav-dropdown-backdrop" aria-hidden="true"></div>
 </section>

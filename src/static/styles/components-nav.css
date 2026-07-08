@@ -23,6 +23,33 @@
   .nav--main-container {
     @apply border-silver-mist w-full border-b bg-white;
   }
+
+  /* Blurs page content below the nav when a desktop dropdown is open (Figma overlay). */
+  .nav-dropdown-backdrop {
+    @apply bg-app---dark---utility-4/50 pointer-events-none invisible fixed inset-x-0 top-16 bottom-0 z-70 hidden opacity-0 backdrop-blur-[7px] md:block;
+    transition:
+      opacity 200ms ease-in-out 150ms,
+      visibility 0s 350ms;
+
+    @media (width >= theme(--breakpoint-lg)) {
+      top: 5rem;
+    }
+  }
+
+  .nav--main-container:has(.nav-dropdown:hover) .nav-dropdown-backdrop,
+  .nav--main-container:has(.nav-dropdown:focus-within) .nav-dropdown-backdrop {
+    @apply pointer-events-auto visible opacity-100;
+    transition:
+      opacity 200ms ease-in-out,
+      visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-dropdown-backdrop {
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .nav--main {
     @apply max-width relative z-80 m-auto flex h-16 w-full items-center justify-between gap-5 md:gap-10 lg:h-20 lg:gap-16;
 

@@ -64,35 +64,51 @@
       "isExternal": true
     }
   ],
+  "footerCards": [
+    {
+      "title": "Dedicated Cloud",
+      "description": "For scaling providers and enterprises who benefit from full control, custom locations, and ideal economics.",
+      "href": "/pricing#provider",
+      "icon": "diamond-plus"
+    },
+    {
+      "title": "Pricing",
+      "description": "Simple, transparent pricing with everything you need to get started.",
+      "href": "/pricing",
+      "icon": "dollar-sign"
+    },
+    {
+      "title": "Legal",
+      "description": "Everything you need to know from terms of service to privacy policies",
+      "href": "/legal/terms",
+      "icon": "scroll-text"
+    }
+  ],
   "footer": [
     {
-      "title": "Product",
+      "title": "Platform features",
       "items": [
-        {
-          "text": "Core features",
-          "href": "/features"
-        },
-        {
-          "text": "Pricing",
-          "href": "/pricing"
-        },
-        {
-          "text": "Docs",
-          "href": "/docs"
-        },
-        { "text": "Status", "href": "https://www.datumstatus.net/", "isExternal": true }
+        { "text": "Global Load Balancer", "href": "/features" },
+        { "text": "Application Load Balancer", "href": "/features" },
+        { "text": "DNS", "href": "/docs" },
+        { "text": "Compute", "href": "/features" },
+        { "text": "Object Storage", "href": "/features" },
+        { "text": "Edge Apps", "href": "/features" },
+        { "text": "Galactic VPC", "href": "/features" },
+        { "text": "Zero Trust", "href": "/features" },
+        { "text": "Interconnect", "href": "/essentials" },
+        { "text": "Locations", "href": "/locations" },
+        { "text": "Essentials", "href": "/essentials" }
       ]
     },
     {
       "title": "Resources",
       "items": [
-        { "text": "Blog", "href": "/blog" },
-        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Docs", "href": "/docs" },
         { "text": "Roadmap", "href": "/roadmap" },
-        { "text": "Open Source", "href": "/open-source" },
-        { "text": "Discord", "href": "https://discord.com/invite/AeA9XZu4Py" },
-        { "text": "GitHub", "href": "https://github.com/orgs/datum-cloud/discussions" },
-        { "text": "Youtube", "href": "https://www.youtube.com/@Datum-Cloud" }
+        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Download", "href": "/download" },
+        { "text": "Blog", "href": "/blog" }
       ]
     },
     {
@@ -104,16 +120,6 @@
         { "text": "Events", "href": "/events" },
         { "text": "Brand Assets", "href": "/brand" },
         { "text": "Contact", "href": "/contact" }
-      ]
-    },
-    {
-      "title": "Legal",
-      "items": [
-        { "text": "Terms", "href": "/legal/terms" },
-        { "text": "Privacy", "href": "/legal/privacy" },
-        { "text": "AUP", "href": "/legal/aup" },
-        { "text": "CST", "href": "/legal/service-country-specific-terms" },
-        { "text": "Sub-Processors", "href": "/legal/subprocessors" }
       ]
     }
   ],

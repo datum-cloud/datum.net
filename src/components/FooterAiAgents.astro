@@ -1,6 +1,7 @@
 ---
 // src/components/FooterAiAgents.astro
 import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
 import MarkdownLightbox from '@components/MarkdownLightbox.astro';
 import claudeSvg from '@assets/icons/ai/claude.svg?raw';
 import chatgptSvg from '@assets/icons/ai/chatgpt.svg?raw';
@@ -8,10 +9,15 @@ import geminiSvg from '@assets/icons/ai/gemini.svg?raw';
 import perplexitySvg from '@assets/icons/ai/perplexity.svg?raw';
 import promptRaw from '@data/ai-prompt.md?raw';
 import { resolveMarkdownUrl } from '@utils/markdownExport';
+import type { NavItem } from '@/src/types/navigation';
+
+interface FooterAiAgentsProps {
+  social: NavItem[];
+}
+
+const { social } = Astro.props as FooterAiAgentsProps;
 
 const encodedPrompt = encodeURIComponent(promptRaw);
-
-// Resolve the current page's raw markdown URL (null when no source exists).
 const markdownUrl = await resolveMarkdownUrl(Astro.url.pathname);
 
 const aiTools = [
@@ -28,8 +34,6 @@ const aiTools = [
   {
     name: 'Gemini',
     icon: geminiSvg,
-    // gemini.google.com does not natively support URL prompt prefilling;
-    // using AI Studio which supports ?prompt= natively
     href: `https://aistudio.google.com/prompts/new_chat?prompt=${encodedPrompt}`,
   },
   {
@@ -40,73 +44,76 @@ const aiTools = [
 ];
 ---
 
-<div class="bg-midnight-fjord">
-  <div class="max-width">
-    <div
-      class="border-app---dark---utility-2 flex flex-col gap-5 border-t py-7 pb-12 md:flex-row md:items-center md:justify-between md:pb-16 lg:pb-20"
-    >
-      <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
-        <div class="flex shrink-0 flex-col gap-0.5">
-          <p class="datum-text-sm text-white">
-            Create a <strong class="font-semibold">summary of Datum</strong>
-          </p>
-          <p class="datum-text-xs text-white/60">Open a pre-filled prompt in your assistant</p>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          {
-            aiTools.map((tool) => (
-              <a
-                href={tool.href}
-                class="border-app---dark---utility-2 hover:border-app---dark---utility-3 flex h-9 items-center gap-2 rounded-md border px-3.5 text-xs font-medium whitespace-nowrap text-white transition-colors hover:bg-white/5"
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Open ${tool.name} with a summary prompt`}
-              >
-                <span
-                  class="flex size-4 shrink-0 items-center justify-center [&_svg]:size-full"
-                  set:html={tool.icon}
-                />
-                <span>{tool.name}</span>
-              </a>
-            ))
-          }
-        </div>
-      </div>
-      <div class="flex shrink-0 flex-col items-start gap-1 md:items-end">
+<div class="footer-bottom">
+  <div class="footer-bottom-row">
+    <div class="footer-bottom-ai">
+      <p class="footer-bottom-ai-label">Create a summary of Datum</p>
+      <div class="footer-bottom-ai-tools">
         {
-          markdownUrl && (
+          aiTools.map((tool) => (
             <a
-              href={markdownUrl}
-              data-markdown-trigger
-              data-md-title={`cat ${markdownUrl}`}
-              class="markdown-lightbox-trigger"
-              aria-label="Read this page as Markdown"
+              href={tool.href}
+              class="footer-ai-tool"
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Open ${tool.name} with a summary prompt`}
             >
-              <span class="markdown-lightbox-trigger__label">
-                Read as <strong>Markdown</strong>
-              </span>
-              <Icon name="file-text" size="md" class="markdown-lightbox-trigger__icon" />
+              <span class="footer-ai-tool-icon" set:html={tool.icon} />
+              <span>{tool.name}</span>
             </a>
-          )
+          ))
         }
-        <a
-          href="https://agents.datum.net"
-          class="datum-text-sm flex min-h-6 shrink-0 items-center gap-3 whitespace-nowrap text-white transition-opacity hover:opacity-80"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span
-            >Agents, use <strong class="font-semibold underline underline-offset-2"
-              >Agents.Datum.net</strong
-            ></span
-          >
-          <Icon
-            name="external-link"
-            size="md"
-            class="stroke-1.5 text-app---dark---utility-3 shrink-0"
-          />
-        </a>
       </div>
+    </div>
+
+    <div class="footer-bottom-links">
+      {
+        markdownUrl && (
+          <a
+            href={markdownUrl}
+            data-markdown-trigger
+            data-md-title={`cat ${markdownUrl}`}
+            class="markdown-lightbox-trigger"
+            aria-label="Read this page as Markdown"
+          >
+            <span class="markdown-lightbox-trigger__label">
+              Read as <strong>Markdown</strong>
+            </span>
+            <Icon name="file-text" size="md" class="markdown-lightbox-trigger__icon" />
+          </a>
+        )
+      }
+      <a
+        href="https://agents.datum.net"
+        class="footer-bottom-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="footer-bottom-link-text">
+          Agents, use <strong>Agents.Datum.net</strong>
+        </span>
+        <Icon name="external-link" size="md" class="footer-bottom-link-icon stroke-1.5" />
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom-meta">
+    <p class="footer-copyright">&copy; {new Date().getFullYear()} Datum Technology Inc.</p>
+    <div class="footer-social">
+      {
+        social.map((item) => (
+          <Button
+            class="btn btn--clean footer-social-link"
+            icon={{ name: item.icon, size: 'md' }}
+            iconPosition="left"
+            iconClass="stroke-1.5"
+            target={item.isExternal ? '_blank' : '_self'}
+            href={item.href}
+            text=""
+            title={item.text}
+          />
+        ))
+      }
     </div>
   </div>
 </div>

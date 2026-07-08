@@ -373,22 +373,19 @@
   }
 
   /* Footer Navigation Styles */
-  .footer-nav-container {
-    @apply flex flex-row;
-  }
-
   .footer-nav-section {
     @apply flex flex-col;
   }
+
   .footer-nav-header {
-    @apply datum-text-base mb-3.5 font-bold text-white;
+    @apply datum-text-xs font-dejavu text-app---dark---utility-4 mb-3.5 uppercase;
   }
 
   .footer-nav-list {
     @apply datum-text-base text-white opacity-80;
 
     li {
-      @apply mb-1.5 flex gap-2;
+      @apply mb-1 flex gap-2;
     }
 
     .nav-label {
@@ -397,7 +394,7 @@
   }
 
   .footer-nav-link {
-    @apply flex items-center gap-2 text-white/80 transition-colors hover:text-white;
+    @apply text-white/80 transition-colors hover:text-white;
   }
 
   /* Logo Dropdown Styles */

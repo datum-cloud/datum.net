@@ -50,10 +50,6 @@
       "href": "/pricing#provider"
     },
     {
-      "text": "Use cases",
-      "href": "#"
-    },
-    {
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
@@ -62,13 +58,13 @@
         {
           "title": "Get Started:",
           "items": [
-            { "text": "Changelog", "href": "/changelog" },
+            { "text": "Docs", "href": "/docs" },
             { "text": "Download", "href": "/download" },
             { "text": "Roadmap", "href": "/roadmap" }
           ]
         },
         {
-          "title": "About Us:",
+          "title": "Company:",
           "items": [
             { "text": "Careers", "href": "/careers" },
             { "text": "Blog", "href": "/blog" },
@@ -76,10 +72,6 @@
           ]
         }
       ]
-    },
-    {
-      "text": "Pricing",
-      "href": "/pricing"
     }
   ],
   "right": [
@@ -97,12 +89,6 @@
       "icon": "diamond-plus"
     },
     {
-      "title": "Pricing",
-      "description": "Simple, transparent pricing with everything you need to get started.",
-      "href": "/pricing",
-      "icon": "dollar-sign"
-    },
-    {
       "title": "Legal",
       "description": "Everything you need to know from terms of service to privacy policies",
       "href": "/legal/terms",
@@ -113,17 +99,9 @@
     {
       "title": "Platform features",
       "items": [
-        { "text": "Global Load Balancer", "href": "/features" },
-        { "text": "Application Load Balancer", "href": "/features" },
-        { "text": "DNS", "href": "/docs" },
-        { "text": "Compute", "href": "/features" },
-        { "text": "Object Storage", "href": "/features" },
-        { "text": "Edge Apps", "href": "/features" },
-        { "text": "Galactic VPC", "href": "/features" },
-        { "text": "Zero Trust", "href": "/features" },
-        { "text": "Interconnect", "href": "/essentials" },
-        { "text": "Locations", "href": "/locations" },
-        { "text": "Essentials", "href": "/essentials" }
+        { "text": "Product Features", "href": "/features" },
+        { "text": "Essentials", "href": "/essentials" },
+        { "text": "Locations", "href": "/locations" }
       ]
     },
     {

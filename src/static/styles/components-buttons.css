@@ -45,6 +45,10 @@
 
   .btn--midnight-fjord {
     @apply bg-midnight-fjord/90 hover:bg-midnight-fjord/80 border-midnight-fjord text-white;
+
+    svg {
+      @apply text-aurora-moss;
+    }
   }
 
   .btn--midnight-fjord-alpha {

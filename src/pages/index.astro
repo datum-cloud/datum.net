@@ -1,7 +1,9 @@
 ---
 import '@styles/page-home.css';
 import Layout from '@layouts/Layout.astro';
-import Hero from '@components/home/Hero.astro';
+import Announcement from '@components/Announcement.astro';
+import Nav from '@components/Nav.astro';
+import HomeHero from '@components/home/HomeHero.astro';
 import Mission from '@components/home/Mission.astro';
 import Footer from '@components/Footer.astro';
 
@@ -12,13 +14,23 @@ const fm = page.data;
 
 // SEO
 const meta = fm.meta || {};
-const title = fm.title ? 'Datum - ' + fm.title : 'Datum';
+const title = fm.title
+  ? 'Datum - ' +
+    fm.title
+      .replace(/<[^>]+>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  : 'Datum';
 const description = fm.description ? fm.description : '';
 ---
 
 <Layout title={title} description={description} bodyClass="page-home" meta={meta}>
   <section class="datum-container">
-    <Hero class="dark" title={fm.title} description={fm.description} />
+    <header class="home-hero-header">
+      <Announcement />
+      <Nav />
+    </header>
+    <HomeHero title={fm.title} description={fm.description} />
     <section class="bg-glacier-mist-700">
       <Mission class="max-width" />
     </section>

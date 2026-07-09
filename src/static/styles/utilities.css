@@ -14,6 +14,10 @@
   @apply max-w-8xl mx-auto w-full px-7;
 }
 
+@utility max-width-nav {
+  @apply mx-auto w-full max-w-(--datum-max-width-nav) px-7;
+}
+
 @utility max-width-internal {
   @apply mx-auto w-full max-w-(--breakpoint---internal) px-7;
 }

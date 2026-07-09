@@ -51,6 +51,11 @@ export interface HeroProps {
   hideContent?: boolean;
 }
 
+export interface HomeHeroProps {
+  title?: string;
+  description?: string;
+}
+
 export interface ArticleProps {
   articleId?: string;
   showSidebar?: boolean;

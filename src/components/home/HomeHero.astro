@@ -1,0 +1,124 @@
+---
+// src/components/home/HomeHero.astro
+import { marked } from 'marked';
+import Button from '@components/Button.astro';
+import MediaLightbox from '@components/MediaLightbox.astro';
+import HomeHeroGrid from '@assets/svgs/home-hero-grid.svg';
+import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
+import type { HomeHeroProps } from '@/src/types/common';
+
+const { title = '', description = '' } = Astro.props as HomeHeroProps;
+
+// Decorative code-skeleton inside the "Product Overview" video card (mirrors the Figma layout):
+// a narrow left column of short bars and a wide right column of long bars, each grouped into
+// paragraphs led by a darker "heading" pill.
+const sidebarBars = ['s-md', 's-sm', 's-md', 's-lg'];
+const mainBars = ['m-1', 'm-2', 'm-3', 'm-4'];
+---
+
+<section
+  class="section--block section--block--pad section--block--large-pad bg-white"
+  aria-labelledby="home-hero-title"
+>
+  <div class="max-width">
+    <div class="home-hero-layout">
+      <div class="home-hero-content">
+        {
+          title && (
+            <h1 id="home-hero-title" class="home-hero-title" set:html={marked.parseInline(title)} />
+          )
+        }
+        {
+          description && (
+            <p class="home-hero-description" set:html={marked.parseInline(description)} />
+          )
+        }
+        <div class="home-hero-actions">
+          <Button
+            class="btn btn--midnight-fjord"
+            text="Book a demo"
+            href="https://auth.datum.net/ui/v2/login/register"
+            target="_blank"
+            icon={{ name: 'calendar', size: 'md' }}
+            iconPosition="left"
+            data-fathom-event="Homepage: Book a demo"
+          />
+          <Button
+            class="btn btn--alpha"
+            text="Chat with us"
+            href="https://link.datum.net/discord"
+            target="_blank"
+            icon={{ name: 'discord', size: 'md' }}
+            iconPosition="left"
+            data-fathom-event="Homepage: Chat with us"
+          />
+        </div>
+      </div>
+
+      <div class="home-hero-visual">
+        <div class="home-hero-card-frame">
+          <HomeHeroGrid class="home-hero-grid-lines" aria-hidden="true" />
+
+          <button
+            type="button"
+            class="home-hero-video-card"
+            data-video-trigger
+            data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
+            aria-label="Play Product Overview video"
+          >
+            <div class="home-hero-video-card-header">
+              <span>Product Overview</span>
+              <span>2 min</span>
+            </div>
+
+            <div class="home-hero-video-card-body">
+              <div class="home-hero-video-card-sidebar">
+                {
+                  Array.from({ length: 4 }).map(() => (
+                    <div class="home-hero-video-card-group">
+                      <span class="home-hero-video-card-bar home-hero-video-card-bar--heading" />
+                      {sidebarBars.map((w) => (
+                        <span
+                          class={`home-hero-video-card-bar home-hero-video-card-bar--muted home-hero-video-card-bar--${w}`}
+                        />
+                      ))}
+                    </div>
+                  ))
+                }
+              </div>
+
+              <div class="home-hero-video-card-main">
+                {
+                  Array.from({ length: 3 }).map(() => (
+                    <div class="home-hero-video-card-group">
+                      <span class="home-hero-video-card-bar home-hero-video-card-bar--heading" />
+                      {mainBars.map((w) => (
+                        <span
+                          class={`home-hero-video-card-bar home-hero-video-card-bar--muted home-hero-video-card-bar--${w}`}
+                        />
+                      ))}
+                    </div>
+                  ))
+                }
+              </div>
+
+              <div class="home-hero-video-card-play" aria-hidden="true">
+                <div class="home-hero-video-card-play-inner">
+                  <svg
+                    class="home-hero-video-card-play-icon"
+                    viewBox="0 0 24 28"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 2.5 L22 14 L2 25.5 Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <MediaLightbox selector="" />
+</section>

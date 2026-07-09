@@ -1,0 +1,174 @@
+@layer components {
+  .home-hero {
+    @apply text-midnight-fjord relative overflow-hidden bg-white;
+    @apply pb-16 md:pb-20 lg:pb-28 xl:pb-40;
+  }
+
+  .home-hero-grid {
+    @apply pointer-events-none absolute inset-0 z-0 hidden lg:block;
+
+    &::before {
+      @apply bg-silver-mist absolute top-0 bottom-0 left-7 w-px content-[''];
+    }
+  }
+
+  /* Decorative technical grid framing the video card (Figma node 15328:1441).
+     The SVG viewBox is 708x809 with the card occupying the box (40,199)-(588,584).
+     Scaling its width to (708/548) of the card frame and translating by the card's
+     offset within the viewBox keeps the grid registered to the card at any size. */
+  .home-hero-grid-lines {
+    @apply pointer-events-none absolute top-0 left-0 z-0 hidden h-auto md:block;
+
+    width: calc(100% * 708 / 548);
+    transform: translate(calc(-100% * 40 / 708), calc(-100% * 199 / 809));
+  }
+
+  .home-hero-layout {
+    @apply relative z-10 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-8 xl:gap-12;
+  }
+
+  .home-hero-content {
+    @apply flex flex-col items-start gap-10;
+  }
+
+  .home-hero-title {
+    @apply datum-text-11xl text-midnight-fjord m-0 max-w-none text-left;
+
+    /* Match Figma: line-height equals font-size (80/80) for a tight display stack. */
+    line-height: 1;
+
+    br {
+      @apply hidden md:block;
+    }
+
+    span {
+      @apply text-canyon-clay---links box-decoration-clone px-1;
+
+      /* Highlighter-style marker: a ~43px band sitting over the lower portion of the line,
+         matching the Blush Quartz rectangle (opacity 50%) in the Figma design. */
+      background-image: linear-gradient(
+        to bottom,
+        transparent 42%,
+        rgb(236 208 208 / 0.5) 42%,
+        rgb(236 208 208 / 0.5) 92%,
+        transparent 92%
+      );
+    }
+  }
+
+  .home-hero-description {
+    @apply datum-text-xl m-0 max-w-151 text-pretty opacity-80;
+  }
+
+  .home-hero-actions {
+    @apply flex flex-col gap-5 sm:flex-row sm:items-center;
+  }
+
+  .btn--home-hero-primary {
+    @apply bg-midnight-fjord hover:bg-midnight-fjord/90 border-midnight-fjord datum-text-sm gap-3 rounded-md border-none px-5 py-3.5 font-semibold text-white;
+
+    svg {
+      @apply text-white;
+    }
+  }
+
+  .btn--home-hero-secondary {
+    @apply text-midnight-fjord hover:bg-glacier-mist-800 border-midnight-fjord datum-text-sm gap-3 rounded-md border bg-white px-5 py-3.5 font-semibold;
+
+    svg {
+      @apply text-midnight-fjord;
+    }
+  }
+
+  .home-hero-visual {
+    @apply relative flex w-full justify-center lg:justify-end;
+  }
+
+  .home-hero-card-frame {
+    @apply relative w-full max-w-137;
+  }
+
+  .home-hero-video-card {
+    @apply border-silver-mist to-glacier-mist-700/70 relative z-10 flex w-full cursor-pointer flex-col overflow-hidden border bg-linear-to-b from-white from-30% text-left shadow-(--shadow-home-hero-card) transition-opacity duration-200 hover:opacity-95;
+    @apply min-h-80 md:min-h-96;
+  }
+
+  .home-hero-video-card-header {
+    @apply font-dejavu text-midnight-fjord flex items-center justify-between px-3.5 pt-3.5 pb-2 text-(length:--text-10) uppercase opacity-80;
+  }
+
+  .home-hero-video-card-body {
+    @apply relative flex flex-1 gap-7 px-3.5 pt-3 pb-3.5;
+  }
+
+  .home-hero-video-card-sidebar {
+    @apply flex w-[92px] shrink-0 flex-col gap-3.5 pt-2.5;
+  }
+
+  .home-hero-video-card-main {
+    @apply flex flex-1 flex-col gap-10 pt-6;
+  }
+
+  .home-hero-video-card-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .home-hero-video-card-bar {
+    @apply h-2 rounded-full;
+  }
+
+  .home-hero-video-card-bar--heading {
+    @apply bg-glacier-mist-900 w-[52px];
+  }
+
+  .home-hero-video-card-bar--muted {
+    @apply bg-glacier-mist-800;
+  }
+
+  /* Sidebar paragraph bars sit indented 10px from their outdented heading (per Figma). */
+  .home-hero-video-card-sidebar .home-hero-video-card-bar--muted {
+    @apply ml-2.5;
+  }
+
+  /* narrow sidebar bar widths */
+  .home-hero-video-card-bar--s-sm {
+    @apply w-[52px];
+  }
+
+  .home-hero-video-card-bar--s-md {
+    @apply w-[70px];
+  }
+
+  .home-hero-video-card-bar--s-lg {
+    @apply w-[82px];
+  }
+
+  /* wide main-column bar widths */
+  .home-hero-video-card-bar--m-1 {
+    @apply w-4/5;
+  }
+
+  .home-hero-video-card-bar--m-2 {
+    @apply w-[84%];
+  }
+
+  .home-hero-video-card-bar--m-3 {
+    @apply w-[78%];
+  }
+
+  .home-hero-video-card-bar--m-4 {
+    @apply w-[57%];
+  }
+
+  .home-hero-video-card-play {
+    @apply absolute top-1/2 left-1/2 z-20 flex size-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md border border-[#98afc5] bg-[#e8eff5] shadow-(--shadow-home-hero-play);
+  }
+
+  .home-hero-video-card-play-inner {
+    @apply flex size-16 items-center justify-center bg-white;
+  }
+
+  .home-hero-video-card-play-icon {
+    @apply fill-midnight-fjord h-7 w-6;
+  }
+}

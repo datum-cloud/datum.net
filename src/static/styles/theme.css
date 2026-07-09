@@ -20,6 +20,7 @@
   /* Custom width */
   --datum-max-width: 1926px;
   --datum-max-width-container: 1372px;
+  --datum-max-width-nav: 1478px;
   --datum-section-width: 155px;
   --max-width-8xl: var(--datum-max-width-container);
   --width-8xl: var(--datum-max-width-container);
@@ -105,6 +106,8 @@
   --shadow-sm: 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
   --shadow-modal: 0 4px 16px 0 rgba(0, 0, 0, 0.05), 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
   --shadow-glow-aurora: 0 0 4px 0 var(--color-aurora-moss);
+  --shadow-home-hero-card: 0 10px 60px -40px rgba(12, 29, 49, 0.6);
+  --shadow-home-hero-play: 0 8px 20px -12px rgba(12, 29, 49, 0.4);
 
   --radius-sm: 3px;
   --radius-md: 6px;

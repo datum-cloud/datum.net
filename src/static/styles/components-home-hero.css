@@ -12,15 +12,8 @@
     }
   }
 
-  /* Decorative technical grid framing the video card (Figma node 15328:1441).
-     The SVG viewBox is 708x809 with the card occupying the box (40,199)-(588,584).
-     Scaling its width to (708/548) of the card frame and translating by the card's
-     offset within the viewBox keeps the grid registered to the card at any size. */
   .home-hero-grid-lines {
-    @apply pointer-events-none absolute top-0 left-0 z-0 hidden h-auto md:block;
-
-    width: calc(100% * 708 / 548);
-    transform: translate(calc(-100% * 40 / 708), calc(-100% * 199 / 809));
+    @apply pointer-events-none absolute inset-0 z-0 h-full w-full;
   }
 
   .home-hero-layout {
@@ -84,91 +77,50 @@
     @apply relative flex w-full justify-center lg:justify-end;
   }
 
-  .home-hero-card-frame {
-    @apply relative w-full max-w-137;
+  /* Full section height — grid touches top/bottom of section--block (Figma 708×809). */
+  .home-hero-visual-frame {
+    @apply pointer-events-none absolute top-0 right-7 z-20 hidden h-full w-auto md:right-0 lg:right-0 lg:block xl:right-11.25;
+
+    aspect-ratio: 708 / 809;
+  }
+
+  .home-hero-visual-spacer {
+    @apply hidden w-full max-w-137 lg:block;
+
+    aspect-ratio: 708 / 809;
   }
 
   .home-hero-video-card {
-    @apply border-silver-mist to-glacier-mist-700/70 relative z-10 flex w-full cursor-pointer flex-col overflow-hidden border bg-linear-to-b from-white from-30% text-left shadow-(--shadow-home-hero-card) transition-opacity duration-200 hover:opacity-95;
-    @apply min-h-80 md:min-h-96;
+    @apply relative z-10 block w-full cursor-pointer border-0 bg-transparent p-0 text-left;
+
+    &:hover,
+    &:focus-visible {
+      .home-hero-video-card-play {
+        @apply scale-110;
+      }
+    }
   }
 
-  .home-hero-video-card-header {
-    @apply font-dejavu text-midnight-fjord flex items-center justify-between px-3.5 pt-3.5 pb-2 text-(length:--text-10) uppercase opacity-80;
+  .home-hero-video-card--desktop {
+    @media (width >= theme(--breakpoint-lg)) {
+      /* player.svg card rect sits at (20.5, 10.5) inside a 589×426 asset */
+      @apply pointer-events-auto absolute z-20;
+
+      top: calc(100% * 188.5 / 809);
+      left: calc(100% * 19.5 / 708);
+      width: calc(100% * 589 / 708);
+    }
   }
 
-  .home-hero-video-card-body {
-    @apply relative flex flex-1 gap-7 px-3.5 pt-3 pb-3.5;
+  .home-hero-video-card--mobile {
+    @apply mx-auto max-w-137 lg:hidden;
   }
 
-  .home-hero-video-card-sidebar {
-    @apply flex w-[92px] shrink-0 flex-col gap-3.5 pt-2.5;
-  }
-
-  .home-hero-video-card-main {
-    @apply flex flex-1 flex-col gap-10 pt-6;
-  }
-
-  .home-hero-video-card-group {
-    @apply flex flex-col gap-1.5;
-  }
-
-  .home-hero-video-card-bar {
-    @apply h-2 rounded-full;
-  }
-
-  .home-hero-video-card-bar--heading {
-    @apply bg-glacier-mist-900 w-[52px];
-  }
-
-  .home-hero-video-card-bar--muted {
-    @apply bg-glacier-mist-800;
-  }
-
-  /* Sidebar paragraph bars sit indented 10px from their outdented heading (per Figma). */
-  .home-hero-video-card-sidebar .home-hero-video-card-bar--muted {
-    @apply ml-2.5;
-  }
-
-  /* narrow sidebar bar widths */
-  .home-hero-video-card-bar--s-sm {
-    @apply w-[52px];
-  }
-
-  .home-hero-video-card-bar--s-md {
-    @apply w-[70px];
-  }
-
-  .home-hero-video-card-bar--s-lg {
-    @apply w-[82px];
-  }
-
-  /* wide main-column bar widths */
-  .home-hero-video-card-bar--m-1 {
-    @apply w-4/5;
-  }
-
-  .home-hero-video-card-bar--m-2 {
-    @apply w-[84%];
-  }
-
-  .home-hero-video-card-bar--m-3 {
-    @apply w-[78%];
-  }
-
-  .home-hero-video-card-bar--m-4 {
-    @apply w-[57%];
+  .home-hero-video-card-art {
+    @apply block h-auto w-full;
   }
 
   .home-hero-video-card-play {
-    @apply absolute top-1/2 left-1/2 z-20 flex size-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md border border-[#98afc5] bg-[#e8eff5] shadow-(--shadow-home-hero-play);
-  }
-
-  .home-hero-video-card-play-inner {
-    @apply flex size-16 items-center justify-center bg-white;
-  }
-
-  .home-hero-video-card-play-icon {
-    @apply fill-midnight-fjord h-7 w-6;
+    @apply pointer-events-none absolute top-1/2 left-1/2 z-20 size-24 -translate-x-1/2 -translate-y-1/2 transition-transform duration-200 ease-out;
   }
 }

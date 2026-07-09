@@ -14,7 +14,8 @@
   --breakpoint-3xl: 120rem;
 
   /* width */
-  --datum-max-width: 1926px;
+  /* --datum-max-width: 1926px; */
+  --datum-max-width: 1680px;
   --datum-max-width-container: 1372px;
   --datum-section-width: 155px;
   --max-width-8xl: 1372px;

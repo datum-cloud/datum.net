@@ -18,9 +18,10 @@
   --breakpoint-3xl: 120rem;
 
   /* Custom width */
-  --datum-max-width: 1926px;
+  /* --datum-max-width: 1926px; */
+  --datum-max-width: 1680px;
   --datum-max-width-container: 1372px;
-  --datum-max-width-nav: 1478px;
+  --datum-max-width-nav: 1507px;
   --datum-section-width: 155px;
   --max-width-8xl: var(--datum-max-width-container);
   --width-8xl: var(--datum-max-width-container);

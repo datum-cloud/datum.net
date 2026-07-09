@@ -29,6 +29,59 @@
     background-image: linear-gradient(var(--color-glacier-mist-900), var(--color-glacier-mist-900));
   }
 
+  .section-eyebrow {
+    @apply font-dejavu datum-text-sm text-canyon-clay---links inline-flex items-center gap-2.5 whitespace-nowrap uppercase;
+
+    &::before {
+      @apply bg-canyon-clay h-3.5 w-3.25 shrink-0 rounded-[1.25px] content-[''];
+    }
+  }
+
+  .section-eyebrow--pine {
+    @apply text-pine-forge;
+
+    &::before {
+      @apply bg-pine-forge;
+    }
+  }
+
+  .section-eyebrow--midnight-fjord {
+    @apply text-midnight-fjord;
+
+    &::before {
+      @apply bg-midnight-fjord;
+    }
+  }
+
+  .section-eyebrow--left-top {
+    @apply absolute left-7 md:left-18 lg:left-28;
+    @apply top-5 md:top-6 lg:top-8;
+  }
+
+  .section-line {
+    @apply bg-silver-mist/50 absolute block w-px;
+    @apply h-12 md:h-16 lg:h-20;
+    @apply hidden md:block;
+  }
+  .section-line-h {
+    @apply bg-silver-mist/50 absolute block h-px;
+    @apply w-12 md:w-16 lg:w-20;
+    @apply hidden md:block;
+  }
+  .section-line--left {
+    @apply left-7 md:left-12 lg:left-21;
+  }
+  .section-line--right {
+    @apply right-7 md:right-12 lg:right-21;
+  }
+
+  .section-line--top {
+    @apply top-0;
+  }
+  .section-line--bottom {
+    @apply bottom-0;
+  }
+
   .section-title {
     @apply datum-text-8xl text-midnight-fjord text-pretty;
   }
@@ -74,10 +127,7 @@
 
   .footer-prefooter {
     @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto pt-14 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40;
-
-    &:before {
-      @apply bg-silver-mist absolute top-0 left-0 z-10 h-px w-full content-[''];
-    }
+    @apply border-silver-mist/50 border-t;
   }
 
   .footer-prefooter-label {
@@ -85,27 +135,12 @@
     @apply h-[96px] md:h-[120px] lg:h-[159px];
   }
 
-  .footer-prefooter-label-line {
-    @apply bg-silver-mist absolute top-0 h-full w-px;
-    @apply left-7 md:left-12 lg:left-21;
-    @apply top-0 -translate-y-1/2;
-  }
-
-  .footer-prefooter-label-text {
-    @apply datum-text-sm font-dejavu relative flex items-center-safe justify-center gap-2.5 whitespace-nowrap uppercase;
-    @apply left-14 md:left-18 lg:left-28;
-    @apply top-4 md:top-6 lg:top-8;
-
-    &::before {
-      @apply bg-midnight-fjord h-3.5 w-3.25 rounded-[1.25px] content-[''];
-    }
-  }
-
   .footer-prefooter-grid {
-    @apply pointer-events-none absolute -top-2 right-3 h-20 w-20 overflow-hidden;
-    @apply md:right-6 lg:right-11;
-    @apply md:-top-5 md:h-34 md:w-28;
-    @apply lg:top-[-79px] lg:h-196.25 lg:w-64;
+    @apply pointer-events-none absolute top-0 overflow-hidden;
+    @apply right-3 md:right-7.75 lg:right-11;
+
+    @apply md:h-34 md:w-28;
+    @apply lg:h-196.25 lg:w-64;
   }
 
   .footer-illustration-container {

@@ -1,0 +1,98 @@
+---
+// src/components/home/DedicatedCloud.astro
+import { Image } from 'astro:assets';
+import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import starfieldImage from '@assets/images/dedicated-cloud-starfield.png';
+
+const { class: className = '' } = Astro.props;
+
+const expertiseItems = [
+  'Physical infrastructure',
+  'Data center supply chain',
+  'Network design & implementation',
+];
+---
+
+<section
+  id="dedicated-cloud"
+  class:list={[
+    'section--block section--block--pad section--block--large-pad bg-glacier-mist-700 border-silver-mist/50 relative overflow-hidden border-t',
+    className,
+  ]}
+>
+  <span class="section-line section-line--left section-line--bottom"></span>
+  <span class="section-line section-line--left section-line--top"></span>
+  <span class="section-line section-line--right section-line--bottom"></span>
+  <span class="section-eyebrow section-eyebrow--left-top"> Dedicated cloud </span>
+
+  <div class="max-width flex flex-col items-center gap-10 md:gap-16">
+    <div class="flex w-full flex-col items-center gap-7">
+      <h2 class="datum-text-9xl text-midnight-fjord text-center">
+        <span
+          class="text-canyon-clay---links bg-[linear-gradient(to_bottom,transparent_42%,var(--color-blush-quartz)_42%,var(--color-blush-quartz)_92%,transparent_92%)] box-decoration-clone px-1"
+          >Single-tenant</span
+        >{' '}
+        GPU, CPU, and network infrastructure.
+      </h2>
+    </div>
+
+    <div class="bg-midnight-fjord relative w-full overflow-hidden p-8 md:p-20">
+      <Image
+        src={starfieldImage}
+        alt=""
+        class="pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none -translate-y-1/2 rotate-16 opacity-60"
+        aria-hidden="true"
+        loading="lazy"
+      />
+
+      <div
+        class="pointer-events-none absolute top-0 right-0 hidden size-20 bg-white/10 lg:block"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="pointer-events-none absolute right-0 bottom-0 hidden size-20 bg-white/10 lg:block"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative z-10 flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-16">
+        <div class="flex flex-1 flex-col gap-7">
+          <div class="bg-app---dark---utility-1 flex size-10 shrink-0 items-center justify-center">
+            <Icon name="diamond-plus" size="md" class="text-glacier-mist-700 stroke-1" />
+          </div>
+          <div class="text-glacier-mist-700 flex flex-col gap-5">
+            <h3 class="datum-text-8xl">
+              A different kind of cloud –<br />
+              built around <span class="text-aurora-moss">you</span>
+            </h3>
+            <p class="datum-text-lg opacity-87">
+              For scaling providers and enterprises who benefit from full control, custom locations,
+              and ideal economics.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="bg-app---dark---utility-1/80 flex w-full flex-col gap-10 rounded-sm p-8 md:p-10 lg:w-120 lg:shrink-0"
+        >
+          <div class="text-glacier-mist-700 flex flex-col gap-5">
+            <p class="datum-text-lg opacity-80">Leverage our expertise around:</p>
+            <ul class="datum-text-lg list-disc space-y-2.5 pl-7 font-medium">
+              {expertiseItems.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          <Button
+            class="btn btn--aurora-moss w-full"
+            text="Learn more about Dedicated"
+            href="/pricing#provider"
+            icon={{ name: 'external-link', size: 'md' }}
+            iconPosition="right"
+            data-fathom-event="Homepage: Learn more about Dedicated"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

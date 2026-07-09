@@ -1,0 +1,40 @@
+---
+// src/components/home/WhatIsDatum.astro
+import WhatIsDatumGrid from '@assets/svgs/what-is-datum-grid.svg';
+
+const { class: className = '' } = Astro.props;
+---
+
+<section
+  id="what-is-datum"
+  class="section--block section--block--pad section--block--large-pad bg-glacier-mist-700/70 border-silver-mist/50 overflow-hidden border-b"
+>
+  <WhatIsDatumGrid
+    class="pointer-events-none absolute top-0 left-7 z-0 hidden h-full w-auto lg:left-10.75 lg:block xl:left-12"
+    aria-hidden="true"
+  />
+
+  <div class="max-width">
+    <div class:list={['relative', className]}>
+      <div
+        class="relative z-10 mx-auto flex w-full max-w-none flex-col gap-7 md:max-w-3xl md:pl-0 lg:max-w-4xl lg:pl-52 xl:max-w-6xl xl:pl-12"
+      >
+        <span class="section-eyebrow">What is Datum?</span>
+        <div class="flex flex-col gap-7">
+          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+            We're a venture-backed infrastructure startup upgrading the internet for a world
+            disrupted by AI.
+          </p>
+          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+            We think every tech-forward company will move intelligence to the edge, keep workloads
+            off the public internet, and curate with whom and how they connect.
+          </p>
+          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+            We make it that possible with a modern edge cloud platform and dedicated infrastructure
+            services.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

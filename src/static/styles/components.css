@@ -575,7 +575,7 @@
   /* announcement */
 
   .announcement {
-    @apply datum-app-body relative z-40 mb-2.5 flex items-center justify-center gap-4 px-7 py-[15.5px];
+    @apply datum-app-body relative z-40 flex items-center justify-center gap-4 px-7 py-[15.5px];
     @apply bg-blush-quartz;
 
     label {

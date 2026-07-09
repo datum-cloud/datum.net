@@ -67,3 +67,34 @@ import NavMenu from '@components/NavMenu.astro';
 
   <div class="nav-dropdown-backdrop" aria-hidden="true"></div>
 </section>
+
+<script>
+  const syncNavDropdownBackdropTop = () => {
+    const container = document.querySelector('.nav--main-container');
+    if (!container) return;
+    document.documentElement.style.setProperty(
+      '--nav-dropdown-backdrop-top',
+      `${container.getBoundingClientRect().bottom}px`
+    );
+  };
+
+  const initNavDropdownBackdropTop = () => {
+    const container = document.querySelector('.nav--main-container');
+    if (!container) return;
+
+    syncNavDropdownBackdropTop();
+
+    window.addEventListener('resize', syncNavDropdownBackdropTop, { passive: true });
+    window.addEventListener('scroll', syncNavDropdownBackdropTop, { passive: true });
+
+    new ResizeObserver(syncNavDropdownBackdropTop).observe(container);
+
+    const announcement = document.getElementById('announcement');
+    if (announcement) {
+      new ResizeObserver(syncNavDropdownBackdropTop).observe(announcement);
+    }
+  };
+
+  initNavDropdownBackdropTop();
+  document.addEventListener('alpine:initialized', syncNavDropdownBackdropTop);
+</script>

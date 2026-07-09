@@ -26,10 +26,17 @@
 
   /* Blurs page content below the nav when a desktop dropdown is open (Figma overlay). */
   .nav-dropdown-backdrop {
-    @apply bg-app---dark---utility-4/50 pointer-events-none invisible fixed inset-x-0 top-16 bottom-0 z-70 hidden opacity-0 backdrop-blur-[7px] md:block lg:top-18;
+    @apply bg-app---dark---utility-4/50 pointer-events-none invisible fixed inset-x-0 bottom-0 z-70 hidden opacity-0 backdrop-blur-[7px] md:block;
+    top: var(--nav-dropdown-backdrop-top, 4rem);
     transition:
       opacity 200ms ease-in-out 150ms,
       visibility 0s 350ms;
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    .nav-dropdown-backdrop {
+      top: var(--nav-dropdown-backdrop-top, 4.5rem);
+    }
   }
 
   .nav--main-container:has(.nav-dropdown:hover) .nav-dropdown-backdrop,

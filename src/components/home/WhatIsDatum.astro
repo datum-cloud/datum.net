@@ -10,26 +10,28 @@ const { class: className = '' } = Astro.props;
   class="section--block section--block--pad section--block--large-pad bg-glacier-mist-700/70 border-silver-mist/50 overflow-hidden border-b"
 >
   <WhatIsDatumGrid
-    class="pointer-events-none absolute top-0 left-7 z-0 hidden h-full w-auto lg:left-10.75 lg:block xl:left-12"
+    class="pointer-events-none absolute top-0 left-7 z-0 hidden h-full w-auto lg:left-11.25 lg:block xl:left-11 2xl:left-11.5"
     aria-hidden="true"
   />
 
-  <div class="max-width">
+  <div class="max-width-nav">
     <div class:list={['relative', className]}>
       <div
-        class="relative z-10 mx-auto flex w-full max-w-none flex-col gap-7 md:max-w-3xl md:pl-0 lg:max-w-4xl lg:pl-52 xl:max-w-6xl xl:pl-12"
+        class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-65 xl:pr-47 xl:pl-70 2xl:pr-47 2xl:pl-50"
       >
         <span class="section-eyebrow">What is Datum?</span>
-        <div class="flex flex-col gap-7">
-          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+        <div
+          class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"
+        >
+          <p>
             We're a venture-backed infrastructure startup upgrading the internet for a world
             disrupted by AI.
           </p>
-          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+          <p>
             We think every tech-forward company will move intelligence to the edge, keep workloads
             off the public internet, and curate with whom and how they connect.
           </p>
-          <p class="datum-text-2xl text-midnight-fjord opacity-80">
+          <p>
             We make it that possible with a modern edge cloud platform and dedicated infrastructure
             services.
           </p>

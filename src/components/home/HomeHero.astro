@@ -5,6 +5,7 @@ import Button from '@components/Button.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
 import HomeHeroGrid from '@assets/svgs/home-hero-grid.svg';
 import PlayerArt from '@assets/svgs/player.svg';
+import PlayerMobileArt from '@assets/svgs/player-mobile.svg';
 import ButtonPlay from '@assets/svgs/button-play.svg';
 import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
 import type { HomeHeroProps } from '@/src/types/common';
@@ -74,7 +75,10 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
           data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
           aria-label="Play Product Overview video"
         >
-          <PlayerArt class="home-hero-video-card-art" aria-hidden="true" />
+          <PlayerMobileArt
+            class="home-hero-video-card-art home-hero-video-card-art--mobile"
+            aria-hidden="true"
+          />
           <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
         </button>
       </div>

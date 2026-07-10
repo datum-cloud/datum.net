@@ -23,6 +23,7 @@
   --datum-max-width-container: 1372px;
   --datum-max-width-nav: 1512px;
   --datum-section-width: 155px;
+  --width-home-hero-visual: 635px;
   --max-width-8xl: var(--datum-max-width-container);
   --width-8xl: var(--datum-max-width-container);
 

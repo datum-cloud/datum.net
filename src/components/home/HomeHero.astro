@@ -13,26 +13,11 @@ import type { HomeHeroProps } from '@/src/types/common';
 const { title = '', description = '' } = Astro.props as HomeHeroProps;
 ---
 
-<section
-  class="section--block section--block--pad section--block--large-pad bg-white"
-  aria-labelledby="home-hero-title"
->
+<section class="section--block bg-white" aria-labelledby="home-hero-title">
   <span class="section-line section-line--left section-line--top"></span>
   <span class="section-line section-line--left section-line--bottom"></span>
-  <div class="home-hero-visual-frame">
-    <HomeHeroGrid class="home-hero-grid-lines" />
-    <button
-      type="button"
-      class="home-hero-video-card home-hero-video-card--desktop"
-      data-video-trigger
-      data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
-      aria-label="Play Product Overview video"
-    >
-      <PlayerArt class="home-hero-video-card-art" aria-hidden="true" />
-      <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
-    </button>
-  </div>
-  <div class="max-width">
+
+  <div class="max-width-nav">
     <div class="home-hero-layout">
       <div class="home-hero-content">
         {
@@ -65,6 +50,20 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
             data-fathom-event="Homepage: Chat with us"
           />
         </div>
+      </div>
+
+      <div class="home-hero-visual-frame">
+        <HomeHeroGrid class="home-hero-grid-lines" />
+        <button
+          type="button"
+          class="home-hero-video-card home-hero-video-card--desktop"
+          data-video-trigger
+          data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
+          aria-label="Play Product Overview video"
+        >
+          <PlayerArt class="home-hero-video-card-art" aria-hidden="true" />
+          <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
+        </button>
       </div>
 
       <div class="home-hero-visual">

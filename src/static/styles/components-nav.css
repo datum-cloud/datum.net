@@ -73,7 +73,7 @@
     }
 
     .nav-menu-link {
-      @apply font-alliance flex h-9 items-center gap-2 rounded-sm px-3 text-(length:--14px) leading-(--21px) font-normal opacity-80 transition-colors duration-150;
+      @apply datum-text-base flex h-9 items-center gap-2 rounded-sm px-3 font-normal opacity-80 transition-colors duration-150;
 
       &.link--active {
         @apply font-semibold;
@@ -95,12 +95,12 @@
 
   /* Desktop Actions: Sign in + Book a demo */
   .nav-cta-signin {
-    @apply border-silver-mist text-midnight-fjord flex h-full items-center justify-center gap-3 border-x px-7 font-medium whitespace-nowrap transition-colors duration-150;
+    @apply border-silver-mist text-midnight-fjord datum-text-base flex h-full items-center justify-center gap-3 border-x px-7 whitespace-nowrap transition-colors duration-150;
     @apply hover:bg-glacier-mist-800;
   }
 
   .nav-cta-demo {
-    @apply bg-midnight-fjord text-glacier-mist-700 flex h-full items-center justify-center gap-3 px-7 font-medium whitespace-nowrap transition-colors duration-150;
+    @apply bg-midnight-fjord text-glacier-mist-700 datum-text-base flex h-full items-center justify-center gap-3 px-7 whitespace-nowrap transition-colors duration-150;
     @apply hover:bg-midnight-fjord/90;
 
     svg {
@@ -117,15 +117,6 @@
      with the nav bar's left edge instead of under its own trigger. */
   .nav-dropdown:has(.nav-dropdown-parent--platform) {
     @apply static;
-  }
-
-  .nav-dropdown-arrow {
-    @apply transition-transform duration-200 ease-in-out;
-  }
-
-  .nav-dropdown:hover .nav-dropdown-arrow,
-  .nav-dropdown:focus-within .nav-dropdown-arrow {
-    @apply rotate-180;
   }
 
   .nav-dropdown-menu {

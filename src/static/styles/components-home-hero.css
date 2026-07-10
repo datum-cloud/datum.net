@@ -25,20 +25,10 @@
   }
 
   .home-hero-title {
-    @apply datum-text-11xl text-midnight-fjord m-0 max-w-none text-left;
-
-    /* Match Figma: line-height equals font-size (80/80) for a tight display stack. */
-    line-height: 1;
-
-    br {
-      @apply hidden md:block;
-    }
+    @apply datum-text-9xl text-midnight-fjord m-0 max-w-none text-left leading-none;
 
     span {
       @apply text-canyon-clay---links box-decoration-clone px-1;
-
-      /* Highlighter-style marker: a ~43px band sitting over the lower portion of the line,
-         matching the Blush Quartz rectangle (opacity 50%) in the Figma design. */
       background-image: linear-gradient(
         to bottom,
         transparent 42%,
@@ -113,7 +103,7 @@
   }
 
   .home-hero-video-card--mobile {
-    @apply mx-auto max-w-137 lg:hidden;
+    @apply mx-auto max-w-full md:max-w-137 lg:hidden;
   }
 
   .home-hero-video-card-art {

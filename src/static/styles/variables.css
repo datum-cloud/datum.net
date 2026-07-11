@@ -14,13 +14,12 @@
   --breakpoint-3xl: 120rem;
 
   /* width */
-  /* --datum-max-width: 1926px; */
-  --datum-max-width: 1680px;
-  --datum-max-width-container: 1372px;
-  --datum-section-width: 155px;
-  --width-home-hero-visual: 635px;
-  --max-width-8xl: 1372px;
-  --width-8xl: 1372px;
+  /* --datum-max-width: 1920px; */
+  /* --datum-max-width-container: 1372px; */
+  /* --datum-section-width: 155px; */
+  /* --width-home-hero-visual: 635px; */
+  /* --max-width-8xl: 1372px; */
+  /* --width-8xl: 1372px; */
 
   /* colors */
   --app---dark---utility-1: #223143;

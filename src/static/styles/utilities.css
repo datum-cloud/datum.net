@@ -1,3 +1,7 @@
+@utility large-pad {
+  @apply py-12 md:py-30 lg:py-40;
+}
+
 @utility linear-gradient-light {
   @apply from-blush-quartz/50 to-blush-quartz/50 bg-white bg-linear-to-t;
 }
@@ -15,7 +19,7 @@
 }
 
 @utility max-width-nav {
-  @apply mx-auto w-full max-w-(--datum-max-width-nav) px-7;
+  @apply mx-auto w-full max-w-(--datum-max-width-nav);
 }
 
 @utility max-width-internal {

@@ -14,11 +14,11 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
 ---
 
 <section class="section--block bg-white" aria-labelledby="home-hero-title">
-  <span class="section-line section-line--left section-line--top"></span>
-  <span class="section-line section-line--left section-line--bottom"></span>
+  <div class="max-width-nav relative px-0">
+    <span class="section-line section-line--left section-line--top"></span>
+    <span class="section-line section-line--left section-line--bottom"></span>
 
-  <div class="max-width-nav">
-    <div class="home-hero-layout">
+    <div class="home-hero-layout max-width">
       <div class="home-hero-content">
         {
           title && (

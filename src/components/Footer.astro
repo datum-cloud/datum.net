@@ -32,49 +32,51 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
   {
     showCTA && (
       <div class="footer-prefooter">
-        <span class="section-line section-line--left section-line--top" />
-        <span class="section-eyebrow section-eyebrow--midnight-fjord section-eyebrow--left-top">
-          Get started
-        </span>
+        <div class="max-width-nav relative px-0">
+          <span class="section-line section-line--left section-line--top" />
+          <span class="section-eyebrow section-eyebrow--midnight-fjord section-eyebrow--left-top">
+            Get started
+          </span>
 
-        <div class="footer-prefooter-grid" aria-hidden="true">
-          <svg viewBox="0 0 255 282" fill="none" preserveAspectRatio="xMaxYMin slice">
-            <rect x="135" y="81.5" width="80" height="80" fill="#E6F59F" />
-            <rect x="16" y="121.5" width="40" height="40" fill="#E6F59F" />
-            <rect x="136" y="241.5" width="40" height="40" fill="#E6F59F" />
-            <path d="M215 0.5L215 120.5" stroke="#C3C6C9" />
-            <path d="M136 41.5L136 280.5" stroke="#C3C6C9" />
-            <path d="M56 121.5L56 160.5" stroke="#C3C6C9" />
-            <path d="M96 240.5H176" stroke="#C3C6C9" />
-            <path d="M0 160.5L176 160.5" stroke="#C3C6C9" />
-            <path d="M96 80.5L255 80.5" stroke="#C3C6C9" />
-          </svg>
-        </div>
-        <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
-          <h2 class="datum-text-9xl">
-            <span class="text-pine-forge">Less talk,</span> more building
-          </h2>
-          <p class="datum-text-xl max-w-186 text-pretty opacity-80">
-            Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
-            exposing localhost to the internet, with more on the way.
-          </p>
-          <div class="flex items-center justify-center gap-4">
-            <Button
-              class="btn btn--midnight-fjord btn--glow-aurora"
-              text="Get started"
-              icon={{ name: 'arrow-right', size: 'md' }}
-              iconPosition="right"
-              iconClass="stroke-1.5"
-              target="_blank"
-              href="https://auth.datum.net/ui/v2/login/register"
-              data-fathom-event="Pre-footer: Get started"
-            />
-            <Button
-              class="btn btn--alpha"
-              text="Download local apps"
-              href="/download"
-              data-fathom-event="Pre-footer: Download local apps"
-            />
+          <div class="footer-prefooter-grid" aria-hidden="true">
+            <svg viewBox="0 0 255 282" fill="none" preserveAspectRatio="xMaxYMin slice">
+              <rect x="135" y="81.5" width="80" height="80" fill="#E6F59F" />
+              <rect x="16" y="121.5" width="40" height="40" fill="#E6F59F" />
+              <rect x="136" y="241.5" width="40" height="40" fill="#E6F59F" />
+              <path d="M215 0.5L215 120.5" stroke="#C3C6C9" />
+              <path d="M136 41.5L136 280.5" stroke="#C3C6C9" />
+              <path d="M56 121.5L56 160.5" stroke="#C3C6C9" />
+              <path d="M96 240.5H176" stroke="#C3C6C9" />
+              <path d="M0 160.5L176 160.5" stroke="#C3C6C9" />
+              <path d="M96 80.5L255 80.5" stroke="#C3C6C9" />
+            </svg>
+          </div>
+          <div class="max-width flex flex-col items-center gap-5.5 pt-14 text-center md:gap-10 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40">
+            <h2 class="datum-text-9xl">
+              <span class="text-pine-forge">Less talk,</span> more building
+            </h2>
+            <p class="datum-text-xl max-w-186 text-pretty opacity-80">
+              Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
+              exposing localhost to the internet, with more on the way.
+            </p>
+            <div class="flex items-center justify-center gap-4">
+              <Button
+                class="btn btn--midnight-fjord btn--glow-aurora"
+                text="Get started"
+                icon={{ name: 'arrow-right', size: 'md' }}
+                iconPosition="right"
+                iconClass="stroke-1.5"
+                target="_blank"
+                href="https://auth.datum.net/ui/v2/login/register"
+                data-fathom-event="Pre-footer: Get started"
+              />
+              <Button
+                class="btn btn--alpha"
+                text="Download local apps"
+                href="/download"
+                data-fathom-event="Pre-footer: Download local apps"
+              />
+            </div>
           </div>
         </div>
       </div>

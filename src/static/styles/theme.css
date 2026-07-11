@@ -18,12 +18,11 @@
   --breakpoint-3xl: 120rem;
 
   /* Custom width */
-  /* --datum-max-width: 1926px; */
-  --datum-max-width: 1680px;
-  --datum-max-width-container: 1372px;
-  --datum-max-width-nav: 1512px;
-  --datum-section-width: 155px;
-  --width-home-hero-visual: 635px;
+  --datum-max-width: 1920px;
+  --datum-max-width-container: 1316px;
+  --datum-max-width-nav: 1520px;
+  /* --datum-max-width-nav: 1464px; */
+  --width-home-hero-visual: 675px;
   --max-width-8xl: var(--datum-max-width-container);
   --width-8xl: var(--datum-max-width-container);
 

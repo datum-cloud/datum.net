@@ -23,11 +23,10 @@
   .home-hero-content {
     @apply flex min-w-0 flex-col items-start gap-10;
     @apply py-12 pb-0 md:py-30 md:pt-30 md:pb-10 lg:py-36 xl:py-40;
-    @apply pl-0 md:pl-10 lg:pl-20;
   }
 
   .home-hero-title {
-    @apply datum-text-9xl text-midnight-fjord m-0 max-w-none text-left leading-none;
+    @apply datum-text-11xl text-midnight-fjord m-0 max-w-none text-left leading-none;
 
     span {
       @apply text-canyon-clay---links box-decoration-clone px-1;
@@ -69,18 +68,12 @@
     @apply relative flex w-full justify-center lg:hidden;
   }
 
-  /* Figma visual frame (708×809) — fixed column width prevents overlap with content. */
+  /* Figma visual frame (675×809) — fixed column width prevents overlap with content. */
   .home-hero-visual-frame {
     @apply pointer-events-none relative z-20 hidden w-full shrink-0 lg:block;
-    @apply right-0 lg:-right-16.25;
+    @apply right-0;
 
-    aspect-ratio: 708 / 809;
-  }
-
-  .home-hero-visual-spacer {
-    @apply hidden w-full max-w-137 lg:block;
-
-    aspect-ratio: 708 / 809;
+    aspect-ratio: 675 / 809;
   }
 
   .home-hero-video-card {
@@ -100,8 +93,8 @@
       @apply pointer-events-auto absolute z-20;
 
       top: calc(100% * 188.5 / 809);
-      left: calc(100% * 19.5 / 708);
-      width: calc(100% * 589 / 708);
+      left: calc(100% * 19.5 / 675);
+      width: calc(100% * 589 / 675);
     }
   }
 

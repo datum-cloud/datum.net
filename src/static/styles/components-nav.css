@@ -22,6 +22,7 @@
 @layer components {
   .nav--main-container {
     @apply border-silver-mist w-full border-b bg-white;
+    @apply px-7;
   }
 
   /* Blurs page content below the nav when a desktop dropdown is open (Figma overlay). */
@@ -55,8 +56,11 @@
 
   .nav--main {
     @apply max-width-nav relative z-80 m-auto flex h-16 w-full items-center justify-between gap-5 md:gap-10 lg:h-18 lg:gap-16;
-    @apply border-silver-mist/50 border-l;
-    @apply md:pr-0;
+    @apply xl:pr-0;
+
+    &::before {
+      @apply bg-silver-mist/50 absolute top-0 bottom-0 left-0 w-px content-[''];
+    }
     .nav-actions {
       @apply ml-auto hidden h-full items-center justify-self-end md:flex;
     }
@@ -459,6 +463,7 @@
   /* Logo Dropdown Styles */
   .nav-logo-container {
     @apply relative md:col-span-2;
+    @apply pl-7;
   }
 
   .nav-logo {

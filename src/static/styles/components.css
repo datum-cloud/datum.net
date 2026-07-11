@@ -54,7 +54,7 @@
   }
 
   .section-eyebrow--left-top {
-    @apply absolute left-7 md:left-18 lg:left-28;
+    @apply absolute left-7;
     @apply top-5 md:top-6 lg:top-8;
   }
 
@@ -69,10 +69,10 @@
     @apply hidden md:block;
   }
   .section-line--left {
-    @apply left-7 md:left-12 lg:left-21;
+    @apply left-7 md:left-7 lg:left-7 xl:left-7 2xl:left-0;
   }
   .section-line--right {
-    @apply right-7 md:right-12 lg:right-21;
+    @apply right-7 md:right-7 lg:right-7 xl:right-7 2xl:right-0;
   }
 
   .section-line--top {
@@ -126,7 +126,7 @@
   /* Footer Components */
 
   .footer-prefooter {
-    @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto pt-14 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40;
+    @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto;
     @apply border-silver-mist/50 border-t;
   }
 

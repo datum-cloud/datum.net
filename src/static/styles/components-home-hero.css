@@ -22,7 +22,7 @@
 
   .home-hero-content {
     @apply flex min-w-0 flex-col items-start gap-10;
-    @apply py-12 md:py-30 md:pt-30 md:pb-10 lg:py-36 xl:py-40;
+    @apply py-12 pb-0 md:py-30 md:pt-30 md:pb-10 lg:py-36 xl:py-40;
     @apply pl-0 md:pl-10 lg:pl-20;
   }
 
@@ -46,7 +46,7 @@
   }
 
   .home-hero-actions {
-    @apply flex flex-col gap-5 sm:flex-row sm:items-center;
+    @apply flex gap-5;
   }
 
   .btn--home-hero-primary {

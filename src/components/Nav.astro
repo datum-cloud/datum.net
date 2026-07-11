@@ -60,8 +60,18 @@ import NavMenu from '@components/NavMenu.astro';
       }
     </div>
 
-    {/* Mobile menu — deferred so it is never emitted into static HTML */}
-    <MobileMenu server:defer />
+    {/* Mobile menu — inside <template> so it is inert in static HTML and invisible to crawlers */}
+    <template id="mobile-menu-template">
+      <MobileMenu />
+    </template>
+    <div id="mobile-menu-mount"></div>
+    <script is:inline>
+      (function () {
+        var tpl = document.getElementById('mobile-menu-template');
+        var mount = document.getElementById('mobile-menu-mount');
+        if (tpl && mount) mount.appendChild(tpl.content.cloneNode(true));
+      })();
+    </script>
   </nav>
 
   <div class="nav-dropdown-backdrop" aria-hidden="true"></div>

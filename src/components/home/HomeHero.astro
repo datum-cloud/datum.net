@@ -13,12 +13,12 @@ import type { HomeHeroProps } from '@/src/types/common';
 const { title = '', description = '' } = Astro.props as HomeHeroProps;
 ---
 
-<section class="section--block bg-white" aria-labelledby="home-hero-title">
-  <div class="max-width-nav relative px-0">
+<section class="section--block bg-white px-7" aria-labelledby="home-hero-title">
+  <div class="max-width-nav relative">
     <span class="section-line section-line--left section-line--top"></span>
     <span class="section-line section-line--left section-line--bottom"></span>
 
-    <div class="home-hero-layout max-width">
+    <div class="home-hero-layout max-width-nopad">
       <div class="home-hero-content">
         {
           title && (

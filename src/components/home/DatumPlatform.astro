@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
 import dashboardImage from '@assets/images/datum-platform-dashboard.png';
+import dashboardImageMobile from '@assets/images/datum-platform-dashboard-mobile.png';
 import type { IconName } from '@utils/iconMap';
 
 const { class: className = '' } = Astro.props;
@@ -38,12 +39,15 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
 
 <section
   id="datum-platform"
-  class:list={['section--block border-silver-mist/50 overflow-hidden border-b bg-white', className]}
+  class:list={[
+    'section--block border-silver-mist/50 overflow-hidden border-b bg-white px-7',
+    className,
+  ]}
 >
-  <div class="max-width-nav large-pad relative px-0">
+  <div class="max-width-nav large-pad relative">
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--left section-line--top"></span>
-    <div class="max-width flex flex-col items-center gap-10 md:gap-16">
+    <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
       <div class="flex w-full flex-col items-center gap-7 text-center">
         <span class="section-eyebrow section-eyebrow--pine">The Datum Platform</span>
         <h2 class="datum-text-9xl text-midnight-fjord">
@@ -59,12 +63,12 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
       </div>
 
       <div class="relative flex w-full flex-col">
-        <span class="section-line bg-silver-mist -top-10 left-0"></span>
-        <span class="section-line-h bg-silver-mist top-0 -left-10"></span>
+        <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
+        <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
         <div
-          class="border-silver-mist from-glacier-mist-700 to-aurora-moss relative overflow-hidden border bg-linear-to-br from-55% to-71% p-8 md:p-16 lg:min-h-120"
+          class="border-silver-mist from-glacier-mist-700 to-aurora-moss grid grid-cols-1 gap-0 overflow-hidden border bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
         >
-          <div class="relative z-10 flex max-w-xl flex-col gap-7">
+          <div class="flex min-w-0 flex-col gap-7 p-8 md:p-16">
             <h3 class="datum-text-7xl text-midnight-fjord">Private, protected, performant.</h3>
             <p class="datum-text-base text-app---dark---utility-2 opacity-80">
               Our platform helps developers run workloads at the network edge and securely connect
@@ -87,17 +91,19 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
           </div>
 
           <div
-            class="pointer-events-none absolute top-0 right-0 hidden h-full w-1/2 lg:block"
+            class="pointer-events-none relative min-h-0 w-full self-stretch overflow-hidden p-5 md:w-[265px] md:p-0 lg:w-[415px] xl:w-[600px]"
             aria-hidden="true"
           >
-            <div
-              class="absolute inset-0 z-10 bg-linear-to-br from-transparent from-44% to-[rgb(178_226_172/0.4)] to-76%"
-            >
-            </div>
+            <Image
+              src={dashboardImageMobile}
+              alt=""
+              class="block h-auto w-full md:hidden"
+              loading="lazy"
+            />
             <Image
               src={dashboardImage}
               alt=""
-              class="absolute top-0 right-0 h-full w-auto max-w-none object-cover object-top-left"
+              class="hidden md:absolute md:bottom-0 md:left-0 md:block md:h-full md:w-auto md:max-w-none"
               loading="lazy"
             />
           </div>

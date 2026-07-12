@@ -7,17 +7,18 @@ const { class: className = '' } = Astro.props;
 
 <section
   id="what-is-datum"
-  class="section--block section--block--pad section--block--large-pad bg-glacier-mist-700/70 border-silver-mist/50 overflow-hidden border-b"
+  class="section--block bg-glacier-mist-700/70 border-silver-mist/50 overflow-hidden border-b px-7"
 >
-  <WhatIsDatumGrid
-    class="pointer-events-none absolute top-0 left-7 z-0 hidden h-full w-auto lg:left-11.25 lg:block xl:left-11 2xl:left-11.5"
-    aria-hidden="true"
-  />
-
-  <div class="max-width-nav">
-    <div class:list={['relative', className]}>
+  <div class="max-width-nav relative px-0">
+    <span class="section-line section-line--left section-line--bottom lg:hidden"></span>
+    <span class="section-line section-line--left section-line--top lg:hidden"></span>
+    <WhatIsDatumGrid
+      class="pointer-events-none absolute top-0 left-0 z-0 hidden h-full max-h-[600px] w-auto lg:-left-8.25 lg:block xl:-left-10 2xl:-left-9"
+      aria-hidden="true"
+    />
+    <div class:list={['large-pad relative', className]}>
       <div
-        class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-65 xl:pr-47 xl:pl-70 2xl:pr-47 2xl:pl-50"
+        class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-50 xl:pr-40 xl:pl-60 2xl:pr-40 2xl:pl-60"
       >
         <span class="section-eyebrow">What is Datum?</span>
         <div

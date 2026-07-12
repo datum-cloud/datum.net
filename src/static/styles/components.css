@@ -60,19 +60,19 @@
 
   .section-line {
     @apply bg-silver-mist/50 absolute block w-px;
-    @apply h-12 md:h-16 lg:h-20;
-    @apply hidden md:block;
+    @apply h-5 md:h-10 lg:h-20 xl:h-20;
   }
   .section-line-h {
     @apply bg-silver-mist/50 absolute block h-px;
     @apply w-12 md:w-16 lg:w-20;
-    @apply hidden md:block;
   }
   .section-line--left {
-    @apply left-7 md:left-7 lg:left-7 xl:left-7 2xl:left-0;
+    /* @apply left-7 md:left-7 lg:left-7 xl:left-7 2xl:left-0; */
+    @apply left-0;
   }
   .section-line--right {
-    @apply right-7 md:right-7 lg:right-7 xl:right-7 2xl:right-0;
+    /* @apply right-7 md:right-7 lg:right-7 xl:right-7 2xl:right-0; */
+    @apply right-0;
   }
 
   .section-line--top {
@@ -137,10 +137,11 @@
 
   .footer-prefooter-grid {
     @apply pointer-events-none absolute top-0 overflow-hidden;
-    @apply right-3 md:right-7.75 lg:right-11;
+    @apply right-0 hidden lg:-right-6.25 lg:block xl:-right-10;
 
     @apply md:h-34 md:w-28;
-    @apply lg:h-196.25 lg:w-64;
+    @apply lg:h-44 lg:w-40;
+    @apply xl:h-[196.25px] xl:w-64;
   }
 
   .footer-illustration-container {

@@ -1,5 +1,5 @@
 @utility large-pad {
-  @apply py-12 md:py-30 lg:py-40;
+  @apply py-16 md:py-20 lg:py-30 xl:py-35 2xl:py-40;
 }
 
 @utility linear-gradient-light {
@@ -18,8 +18,13 @@
   @apply max-w-8xl mx-auto w-full px-7;
 }
 
+@utility max-width-nopad {
+  @apply max-w-8xl mx-auto w-full;
+}
+
 @utility max-width-nav {
   @apply mx-auto w-full max-w-(--datum-max-width-nav);
+  /* @apply px-7; */
 }
 
 @utility max-width-internal {

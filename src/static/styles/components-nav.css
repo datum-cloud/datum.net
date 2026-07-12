@@ -61,8 +61,11 @@
     &::before {
       @apply bg-silver-mist/50 absolute top-0 bottom-0 left-0 w-px content-[''];
     }
+    &::after {
+      @apply bg-silver-mist/50 absolute top-0 right-0 bottom-0 w-px content-[''];
+    }
     .nav-actions {
-      @apply ml-auto hidden h-full items-center justify-self-end md:flex;
+      @apply ml-auto flex h-full shrink-0 items-center justify-self-end;
     }
 
     .nav-menu-wrapper {
@@ -100,12 +103,12 @@
 
   /* Desktop Actions: Sign in + Book a demo */
   .nav-cta-signin {
-    @apply border-silver-mist text-midnight-fjord datum-text-base flex h-full items-center justify-center gap-3 border-x px-7 whitespace-nowrap transition-colors duration-150;
-    @apply hover:bg-glacier-mist-800;
+    @apply border-silver-mist text-midnight-fjord datum-text-base flex h-full items-center justify-center gap-3 border-x px-4 whitespace-nowrap transition-colors duration-150;
+    @apply hover:bg-glacier-mist-800 md:px-7;
   }
 
   .nav-cta-demo {
-    @apply bg-midnight-fjord text-glacier-mist-700 datum-text-base flex h-full items-center justify-center gap-3 px-7 whitespace-nowrap transition-colors duration-150;
+    @apply bg-midnight-fjord text-glacier-mist-700 datum-text-base flex h-full items-center justify-center gap-3 px-4 whitespace-nowrap transition-colors duration-150 md:px-7;
     @apply hover:bg-midnight-fjord/90;
 
     svg {
@@ -287,45 +290,50 @@
 
   /* Mobile Navigation Styles */
   .mobile-menu-container {
-    @apply flex w-8 justify-self-end md:hidden;
+    @apply mr-4 flex w-7.5 shrink-0 justify-self-end md:hidden;
   }
   .mobile-menu-button {
-    @apply text-midnight-fjord hover:text-midnight-fjord/80 relative z-90 ml-auto transition-colors duration-200 hover:cursor-pointer md:hidden;
+    @apply text-canyon-clay hover:text-canyon-clay/80 relative z-90 transition-colors duration-300 hover:cursor-pointer md:hidden;
+
+    &:has(.mobile-menu-icon--open) {
+      @apply text-midnight-fjord hover:text-midnight-fjord/80;
+    }
 
     .mobile-menu-icon {
       @apply h-7.5 w-7.5;
 
-      /* viewBox is 30×30, rendered at 30×30px → 1 SVG unit = 1 CSS px, no ambiguity */
+      /* viewBox is 30×30; path y positions at 7.5, 15, 22.5 */
       .burger-top,
       .burger-mid,
       .burger-bot {
         transition:
           transform 0.3s ease-in-out,
-          opacity 0.2s ease-in-out;
+          opacity 0.2s ease-in-out,
+          clip-path 0.3s ease-in-out;
       }
       .burger-top {
-        transform-origin: 15px 7px;
+        transform-origin: 15px 7.5px;
       }
       .burger-mid {
         transform-origin: 15px 15px;
       }
       .burger-bot {
-        transform-origin: 15px 23px;
+        transform-origin: 15px 22.5px;
       }
     }
 
     .mobile-menu-icon--open {
-      /* CSS applies right-to-left: rotate in place, then translateY in screen space */
-      /* Top bar: center (15,7) → rotate → still (15,7) → +8px → (15,15) = SVG center */
+      /* Both bars are full width when open — symmetric X at (15, 15) */
       .burger-top {
-        transform: translateY(8px) rotate(45deg);
+        transform: translateY(7.5px) rotate(45deg);
       }
       .burger-mid {
         opacity: 0;
         transform: scaleX(0);
       }
       .burger-bot {
-        transform: translateY(-8px) rotate(-45deg);
+        clip-path: none;
+        transform: translateY(-7.5px) rotate(-45deg);
       }
     }
 

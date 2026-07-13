@@ -1,0 +1,35 @@
+src/libs/mailer.ts
+  s_3c3257ba590268::t_810893903b8b92 8-9,11-13,15-26,28-32
+src/components/forms/BookDemo.astro
+  s_3c3257ba590268::t_7922b9c6d4a50b 126
+  s_3c3257ba590268::t_7a02680f996791 22-23,31,33-34,42,44-45,53,55-56,64,66-67,69,74
+  s_3c3257ba590268::t_3bc78dcaa00927 9
+  s_3c3257ba590268::t_6230578fc29413 4-8,12
+src/pages/dedicated-cloud.astro
+  s_3c3257ba590268::t_b6cde0c9bc67f4 71
+.env.example
+  s_3c3257ba590268::t_061753cb4cbb40 56-57
+src/actions/demo.ts
+  s_3c3257ba590268::t_b864db1c5684d4 5-9,17,22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "8e1ea34b7f984f410d8a0b08a917e1e89e5db904",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_3c3257ba590268": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a155df29-24d6-4899-9a7c-0d7b301410f5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

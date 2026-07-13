@@ -1,0 +1,59 @@
+src/pages/demo.astro
+  s_18224dea664a34::t_0ff42a2ece693f 45-72
+  s_18224dea664a34::t_4e5b9f861fa2c9 37-38
+  s_18224dea664a34::t_6e07ad09cb3671 39-44
+  s_18224dea664a34::t_920b2fd7cb2188 34-36
+  s_18224dea664a34::t_3ec7f4b3d5b87f 73-75
+  s_18224dea664a34::t_72b4abc562ff1a 1-33,76-80
+src/components/forms/BookDemo.astro
+  s_18224dea664a34::t_a7b02f8697db05 16-93
+  s_18224dea664a34::t_051015ed20c340 7-15
+  s_18224dea664a34::t_17cac3c0094d10 4-6
+  s_18224dea664a34::t_ca31e776cba994 94-96
+.env.example
+  s_8fe594693866d2::t_b94efac0a1a48f 55-60
+docs/CONTENT_STRUCTURE.md
+  s_418b8e9d3185b4::t_0433595d5712a7 5-6,11-12,14,41-55,59-64,67-68,71,74-83,86,89-93,96-103,113,115,117,119,121,123,125,127,129,131,133,135,137,141,145,149,153,157,161,165,169-171,175-177
+docs/PROJECT_STRUCTURE.md
+  s_418b8e9d3185b4::t_32592cc60b0c9f 3,9-25,35,44-46,49,52-54,56-58,60-62,64-71,80,86,88-89,93,109-118,122-127,137,139,143-146,149-152,155-165,169-174,176,178,180-188,190,200-201,210,215,219,223,226-227,230,233,235-250,254,257-266,270,272-273,288,296,299,303-306,308,310,312,318,322-323,336-356,362-363,378,380
+src/actions/demo.ts
+  s_8fe594693866d2::t_25e8a4503c5dcd 1-30
+src/actions/index.ts
+  s_8fe594693866d2::t_35fe47f93f6958 2,6
+src/env.d.ts
+  s_8fe594693866d2::t_92f35ae3f73585 24-28,38-42
+src/libs/mailer.ts
+  s_8fe594693866d2::t_cfa5561e06ef11 1-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "549dc7ffdd04b099122662c4ae3ad582b2f688d3",
+  "prompts": {},
+  "sessions": {
+    "s_18224dea664a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58d8f649-46a4-4a8a-8094-4da981bb17eb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_418b8e9d3185b4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb028dd9-4c94-4096-92aa-dceb84b42ccd",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_8fe594693866d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e93a0bda-d18e-48e6-a841-53fbbb198a6b",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

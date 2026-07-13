@@ -516,6 +516,8 @@
       --text-11xl-canela-font-family: var(--canela);
       --text-11xl-canela-font-size: var(--72px);
       --text-11xl-canela-line-height: var(--80px);
+      /* --text-11xl-canela-font-size: var(--54px); */
+      /* --text-11xl-canela-line-height: var(--64px); */
       --text-11xl-canela-letter-spacing: var(--xxs);
 
       --text-article-body-font-family: var(--alliance);

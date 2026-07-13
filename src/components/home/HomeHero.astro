@@ -3,8 +3,10 @@
 import { marked } from 'marked';
 import Button from '@components/Button.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
-import HomeHeroGrid from '@assets/svgs/home-hero-grid.svg';
-import PlayerArt from '@assets/svgs/player.svg';
+import HomeHeroGrid from '@assets/svgs/player-full.svg';
+import HomeHeroGridLg from '@assets/svgs/player-full-lg.svg';
+import HomeHeroGridMd from '@assets/svgs/player-full-md.svg';
+// import PlayerArt from '@assets/svgs/player.svg';
 import PlayerMobileArt from '@assets/svgs/player-mobile.svg';
 import ButtonPlay from '@assets/svgs/button-play.svg';
 import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
@@ -18,8 +20,16 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
     <span class="section-line section-line--left section-line--top"></span>
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--right section-line--top md:hidden"></span>
+    <!-- <PlayerArt class="home-hero-video-card-art" aria-hidden="true" /> -->
+    <div
+      class="absolute top-0 right-0 z-10 hidden h-full max-w-168.75 md:block lg:-right-7 xl:right-0"
+    >
+      <HomeHeroGrid class="hidden xl:block" />
+      <HomeHeroGridLg class="hidden lg:block xl:hidden" />
+      <HomeHeroGridMd class="hidden md:block lg:hidden" />
+    </div>
 
-    <div class="home-hero-layout max-width-nopad">
+    <div class="home-hero-layout max-width-nopad relative z-20">
       <div class="home-hero-content">
         {
           title && (
@@ -53,21 +63,17 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
         </div>
       </div>
 
-      <div class="home-hero-visual-frame">
-        <HomeHeroGrid class="home-hero-grid-lines" />
+      <div class="home-hero-visual">
         <button
           type="button"
-          class="home-hero-video-card home-hero-video-card--desktop"
+          class="home-hero-video-card"
           data-video-trigger
           data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
           aria-label="Play Product Overview video"
         >
-          <PlayerArt class="home-hero-video-card-art" aria-hidden="true" />
           <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
         </button>
-      </div>
 
-      <div class="home-hero-visual">
         <button
           type="button"
           class="home-hero-video-card home-hero-video-card--mobile"
@@ -75,10 +81,7 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
           data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
           aria-label="Play Product Overview video"
         >
-          <PlayerMobileArt
-            class="home-hero-video-card-art home-hero-video-card-art--mobile"
-            aria-hidden="true"
-          />
+          <PlayerMobileArt class="home-hero-video-card-art" aria-hidden="true" />
           <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
         </button>
       </div>

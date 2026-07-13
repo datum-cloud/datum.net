@@ -1,5 +1,3 @@
-import nodemailer from 'nodemailer';
-
 interface SendMailInput {
   to: string;
   subject: string;
@@ -7,25 +5,31 @@ interface SendMailInput {
 }
 
 async function sendMail(input: SendMailInput): Promise<void> {
-  const host = import.meta.env.SMTP_HOST || process.env.SMTP_HOST;
-  const port = Number(import.meta.env.SMTP_PORT || process.env.SMTP_PORT || 587);
-  const user = import.meta.env.SMTP_USER || process.env.SMTP_USER;
-  const password = import.meta.env.SMTP_PASSWORD || process.env.SMTP_PASSWORD;
-  const from = import.meta.env.SMTP_FROM || process.env.SMTP_FROM || user;
+  const apiKey = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
+  const from = import.meta.env.RESEND_FROM || process.env.RESEND_FROM;
 
-  const transport = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: user && password ? { user, pass: password } : undefined,
+  if (!apiKey || !from) {
+    throw new Error('RESEND_API_KEY and RESEND_FROM must be configured');
+  }
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to: input.to,
+      subject: input.subject,
+      text: input.text,
+    }),
   });
 
-  await transport.sendMail({
-    from,
-    to: input.to,
-    subject: input.subject,
-    text: input.text,
-  });
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Resend request failed (${response.status}): ${body}`);
+  }
 }
 
 export { sendMail };

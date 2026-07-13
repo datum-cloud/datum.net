@@ -1,9 +1,15 @@
 ---
 // src/components/forms/BookDemo.astro
 import Icon from '@components/Icon.astro';
+
+interface Props {
+  formType?: 'demo' | 'dedicated-cloud';
+}
+
+const { formType = 'demo' } = Astro.props as Props;
 ---
 
-<book-demo-form>
+<book-demo-form data-form-type={formType}>
   <div class="relative">
     <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
     <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
@@ -13,72 +19,59 @@ import Icon from '@components/Icon.astro';
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
       onsubmit="return false;"
     >
-      <div class="flex flex-col gap-2">
-        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-name">
-          Name
-        </label>
+      <label class="flex flex-col gap-2">
+        <span class="datum-text-xs text-midnight-fjord/80 font-semibold">Name</span>
         <input
-          id="demo-name"
           type="text"
           name="name"
           class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
           autocomplete="name"
           required
         />
-      </div>
+      </label>
 
-      <div class="flex flex-col gap-2">
-        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-email">
-          Work email
-        </label>
+      <label class="flex flex-col gap-2">
+        <span class="datum-text-xs text-midnight-fjord/80 font-semibold">Work email</span>
         <input
-          id="demo-email"
           type="email"
           name="email"
           class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
           autocomplete="email"
           required
         />
-      </div>
+      </label>
 
-      <div class="flex flex-col gap-2">
-        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-company">
-          Company
-        </label>
+      <label class="flex flex-col gap-2">
+        <span class="datum-text-xs text-midnight-fjord/80 font-semibold">Company</span>
         <input
-          id="demo-company"
           type="text"
           name="company"
           class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
           autocomplete="organization"
           required
         />
-      </div>
+      </label>
 
-      <div class="flex flex-col gap-2">
-        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-workload-type">
-          Workload type
-        </label>
+      <label class="flex flex-col gap-2">
+        <span class="datum-text-xs text-midnight-fjord/80 font-semibold">Workload type</span>
         <input
-          id="demo-workload-type"
           type="text"
           name="workloadType"
           placeholder="GPU training, inference, CPU bare metal..."
           class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord placeholder:text-midnight-fjord/40 focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
           required
         />
-      </div>
+      </label>
 
-      <div class="flex flex-col gap-2">
-        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-message">
+      <label class="flex flex-col gap-2">
+        <span class="datum-text-xs text-midnight-fjord/80 font-semibold">
           Anything we should know?
-        </label>
+        </span>
         <textarea
-          id="demo-message"
           name="message"
           class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-[106px] resize-none rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
         ></textarea>
-      </div>
+      </label>
 
       <p class="form-status datum-text-sm hidden"></p>
 
@@ -130,6 +123,7 @@ import Icon from '@components/Icon.astro';
           company: String(data.get('company') || ''),
           workloadType: String(data.get('workloadType') || ''),
           message: String(data.get('message') || ''),
+          formType: this.dataset.formType === 'dedicated-cloud' ? 'dedicated-cloud' : 'demo',
         })
         .then((result) => {
           if (result.error) {

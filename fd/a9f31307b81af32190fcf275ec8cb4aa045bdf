@@ -1,0 +1,21 @@
+src/pages/demo.astro
+  s_18224dea664a34::t_4e5b9f861fa2c9 37-38
+  s_18224dea664a34::t_6e07ad09cb3671 39-41,43-44
+  s_18224dea664a34::t_0ff42a2ece693f 45-49,51-68,70-72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "fda9f31307b81af32190fcf275ec8cb4aa045bdf",
+  "prompts": {},
+  "sessions": {
+    "s_18224dea664a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58d8f649-46a4-4a8a-8094-4da981bb17eb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

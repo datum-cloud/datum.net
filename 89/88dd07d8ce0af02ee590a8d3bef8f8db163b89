@@ -1,0 +1,20 @@
+src/components/forms/BookDemo.astro
+  s_18224dea664a34::t_051015ed20c340 7-15
+  s_18224dea664a34::t_a7b02f8697db05 16-28,30-42,44-56,58-70,72-81,83,85-93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "8988dd07d8ce0af02ee590a8d3bef8f8db163b89",
+  "prompts": {},
+  "sessions": {
+    "s_18224dea664a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58d8f649-46a4-4a8a-8094-4da981bb17eb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

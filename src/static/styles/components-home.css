@@ -17,20 +17,16 @@
   }
 
   .home-hero-layout {
-    @apply relative z-10 grid items-start gap-12 pb-0 lg:gap-8 lg:pb-0 xl:gap-10;
-    @apply md:grid-cols-[minmax(0,1fr)_minmax(0,299px)];
-    @apply lg:grid-cols-[minmax(0,1fr)_minmax(0,468px)];
-    @apply xl:grid-cols-[minmax(0,1fr)_minmax(0,635px)];
+    @apply relative z-10 grid items-start gap-12 pb-12 md:pb-30 lg:grid-cols-[minmax(0,1fr)_var(--width-home-hero-visual)] lg:gap-8 lg:pb-0 xl:gap-12;
   }
 
   .home-hero-content {
-    @apply flex min-w-0 flex-col items-center md:items-start;
-    @apply gap-8 xl:gap-10;
-    @apply py-16 pb-0 md:py-20 lg:py-28 xl:py-40;
+    @apply flex min-w-0 flex-col items-start gap-10;
+    @apply py-12 pb-0 md:py-30 md:pt-30 md:pb-10 lg:py-36 xl:py-40;
   }
 
   .home-hero-title {
-    @apply datum-text-10xl xl:datum-text-11xl text-midnight-fjord m-0 max-w-none text-center leading-none! md:text-left;
+    @apply datum-text-11xl text-midnight-fjord m-0 max-w-none text-left leading-none;
 
     span {
       @apply text-canyon-clay---links box-decoration-clone px-1;
@@ -45,7 +41,7 @@
   }
 
   .home-hero-description {
-    @apply datum-text-xl m-0 max-w-151 text-center text-pretty opacity-80 md:text-left;
+    @apply datum-text-xl m-0 max-w-151 text-pretty opacity-80;
   }
 
   .home-hero-actions {
@@ -69,45 +65,49 @@
   }
 
   .home-hero-visual {
-    /* @apply relative flex w-full justify-center lg:hidden; */
+    @apply relative flex w-full justify-center lg:hidden;
+  }
 
-    @apply pointer-events-none relative z-20 flex h-full w-full shrink-0 items-center justify-center;
-    @apply right-auto lg:right-0;
-    @apply pb-16 md:pb-0;
+  /* Figma visual frame (675×809) — fixed column width prevents overlap with content. */
+  .home-hero-visual-frame {
+    @apply pointer-events-none relative z-20 hidden w-full shrink-0 lg:block;
+    @apply right-0;
+
+    aspect-ratio: 675 / 809;
   }
 
   .home-hero-video-card {
-    @apply z-10 hidden max-w-full cursor-pointer border-0 bg-transparent p-0 text-left md:block;
-    @apply relative left-10 md:absolute md:top-1/2 md:-translate-y-1/2;
-    @apply h-auto w-auto;
-    @apply md:h-[385px] md:w-[307px];
-    @apply lg:h-[385px] lg:w-[468px];
-    @apply xl:h-[385px] xl:w-[532px];
+    @apply relative z-10 block w-full cursor-pointer border-0 bg-transparent p-0 text-left;
+
     &:hover,
     &:focus-visible {
       .home-hero-video-card-play {
         @apply scale-110;
       }
     }
+  }
 
-    @apply pointer-events-auto z-20 aspect-532/385;
+  .home-hero-video-card--desktop {
+    @media (width >= theme(--breakpoint-lg)) {
+      /* player.svg card rect sits at (20.5, 10.5) inside a 589×426 asset */
+      @apply pointer-events-auto absolute z-20;
 
-    @apply md:-mt-1 lg:-mt-1.5 xl:-mt-2.5;
-
-    /* @apply border;
-    @apply border-black;
-    @apply md:border-yellow-200;
-    @apply lg:border-red-500;
-    @apply xl:border-blue-500;
-    @apply 2xl:border-green-500; */
+      top: calc(100% * 188.5 / 809);
+      left: calc(100% * 19.5 / 675);
+      width: calc(100% * 589 / 675);
+    }
   }
 
   .home-hero-video-card--mobile {
-    @apply left-auto mx-auto mt-auto block h-auto w-full md:hidden;
+    @apply mx-auto max-w-full md:max-w-137 lg:hidden;
   }
 
   .home-hero-video-card-art {
-    @apply block h-auto w-full shadow-(--shadow-home-hero-card);
+    @apply block h-auto w-full;
+  }
+
+  .home-hero-video-card-art--mobile {
+    box-shadow: var(--shadow-home-hero-card);
   }
 
   .home-hero-video-card-play {

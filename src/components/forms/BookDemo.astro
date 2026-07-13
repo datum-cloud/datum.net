@@ -1,0 +1,160 @@
+---
+// src/components/forms/BookDemo.astro
+import Icon from '@components/Icon.astro';
+---
+
+<book-demo-form>
+  <div class="relative">
+    <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
+    <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
+    <span class="section-line bg-silver-mist right-0 -bottom-10 hidden md:block"></span>
+    <span class="section-line-h bg-silver-mist -right-10 bottom-0 hidden md:block"></span>
+    <form
+      class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
+      onsubmit="return false;"
+    >
+      <div class="flex flex-col gap-2">
+        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-name">
+          Name
+        </label>
+        <input
+          id="demo-name"
+          type="text"
+          name="name"
+          class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
+          autocomplete="name"
+          required
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-email">
+          Work email
+        </label>
+        <input
+          id="demo-email"
+          type="email"
+          name="email"
+          class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-company">
+          Company
+        </label>
+        <input
+          id="demo-company"
+          type="text"
+          name="company"
+          class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
+          autocomplete="organization"
+          required
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-workload-type">
+          Workload type
+        </label>
+        <input
+          id="demo-workload-type"
+          type="text"
+          name="workloadType"
+          placeholder="GPU training, inference, CPU bare metal..."
+          class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord placeholder:text-midnight-fjord/40 focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
+          required
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="datum-text-xs text-midnight-fjord/80 font-semibold" for="demo-message">
+          Anything we should know?
+        </label>
+        <textarea
+          id="demo-message"
+          name="message"
+          class="border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-[106px] resize-none rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none"
+        ></textarea>
+      </div>
+
+      <p class="form-status datum-text-sm hidden"></p>
+
+      <button
+        type="submit"
+        class="btn btn--midnight-fjord disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="submit-btn-text">Send request</span>
+        <Icon name="arrow-right" size="sm" />
+      </button>
+    </form>
+  </div>
+</book-demo-form>
+
+<script>
+  import { actions } from 'astro:actions';
+
+  class BookDemoForm extends HTMLElement {
+    form: HTMLFormElement;
+    submitBtn: HTMLButtonElement;
+    submitBtnText: HTMLElement;
+    status: HTMLElement;
+    isSubmitting = false;
+
+    constructor() {
+      super();
+      this.form = this.querySelector('form')!;
+      this.submitBtn = this.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      this.submitBtnText = this.querySelector<HTMLElement>('.submit-btn-text')!;
+      this.status = this.querySelector<HTMLElement>('.form-status')!;
+
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!this.isSubmitting) this.submitForm();
+      });
+    }
+
+    submitForm() {
+      this.isSubmitting = true;
+      this.submitBtn.disabled = true;
+      this.submitBtnText.textContent = 'Sending...';
+
+      const data = new FormData(this.form);
+
+      actions
+        .BookDemo({
+          name: String(data.get('name') || ''),
+          email: String(data.get('email') || ''),
+          company: String(data.get('company') || ''),
+          workloadType: String(data.get('workloadType') || ''),
+          message: String(data.get('message') || ''),
+        })
+        .then((result) => {
+          if (result.error) {
+            this.showStatus('Something went wrong. Please try again in a minute or two.', false);
+          } else {
+            this.showStatus("Thanks — we'll be in touch shortly.", true);
+            this.form.reset();
+          }
+        })
+        .catch(() => {
+          this.showStatus('Something went wrong. Please try again in a minute or two.', false);
+        })
+        .finally(() => {
+          this.isSubmitting = false;
+          this.submitBtnText.textContent = 'Send request';
+          this.submitBtn.disabled = false;
+        });
+    }
+
+    showStatus(message: string, success: boolean) {
+      this.status.textContent = message;
+      this.status.classList.remove('hidden', 'text-red-600', 'text-aurora-moss');
+      this.status.classList.add(success ? 'text-aurora-moss' : 'text-red-600');
+    }
+  }
+
+  customElements.define('book-demo-form', BookDemoForm);
+</script>

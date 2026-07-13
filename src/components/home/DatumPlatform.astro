@@ -40,13 +40,14 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
 <section
   id="datum-platform"
   class:list={[
-    'section--block border-silver-mist/50 overflow-hidden border-b bg-white px-7',
+    'section--block border-silver-mist overflow-hidden border-t bg-white px-7',
     className,
   ]}
 >
   <div class="max-width-nav large-pad relative">
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--left section-line--top"></span>
+
     <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
       <div class="flex w-full flex-col items-center gap-7 text-center">
         <span class="section-eyebrow section-eyebrow--pine">The Datum Platform</span>
@@ -65,8 +66,12 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
       <div class="relative flex w-full flex-col">
         <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
         <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
+
+        <span class="section-line section-line--right section-line--bottom-overlap"></span>
+        <span class="section-line-h bg-silver-mist -right-10 bottom-0 hidden md:block"></span>
+
         <div
-          class="border-silver-mist from-glacier-mist-700 to-aurora-moss grid grid-cols-1 gap-0 overflow-hidden border bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
+          class="border-silver-mist from-platinum to-aurora-moss grid grid-cols-1 gap-0 overflow-hidden border border-b-0 bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
         >
           <div class="flex min-w-0 flex-col gap-7 p-8 md:p-16">
             <h3 class="datum-text-7xl text-midnight-fjord">Private, protected, performant.</h3>
@@ -114,13 +119,13 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
         >
           {
             pillars.map((pillar) => (
-              <div class="bg-glacier-mist-700 flex flex-col gap-4 p-8 md:p-16">
+              <div class="bg-platinum flex flex-col gap-4 p-8 md:p-16">
                 <div class="flex items-center gap-4">
                   <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center">
                     <Icon
                       name={pillar.icon}
                       size="md"
-                      class="text-app---dark---utility-3 stroke-1"
+                      class="text-app---dark---utility-3 stroke-1.75"
                     />
                   </div>
                   <p class="datum-text-xl text-midnight-fjord font-semibold">{pillar.title}</p>

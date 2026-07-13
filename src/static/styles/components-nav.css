@@ -59,10 +59,10 @@
     @apply xl:pr-0;
 
     &::before {
-      @apply bg-silver-mist/50 absolute top-0 bottom-0 left-0 w-px content-[''];
+      @apply bg-silver-mist absolute top-0 bottom-0 left-0 w-px content-[''];
     }
     &::after {
-      @apply bg-silver-mist/50 absolute top-0 right-0 bottom-0 w-px content-[''];
+      @apply bg-silver-mist absolute top-0 right-0 bottom-0 w-px content-[''];
     }
     .nav-actions {
       @apply ml-auto flex h-full shrink-0 items-center justify-self-end;

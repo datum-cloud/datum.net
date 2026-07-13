@@ -6,7 +6,6 @@ import MediaLightbox from '@components/MediaLightbox.astro';
 import HomeHeroGrid from '@assets/svgs/player-full.svg';
 import HomeHeroGridLg from '@assets/svgs/player-full-lg.svg';
 import HomeHeroGridMd from '@assets/svgs/player-full-md.svg';
-// import PlayerArt from '@assets/svgs/player.svg';
 import PlayerMobileArt from '@assets/svgs/player-mobile.svg';
 import ButtonPlay from '@assets/svgs/button-play.svg';
 import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
@@ -20,16 +19,25 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
     <span class="section-line section-line--left section-line--top"></span>
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--right section-line--top md:hidden"></span>
-    <!-- <PlayerArt class="home-hero-video-card-art" aria-hidden="true" /> -->
     <div
-      class="absolute top-0 right-0 z-10 hidden h-full max-w-168.75 md:block lg:-right-7 xl:right-0"
+      class="absolute top-0 right-0 z-20 hidden h-full max-w-168.75 md:-right-7 md:block xl:right-0"
     >
-      <HomeHeroGrid class="hidden xl:block" />
-      <HomeHeroGridLg class="hidden lg:block xl:hidden" />
-      <HomeHeroGridMd class="hidden md:block lg:hidden" />
+      <button
+        type="button"
+        class="home-hero-video-card z-12"
+        data-video-trigger
+        data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
+        aria-label="Play Product Overview video"
+      >
+        <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
+      </button>
+
+      <HomeHeroGrid class="z-11 hidden max-h-full xl:block" />
+      <HomeHeroGridLg class="z-11 hidden min-h-full lg:block xl:hidden" />
+      <HomeHeroGridMd class="z-11 hidden min-h-full md:block lg:hidden" />
     </div>
 
-    <div class="home-hero-layout max-width-nopad relative z-20">
+    <div class="home-hero-layout max-width-nopad relative z-10">
       <div class="home-hero-content">
         {
           title && (
@@ -64,16 +72,6 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
       </div>
 
       <div class="home-hero-visual">
-        <button
-          type="button"
-          class="home-hero-video-card"
-          data-video-trigger
-          data-embed-url={HOMEPAGE_FEATURE_VIDEO_EMBED_URL}
-          aria-label="Play Product Overview video"
-        >
-          <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
-        </button>
-
         <button
           type="button"
           class="home-hero-video-card home-hero-video-card--mobile"

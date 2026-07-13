@@ -78,8 +78,11 @@
 
   .home-hero-video-card {
     @apply z-10 hidden max-w-full cursor-pointer border-0 bg-transparent p-0 text-left md:block;
-    @apply relative md:absolute md:top-1/2 md:right-0 md:-translate-y-1/2;
-    @apply h-auto w-auto md:h-[385px] md:w-[532px];
+    @apply relative left-10 md:absolute md:top-1/2 md:-translate-y-1/2;
+    @apply h-auto w-auto;
+    @apply md:h-[385px] md:w-[307px];
+    @apply lg:h-[385px] lg:w-[468px];
+    @apply xl:h-[385px] xl:w-[532px];
     &:hover,
     &:focus-visible {
       .home-hero-video-card-play {
@@ -88,10 +91,19 @@
     }
 
     @apply pointer-events-auto z-20 aspect-532/385;
+
+    @apply md:-mt-1 lg:-mt-1.5 xl:-mt-2.5;
+
+    /* @apply border;
+    @apply border-black;
+    @apply md:border-yellow-200;
+    @apply lg:border-red-500;
+    @apply xl:border-blue-500;
+    @apply 2xl:border-green-500; */
   }
 
   .home-hero-video-card--mobile {
-    @apply mx-auto block h-auto w-full md:hidden;
+    @apply left-auto mx-auto mt-auto block h-auto w-full md:hidden;
   }
 
   .home-hero-video-card-art {

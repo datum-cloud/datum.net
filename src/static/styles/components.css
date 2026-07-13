@@ -38,10 +38,10 @@
   }
 
   .section-eyebrow--pine {
-    @apply text-pine-forge;
+    @apply text-pine-forge---links;
 
     &::before {
-      @apply bg-pine-forge;
+      @apply bg-pine-forge---links;
     }
   }
 
@@ -126,6 +126,13 @@
     }
   }
 
+  .section--title {
+    @apply datum-text-8xl md:datum-text-9xl;
+  }
+
+  .section--sub-title {
+    @apply datum-text-7xl md:datum-text-8xl;
+  }
   /* Footer Components */
 
   .footer-prefooter {

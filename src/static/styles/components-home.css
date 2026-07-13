@@ -17,10 +17,10 @@
   }
 
   .home-hero-layout {
-    @apply relative z-10 grid items-start gap-12 pb-0 lg:gap-8 lg:pb-0 xl:gap-10;
+    @apply home-hero-xl:gap-10 relative z-10 grid items-start gap-12 pb-0 lg:gap-8 lg:pb-0;
     @apply md:grid-cols-[minmax(0,1fr)_minmax(0,299px)];
     @apply lg:grid-cols-[minmax(0,1fr)_minmax(0,468px)];
-    @apply xl:grid-cols-[minmax(0,1fr)_minmax(0,635px)];
+    @apply home-hero-xl:grid-cols-[minmax(0,1fr)_minmax(0,635px)];
   }
 
   .home-hero-content {
@@ -33,7 +33,7 @@
     @apply datum-text-10xl xl:datum-text-11xl text-midnight-fjord m-0 max-w-none text-center leading-none! md:text-left;
 
     span {
-      @apply text-canyon-clay---links box-decoration-clone px-1;
+      @apply text-pine-forge---links box-decoration-clone px-1;
       background-image: linear-gradient(
         to bottom,
         transparent 42%,
@@ -82,7 +82,7 @@
     @apply h-auto w-auto;
     @apply md:h-[385px] md:w-[307px];
     @apply lg:h-[385px] lg:w-[468px];
-    @apply xl:h-[385px] xl:w-[532px];
+    @apply home-hero-xl:h-[385px] home-hero-xl:w-[532px];
     &:hover,
     &:focus-visible {
       .home-hero-video-card-play {
@@ -92,7 +92,7 @@
 
     @apply pointer-events-auto z-20 aspect-532/385;
 
-    @apply md:-mt-1 lg:-mt-1.5 xl:-mt-2.5;
+    @apply home-hero-xl:-mt-2.5 md:-mt-1 lg:-mt-1.5;
 
     /* @apply border;
     @apply border-black;

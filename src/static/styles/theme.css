@@ -16,6 +16,7 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
   --breakpoint-3xl: 120rem;
+  --breakpoint-home-hero-xl: 82.25rem;
 
   /* Custom width */
   /* --datum-max-width: 1920px; */
@@ -56,6 +57,7 @@
   --color-deep-navy: #152538;
   --color-steel-blue: #8ab2ca;
   --color-platinum: #f9f9f8;
+  --color-pine-forge---links: #417958;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;

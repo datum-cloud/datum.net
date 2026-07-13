@@ -5,19 +5,17 @@ import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
 import dashboardImage from '@assets/images/datum-platform-dashboard.png';
 import dashboardImageMobile from '@assets/images/datum-platform-dashboard-mobile.png';
-import type { IconName } from '@utils/iconMap';
-
 const { class: className = '' } = Astro.props;
 
-const pillars: { icon: IconName; title: string; description: string }[] = [
+const pillars: { icon: string; title: string; description: string }[] = [
   {
-    icon: 'arrow-right',
+    icon: 'send',
     title: 'Deliver',
     description:
       'Bring traffic into your world and meet the internet with confidence using our Layer7 load balancers and global DNS.',
   },
   {
-    icon: 'dollar-sign',
+    icon: 'construction',
     title: 'Build',
     description:
       'Push intelligence to the edge with microVM compute, object storage, and a marketplace of partner solutions.',
@@ -29,7 +27,7 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
       'Bring in traffic with our "dial by key, not by IP" zero trust tunnels and aggregate connections with Galactic VPC.',
   },
   {
-    icon: 'list-check',
+    icon: 'pin',
     title: 'Essentials',
     description:
       'Our modern CLI and terminal to scalable constructs for authorization, billing accounts, and more.',
@@ -51,10 +49,10 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
     <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
       <div class="flex w-full flex-col items-center gap-7 text-center">
         <span class="section-eyebrow section-eyebrow--pine">The Datum Platform</span>
-        <h2 class="datum-text-9xl text-midnight-fjord">
+        <h2 class="section--title text-midnight-fjord">
           A modern{' '}
           <span
-            class="text-pine-forge bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
+            class="text-pine-forge---links bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
             >edge cloud</span
           >, backed by open source
         </h2>
@@ -125,7 +123,7 @@ const pillars: { icon: IconName; title: string; description: string }[] = [
                     <Icon
                       name={pillar.icon}
                       size="md"
-                      class="text-app---dark---utility-3 stroke-1.75"
+                      class="text-pine-forge---links stroke-1.75"
                     />
                   </div>
                   <p class="datum-text-xl text-midnight-fjord font-semibold">{pillar.title}</p>

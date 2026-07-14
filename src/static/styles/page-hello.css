@@ -267,7 +267,7 @@
   }
 
   hello-modal dialog::backdrop {
-    @apply bg-app---dark---utility-2/50 backdrop-blur;
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   .hello-modal--frame {

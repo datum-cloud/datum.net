@@ -81,23 +81,23 @@
     }
 
     .nav-menu-link {
-      @apply datum-text-base flex h-9 items-center gap-2 rounded-sm px-3 font-normal opacity-80 transition-colors duration-150;
+      @apply datum-text-base flex h-9 items-center gap-2 rounded-sm px-3 font-medium opacity-80 transition-colors duration-150;
 
       &.link--active {
         @apply font-semibold;
       }
     }
 
-    /* Pill: hover preview (normal weight) vs route-active pill (semibold) */
+    /* Pill: hover preview (medium weight) vs route-active pill (semibold) */
     .nav-menu-item:hover > .nav-menu-link:not(.link--active),
     .nav-dropdown:focus-within > .nav-menu-link:not(.link--active) {
-      @apply bg-glacier-mist-800 text-canyon-clay font-normal;
+      @apply bg-glacier-mist-800 text-canyon-clay---links font-medium;
     }
 
     .nav-menu:not(:has(.nav-menu-item:hover)) .nav-menu-link.link--active,
     .nav-menu-item:hover > .nav-menu-link.link--active,
     .nav-dropdown:focus-within > .nav-menu-link.link--active {
-      @apply bg-glacier-mist-800 text-canyon-clay font-semibold;
+      @apply bg-glacier-mist-800 text-canyon-clay---links font-semibold;
     }
   }
 

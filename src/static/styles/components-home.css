@@ -33,7 +33,7 @@
     @apply datum-text-10xl xl:datum-text-11xl text-midnight-fjord m-0 max-w-none text-center leading-none! md:text-left;
 
     span {
-      @apply text-pine-forge---links box-decoration-clone px-1;
+      @apply text-canyon-clay---links box-decoration-clone px-1;
       background-image: linear-gradient(
         to bottom,
         transparent 42%,

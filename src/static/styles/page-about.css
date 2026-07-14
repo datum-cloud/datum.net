@@ -56,7 +56,7 @@
   }
 
   profile-modal dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur;
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   .profile-modal--frame {

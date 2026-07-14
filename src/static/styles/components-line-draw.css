@@ -1,0 +1,86 @@
+@layer components {
+  /* Scroll-triggered "line draw" reveal for decorative blueprint-grid SVGs
+     (hero graphic, next-row grid, pre-footer grid) and section divider lines.
+     Classes are toggled by the observers in src/layouts/Layout.astro. */
+
+  .line-draw path[data-line-draw] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .line-draw path[data-line-draw].is-inview {
+    stroke-dashoffset: 0;
+  }
+
+  .line-draw rect[data-line-draw] {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.4);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .line-draw rect[data-line-draw].is-inview {
+    transform: scale(1);
+  }
+
+  .line-draw [data-line-draw-panel] {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .line-draw [data-line-draw-panel].is-inview {
+    opacity: 1;
+  }
+
+  .section-line,
+  .section-line-h {
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .section-line {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .section-line--bottom {
+    transform-origin: bottom;
+  }
+
+  .section-line-h {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .section-line.is-inview,
+  .section-line-h.is-inview {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line-draw path[data-line-draw],
+    .line-draw rect[data-line-draw],
+    .line-draw [data-line-draw-panel],
+    .section-line,
+    .section-line-h {
+      transition: none !important;
+    }
+
+    .line-draw path[data-line-draw] {
+      stroke-dashoffset: 0 !important;
+    }
+
+    .line-draw rect[data-line-draw] {
+      transform: none !important;
+    }
+
+    .line-draw [data-line-draw-panel] {
+      opacity: 1 !important;
+    }
+
+    .section-line,
+    .section-line-h {
+      transform: none !important;
+    }
+  }
+}

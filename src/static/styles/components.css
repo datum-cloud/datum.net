@@ -29,6 +29,18 @@
     background-image: linear-gradient(var(--color-glacier-mist-900), var(--color-glacier-mist-900));
   }
 
+  /* Inline text highlight (marker-style band behind text) — reveals left to
+     right on scroll, same background-size mechanic as .section-label. */
+  .text-highlight {
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
+  }
+
   .section-eyebrow {
     @apply font-dejavu datum-text-sm text-canyon-clay---links inline-flex items-center gap-2.5 whitespace-nowrap uppercase;
 

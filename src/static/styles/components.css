@@ -38,10 +38,10 @@
   }
 
   .section-eyebrow--pine {
-    @apply text-pine-forge;
+    @apply text-pine-forge---links;
 
     &::before {
-      @apply bg-pine-forge;
+      @apply bg-pine-forge---links;
     }
   }
 
@@ -59,19 +59,17 @@
   }
 
   .section-line {
-    @apply bg-silver-mist/50 absolute block w-px;
-    @apply h-5 md:h-10 lg:h-20 xl:h-20;
+    @apply bg-silver-mist absolute block w-px;
+    @apply h-5 md:h-10 lg:h-15 xl:h-20;
   }
   .section-line-h {
-    @apply bg-silver-mist/50 absolute block h-px;
+    @apply bg-silver-mist absolute block h-px;
     @apply w-12 md:w-16 lg:w-20;
   }
   .section-line--left {
-    /* @apply left-7 md:left-7 lg:left-7 xl:left-7 2xl:left-0; */
     @apply left-0;
   }
   .section-line--right {
-    /* @apply right-7 md:right-7 lg:right-7 xl:right-7 2xl:right-0; */
     @apply right-0;
   }
 
@@ -80,6 +78,11 @@
   }
   .section-line--bottom {
     @apply bottom-0;
+  }
+
+  .section-line--bottom-overlap {
+    @apply hidden md:-bottom-7 md:block lg:-bottom-10;
+    @apply md:h-7 lg:h-20 xl:h-20;
   }
 
   .section-title {
@@ -123,11 +126,18 @@
     }
   }
 
+  .section--title {
+    @apply datum-text-8xl md:datum-text-9xl;
+  }
+
+  .section--sub-title {
+    @apply datum-text-7xl md:datum-text-8xl;
+  }
   /* Footer Components */
 
   .footer-prefooter {
     @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto;
-    @apply border-silver-mist/50 border-t;
+    @apply border-silver-mist border-t;
   }
 
   .footer-prefooter-label {

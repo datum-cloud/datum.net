@@ -20,7 +20,7 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--right section-line--top md:hidden"></span>
     <div
-      class="absolute top-0 right-0 z-20 hidden h-full max-w-168.75 md:-right-7 md:block xl:right-0"
+      class="home-hero-xl:right-0 absolute top-0 right-0 z-20 hidden h-full max-w-168.75 md:-right-7 md:block"
     >
       <button
         type="button"
@@ -32,8 +32,8 @@ const { title = '', description = '' } = Astro.props as HomeHeroProps;
         <ButtonPlay class="home-hero-video-card-play" aria-hidden="true" />
       </button>
 
-      <HomeHeroGrid class="z-11 hidden max-h-full xl:block" />
-      <HomeHeroGridLg class="z-11 hidden min-h-full lg:block xl:hidden" />
+      <HomeHeroGrid class="home-hero-xl:block z-11 hidden max-h-full" />
+      <HomeHeroGridLg class="home-hero-xl:hidden z-11 hidden min-h-full lg:block" />
       <HomeHeroGridMd class="z-11 hidden min-h-full md:block lg:hidden" />
     </div>
 

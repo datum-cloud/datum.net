@@ -16,9 +16,11 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
   --breakpoint-3xl: 120rem;
+  --breakpoint-home-hero-xl: 82.25rem;
 
   /* Custom width */
-  --datum-max-width: 1920px;
+  /* --datum-max-width: 1920px; */
+  --datum-max-width: 100%;
   --datum-max-width-container: 1316px;
   --datum-max-width-nav: 1520px;
   --max-width-8xl: var(--datum-max-width-container);
@@ -54,6 +56,8 @@
   --color-silver-mist: #c3c6c9;
   --color-deep-navy: #152538;
   --color-steel-blue: #8ab2ca;
+  --color-platinum: #f9f9f8;
+  --color-pine-forge---links: #417958;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
@@ -111,6 +115,8 @@
   --radius-sm: 3px;
   --radius-md: 6px;
   --radius-lg: 9px;
+
+  --stroke-width-1.75: 1.75;
 
   --color-borderpanel: var(--color-glacier-mist-900);
 

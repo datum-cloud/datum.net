@@ -26,7 +26,11 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
 <footer
   id="footer"
-  class:list={['footer relative bg-white text-white', !showBackground && 'bg-midnight-fjord']}
+  class:list={[
+    'footer relative bg-white text-white',
+    !showCTA && 'pt-3 md:pt-0',
+    !showBackground && 'bg-midnight-fjord',
+  ]}
 >
   {
     showCTA && (

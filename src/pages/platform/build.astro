@@ -1,0 +1,110 @@
+---
+import { render } from 'astro:content';
+import '@styles/page-features-hub.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import FeatureSections from '@components/features/FeatureSections.astro';
+import FeatureSection from '@components/features/FeatureSection.astro';
+import navigation from '@data/navigation.json';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+
+const page = await getCollectionEntry('pages', 'features/build/index');
+const compute = await getCollectionEntry('pages', 'features/build/compute');
+const objectStorage = await getCollectionEntry('pages', 'features/build/object-storage');
+const edgeApps = await getCollectionEntry('pages', 'features/build/edge-apps');
+
+const { Content: ComputeContent } = await render(compute);
+const { Content: ObjectStorageContent } = await render(objectStorage);
+const { Content: EdgeAppsContent } = await render(edgeApps);
+
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform/build',
+      url: 'https://www.datum.net/platform/build',
+      name: meta.title ?? 'Datum Platform – Build',
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-07-14',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-features"
+  title={title}
+  description={fm.description}
+  meta={meta}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <Hero
+      class="light content-alt pb-0"
+      title={title}
+      description={fm.description}
+      showSectionLines={true}
+    >
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={navigation.productTabs}
+        variant="canyon"
+      />
+    </Hero>
+
+    <section
+      id="datum-platform"
+      class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-t"
+    >
+      <FeatureSections label="Features" eyebrowVariant="canyon">
+        <FeatureSection
+          id="compute"
+          mediaSide={compute.data.mediaSide ?? 'left'}
+          image={compute.data.featuredImage!}
+          imageAlt={compute.data.title}
+        >
+          <ComputeContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="object-storage"
+          variant="highlight"
+          highlightTheme="canyon"
+          highlightIcon="server"
+          highlights={[
+            'Highly available object storage',
+            '10+ global regions',
+            'No outbound data fees',
+          ]}
+        >
+          <ObjectStorageContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="edge-apps"
+          mediaSide={edgeApps.data.mediaSide ?? 'left'}
+          image={edgeApps.data.featuredImage!}
+          imageAlt={edgeApps.data.title}
+        >
+          <EdgeAppsContent />
+        </FeatureSection>
+      </FeatureSections>
+    </section>
+
+    <ModuleConnector />
+
+    <Footer />
+  </section>
+</Layout>

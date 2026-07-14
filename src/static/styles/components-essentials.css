@@ -1,17 +1,12 @@
 @layer components {
-  .essentials-header {
-    @apply flex w-full flex-col items-start gap-4 md:gap-6 lg:gap-8 xl:gap-10;
-    @apply mb-8 md:mb-10 lg:mb-12 xl:mb-16;
-  }
-
   .essentials-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-    @apply border-glacier-mist-900 border-2;
-    @apply bg-glacier-mist-900 gap-px;
+    @apply border-silver-mist border;
+    @apply bg-silver-mist gap-px;
   }
 
   .essentials-item {
-    @apply bg-glacier-mist-700;
+    @apply bg-platinum;
     @apply flex flex-col items-start gap-7;
     @apply p-8 lg:p-11;
   }
@@ -20,7 +15,7 @@
     @apply rounded-sm;
     @apply flex items-center justify-center;
     @apply size-10;
-    background-image: linear-gradient(#e6f59f, #e6f59f);
+    background-image: linear-gradient(var(--color-iris-pale), var(--color-iris-pale));
     background-size: 0% 100%;
     background-repeat: no-repeat;
     background-position: left center;
@@ -30,7 +25,7 @@
     }
 
     svg {
-      @apply text-app---dark---utility-3 size-5;
+      @apply text-iris size-5;
     }
 
     img {
@@ -43,10 +38,10 @@
   }
 
   .essentials-item-title {
-    @apply text-midnight-fjord font-dejavu text-lg leading-6 font-bold whitespace-nowrap;
+    @apply text-midnight-fjord datum-text-xl font-semibold;
   }
 
   .essentials-item-description {
-    @apply datum-text-base text-app---dark---utility-3 opacity-80;
+    @apply datum-text-base text-midnight-fjord/80;
   }
 }

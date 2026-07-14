@@ -122,8 +122,14 @@
     @apply relative;
   }
 
+  /* Platform's dark mega-dropdown (with aside cards) breaks out to sit flush
+     with the nav bar's left edge instead of under its own trigger. */
+  .nav-dropdown:has(.nav-dropdown-parent--platform) {
+    @apply static;
+  }
+
   .nav-dropdown-menu {
-    @apply shadow-modal absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-t-none rounded-b-lg bg-white p-6;
+    @apply shadow-modal absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-lg bg-white p-6;
     opacity: 0;
     visibility: hidden;
     /* Close: 300ms hold, then 200ms fade-out, then hide. Using visibility (not
@@ -187,17 +193,13 @@
     @apply text-midnight-fjord/60 font-alliance mb-4 text-sm font-semibold tracking-wider uppercase;
   }
 
-  /* Mega Dropdown Styles (Resources) */
-  .nav-dropdown-mega {
-    @apply -left-[120%] p-3;
-  }
-
+  /* Mega Dropdown Styles */
   .nav-dropdown-mega .nav-dropdown-columns {
-    @apply grid grid-cols-2 gap-4;
+    @apply flex-row;
   }
 
   .nav-dropdown-mega-section {
-    @apply mb-0 flex min-w-[260px] flex-col gap-3;
+    @apply mb-0 flex w-[206px] shrink-0 flex-col gap-3;
   }
 
   .nav-dropdown-mega-items {
@@ -211,29 +213,12 @@
   .nav-dropdown-mega .nav-dropdown-title {
     @apply mb-0 px-4;
     span {
-      @apply text-midnight-fjord/50 border-app---dark---utility-5 inline-block w-full border-b pt-4 pb-2.5 text-xs font-normal tracking-normal normal-case;
+      @apply text-app---dark---utility-4 font-dejavu border-app---dark---utility-2 block w-full border-b pt-0 pb-4 text-(length:--12px) leading-normal font-normal whitespace-nowrap uppercase;
     }
   }
 
   .nav-dropdown-mega .nav-dropdown-link {
-    @apply hover:bg-aurora-moss hover:text-midnight-fjord gap-0 rounded-md px-4 py-2.5 hover:bg-[url('../assets/images/bg-hover-nav.png')] hover:bg-contain hover:bg-right hover:bg-no-repeat [&>span:not(.nav-dropdown-badge)]:border-b-0;
-  }
-
-  .nav-dropdown-mega .nav-dropdown-link span {
-    @apply datum-text-base font-semibold;
-  }
-
-  /* Dark mega-menu panel variant */
-  .nav-dropdown-menu--dark .nav-dropdown-mega .nav-dropdown-title span {
-    @apply text-app---dark---utility-4 font-dejavu border-app---dark---utility-2 block w-full border-b pt-0 pb-4 text-(length:--12px) leading-normal font-normal whitespace-nowrap uppercase;
-  }
-
-  .nav-dropdown-menu--dark .nav-dropdown-mega .nav-dropdown-link {
     @apply hover:bg-app---dark---utility-1 gap-0 rounded-md px-4 py-2.5 text-white hover:text-white [&>span:not(.nav-dropdown-badge)]:border-b-0;
-  }
-
-  .nav-dropdown-menu--dark .nav-dropdown-mega-section {
-    @apply w-[206px] min-w-0 shrink-0;
   }
 
   /* Aside feature cards (e.g. Locations, Essentials in the Platform dropdown) */
@@ -261,13 +246,9 @@
     @apply font-alliance text-(length:--12px) leading-(--16px) text-white/60;
   }
 
-  /* Card Dropdown Styles (Platform) */
+  /* Card Dropdown Styles (Product) */
   .nav-dropdown-cards-wrapper {
-    @apply -left-[150%] p-3;
-  }
-
-  .nav-dropdown-menu.nav-dropdown-parent--platform {
-    @apply -left-[170%]! p-3;
+    @apply p-3;
   }
 
   .nav-dropdown-cards {

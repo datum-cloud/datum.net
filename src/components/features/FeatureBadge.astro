@@ -1,0 +1,18 @@
+---
+// src/components/features/FeatureBadge.astro
+// Status badge for feature section rows (Figma Datum App UI/Badges)
+
+interface FeatureBadgeProps {
+  class?: string;
+  /** Accent colour. `highlight` uses harbor-blue for callout cards. */
+  variant?: 'default' | 'highlight';
+}
+
+const { class: className = '', variant = 'default' } = Astro.props as FeatureBadgeProps;
+---
+
+<span
+  class:list={['feature-badge', variant === 'highlight' && 'feature-badge--highlight', className]}
+>
+  <slot />
+</span>

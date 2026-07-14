@@ -24,8 +24,8 @@
   --datum-max-width: 100%;
   --datum-max-width-container: 1316px;
   --datum-max-width-nav: 1520px;
-  /* --datum-max-width-nav: 1464px; */
   --width-home-hero-visual: 675px;
+  --datum-max-width-section: 1092px;
   --max-width-8xl: var(--datum-max-width-container);
   --width-8xl: var(--datum-max-width-container);
 
@@ -60,8 +60,19 @@
   --color-silver-mist: #c3c6c9;
   --color-deep-navy: #152538;
   --color-steel-blue: #8ab2ca;
+  --color-connect-slate: #5c7693;
+  --color-iris: #7a6f8a;
+  --color-iris-pale: #e5e3f3;
   --color-platinum: #f9f9f8;
   --color-pine-forge---links: #417958;
+  --color-aurora-mist: #e2ede7;
+  --color-harbor-blue: #4e809d;
+  --color-morning-mist: #f5faf7;
+  --color-canyon-highlight: #f0d9d9;
+  --color-canyon-highlight-panel: #f9eeee;
+  --color-canyon-highlight-accent: #815e5e;
+  --color-connect-highlight: #dde8f2;
+  --color-connect-highlight-panel: #f1f6fb;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;

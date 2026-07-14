@@ -8,6 +8,11 @@
     background-color: var(--color-blush-quartz) !important;
   }
 
+  .section-group-list {
+    @apply max-width-section-nopad flex flex-col;
+    @apply gap-16 md:gap-24 lg:gap-40;
+  }
+
   /* Section Label & Title */
   .section-label {
     @apply inline-flex items-center justify-center;
@@ -51,25 +56,85 @@
     @apply text-pine-forge---links;
   }
 
+  .section-eyebrow--connect {
+    @apply text-connect-slate;
+
+    &::before {
+      @apply bg-connect-slate;
+    }
+  }
+
+  .section-eyebrow--iris {
+    @apply text-iris;
+
+    &::before {
+      @apply bg-iris;
+    }
+  }
+  .section-eyebrow--app {
+    @apply text-app---dark---utility-3;
+
+    &::before {
+      @apply bg-app---dark---utility-3;
+    }
+  }
+
   .section-eyebrow--midnight-fjord {
     @apply text-midnight-fjord;
   }
 
   .section-eyebrow--left-top {
-    @apply absolute left-7;
+    @apply absolute left-4 md:left-7;
     @apply top-5 md:top-6 lg:top-8;
   }
 
   /* Demo / dedicated-cloud: align eyebrow bottom with key line bottom */
   .section-eyebrow--left-top-keyline {
-    @apply absolute left-7 -translate-y-full;
-    @apply top-5 md:top-10 lg:top-15 xl:top-20;
+    @apply absolute left-4 -translate-y-full md:left-7;
+    @apply top-7 md:top-10 lg:top-15 xl:top-20;
   }
 
   .section-line {
     @apply bg-silver-mist absolute block w-px;
     @apply h-5 md:h-10 lg:h-15 xl:h-20;
   }
+
+  .section-line--overlap {
+    @apply bg-silver-mist absolute block w-px;
+    @apply h-5 md:h-10;
+
+    &.section-line--left {
+      @apply left-0;
+    }
+    &.section-line--right {
+      @apply right-0;
+    }
+    &.section-line--top {
+      @apply -top-5 md:-top-10;
+    }
+    &.section-line--bottom {
+      @apply -bottom-5 md:-bottom-10;
+    }
+  }
+
+  .section-line-h--overlap {
+    @apply bg-silver-mist absolute block h-px;
+    @apply w-5 md:w-10;
+
+    &.section-line--left {
+      @apply -left-5 md:-left-10;
+    }
+    &.section-line--right {
+      @apply -right-5 md:-right-10;
+    }
+    &.section-line--top {
+      @apply top-0;
+    }
+    &.section-line--bottom {
+      @apply bottom-0;
+    }
+  }
+
   .section-line-h {
     @apply bg-silver-mist absolute block h-px;
     @apply w-12 md:w-16 lg:w-20;

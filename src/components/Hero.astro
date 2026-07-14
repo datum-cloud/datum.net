@@ -5,6 +5,7 @@ import { marked } from 'marked';
 import Nav from '@components/Nav.astro';
 import Icon from '@components/Icon.astro';
 import Announcement from '@components/Announcement.astro';
+import SectionLine from '@components/SectionLine.astro';
 
 import type { HeroProps } from '@/src/types/common';
 
@@ -17,6 +18,8 @@ const {
   class: className,
   imagePath,
   hideContent = false,
+  hideHero = false,
+  showSectionLines = false,
 } = Astro.props as HeroProps;
 
 const TitleTag = titleTag;
@@ -27,55 +30,64 @@ const TitleTag = titleTag;
   <Nav />
 
   {
-    Astro.slots.has('before-content') && (
-      <div class="hero--before-content px-7 pt-8 pb-0 md:pt-10 md:pb-2 lg:pt-12 lg:pb-4">
-        <slot name="before-content" />
-      </div>
-    )
-  }
+    !hideHero && (
+      <div class="section--block--x-pad section--block">
+        <div class="hero--content-container spacing-pad">
+          {Astro.slots.has('before-content') && (
+            <div class="hero--before-content">
+              <slot name="before-content" />
+            </div>
+          )}
 
-  {
-    !hideContent && (
-      <div class="hero--main-content">
-        {/* Hero Main Content */}
-        {(title || description) && (
-          <div class="hero--main-content-inner" role="banner">
-            {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
-              <div class="hero--main-content-icon">
-                {iconName && iconName !== '' && (
-                  <div class="hero--main-content-icon-inner">
-                    <Icon name={iconName} size="md" />
-                  </div>
-                )}
-                {subtitle && subtitle !== '' && <span set:html={subtitle} />}
-              </div>
-            ) : null}
+          {!hideContent && (
+            <div class="hero--main-content">
+              {/* Hero Main Content */}
+              {(title || description) && (
+                <div class="hero--main-content-inner" role="banner">
+                  {(iconName && iconName !== '') || (subtitle && subtitle !== '') ? (
+                    <div class="hero--main-content-icon">
+                      {iconName && iconName !== '' && (
+                        <div class="hero--main-content-icon-inner">
+                          <Icon name={iconName} size="md" />
+                        </div>
+                      )}
+                      {subtitle && subtitle !== '' && <span set:html={subtitle} />}
+                    </div>
+                  ) : null}
 
-            {title && (
-              <TitleTag class="hero--main-content-title" set:html={marked.parseInline(title)} />
-            )}
-            {description && (
-              <p
-                class="hero--main-content-description"
-                set:html={marked.parseInline(description)}
-              />
-            )}
-          </div>
-        )}
+                  {title && (
+                    <TitleTag
+                      class="hero--main-content-title"
+                      set:html={marked.parseInline(title)}
+                    />
+                  )}
+                  {description && (
+                    <p
+                      class="hero--main-content-description"
+                      set:html={marked.parseInline(description)}
+                    />
+                  )}
+                </div>
+              )}
 
-        {imagePath && (
-          <div class="hero--main-content-image">
-            <Image
-              src={imagePath}
-              alt={title}
-              data-scroll-effect="parallax"
-              data-scroll-speed="0.1"
-              data-scroll-direction="down"
-              data-viewport-offset="0"
-              data-max-movement="50"
-            />
-          </div>
-        )}
+              {imagePath && (
+                <div class="hero--main-content-image">
+                  <Image
+                    src={imagePath}
+                    alt={title}
+                    data-scroll-effect="parallax"
+                    data-scroll-speed="0.1"
+                    data-scroll-direction="down"
+                    data-viewport-offset="0"
+                    data-max-movement="50"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {showSectionLines && <SectionLine left right top bottom />}
+        </div>
       </div>
     )
   }

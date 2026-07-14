@@ -12,6 +12,7 @@ const {
   ariaLabel,
   mobileLabel,
   idPrefix = 'secondary-tab-nav',
+  variant = 'pine',
 } = Astro.props as SecondaryTabNavProps;
 
 function normalizePath(p: string): string {
@@ -72,7 +73,17 @@ const mobileTriggerId = `${idPrefix}-mobile-trigger`;
 const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
 ---
 
-<nav class="secondary-tab-nav" aria-label={ariaLabel} data-hash-tabs={hasHashTabs || undefined}>
+<nav
+  class:list={[
+    'secondary-tab-nav',
+    variant === 'canyon' && 'secondary-tab-nav--canyon',
+    variant === 'connect' && 'secondary-tab-nav--connect',
+    variant === 'essentials' && 'secondary-tab-nav--essentials',
+    variant === 'locations' && 'secondary-tab-nav--locations',
+  ]}
+  aria-label={ariaLabel}
+  data-hash-tabs={hasHashTabs || undefined}
+>
   <div class="secondary-tab-nav-mobile md:hidden" x-data="{ open: false }">
     <button
       type="button"
@@ -156,7 +167,14 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
               data-secondary-tab-hash={tabHash}
               data-secondary-tab-label={item.label}
             >
-              {item.label}
+              {item.icon && (
+                <Icon
+                  name={item.icon.name}
+                  size={item.icon.size ?? 'md'}
+                  class="secondary-tab-nav__tab-icon text-glacier-mist-700"
+                />
+              )}
+              <span>{item.label}</span>
             </a>
           </li>
         );

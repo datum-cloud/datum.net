@@ -1,0 +1,30 @@
+---
+// src/components/features/FeatureSections.astro
+// Feature hub section rows — thin wrapper around SectionGroup
+
+import SectionGroup from '@components/SectionGroup.astro';
+
+interface FeatureSectionsProps {
+  label?: string;
+  eyebrowVariant?: 'pine' | 'canyon' | 'connect' | 'iris';
+  showSectionLines?: boolean;
+  class?: string;
+}
+
+const {
+  label = 'Features',
+  eyebrowVariant = 'pine',
+  showSectionLines = true,
+  class: className = '',
+} = Astro.props as FeatureSectionsProps;
+---
+
+<SectionGroup
+  label={label}
+  eyebrowVariant={eyebrowVariant}
+  showSectionLines={showSectionLines}
+  listClass="feature-sections-list"
+  class={className}
+>
+  <slot />
+</SectionGroup>

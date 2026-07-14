@@ -1,0 +1,110 @@
+---
+import { render } from 'astro:content';
+import '@styles/page-features-hub.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import FeatureSections from '@components/features/FeatureSections.astro';
+import FeatureSection from '@components/features/FeatureSection.astro';
+import navigation from '@data/navigation.json';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+
+const page = await getCollectionEntry('pages', 'features/connect/index');
+const galacticVpc = await getCollectionEntry('pages', 'features/connect/galactic-vpc');
+const connections = await getCollectionEntry('pages', 'features/connect/connections');
+const interconnect = await getCollectionEntry('pages', 'features/connect/interconnect');
+
+const { Content: GalacticVpcContent } = await render(galacticVpc);
+const { Content: ConnectionsContent } = await render(connections);
+const { Content: InterconnectContent } = await render(interconnect);
+
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform/connect',
+      url: 'https://www.datum.net/platform/connect',
+      name: meta.title ?? 'Datum Platform – Connect',
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-07-14',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-features"
+  title={title}
+  description={fm.description}
+  meta={meta}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <Hero
+      class="light content-alt pb-0"
+      title={title}
+      description={fm.description}
+      showSectionLines={true}
+    >
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={navigation.productTabs}
+        variant="connect"
+      />
+    </Hero>
+
+    <section
+      id="datum-platform"
+      class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-t"
+    >
+      <FeatureSections label="Features" eyebrowVariant="connect">
+        <FeatureSection
+          id="galactic-vpc"
+          variant="highlight"
+          highlightTheme="connect"
+          highlightIcon="sliders-vertical"
+          highlights={[
+            'Virtual private backbones',
+            'Connect across environments',
+            'Unified traffic across infrastructure',
+          ]}
+        >
+          <GalacticVpcContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="connections"
+          mediaSide={connections.data.mediaSide ?? 'right'}
+          image={connections.data.featuredImage!}
+          imageAlt={connections.data.title}
+        >
+          <ConnectionsContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="interconnect"
+          mediaSide={interconnect.data.mediaSide ?? 'left'}
+          image={interconnect.data.featuredImage!}
+          imageAlt={interconnect.data.title}
+        >
+          <InterconnectContent />
+        </FeatureSection>
+      </FeatureSections>
+    </section>
+
+    <ModuleConnector />
+
+    <Footer />
+  </section>
+</Layout>

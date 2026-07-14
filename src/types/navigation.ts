@@ -2,6 +2,8 @@
  * Type definitions for navigation data structure
  */
 
+import type { SecondaryTabNavItem } from '@/src/types/common';
+
 export interface NavItem {
   text: string;
   desc?: string;
@@ -51,6 +53,7 @@ export interface NavFooterDocsSection {
 }
 
 export interface NavData {
+  productTabs: SecondaryTabNavItem[];
   main: NavMainItem[];
   right?: NavItem[];
   footerCards: NavFooterCard[];

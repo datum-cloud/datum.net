@@ -1,41 +1,62 @@
 ---
 // src/components/locations/LocationsList.astro
 import locations from '@data/locations.json';
+import SectionLine from '@components/SectionLine.astro';
 
-const groupLabels: Record<string, string> = {
-  NA: 'North America (NA)',
-  LATAM: 'Latin America (LATAM)',
-  EU: 'Europe (EU)',
-  MEA: 'Middle East & Africa (MEA)',
-  APAC: 'Asia Pacific (APAC)',
+const groupMeta: Record<string, { name: string; inline?: boolean }> = {
+  NA: { name: 'North America' },
+  LATAM: { name: 'Latin America' },
+  EU: { name: 'Europe' },
+  MEA: { name: 'Middle East & Africa', inline: true },
+  APAC: { name: 'Asia Pacific' },
 };
 
 const groupOrder = ['NA', 'LATAM', 'EU', 'MEA', 'APAC'];
 
 const grouped = groupOrder.map((key) => ({
   key,
-  label: groupLabels[key],
+  ...groupMeta[key],
   items: locations
     .filter((loc) => loc.group === key)
     .sort((a, b) => a.metro.localeCompare(b.metro)),
 }));
 ---
 
-<div class="locations-list">
-  {
-    grouped.map((group) => (
-      <div class="locations-list--group">
-        <h3 class="locations-list--header">{group.label}</h3>
-        <div class="locations-list--items">
-          {group.items.map((loc) => (
-            <span class="locations-list--item">{loc.metro}</span>
-          ))}
-        </div>
-      </div>
-    ))
-  }
-</div>
+<div class="relative">
+  <SectionLine left top overlap />
+  <SectionLine right bottom overlap />
 
+  <div class="locations-list">
+    {
+      grouped.map((group) => (
+        <div class="locations-list--group">
+          <div class="locations-list--header-row">
+            <h3 class="locations-list--header">
+              {group.inline ? (
+                <>
+                  {group.name} ({group.key})
+                </>
+              ) : (
+                <>
+                  {group.name}
+                  <br />
+                  <span>({group.key})</span>
+                </>
+              )}
+            </h3>
+          </div>
+          <div class="locations-list--items-row">
+            <ul class="locations-list--items">
+              {group.items.map((loc) => (
+                <li class="locations-list--item">{loc.metro}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
 <script>
   (function initSplitFlap() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

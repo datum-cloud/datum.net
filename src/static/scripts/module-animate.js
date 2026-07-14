@@ -13,6 +13,12 @@ const CHAR_TYPE_MS = 45;
 const TOUCH_LEAD_PX = 150;
 
 let activeObservers = [];
+let bottomLineScrollHandlers = [];
+
+function trackBottomLineScroll(handler) {
+  bottomLineScrollHandlers.push(handler);
+  return handler;
+}
 
 function trackObserver(obs) {
   activeObservers.push(obs);
@@ -44,7 +50,21 @@ function initSectionLabels() {
 // instant. Reverses (cancelling any pending delayed reveal) on scroll-up.
 function initSectionLines() {
   const lines = document.querySelectorAll('.section-line, .section-line-h');
+  const bottomLinesByParent = new Map();
+
   for (const line of Array.from(lines)) {
+    const isBottomStandard =
+      line.classList.contains('section-line') && line.classList.contains('section-line--bottom');
+
+    if (isBottomStandard && line.parentElement) {
+      const parent = line.parentElement;
+      if (!bottomLinesByParent.has(parent)) {
+        bottomLinesByParent.set(parent, []);
+      }
+      bottomLinesByParent.get(parent).push(line);
+      continue;
+    }
+
     const offset = parseInt(line.dataset.revealOffset, 10) || REVEAL_OFFSET_PX;
     let timeoutId = null;
     const obs = trackObserver(
@@ -61,6 +81,44 @@ function initSectionLines() {
       )
     );
     obs.observe(line);
+  }
+
+  // Bottom corner lines start at scaleY(0) (zero height), so IO never fires on
+  // the line itself. Track the positioned parent on scroll instead.
+  for (const [parent, bottomLines] of bottomLinesByParent) {
+    const offset =
+      Math.max(
+        ...bottomLines.map((line) => parseInt(line.dataset.revealOffset, 10) || REVEAL_OFFSET_PX)
+      ) || REVEAL_OFFSET_PX;
+    const timeouts = new Map();
+
+    function updateBottomLines() {
+      const rect = parent.getBoundingClientRect();
+      const bottomNearViewport = rect.bottom > 0 && rect.bottom <= window.innerHeight - offset + 80;
+
+      for (const line of bottomLines) {
+        clearTimeout(timeouts.get(line));
+        if (bottomNearViewport) {
+          const timeoutId = setTimeout(() => line.classList.add('is-inview'), REVEAL_DELAY_MS);
+          timeouts.set(line, timeoutId);
+        } else {
+          line.classList.remove('is-inview');
+        }
+      }
+    }
+
+    let rafId = 0;
+    const onScroll = trackBottomLineScroll(() => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        updateBottomLines();
+      });
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    updateBottomLines();
   }
 }
 
@@ -179,6 +237,12 @@ function initEyebrowTypeout() {
 function initModuleAnimate() {
   activeObservers.forEach((obs) => obs.disconnect());
   activeObservers = [];
+
+  for (const handler of bottomLineScrollHandlers) {
+    window.removeEventListener('scroll', handler);
+    window.removeEventListener('resize', handler);
+  }
+  bottomLineScrollHandlers = [];
 
   initSectionLabels();
   initSectionLines();

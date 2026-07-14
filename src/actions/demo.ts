@@ -20,8 +20,14 @@ const BookDemo = defineAction({
     workloadType: z.string(),
     message: z.string().optional(),
     formType: z.enum(['demo', 'dedicated-cloud']),
+    website: z.string().optional(),
+    elapsedMs: z.number(),
   }),
   handler: async (input) => {
+    if (input.website || input.elapsedMs < 3000) {
+      return { success: true };
+    }
+
     await sendMail({
       from: FROM_ADDRESSES[input.formType],
       to: 'support@datum.net',

@@ -7,10 +7,7 @@ const SUBJECTS = {
   'dedicated-cloud': 'Interest in Dedicated Cloud, request form',
 } as const;
 
-const FROM_ADDRESSES = {
-  demo: 'demo@mail.datum.net',
-  'dedicated-cloud': 'dedicated-cloud@mail.datum.net',
-} as const;
+const FROM_ADDRESS = 'team@mail.datum.net';
 
 const BookDemo = defineAction({
   input: z.object({
@@ -29,7 +26,7 @@ const BookDemo = defineAction({
     }
 
     await sendMail({
-      from: FROM_ADDRESSES[input.formType],
+      from: FROM_ADDRESS,
       to: 'support@datum.net',
       subject: SUBJECTS[input.formType],
       text: [

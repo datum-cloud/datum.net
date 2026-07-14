@@ -177,7 +177,7 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <script>
       // Section label highlight — fires once per label as it enters the viewport
       (function initSectionLabels() {
-        const labels = document.querySelectorAll('.section-label, .mission-label');
+        const labels = document.querySelectorAll('.section-label, .mission-label, .text-highlight');
         for (const label of Array.from(labels) as HTMLElement[]) {
           let done = false;
           const obs = new IntersectionObserver(
@@ -190,6 +190,69 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
             { threshold: 0.8 }
           );
           obs.observe(label);
+        }
+      })();
+
+      // Section divider lines — draw in once as their section enters the viewport
+      (function initSectionLines() {
+        const lines = document.querySelectorAll('.section-line, .section-line-h');
+        for (const line of Array.from(lines) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (entries[0].isIntersecting && !done) {
+                done = true;
+                line.classList.add('is-inview');
+                obs.unobserve(line);
+              }
+            },
+            { threshold: 0.1 }
+          );
+          obs.observe(line);
+        }
+      })();
+
+      // Blueprint-grid graphics (hero, next-row, pre-footer) — lines draw in,
+      // then accent squares pop, then any content panel fades in on top.
+      (function initLineDrawGraphics() {
+        const PATH_STEP_MS = 55;
+        const NODE_STEP_MS = 70;
+        const GROUP_GAP_MS = 120;
+
+        const graphics = document.querySelectorAll('.line-draw');
+        for (const graphic of Array.from(graphics) as HTMLElement[]) {
+          let done = false;
+          const obs = new IntersectionObserver(
+            (entries) => {
+              if (!entries[0].isIntersecting || done) return;
+              done = true;
+              obs.unobserve(graphic);
+
+              const paths = Array.from(
+                graphic.querySelectorAll('path[data-line-draw]')
+              ) as HTMLElement[];
+              const nodes = Array.from(
+                graphic.querySelectorAll('rect[data-line-draw]')
+              ) as HTMLElement[];
+              const panel = graphic.querySelector('[data-line-draw-panel]') as HTMLElement | null;
+
+              paths.forEach((el, i) =>
+                setTimeout(() => el.classList.add('is-inview'), i * PATH_STEP_MS)
+              );
+
+              const nodesStart = paths.length * PATH_STEP_MS + GROUP_GAP_MS;
+              nodes.forEach((el, i) =>
+                setTimeout(() => el.classList.add('is-inview'), nodesStart + i * NODE_STEP_MS)
+              );
+
+              if (panel) {
+                const panelStart = nodesStart + nodes.length * NODE_STEP_MS + GROUP_GAP_MS;
+                setTimeout(() => panel.classList.add('is-inview'), panelStart);
+              }
+            },
+            { threshold: 0.2 }
+          );
+          obs.observe(graphic);
         }
       })();
     </script>

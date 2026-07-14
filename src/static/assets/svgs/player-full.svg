@@ -1,25 +1,25 @@
 <svg width="675" height="804" viewBox="0 0 675 804" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect opacity="0.7" x="594" y="120" width="80" height="80" fill="#F6F6F5" />
-  <rect opacity="0.7" y="584" width="40" height="40" fill="#F6F6F5" />
-  <rect opacity="0.7" x="594" y="584" width="80" height="80" fill="#F6F6F5" />
-  <rect opacity="0.7" x="555" y="664" width="40" height="40" fill="#F6F6F5" />
-  <rect opacity="0.7" x="475" y="160" width="40" height="40" fill="#F6F6F5" />
-  <path d="M674 0L674 159" stroke="#C3C6C9" />
-  <path d="M595 120L595 199" stroke="#C3C6C9" />
-  <path d="M515 160L515 199" stroke="#C3C6C9" />
-  <path d="M515 584L515 623" stroke="#C3C6C9" />
-  <path d="M571.495 503.496L610.495 503.496" stroke="#C3C6C9" />
-  <path d="M0.495117 503.496L39.4951 503.496" stroke="#C3C6C9" />
-  <path d="M572.495 279.496L611.495 279.496" stroke="#C3C6C9" />
-  <path d="M459 199L635 199" stroke="#C3C6C9" />
-  <path d="M555 119L674 119" stroke="#C3C6C9" />
-  <path d="M595 584L595 704" stroke="#C3C6C9" />
-  <path d="M40 584L40 624" stroke="#C3C6C9" />
-  <path d="M0 584H40" stroke="#C3C6C9" />
-  <path d="M436 584H635" stroke="#C3C6C9" />
-  <path d="M674 624L674 809" stroke="#C3C6C9" />
-  <path d="M556 664H675" stroke="#C3C6C9" />
-  <g filter="url(#filter0_d_15383_44993)">
+  <rect data-line-draw opacity="0.7" x="594" y="120" width="80" height="80" fill="#F6F6F5" />
+  <rect data-line-draw opacity="0.7" y="584" width="40" height="40" fill="#F6F6F5" />
+  <rect data-line-draw opacity="0.7" x="594" y="584" width="80" height="80" fill="#F6F6F5" />
+  <rect data-line-draw opacity="0.7" x="555" y="664" width="40" height="40" fill="#F6F6F5" />
+  <rect data-line-draw opacity="0.7" x="475" y="160" width="40" height="40" fill="#F6F6F5" />
+  <path data-line-draw pathLength="1" d="M674 0L674 159" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M595 120L595 199" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M515 160L515 199" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M515 584L515 623" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M571.495 503.496L610.495 503.496" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M0.495117 503.496L39.4951 503.496" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M572.495 279.496L611.495 279.496" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M459 199L635 199" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M555 119L674 119" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M595 584L595 704" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M40 584L40 624" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M0 584H40" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M436 584H635" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M674 624L674 809" stroke="#C3C6C9" />
+  <path data-line-draw pathLength="1" d="M556 664H675" stroke="#C3C6C9" />
+  <g data-line-draw-panel filter="url(#filter0_d_15383_44993)">
     <rect x="40" y="199" width="532" height="385" fill="url(#paint0_linear_15383_44993)"
       shape-rendering="crispEdges" />
     <rect x="40" y="199" width="532" height="385" stroke="#C3C6C9" shape-rendering="crispEdges" />
@@ -79,8 +79,7 @@
       <feColorMatrix type="matrix"
         values="0 0 0 0 0.0470588 0 0 0 0 0.113725 0 0 0 0 0.192157 0 0 0 0.6 0" />
       <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_15383_44993" />
-      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_15383_44993"
-        result="shape" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_15383_44993" result="shape" />
     </filter>
     <linearGradient id="paint0_linear_15383_44993" x1="306" y1="199" x2="306" y2="584"
       gradientUnits="userSpaceOnUse">

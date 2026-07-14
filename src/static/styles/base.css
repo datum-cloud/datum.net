@@ -74,6 +74,8 @@
 
 @import './components.css';
 
+@import './components-line-draw.css';
+
 @import './components-hero.css';
 
 @import './components-nav.css';

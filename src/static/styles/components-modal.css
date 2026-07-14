@@ -48,11 +48,11 @@
   }
 
   media-lightbox dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur;
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   .media-lightbox-frame {
-    @apply items-center justify-center;
+    @apply items-center justify-center p-4 md:p-10;
   }
 
   .media-lightbox-content {
@@ -100,7 +100,7 @@
   }
 
   .community-huddle-past-modal__dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur-[9px];
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   .community-huddle-past-modal__frame {
@@ -205,7 +205,7 @@
   }
 
   newsletter-modal dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur;
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   /* Newsletter modal — Figma Card (node 9185-41852): 360px, 40px pad, 9px radius */
@@ -276,7 +276,7 @@
   }
 
   markdown-lightbox dialog::backdrop {
-    @apply bg-glacier-mist-900/80 backdrop-blur;
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
   }
 
   .markdown-lightbox__frame {

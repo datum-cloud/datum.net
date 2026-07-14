@@ -37,8 +37,8 @@
       background-image: linear-gradient(
         to bottom,
         transparent 42%,
-        rgb(236 208 208 / 0.5) 42%,
-        rgb(236 208 208 / 0.5) 92%,
+        var(--color-canyon-clay-pale) 42%,
+        var(--color-canyon-clay-pale) 92%,
         transparent 92%
       );
     }

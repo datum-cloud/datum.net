@@ -2,6 +2,10 @@
   @apply py-16 md:py-20 lg:py-30 xl:py-35 2xl:py-40;
 }
 
+@utility spacing-pad {
+  @apply px-4 md:px-5 lg:px-7 2xl:px-0;
+}
+
 @utility linear-gradient-light {
   @apply from-blush-quartz/50 to-blush-quartz/50 bg-white bg-linear-to-t;
 }

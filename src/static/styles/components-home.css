@@ -27,6 +27,7 @@
     @apply flex min-w-0 flex-col items-center md:items-start;
     @apply gap-8 xl:gap-10;
     @apply py-16 pb-0 md:py-20 lg:py-28 xl:py-40;
+    @apply pr-4 pl-4 md:pr-0 md:pl-5 lg:pr-0 lg:pl-7 2xl:pr-0 2xl:pl-0;
   }
 
   .home-hero-title {
@@ -37,8 +38,8 @@
       background-image: linear-gradient(
         to bottom,
         transparent 42%,
-        rgb(236 208 208 / 0.5) 42%,
-        rgb(236 208 208 / 0.5) 92%,
+        var(--color-canyon-clay-pale) 42%,
+        var(--color-canyon-clay-pale) 92%,
         transparent 92%
       );
     }
@@ -49,7 +50,7 @@
   }
 
   .home-hero-actions {
-    @apply flex gap-5;
+    @apply flex gap-3 md:gap-5;
   }
 
   .btn--home-hero-primary {
@@ -74,6 +75,8 @@
     @apply pointer-events-none relative z-20 flex h-full w-full shrink-0 items-center justify-center;
     @apply right-auto lg:right-0;
     @apply pb-16 md:pb-0;
+
+    @apply spacing-pad;
   }
 
   .home-hero-video-card {

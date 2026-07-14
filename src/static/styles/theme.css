@@ -10,6 +10,7 @@
  */
 @theme {
   /* breakpoints */
+  --breakpoint-xs: 30rem;
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;
@@ -49,6 +50,7 @@
   --color-blush-quartz: #ecd0d0;
   --color-canyon-clay: #bf9595;
   --color-canyon-clay---links: #9c7979;
+  --color-canyon-clay-pale: #f5e8e8;
   --color-potted-olive: #adbab0;
   --color-sage-mist: #d6ddd7;
   --color-cultured: #f5f5f3;

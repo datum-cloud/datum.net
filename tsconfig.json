@@ -12,13 +12,12 @@
       "@libs/*": ["./src/libs/*"],
       "@plugins/*": ["./src/plugins/*"],
       "@layouts/*": ["./src/layouts/*"],
-      "@v1/*": ["./src/v1/*"],
       "@content/*": ["./src/content/*"],
       "@hosts/*": ["./src/content/events/images/hosts/*"],
       "@guests/*": ["./src/content/events/images/guests/*"],
       "@data/*": ["./src/data/*"],
-      "@styles/*": ["./src/v1/styles/*"],
-      "@assets/*": ["./src/v1/assets/*"]
+      "@styles/*": ["./src/static/styles/*"],
+      "@assets/*": ["./src/static/assets/*"]
     },
     "plugins": [
       {

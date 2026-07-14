@@ -1,3 +1,7 @@
+@utility large-pad {
+  @apply py-16 md:py-20 lg:py-30 xl:py-35 2xl:py-40;
+}
+
 @utility linear-gradient-light {
   @apply from-blush-quartz/50 to-blush-quartz/50 bg-white bg-linear-to-t;
 }
@@ -11,7 +15,16 @@
 }
 
 @utility max-width {
-  @apply mx-auto w-full max-w-7xl px-7;
+  @apply max-w-8xl mx-auto w-full px-7;
+}
+
+@utility max-width-nopad {
+  @apply max-w-8xl mx-auto w-full;
+}
+
+@utility max-width-nav {
+  @apply mx-auto w-full max-w-(--datum-max-width-nav);
+  /* @apply px-7; */
 }
 
 @utility max-width-internal {
@@ -217,7 +230,7 @@
 /* Shared prose link and inheritance base — applied by all datum-prose-* variants */
 @utility datum-prose-base {
   --tw-prose-links: var(--color-canyon-clay---links);
-  --tw-prose-links-hover: var(--color-canyon-clay---links/80);
+  --tw-prose-links-hover: color-mix(in srgb, var(--color-canyon-clay---links) 80%, transparent);
 
   @apply prose max-w-none;
   @apply **:text-inherit;

@@ -53,3 +53,5 @@ bunfig.toml
 # ignore local claude settings
 .claude/settings.local.json
 docs/PROJECT_RECOMMENDATIONS.md
+
+.superpowers/

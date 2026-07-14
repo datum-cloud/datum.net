@@ -1,5 +1,5 @@
 ---
-import fontsCss from '@v1/styles/fonts.css?raw';
+import fontsCss from '@styles/fonts.css?raw';
 import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
 import { formatISODate } from '@utils/dateUtils';
@@ -157,7 +157,7 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
       <slot />
     </main>
     <script>
-      import '@v1/scripts/scroll-effects.js';
+      import '@/src/static/scripts/scroll-effects.js';
     </script>
 
     <LayoutEmbedScripts isProduction={isProduction} />

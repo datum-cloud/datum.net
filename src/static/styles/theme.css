@@ -16,10 +16,17 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
   --breakpoint-3xl: 120rem;
+  --breakpoint-home-hero-xl: 82.25rem;
 
   /* Custom width */
-  --datum-max-width: 1926px;
-  --datum-section-width: 155px;
+  /* --datum-max-width: 1920px; */
+  --datum-max-width: 100%;
+  --datum-max-width-container: 1316px;
+  --datum-max-width-nav: 1520px;
+  /* --datum-max-width-nav: 1464px; */
+  --width-home-hero-visual: 675px;
+  --max-width-8xl: var(--datum-max-width-container);
+  --width-8xl: var(--datum-max-width-container);
 
   --color-logo-object: #e8e7e4;
   --color-logo-text: #ffffff;
@@ -48,6 +55,11 @@
   --color-pale-yellow: #fffbc5;
   --color-misty-rose: #fde2e2;
   --color-platinum: #e2e9e3;
+  --color-silver-mist: #c3c6c9;
+  --color-deep-navy: #152538;
+  --color-steel-blue: #8ab2ca;
+  --color-platinum: #f9f9f8;
+  --color-pine-forge---links: #417958;
 
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
@@ -98,10 +110,15 @@
 
   --shadow-sm: 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
   --shadow-modal: 0 4px 16px 0 rgba(0, 0, 0, 0.05), 1px 8px 8px 0 rgba(0, 0, 0, 0.02);
+  --shadow-glow-aurora: 0 0 4px 0 var(--color-aurora-moss);
+  --shadow-home-hero-card: 0 10px 60px -40px rgba(12, 29, 49, 0.6);
+  --shadow-home-hero-play: 0 8px 20px -12px rgba(12, 29, 49, 0.4);
 
   --radius-sm: 3px;
   --radius-md: 6px;
   --radius-lg: 9px;
+
+  --stroke-width-1.75: 1.75;
 
   --color-borderpanel: var(--color-glacier-mist-900);
 

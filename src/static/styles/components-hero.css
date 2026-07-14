@@ -8,56 +8,9 @@
 
     &.dark {
       @apply bg-midnight-fjord text-white;
-      .nav--main-container {
-        @apply border-0;
-      }
-      .nav--main {
-        .nav-actions {
-          .btn {
-            @apply bg-midnight-fjord/30 backdrop-blur-md;
-
-            svg {
-              @apply text-potted-olive;
-            }
-          }
-          .btn.gh-button {
-            svg {
-              @apply text-aurora-moss!;
-            }
-          }
-        }
-      }
     }
     &.light {
       @apply bg-glacier-mist-700 text-midnight-fjord;
-      .nav--main-container {
-        @apply border-b;
-      }
-      .nav--main {
-        .nav-menu {
-          @apply text-midnight-fjord;
-        }
-
-        .nav-actions {
-          .btn {
-            @apply text-midnight-fjord;
-            @apply border-midnight-fjord/20 hover:border-midnight-fjord/70;
-
-            svg {
-              @apply text-canyon-clay;
-            }
-          }
-        }
-      }
-
-      .nav-logo {
-        --color-logo-object: var(--color-canyon-clay);
-        --color-logo-text: var(--color-midnight-fjord);
-      }
-
-      .mobile-menu-button {
-        @apply text-midnight-fjord;
-      }
     }
 
     &.content-alt {
@@ -74,33 +27,6 @@
   [data-theme='light'] {
     .hero--main {
       @apply text-midnight-fjord;
-
-      .nav--main {
-        .nav-menu {
-          @apply text-midnight-fjord;
-        }
-        .btn {
-          svg {
-            @apply text-tuscany;
-          }
-        }
-      }
-
-      .nav-actions {
-        .btn {
-          @apply text-midnight-fjord;
-          @apply border-midnight-fjord/20 hover:border-midnight-fjord/70;
-        }
-      }
-
-      .nav-logo {
-        --color-logo-object: var(--color-tuscany);
-        --color-logo-text: var(--color-midnight-fjord);
-      }
-
-      .mobile-menu-button {
-        @apply text-midnight-fjord;
-      }
     }
   }
 

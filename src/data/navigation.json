@@ -3,47 +3,68 @@
     {
       "text": "Platform",
       "href": "/features",
+      "theme": "dark",
       "children": [
         {
-          "isCardLayout": true,
+          "title": "Deliver",
           "items": [
-            {
-              "text": "Features",
-              "image": "/images/nav/core-features.png",
-              "desc": "Critical network services",
-              "href": "/features"
-            },
-            {
-              "text": "Essentials",
-              "image": "/images/nav/essentials.png",
-              "desc": "Enterprise-grade networking primitives",
-              "href": "/essentials"
-            },
-            {
-              "text": "Locations",
-              "image": "/images/nav/world-map.png",
-              "desc": "Deploy at the global edge",
-              "href": "/locations"
-            }
+            { "text": "Global Load Balancer", "href": "/features" },
+            { "text": "Application Load Balancer", "href": "/features" },
+            { "text": "DNS", "href": "/docs" }
+          ]
+        },
+        {
+          "title": "Build",
+          "items": [
+            { "text": "Compute", "href": "/features" },
+            { "text": "Object Storage", "href": "/features" },
+            { "text": "Edge Apps", "href": "/features", "label": "Soon" }
+          ]
+        },
+        {
+          "title": "Connect",
+          "items": [
+            { "text": "Galactic VPC", "href": "/features" },
+            { "text": "Connections", "href": "/features" },
+            { "text": "Interconnect", "href": "/essentials", "label": "Soon" }
           ]
         }
+      ],
+      "asideCards": [
+        {
+          "text": "Locations",
+          "desc": "NVIDIA Bluefield optimized hardware in 20+ global metros.",
+          "href": "/locations",
+          "icon": "globe"
+        },
+        {
+          "text": "Essentials",
+          "desc": "From our CLI and audit logs to robust IAM, we have you covered.",
+          "href": "/essentials",
+          "icon": "list-check"
+        }
       ]
+    },
+    {
+      "text": "Dedicated",
+      "href": "/dedicated-cloud"
     },
     {
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
+      "theme": "dark",
       "children": [
         {
           "title": "Get Started:",
           "items": [
-            { "text": "Changelog", "href": "/changelog" },
+            { "text": "Docs", "href": "/docs" },
             { "text": "Download", "href": "/download" },
             { "text": "Roadmap", "href": "/roadmap" }
           ]
         },
         {
-          "title": "About Us:",
+          "title": "Company:",
           "items": [
             { "text": "Careers", "href": "/careers" },
             { "text": "Blog", "href": "/blog" },
@@ -51,10 +72,6 @@
           ]
         }
       ]
-    },
-    {
-      "text": "Docs",
-      "href": "/docs"
     }
   ],
   "right": [
@@ -64,35 +81,37 @@
       "isExternal": true
     }
   ],
+  "footerCards": [
+    {
+      "title": "Dedicated Cloud",
+      "description": "For scaling providers and enterprises who benefit from full control, custom locations, and ideal economics.",
+      "href": "/pricing#provider",
+      "icon": "diamond-plus"
+    },
+    {
+      "title": "Legal",
+      "description": "Everything you need to know from terms of service to privacy policies",
+      "href": "/legal/terms",
+      "icon": "scroll-text"
+    }
+  ],
   "footer": [
     {
-      "title": "Product",
+      "title": "Platform features",
       "items": [
-        {
-          "text": "Core features",
-          "href": "/features"
-        },
-        {
-          "text": "Pricing",
-          "href": "/pricing"
-        },
-        {
-          "text": "Docs",
-          "href": "/docs"
-        },
-        { "text": "Status", "href": "https://www.datumstatus.net/", "isExternal": true }
+        { "text": "Product Features", "href": "/features" },
+        { "text": "Essentials", "href": "/essentials" },
+        { "text": "Locations", "href": "/locations" }
       ]
     },
     {
       "title": "Resources",
       "items": [
-        { "text": "Blog", "href": "/blog" },
-        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Docs", "href": "/docs" },
         { "text": "Roadmap", "href": "/roadmap" },
-        { "text": "Open Source", "href": "/open-source" },
-        { "text": "Discord", "href": "https://discord.com/invite/AeA9XZu4Py" },
-        { "text": "GitHub", "href": "https://github.com/orgs/datum-cloud/discussions" },
-        { "text": "Youtube", "href": "https://www.youtube.com/@Datum-Cloud" }
+        { "text": "Changelog", "href": "/changelog" },
+        { "text": "Download", "href": "/download" },
+        { "text": "Blog", "href": "/blog" }
       ]
     },
     {
@@ -104,16 +123,6 @@
         { "text": "Events", "href": "/events" },
         { "text": "Brand Assets", "href": "/brand" },
         { "text": "Contact", "href": "/contact" }
-      ]
-    },
-    {
-      "title": "Legal",
-      "items": [
-        { "text": "Terms", "href": "/legal/terms" },
-        { "text": "Privacy", "href": "/legal/privacy" },
-        { "text": "AUP", "href": "/legal/aup" },
-        { "text": "CST", "href": "/legal/service-country-specific-terms" },
-        { "text": "Sub-Processors", "href": "/legal/subprocessors" }
       ]
     }
   ],

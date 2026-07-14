@@ -1,6 +1,6 @@
 ---
 // src/pages/features.astro
-import '@v1/styles/page-features.css';
+import '@styles/page-features.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
@@ -9,8 +9,8 @@ import Icon from '@components/Icon.astro';
 import { Image } from 'astro:assets';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
-import featuresMapImage from '@v1/assets/images/features-map.png';
-import videoFrameImage from '@v1/assets/images/video-frame.png';
+import featuresMapImage from '@assets/images/features-map.png';
+import videoFrameImage from '@assets/images/video-frame.png';
 
 const page = await getCollectionEntry('pages', 'features');
 const fm = page.data;

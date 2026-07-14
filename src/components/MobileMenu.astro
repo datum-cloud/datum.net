@@ -2,9 +2,9 @@
 // src/components/MobileMenu.astro
 import type { NavData } from '@/src/types/navigation';
 import Icon from '@components/Icon.astro';
-import Logo from '@v1/assets/svgs/datum-logo-h.svg';
-import DiscordIcon from '@v1/assets/icons/discord.svg';
-import GithubIcon from '@v1/assets/icons/github.svg';
+import Logo from '@assets/svgs/datum-logo-h.svg';
+import DiscordIcon from '@assets/icons/discord.svg';
+import GithubIcon from '@assets/icons/github.svg';
 import navigation from '@data/navigation.json';
 
 // Type-safe navigation data
@@ -69,9 +69,30 @@ const mainNav = navData.main;
       viewBox="0 0 30 30"
       aria-hidden="true"
     >
-      <path class="burger-top" d="M4 7h22" stroke-width="2.5" stroke-linecap="round"></path>
-      <path class="burger-mid" d="M4 15h22" stroke-width="2.5" stroke-linecap="round"></path>
-      <path class="burger-bot" d="M4 23h22" stroke-width="2.5" stroke-linecap="round"></path>
+      <defs>
+        <clipPath id="mobile-menu-bot-clip">
+          <rect x="0" y="0" width="20" height="30"></rect>
+        </clipPath>
+      </defs>
+      <path
+        class="burger-top"
+        d="M4.99927 7.5H24.9993"
+        stroke-width="2.58333"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+      <path
+        class="burger-mid"
+        d="M4.99927 15H24.9993"
+        stroke-width="2.58333"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+      <path
+        class="burger-bot"
+        d="M4.99927 22.5H24.9993"
+        clip-path="url(#mobile-menu-bot-clip)"
+        stroke-width="2.58333"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
     </svg>
   </button>
 
@@ -187,14 +208,9 @@ const mainNav = navData.main;
           Sign in
           <Icon name="arrow-right" size="sm" />
         </a>
-        <a
-          href="https://auth.datum.net/ui/v2/login/register"
-          class="mobile-cta-primary"
-          target="_blank"
-          x-on:click="closeMenu()"
-        >
-          Start for free
-          <Icon name="arrow-right" size="sm" />
+        <a href="/demo" class="mobile-cta-primary" target="_blank" x-on:click="closeMenu()">
+          Book a demo
+          <Icon name="calendar" size="sm" />
         </a>
       </div>
       <div class="mobile-menu-social">

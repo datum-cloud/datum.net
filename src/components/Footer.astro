@@ -1,16 +1,16 @@
 ---
+// src/components/Footer.astro
 import { Image } from 'astro:assets';
 import navigation from '@data/navigation.json';
-import type { NavData, NavItem } from '@/src/types/navigation';
+import type { NavData, NavFooterCard, NavItem } from '@/src/types/navigation';
 import type { FooterProps } from '@/src/types/common';
-import ImageFooter from '@v1/assets/images/footer-illustration.png';
+import ImageFooter from '@assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
-import ImageTwoMen from '@v1/assets/images/two-person-talking.png';
-import GithubStargazerValue from '@components/GithubStargazerValue.astro';
+import Icon from '@components/Icon.astro';
+import ImageTwoMen from '@assets/images/two-person-talking.png';
 import NewsletterModal from '@components/forms/NewsletterModal.astro';
 import FooterAiAgents from '@components/FooterAiAgents.astro';
 
-// Get props with default values
 const {
   showCTA = true,
   showBackground = true,
@@ -18,8 +18,8 @@ const {
   showSignup = true,
 } = Astro.props as FooterProps;
 
-// Type-safe navigation data
 const navData = navigation as NavData;
+const [platformSection, resourcesSection, companySection] = navData.footer;
 ---
 
 <footer
@@ -29,42 +29,60 @@ const navData = navigation as NavData;
     !showBackground && 'bg-midnight-fjord',
   ]}
 >
-  {/* Hero Content - Conditionally rendered */}
   {
     showCTA && (
-      <div class="text-midnight-fjord bg-sage-mist relative z-10 mx-auto pt-14 md:pt-20 lg:pt-28">
-        <div class="max-width flex flex-col items-center gap-5.5 text-center md:gap-10">
-          <h2 class="datum-text-11xl">
-            <span class="text-pine-forge">Less talk,</span> more building
-          </h2>
-          <p class="datum-text-xl max-w-186 text-pretty">
-            Our "forever free" tier currently includes an Envoy-based AI Edge and QUIC tunnels for
-            exposing localhost to the internet, with more on the way.
-          </p>
-          <div class="flex items-center justify-center gap-4">
-            <Button
-              class="btn btn--midnight-fjord"
-              text="Get started"
-              icon={{ name: 'arrow-right', size: 'md' }}
-              iconPosition="right"
-              iconClass="stroke-1.5"
-              target="_blank"
-              href="https://auth.datum.net/ui/v2/login/register"
-              data-fathom-event="Pre-footer: Get started"
-            />
-            <Button
-              class="btn btn--alpha"
-              text="Download local apps"
-              href="/download"
-              data-fathom-event="Pre-footer: Download local apps"
-            />
+      <div class="footer-prefooter px-7">
+        <div class="max-width-nav relative">
+          <span class="section-line section-line--left section-line--top" />
+          <span class="section-eyebrow section-eyebrow--midnight-fjord section-eyebrow--left-top">
+            Get started
+          </span>
+
+          <div class="footer-prefooter-grid" aria-hidden="true">
+            <svg viewBox="0 0 255 282" fill="none" preserveAspectRatio="xMaxYMin slice">
+              <rect x="135" y="81.5" width="80" height="80" fill="#E6F59F" />
+              <rect x="16" y="121.5" width="40" height="40" fill="#E6F59F" />
+              <rect x="136" y="241.5" width="40" height="40" fill="#E6F59F" />
+              <path d="M215 0.5L215 120.5" stroke="#C3C6C9" />
+              <path d="M136 41.5L136 280.5" stroke="#C3C6C9" />
+              <path d="M56 121.5L56 160.5" stroke="#C3C6C9" />
+              <path d="M96 240.5H176" stroke="#C3C6C9" />
+              <path d="M0 160.5L176 160.5" stroke="#C3C6C9" />
+              <path d="M96 80.5L255 80.5" stroke="#C3C6C9" />
+            </svg>
+          </div>
+          <div class="max-width-nopad flex flex-col items-center gap-5.5 pt-14 text-center md:gap-10 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40">
+            <h2 class="section--title">
+              <span class="text-pine-forge---links">Start here,</span> go anywhere
+            </h2>
+            <p class="datum-text-xl max-w-5xl text-pretty opacity-80">
+              Own more of your stack, reduce latency across regions, and connect privately with
+              customers.
+            </p>
+            <div class="flex items-center justify-center gap-4">
+              <Button
+                class="btn btn--midnight-fjord btn--glow-aurora"
+                text="Start for free"
+                icon={{ name: 'arrow-right', size: 'md' }}
+                iconPosition="right"
+                iconClass="stroke-1.5"
+                target="_blank"
+                href="https://auth.datum.net/ui/v2/login/register"
+                data-fathom-event="Pre-footer: Start for free"
+              />
+              <Button
+                class="btn btn--alpha"
+                text="Request a demo"
+                href="/demo"
+                data-fathom-event="Pre-footer: Request a demo"
+              />
+            </div>
           </div>
         </div>
       </div>
     )
   }
 
-  {/* Background Landscape - Conditionally rendered */}
   {
     showBackground && (
       <div class:list={['footer-illustration-container', !showCTA && 'bg-glacier-mist-700 pt-30']}>
@@ -97,91 +115,120 @@ const navData = navigation as NavData;
     )
   }
 
-  <!-- Main Footer Content -->
   <div class="bg-midnight-fjord relative z-20">
     <div class="footer-main">
       <div class="footer-grid">
-        <!-- Navigation Sections -->
+        <div class="footer-cards">
+          {
+            navData.footerCards.map((card: NavFooterCard) => (
+              <a
+                href={card.href}
+                class="footer-card"
+                target={card.isExternal ? '_blank' : undefined}
+                rel={card.isExternal ? 'noopener noreferrer' : undefined}
+                data-astro-prefetch={card.isExternal ? undefined : 'hover'}
+              >
+                <Icon name={card.icon} size="lg" class="footer-card-icon" />
+                <span class="footer-card-content">
+                  <span class="footer-card-title">{card.title}</span>
+                  <span class="footer-card-description">{card.description}</span>
+                </span>
+              </a>
+            ))
+          }
+        </div>
 
         <div class="footer-nav-container" role="navigation">
           {
-            navData.footer.map((section) => (
+            platformSection && (
               <div class="footer-nav-section">
-                <p class="footer-nav-header">{section.title}</p>
+                <p class="footer-nav-header">{platformSection.title}</p>
                 <ul class="footer-nav-list">
-                  {section.items.map((item: NavItem) => (
+                  {platformSection.items.map((item: NavItem) => (
                     <li>
                       <a
                         href={item.href}
-                        class="footer-nav-link relative"
+                        class="footer-nav-link"
                         target={item.isExternal ? '_blank' : undefined}
                         rel={item.isExternal ? 'noopener noreferrer' : undefined}
                         data-astro-prefetch="hover"
                         title={item.text}
                         tabindex="0"
                       >
-                        {item.text.toLowerCase() === 'github' ? (
-                          <>
-                            {item.text}
-                            <span class="datum-docs-sidebar-headings bg-glacier-mist-900/15 text-glacier-mist-700 rounded-md px-[6px] py-[2px]">
-                              <GithubStargazerValue server:defer />
-                            </span>
-                          </>
-                        ) : item.text.toLowerCase() === 'status' ? (
-                          <>
-                            <span class="hidden md:inline-block">Status</span>
-                            <span
-                              id="hyperping-badge"
-                              class="datum-docs-sidebar-headings text-glacier-mist-700 [&>div]:bg-logo-object/15 min-w-[140px] normal-case [&>div]:rounded-md [&>div]:px-2 [&>div]:py-1"
-                            />
-                          </>
-                        ) : (
-                          item.text
-                        )}
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+
+          {
+            resourcesSection && (
+              <div class="footer-nav-section footer-nav-section--stacked">
+                <div class="footer-nav-group">
+                  <p class="footer-nav-header">{resourcesSection.title}</p>
+                  <ul class="footer-nav-list">
+                    {resourcesSection.items.map((item: NavItem) => (
+                      <li>
+                        <a
+                          href={item.href}
+                          class="footer-nav-link"
+                          target={item.isExternal ? '_blank' : undefined}
+                          rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                          data-astro-prefetch="hover"
+                          title={item.text}
+                          tabindex="0"
+                        >
+                          {item.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="footer-nav-group">
+                  <p class="footer-nav-header">Status</p>
+                  <div
+                    id="hyperping-badge"
+                    class="footer-status-badge datum-docs-sidebar-headings text-glacier-mist-700 [&>div]:bg-logo-object/15 min-w-[140px] normal-case [&>div]:rounded-md [&>div]:px-2 [&>div]:py-1"
+                  />
+                </div>
+              </div>
+            )
+          }
+
+          {
+            companySection && (
+              <div class="footer-nav-section">
+                <p class="footer-nav-header">{companySection.title}</p>
+                <ul class="footer-nav-list">
+                  {companySection.items.map((item: NavItem) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="footer-nav-link"
+                        target={item.isExternal ? '_blank' : undefined}
+                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        data-astro-prefetch="hover"
+                        title={item.text}
+                        tabindex="0"
+                      >
+                        {item.text}
                       </a>
                       {item.label && <span class="nav-label">{item.label}</span>}
                     </li>
                   ))}
                 </ul>
               </div>
-            ))
+            )
           }
         </div>
-        <!-- Social Links Section -->
-        <div class="footer-actions-section" role="contentinfo">
-          <div class="w-full">
-            <div class="mb-8 flex w-full justify-center space-x-3 md:justify-end-safe">
-              {
-                navData.social.map((item) => (
-                  <Button
-                    class="btn btn--clean text-blush-quartz hover:text-glacier-mist-900"
-                    icon={{ name: item.icon, size: 'md' }}
-                    iconPosition="left"
-                    iconClass="stroke-1.5"
-                    target={item.isExternal ? '_blank' : '_self'}
-                    href={item.href}
-                    text=""
-                    title={item.text}
-                  />
-                ))
-              }
-            </div>
-            <!-- <p
-              class="footer-copyright mb-2 w-full text-center text-nowrap md:text-right [&_a]:inline-block"
-            >
-              <a href="/legal/terms" class="footer-nav-link" tabindex="0">Terms of Service</a>,
-              <a href="/legal/privacy" class="footer-nav-link" tabindex="0">Privacy Policy</a>
-            </p> -->
-            <p class="footer-copyright">
-              &copy; {new Date().getFullYear()} Datum Technology, Inc.
-            </p>
-          </div>
-        </div>
       </div>
-    </div>
 
-    <!-- AI Agents Footer -->
-    <FooterAiAgents />
+      <FooterAiAgents social={navData.social} />
+    </div>
   </div>
 
   {

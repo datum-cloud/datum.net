@@ -29,6 +29,62 @@
     background-image: linear-gradient(var(--color-glacier-mist-900), var(--color-glacier-mist-900));
   }
 
+  .section-eyebrow {
+    @apply font-dejavu datum-text-sm text-canyon-clay---links inline-flex items-center gap-2.5 whitespace-nowrap uppercase;
+
+    &::before {
+      @apply bg-canyon-clay h-3.5 w-3.25 shrink-0 rounded-[1.25px] content-[''];
+    }
+  }
+
+  .section-eyebrow--pine {
+    @apply text-pine-forge---links;
+
+    &::before {
+      @apply bg-pine-forge---links;
+    }
+  }
+
+  .section-eyebrow--midnight-fjord {
+    @apply text-midnight-fjord;
+
+    &::before {
+      @apply bg-midnight-fjord;
+    }
+  }
+
+  .section-eyebrow--left-top {
+    @apply absolute left-7;
+    @apply top-5 md:top-6 lg:top-8;
+  }
+
+  .section-line {
+    @apply bg-silver-mist absolute block w-px;
+    @apply h-5 md:h-10 lg:h-15 xl:h-20;
+  }
+  .section-line-h {
+    @apply bg-silver-mist absolute block h-px;
+    @apply w-12 md:w-16 lg:w-20;
+  }
+  .section-line--left {
+    @apply left-0;
+  }
+  .section-line--right {
+    @apply right-0;
+  }
+
+  .section-line--top {
+    @apply top-0;
+  }
+  .section-line--bottom {
+    @apply bottom-0;
+  }
+
+  .section-line--bottom-overlap {
+    @apply hidden md:-bottom-7 md:block lg:-bottom-10;
+    @apply md:h-7 lg:h-20 xl:h-20;
+  }
+
   .section-title {
     @apply datum-text-8xl text-midnight-fjord text-pretty;
   }
@@ -57,6 +113,10 @@
       @apply py-10 md:py-16 lg:py-20 xl:py-28;
     }
 
+    &.section--block--large-pad {
+      @apply py-12 md:py-30 lg:py-40;
+    }
+
     &.section--block--small-pad {
       @apply py-9 md:py-12 lg:py-16;
     }
@@ -66,10 +126,36 @@
     }
   }
 
+  .section--title {
+    @apply datum-text-8xl md:datum-text-9xl;
+  }
+
+  .section--sub-title {
+    @apply datum-text-7xl md:datum-text-8xl;
+  }
   /* Footer Components */
 
+  .footer-prefooter {
+    @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto;
+    @apply border-silver-mist border-t;
+  }
+
+  .footer-prefooter-label {
+    @apply pointer-events-none absolute top-0 left-0;
+    @apply h-[96px] md:h-[120px] lg:h-[159px];
+  }
+
+  .footer-prefooter-grid {
+    @apply pointer-events-none absolute top-0 overflow-hidden;
+    @apply right-0 hidden lg:-right-6.25 lg:block xl:-right-10;
+
+    @apply md:h-34 md:w-28;
+    @apply lg:h-44 lg:w-40;
+    @apply xl:h-[196.25px] xl:w-64;
+  }
+
   .footer-illustration-container {
-    @apply bg-sage-mist relative;
+    @apply bg-aurora-moss/30 relative;
     @apply relative z-9 pt-5 lg:pt-1;
 
     &:before {
@@ -78,30 +164,125 @@
   }
 
   .footer-main {
-    @apply max-width bg-midnight-fjord relative z-10 mx-auto py-9 lg:py-14 xl:py-20;
+    @apply max-width bg-midnight-fjord relative z-10 mx-auto flex flex-col gap-10 py-14 lg:py-20;
   }
 
   .footer-grid {
-    @apply flex flex-col gap-8 md:gap-2.5 lg:flex-row lg:gap-40;
+    @apply flex flex-col gap-10 lg:flex-row lg:gap-20;
+  }
+
+  .footer-cards {
+    @apply flex w-full shrink-0 flex-col gap-4;
+
+    @media (width >= theme(--breakpoint-lg)) {
+      max-width: 420px;
+    }
+  }
+
+  .footer-card {
+    @apply border-app---dark---utility-2 flex w-full items-center gap-6 rounded-[9px] border bg-[rgba(34,49,67,0.4)] px-7 py-5 transition-colors hover:bg-[rgba(34,49,67,0.55)];
+  }
+
+  .footer-card-icon {
+    @apply text-aurora-moss size-6 shrink-0;
+
+    svg {
+      stroke-width: 1.5;
+    }
+  }
+
+  .footer-card-content {
+    @apply flex min-w-0 flex-col;
+  }
+
+  .footer-card-title {
+    @apply datum-text-base text-white;
+  }
+
+  .footer-card-description {
+    @apply datum-text-sm text-glacier-mist-700 opacity-60;
   }
 
   .footer-nav-container {
-    @apply flex w-full flex-wrap justify-between space-y-7;
+    @apply flex w-full flex-1 flex-col gap-10 sm:flex-row sm:flex-wrap sm:justify-between lg:gap-20;
   }
+
   .footer-nav-section {
-    @apply w-1/2 md:w-auto;
-    @apply first:-mr-8;
+    @apply w-full sm:w-auto sm:min-w-36 sm:flex-1;
   }
-  .footer-actions-section {
-    @apply flex flex-col items-center justify-between gap-4 md:col-span-4 md:items-end lg:col-span-1 lg:flex-col;
+
+  .footer-nav-section--stacked {
+    @apply flex flex-col gap-10;
+  }
+
+  .footer-nav-group {
+    @apply flex flex-col;
+  }
+
+  .footer-status-badge {
+    @apply inline-flex;
+  }
+
+  .footer-bottom {
+    @apply border-app---dark---utility-2 flex flex-col gap-7 border-t pt-7;
+  }
+
+  .footer-bottom-row {
+    @apply flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between;
+  }
+
+  .footer-bottom-ai {
+    @apply flex flex-col gap-3;
+  }
+
+  .footer-bottom-ai-label {
+    @apply datum-text-sm text-white/80;
+  }
+
+  .footer-bottom-ai-tools {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .footer-ai-tool {
+    @apply border-app---dark---utility-2 hover:border-app---dark---utility-3 flex h-9 items-center gap-2 rounded-md border px-3.5 text-xs font-medium whitespace-nowrap text-white transition-colors hover:bg-white/5;
+  }
+
+  .footer-ai-tool-icon {
+    @apply flex size-4 shrink-0 items-center justify-center [&_svg]:size-full;
+  }
+
+  .footer-bottom-links {
+    @apply flex shrink-0 flex-col items-start gap-2 lg:items-end;
+  }
+
+  .footer-bottom-link {
+    @apply datum-text-sm flex min-h-6 items-center gap-3 whitespace-nowrap text-white/80 transition-opacity hover:opacity-100;
+  }
+
+  .footer-bottom-link-text {
+    strong {
+      @apply font-semibold underline underline-offset-2;
+    }
+  }
+
+  .footer-bottom-link-icon {
+    @apply text-app---dark---utility-3 shrink-0;
+  }
+
+  .footer-bottom-meta {
+    @apply flex flex-col-reverse items-start justify-between gap-4 sm:flex-row sm:items-center;
+  }
+
+  .footer-social {
+    @apply flex items-center gap-2.5;
+  }
+
+  .footer-social-link {
+    @apply text-blush-quartz hover:text-glacier-mist-900 size-5 p-0;
   }
 
   .footer-copyright {
-    @apply datum-text-xs text-center whitespace-nowrap text-white/55 md:text-right;
-
-    .footer-nav-link {
-      @apply text-white/55 transition-colors hover:text-white;
-    }
+    @apply datum-text-xs whitespace-nowrap text-white/40;
   }
 
   .label {
@@ -405,7 +586,7 @@
   /* announcement */
 
   .announcement {
-    @apply datum-app-body relative z-40 mb-2.5 flex items-center justify-center gap-4 px-7 py-[15.5px];
+    @apply datum-app-body relative z-40 flex items-center justify-center gap-4 px-7 py-[15.5px];
     @apply bg-blush-quartz;
 
     label {

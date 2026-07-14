@@ -44,14 +44,22 @@
   }
 
   .btn--midnight-fjord {
-    @apply bg-midnight-fjord/90 hover:bg-midnight-fjord/80 border-midnight-fjord text-white;
+    @apply bg-midnight-fjord hover:bg-midnight-fjord/80 border-midnight-fjord text-white;
+
+    svg {
+      @apply text-aurora-moss;
+    }
   }
 
   .btn--midnight-fjord-alpha {
-    @apply bg-midnight-fjord/90 border-white/20 text-white hover:bg-white/10;
+    @apply bg-midnight-fjord border-white/20 text-white hover:bg-white/10;
   }
 
   .btn--outline {
     @apply text-midnight-fjord hover:bg-canyon-clay/10 border-[var(--app---dark---utility-5)] bg-none;
+  }
+
+  .btn--glow-aurora {
+    @apply shadow-(--shadow-glow-aurora);
   }
 }

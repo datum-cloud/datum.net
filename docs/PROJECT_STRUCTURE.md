@@ -1,26 +1,28 @@
 # Project Structure
 
-This document provides a comprehensive overview of Datum Inc. website project structure.
+This document provides a comprehensive overview of the Datum Inc. website project structure.
 
 ## Root Directory Structure
 
 ```
 .
-├── src/                    # Source code
-├── public/                 # Static files served as-is
-├── config/                 # Kubernetes and deployment configuration
-├── dist/                   # Build output (generated)
-├── tests/                  # End-to-end tests
-├── init/                   # Database initialization scripts
-├── .github/                # GitHub configuration and workflows
-├── .vscode/                # VS Code settings
-├── astro.config.mjs        # Astro configuration
-├── docker-compose.yml      # Docker Compose configuration
-├── Dockerfile              # Docker build configuration
-├── package.json            # Project dependencies and scripts
-├── tsconfig.json           # TypeScript configuration
-├── eslint.config.mjs       # ESLint configuration
-└── playwright.config.ts    # Playwright test configuration
+├── src/            # Source code
+├── public/         # Static files served as-is
+├── config/         # Kubernetes deployment configuration
+├── dist/           # Build output (generated)
+├── tests/          # End-to-end tests
+├── init/           # Database initialization scripts
+├── scripts/        # Standalone maintenance scripts (SEO review, cache warmup)
+├── templates/      # Code-generation templates (API docs)
+├── .github/        # GitHub configuration and workflows
+├── .vscode/        # VS Code settings
+├── astro.config.mjs      # Astro configuration
+├── docker-compose.yml    # Docker Compose configuration
+├── Dockerfile            # Docker build configuration
+├── package.json          # Project dependencies and scripts
+├── tsconfig.json         # TypeScript configuration
+├── eslint.config.mjs     # ESLint configuration
+└── playwright.config.ts  # Playwright test configuration
 ```
 
 ## Source Code (`src/`)
@@ -30,8 +32,8 @@ This document provides a comprehensive overview of Datum Inc. website project st
 Server-side actions for form submissions and API interactions:
 
 - `index.ts` - Main actions export
+- `demo.ts` - Book-a-demo form action (sends via `libs/mailer.ts`)
 - `newsletter.ts` - Newsletter subscription actions
-- `roadmap.ts` - Roadmap-related actions
 
 ### Components (`src/components/`)
 
@@ -39,34 +41,34 @@ Reusable UI components organized by feature:
 
 #### Core Components
 
-- `Button.astro` - Button component
-- `Card.astro` - Card component
-- `Container.astro` - Container wrapper
-- `Icon.astro` - Icon component
-- `Pagination.astro` - Pagination component
-- `TableOfContents.astro` - Table of contents component
-- `Figure.astro` - Figure component
-- `Favicons.astro` - Favicons component
-- `Announcement.astro` - Announcement component
+- `Announcement.astro` - Announcement banner
 - `ArticleNavigation.astro` - Article navigation
 - `Aside.astro` - Aside component
+- `Button.astro` - Button component
+- `Card.astro` - Card component
+- `CollectionEntryBody.astro` - Renders a content-collection entry body
+- `Container.astro` - Container wrapper
 - `FAQ.astro` - FAQ component
+- `Favicons.astro` - Favicons component
+- `Figure.astro` - Figure component
+- `Footer.astro` / `FooterAiAgents.astro` - Site footer variants
 - `GithubStargazerValue.astro` - GitHub stargazer counter
+- `GlobalSection.astro` - Generic full-width section wrapper
+- `GrafanaResourceGenerator.astro` / `GrafanaUrlGenerator.astro` - Grafana dashboard link generators
+- `Header.astro` - Page header
 - `Hero.astro` - Hero component
-- `GrafanaResourceGenerator.astro` - Grafana resource generator
-- `GrafanaUrlGenerator.astro` - Grafana URL generator
-- `GlobalSection.astro` - Global section wrapper
-- `TeamMemberCard.astro` - Team member card
-- `PricingCard.astro` - Pricing card component
-
-#### Layout Components
-
-- `Header.astro` - Site header
-- `Footer.astro` - Site footer
-- `Nav.astro` - Navigation component
-- `NavMenu.astro` - Navigation menu
-- `MobileMenu.astro` - Mobile navigation menu
+- `Icon.astro` - Icon component
+- `JsonLd.astro` - JSON-LD structured data injector
+- `LayoutEmbedScripts.astro` - Shared embed/analytics scripts
 - `LogoDropdown.astro` - Logo dropdown menu
+- `MarkdownLightbox.astro` / `MediaLightbox.astro` - Image/video lightbox
+- `MobileMenu.astro` - Mobile navigation menu
+- `Nav.astro` / `NavMenu.astro` - Site navigation
+- `Pagination.astro` - Pagination component
+- `PricingCard.astro` - Pricing card
+- `SecondaryTabNav.astro` - Secondary tab navigation
+- `TableOfContents.astro` - Table of contents component
+- `TeamMemberCard.astro` - Team member card
 
 #### Feature-Specific Components
 
@@ -75,26 +77,20 @@ Reusable UI components organized by feature:
 - `Companies.astro` - Companies/investors component
 - `Investors.astro` - Investors component
 - `OurMission.astro` - Our mission component
-- `OurPurpose.astro` - Our purpose component
-- `People.astro` - People component
+- `People.astro` / `PeopleStrapi.astro` / `PeopleStrapiSkeleton.astro` - People listing (Strapi-backed) with loading skeleton
 - `ProfileModal.astro` - Profile modal component
 - `Team.astro` - Team component
-- `WeValue.astro` - Values component
 
 **Blog** (`blog/`)
 
-- `Blog.astro` - Blog listing page
-- `BlogFilters.astro` - Blog filtering
-- `BlogItem.astro` - Individual blog post card
+- `BlogItemStrapi.astro` - Individual blog post card (Strapi-backed)
 - `BlogPagination.astro` - Blog pagination
-- `FeaturedPost.astro` - Featured blog post
-- `Latest.astro` - Latest posts component
+- `BlogStrapi.astro` / `BlogStrapiSkeleton.astro` - Blog listing with loading skeleton
+- `FeaturedPostStrapi.astro` - Featured blog post
 
 **Brand** (`brand/`)
 
-- `BrandCard.astro` - Brand card component
-- `BrandCardImage.astro` - Brand card image
-- `BrandCardText.astro` - Brand card text
+- `BrandCard.astro` / `BrandCardImage.astro` / `BrandCardText.astro` - Brand card and variants (used from `content/pages/brand/*.mdx`)
 - `ColorPalette.astro` - Color palette display
 - `NavBrand.astro` - Brand navigation
 
@@ -110,63 +106,99 @@ Reusable UI components organized by feature:
 - `Card.astro` - Changelog card
 - `Skeleton.astro` - Loading skeleton
 
+**Content** (`content/`)
+
+- `Note.astro` / `TabItem.astro` / `Tabs.astro` - MDX content primitives (callouts, tabbed content)
+- `index.ts` / `tabs.ts` - Content component exports and tab logic
+
+**Download** (`download/`)
+
+- `Download.astro` - Download link/button
+- `DownloadNav.astro` - Download page navigation
+
 **Events** (`events/`)
 
 - `Card.astro` - Event card component
-- `EventListItem.astro` - Event list item component
-- `FeaturedEvent.astro` - Featured event component
+- `CommunityHuddlePastModal.astro` - Past community huddle modal
+- `EventBadge.astro` - Event status badge
+- `EventCalendarSection.astro` - Event calendar section
+- `EventCategoryCard.astro` - Event category card
+- `EventPeople.astro` - Event speakers/attendees
+- `EventSeriesCard.astro` - Event series card
 - `Skeleton.astro` - Loading skeleton
 
 **Features** (`features/`)
 
 - `Cards.astro` - Feature cards
-- `Grids.astro` - Feature grid layout
 - `Table.astro` - Feature comparison table
 
 **Forms** (`forms/`)
 
+- `BookDemo.astro` - Book-a-demo form (submits via `actions/demo.ts`)
 - `Contact.astro` - Contact form
-- `Signup.astro` - Signup form
+- `NewsletterModal.astro` - Newsletter signup modal
 
 **Handbook** (`handbook/`)
 
-- `Article.astro` - Handbook article layout
-- `EditPage.astro` - Edit page component
-- `LastUpdated.astro` - Last updated component
-- `PageNav.astro` - Page navigation
+- `Article.astro` - Handbook article
+- `EditPage.astro` - "Edit this page" link
+- `LastUpdated.astro` - Last-updated timestamp
+- `PageNav.astro` - Prev/next page navigation
 - `Sidebar.astro` - Handbook sidebar
+
+**Hello** (`hello/`)
+
+- `HelloBehindCard.astro` / `HelloCard.astro` / `HelloHero.astro` - `/hello` landing page sections
 
 **Home** (`home/`)
 
-- `FirstSection.astro` - First section component
-- `SecondSection.astro` - Second section component
-- `Video.astro` - Video component
-- `MediaLightbox.astro` - Image and video modal lightbox
+- `DatumPlatform.astro` - Platform overview section
+- `DedicatedCloud.astro` - Dedicated cloud section
+- `Hero.astro` / `HomeHero.astro` - Homepage hero
+- `Mission.astro` - Mission section
+- `Video.astro` - Video section
+- `WhatIsDatum.astro` - "What is Datum" section
+
+**Locations** (`locations/`)
+
+- `LocationsList.astro` - Locations list
+- `LocationsMap.astro` - Locations map
 
 **Roadmap** (`roadmap/`)
 
-- `Card.astro` - Roadmap card
-- `Skeleton.astro` - Loading skeleton
+- `RoadmapBacklog.astro` / `RoadmapBacklogRow.astro` - Backlog table
+- `RoadmapCard.astro` - Roadmap card
+- `RoadmapDetailContent.astro` - Roadmap detail page content
+- `RoadmapGrid.astro` / `RoadmapRow.astro` - Roadmap listing layouts
+- `RoadmapStrapi.astro` - Roadmap listing (Strapi-backed)
+- `RoadmapViewFilter.astro` - Grid/list view filter
 
-### Config (`src/config/`)
+### Data (`src/data/`)
 
-Configuration files:
+Static data files:
 
-- `announcement.ts` - Announcement configuration
+- `ai-prompt.md` - AI agent system prompt content
+- `announcement.json` - Announcement banner config
+- `downloads.json` - Download page entries
+- `features.json` - Feature descriptions
+- `locations.json` - Office/location data
+- `logos.json` - Logo data
+- `navigation.json` - Navigation structure
+- `schemaOrgSite.ts` - Schema.org site data
+- `siteConfig.json` - Site configuration
 
-### Content (`src/content/`)
+Content (`src/content/`)
 
 Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_STRUCTURE.md) for detailed content organization.
 
 #### Main Content Directories
 
 - `about/` - About page content and images
-- `authors/` - Author profiles and assets
-- `blog/` - Blog posts and assets
 - `careers/` - Career content and assets
 - `categories/` - Blog post categories
 - `changelog/` - Changelog entries
-- `docs/` - Documentation
+- `download/` - Downloads content
+- `events/` - Event entries
 - `faq/` - Frequently asked questions
 - `features/` - Feature descriptions
 - `handbook/` - Company handbook
@@ -175,103 +207,70 @@ Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_ST
 - `pages/` - Static page content
 - `pricing/` - Pricing configuration (JSON)
 
-### Data (`src/data/`)
-
-Static data files:
-
-- `logos.json` - Logo data
-- `navigation.json` - Navigation structure
-- `siteConfig.json` - Site configuration
-
-### Layouts (`src/layouts/`)
+Layouts (`src/layouts/`)
 
 Page layout templates:
 
 - `Layout.astro` - Default layout
+- `LayoutMinimal.astro` - Minimal layout
 - `LayoutSimple.astro` - Simple layout
 - `NotFound.astro` - 404 page layout
 
-### Libraries (`src/libs/`)
+Libraries (`src/libs/`)
 
 Reusable utility libraries:
 
-- `ashby.ts` - Ashby API client
+- `ashby.ts` - Ashby (careers) API client
 - `auth.ts` - Authentication utilities
 - `cache.ts` - Caching utilities
+- `cacheApiAuth.ts` - Auth guard for cache API routes
+- `cacheViewer.ts` - Cache inspection utilities
 - `cookie.ts` - Cookie handling
 - `datum.ts` - Datum API client
+- `events.ts` - Events data fetching/formatting
 - `file.ts` - File utilities
 - `github.ts` - GitHub API client
+- `githubBacklog.ts` - GitHub-backed roadmap backlog
 - `k8s-client.ts` - Kubernetes client
-- `luma/index.ts` - Luma integration
-- `miloapi.ts` - Milo API client
-- `oidc.ts` - OpenID Connect client
-- `postgres.ts` - PostgreSQL client
-- `string.ts` - String utilities
+- `mailer.ts` - Email sending (used by `actions/demo.ts`)
+- `miloapi.ts` - Milo IAM API client
+- `oidc.ts` - OIDC authentication flow
+- `postgres.ts` - Postgres client
+- `string.ts` - String helpers
+- `strapi/` - Strapi CMS client
+  - `_runtime.ts` - Shared runtime helpers
+  - `articles.ts` - Blog article queries
+  - `authors.ts` - Author queries
+  - `graphqlPagination.ts` - GraphQL pagination helper
+  - `httpCache.ts` - HTTP-level caching
+  - `index.ts` - Strapi client exports
+  - `regenerateCache.ts` - Cache regeneration
+  - `resilientGraphqlClient.ts` - GraphQL client with retries
+  - `roadmaps.ts` - Roadmap queries
+  - `drivers/` - Underlying transport drivers
 
 ### Pages (`src/pages/`)
 
-Page components and routing (file-based routing):
+File-based routes. Notable routes beyond the obvious top-level pages:
 
-- `index.astro` - Homepage
-- `404.astro` - 404 error page
-- `_[...slug].astro` - Catch-all route for dynamic pages
-- `about/` - About pages
-- `about/index.astro` - Main about page
 - `api/` - API routes
-- `api/auth/login.ts` - Login API endpoint
-- `api/user.ts` - User API endpoint
-- `api/cache/index.ts` / `api/cache/[name].ts` / `api/cache/strapi.ts` - Cache inventory (**GET**), single-key JSON (**GET** `/api/cache/:name`), Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
-- `auth/` - Authentication pages
-- `auth/callback.astro` - OAuth callback
-- `auth/login.astro` - Login page
-- `auth/logout.astro` - Logout page
-- `authors/` - Author pages
-- `authors/[slug]/[page].astro` - Author posts with pagination
-- `authors/[slug].astro` - Author profile page
-- `blog/` - Blog pages
-- `blog/[page].astro` - Blog listing with pagination
-- `blog/[slug]/[page].astro` - Blog post series pages
-- `blog/[slug]/index.astro` - Blog post main page
-- `blog/[slug].astro` - Blog post page
-- `blog.astro` - Blog listing
-- `brand/` - Brand pages
-- `brand/[...slug].astro` - Dynamic brand pages
-- `brand/index.astro` - Main brand page
-- `careers.astro` - Careers page
-- `contact.astro` - Contact page
-- `dev/` - Developer tools
-- `dev/build.astro` - Build status page
-- `dev/info.astro` - Build info page
-- `dev/rebuild-glossary.astro` - Rebuild glossary page
-- `docs/` - Documentation pages
-- `docs/llms.txt.ts` - LLMs.txt endpoint
-- `events.astro` - Events page
-- `features/` - Feature pages
-- `features/index.astro` - Features listing page
-- `handbook/` - Handbook pages
-- `handbook/[...slug].astro` - Dynamic handbook pages
-- `handbook.astro` - Handbook listing
-- `legal/` - Legal pages
-- `legal/[slug].astro` - Dynamic legal pages
-- `llms.txt.ts` - LLMs.txt endpoint
-- `pricing.astro` - Pricing page
-- `resources/` - Resource pages
-- `resources/changelog.astro` - Changelog page
-- `resources/open-source.astro` - Open source page
-- `resources/roadmap.astro` - Roadmap page
-- `rss.xml.js` - RSS feed
-- `shop/` - Shop pages
-- `shop/index.astro` - Shop page
-- `waitlist.astro` - Waitlist page
+  - `api/auth/login.ts` - Login API endpoint
+  - `api/user.ts` - User API endpoint
+  - `api/cache/index.ts` / `api/cache/[name].ts` / `api/cache/strapi.ts` - Cache inventory (**GET**), single-key JSON (**GET** `/api/cache/:name`), Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
+  - `api/webhooks/strapi-content.ts` - Strapi content-change webhook
+- `auth/` - `callback.astro`, `login.astro`, `logout.astro` - OIDC auth pages
+- `blog/`, `authors/`, `roadmap/`, `download/` - Dynamic listing/detail pages, each with a matching `*.md.ts` markdown-export route
+- `dev/` - `build.astro`, `info.astro` - Build status/info pages
+- `demo.astro` - Book-a-demo page (renders `components/forms/BookDemo.astro`)
+- `llms.txt.ts` / `llms-full.txt.ts` - LLMs.txt endpoints
+- `rss.xml.js` / `sitemap.xml.ts` - Feed and sitemap endpoints
 
 ### Plugins (`src/plugins/`)
 
-Astro plugins:
+Astro/remark build plugins:
 
-- `announcement.ts` - Announcement plugin
-- `glossary.ts` - Glossary plugin
-- `remarkModifiedTime.mjs` - Modified time remark plugin
+- `announcement.ts` - Announcement integration
+- `remarkModifiedTime.mjs` - Modified-time remark plugin
 - `sitemap.ts` - Sitemap plugin
 
 ### Types (`src/types/`)
@@ -286,6 +285,7 @@ TypeScript type definitions:
 - `k8s-resources.ts` - Kubernetes resource types
 - `navigation.ts` - Navigation types
 - `roadmap.ts` - Roadmap types
+- `strapi.ts` - Strapi API response types
 - `team.ts` - Team types
 
 ### Utils (`src/utils/`)
@@ -293,30 +293,34 @@ TypeScript type definitions:
 Utility functions:
 
 - `authorUtils.ts` - Author utilities
+- `blogPagination.ts` - Blog pagination helpers
 - `collectionUtils.ts` - Collection utilities
 - `dateUtils.ts` - Date utilities
-- `envLogger.ts` - Environment logger
+- `expressiveCode.ts` / `expressiveCodeOptions.ts` - Code block rendering config
 - `github.ts` - GitHub utilities
 - `iconMap.ts` - Icon mapping
-- `imageUtils.ts` - Image utilities
 - `llmsUtils.ts` - LLMs utilities
-- `roadmap.ts` - Roadmap utilities
+- `markdownExport.ts` - Markdown export helpers
+- `markdownFigure.ts` - Markdown figure rendering
+- `markdownRegistry.ts` - Markdown component registry
+- `pageMarkdown.ts` - Page-to-markdown rendering
 - `string.ts` - String utilities
+- `youtube.ts` - YouTube embed helpers
 
-### Legacy (`src/v1/`)
+Static (`src/static/`)
 
-Legacy v1 assets and styles:
+Legacy static assets and styles:
 
 - `assets/` - Legacy images, SVGs, and other assets
 - `scripts/` - Legacy JavaScript files
 - `styles/` - Legacy CSS files
 
-### Configuration Files
+Configuration Files
 
 - `content.config.ts` - Content collection configuration
 - `entrypoint.ts` - Application entry point
-- `env.d.ts` - Environment type definitions
-- `global.d.ts` - Global type definitions
+- `env.d.ts` - Environment types
+- `global.d.ts` - Global types
 - `middleware.ts` - Astro middleware
 
 ## Public Assets (`public/`)
@@ -325,40 +329,38 @@ Static files served as-is:
 
 - `fonts/` - Web fonts
 - `images/` - Static images
-- `scripts/` - Client-side scripts
 - `download/` - Downloadable assets
 - `favicons/` - Favicon files
 - `favicon.ico`, `favicon.png`, `favicon.svg` - Root favicons
 - `site.webmanifest` - Web app manifest
-- `apple-touch-icon.png` - Apple touch icon
-- Brand logos (SVG files)
+- `robots.txt` - Robots directives
+- `*.md` - Prerendered markdown exports of top-level pages (for `.md` fetches)
 
-## Configuration (`config/`)
+## Kubernetes Config (`config/`)
 
-Kubernetes and deployment configuration:
+- `base/` - Deployment, service, and HTTP route kustomize base
+- `dev/` - Dev-environment Postgres values/config
+- `gateway/` - Gateway API configuration (endpoint, gateway, HTTP routes, namespace, kustomization)
 
-- `base/` - Base Kubernetes manifests
-  - `deployment.yaml` - Deployment configuration
-  - `service.yaml` - Service configuration
-  - `http-route.yaml` - HTTP route configuration
-  - `kustomization.yaml` - Kustomize configuration
-- `dev/` - Development environment configuration
-  - `postgres-config.yaml` - PostgreSQL configuration
-  - `postgres-values.yaml` - PostgreSQL Helm values
-- `gateway/` - Gateway configuration
-  - `endpoint.yaml` - Endpoint configuration
-  - `gateway.yaml` - Gateway configuration
-  - `httproute.yaml` - HTTP route
-  - `httproute-redirect.yaml` - HTTP redirect route
-  - `kustomization.yaml` - Kustomize configuration
-  - `namespace.yaml` - Namespace configuration
+## Database Init (`init/`)
+
+- `roadmap.sql` - Roadmap schema/seed script
+
+## Scripts (`scripts/`)
+
+- `seo-review.mjs` / `seo-review.config.json` - SEO review tooling
+- `warmup-cache.ts` - Cache warmup script
+
+## Templates (`templates/`)
+
+- `api-docs/` - API documentation generation templates (`gv_details.tpl`, `gv_list.tpl`, `type.tpl`, `type_members.tpl`)
 
 ## Tests (`tests/`)
 
 End-to-end tests using Playwright:
 
-- `e2e/` - End-to-end test files
-  - `home.spec.ts` - Homepage tests
+- `e2e/home.spec.ts` - Homepage tests
+- `test-webhook.sh` - Manual webhook test script
 
 ## Build Output (`dist/`)
 
@@ -373,9 +375,9 @@ For detailed content organization, see [CONTENT_STRUCTURE.md](./CONTENT_STRUCTUR
 
 ## File Naming Conventions
 
-- **Components**: PascalCase (e.g., `Button.astro`, `BlogItem.astro`)
+- **Components**: PascalCase (e.g., `Button.astro`, `BlogItemStrapi.astro`)
 - **Pages**: kebab-case or PascalCase (e.g., `index.astro`, `blog.astro`)
-- **Utilities**: camelCase (e.g., `dateUtils.ts`, `imageUtils.ts`)
+- **Utilities**: camelCase (e.g., `dateUtils.ts`, `collectionUtils.ts`)
 - **Types**: camelCase (e.g., `brand.ts`, `common.ts`)
 - **Content**: kebab-case (e.g., `our-purpose.mdx`, `team.mdx`)
 

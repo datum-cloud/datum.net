@@ -1,0 +1,31 @@
+@layer components {
+  /* Section Block */
+  [data-theme='dark'] {
+    .btn svg {
+      @apply text-aurora-moss!;
+    }
+
+    html,
+    body,
+    .datum-container {
+      @apply bg-midnight-fjord;
+    }
+  }
+
+  .hero--main.dark {
+    .announcement {
+      @apply border-b border-(--app---dark---utility-1);
+      @apply bg-(--app---dark---utility-1)/50;
+
+      label {
+        @apply bg-blush-quartz text-midnight-fjord;
+      }
+
+      a {
+        svg {
+          @apply text-glacier-mist-900;
+        }
+      }
+    }
+  }
+}

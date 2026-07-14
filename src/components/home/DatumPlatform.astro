@@ -1,0 +1,141 @@
+---
+// src/components/home/DatumPlatform.astro
+import { Image } from 'astro:assets';
+import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import dashboardImage from '@assets/images/datum-platform-dashboard.png';
+import dashboardImageMobile from '@assets/images/datum-platform-dashboard-mobile.png';
+const { class: className = '' } = Astro.props;
+
+const pillars: { icon: string; title: string; description: string }[] = [
+  {
+    icon: 'send',
+    title: 'Deliver',
+    description:
+      'Bring traffic into your world and meet the internet with confidence using our Layer7 load balancers and global DNS.',
+  },
+  {
+    icon: 'construction',
+    title: 'Build',
+    description:
+      'Push intelligence to the edge with microVM compute, object storage, and a marketplace of partner solutions.',
+  },
+  {
+    icon: 'network',
+    title: 'Connect',
+    description:
+      'Bring in traffic with our "dial by key, not by IP" zero trust tunnels and aggregate connections with Galactic VPC.',
+  },
+  {
+    icon: 'pin',
+    title: 'Essentials',
+    description:
+      'Our modern CLI and terminal to scalable constructs for authorization, billing accounts, and more.',
+  },
+];
+---
+
+<section
+  id="datum-platform"
+  class:list={[
+    'section--block border-silver-mist overflow-hidden border-t bg-white px-7',
+    className,
+  ]}
+>
+  <div class="max-width-nav large-pad relative">
+    <span class="section-line section-line--left section-line--bottom"></span>
+    <span class="section-line section-line--left section-line--top"></span>
+
+    <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
+      <div class="flex w-full flex-col items-center gap-7 text-center">
+        <span class="section-eyebrow section-eyebrow--pine">The Datum Platform</span>
+        <h2 class="section--title text-midnight-fjord">
+          A modern{' '}
+          <span
+            class="text-pine-forge---links bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
+            >edge cloud</span
+          >, backed by open source
+        </h2>
+        <p class="datum-text-xl text-app---dark---utility-3 max-w-3xl">
+          Why use picks and shovels when you need bulldozers and backhoes?
+        </p>
+      </div>
+
+      <div class="relative flex w-full flex-col">
+        <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
+        <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
+
+        <span class="section-line section-line--right section-line--bottom-overlap"></span>
+        <span class="section-line-h bg-silver-mist -right-10 bottom-0 hidden md:block"></span>
+
+        <div
+          class="border-silver-mist from-platinum to-aurora-moss grid grid-cols-1 gap-0 overflow-hidden border border-b-0 bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
+        >
+          <div class="flex min-w-0 flex-col gap-7 p-8 md:p-16">
+            <h3 class="datum-text-7xl text-midnight-fjord">Private, protected, performant.</h3>
+            <p class="datum-text-base text-app---dark---utility-2 opacity-80">
+              Our platform helps developers run workloads at the network edge and securely connect
+              everything from doorbells to databases.
+              <br />
+              <br />
+              Isolated agentic sandboxes? Global load balancing? Cloud interconnects to AWS or GCP? Datum
+              offers a consistent runtime that is lovingly designed for Kubernetes platform engineers
+              and AI builders.
+            </p>
+            <Button
+              class="btn btn--midnight-fjord w-fit"
+              text="Book a demo"
+              href="/demo"
+              target="_blank"
+              icon={{ name: 'calendar', size: 'md' }}
+              iconPosition="left"
+              data-fathom-event="Homepage: Book a demo"
+            />
+          </div>
+
+          <div
+            class="pointer-events-none relative min-h-0 w-full self-stretch overflow-hidden p-5 md:w-[265px] md:p-0 lg:w-[415px] xl:w-[600px]"
+            aria-hidden="true"
+          >
+            <Image
+              src={dashboardImageMobile}
+              alt=""
+              class="block h-auto w-full md:hidden"
+              loading="lazy"
+            />
+            <Image
+              src={dashboardImage}
+              alt=""
+              class="hidden md:absolute md:bottom-0 md:left-0 md:block md:h-full md:w-auto md:max-w-none"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div
+          class="border-silver-mist bg-silver-mist grid grid-cols-1 gap-px border md:grid-cols-2 xl:grid-cols-4"
+        >
+          {
+            pillars.map((pillar) => (
+              <div class="bg-platinum flex flex-col gap-4 p-8 md:p-16">
+                <div class="flex items-center gap-4">
+                  <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center">
+                    <Icon
+                      name={pillar.icon}
+                      size="md"
+                      class="text-pine-forge---links stroke-1.75"
+                    />
+                  </div>
+                  <p class="datum-text-xl text-midnight-fjord font-semibold">{pillar.title}</p>
+                </div>
+                <p class="datum-text-base text-app---dark---utility-2 opacity-80">
+                  {pillar.description}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

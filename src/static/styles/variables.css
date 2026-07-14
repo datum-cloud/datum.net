@@ -12,6 +12,15 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
   --breakpoint-3xl: 120rem;
+  --breakpoint-home-hero-xl: 82.25rem;
+
+  /* width */
+  /* --datum-max-width: 1920px; */
+  /* --datum-max-width-container: 1372px; */
+  /* --datum-section-width: 155px; */
+  /* --width-home-hero-visual: 635px; */
+  /* --max-width-8xl: 1372px; */
+  /* --width-8xl: 1372px; */
 
   /* colors */
   --app---dark---utility-1: #223143;
@@ -24,6 +33,8 @@
   --blush-quartz: #ecd0d0;
   --canyon-clay: #bf9595;
   --canyon-clay---links: #9c7979;
+  --deep-navy: #152538;
+  --steel-blue: #8ab2ca;
   --glacier-mist-700: #f6f6f5;
   --glacier-mist-800: #efefed;
   --glacier-mist-900: #e8e7e4;
@@ -31,6 +42,7 @@
   --pine-forge: #4d6356;
   --potted-olive: #adbab0;
   --sage-mist: #d6ddd7;
+  --silver-mist: #c3c6c9;
   --white: #ffffff;
   --alert-red-light: #d25b5b;
   --alert-red-dark: #f08c8c;

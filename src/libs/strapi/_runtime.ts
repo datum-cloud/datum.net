@@ -3,8 +3,8 @@
  * Shared @datum-cloud/strapi-revalidate runtime.
  *
  * Cache driver selection (in priority order):
- *  1. Redis  — when REDIS_URL is set (required for multi-replica deployments)
- *  2. File   — fallback for single-instance / local dev
+ *  1. Redis  — when REDIS_URL is set and a connection succeeds (multi-replica)
+ *  2. File   — fallback for single-instance / local dev, or when Redis is down
  *
  * The file driver is always used as the persistent fallback so Strapi
  * outages don't take the site down even when Redis is the primary.
@@ -26,11 +26,11 @@ import Redis from 'ioredis';
 import {
   CacheManager,
   FileCacheDriver,
-  createStrapiClient,
   createWebhookHandler,
   revalidateConfigSchema,
 } from '@datum-cloud/strapi-revalidate';
 import { RedisCacheDriver } from './drivers/redis';
+import { createResilientStrapiClient } from './resilientGraphqlClient';
 
 const DEFAULT_STRAPI_URL = 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
 const DEFAULT_CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
@@ -80,27 +80,59 @@ const fallback = new FileCacheDriver({ dir: '.cache/strapi-fallback' });
 const redisUrl = readEnv('REDIS_URL');
 const keyPrefix = readEnv('REDIS_KEY_PREFIX') ?? 'strapi:';
 
-/**
- * Shared raw ioredis client. `null` when Redis is not configured (local dev).
- * Import this in other libs (e.g. githubBacklog.ts) to reuse the same connection
- * instead of opening a second ioredis socket.
- */
-export const redisClient: Redis | null = redisUrl
-  ? new Redis(redisUrl, { lazyConnect: true, enableReadyCheck: false })
-  : null;
-
 /** Key prefix used for all Redis keys in this app (default "strapi:"). */
 export const redisKeyPrefix = keyPrefix;
 
-let primary: FileCacheDriver | RedisCacheDriver;
+const REDIS_CONNECT_TIMEOUT_MS = 2_000;
 
-if (redisClient) {
-  primary = new RedisCacheDriver(redisClient, keyPrefix);
-  if (debug) console.debug('[strapi-runtime] Primary cache: Redis at', redisUrl);
-} else {
-  primary = new FileCacheDriver({ dir: '.cache' });
-  if (debug) console.debug('[strapi-runtime] Primary cache: file (.cache)');
+function createRedisClient(url: string): Redis {
+  const client = new Redis(url, {
+    lazyConnect: true,
+    enableReadyCheck: false,
+    connectTimeout: REDIS_CONNECT_TIMEOUT_MS,
+    maxRetriesPerRequest: 1,
+    retryStrategy: () => null,
+  });
+
+  // Avoid ioredis "Unhandled error event" noise when Redis is unreachable.
+  client.on('error', () => {});
+
+  return client;
 }
+
+async function resolvePrimaryCache(): Promise<{
+  primary: FileCacheDriver | RedisCacheDriver;
+  redisClient: Redis | null;
+}> {
+  const filePrimary = new FileCacheDriver({ dir: '.cache' });
+
+  if (!redisUrl) {
+    if (debug) console.debug('[strapi-runtime] Primary cache: file (.cache)');
+    return { primary: filePrimary, redisClient: null };
+  }
+
+  const client = createRedisClient(redisUrl);
+
+  try {
+    await client.connect();
+    await client.ping();
+    if (debug) console.debug('[strapi-runtime] Primary cache: Redis at', redisUrl);
+    return { primary: new RedisCacheDriver(client, keyPrefix), redisClient: client };
+  } catch {
+    client.disconnect();
+    console.warn(`[strapi-runtime] Redis not available at ${redisUrl}, using file cache (.cache)`);
+    return { primary: filePrimary, redisClient: null };
+  }
+}
+
+const { primary, redisClient: resolvedRedisClient } = await resolvePrimaryCache();
+
+/**
+ * Shared raw ioredis client. `null` when Redis is not configured or unreachable.
+ * Import this in other libs (e.g. githubBacklog.ts) to reuse the same connection
+ * instead of opening a second ioredis socket.
+ */
+export const redisClient: Redis | null = resolvedRedisClient;
 
 export const cache = new CacheManager({ primary, fallback, defaultTtl: ttl, debug });
 
@@ -120,7 +152,13 @@ export async function deletePrimaryCacheByPrefix(prefix: string): Promise<string
   return keys;
 }
 
-export const client = createStrapiClient(config);
+export const client = createResilientStrapiClient({
+  url: config.url,
+  token: config.token,
+  timeout: config.timeout,
+  retry: config.retry,
+  debug,
+});
 export const webhook = createWebhookHandler({ config, cache });
 export { config };
 export type { RevalidateConfig } from '@datum-cloud/strapi-revalidate';

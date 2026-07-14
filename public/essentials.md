@@ -24,7 +24,7 @@ If you're interested in our work and want to learn more or participate in our cl
 - **Secrets** - Encrypted secret storage tied to projects and workloads.
 - **Teams and RBAC** - Fine-grained access control for humans.
 - **SSO** - Single sign-on for org-wide login.
-- **Machine Accounts** - First-class identity for agents and automation.
+- **Service accounts** - First-class identity for agents and automation.
 - **Audit Logs** - Tamper-evident record of who did what, when.
 
 ## Why "essentials" matter

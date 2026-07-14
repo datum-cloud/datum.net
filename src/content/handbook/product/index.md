@@ -41,10 +41,10 @@ We're aggressively maturing various platform features that help users adopt best
 
 * DNS and domains
 * Export OTel metrics to Grafana Cloud
-* Machine accounts, SSO, RBAC, and secrets
+* Service accounts, SSO, RBAC, and secrets
 * Activity & audit logs
 
-Finally, we're investing ahead of our own needs [with Milo](https://www.datum.net/handbook/build/milo/), a "system of action" purpose built to help modern cloud providers grow. Our hope and expectation is that we will collectively see thousands of new specialized providers take shape, and we'd like to collaborate on reducing the amount of undifferentiated investment folks have to do to show up, and scale up.
+Finally, we're investing ahead of our own needs [with Milo](https://www.datum.net/handbook/product/milo/), a "system of action" purpose built to help modern cloud providers grow. Our hope and expectation is that we will collectively see thousands of new specialized providers take shape, and we'd like to collaborate on reducing the amount of undifferentiated investment folks have to do to show up, and scale up.
 
 ## Product values
 It's hard to translate high level company values directly into daily work, so we've created a short list of product values to primarily help engineers move faster and with more confidence:

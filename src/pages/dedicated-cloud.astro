@@ -1,0 +1,80 @@
+---
+// src/pages/demo.astro
+import '@styles/global.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Icon from '@components/Icon.astro';
+import BookDemo from '@components/forms/BookDemo.astro';
+
+const title = 'Talk to our team';
+const description =
+  "Tell us what you're trying to do, and the challenges you have. We'll do the work to align the datacenter, compute, network, and operational assets you need to move with confidence.";
+
+const checklist = [
+  {
+    title: 'Built for your stack',
+    description:
+      'Dedicated hardware, custom locations, and defined economics. From a single availability zone to an edge network in 40 global metros.',
+  },
+  {
+    title: 'Connected from day one',
+    description:
+      'Anycast, VPC, zero trust, and L7 routing attach the moment hardware is live — no separate vendor, no integration project.',
+  },
+  {
+    title: "Operated by people who've done it",
+    description:
+      "We've built and run bare-metal and networks at scale. Our deep relationships across datacenters, networking, and silicon mean we can move when others can't.",
+  },
+];
+---
+
+<Layout title={title} description={description} bodyClass="page-demo">
+  <section class="datum-container">
+    <Hero class="light" hideContent={true} />
+
+    <div class="section--block bg-glacier-mist-700 relative overflow-hidden px-7">
+      <div class="max-width-nav large-pad relative">
+        <span class="section-line section-line--left section-line--bottom"></span>
+        <span class="section-line section-line--left section-line--top"></span>
+        <span class="section-eyebrow section-eyebrow--left-top">Dedicated cloud</span>
+
+        <div class="max-width-nopad">
+          <div class="grid grid-cols-6 gap-8 md:gap-15 lg:gap-25 xl:gap-28">
+            <div class="col-span-6 flex flex-col gap-10 md:col-span-3">
+              <div class="flex flex-col gap-5">
+                <h1 class="datum-text-8xl text-midnight-fjord">{title}</h1>
+                <p class="datum-text-lg text-app---dark---utility-3">{description}</p>
+              </div>
+
+              <ul class="flex flex-col gap-7">
+                {
+                  checklist.map((item) => (
+                    <li class="flex items-start gap-4">
+                      <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center">
+                        <Icon name="check" size="md" class="text-app---dark---utility-3 stroke-1" />
+                      </div>
+                      <div class="flex flex-col gap-1">
+                        <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
+                        <p class="datum-text-base text-app---dark---utility-3 opacity-80">
+                          {item.description}
+                        </p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
+            <div class="col-span-6 md:col-span-3">
+              <BookDemo formType="dedicated-cloud" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

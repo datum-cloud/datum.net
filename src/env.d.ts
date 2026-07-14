@@ -21,6 +21,11 @@ declare namespace NodeJS {
     AUTH_OIDC_CLIENT_SECRET?: string;
     AUTH_OIDC_REDIRECT_URI?: string;
     API_URL?: string;
+    SMTP_HOST?: string;
+    SMTP_PORT?: string;
+    SMTP_USER?: string;
+    SMTP_PASSWORD?: string;
+    SMTP_FROM?: string;
   }
 }
 
@@ -30,6 +35,11 @@ interface ImportMetaEnv {
   readonly AUTH_OIDC_CLIENT_SECRET?: string;
   readonly AUTH_OIDC_REDIRECT_URI?: string;
   readonly API_URL?: string;
+  readonly SMTP_HOST?: string;
+  readonly SMTP_PORT?: string;
+  readonly SMTP_USER?: string;
+  readonly SMTP_PASSWORD?: string;
+  readonly SMTP_FROM?: string;
 }
 
 interface ImportMeta {

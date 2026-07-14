@@ -1,0 +1,25 @@
+src/actions/demo.ts
+  s_2be26d133b64aa::t_99de8aee3d6a63 10
+  s_2be26d133b64aa::t_9819ae534a0068 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "516f3de2cae9dac302eedd46100b2dc991a877e2",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2be26d133b64aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "08857cd4-96ff-489e-a143-20d5ce9e71e9",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

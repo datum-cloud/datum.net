@@ -1,0 +1,37 @@
+src/actions/demo.ts
+  s_fb4b388a3c1561::t_25f758e28ac2e7 10-14
+  s_fb4b388a3c1561::t_ce6d7b1a156b9d 26
+src/components/forms/BookDemo.astro
+  s_6aa3dce9d865f6::t_262a757a2caa2d 148-149
+src/libs/mailer.ts
+  s_fb4b388a3c1561::t_1764b00e90fcd5 2,11-12,22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "aaa1569e1c88c31c9190120840c3643daf477ba6",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_6aa3dce9d865f6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "22dc7647-84ba-4b0a-aa2b-769d5907dd08",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_fb4b388a3c1561": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2cc4bb85-1768-4b04-b6ba-159c110fa450",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

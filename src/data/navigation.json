@@ -3,45 +3,29 @@
     {
       "text": "Platform",
       "href": "/features",
-      "theme": "dark",
       "children": [
         {
-          "title": "Deliver",
+          "isCardLayout": true,
           "items": [
-            { "text": "Global Load Balancer", "href": "/features", "label": "Soon" },
-            { "text": "Application Load Balancer", "href": "/features" },
-            { "text": "DNS", "href": "/docs" }
+            {
+              "text": "Features",
+              "image": "/images/nav/core-features.png",
+              "desc": "Critical network services",
+              "href": "/features"
+            },
+            {
+              "text": "Essentials",
+              "image": "/images/nav/essentials.png",
+              "desc": "Enterprise-grade networking primitives",
+              "href": "/essentials"
+            },
+            {
+              "text": "Locations",
+              "image": "/images/nav/world-map.png",
+              "desc": "Deploy at the global edge",
+              "href": "/locations"
+            }
           ]
-        },
-        {
-          "title": "Build",
-          "items": [
-            { "text": "Compute", "href": "/features" },
-            { "text": "Object Storage", "href": "/features", "label": "Soon" },
-            { "text": "Edge Apps", "href": "/features", "label": "Soon" }
-          ]
-        },
-        {
-          "title": "Connect",
-          "items": [
-            { "text": "Galactic VPC", "href": "/features" },
-            { "text": "Connections", "href": "/features" },
-            { "text": "Interconnect", "href": "/essentials", "label": "Soon" }
-          ]
-        }
-      ],
-      "asideCards": [
-        {
-          "text": "Locations",
-          "desc": "Network optimized hardware in 20+ global metros.",
-          "href": "/locations",
-          "icon": "globe"
-        },
-        {
-          "text": "Essentials",
-          "desc": "From our CLI and audit logs to robust IAM, we have you covered.",
-          "href": "/essentials",
-          "icon": "list-check"
         }
       ]
     },

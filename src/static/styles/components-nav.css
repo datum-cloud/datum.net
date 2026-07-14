@@ -122,12 +122,6 @@
     @apply relative;
   }
 
-  /* Platform's dark mega-dropdown (with aside cards) breaks out to sit flush
-     with the nav bar's left edge instead of under its own trigger. */
-  .nav-dropdown:has(.nav-dropdown-parent--platform) {
-    @apply static;
-  }
-
   .nav-dropdown-menu {
     @apply shadow-modal absolute top-full left-0 z-90 w-max min-w-[250px] cursor-pointer rounded-[var(--radius-lg)] bg-white p-6;
     opacity: 0;
@@ -246,9 +240,13 @@
     @apply font-alliance text-(length:--12px) leading-(--16px) text-white/60;
   }
 
-  /* Card Dropdown Styles (Product) */
+  /* Card Dropdown Styles (Platform) */
   .nav-dropdown-cards-wrapper {
-    @apply p-3;
+    @apply -left-[150%] p-3;
+  }
+
+  .nav-dropdown-menu.nav-dropdown-parent--platform {
+    @apply -left-[170%]! p-3;
   }
 
   .nav-dropdown-cards {

@@ -17,7 +17,7 @@ const expertiseItems = [
 <section
   id="dedicated-cloud"
   class:list={[
-    'section--block bg-glacier-mist-700 border-silver-mist/50 relative overflow-hidden border-t px-7',
+    'section--block bg-platinum border-silver-mist relative overflow-hidden border-t px-7',
     className,
   ]}
 >
@@ -29,7 +29,7 @@ const expertiseItems = [
 
     <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
       <div class="flex w-full flex-col items-center gap-7">
-        <h2 class="datum-text-9xl text-midnight-fjord text-center">
+        <h2 class="section--title text-midnight-fjord text-center">
           <span
             class="text-canyon-clay---links bg-[linear-gradient(to_bottom,transparent_42%,var(--color-blush-quartz)_42%,var(--color-blush-quartz)_92%,transparent_92%)] box-decoration-clone px-1"
             >Single-tenant</span
@@ -38,7 +38,12 @@ const expertiseItems = [
         </h2>
       </div>
 
-      <div class="bg-midnight-fjord relative w-full overflow-hidden p-7 md:p-16 lg:p-20">
+      <div class="bg-midnight-fjord relative w-full p-7 md:p-16 lg:p-20">
+        <span
+          class="section-line bg-midnight-fjord section-line--right section-line--bottom-overlap"
+        ></span>
+        <span class="section-line-h bg-midnight-fjord -right-10 bottom-0 hidden md:block"></span>
+
         <Image
           src={starfieldImage}
           alt=""
@@ -63,10 +68,10 @@ const expertiseItems = [
             <div
               class="bg-app---dark---utility-1 flex size-10 shrink-0 items-center justify-center"
             >
-              <Icon name="diamond-plus" size="md" class="text-glacier-mist-700 stroke-1" />
+              <Icon name="diamond-plus" size="md" class="text-aurora-moss stroke-1.75" />
             </div>
             <div class="text-glacier-mist-700 flex flex-col gap-5">
-              <h3 class="datum-text-8xl">
+              <h3 class="section--sub-title">
                 A different kind of cloud –<br />
                 built around <span class="text-aurora-moss">you</span>
               </h3>

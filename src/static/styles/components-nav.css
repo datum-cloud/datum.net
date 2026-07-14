@@ -22,7 +22,7 @@
 @layer components {
   .nav--main-container {
     @apply border-silver-mist w-full border-b bg-white;
-    @apply px-7;
+    @apply px-4 sm:px-7;
   }
 
   /* Blurs page content below the nav when a desktop dropdown is open (Figma overlay). */
@@ -55,7 +55,8 @@
   }
 
   .nav--main {
-    @apply max-width-nav relative z-80 m-auto flex h-16 w-full items-center justify-between gap-5 md:gap-10 lg:h-18 lg:gap-16;
+    @apply max-width-nav relative z-80 m-auto flex h-16 w-full items-center justify-between;
+    @apply gap-3 sm:gap-5 md:gap-10 lg:h-18 lg:gap-16;
     @apply xl:pr-0;
 
     &::before {
@@ -290,7 +291,7 @@
 
   /* Mobile Navigation Styles */
   .mobile-menu-container {
-    @apply mr-4 flex w-7.5 shrink-0 justify-self-end md:hidden;
+    @apply mr-3 flex w-7.5 shrink-0 justify-self-end sm:mr-4 md:hidden;
   }
   .mobile-menu-button {
     @apply text-canyon-clay hover:text-canyon-clay/80 relative z-90 transition-colors duration-300 hover:cursor-pointer md:hidden;
@@ -471,7 +472,7 @@
   /* Logo Dropdown Styles */
   .nav-logo-container {
     @apply relative md:col-span-2;
-    @apply pl-7;
+    @apply pl-5 sm:pl-7;
   }
 
   .nav-logo {

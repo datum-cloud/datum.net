@@ -7,35 +7,37 @@ const { class: className = '' } = Astro.props;
 
 <section
   id="what-is-datum"
-  class="section--block bg-platinum border-silver-mist overflow-hidden border-t px-7"
+  class="section--block bg-platinum border-silver-mist section--block--x-pad overflow-hidden border-t"
 >
   <div class="max-width-nav relative px-0">
     <span class="section-line section-line--left section-line--bottom lg:hidden"></span>
     <span class="section-line section-line--left section-line--top lg:hidden"></span>
     <WhatIsDatumGrid
-      class="line-draw pointer-events-none absolute top-0 left-0 z-0 hidden h-full max-h-[600px] w-auto lg:-left-8.25 lg:block xl:-left-10 2xl:-left-9"
+      class="line-draw pointer-events-none absolute top-0 left-0 z-0 hidden h-full max-h-[600px] w-auto lg:-left-8.5 lg:block xl:-left-9 2xl:-left-8.5"
       aria-hidden="true"
     />
     <div class:list={['large-pad relative', className]}>
       <div
         class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-50 xl:pr-40 xl:pl-60 2xl:pr-40 2xl:pl-60"
       >
-        <span class="section-eyebrow">What is Datum?</span>
-        <div
-          class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"
-        >
-          <p>
-            We're a venture-backed infrastructure startup upgrading the internet for a world
-            disrupted by AI.
-          </p>
-          <p>
-            We think every tech-forward company will move intelligence to the edge, keep workloads
-            off the public internet, and curate with whom and how they connect.
-          </p>
-          <p>
-            We make that possible with a modern edge cloud platform and dedicated infrastructure
-            services.
-          </p>
+        <div class="spacing-pad">
+          <span class="section-eyebrow">What is Datum?</span>
+          <div
+            class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"
+          >
+            <p>
+              We're a venture-backed infrastructure startup upgrading the internet for a world
+              disrupted by AI.
+            </p>
+            <p>
+              We think every tech-forward company will move intelligence to the edge, keep workloads
+              off the public internet, and curate with whom and how they connect.
+            </p>
+            <p>
+              We make that possible with a modern edge cloud platform and dedicated infrastructure
+              services.
+            </p>
+          </div>
         </div>
       </div>
     </div>

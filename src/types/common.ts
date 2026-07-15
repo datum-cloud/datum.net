@@ -138,6 +138,8 @@ export interface FooterProps {
   showBackground?: boolean;
   showIllustration?: boolean;
   showSignup?: boolean;
+  /** Illustration only — no tint/padding (demo, dedicated-cloud) */
+  plainIllustration?: boolean;
 }
 
 export interface ContainerProps {

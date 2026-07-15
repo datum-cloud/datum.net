@@ -16,6 +16,7 @@ const {
   showBackground = true,
   showIllustration = false,
   showSignup = true,
+  plainIllustration = false,
 } = Astro.props as FooterProps;
 
 const navData = navigation as NavData;
@@ -24,10 +25,7 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
 <footer
   id="footer"
-  class:list={[
-    'footer bg-glacier-mist-700 relative text-white',
-    !showBackground && 'bg-midnight-fjord',
-  ]}
+  class:list={['footer relative bg-white text-white', !showBackground && 'bg-midnight-fjord']}
 >
   {
     showCTA && (
@@ -90,7 +88,13 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
   {
     showBackground && (
-      <div class:list={['footer-illustration-container', !showCTA && 'bg-glacier-mist-700 pt-30']}>
+      <div
+        class:list={[
+          'footer-illustration-container',
+          !showCTA && !plainIllustration && 'bg-glacier-mist-700 pt-30',
+          plainIllustration && 'footer-illustration-container--plain',
+        ]}
+      >
         <div class="relative w-full">
           <Image
             src={ImageFooter}

@@ -1,0 +1,22 @@
+name: Refresh Backlog Cache
+
+on:
+  schedule:
+    # Every 10 minutes — keeps /roadmap/backlog close to the GitHub Projects
+    # board without waiting on the 24h cache TTL fallback.
+    - cron: '*/10 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Force-regenerate GitHub backlog cache
+        env:
+          STRAPI_WEBHOOK_SECRET: ${{ secrets.STRAPI_WEBHOOK_SECRET }}
+        run: |
+          set -euo pipefail
+          curl -sS -f -X POST "https://www.datum.net/api/cache/strapi" \
+            -H "X-Webhook-Secret: ${STRAPI_WEBHOOK_SECRET}" \
+            -H "Content-Type: application/json" \
+            -d '{"names":["github-backlog"]}'

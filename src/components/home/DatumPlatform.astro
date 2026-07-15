@@ -72,8 +72,10 @@ const pillars: { icon: string; title: string; description: string }[] = [
         <span class="section-line-h bg-silver-mist -right-10 bottom-0 hidden md:block"></span>
 
         <div
-          class="border-silver-mist from-platinum to-aurora-moss grid grid-cols-1 gap-0 overflow-hidden border border-b-0 bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
+          class="border-silver-mist from-platinum to-aurora-moss relative grid grid-cols-1 gap-0 overflow-hidden border-x border-t-0 border-b bg-linear-to-br from-55% to-71% md:grid-cols-[minmax(0,1fr)_auto] md:gap-11.5 xl:gap-18.5"
+          data-module-wipe
         >
+          <span class="module-border-wipe" aria-hidden="true"></span>
           <div class="flex min-w-0 flex-col gap-7 p-8 md:p-16">
             <h3 class="datum-text-7xl text-midnight-fjord">Private, protected, performant.</h3>
             <p class="datum-text-base text-app---dark---utility-2 opacity-80">

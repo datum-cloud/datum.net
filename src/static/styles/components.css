@@ -147,7 +147,6 @@
 
   .footer-prefooter {
     @apply text-midnight-fjord bg-aurora-moss/30 relative z-10 mx-auto;
-    @apply border-silver-mist border-t;
   }
 
   .footer-prefooter-label {

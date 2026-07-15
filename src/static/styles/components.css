@@ -41,28 +41,18 @@
     }
   }
 
+  /* Cursor square + typeout animation states live in
+     components-module-animate.css alongside the other scroll-driven reveals. */
   .section-eyebrow {
     @apply font-dejavu datum-text-sm text-canyon-clay---links inline-flex items-center gap-2.5 whitespace-nowrap uppercase;
-
-    &::before {
-      @apply bg-canyon-clay h-3.5 w-3.25 shrink-0 rounded-[1.25px] content-[''];
-    }
   }
 
   .section-eyebrow--pine {
     @apply text-pine-forge---links;
-
-    &::before {
-      @apply bg-pine-forge---links;
-    }
   }
 
   .section-eyebrow--midnight-fjord {
     @apply text-midnight-fjord;
-
-    &::before {
-      @apply bg-midnight-fjord;
-    }
   }
 
   .section-eyebrow--left-top {

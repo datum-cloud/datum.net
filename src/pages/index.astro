@@ -35,9 +35,20 @@ const description = fm.description ? fm.description : '';
     </header>
     <div class="relative">
       <HomeHero title={fm.title} description={fm.description} />
+      <ModuleConnector />
+    </div>
 
+    <div class="relative">
       <WhatIsDatum />
+      {
+        /* WhatIsDatum shows its own blueprint-grid SVG corner at lg+ instead
+          of a plain line — suppress the connector there to avoid the two
+          competing side by side. */
+      }
+      <ModuleConnector class="lg:hidden" />
+    </div>
 
+    <div class="relative">
       <DatumPlatform />
 
       <DedicatedCloud />

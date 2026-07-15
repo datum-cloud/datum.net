@@ -16,7 +16,9 @@
      connector bar reaches it, then builds out left to right. */
   .module-border-wipe {
     @apply bg-silver-mist pointer-events-none absolute inset-x-0 top-0 block h-px origin-left scale-x-0;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Tailwind v4 compiles scale-x-* to the `scale` property, not `transform` —
+       transition that property, not `transform`, or the wipe snaps instantly. */
+    transition: scale 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .module-border-wipe.is-inview {
@@ -45,11 +47,13 @@
      spaced per character. */
   .section-eyebrow-text {
     clip-path: inset(0 100% 0 0);
+    /* On the base rule (not just `.is-typing`) so removing `.is-typing` on
+       scroll-up un-types character by character instead of snapping shut. */
+    transition: clip-path var(--eyebrow-type-ms, 0.5s) steps(var(--eyebrow-chars, 1));
   }
 
   .section-eyebrow.is-typing .section-eyebrow-text {
     clip-path: inset(0 0 0 0);
-    transition: clip-path var(--eyebrow-type-ms, 0.5s) steps(var(--eyebrow-chars, 1));
   }
 
   .section-eyebrow.is-typing .section-eyebrow-cursor {

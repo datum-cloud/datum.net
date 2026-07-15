@@ -6,9 +6,15 @@
 // border-wipe reveal on whichever module it currently sits beside (see
 // module-animate.js). Nested in a `max-width-nav` box so its left edge
 // lines up with every module's own `.section-line--left` at `left-0`.
+//
+// Rendered as one instance per wrapping `.relative` group in index.astro
+// rather than a single instance spanning the whole page, so it can be
+// suppressed (via `class`) over WhatIsDatum at `lg`+, where that module
+// shows its own blueprint-grid SVG corner instead of a plain line.
+const { class: className = '' } = Astro.props;
 ---
 
-<div class="module-connector" aria-hidden="true">
+<div class:list={['module-connector', className]} aria-hidden="true">
   <div class="max-width-nav relative h-full">
     <span class="module-connector-bar"></span>
   </div>

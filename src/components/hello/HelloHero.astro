@@ -27,7 +27,7 @@ const socials = (
       <div class="hello-hero-newsletter-field">
         <div
           data-newsletter-trigger
-          data-newsletter-fathom="Hello: Newsletter Signup"
+          data-newsletter-rybbit="Hello: Newsletter Signup"
           class="w-full"
         >
           <Button
@@ -75,7 +75,7 @@ const socials = (
     if (cta) {
       cta.addEventListener('click', (e) => {
         e.preventDefault();
-        if (window.fathom) window.fathom.trackEvent('Hello: Newsletter Signup');
+        if (window.rybbit) window.rybbit.event('Hello: Newsletter Signup');
         openNewsletterModal();
       });
     }

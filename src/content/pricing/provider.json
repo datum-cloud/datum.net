@@ -12,7 +12,7 @@
     "class": "btn btn--pine-forge",
     "href": "https://link.datum.net/founders",
     "isExternal": true,
-    "fathomEvent": "Pricing-Founder-Meeting"
+    "rybbitEvent": "Pricing-Founder-Meeting"
   },
   "featureGroups": [
     {

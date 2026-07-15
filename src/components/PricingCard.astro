@@ -50,7 +50,7 @@ const target = cta?.isExternal ? '_blank' : '_self';
         text={cta?.label || 'Learn more'}
         href={cta?.href || '#'}
         target={target}
-        {...cta?.fathomEvent && { 'data-fathom-event': cta.fathomEvent }}
+        {...cta?.rybbitEvent && { 'data-rybbit-event': cta.rybbitEvent }}
       />
     </div>
 

@@ -13,14 +13,14 @@ const { class: className = '' } = Astro.props;
     <span class="section-line section-line--left section-line--bottom lg:hidden"></span>
     <span class="section-line section-line--left section-line--top lg:hidden"></span>
     <WhatIsDatumGrid
-      class="line-draw pointer-events-none absolute top-0 left-0 z-0 hidden h-full max-h-[600px] w-auto lg:-left-8.5 lg:block xl:-left-9 2xl:-left-8.5"
+      class="line-draw pointer-events-none absolute top-0 left-0 z-0 hidden h-full max-h-[600px] w-auto lg:-left-8.5 lg:block xl:-left-9 2xl:-left-9"
       aria-hidden="true"
     />
     <div class:list={['large-pad relative', className]}>
       <div
         class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-50 xl:pr-40 xl:pl-60 2xl:pr-40 2xl:pl-60"
       >
-        <div class="spacing-pad">
+        <div class="spacing-pad flex flex-col gap-7">
           <span class="section-eyebrow">What is Datum?</span>
           <div
             class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"

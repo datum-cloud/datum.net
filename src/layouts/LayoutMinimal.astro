@@ -59,7 +59,7 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <link rel="dns-prefetch" href="https://hyperping.com" />
     <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
 
-    <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+    <link rel="preconnect" href="https://app.rybbit.io" crossorigin />
 
     <link
       rel="preload"
@@ -147,7 +147,12 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
 
     {
       isProduction && (
-        <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
+        <script
+          src="https://app.rybbit.io/api/script.js"
+          data-site-id="abbcab984f01"
+          defer
+          is:inline
+        />
       )
     }
   </head>

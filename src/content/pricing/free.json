@@ -12,7 +12,7 @@
     "class": "btn btn--pine-forge",
     "href": "https://auth.datum.net/ui/v2/login/register",
     "isExternal": true,
-    "fathomEvent": "Pricing-Waitlist-Subscribe"
+    "rybbitEvent": "Pricing-Waitlist-Subscribe"
   },
   "featureGroups": [
     {

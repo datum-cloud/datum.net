@@ -27,11 +27,10 @@ const checklist = [
   <section class="datum-container">
     <Hero class="light" hideContent={true} />
 
-    <div class="section--block bg-glacier-mist-700 relative overflow-hidden px-7">
+    <div class="section--block relative overflow-hidden bg-white px-7">
       <div class="max-width-nav large-pad relative">
-        <span class="section-line section-line--left section-line--bottom"></span>
         <span class="section-line section-line--left section-line--top"></span>
-        <span class="section-eyebrow section-eyebrow--left-top">Book a demo</span>
+        <span class="section-eyebrow section-eyebrow--left-top-keyline">Book a demo</span>
 
         <div class="max-width-nopad">
           <div class="grid grid-cols-6 gap-8 md:gap-15 lg:gap-25 xl:gap-28">
@@ -65,6 +64,6 @@ const checklist = [
       </div>
     </div>
 
-    <Footer />
+    <Footer showCTA={false} plainIllustration />
   </section>
 </Layout>

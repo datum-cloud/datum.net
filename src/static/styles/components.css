@@ -70,6 +70,12 @@
     @apply top-5 md:top-6 lg:top-8;
   }
 
+  /* Demo / dedicated-cloud: align eyebrow bottom with key line bottom */
+  .section-eyebrow--left-top-keyline {
+    @apply absolute left-7 -translate-y-full;
+    @apply top-5 md:top-10 lg:top-15 xl:top-20;
+  }
+
   .section-line {
     @apply bg-silver-mist absolute block w-px;
     @apply h-5 md:h-10 lg:h-15 xl:h-20;
@@ -174,6 +180,11 @@
 
     &:before {
       @apply bg-midnight-fjord absolute inset-0 top-auto bottom-0 left-0 z-0 h-4 w-full content-[''];
+    }
+
+    /* Illustration only — no tint (demo / dedicated-cloud via showCTA={false}) */
+    &.footer-illustration-container--plain {
+      @apply bg-transparent pt-0;
     }
   }
 

@@ -16,6 +16,7 @@ const {
   showBackground = true,
   showIllustration = false,
   showSignup = true,
+  plainIllustration = false,
 } = Astro.props as FooterProps;
 
 const navData = navigation as NavData;
@@ -24,10 +25,7 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
 <footer
   id="footer"
-  class:list={[
-    'footer bg-glacier-mist-700 relative text-white',
-    !showBackground && 'bg-midnight-fjord',
-  ]}
+  class:list={['footer relative bg-white text-white', !showBackground && 'bg-midnight-fjord']}
 >
   {
     showCTA && (
@@ -73,13 +71,13 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
                 iconClass="stroke-1.5"
                 target="_blank"
                 href="https://auth.datum.net/ui/v2/login/register"
-                data-fathom-event="Pre-footer: Start for free"
+                data-rybbit-event="Pre-footer: Start for free"
               />
               <Button
                 class="btn btn--alpha"
                 text="Request a demo"
                 href="/demo"
-                data-fathom-event="Pre-footer: Request a demo"
+                data-rybbit-event="Pre-footer: Request a demo"
               />
             </div>
           </div>
@@ -90,7 +88,13 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
   {
     showBackground && (
-      <div class:list={['footer-illustration-container', !showCTA && 'bg-glacier-mist-700 pt-30']}>
+      <div
+        class:list={[
+          'footer-illustration-container',
+          !showCTA && !plainIllustration && 'bg-glacier-mist-700 pt-30',
+          plainIllustration && 'footer-illustration-container--plain',
+        ]}
+      >
         <div class="relative w-full">
           <Image
             src={ImageFooter}
@@ -275,8 +279,8 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
     triggers.forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
-        const label = trigger.getAttribute('data-newsletter-fathom') || 'Footer: Newsletter Signup';
-        if (window.fathom) window.fathom.trackEvent(label);
+        const label = trigger.getAttribute('data-newsletter-rybbit') || 'Footer: Newsletter Signup';
+        if (window.rybbit) window.rybbit.event(label);
         openNewsletterModal();
       });
     });

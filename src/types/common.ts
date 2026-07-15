@@ -194,4 +194,12 @@ export interface SecondaryTabNavProps {
   idPrefix?: string;
 }
 
+export interface SectionEyebrowProps {
+  class?: string;
+  /** Text colour + cursor colour. Defaults to canyon-clay. */
+  variant?: 'pine' | 'midnight-fjord';
+  /** Absolute positioning against the nearest `relative` ancestor. */
+  position?: 'left-top' | 'left-top-keyline';
+}
+
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

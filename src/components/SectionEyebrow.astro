@@ -1,0 +1,25 @@
+---
+// src/components/SectionEyebrow.astro
+import type { SectionEyebrowProps } from '@/src/types/common';
+
+const { class: className = '', variant, position } = Astro.props as SectionEyebrowProps;
+
+const variantClass =
+  variant === 'pine'
+    ? 'section-eyebrow--pine'
+    : variant === 'midnight-fjord'
+      ? 'section-eyebrow--midnight-fjord'
+      : '';
+
+const positionClass =
+  position === 'left-top'
+    ? 'section-eyebrow--left-top'
+    : position === 'left-top-keyline'
+      ? 'section-eyebrow--left-top-keyline'
+      : '';
+---
+
+<span class:list={['section-eyebrow', variantClass, positionClass, className]} data-eyebrow-typeout>
+  <span class="section-eyebrow-cursor" aria-hidden="true"></span>
+  <span class="section-eyebrow-text"><slot /></span>
+</span>

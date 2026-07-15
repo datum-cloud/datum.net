@@ -1,0 +1,15 @@
+---
+// src/components/home/ModuleConnector.astro
+// Continuation of the hero's top-left `.section-line` — instead of scrolling
+// away with the hero, it sticks to the top of the viewport as the user
+// scrolls through the wrapped modules (see index.astro), cueing the
+// border-wipe reveal on whichever module it currently sits beside (see
+// module-animate.js). Nested in a `max-width-nav` box so its left edge
+// lines up with every module's own `.section-line--left` at `left-0`.
+---
+
+<div class="module-connector" aria-hidden="true">
+  <div class="max-width-nav relative h-full">
+    <span class="module-connector-bar"></span>
+  </div>
+</div>

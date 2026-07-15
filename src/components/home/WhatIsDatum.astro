@@ -1,14 +1,17 @@
 ---
 // src/components/home/WhatIsDatum.astro
 import WhatIsDatumGrid from '@assets/svgs/what-is-datum-grid.svg';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 
 const { class: className = '' } = Astro.props;
 ---
 
 <section
   id="what-is-datum"
-  class="section--block bg-platinum border-silver-mist section--block--x-pad overflow-hidden border-t"
+  class="section--block bg-platinum border-silver-mist section--block--x-pad relative overflow-hidden"
+  data-module-wipe
 >
+  <span class="module-border-wipe" aria-hidden="true"></span>
   <div class="max-width-nav relative px-0">
     <span class="section-line section-line--left section-line--bottom lg:hidden"></span>
     <span class="section-line section-line--left section-line--top lg:hidden"></span>
@@ -21,7 +24,7 @@ const { class: className = '' } = Astro.props;
         class="relative z-10 mx-auto flex w-full flex-col gap-7 md:pr-30 md:pl-0 lg:pl-50 xl:pr-40 xl:pl-60 2xl:pr-40 2xl:pl-60"
       >
         <div class="spacing-pad flex flex-col gap-7">
-          <span class="section-eyebrow">What is Datum?</span>
+          <SectionEyebrow>What is Datum?</SectionEyebrow>
           <div
             class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"
           >

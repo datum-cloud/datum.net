@@ -7,6 +7,7 @@ import type { FooterProps } from '@/src/types/common';
 import ImageFooter from '@assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 import ImageTwoMen from '@assets/images/two-person-talking.png';
 import NewsletterModal from '@components/forms/NewsletterModal.astro';
 import FooterAiAgents from '@components/FooterAiAgents.astro';
@@ -32,9 +33,9 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
       <div class="footer-prefooter px-4 sm:px-7">
         <div class="max-width-nav relative">
           <span class="section-line section-line--left section-line--top" />
-          <span class="section-eyebrow section-eyebrow--midnight-fjord section-eyebrow--left-top">
+          <SectionEyebrow variant="midnight-fjord" position="left-top">
             Get started
-          </span>
+          </SectionEyebrow>
 
           <div class="footer-prefooter-grid" aria-hidden="true">
             <svg

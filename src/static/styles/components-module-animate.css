@@ -1,0 +1,81 @@
+@layer components {
+  /* Module connector — continuation of the hero's `.section-line--top`
+     (see HomeHero.astro), spanning the stacked group of home modules
+     (see ModuleConnector.astro). Same look as `.section-line` so the bar
+     reads as one continuous line rather than a new element. */
+  .module-connector {
+    @apply pointer-events-none absolute inset-y-0 left-0 z-20 w-full px-4 sm:px-7;
+  }
+
+  .module-connector-bar {
+    @apply bg-silver-mist sticky top-0 left-0 block w-px;
+    @apply h-5 md:h-10 lg:h-15 xl:h-20;
+  }
+
+  /* Module border wipe — top border of a module, hidden until the sticky
+     connector bar reaches it, then builds out left to right. */
+  .module-border-wipe {
+    @apply bg-silver-mist pointer-events-none absolute inset-x-0 top-0 block h-px origin-left scale-x-0;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .module-border-wipe.is-inview {
+    @apply scale-x-100;
+  }
+
+  /* Eyebrow typeout cursor — a real element (was previously a ::before
+     square) so it can travel across the text while typing, then return to
+     its resting position on the left. */
+  .section-eyebrow-cursor {
+    @apply bg-canyon-clay inline-block h-3.5 w-3.25 shrink-0 rounded-[1.25px];
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .section-eyebrow--pine .section-eyebrow-cursor {
+    @apply bg-pine-forge---links;
+  }
+
+  .section-eyebrow--midnight-fjord .section-eyebrow-cursor {
+    @apply bg-midnight-fjord;
+  }
+
+  /* Text stays in the DOM at full size (no layout shift) but is clipped
+     until typed — the monospace eyebrow font keeps clip-path steps evenly
+     spaced per character. */
+  .section-eyebrow-text {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .section-eyebrow.is-typing .section-eyebrow-text {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path var(--eyebrow-type-ms, 0.5s) steps(var(--eyebrow-chars, 1));
+  }
+
+  .section-eyebrow.is-typing .section-eyebrow-cursor {
+    transform: translateX(calc(var(--eyebrow-chars, 1) * 1ch + 0.625rem));
+    transition: transform var(--eyebrow-type-ms, 0.5s) steps(var(--eyebrow-chars, 1));
+  }
+
+  /* Cursor returns to its resting position once typing completes. */
+  .section-eyebrow.is-typed .section-eyebrow-cursor {
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .module-border-wipe,
+    .section-eyebrow-cursor,
+    .section-eyebrow-text {
+      transition: none !important;
+    }
+
+    .module-border-wipe {
+      @apply scale-x-100;
+    }
+
+    .section-eyebrow-text {
+      clip-path: inset(0 0 0 0) !important;
+    }
+  }
+}

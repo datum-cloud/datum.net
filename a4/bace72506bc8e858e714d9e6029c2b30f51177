@@ -1,0 +1,18 @@
+src/pages/dedicated-cloud.astro
+  h_c7951bc64db670 3-4
+src/components/forms/BookDemo.astro
+  h_c7951bc64db670 3-4
+src/pages/demo.astro
+  h_c7951bc64db670 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "a4bace72506bc8e858e714d9e6029c2b30f51177",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

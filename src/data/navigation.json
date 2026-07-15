@@ -37,7 +37,6 @@
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
-      "theme": "dark",
       "children": [
         {
           "title": "Get Started:",

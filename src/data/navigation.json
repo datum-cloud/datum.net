@@ -80,9 +80,9 @@
   ],
   "footer": [
     {
-      "title": "Platform features",
+      "title": "Platform",
       "items": [
-        { "text": "Product Features", "href": "/features" },
+        { "text": "Features", "href": "/features" },
         { "text": "Essentials", "href": "/essentials" },
         { "text": "Locations", "href": "/locations" }
       ]

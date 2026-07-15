@@ -9,9 +9,6 @@ interface Props {
 
 const { item } = Astro.props as Props;
 
-/** Temporarily hide status badges on the backlog list; set true to show again. */
-const SHOW_BACKLOG_STATUS = false;
-
 const statusClassMap: Record<GitHubBacklogStatus, string> = {
   'In progress': 'roadmap-backlog-status--in-progress',
   Planned: 'roadmap-backlog-status--planned',
@@ -28,27 +25,11 @@ const statusClassMap: Record<GitHubBacklogStatus, string> = {
 >
   <span class="roadmap-backlog-number">#{item.number}</span>
 
-  {
-    SHOW_BACKLOG_STATUS && (
-      <span class:list={['roadmap-backlog-status', statusClassMap[item.status]]}>
-        {item.status}
-      </span>
-    )
-  }
+  <span class:list={['roadmap-backlog-status', statusClassMap[item.status]]}>
+    {item.status}
+  </span>
 
   <h3 class="roadmap-backlog-title">{item.title}</h3>
-
-  {
-    item.labels.length > 0 && (
-      <ul class="roadmap-backlog-labels" aria-label="Labels">
-        {item.labels.map((label) => (
-          <li>
-            <span class="roadmap-backlog-badge">{label}</span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
 
   <span class="roadmap-backlog-link">
     GitHub

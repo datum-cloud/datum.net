@@ -3,6 +3,7 @@
 import { Image } from 'astro:assets';
 import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 import dashboardImage from '@assets/images/datum-platform-dashboard.png';
 import dashboardImageMobile from '@assets/images/datum-platform-dashboard-mobile.png';
 const { class: className = '' } = Astro.props;
@@ -38,17 +39,19 @@ const pillars: { icon: string; title: string; description: string }[] = [
 <section
   id="datum-platform"
   class:list={[
-    'section--block section--block--x-pad border-silver-mist overflow-hidden border-t bg-white',
+    'section--block section--block--x-pad border-silver-mist relative overflow-hidden bg-white',
     className,
   ]}
+  data-module-wipe
 >
+  <span class="module-border-wipe" aria-hidden="true"></span>
   <div class="max-width-nav large-pad relative">
     <span class="section-line section-line--left section-line--bottom"></span>
     <span class="section-line section-line--left section-line--top"></span>
 
     <div class="max-width-nopad flex flex-col items-center gap-10 md:gap-16">
       <div class="spacing-pad flex w-full flex-col items-center gap-7 text-center">
-        <span class="section-eyebrow section-eyebrow--pine">The Datum Platform</span>
+        <SectionEyebrow variant="pine">The Datum Platform</SectionEyebrow>
         <h2 class="section--title text-midnight-fjord">
           A modern{' '}
           <span

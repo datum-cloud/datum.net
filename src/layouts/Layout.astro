@@ -64,7 +64,7 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <link rel="dns-prefetch" href="https://device.maxmind.com" />
 
     <!-- Preconnect to critical external domains (loads within ~5s) -->
-    <link rel="preconnect" href="https://cdn.usefathom.com" crossorigin />
+    <link rel="preconnect" href="https://app.rybbit.io" crossorigin />
 
     <!-- Preload critical fonts (used above the fold) -->
     <link
@@ -156,10 +156,15 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <JsonLd data={websiteSchema} />
     {jsonLd && <JsonLd data={jsonLd} />}
 
-    {/* Analytics (Fathom) - Load early but defer execution */}
+    {/* Analytics (Rybbit) - Load early but defer execution */}
     {
       isProduction && (
-        <script src="https://cdn.usefathom.com/script.js" data-site="PXKRQKIZ" defer is:inline />
+        <script
+          src="https://app.rybbit.io/api/script.js"
+          data-site-id="abbcab984f01"
+          defer
+          is:inline
+        />
       )
     }
   </head>

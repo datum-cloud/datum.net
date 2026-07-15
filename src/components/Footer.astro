@@ -71,13 +71,13 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
                 iconClass="stroke-1.5"
                 target="_blank"
                 href="https://auth.datum.net/ui/v2/login/register"
-                data-fathom-event="Pre-footer: Start for free"
+                data-rybbit-event="Pre-footer: Start for free"
               />
               <Button
                 class="btn btn--alpha"
                 text="Request a demo"
                 href="/demo"
-                data-fathom-event="Pre-footer: Request a demo"
+                data-rybbit-event="Pre-footer: Request a demo"
               />
             </div>
           </div>
@@ -279,8 +279,8 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
     triggers.forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
-        const label = trigger.getAttribute('data-newsletter-fathom') || 'Footer: Newsletter Signup';
-        if (window.fathom) window.fathom.trackEvent(label);
+        const label = trigger.getAttribute('data-newsletter-rybbit') || 'Footer: Newsletter Signup';
+        if (window.rybbit) window.rybbit.event(label);
         openNewsletterModal();
       });
     });

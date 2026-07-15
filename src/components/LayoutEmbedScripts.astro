@@ -1,6 +1,6 @@
 ---
 // src/components/LayoutEmbedScripts.astro
-/** Third-party embed loaders: Fathom events, HelpScout, Hyperping, MaxMind, WebMCP. */
+/** Third-party embed loaders: HelpScout, Hyperping, MaxMind, WebMCP. */
 
 interface LayoutEmbedScriptsProps {
   isProduction: boolean;
@@ -8,16 +8,6 @@ interface LayoutEmbedScriptsProps {
 
 const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
 ---
-
-{/* Fathom event tracking - fires on any element with data-fathom-event */}
-<script is:inline>
-  document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-fathom-event]');
-    if (el && window.fathom) {
-      window.fathom.trackEvent(el.getAttribute('data-fathom-event'));
-    }
-  });
-</script>
 
 {/* HelpScout Beacon open trigger handler */}
 <script>

@@ -1,0 +1,18 @@
+src/components/MobileMenu.astro
+  h_c7951bc64db670 211
+docker-compose.yml
+  h_c7951bc64db670 4,8,18,39
+src/components/Nav.astro
+  h_c7951bc64db670 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "fdc55f304ca0dfb406fe5ea9de0ee11763f486d2",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -3,13 +3,14 @@ export const prerender = false;
 
 import { OIDCClient } from '@libs/oidc';
 import { validateAndRefreshSession } from '@libs/auth';
+import { safeRedirect } from '@libs/safeRedirect';
 
 // Check if user is already authenticated
 const { session } = await validateAndRefreshSession(Astro.cookies);
 
 if (session) {
   // User is already logged in, redirect to intended destination or home
-  return Astro.redirect(Astro.url.searchParams.get('redirect_uri') || '/');
+  return Astro.redirect(safeRedirect(Astro.url.searchParams.get('redirect_uri')));
 }
 
 // Generate authorization URL with PKCE
@@ -34,7 +35,7 @@ if (authResponse.nonce) {
 // Store the redirect destination
 const authRedirect = Astro.url.searchParams.get('redirect_uri');
 if (authRedirect) {
-  Astro.cookies.set('redirect_uri', authRedirect, cookieOptions);
+  Astro.cookies.set('redirect_uri', safeRedirect(authRedirect), cookieOptions);
 }
 
 // Redirect to authorization server

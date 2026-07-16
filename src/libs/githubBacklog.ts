@@ -35,7 +35,7 @@ export interface GitHubBacklogItem {
 
 const GITHUB_ORG = 'datum-cloud';
 const GITHUB_PROJECT_NUMBER = 22;
-const CACHE_TTL_SECONDS = 24 * 60 * 60; // 24 hours
+const CACHE_TTL_SECONDS = 30 * 60; // 30 minutes
 
 const REDIS_CACHE_KEY = `${redisKeyPrefix}github:backlog`;
 

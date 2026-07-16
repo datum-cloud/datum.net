@@ -1,0 +1,37 @@
+src/pages/auth/logout.astro
+  s_7f5c08ffb4ee80::t_32e6d044427d8e 13-14
+  s_7f5c08ffb4ee80::t_4778ec6d2e793c 27
+src/pages/auth/login.astro
+  s_7f5c08ffb4ee80::t_740649ade1a869 38
+  s_7f5c08ffb4ee80::t_50d976e68e78e3 6,13
+src/pages/auth/callback.astro
+  s_7f5c08ffb4ee80::t_8fc1e15c524712 6
+  s_7f5c08ffb4ee80::t_f4ad492c6042f3 20
+src/libs/safeRedirect.ts
+  s_7f5c08ffb4ee80::t_6142b6b5b8d0a3 1-12
+package.json
+  s_7f5c08ffb4ee80::t_70986f7a2931d3 41-44
+package-lock.json
+  s_7f5c08ffb4ee80::t_d52c106261daff 19-22,5728,6144-6147,12637,14441,14789,14809,14826,14845
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "d5da3adcea0937a33d4fc9b8ed99df9a3aacd0b7",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_7f5c08ffb4ee80": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "db47f873-7d35-4874-8032-7fba20121ab8",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

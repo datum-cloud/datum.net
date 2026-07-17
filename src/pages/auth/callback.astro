@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { OIDCClient } from '@libs/oidc';
 import type { CallbackResult } from '@libs/oidc';
+import { safeRedirect } from '@libs/safeRedirect';
 
 const cookieOptions = {
   path: '/',
@@ -16,9 +17,7 @@ const oidcClient = new OIDCClient();
 const currentUrl = Astro.url.toString();
 const nonce = Astro.cookies.get('nonce')?.value;
 const codeVerifier = Astro.cookies.get('codeVerifier')?.value;
-const redirectUrl = Astro.cookies.has('redirect_uri')
-  ? Astro.cookies.get('redirect_uri')?.value
-  : '/';
+const redirectUrl = safeRedirect(Astro.cookies.get('redirect_uri')?.value);
 
 Astro.cookies.delete('redirect_uri', cookieOptions);
 

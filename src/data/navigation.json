@@ -15,19 +15,19 @@
         {
           "title": "Deliver",
           "items": [
-            { "text": "Global Load Balancer", "href": "/platform/deliver" },
+            { "text": "DNS", "href": "/platform/deliver#dns" },
             {
               "text": "Application Load Balancer",
               "href": "/platform/deliver#application-load-balancer"
             },
-            { "text": "DNS", "href": "/platform/deliver#dns" }
+            { "text": "Global Load Balancer", "href": "/platform/deliver", "label": "Soon" }
           ]
         },
         {
           "title": "Build",
           "items": [
             { "text": "Compute", "href": "/platform/build" },
-            { "text": "Object Storage", "href": "/platform/build#object-storage" },
+            { "text": "Object Storage", "href": "/platform/build#object-storage", "label": "Soon" },
             { "text": "Edge Apps", "href": "/platform/build#edge-apps", "label": "Soon" }
           ]
         },
@@ -43,7 +43,7 @@
       "asideCards": [
         {
           "text": "Locations",
-          "desc": "NVIDIA Bluefield optimized hardware in 20+ global metros.",
+          "desc": "Network optimized hardware in 20+ global metros.",
           "href": "/locations",
           "icon": "globe"
         },

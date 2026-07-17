@@ -67,19 +67,20 @@ function initSectionLines() {
 
     const offset = parseInt(line.dataset.revealOffset, 10) || REVEAL_OFFSET_PX;
     let timeoutId = null;
-    const obs = trackObserver(
-      new IntersectionObserver(
-        (entries) => {
-          clearTimeout(timeoutId);
-          if (entries[0].isIntersecting) {
-            timeoutId = setTimeout(() => line.classList.add('is-inview'), REVEAL_DELAY_MS);
-          } else {
-            line.classList.remove('is-inview');
-          }
-        },
-        { threshold: 0, rootMargin: `0px 0px -${offset}px 0px` }
-      )
+    // Inline observer tracking — calling trackObserver here gets mis-minified
+    // when the local `lines` binding shadows trackObserver's short name.
+    const obs = new IntersectionObserver(
+      (entries) => {
+        clearTimeout(timeoutId);
+        if (entries[0].isIntersecting) {
+          timeoutId = setTimeout(() => line.classList.add('is-inview'), REVEAL_DELAY_MS);
+        } else {
+          line.classList.remove('is-inview');
+        }
+      },
+      { threshold: 0, rootMargin: `0px 0px -${offset}px 0px` }
     );
+    activeObservers.push(obs);
     obs.observe(line);
   }
 
@@ -92,7 +93,9 @@ function initSectionLines() {
       ) || REVEAL_OFFSET_PX;
     const timeouts = new Map();
 
-    function updateBottomLines() {
+    // Arrow (not a nested function declaration) avoids minifier name collisions
+    // with module-level constants that share the same mangled identifier.
+    const updateBottomLines = () => {
       const rect = parent.getBoundingClientRect();
       const bottomNearViewport = rect.bottom > 0 && rect.bottom <= window.innerHeight - offset + 80;
 
@@ -105,7 +108,7 @@ function initSectionLines() {
           line.classList.remove('is-inview');
         }
       }
-    }
+    };
 
     let rafId = 0;
     const onScroll = trackBottomLineScroll(() => {

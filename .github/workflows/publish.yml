@@ -20,18 +20,84 @@ jobs:
         uses: actions/checkout@v7
 
   build-and-push:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       id-token: write
     needs: check-files
-    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.20.0
-    with:
-      image-name: datum-net
-      target: production
-      extra-build-args: |
-        ASTRO_TELEMETRY_DISABLED=1
-    secrets: inherit
+    outputs:
+      tag: ${{ steps.version-tag.outputs.tag }}
+      build-version: ${{ steps.version-tag.outputs.build_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+        with:
+          platforms: linux/amd64
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/datum-cloud/datum-net
+          tags: |
+            type=ref,event=pr,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}},prefix=v0.0.0-
+            type=ref,event=pr,prefix=v0.0.0-
+            type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}},prefix=v0.0.0-
+            type=ref,event=branch,prefix=v0.0.0-
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
+            type=sha,prefix=v0.0.0-
+
+      - name: Extract version tag
+        id: version-tag
+        run: |
+          FULL_TAG="${{ fromJSON(steps.meta.outputs.json).tags[0] }}"
+          VERSION_TAG="${FULL_TAG##*:}"
+
+          # For Kubernetes semver compatibility, transform the version for the build arg
+          # If it's already a semver tag (starts with v and has dots), keep it as-is
+          if [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            # Already semver compliant (e.g., v1.2.3)
+            BUILD_VERSION="$VERSION_TAG"
+          else
+            # Non-semver tag: prepend v0.0.0- to make it semver compliant
+            BUILD_VERSION="v0.0.0-${VERSION_TAG}"
+          fi
+
+          echo "tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
+          echo "build_version=$BUILD_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v7.1.0
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          target: production
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ steps.version-tag.outputs.build_version }}
+            GIT_COMMIT=${{ github.sha }}
+            GIT_TREE_STATE=clean
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            ASTRO_TELEMETRY_DISABLED=1
 
   publish-kustomize-bundles:
     permissions:

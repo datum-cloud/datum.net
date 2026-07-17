@@ -124,22 +124,40 @@
   }
 
   .locations-list {
-    @apply grid grid-cols-2 gap-8 pt-10 pb-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
+    @apply border-silver-mist bg-silver-mist mt-10 grid grid-cols-2 gap-px border md:grid-cols-3 lg:grid-cols-5;
   }
 
   .locations-list--group {
-    @apply flex flex-col;
+    @apply bg-platinum flex flex-col gap-2.5 p-6 md:p-8 lg:p-10;
+  }
+
+  .locations-list--header-row {
+    @apply border-glacier-mist-700 border-b py-1;
+    h3 {
+      @apply font-semibold;
+    }
+    span {
+      @apply font-normal;
+    }
   }
 
   .locations-list--header {
-    @apply datum-text-base text-midnight-fjord pb-2.5 font-semibold;
+    @apply datum-text-base text-midnight-fjord font-normal;
+  }
+
+  .locations-list--items-row {
+    @apply border-glacier-mist-700 border-b py-1;
   }
 
   .locations-list--items {
-    @apply border-midnight-fjord flex flex-col border-l;
+    @apply datum-text-base text-midnight-fjord list-disc pl-6;
   }
 
   .locations-list--item {
-    @apply datum-text-base text-midnight-fjord/80 py-1 pl-5;
+    @apply leading-6;
+
+    &:not(:last-child) {
+      @apply mb-0 md:mb-2;
+    }
   }
 }

@@ -1,0 +1,44 @@
+---
+// src/components/SectionGroup.astro
+// Labeled section wrapper with optional decorative section lines
+
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import type { SectionEyebrowProps, SectionLineProps } from '@/src/types/common';
+
+interface SectionGroupProps {
+  label?: string;
+  eyebrowVariant?: 'pine' | 'canyon' | 'connect' | 'iris';
+  showSectionLines?: boolean;
+  sectionLines?: Pick<SectionLineProps, 'left' | 'right' | 'top' | 'bottom' | 'overlap'>;
+  listClass?: string;
+  class?: string;
+}
+
+const {
+  label,
+  eyebrowVariant = 'pine',
+  showSectionLines = true,
+  sectionLines = { left: true, right: true, top: true, bottom: true },
+  listClass = 'section-group-list',
+  class: className = '',
+} = Astro.props as SectionGroupProps;
+
+const eyebrowVariantProp: SectionEyebrowProps['variant'] =
+  eyebrowVariant === 'canyon' ? undefined : eyebrowVariant;
+---
+
+<div class:list={['max-width-nav large-pad relative', className]}>
+  {
+    label && (
+      <SectionEyebrow variant={eyebrowVariantProp} position="left-top">
+        {label}
+      </SectionEyebrow>
+    )
+  }
+  {showSectionLines && <SectionLine {...sectionLines} />}
+
+  <div class={listClass}>
+    <slot />
+  </div>
+</div>

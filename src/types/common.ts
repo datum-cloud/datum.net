@@ -49,6 +49,10 @@ export interface HeroProps {
   class?: string;
   imagePath?: ImageMetadata;
   hideContent?: boolean;
+  /** Hides the hero content container (tabs, title, section lines) */
+  hideHero?: boolean;
+  /** Renders decorative corner grid lines inside the hero container */
+  showSectionLines?: boolean;
 }
 
 export interface HomeHeroProps {
@@ -185,6 +189,11 @@ export interface SecondaryTabNavItem {
   href: string;
   /** When true, active only on this path (normalized), not on deeper URL segments */
   exact?: boolean;
+  /** Shown on the active tab only (desktop segmented control) */
+  icon?: {
+    name: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+  };
 }
 
 export interface SecondaryTabNavProps {
@@ -192,14 +201,25 @@ export interface SecondaryTabNavProps {
   ariaLabel: string;
   mobileLabel: string;
   idPrefix?: string;
+  /** Active tab color theme. Defaults to pine (Deliver). */
+  variant?: 'pine' | 'canyon' | 'connect' | 'essentials' | 'locations';
 }
 
 export interface SectionEyebrowProps {
   class?: string;
   /** Text colour + cursor colour. Defaults to canyon-clay. */
-  variant?: 'pine' | 'midnight-fjord';
+  variant?: 'pine' | 'midnight-fjord' | 'connect' | 'iris';
   /** Absolute positioning against the nearest `relative` ancestor. */
   position?: 'left-top' | 'left-top-keyline';
 }
 
+export interface SectionLineProps {
+  left?: boolean;
+  right?: boolean;
+  top?: boolean;
+  bottom?: boolean;
+  /** Renders corner overlap lines (vertical + horizontal) instead of standard section lines */
+  overlap?: boolean;
+  class?: string;
+}
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type

@@ -4,13 +4,13 @@
   }
 
   .hero--main {
-    @apply relative flex flex-col justify-center;
+    @apply relative z-11 flex flex-col justify-center;
 
     &.dark {
       @apply bg-midnight-fjord text-white;
     }
     &.light {
-      @apply bg-glacier-mist-700 text-midnight-fjord;
+      @apply bg-platinum text-midnight-fjord;
     }
 
     &.content-alt {
@@ -30,8 +30,18 @@
     }
   }
 
+  .hero--content-container {
+    @apply max-width-nav relative;
+    @apply flex flex-col gap-10 md:gap-12 lg:gap-16;
+    @apply py-10 md:py-12 lg:py-16 xl:py-20;
+  }
+
   .hero--main-content {
     @apply relative z-0 flex aspect-auto w-full flex-col items-center md:h-auto;
+  }
+
+  .hero--main-content-inner {
+    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 text-center xl:gap-7;
   }
 
   .hero--main-content-image {
@@ -40,10 +50,6 @@
     img {
       @apply ml-auto size-auto max-w-1/2;
     }
-  }
-
-  .hero--main-content-inner {
-    @apply max-width relative z-10 flex flex-col items-center justify-center gap-4 pt-10 pb-10 text-center md:pb-12 lg:pb-14 xl:gap-6 xl:pt-12 xl:pb-16;
   }
 
   .hero--main-content-icon {

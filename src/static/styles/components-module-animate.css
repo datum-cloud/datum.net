@@ -42,6 +42,14 @@
     @apply bg-midnight-fjord;
   }
 
+  .section-eyebrow--connect .section-eyebrow-cursor {
+    @apply bg-connect-slate;
+  }
+
+  .section-eyebrow--iris .section-eyebrow-cursor {
+    @apply bg-iris;
+  }
+
   /* Text stays in the DOM at full size (no layout shift) but is clipped
      until typed — the monospace eyebrow font keeps clip-path steps evenly
      spaced per character. */

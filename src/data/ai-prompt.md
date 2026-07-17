@@ -6,7 +6,7 @@ Crawl all of the following URLs. Do not skip any.
 
 Marketing site:
 https://datum.net
-https://datum.net/features
+https://datum.net/platform/deliver
 https://datum.net/pricing
 https://datum.net/about
 https://datum.net/locations

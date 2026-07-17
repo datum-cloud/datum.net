@@ -1,0 +1,116 @@
+---
+import { render } from 'astro:content';
+import '@styles/page-features-hub.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import FeatureSections from '@components/features/FeatureSections.astro';
+import FeatureSection from '@components/features/FeatureSection.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import navigation from '@data/navigation.json';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'features/deliver/index');
+const globalLoadBalancer = await getCollectionEntry(
+  'pages',
+  'features/deliver/global-load-balancer'
+);
+const applicationLoadBalancer = await getCollectionEntry(
+  'pages',
+  'features/deliver/application-load-balancer'
+);
+const dns = await getCollectionEntry('pages', 'features/deliver/dns');
+
+const { Content: GlobalLoadBalancerContent } = await render(globalLoadBalancer);
+const { Content: ApplicationLoadBalancerContent } = await render(applicationLoadBalancer);
+const { Content: DnsContent } = await render(dns);
+
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform/deliver',
+      url: 'https://www.datum.net/platform/deliver',
+      name: meta.title ?? 'Datum Platform – Deliver',
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-07-14',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-features"
+  title={title}
+  description={fm.description}
+  meta={meta}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <Hero
+      class="light content-alt pb-0"
+      title={title}
+      description={fm.description}
+      showSectionLines={true}
+    >
+      <SecondaryTabNav
+        slot="before-content"
+        ariaLabel="Product"
+        mobileLabel="Product"
+        items={navigation.productTabs}
+      />
+    </Hero>
+
+    <section
+      id="datum-platform"
+      class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-t"
+      data-module-wipe
+    >
+      <span class="module-border-wipe" aria-hidden="true"></span>
+      <FeatureSections label="Features">
+        <FeatureSection
+          id="global-load-balancer"
+          mediaSide={globalLoadBalancer.data.mediaSide ?? 'left'}
+          image={globalLoadBalancer.data.featuredImage!}
+          imageAlt={globalLoadBalancer.data.title}
+        >
+          <GlobalLoadBalancerContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="application-load-balancer"
+          variant="highlight"
+          highlightIcon="sliders-vertical"
+          highlights={[
+            'Smart Layer 7 request routing',
+            'URL & header-based traffic control',
+            'TLS offload, rewrites & rate limiting',
+          ]}
+        >
+          <ApplicationLoadBalancerContent />
+        </FeatureSection>
+
+        <FeatureSection
+          id="dns"
+          mediaSide={dns.data.mediaSide ?? 'left'}
+          image={dns.data.featuredImage!}
+          imageAlt={dns.data.title}
+        >
+          <DnsContent />
+        </FeatureSection>
+      </FeatureSections>
+    </section>
+
+    <ModuleConnector />
+
+    <Footer />
+  </section>
+</Layout>

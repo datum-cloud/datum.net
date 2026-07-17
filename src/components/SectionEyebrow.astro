@@ -9,7 +9,11 @@ const variantClass =
     ? 'section-eyebrow--pine'
     : variant === 'midnight-fjord'
       ? 'section-eyebrow--midnight-fjord'
-      : '';
+      : variant === 'connect'
+        ? 'section-eyebrow--connect'
+        : variant === 'iris'
+          ? 'section-eyebrow--iris'
+          : '';
 
 const positionClass =
   position === 'left-top'

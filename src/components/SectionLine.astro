@@ -1,0 +1,62 @@
+---
+// src/components/SectionLine.astro
+// Decorative corner grid lines for section containers
+
+import type { SectionLineProps } from '@/src/types/common';
+
+const {
+  left = false,
+  right = false,
+  top = false,
+  bottom = false,
+  overlap = false,
+  class: className = '',
+} = Astro.props as SectionLineProps;
+
+const corners: Array<{ horizontal: 'left' | 'right'; vertical: 'top' | 'bottom' }> = [];
+
+if (left && top) corners.push({ horizontal: 'left', vertical: 'top' });
+if (left && bottom) corners.push({ horizontal: 'left', vertical: 'bottom' });
+if (right && top) corners.push({ horizontal: 'right', vertical: 'top' });
+if (right && bottom) corners.push({ horizontal: 'right', vertical: 'bottom' });
+---
+
+{
+  corners.map(({ horizontal, vertical }) =>
+    overlap ? (
+      <>
+        <span
+          class:list={[
+            'section-line--overlap',
+            horizontal === 'left' && 'section-line--left',
+            horizontal === 'right' && 'section-line--right',
+            vertical === 'top' && 'section-line--top',
+            vertical === 'bottom' && 'section-line--bottom',
+            className,
+          ]}
+        />
+        <span
+          class:list={[
+            'section-line-h--overlap',
+            horizontal === 'left' && 'section-line--left',
+            horizontal === 'right' && 'section-line--right',
+            vertical === 'top' && 'section-line--top',
+            vertical === 'bottom' && 'section-line--bottom',
+            className,
+          ]}
+        />
+      </>
+    ) : (
+      <span
+        class:list={[
+          'section-line',
+          horizontal === 'left' && 'section-line--left',
+          horizontal === 'right' && 'section-line--right',
+          vertical === 'top' && 'section-line--top',
+          vertical === 'bottom' && 'section-line--bottom',
+          className,
+        ]}
+      />
+    )
+  )
+}

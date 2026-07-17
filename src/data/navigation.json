@@ -1,31 +1,57 @@
 {
+  "productTabs": [
+    { "label": "Deliver", "href": "/platform/deliver", "exact": true, "icon": { "name": "send" } },
+    { "label": "Build", "href": "/platform/build", "icon": { "name": "construction" } },
+    { "label": "Connect", "href": "/platform/connect", "icon": { "name": "network" } },
+    { "label": "Essentials", "href": "/essentials", "icon": { "name": "list-check" } },
+    { "label": "Locations", "href": "/locations", "icon": { "name": "earth" } }
+  ],
   "main": [
     {
       "text": "Platform",
-      "href": "/features",
+      "href": "/platform",
+      "theme": "dark",
       "children": [
         {
-          "isCardLayout": true,
+          "title": "Deliver",
           "items": [
+            { "text": "Global Load Balancer", "href": "/platform/deliver" },
             {
-              "text": "Features",
-              "image": "/images/nav/core-features.png",
-              "desc": "Critical network services",
-              "href": "/features"
+              "text": "Application Load Balancer",
+              "href": "/platform/deliver#application-load-balancer"
             },
-            {
-              "text": "Essentials",
-              "image": "/images/nav/essentials.png",
-              "desc": "Enterprise-grade networking primitives",
-              "href": "/essentials"
-            },
-            {
-              "text": "Locations",
-              "image": "/images/nav/world-map.png",
-              "desc": "Deploy at the global edge",
-              "href": "/locations"
-            }
+            { "text": "DNS", "href": "/platform/deliver#dns" }
           ]
+        },
+        {
+          "title": "Build",
+          "items": [
+            { "text": "Compute", "href": "/platform/build" },
+            { "text": "Object Storage", "href": "/platform/build#object-storage" },
+            { "text": "Edge Apps", "href": "/platform/build#edge-apps", "label": "Soon" }
+          ]
+        },
+        {
+          "title": "Connect",
+          "items": [
+            { "text": "Galactic VPC", "href": "/platform/connect" },
+            { "text": "Connections", "href": "/platform/connect#connections" },
+            { "text": "Interconnect", "href": "/platform/connect#interconnect", "label": "Soon" }
+          ]
+        }
+      ],
+      "asideCards": [
+        {
+          "text": "Locations",
+          "desc": "NVIDIA Bluefield optimized hardware in 20+ global metros.",
+          "href": "/locations",
+          "icon": "globe"
+        },
+        {
+          "text": "Essentials",
+          "desc": "From our CLI and audit logs to robust IAM, we have you covered.",
+          "href": "/essentials",
+          "icon": "list-check"
         }
       ]
     },
@@ -37,6 +63,7 @@
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,
+      "theme": "dark",
       "children": [
         {
           "title": "Get Started:",
@@ -82,7 +109,7 @@
     {
       "title": "Platform",
       "items": [
-        { "text": "Features", "href": "/features" },
+        { "text": "Platform", "href": "/platform" },
         { "text": "Essentials", "href": "/essentials" },
         { "text": "Locations", "href": "/locations" }
       ]

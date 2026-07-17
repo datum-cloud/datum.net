@@ -7,6 +7,9 @@ import Footer from '@components/Footer.astro';
 import LocationsMap from '@components/locations/LocationsMap.astro';
 import LocationsList from '@components/locations/LocationsList.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+import SectionGroup from '@components/SectionGroup.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import navigation from '@data/navigation.json';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -36,38 +39,43 @@ const jsonLd = {
 ---
 
 <Layout bodyClass="page-locations" meta={meta} jsonLd={jsonLd}>
-  <section class="datum-container overflow-clip">
-    <Hero class="light content-alt pb-0" title={title} description={fm.description}>
+  <section class="datum-container">
+    <Hero
+      class="light content-alt pb-0"
+      title={title}
+      description={fm.description}
+      showSectionLines={true}
+    >
       <SecondaryTabNav
         slot="before-content"
         ariaLabel="Product"
         mobileLabel="Product"
-        items={[
-          { label: 'Features', href: '/features', exact: true },
-          { label: 'Essentials', href: '/essentials' },
-          { label: 'Locations', href: '/locations' },
-        ]}
+        items={navigation.productTabs}
+        variant="locations"
       />
     </Hero>
 
-    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0 pb-0">
-      <div class="max-width">
-        <section class="mb-8 flex flex-col items-center gap-10 lg:flex-row">
-          <div class="locations-map--description">
-            <p>
-              Our network is deployed at the most important <strong>internet peering points</strong> globally.
-              This ensures low-latency access to public clouds, AI clouds, and end users alike.
-            </p>
-          </div>
-          <div>
+    <section
+      class="section--block border-silver-mist bg-platinum section--block--x-pad overflow-hidden border-t"
+    >
+      <SectionGroup
+        label="NAP"
+        eyebrowVariant="app"
+        class="small-pad"
+        listClass="section-group-list max-w-8xl "
+      >
+        <div class="spacing-pad relative">
+          <section class="max-width max-w-6xl">
             <LocationsMap />
-          </div>
-        </section>
-        <LocationsList />
-      </div>
-    </div>
+          </section>
+          <LocationsList />
+        </div>
+      </SectionGroup>
+    </section>
 
-    <Footer showCTA={false} />
+    <ModuleConnector />
+
+    <Footer />
   </section>
 </Layout>
 

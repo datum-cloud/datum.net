@@ -22,7 +22,7 @@
   }
 
   .secondary-tab-nav-mobile-selected {
-    @apply datum-text-sm text-canyon-clay---links shrink-0 font-semibold;
+    @apply datum-text-sm text-midnight-fjord shrink-0 font-semibold;
   }
 
   .secondary-tab-nav-mobile-chevron {
@@ -34,40 +34,75 @@
   }
 
   .secondary-tab-nav-mobile-dropdown {
-    @apply border-glacier-mist-900 absolute top-full right-0 left-0 z-50 mt-2 rounded-md border bg-white py-2 shadow-sm;
+    @apply border-glacier-mist-900 absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-lg border bg-white p-0.5 shadow-sm;
   }
 
   .secondary-tab-nav-mobile-list {
-    @apply flex flex-col;
+    @apply flex flex-col gap-0.5;
   }
 
   .secondary-tab-nav-mobile-link {
-    @apply datum-text-sm text-midnight-fjord/60 mx-2 flex items-center gap-2 rounded-md px-4 py-3 font-medium no-underline;
-    @apply hover:text-midnight-fjord/80;
+    @apply datum-text-base text-midnight-fjord flex gap-2.5 rounded-md px-5 py-2.5 font-medium no-underline;
+    @apply hover:text-midnight-fjord/80 text-left;
 
     &--active {
-      @apply text-canyon-clay---links bg-white font-semibold;
-      @apply hover:text-canyon-clay---links hover:bg-white;
+      @apply bg-pine-forge text-glacier-mist-700 font-semibold;
+      @apply hover:bg-pine-forge hover:text-glacier-mist-700;
     }
   }
 
   .secondary-tab-nav__list {
-    @apply bg-glacier-mist-800 m-0 hidden list-none gap-0 p-0.5 md:inline-flex md:overflow-hidden md:rounded-lg;
-
-    li {
-      @apply m-0 p-0;
-    }
+    @apply m-0 hidden list-none gap-0 overflow-hidden rounded-lg bg-white p-0.5 md:inline-flex;
   }
 
   .secondary-tab-nav__tab {
-    @apply datum-text-sm text-midnight-fjord/60 inline-flex items-center justify-center rounded-md bg-transparent font-medium no-underline;
+    @apply datum-text-base text-midnight-fjord inline-flex h-9 min-w-36 shrink-0 items-center justify-center gap-2.5 rounded-md bg-transparent px-6 py-1 font-medium whitespace-nowrap no-underline;
     @apply hover:text-midnight-fjord/80;
     @apply focus-visible:ring-midnight-fjord/30 focus-visible:relative focus-visible:z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset;
-    @apply px-6 py-1.5;
+  }
+
+  .secondary-tab-nav__tab-icon {
+    @apply hidden shrink-0;
   }
 
   .secondary-tab-nav__tab--active {
-    @apply text-canyon-clay---links bg-white font-semibold;
-    @apply hover:text-canyon-clay---links hover:bg-white;
+    @apply bg-pine-forge text-glacier-mist-700 font-semibold;
+    @apply hover:bg-pine-forge hover:text-glacier-mist-700;
+
+    .secondary-tab-nav__tab-icon {
+      @apply inline-flex;
+    }
+  }
+
+  .secondary-tab-nav--canyon {
+    .secondary-tab-nav__tab--active,
+    .secondary-tab-nav-mobile-link--active {
+      @apply bg-canyon-clay---links text-glacier-mist-700 font-semibold;
+      @apply hover:bg-canyon-clay---links hover:text-glacier-mist-700;
+    }
+  }
+
+  .secondary-tab-nav--connect {
+    .secondary-tab-nav__tab--active,
+    .secondary-tab-nav-mobile-link--active {
+      @apply bg-connect-slate text-glacier-mist-700 font-semibold;
+      @apply hover:bg-connect-slate hover:text-glacier-mist-700;
+    }
+  }
+
+  .secondary-tab-nav--essentials {
+    .secondary-tab-nav__tab--active,
+    .secondary-tab-nav-mobile-link--active {
+      @apply bg-iris text-glacier-mist-700 font-semibold;
+      @apply hover:bg-iris hover:text-glacier-mist-700;
+    }
+  }
+
+  .secondary-tab-nav--locations {
+    .secondary-tab-nav__tab--active,
+    .secondary-tab-nav-mobile-link--active {
+      @apply bg-app---dark---utility-3 text-glacier-mist-700 font-semibold;
+      @apply hover:bg-app---dark---utility-3 hover:text-glacier-mist-700;
+    }
   }
 }

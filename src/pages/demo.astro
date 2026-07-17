@@ -9,6 +9,8 @@ import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
 import BookDemo from '@components/forms/BookDemo.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 
 const title = 'Book a demo';
 const description = 'See our modern alternative to global cloud solutions in action.';
@@ -28,14 +30,15 @@ const checklist = [
 
 <Layout title={title} description={description} bodyClass="page-demo">
   <section class="datum-container">
-    <Hero class="light" hideContent={true} />
+    <Hero class="light" hideContent={true} hideHero />
 
-    <div class="section--block relative overflow-hidden bg-white px-7">
+    <div class="section--block section--block--x-pad relative overflow-hidden bg-white">
       <div class="max-width-nav large-pad relative">
-        <span class="section-line section-line--left section-line--top"></span>
+        <SectionLine position="left-top" />
+
         <SectionEyebrow position="left-top-keyline">Book a demo</SectionEyebrow>
 
-        <div class="max-width-nopad">
+        <div class="max-width-nopad spacing-pad">
           <div class="grid grid-cols-6 gap-8 md:gap-15 lg:gap-25 xl:gap-28">
             <div class="col-span-6 flex flex-col gap-10 md:col-span-3">
               <div class="flex flex-col gap-5">
@@ -66,6 +69,8 @@ const checklist = [
         </div>
       </div>
     </div>
+
+    <ModuleConnector />
 
     <Footer showCTA={false} plainIllustration />
   </section>

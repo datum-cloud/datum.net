@@ -1,0 +1,179 @@
+@layer components {
+  .feature-sections {
+    @apply bg-glacier-mist-700 relative;
+    @apply px-7 py-16 md:px-12 md:py-24 lg:px-28 lg:py-40;
+  }
+
+  .feature-sections-header {
+    @apply relative mb-16 md:mb-24 lg:mb-40;
+  }
+
+  .feature-sections-label {
+    @apply inline-flex items-center gap-2.5;
+    @apply text-pine-forge---links font-mono text-sm tracking-normal uppercase;
+  }
+
+  .feature-sections-label-mark {
+    @apply bg-pine-forge---links block h-3.5 w-3.25 shrink-0 rounded-sm;
+  }
+
+  .feature-sections-list {
+    @apply max-width-section-nopad flex flex-col;
+    @apply gap-16 md:gap-24 lg:gap-40;
+  }
+
+  .feature-section {
+    @apply relative flex flex-col items-center gap-10 md:gap-16;
+    @apply lg:flex-row lg:gap-16;
+  }
+
+  .feature-section--media-right {
+    @apply lg:flex-row-reverse;
+  }
+
+  .feature-section-media {
+    @apply relative aspect-514/300 w-full shrink-0 lg:w-128.5;
+  }
+
+  .feature-section-media-image {
+    @apply block h-full w-full object-cover;
+  }
+
+  .feature-section-content {
+    @apply relative z-10 flex w-full flex-1 flex-col items-start gap-4;
+
+    h2 {
+      @apply datum-text-7xl text-midnight-fjord;
+    }
+
+    p {
+      @apply datum-text-xl text-midnight-fjord/80;
+    }
+  }
+
+  .feature-badge {
+    @apply datum-docs-sidebar-headings inline-flex items-center justify-center rounded-sm border px-1.25 pt-px;
+    @apply border-steel-blue/70 bg-steel-blue/20 text-steel-blue font-medium tracking-[0.3px] uppercase;
+  }
+
+  .feature-badge--highlight {
+    @apply border-harbor-blue/70 bg-harbor-blue/20 text-harbor-blue px-1.25 pt-px;
+  }
+
+  /* Figma nodes 15336:56552 / 15336:49101 / 15336:56575 — "Coming soon" callout cards */
+  .feature-section.feature-section--highlight {
+    @apply relative flex-col items-start gap-10 overflow-hidden p-10 md:gap-2 lg:flex-row lg:gap-16;
+  }
+
+  .feature-section--highlight-pine {
+    @apply bg-aurora-mist;
+  }
+
+  .feature-section--highlight-canyon {
+    @apply bg-canyon-highlight;
+  }
+
+  .feature-section--highlight-connect {
+    @apply bg-connect-highlight;
+  }
+
+  /* Figma node 15336:49101 — grid image at x 512 / y -43, 662px, rotate 90°,
+     opacity 20%; right edge overshoots the 1092px frame by 82px. */
+  .feature-highlight-grid {
+    @apply pointer-events-none absolute -top-10.75 -right-20.5 z-0 h-165.5 w-165.5 rotate-90 opacity-20 select-none;
+  }
+
+  .feature-highlight-grid img {
+    @apply block size-full max-w-none object-cover;
+  }
+
+  /* Soften the grid into the card bg on its left edge; keep the right side
+     of the grid visible (matches Figma's flipped 94.84deg fill). */
+  .feature-highlight-fade {
+    @apply pointer-events-none absolute inset-y-0 right-0 z-1 w-3/5;
+  }
+
+  .feature-section--highlight-pine .feature-highlight-fade {
+    background-image: linear-gradient(
+      to right,
+      var(--color-aurora-mist) 0%,
+      rgb(226 237 231 / 0) 70%
+    );
+  }
+
+  .feature-section--highlight-canyon .feature-highlight-fade {
+    background-image: linear-gradient(
+      to right,
+      var(--color-canyon-highlight) 0%,
+      rgb(240 217 217 / 0) 70%
+    );
+  }
+
+  .feature-section--highlight-connect .feature-highlight-fade {
+    background-image: linear-gradient(
+      to right,
+      var(--color-connect-highlight) 0%,
+      rgb(221 232 242 / 0) 70%
+    );
+  }
+
+  .feature-highlight-content {
+    @apply relative z-10 flex min-w-0 flex-1 flex-col items-start gap-4 p-6;
+
+    h2 {
+      @apply datum-text-7xl text-midnight-fjord;
+    }
+  }
+
+  .feature-highlight-heading {
+    @apply flex w-full flex-col items-start gap-5;
+  }
+
+  .feature-highlight-content .btn {
+    @apply datum-text-sm rounded-md px-5 py-3;
+  }
+
+  .feature-highlight-panel {
+    @apply relative z-10 flex w-full shrink-0 flex-col items-center gap-7 px-7 py-7 md:flex-row md:px-12;
+    @apply lg:w-118.5 lg:self-stretch;
+  }
+
+  .feature-section--highlight-pine .feature-highlight-panel {
+    @apply bg-morning-mist/70;
+  }
+
+  .feature-section--highlight-canyon .feature-highlight-panel {
+    @apply bg-canyon-highlight-panel/70;
+  }
+
+  .feature-section--highlight-connect .feature-highlight-panel {
+    @apply bg-connect-highlight-panel/70;
+  }
+
+  .feature-section--highlight-pine .feature-highlight-panel-icon,
+  .feature-section--highlight-pine .feature-highlight-list {
+    @apply text-pine-forge;
+  }
+
+  .feature-section--highlight-canyon .feature-highlight-panel-icon,
+  .feature-section--highlight-canyon .feature-highlight-list {
+    @apply text-canyon-highlight-accent;
+  }
+
+  .feature-section--highlight-connect .feature-highlight-panel-icon,
+  .feature-section--highlight-connect .feature-highlight-list {
+    @apply text-app---dark---utility-2;
+  }
+
+  .feature-highlight-panel-icon {
+    @apply size-6 shrink-0;
+  }
+
+  .feature-highlight-list {
+    @apply datum-text-lg min-w-0 flex-1 list-disc pl-0 font-medium;
+
+    li {
+      @apply ms-6.75 mb-0.5 last:mb-0;
+    }
+  }
+}

@@ -1,0 +1,105 @@
+---
+// src/components/features/FeatureSection.astro
+// Alternating media/text row for feature hub sections. The `highlight`
+// variant renders a callout card (decorative grid + feature list panel)
+// instead of a media image, for not-yet-shipped features.
+
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from '@components/Icon.astro';
+import SectionLine from '@components/SectionLine.astro';
+import type { IconName } from '@utils/iconMap';
+import featureCardNetworkGrid from '@assets/images/feature-card-network-grid.png';
+
+interface FeatureSectionBaseProps {
+  id?: string;
+  class?: string;
+}
+
+interface FeatureSectionMediaProps extends FeatureSectionBaseProps {
+  variant?: 'default';
+  mediaSide: 'left' | 'right';
+  image: ImageMetadata;
+  imageAlt?: string;
+}
+
+interface FeatureSectionHighlightProps extends FeatureSectionBaseProps {
+  variant: 'highlight';
+  highlightIcon: IconName;
+  highlights: string[];
+  /** Card accent palette. Defaults to pine (Deliver). */
+  highlightTheme?: 'pine' | 'canyon' | 'connect';
+}
+
+export type FeatureSectionProps = FeatureSectionMediaProps | FeatureSectionHighlightProps;
+
+const props = Astro.props as FeatureSectionProps;
+const { id, class: className = '' } = props;
+
+const isHighlight = props.variant === 'highlight';
+const mediaSide = props.variant !== 'highlight' ? props.mediaSide : undefined;
+const image = props.variant !== 'highlight' ? props.image : undefined;
+const imageAlt = props.variant !== 'highlight' ? (props.imageAlt ?? '') : '';
+const highlightIcon = props.variant === 'highlight' ? props.highlightIcon : undefined;
+const highlights = props.variant === 'highlight' ? props.highlights : [];
+const highlightTheme = props.variant === 'highlight' ? (props.highlightTheme ?? 'pine') : undefined;
+---
+
+<div class="spacing-pad">
+  <article
+    id={id}
+    class:list={[
+      'feature-section',
+
+      !isHighlight && mediaSide === 'right' && 'feature-section--media-right',
+      className,
+    ]}
+  >
+    {
+      isHighlight ? (
+        <>
+          <SectionLine left top overlap />
+          <div
+            class:list={[
+              isHighlight && 'feature-section feature-section--highlight w-full',
+              isHighlight && highlightTheme === 'canyon' && 'feature-section--highlight-canyon',
+              isHighlight && highlightTheme === 'connect' && 'feature-section--highlight-connect',
+              isHighlight && highlightTheme === 'pine' && 'feature-section--highlight-pine',
+            ]}
+          >
+            <div class="feature-highlight-grid" aria-hidden="true">
+              <Image src={featureCardNetworkGrid} alt="" />
+            </div>
+            <span class="feature-highlight-fade" aria-hidden="true" />
+
+            <div class="feature-highlight-content">
+              <slot />
+            </div>
+
+            <div class="feature-highlight-panel">
+              {highlightIcon && (
+                <Icon name={highlightIcon} size="lg" class="feature-highlight-panel-icon" />
+              )}
+              <ul class="feature-highlight-list">
+                {highlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div class="feature-section-media">
+            <SectionLine left={mediaSide === 'right'} right={mediaSide === 'left'} top overlap />
+            {image && <Image src={image} alt={imageAlt} class="feature-section-media-image" />}
+          </div>
+
+          <div class="feature-section-content">
+            <slot />
+          </div>
+        </>
+      )
+    }
+  </article>
+</div>

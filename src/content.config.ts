@@ -36,6 +36,7 @@ const pages = defineCollection({
       featuredImage: image().optional(),
       slug: z.string().optional(),
       order: z.number().optional().default(0),
+      mediaSide: z.enum(['left', 'right']).optional(),
       contents: z.array(reference('pages')).optional(),
       items: z.array(z.string()).optional(),
       updatedDate: z.string().optional(),

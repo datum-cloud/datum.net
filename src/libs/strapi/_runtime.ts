@@ -28,8 +28,10 @@ import {
   FileCacheDriver,
   createWebhookHandler,
   revalidateConfigSchema,
+  type CacheDriver,
 } from '@datum-cloud/strapi-revalidate';
 import { RedisCacheDriver } from './drivers/redis';
+import { ResilientCacheDriver } from './drivers/resilient';
 import { createResilientStrapiClient } from './resilientGraphqlClient';
 
 const DEFAULT_STRAPI_URL = 'https://grateful-excitement-dfe9d47bad.strapiapp.com';
@@ -101,7 +103,7 @@ function createRedisClient(url: string): Redis {
 }
 
 async function resolvePrimaryCache(): Promise<{
-  primary: FileCacheDriver | RedisCacheDriver;
+  primary: CacheDriver;
   redisClient: Redis | null;
 }> {
   const filePrimary = new FileCacheDriver({ dir: '.cache' });
@@ -117,7 +119,11 @@ async function resolvePrimaryCache(): Promise<{
     await client.connect();
     await client.ping();
     if (debug) console.debug('[strapi-runtime] Primary cache: Redis at', redisUrl);
-    return { primary: new RedisCacheDriver(client, keyPrefix), redisClient: client };
+    const redisDriver = new RedisCacheDriver(client, keyPrefix);
+    return {
+      primary: new ResilientCacheDriver(redisDriver, filePrimary, { label: 'Redis', debug }),
+      redisClient: client,
+    };
   } catch {
     client.disconnect();
     console.warn(`[strapi-runtime] Redis not available at ${redisUrl}, using file cache (.cache)`);

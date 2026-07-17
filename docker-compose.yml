@@ -1,11 +1,11 @@
 services:
   redis:
     image: redis:8-alpine
-    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    command: ['redis-server', '--save', '', '--appendonly', 'no']
     networks:
       - datum-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 3s
       retries: 5
@@ -15,11 +15,10 @@ services:
       context: .
       target: development
     ports:
-      - "4321:4321"
+      - '4321:4321'
     volumes:
       - .:/app
       - /app/node_modules
-      - persistent-data:/app/.persistent
     environment:
       - NODE_ENV=development
       - REDIS_URL=redis://redis:6379
@@ -37,9 +36,7 @@ services:
       context: .
       target: production
     ports:
-      - "4321:4321"
-    volumes:
-      - persistent-data:/app/.persistent
+      - '4321:4321'
     environment:
       - NODE_ENV=production
       - HOST=0.0.0.0
@@ -53,7 +50,3 @@ services:
 networks:
   datum-network:
     driver: bridge
-
-volumes:
-  persistent-data:
-    driver: local

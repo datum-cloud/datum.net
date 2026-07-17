@@ -1,15 +1,16 @@
 // Maps a request pathname to its raw markdown URL when a source exists.
 //
 // Used by FooterAiAgents.astro to decide whether the "Read as Markdown" trigger
-// should render on the current page. Pages without a markdown source (purely
-// component-rendered .astro pages) return null and the trigger is hidden.
+// should render on the current page. Pages without a markdown source return
+// null and the trigger is hidden.
 //
 // Routing layers:
-//   1. Hand-curated public/*.md files (highest precedence — Astro serves them
-//      as static assets directly).
-//   2. Dedicated <path>.md.ts endpoints with custom logic (blog, changelog,
-//      roadmap, events, handbook, brand, pricing, locations).
-//   3. Auto-derived catch-all [...mdslug].md.ts driven by markdownRegistry.
+//   1. Dedicated <path>.md.ts endpoints with custom logic (home, about,
+//      contact, download, essentials, features, dedicated-cloud, blog,
+//      changelog, roadmap, events, handbook, brand, pricing, locations).
+//      Each reads the same content sources its page renders, so it can't
+//      drift out of sync the way a hand-typed public/*.md file could.
+//   2. Auto-derived catch-all [...mdslug].md.ts driven by markdownRegistry.
 
 import { ensureStrapiArticleDetail } from '@libs/strapi';
 import { hasMarkdownForPath } from '@utils/markdownRegistry';
@@ -27,7 +28,7 @@ function normalisePath(pathname: string): string {
  * registry.
  *
  * Examples:
- *   /                  -> /index.md          (hand-curated)
+ *   /                  -> /index.md          (dedicated endpoint)
  *   /pricing           -> /pricing.md        (dedicated endpoint)
  *   /download/mac-os   -> /download/mac-os.md (auto-derived catch-all)
  *   /brand/principles  -> /brand/principles.md (auto-derived catch-all)
@@ -61,8 +62,8 @@ export async function resolveMarkdownUrl(pathname: string): Promise<string | nul
     return `${path}.md`;
   }
 
-  // Static assets, dedicated endpoints, and auto-derived registry entries are
-  // all checked uniformly by hasMarkdownForPath.
+  // Dedicated endpoints and auto-derived registry entries are checked
+  // uniformly by hasMarkdownForPath.
   if (await hasMarkdownForPath(path)) {
     return `${path}.md`;
   }

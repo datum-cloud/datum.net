@@ -19,14 +19,23 @@ export interface MarkdownSource {
 }
 
 /** URL paths that have a dedicated <path>.md.ts endpoint with custom logic
- * (Strapi listings, JSON-driven content, etc.). The catch-all defers to them
- * rather than overriding. */
+ * (Strapi listings, JSON-driven content, component-composed pages, etc.).
+ * Every one of these reads live from the same sources its page renders, so
+ * the markdown export can't drift the way a hand-typed public/*.md file did.
+ * The catch-all defers to them rather than overriding. */
 const DEDICATED_ENDPOINTS = new Set<string>([
+  '/',
+  '/about',
   '/blog',
   '/changelog',
+  '/contact',
+  '/dedicated-cloud',
+  '/download',
+  '/essentials',
   '/roadmap',
   '/roadmap/backlog',
   '/events',
+  '/features',
   '/handbook',
   '/brand',
   '/pricing',
@@ -46,14 +55,16 @@ const PAGES_URL_OVERRIDES: Record<string, string> = {
 };
 
 /** Entry IDs in the `pages` collection that should NOT produce a markdown
- * URL — hand-curated, dedicated, or not a real page. */
+ * URL via the generic catch-all — each has a dedicated endpoint (see
+ * DEDICATED_ENDPOINTS above) that composes it with sibling collections, or
+ * isn't a real page. */
 const PAGES_SKIP = new Set<string>([
-  '/', // home (hand-curated as public/index.md)
-  'contact', // hand-curated
-  'download', // hand-curated
-  'essentials', // hand-curated
-  'features', // hand-curated
-  'about', // hand-curated
+  '/', // dedicated (home: hero + WhatIsDatum + items.json)
+  'contact', // dedicated (body + founder CTA)
+  'download', // dedicated (body + download collection listing)
+  'essentials', // dedicated (body + features.json + FAQ)
+  'features', // dedicated (component-composed)
+  'about', // dedicated (mission/companies/investors/team + Strapi people)
   'blog', // dedicated (Strapi listing)
   'docs', // no /docs route
   'pricing', // dedicated (JSON tiers)
@@ -62,18 +73,6 @@ const PAGES_SKIP = new Set<string>([
   'brand', // dedicated (sections list)
   'events', // dedicated (events listing)
   'global-section', // component data, not a page
-]);
-
-/** Hand-curated public/*.md files — Astro serves these as static assets, so
- * they take precedence over any dynamic route. We still list them so the
- * trigger renders. */
-const HAND_CURATED_PATHS = new Set<string>([
-  '/',
-  '/about',
-  '/contact',
-  '/download',
-  '/essentials',
-  '/features',
 ]);
 
 /**
@@ -146,14 +145,14 @@ export async function getMarkdownRegistry(): Promise<Map<string, MarkdownSource>
 }
 
 /**
- * Returns true if the path either has a dedicated endpoint, a hand-curated
- * public file, or an auto-derived entry in the registry. Used by the
- * resolver to decide whether to render the footer trigger.
+ * Returns true if the path either has a dedicated endpoint or an auto-derived
+ * entry in the registry. Used by the resolver to decide whether to render
+ * the footer trigger.
  */
 export async function hasMarkdownForPath(path: string): Promise<boolean> {
-  if (HAND_CURATED_PATHS.has(path) || DEDICATED_ENDPOINTS.has(path)) return true;
+  if (DEDICATED_ENDPOINTS.has(path)) return true;
   const reg = await getMarkdownRegistry();
   return reg.has(path);
 }
 
-export { DEDICATED_ENDPOINTS, HAND_CURATED_PATHS };
+export { DEDICATED_ENDPOINTS };

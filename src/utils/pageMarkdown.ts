@@ -18,6 +18,9 @@ export function stripMdxToMarkdown(body: string): string {
   return body
     .replace(/^import\s+.*$/gm, '')
     .replace(/^export\s+.*$/gm, '')
+    .replace(/<a\s+href="([^"]*)"[^>]*>(.*?)<\/a>/gi, (_match, href, text) =>
+      href ? `[${text}](${href})` : text
+    ) // plain HTML anchors -> markdown links (or bare text when href is a JS-only hook)
     .replace(/<\w+[^>]*\/>/g, '') // self-closing JSX
     .replace(/<\/?[A-Z][^>]*>/g, '') // capitalised component tags
     .replace(/\n{3,}/g, '\n\n')

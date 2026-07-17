@@ -24,5 +24,7 @@ Astro.cookies.delete('_id_token', cookieOptions);
 Astro.cookies.delete('_session', cookieOptions);
 Astro.cookies.delete('nonce', cookieOptions);
 
-return Astro.redirect(safeRedirect(Astro.url.searchParams.get('redirect_uri')));
+const redirectUrl = safeRedirect(Astro.url.searchParams.get('redirect_uri'));
+console.log('[logout] redirecting to:', redirectUrl);
+return Astro.redirect(redirectUrl);
 ---

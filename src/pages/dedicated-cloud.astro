@@ -9,28 +9,7 @@ import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
 import BookDemo from '@components/forms/BookDemo.astro';
-
-const title = 'Talk to our team';
-const description =
-  "Tell us what you're trying to do, and the challenges you have. We'll do the work to align the datacenter, compute, network, and operational assets you need to move with confidence.";
-
-const checklist = [
-  {
-    title: 'Built for your stack',
-    description:
-      'Dedicated hardware, custom locations, and defined economics. From a single availability zone to an edge network in 40 global metros.',
-  },
-  {
-    title: 'Connected from day one',
-    description:
-      'Anycast, VPC, zero trust, and L7 routing attach the moment hardware is live — no separate vendor, no integration project.',
-  },
-  {
-    title: "Operated by people who've done it",
-    description:
-      "We've built and run bare-metal and networks at scale. Our deep relationships across datacenters, networking, and silicon mean we can move when others can't.",
-  },
-];
+import { title, description, checklist } from '@data/dedicatedCloud';
 ---
 
 <Layout title={title} description={description} bodyClass="page-demo">

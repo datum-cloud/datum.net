@@ -200,9 +200,15 @@ const staticServer = sirv(CLIENT_DIR, {
   extensions: ['html'], // Auto-append .html for clean URLs
   single: false, // Don't serve index.html for all routes (SPA mode)
   setHeaders: (res, pathname) => {
+    // sirv passes the request pathname here, e.g. "/locations" — clean-URL
+    // pages never carry a literal ".html" suffix, so matching on that suffix
+    // never fires and pages fall through to the immutable 1-year default
+    // meant for hashed /_astro/ assets. Treat any extensionless path as a
+    // page instead.
+    const isPage = pathname.match(/\.(html)$/) || !/\.[^/]+$/.test(pathname);
     if (pathname.includes('/_astro/')) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    } else if (pathname.match(/\.(html)$/)) {
+    } else if (isPage) {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     } else if (pathname.startsWith('/download/brand-assets/')) {
       res.setHeader('Cache-Control', 'no-store, must-revalidate');

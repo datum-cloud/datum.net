@@ -77,12 +77,12 @@ const jsonLd = {
       <span class="module-border-wipe" aria-hidden="true"></span>
       <FeatureSections label="Features">
         <FeatureSection
-          id="global-load-balancer"
-          mediaSide={globalLoadBalancer.data.mediaSide ?? 'left'}
-          image={globalLoadBalancer.data.featuredImage!}
-          imageAlt={globalLoadBalancer.data.title}
+          id="dns"
+          mediaSide={dns.data.mediaSide ?? 'left'}
+          image={dns.data.featuredImage!}
+          imageAlt={dns.data.title}
         >
-          <GlobalLoadBalancerContent />
+          <DnsContent />
         </FeatureSection>
 
         <FeatureSection
@@ -99,12 +99,12 @@ const jsonLd = {
         </FeatureSection>
 
         <FeatureSection
-          id="dns"
-          mediaSide={dns.data.mediaSide ?? 'left'}
-          image={dns.data.featuredImage!}
-          imageAlt={dns.data.title}
+          id="global-load-balancer"
+          mediaSide={globalLoadBalancer.data.mediaSide ?? 'left'}
+          image={globalLoadBalancer.data.featuredImage!}
+          imageAlt={globalLoadBalancer.data.title}
         >
-          <DnsContent />
+          <GlobalLoadBalancerContent />
         </FeatureSection>
       </FeatureSections>
     </section>

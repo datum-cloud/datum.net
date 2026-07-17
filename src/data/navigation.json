@@ -15,12 +15,16 @@
         {
           "title": "Deliver",
           "items": [
-            { "text": "DNS", "href": "/platform/deliver#dns" },
+            { "text": "DNS", "href": "/platform/deliver" },
             {
               "text": "Application Load Balancer",
               "href": "/platform/deliver#application-load-balancer"
             },
-            { "text": "Global Load Balancer", "href": "/platform/deliver", "label": "Soon" }
+            {
+              "text": "Global Load Balancer",
+              "href": "/platform/deliver#global-load-balancer",
+              "label": "Soon"
+            }
           ]
         },
         {

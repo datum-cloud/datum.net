@@ -13,11 +13,11 @@ import ModuleConnector from '@components/home/ModuleConnector.astro';
 
 const page = await getCollectionEntry('pages', 'features/connect/index');
 const galacticVpc = await getCollectionEntry('pages', 'features/connect/galactic-vpc');
-const connections = await getCollectionEntry('pages', 'features/connect/connections');
+const connectors = await getCollectionEntry('pages', 'features/connect/connectors');
 const interconnect = await getCollectionEntry('pages', 'features/connect/interconnect');
 
 const { Content: GalacticVpcContent } = await render(galacticVpc);
-const { Content: ConnectionsContent } = await render(connections);
+const { Content: ConnectorsContent } = await render(connectors);
 const { Content: InterconnectContent } = await render(interconnect);
 
 const fm = page.data;
@@ -84,12 +84,12 @@ const jsonLd = {
         </FeatureSection>
 
         <FeatureSection
-          id="connections"
-          mediaSide={connections.data.mediaSide ?? 'right'}
-          image={connections.data.featuredImage!}
-          imageAlt={connections.data.title}
+          id="connectors"
+          mediaSide={connectors.data.mediaSide ?? 'right'}
+          image={connectors.data.featuredImage!}
+          imageAlt={connectors.data.title}
         >
-          <ConnectionsContent />
+          <ConnectorsContent />
         </FeatureSection>
 
         <FeatureSection

@@ -39,7 +39,7 @@
           "title": "Connect",
           "items": [
             { "text": "Galactic VPC", "href": "/platform/connect" },
-            { "text": "Connections", "href": "/platform/connect#connections" },
+            { "text": "Connectors", "href": "/platform/connect#connectors" },
             { "text": "Interconnect", "href": "/platform/connect#interconnect", "label": "Soon" }
           ]
         }

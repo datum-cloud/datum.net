@@ -16,6 +16,8 @@ export interface NavItem {
 
 export interface NavSection {
   title?: string;
+  /** When set, the section header in mega-menus links to this URL (e.g. Platform pillars). */
+  href?: string;
   isCardLayout?: boolean;
   items: NavItem[];
 }

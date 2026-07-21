@@ -1,0 +1,32 @@
+README.md
+  s_60e5c85b6a4e3a::t_4a779e04c93ad1 96
+  s_60e5c85b6a4e3a::t_970a0df557b555 81
+  s_60e5c85b6a4e3a::t_72836bee86b55a 82
+  s_60e5c85b6a4e3a::t_b0d29ad06b78f3 145,176
+  s_60e5c85b6a4e3a::t_662f8783923b24 147-148
+  s_60e5c85b6a4e3a::t_451a943580999f 94-95
+docs/PROJECT_STRUCTURE.md
+  s_60e5c85b6a4e3a::t_d28d897e5d73af 236,242
+  s_60e5c85b6a4e3a::t_9cefa55d23d336 340
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "72d67863454c96a3335ad40d529b28e6ba5571ce",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_60e5c85b6a4e3a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "506dfa33-65d3-45c7-aff5-5212edc8ab1d",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

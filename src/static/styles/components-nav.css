@@ -212,6 +212,13 @@
 
   .nav-dropdown-mega .nav-dropdown-title {
     @apply mb-0 px-4;
+
+    .nav-dropdown-title-link {
+      @apply block no-underline;
+      @apply focus-visible:ring-aurora-moss focus-visible:ring-offset-midnight-fjord focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+      @apply hover:[&>span]:border-white/40 hover:[&>span]:text-white/90;
+    }
+
     span {
       @apply text-app---dark---utility-4 font-dejavu border-app---dark---utility-2 block w-full border-b pt-0 pb-4 text-(length:--12px) leading-normal font-normal whitespace-nowrap uppercase;
     }
@@ -401,6 +408,10 @@
 
   .mobile-dropdown-title {
     @apply text-midnight-fjord/50 datum-text-xs mb-3 font-semibold;
+  }
+
+  .mobile-dropdown-title-link {
+    @apply text-midnight-fjord/50 hover:text-midnight-fjord/70 no-underline transition-colors duration-200;
   }
 
   .mobile-dropdown-items {

@@ -88,7 +88,21 @@ function navDropdownParentClass(text: string): string {
                     >
                       {'title' in section && section.title && (
                         <h3 class="nav-dropdown-title">
-                          <span>{section.title}</span>
+                          {section.href ? (
+                            <a
+                              href={section.href}
+                              class:list={[
+                                'nav-dropdown-title-link',
+                                isActivePath(section.href, currentPath) && 'link--active',
+                              ]}
+                              data-astro-prefetch="hover"
+                              tabindex="0"
+                            >
+                              <span>{section.title}</span>
+                            </a>
+                          ) : (
+                            <span>{section.title}</span>
+                          )}
                         </h3>
                       )}
                       <ul

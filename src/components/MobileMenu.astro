@@ -153,7 +153,19 @@ const mainNav = navData.main;
                   {item.children.map((section) => (
                     <div class="mobile-dropdown-section">
                       {'title' in section && section.title && (
-                        <h3 class="mobile-dropdown-title">{section.title}</h3>
+                        <h3 class="mobile-dropdown-title">
+                          {section.href ? (
+                            <a
+                              href={section.href}
+                              class="mobile-dropdown-title-link"
+                              x-on:click="closeMenu()"
+                            >
+                              {section.title}
+                            </a>
+                          ) : (
+                            section.title
+                          )}
+                        </h3>
                       )}
                       <ul class="mobile-dropdown-items">
                         {section.items?.map((subItem) => (

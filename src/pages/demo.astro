@@ -9,7 +9,6 @@ import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
 import BookDemo from '@components/forms/BookDemo.astro';
-import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionLine from '@components/SectionLine.astro';
 
 const title = 'Book a demo';
@@ -34,7 +33,7 @@ const checklist = [
 
     <div class="section--block section--block--x-pad relative overflow-hidden bg-white">
       <div class="max-width-nav large-pad relative">
-        <SectionLine position="left-top" />
+        <SectionLine left top />
 
         <SectionEyebrow position="left-top-keyline">Book a demo</SectionEyebrow>
 
@@ -69,8 +68,6 @@ const checklist = [
         </div>
       </div>
     </div>
-
-    <ModuleConnector />
 
     <Footer showCTA={false} plainIllustration />
   </section>

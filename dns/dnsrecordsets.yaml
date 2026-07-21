@@ -1,0 +1,314 @@
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-apex-a
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: A
+  records:
+  - name: "@"
+    ttl: 300
+    a:
+      content: 67.14.168.1
+  - name: "@"
+    ttl: 300
+    a:
+      content: 67.14.164.1
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-apex-aaaa
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: AAAA
+  records:
+  - name: "@"
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:10::1
+  - name: "@"
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:20::1
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-apex-mx
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: MX
+  records:
+  - name: "@"
+    ttl: 300
+    mx:
+      preference: 1
+      exchange: aspmx.l.google.com.
+  - name: "@"
+    ttl: 300
+    mx:
+      preference: 5
+      exchange: alt1.aspmx.l.google.com.
+  - name: "@"
+    ttl: 300
+    mx:
+      preference: 5
+      exchange: alt2.aspmx.l.google.com.
+  - name: "@"
+    ttl: 300
+    mx:
+      preference: 10
+      exchange: alt3.aspmx.l.google.com.
+  - name: "@"
+    ttl: 300
+    mx:
+      preference: 10
+      exchange: alt4.aspmx.l.google.com.
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-apex-txt
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: TXT
+  records:
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "v=spf1 include:_spf.google.com ~all"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "google-site-verification=BdXkIJX2nAEzSnZetVvWdx5ETXt0aT2Goqc04Q-rZcU"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "google-site-verification=83eJo2EJNggYSXSlVDRk_OV0Ac4kHsw6ZRzjG1DLTl8"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "apple-domain-verification=EiOofJx3Kx0sZFmKPNZiHuYPAU8278gXhAF5-JLIegg"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "slack-domain-verification=p9T6PdpUQQDB7gnLZCEUQ0rBEJGeSz6YOQzrWFVr"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "figma-domain-verification=5734cc6de3b60be3f4c5b26ad657e2194993788f7ebba45cf7b93f65fa280767-1734786641"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "canva-site-verification=W8a5VEJwdGK1Uh5BLjdIaQ"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "anthropic-domain-verification-rmt864=Jz9tdjfQKXIudrVhtA3pq0IGh"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "1password-site-verification=4QDX2EQ4E5GWBDPZ3NPHAPX6S4"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "plain-domain-verification-gkk7cw=2aZHArUiJge6W3iS4hRjF9Yfz"
+  - name: "@"
+    ttl: 300
+    txt:
+      content: "4vsie6as0hv8gl59ggtr7mmrv3"
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-apex-dmarc
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: TXT
+  records:
+  - name: _dmarc
+    ttl: 300
+    txt:
+      content: "v=DMARC1;p=quarantine;sp=quarantine;pct=100;rua=mailto:hostmaster@datum.net;ruf=mailto:hostmaster@datum.net;ri=86400;aspf=r;adkim=r;fo=1;"
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-redirect-a
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: A
+  records:
+  - name: status
+    ttl: 300
+    a:
+      content: 67.14.168.1
+  - name: status
+    ttl: 300
+    a:
+      content: 67.14.164.1
+  - name: go
+    ttl: 300
+    a:
+      content: 67.14.168.1
+  - name: go
+    ttl: 300
+    a:
+      content: 67.14.164.1
+  - name: wiki
+    ttl: 300
+    a:
+      content: 67.14.168.1
+  - name: wiki
+    ttl: 300
+    a:
+      content: 67.14.164.1
+  - name: edge
+    ttl: 300
+    a:
+      content: 67.14.168.1
+  - name: edge
+    ttl: 300
+    a:
+      content: 67.14.164.1
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-redirect-aaaa
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: AAAA
+  records:
+  - name: status
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:10::1
+  - name: status
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:20::1
+  - name: go
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:10::1
+  - name: go
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:20::1
+  - name: wiki
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:10::1
+  - name: wiki
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:20::1
+  - name: edge
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:10::1
+  - name: edge
+    ttl: 300
+    aaaa:
+      content: 2607:ed40:20::1
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-dkim-cname
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: CNAME
+  records:
+  - name: s1._domainkey
+    ttl: 300
+    cname:
+      content: s1.domainkey.u46414074.wl075.sendgrid.net.
+  - name: s2._domainkey
+    ttl: 300
+    cname:
+      content: s2.domainkey.u46414074.wl075.sendgrid.net.
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-mail-mx
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: MX
+  records:
+  - name: mail
+    ttl: 300
+    mx:
+      preference: 1
+      exchange: smtp.google.com.
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-resend-dkim-txt
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: TXT
+  records:
+  - name: resend._domainkey.mail
+    ttl: 300
+    txt:
+      content: "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6EYlwekFZdvSITYs3ttdiXB7FoDfDyCUorElD9IVg1GdqUTlLf0YDMzAIlnEYKd5l+yGMybmsBxv3hs+aEwbRG97a+D0pp8PgMkcY2V574mjetXeyF+MGHv90b2Gy0Xc8H4zRqn7NILYVv3otpNRLPiSWmIxYdXKScEExjbEXVwIDAQAB"
+  - name: resend._domainkey.staging
+    ttl: 300
+    txt:
+      content: "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEaw/348dy5+SrYoBJrRFHtcpfLdSweO8NgFxurbsv+uNlmh1bv6K+XSYJS4sba3SEVygB8ptTBzNDG3MWtu4Cv7sH/CeBIB2GH5RgbQKpgohhzXYK6hVjug0tb2Xn7wq50GGzXscYJf0QwknrZlXuQ1RVFSkvpiw9Lt1ZSQQG+wIDAQAB"
+  - name: resend._domainkey.email
+    ttl: 300
+    txt:
+      content: "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYBFJ1ZHZaPOhZ0/X7Jt1ZhuvG6G7ML2lEw/TEr1agkWZ/KpqFRtt9rx1S4u5z39KpR85PawpCyVWjZRS5oUwBkJVjXdz3OxR0P0R9x+P0qBEG6U7KBFEwSeTyLDyGCn2R8ptSXgtZ5LbHal5MaSyk/P/FfmdkBKz+GlFNupS5cQIDAQAB"
+---
+apiVersion: dns.networking.miloapis.com/v1alpha1
+kind: DNSRecordSet
+metadata:
+  name: datum-net-dmarc-send-subdomains
+  namespace: default
+spec:
+  dnsZoneRef:
+    name: datum-net-xq088a
+  recordType: TXT
+  records:
+  - name: _dmarc.mail
+    ttl: 3600
+    txt:
+      content: "v=DMARC1; p=none; rua=mailto:hostmaster@datum.net;"
+  - name: _dmarc.staging
+    ttl: 3600
+    txt:
+      content: "v=DMARC1; p=none; rua=mailto:hostmaster@datum.net;"
+  - name: mail.datum.net._report._dmarc
+    ttl: 3600
+    txt:
+      content: "v=DMARC1"
+  - name: staging.datum.net._report._dmarc
+    ttl: 3600
+    txt:
+      content: "v=DMARC1"

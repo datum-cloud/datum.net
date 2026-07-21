@@ -35,7 +35,7 @@ export const GET: APIRoute = async () => {
       list.push(`- [${a.title}](${url})${meta}${a.description ? ` - ${a.description}` : ''}`);
     }
 
-    const canonicalUrl = 'https://www.datum.net/blog/';
+    const canonicalUrl = 'https://www.datum.net/blog';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Blog' } }, {
       trailingSections: [list.join('\n')],
       sourceUrl: canonicalUrl,

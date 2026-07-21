@@ -51,7 +51,7 @@ export const GET: APIRoute = async () => {
         extractDescription(page.body, 'No description available');
       const override = PLATFORM_HUB_URL_OVERRIDES[page.id];
       const pageUrl = override
-        ? `${(site || '').replace(/\/+$/, '')}${override.replace(/^([^#]+)(#.*)?$/, '$1/$2')}`
+        ? `${(site || '').replace(/\/+$/, '')}${override}`
         : buildUrl(page.id);
       const pageTitle = stripHtml(page.data.title);
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;

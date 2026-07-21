@@ -35,7 +35,7 @@ export const GET: APIRoute = async () => {
       if (linkHref && linkText) sections.push(`[${linkText}](${linkHref})`, '');
     }
 
-    const canonicalUrl = 'https://www.datum.net/platform/build/';
+    const canonicalUrl = 'https://www.datum.net/platform/build';
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));

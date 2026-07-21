@@ -29,7 +29,7 @@ export const GET: APIRoute = async () => {
       return `- [${label}](/download/${entry.id}/) - ${entry.data.description}`;
     });
 
-    const canonicalUrl = 'https://www.datum.net/download/';
+    const canonicalUrl = 'https://www.datum.net/download';
     const body = renderEntryMarkdown(page, {
       trailingSections: list.length ? [['## Available downloads', '', ...list].join('\n')] : [],
       sourceUrl: canonicalUrl,

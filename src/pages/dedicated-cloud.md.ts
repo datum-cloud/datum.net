@@ -16,7 +16,7 @@ export const GET: APIRoute = async () => {
     }
     sections.push('');
 
-    const canonicalUrl = 'https://www.datum.net/dedicated-cloud/';
+    const canonicalUrl = 'https://www.datum.net/dedicated-cloud';
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));

@@ -66,7 +66,7 @@ export const GET: APIRoute = async () => {
       }
     }
 
-    const canonicalUrl = 'https://www.datum.net/locations/';
+    const canonicalUrl = 'https://www.datum.net/locations';
     sections.push(
       '',
       '## Why these cities',

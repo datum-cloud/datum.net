@@ -68,7 +68,7 @@ export const GET: APIRoute = async () => {
       sections.push('', 'No roadmap milestones available yet.');
     }
 
-    const canonicalUrl = 'https://www.datum.net/roadmap/';
+    const canonicalUrl = 'https://www.datum.net/roadmap';
     sections.push(
       '',
       '## How we plan',

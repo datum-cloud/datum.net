@@ -67,7 +67,7 @@ export const GET: APIRoute = async ({ params }) => {
       sections.push(`[View on GitHub](${roadmap.githubUrl})`, '');
     }
 
-    const canonicalUrl = `https://www.datum.net/roadmap/${slug}/`;
+    const canonicalUrl = `https://www.datum.net/roadmap/${slug}`;
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));

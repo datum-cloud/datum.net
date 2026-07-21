@@ -40,7 +40,7 @@ export const GET: APIRoute = async () => {
       }
     }
 
-    const canonicalUrl = 'https://www.datum.net/essentials/';
+    const canonicalUrl = 'https://www.datum.net/essentials';
     sections.push('', '---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));

@@ -70,7 +70,7 @@ export const GET: APIRoute = async () => {
         );
     }
 
-    const canonicalUrl = 'https://www.datum.net/about/';
+    const canonicalUrl = 'https://www.datum.net/about';
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));

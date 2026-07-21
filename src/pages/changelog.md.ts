@@ -38,7 +38,7 @@ export const GET: APIRoute = async () => {
       sections.push('');
     }
 
-    const canonicalUrl = 'https://www.datum.net/changelog/';
+    const canonicalUrl = 'https://www.datum.net/changelog';
     const body = renderEntryMarkdown(index ?? { data: { title: 'Changelog' } }, {
       trailingSections: sections.length ? [sections.join('\n').trim()] : [],
       sourceUrl: canonicalUrl,

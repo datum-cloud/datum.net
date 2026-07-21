@@ -61,7 +61,7 @@ export const GET: APIRoute = async () => {
       '- [Alt Cloud Meetups](/events/alt-cloud-meetups/)'
     );
 
-    const canonicalUrl = 'https://www.datum.net/events/';
+    const canonicalUrl = 'https://www.datum.net/events';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Events' } }, {
       trailingSections: [sections.join('\n')],
       sourceUrl: canonicalUrl,

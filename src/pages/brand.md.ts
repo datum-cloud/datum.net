@@ -22,7 +22,7 @@ export const GET: APIRoute = async () => {
       list.push(`- [${s.data.title ?? slug}](/brand/${slug}/)${desc}`);
     }
 
-    const canonicalUrl = 'https://www.datum.net/brand/';
+    const canonicalUrl = 'https://www.datum.net/brand';
     const body = renderEntryMarkdown(page ?? { data: { title: 'Brand' } }, {
       skipBody: true,
       trailingSections: sections.length ? [list.join('\n')] : [],

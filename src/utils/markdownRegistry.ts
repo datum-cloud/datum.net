@@ -40,6 +40,9 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/brand',
   '/pricing',
   '/locations',
+  '/platform/deliver',
+  '/platform/build',
+  '/platform/connect',
 ]);
 
 /**

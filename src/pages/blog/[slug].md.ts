@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ params }) => {
     const title = article.title ? `# ${article.title}\n\n` : '';
     const description = article.description ? `> ${article.description}\n\n` : '';
 
-    const canonicalUrl = `https://www.datum.net/blog/${slug}/`;
+    const canonicalUrl = `https://www.datum.net/blog/${slug}`;
     return new Response(`${title}${description}${body}`, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',

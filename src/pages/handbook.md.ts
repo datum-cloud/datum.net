@@ -21,7 +21,7 @@ export const GET: APIRoute = async () => {
       }
     }
 
-    const canonicalUrl = 'https://www.datum.net/handbook/';
+    const canonicalUrl = 'https://www.datum.net/handbook';
     const body = renderEntryMarkdown(index ?? { data: { title: 'Handbook' } }, {
       trailingSections: sections.length ? [sections.join('\n')] : [],
       sourceUrl: canonicalUrl,

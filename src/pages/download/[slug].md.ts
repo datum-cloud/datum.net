@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ props }) => {
   try {
     const entry = await getEntry('download', entryId);
     if (!entry) return new Response('Not found', { status: 404 });
-    const canonicalUrl = `https://www.datum.net/download/${entryId}/`;
+    const canonicalUrl = `https://www.datum.net/download/${entryId}`;
     const body = renderEntryMarkdown(entry, {
       demoteHeadings: true,
       sourceUrl: canonicalUrl,

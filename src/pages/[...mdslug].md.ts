@@ -37,7 +37,7 @@ export const GET: APIRoute = async ({ props }) => {
     );
     if (!entry) return new Response('Not found', { status: 404 });
 
-    const canonicalUrl = `https://www.datum.net${urlPath}/`;
+    const canonicalUrl = `https://www.datum.net${urlPath}`;
     const body = renderEntryMarkdown(entry, {
       // Demote body headings so a body-level H1 doesn't compete with the
       // frontmatter title. Safe for all pages — pages without a body H1

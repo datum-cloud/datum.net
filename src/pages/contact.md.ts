@@ -12,7 +12,7 @@ export const GET: APIRoute = async () => {
     const page = await getEntry('pages', 'contact');
     if (!page) return new Response('Not found', { status: 404 });
 
-    const canonicalUrl = 'https://www.datum.net/contact/';
+    const canonicalUrl = 'https://www.datum.net/contact';
     const body = renderEntryMarkdown(page, {
       trailingSections: [
         [

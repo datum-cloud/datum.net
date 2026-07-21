@@ -87,7 +87,8 @@ export const formatDate = (date: Date | string | undefined): string => {
   }
 };
 
-// Build URL for a content item
+// Build URL for a content item. The site uses trailingSlash: 'never', so
+// every URL below (other than the bare root) must NOT have a trailing slash.
 export const buildUrl = (id: string, basePath: string = ''): string => {
   // Normalize siteUrl - remove trailing slashes
   const siteUrl = (site || '').replace(/\/+$/, '');
@@ -97,10 +98,10 @@ export const buildUrl = (id: string, basePath: string = ''): string => {
   const cleanId = id.replace(/^\/+|\/+$/g, '');
 
   if (cleanId === '' || cleanId === 'index') {
-    return basePath ? `${siteUrl}/${basePath}/` : `${siteUrl}/`;
+    return basePath ? `${siteUrl}/${basePath}` : `${siteUrl}/`;
   } else if (cleanId.endsWith('/index')) {
-    return `${siteUrl}/${prefix}${cleanId.replace('/index', '')}/`;
+    return `${siteUrl}/${prefix}${cleanId.replace('/index', '')}`;
   } else {
-    return `${siteUrl}/${prefix}${cleanId}/`;
+    return `${siteUrl}/${prefix}${cleanId}`;
   }
 };

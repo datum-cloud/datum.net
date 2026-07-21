@@ -49,7 +49,7 @@ export const GET: APIRoute = async () => {
       }
     }
 
-    const canonicalUrl = 'https://www.datum.net/roadmap/backlog/';
+    const canonicalUrl = 'https://www.datum.net/roadmap/backlog';
     sections.push(
       '',
       '---',

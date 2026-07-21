@@ -121,6 +121,29 @@ export function renderEntryMarkdown(
 }
 
 /**
+ * Extracts the FeatureBadge status text and Button doc-link (href + label)
+ * from a feature entry's raw MDX body. Feature-section bodies (src/content/pages/
+ * features/<hub>/<slug>.mdx) are pure component composition — a heading that
+ * duplicates the title, an optional status badge, and an optional CTA link —
+ * with no independent prose, so these parsed pieces plus the frontmatter
+ * description are the whole story for a markdown export.
+ */
+export function extractFeatureBodyParts(body: string | undefined): {
+  badge?: string;
+  linkText?: string;
+  linkHref?: string;
+} {
+  if (!body) return {};
+  const badgeMatch = body.match(/<FeatureBadge[^>]*>(.*?)<\/FeatureBadge>/s);
+  const linkMatch = body.match(/<Button\s+href="([^"]+)"[^>]*\btext="([^"]+)"/);
+  return {
+    badge: badgeMatch?.[1]?.trim(),
+    linkHref: linkMatch?.[1],
+    linkText: linkMatch?.[2],
+  };
+}
+
+/**
  * Convenience factory for a basic GET handler that reads one entry from a
  * collection and returns it as ASCII markdown. For most static-content pages
  * the body alone is enough; for listing or composed pages use a custom

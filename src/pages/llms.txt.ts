@@ -6,6 +6,27 @@ import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 // Note: handbook entries intentionally excluded — internal company ops content
 // is not relevant to AI agents consuming platform documentation.
 
+// The `features/<hub>/*` pages entries back the /platform/<hub> hub pages
+// (src/pages/platform/{deliver,build,connect}.astro) — each hub composes an
+// `index` entry plus several sub-feature entries into one route with anchor
+// sections, so `buildUrl(page.id)` (which assumes one entry = one URL) would
+// otherwise point at dead `/features/<hub>/...` URLs. Override with the real
+// hub URL, anchored to the matching FeatureSection id for sub-features.
+const PLATFORM_HUB_URL_OVERRIDES: Record<string, string> = {
+  'features/deliver/index': '/platform/deliver',
+  'features/deliver/dns': '/platform/deliver#dns',
+  'features/deliver/application-load-balancer': '/platform/deliver#application-load-balancer',
+  'features/deliver/global-load-balancer': '/platform/deliver#global-load-balancer',
+  'features/build/index': '/platform/build',
+  'features/build/compute': '/platform/build#compute',
+  'features/build/object-storage': '/platform/build#object-storage',
+  'features/build/edge-apps': '/platform/build#edge-apps',
+  'features/connect/index': '/platform/connect',
+  'features/connect/galactic-vpc': '/platform/connect#galactic-vpc',
+  'features/connect/connectors': '/platform/connect#connectors',
+  'features/connect/interconnect': '/platform/connect#interconnect',
+};
+
 export const GET: APIRoute = async () => {
   try {
     // Get project info
@@ -28,7 +49,10 @@ export const GET: APIRoute = async () => {
         page.data.meta?.description ||
         page.data.description ||
         extractDescription(page.body, 'No description available');
-      const pageUrl = buildUrl(page.id);
+      const override = PLATFORM_HUB_URL_OVERRIDES[page.id];
+      const pageUrl = override
+        ? `${(site || '').replace(/\/+$/, '')}${override.replace(/^([^#]+)(#.*)?$/, '$1/$2')}`
+        : buildUrl(page.id);
       const pageTitle = stripHtml(page.data.title);
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }

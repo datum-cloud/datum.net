@@ -1,0 +1,36 @@
+src/libs/githubRoadmap.ts
+  h_c7951bc64db670 177
+  s_be4722f80578e5::t_97bd9ae3a2a6b7 172-173,175
+  s_be4722f80578e5::t_0b82d35003ff7f 209-213,218
+  s_be4722f80578e5::t_94234459f3a287 56-62,73-78,86
+  s_be4722f80578e5::t_e020b1d2653cd6 174,176
+  s_be4722f80578e5::t_87ed3d4d765905 161-171,178-179
+  s_be4722f80578e5::t_59ff0fba7d8c50 151-160
+docs/PROJECT_STRUCTURE.md
+  s_be4722f80578e5::t_2642e9ff3546d6 234
+  s_be4722f80578e5::t_72282d1afe1ef3 248
+docs/STRAPI_CACHE_API.md
+  s_be4722f80578e5::t_f3788b82d52c32 186-187
+  s_be4722f80578e5::t_7a050b70842ff9 197-211
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "8a08971474443ca91307679ce66446449c6b78fd",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_be4722f80578e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ed0ec50-9487-4b62-8f1d-5db3a97b3f97",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -3,7 +3,7 @@
 /**
  * Cache warmup script — pre-populates .cache/*.json before build.
  *
- * Fetches from GitHub (stargazer/roadmaps/changelogs), and Strapi,
+ * Fetches from GitHub (stargazer/roadmaps/changelogs, Projects backlog), and Strapi,
  * then writes to .cache/ so the build can use cached data instead of hitting APIs.
  *
  * Run: npm run build:cache (or tsx scripts/warmup-cache.ts)
@@ -40,6 +40,15 @@ async function warmup(): Promise<void> {
       '[warmup-cache] Stargazer/GitHub failed:',
       err instanceof Error ? err.message : err
     );
+  }
+
+  // GitHub Projects backlog (roadmap/backlog page)
+  try {
+    const { forceRegenerateGitHubBacklog } = await import('../src/libs/githubBacklog');
+    const backlogItems = await forceRegenerateGitHubBacklog();
+    console.log(`[warmup-cache] GitHub backlog: ${backlogItems.length} items`);
+  } catch (err) {
+    console.warn('[warmup-cache] GitHub backlog failed:', err instanceof Error ? err.message : err);
   }
 
   // Strapi: articles, authors, team, roadmaps

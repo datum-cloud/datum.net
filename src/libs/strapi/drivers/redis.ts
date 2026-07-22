@@ -28,7 +28,21 @@ export class RedisCacheDriver implements CacheDriver {
     return `${this.prefix}${k}`;
   }
 
+  /**
+   * Fail fast when the client isn't connected instead of letting ioredis
+   * queue the command until the next background reconnect attempt fires
+   * (which can take seconds under the reconnect backoff and would stall
+   * the caller). `ResilientCacheDriver` / callers fall back to the file
+   * cache immediately on this throw.
+   */
+  private assertReady(): void {
+    if (this.client.status !== 'ready') {
+      throw new Error(`Redis client not ready (status: ${this.client.status})`);
+    }
+  }
+
   async get<T>(key: string): Promise<T | null> {
+    this.assertReady();
     const raw = await this.client.get(this.key(key));
     if (raw === null) return null;
     try {
@@ -39,6 +53,7 @@ export class RedisCacheDriver implements CacheDriver {
   }
 
   async set<T>(key: string, data: T, options?: CacheSetOptions): Promise<void> {
+    this.assertReady();
     const serialised = JSON.stringify(data);
     const fullKey = this.key(key);
 
@@ -58,10 +73,12 @@ export class RedisCacheDriver implements CacheDriver {
   }
 
   async delete(key: string): Promise<void> {
+    this.assertReady();
     await this.client.del(this.key(key));
   }
 
   async deleteByTag(tag: string): Promise<void> {
+    this.assertReady();
     const tagKey = this.key(tagSetKey(tag));
     const members = await this.client.smembers(tagKey);
     if (members.length === 0) return;
@@ -72,12 +89,14 @@ export class RedisCacheDriver implements CacheDriver {
   }
 
   async clear(): Promise<void> {
+    this.assertReady();
     const keys = await this.keys();
     if (keys.length === 0) return;
     await this.client.del(...keys.map((k) => this.key(k)));
   }
 
   async keys(prefix?: string): Promise<string[]> {
+    this.assertReady();
     const pattern = `${this.prefix}${prefix ?? ''}*`;
     const fullKeys = await this.client.keys(pattern);
     return fullKeys.map((k) => k.slice(this.prefix.length));

@@ -1,0 +1,14 @@
+---
+// src/pages/roadmap/backlog-fragment.astro
+export const prerender = false;
+export const partial = true;
+
+import { fetchGitHubBacklog } from '@libs/githubBacklog';
+import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
+
+const backlogItems = await fetchGitHubBacklog();
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+---
+
+<RoadmapBacklog items={backlogItems} />

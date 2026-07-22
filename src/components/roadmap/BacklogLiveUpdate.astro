@@ -1,0 +1,46 @@
+---
+// src/components/roadmap/BacklogLiveUpdate.astro
+interface Props {
+  updatedAt: number | null;
+}
+
+const { updatedAt } = Astro.props as Props;
+
+const POLL_INTERVAL_MS = 3 * 60 * 1000;
+const FAST_POLL_INTERVAL_MS = 2 * 1000;
+---
+
+<div
+  x-data={`{
+    updatedAt: ${JSON.stringify(updatedAt)},
+    poll() {
+      fetch('/api/roadmap/backlog-meta', { cache: 'no-store' })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.updatedAt && data.updatedAt !== this.updatedAt) {
+            this.updatedAt = data.updatedAt;
+            this.refresh();
+          }
+        })
+        .catch(() => {})
+        .finally(() => this.schedule());
+    },
+    refresh() {
+      fetch('/roadmap/backlog-fragment', { cache: 'no-store' })
+        .then((res) => res.text())
+        .then((html) => {
+          this.$refs.list.innerHTML = html;
+        })
+        .catch(() => {});
+    },
+    schedule() {
+      const delay = this.updatedAt ? ${POLL_INTERVAL_MS} : ${FAST_POLL_INTERVAL_MS};
+      setTimeout(() => this.poll(), delay);
+    }
+  }`}
+  x-init="schedule()"
+>
+  <div x-ref="list">
+    <slot />
+  </div>
+</div>

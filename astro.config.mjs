@@ -144,6 +144,9 @@ export default defineConfig({
     ssr: {
       noExternal: ['zod'],
     },
+    server: {
+      allowedHosts: ['datumproxy.net', '.datumproxy.net'],
+    },
   },
   experimental: {},
   prefetch: true,

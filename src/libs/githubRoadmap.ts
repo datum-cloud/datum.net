@@ -53,6 +53,13 @@ const ROADMAP_MILESTONES_QUERY = `
           dueOn
           state
           url
+          issues(first: 100) {
+            nodes {
+              number
+              title
+              url
+            }
+          }
         }
         pageInfo {
           hasNextPage
@@ -63,6 +70,12 @@ const ROADMAP_MILESTONES_QUERY = `
   }
 `;
 
+interface GitHubMilestoneIssueNode {
+  number?: number;
+  title?: string;
+  url?: string;
+}
+
 interface GitHubMilestoneNode {
   number?: number;
   title?: string;
@@ -70,6 +83,7 @@ interface GitHubMilestoneNode {
   dueOn?: string | null;
   state?: string;
   url?: string;
+  issues?: { nodes: GitHubMilestoneIssueNode[] };
 }
 
 interface GitHubMilestonesPage {
@@ -134,6 +148,35 @@ async function writeToRedis(items: RoadmapMilestone[]): Promise<void> {
   }
 }
 
+/** Escape HTML special characters so issue titles can't inject markup into the rendered summary. */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Build a markdown list of issues linked to a milestone, for appending to its description. */
+function buildIssuesListMarkdown(issues: GitHubMilestoneIssueNode[]): string {
+  const validIssues = issues.filter(
+    (issue): issue is Required<GitHubMilestoneIssueNode> =>
+      typeof issue.number === 'number' &&
+      typeof issue.title === 'string' &&
+      typeof issue.url === 'string'
+  );
+  if (validIssues.length === 0) return '';
+
+  const items = validIssues
+    .map(
+      (issue) =>
+        `<li>${escapeHtml(issue.title)} <a href="${issue.url}" target="_blank" rel="noopener noreferrer">#${issue.number}</a></li>`
+    )
+    .join('');
+  return `<div><p style="margin-bottom: 2rem;"><strong>What's included in this milestone:</strong></p><ul style="margin-top: 0;">${items}</ul></div>`;
+}
+
 /** Fetch all milestone pages from the GitHub GraphQL API. */
 async function fetchFromGitHub(): Promise<RoadmapMilestone[]> {
   console.log(`[githubRoadmap] Fetching milestones from ${GITHUB_ORG}/${GITHUB_REPO}...`);
@@ -163,11 +206,16 @@ async function fetchFromGitHub(): Promise<RoadmapMilestone[]> {
     for (const node of page.nodes) {
       if (typeof node.number !== 'number' || !node.title || !node.dueOn) continue;
 
+      const issuesMarkdown = buildIssuesListMarkdown(node.issues?.nodes ?? []);
+      const summaryParts = [node.description, issuesMarkdown].filter((part): part is string =>
+        Boolean(part && part.trim())
+      );
+
       items.push({
         number: node.number,
         title: node.title,
         slug: getRoadmapSlug({ title: node.title }),
-        summary: node.description ?? undefined,
+        summary: summaryParts.length > 0 ? summaryParts.join('\n\n') : undefined,
         releaseDate: node.dueOn,
         githubUrl: node.url ?? `https://github.com/${GITHUB_ORG}/${GITHUB_REPO}`,
         shipped: node.state === 'CLOSED',

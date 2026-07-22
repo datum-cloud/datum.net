@@ -231,6 +231,7 @@ Reusable utility libraries:
 - `file.ts` - File utilities
 - `github.ts` - GitHub API client
 - `githubBacklog.ts` - GitHub-backed roadmap backlog
+- `githubRoadmap.ts` - GitHub milestones-backed roadmap content (replaces the old Strapi-sourced roadmap; see `docs/STRAPI_CACHE_API.md` for caching)
 - `k8s-client.ts` - Kubernetes client
 - `mailer.ts` - Email sending (used by `actions/demo.ts`)
 - `miloapi.ts` - Milo IAM API client
@@ -244,9 +245,8 @@ Reusable utility libraries:
   - `graphqlPagination.ts` - GraphQL pagination helper
   - `httpCache.ts` - HTTP-level caching
   - `index.ts` - Strapi client exports
-  - `regenerateCache.ts` - Cache regeneration
+  - `regenerateCache.ts` - Cache regeneration (also drives force-regen for the GitHub-sourced roadmap/backlog caches, see `docs/STRAPI_CACHE_API.md`)
   - `resilientGraphqlClient.ts` - GraphQL client with retries
-  - `roadmaps.ts` - Roadmap queries
   - `drivers/` - Underlying transport drivers
 
 ### Pages (`src/pages/`)

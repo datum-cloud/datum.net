@@ -72,7 +72,7 @@ const PAGES_SKIP = new Set<string>([
   'docs', // no /docs route
   'pricing', // dedicated (JSON tiers)
   'locations', // dedicated (JSON regions)
-  'roadmap', // dedicated (Strapi)
+  'roadmap', // dedicated (GitHub milestones)
   'brand', // dedicated (sections list)
   'events', // dedicated (events listing)
   'global-section', // component data, not a page

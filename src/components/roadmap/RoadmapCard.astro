@@ -1,17 +1,18 @@
 ---
 // src/components/roadmap/RoadmapCard.astro
-import type { StrapiRoadmap } from '@libs/strapi';
+import { Image } from 'astro:assets';
+import type { RoadmapMilestone } from '@libs/githubRoadmap';
 import {
   getRoadmapSlug,
   getDaysUntilRelease,
   getMonthAbbreviation,
-  getRoadmapCoverUrl,
+  getRoadmapCoverImage,
   isRoadmapShipped,
-} from '@libs/strapi';
+} from '@libs/githubRoadmap';
 import { formatDate } from '@utils/dateUtils';
 
 interface Props {
-  roadmap?: StrapiRoadmap;
+  roadmap?: RoadmapMilestone;
   /** ISO date string for this card's month slot (e.g. "2026-07-01"). */
   monthDate: string;
 }
@@ -21,15 +22,14 @@ const { roadmap, monthDate } = Astro.props as Props;
 const monthAbbr = getMonthAbbreviation(monthDate);
 const slug = roadmap ? getRoadmapSlug(roadmap) : null;
 const hasRoadmap = Boolean(roadmap && slug);
-const coverUrl = roadmap ? getRoadmapCoverUrl(roadmap.cover) : undefined;
-const hasCover = Boolean(coverUrl);
+const coverImage = roadmap ? getRoadmapCoverImage(roadmap.number) : undefined;
+const hasCover = Boolean(coverImage);
 const detailHref = slug ? `/roadmap/${slug}` : undefined;
 const showDetailLink = hasRoadmap && hasCover && detailHref;
 const showCoverCard = showDetailLink;
 const daysUntil = roadmap ? getDaysUntilRelease(roadmap.releaseDate) : null;
 
-const coverAlt =
-  roadmap?.cover?.alternativeText || roadmap?.title || `${monthAbbr} roadmap release`;
+const coverAlt = roadmap?.title || `${monthAbbr} roadmap release`;
 const detailLabel = roadmap?.title
   ? `View ${roadmap.title} roadmap release`
   : `View ${monthAbbr} roadmap release`;
@@ -50,8 +50,8 @@ const releaseMonthYear = roadmap
     showCoverCard ? (
       <>
         <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
-          <img
-            src={coverUrl}
+          <Image
+            src={coverImage!}
             alt={coverAlt}
             class="roadmap-card--image"
             loading="lazy"

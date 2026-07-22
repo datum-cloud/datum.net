@@ -24,7 +24,6 @@ import {
   getStrapiTeamMembers,
   getStrapiCardMembers,
 } from '@libs/strapi/authors';
-import { fetchStrapiRoadmaps, ROADMAPS_CACHE_KEY } from '@libs/strapi/roadmaps';
 
 /** Primary cache keys — must stay aligned with the Strapi fetcher modules. */
 const ARTICLES_CACHE_KEY = 'strapi-articles';
@@ -129,10 +128,6 @@ async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
       await fetchStrapiAuthors();
       await Promise.all([getStrapiTeamMembers(), getStrapiCardMembers()]);
       await assertPrimaryCache(AUTHORS_CACHE_KEY, 'authors list');
-      break;
-    case 'roadmap':
-      await fetchStrapiRoadmaps();
-      await assertPrimaryCache(ROADMAPS_CACHE_KEY, 'roadmaps list');
       break;
     default:
       console.warn(`[Webhook] No warm strategy for model "${event.model}"`);

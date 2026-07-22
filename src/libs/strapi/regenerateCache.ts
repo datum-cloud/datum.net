@@ -28,11 +28,11 @@ import {
   isGitHubBacklogCached,
 } from '../githubBacklog';
 import {
-  fetchStrapiRoadmaps,
-  clearRoadmapDetailCaches,
-  ROADMAPS_CACHE_KEY,
-  LEGACY_ROADMAPS_CACHE_KEY,
-} from './roadmaps';
+  GITHUB_ROADMAPS_CACHE_KEY,
+  forceRegenerateGitHubRoadmaps,
+  fetchGitHubRoadmaps,
+  isGitHubRoadmapsCached,
+} from '../githubRoadmap';
 import type { StrapiArticle } from '../../types/strapi';
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
@@ -47,22 +47,11 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
   AUTHORS_CACHE_KEY,
   TEAM_MEMBERS_CACHE_KEY,
   CARD_MEMBERS_CACHE_KEY,
-  ROADMAPS_CACHE_KEY,
+  GITHUB_ROADMAPS_CACHE_KEY,
   GITHUB_BACKLOG_CACHE_KEY,
 ] as const;
 
 const FIXED_FORCE_KEYS = new Set<string>(STRAPI_FORCE_REGENERATE_KEYS);
-
-function normalizeForceRegenerateName(name: string): string {
-  return name === LEGACY_ROADMAPS_CACHE_KEY ? ROADMAPS_CACHE_KEY : name;
-}
-
-async function clearRoadmapsCache(): Promise<string[]> {
-  const clearedDetails = await clearRoadmapDetailCaches();
-  await cache.delete(ROADMAPS_CACHE_KEY);
-  await cache.delete(LEGACY_ROADMAPS_CACHE_KEY);
-  return clearedDetails;
-}
 
 function isSafeSlugSegment(slug: string): boolean {
   if (!slug || slug.includes('/') || slug.includes('\\')) return false;
@@ -92,7 +81,7 @@ async function isCached(key: string): Promise<boolean> {
 export function validateStrapiForceRegenerateName(name: string): string | null {
   const trimmed = name.trim();
   if (!trimmed) return 'Empty cache name';
-  if (FIXED_FORCE_KEYS.has(trimmed) || trimmed === LEGACY_ROADMAPS_CACHE_KEY) return null;
+  if (FIXED_FORCE_KEYS.has(trimmed)) return null;
   if (isArticleCacheKey(trimmed)) return null;
   if (isAuthorSlugCacheKey(trimmed)) return null;
   return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(
@@ -120,7 +109,7 @@ export interface RegenerateResult {
   regenerated: string[];
   skipped: string[];
   errors: string[];
-  /** Per-slug roadmap keys cleared during list force-regen (`strapi-roadmap-*`). */
+  /** Reserved for per-slug detail caches cleared during a list force-regen. */
   clearedDetails: string[];
 }
 
@@ -137,14 +126,10 @@ export async function forceRegenerateStrapiCache(
   const errors: string[] = [];
   const clearedDetails: string[] = [];
 
-  const unique = [
-    ...new Set(
-      names.map((n) => normalizeForceRegenerateName(n.trim())).filter((n) => n.length > 0)
-    ),
-  ];
+  const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
 
   for (const name of unique) {
-    if (name !== ROADMAPS_CACHE_KEY && name !== GITHUB_BACKLOG_CACHE_KEY) {
+    if (name !== GITHUB_ROADMAPS_CACHE_KEY && name !== GITHUB_BACKLOG_CACHE_KEY) {
       await cache.delete(name);
     }
 
@@ -166,13 +151,10 @@ export async function forceRegenerateStrapiCache(
           await getStrapiCardMembers();
           regenerated.push(name);
           break;
-        case ROADMAPS_CACHE_KEY: {
-          const cleared = await clearRoadmapsCache();
-          clearedDetails.push(...cleared);
-          await fetchStrapiRoadmaps();
+        case GITHUB_ROADMAPS_CACHE_KEY:
+          await forceRegenerateGitHubRoadmaps();
           regenerated.push(name);
           break;
-        }
         case GITHUB_BACKLOG_CACHE_KEY:
           await forceRegenerateGitHubBacklog();
           regenerated.push(name);
@@ -232,7 +214,6 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
 
   await tryWarm(ARTICLES_CACHE_KEY, fetchStrapiArticles);
   await tryWarm(AUTHORS_CACHE_KEY, fetchStrapiAuthors);
-  await tryWarm(ROADMAPS_CACHE_KEY, fetchStrapiRoadmaps);
   await tryWarm(TEAM_MEMBERS_CACHE_KEY, getStrapiTeamMembers);
   await tryWarm(CARD_MEMBERS_CACHE_KEY, getStrapiCardMembers);
 
@@ -245,6 +226,19 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
     } catch (err) {
       errors.push(
         `${GITHUB_BACKLOG_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
+  }
+
+  if (await isGitHubRoadmapsCached()) {
+    skipped.push(GITHUB_ROADMAPS_CACHE_KEY);
+  } else {
+    try {
+      await fetchGitHubRoadmaps();
+      regenerated.push(GITHUB_ROADMAPS_CACHE_KEY);
+    } catch (err) {
+      errors.push(
+        `${GITHUB_ROADMAPS_CACHE_KEY}: ${err instanceof Error ? err.message : String(err)}`
       );
     }
   }

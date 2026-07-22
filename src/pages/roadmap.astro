@@ -4,7 +4,7 @@ export const prerender = false;
 
 import '@styles/page-roadmap.css';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { fetchStrapiRoadmaps, isRoadmapShipped } from '@libs/strapi';
+import { fetchGitHubRoadmaps, isRoadmapShipped } from '@libs/githubRoadmap';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -24,7 +24,7 @@ const description = fm.description;
 const heroYear = new Date().getFullYear();
 const heroTitle = `${heroYear} Roadmap`;
 
-const roadmaps = await fetchStrapiRoadmaps();
+const roadmaps = await fetchGitHubRoadmaps();
 const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
 
 const tabItems = [

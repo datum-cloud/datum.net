@@ -1,13 +1,14 @@
 ---
 // src/components/roadmap/RoadmapDetailContent.astro
+import { Image } from 'astro:assets';
 import { marked } from 'marked';
-import type { StrapiRoadmap } from '@libs/strapi';
-import { getRoadmapCoverUrl } from '@libs/strapi';
+import type { RoadmapMilestone } from '@libs/githubRoadmap';
+import { getRoadmapCoverImage } from '@libs/githubRoadmap';
 import Button from '@components/Button.astro';
 import { formatDate } from '@utils/dateUtils';
 
 interface Props {
-  roadmap: StrapiRoadmap;
+  roadmap: RoadmapMilestone;
 }
 
 const { roadmap } = Astro.props as Props;
@@ -21,9 +22,8 @@ const formattedDate = formatDate(roadmap.releaseDate, 'en-US', {
 const titleParts = roadmap.title.split(':');
 const releaseName = titleParts[0]?.trim() ?? roadmap.title;
 
-const coverUrl = getRoadmapCoverUrl(roadmap.cover);
-const coverAlt = roadmap.cover?.alternativeText || roadmap.title;
-const honorName = roadmap.cover?.caption?.trim() || releaseName;
+const coverImage = getRoadmapCoverImage(roadmap.number);
+const coverAlt = roadmap.title;
 
 const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : undefined;
 ---
@@ -61,18 +61,9 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
   <!-- Right column: sidebar -->
   <aside class="roadmap-detail--sidebar">
     {
-      coverUrl && (
+      coverImage && (
         <div class="roadmap-detail--sidebar-image">
-          <img src={coverUrl} alt={coverAlt} loading="eager" decoding="async" />
-        </div>
-      )
-    }
-
-    {
-      roadmap.description && (
-        <div class="roadmap-detail--attribution">
-          <h3>This release is named to honor {honorName}</h3>
-          <p>{roadmap.description}</p>
+          <Image src={coverImage} alt={coverAlt} loading="eager" decoding="async" />
         </div>
       )
     }

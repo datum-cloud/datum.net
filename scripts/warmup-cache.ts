@@ -51,14 +51,13 @@ async function warmup(): Promise<void> {
     console.warn('[warmup-cache] GitHub backlog failed:', err instanceof Error ? err.message : err);
   }
 
-  // Strapi: articles, authors, team, roadmaps
+  // Strapi: articles, authors, team
   try {
     const {
       fetchStrapiArticles,
       fetchStrapiArticleBySlug,
       fetchStrapiAuthors,
       getStrapiTeamMembers,
-      fetchStrapiRoadmaps,
     } = await import('../src/libs/strapi/index');
 
     const articles = await fetchStrapiArticles();
@@ -71,10 +70,21 @@ async function warmup(): Promise<void> {
 
     await fetchStrapiAuthors();
     await getStrapiTeamMembers();
-    const strapiRoadmaps = await fetchStrapiRoadmaps();
-    console.log(`[warmup-cache] Strapi: authors, team, ${strapiRoadmaps.length} roadmaps`);
+    console.log(`[warmup-cache] Strapi: authors, team`);
   } catch (err) {
     console.warn('[warmup-cache] Strapi failed:', err instanceof Error ? err.message : err);
+  }
+
+  // GitHub: roadmap milestones (datum-cloud/enhancements)
+  try {
+    const { fetchGitHubRoadmaps } = await import('../src/libs/githubRoadmap');
+    const githubRoadmaps = await fetchGitHubRoadmaps();
+    console.log(`[warmup-cache] GitHub: ${githubRoadmaps.length} roadmap milestones`);
+  } catch (err) {
+    console.warn(
+      '[warmup-cache] GitHub roadmaps failed:',
+      err instanceof Error ? err.message : err
+    );
   }
 
   console.log('\n[warmup-cache] Done.');

@@ -1,15 +1,10 @@
 // Dynamic markdown export of /roadmap/<slug> detail pages. Pulls from the
-// same Strapi source that RoadmapDetailContent.astro renders from. SSR so
-// webhook cache invalidations propagate immediately.
+// same GitHub milestones source that RoadmapDetailContent.astro renders from.
+// SSR so cache invalidations propagate immediately.
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import {
-  fetchStrapiRoadmapBySlug,
-  fetchStrapiRoadmaps,
-  getRoadmapMonthKey,
-  getRoadmapSlug,
-} from '@libs/strapi';
+import { fetchGitHubRoadmaps, getRoadmapMonthKey, getRoadmapSlug } from '@libs/githubRoadmap';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
@@ -21,13 +16,12 @@ export const GET: APIRoute = async ({ params }) => {
   }
 
   try {
-    let roadmap = await fetchStrapiRoadmapBySlug(slug);
+    const roadmaps = await fetchGitHubRoadmaps();
+    let roadmap = roadmaps.find((entry) => entry.slug === slug);
 
     // Legacy YYYY-MM slugs: resolve to canonical slug the same way [slug].astro does.
     if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
-      const match = (await fetchStrapiRoadmaps()).find(
-        (r) => getRoadmapMonthKey(r.releaseDate) === slug
-      );
+      const match = roadmaps.find((r) => getRoadmapMonthKey(r.releaseDate) === slug);
       if (match) {
         const canonical = getRoadmapSlug(match);
         if (canonical !== slug) {
@@ -49,7 +43,6 @@ export const GET: APIRoute = async ({ params }) => {
 
     const titleParts = roadmap.title.split(':');
     const releaseName = titleParts[0]?.trim() ?? roadmap.title;
-    const honorName = roadmap.cover?.caption?.trim() || releaseName;
 
     const sections: string[] = [`# ${releaseName} - ${formattedDate} Roadmap`, ''];
 
@@ -57,10 +50,6 @@ export const GET: APIRoute = async ({ params }) => {
       sections.push(roadmap.summary, '');
     } else {
       sections.push('_Release notes coming soon._', '');
-    }
-
-    if (roadmap.description) {
-      sections.push(`## Named to honor ${honorName}`, '', roadmap.description, '');
     }
 
     if (roadmap.githubUrl) {

@@ -87,17 +87,38 @@ export const redisKeyPrefix = keyPrefix;
 
 const REDIS_CONNECT_TIMEOUT_MS = 2_000;
 
+/**
+ * Bounded backoff for reconnecting after the connection drops (Redis restart,
+ * network blip, etc). Capped at 5s between attempts, retried indefinitely.
+ *
+ * This only governs *automatic* reconnection after a connection that was
+ * once established later closes. The initial `client.connect()` call in
+ * `resolvePrimaryCache` still fails fast: ioredis resolves/rejects that
+ * promise on the very first `ready`/`close` event regardless of this
+ * setting, so an unreachable Redis at boot still falls back to the file
+ * cache immediately instead of retrying here.
+ */
+function reconnectRetryStrategy(times: number): number {
+  return Math.min(times * 500, 5_000);
+}
+
 function createRedisClient(url: string): Redis {
   const client = new Redis(url, {
     lazyConnect: true,
     enableReadyCheck: false,
     connectTimeout: REDIS_CONNECT_TIMEOUT_MS,
     maxRetriesPerRequest: 1,
-    retryStrategy: () => null,
+    retryStrategy: reconnectRetryStrategy,
   });
 
   // Avoid ioredis "Unhandled error event" noise when Redis is unreachable.
   client.on('error', () => {});
+  if (debug) {
+    client.on('reconnecting', (delay: number) =>
+      console.debug(`[strapi-runtime] Redis connection lost, reconnecting in ${delay}ms`)
+    );
+    client.on('ready', () => console.debug('[strapi-runtime] Redis reconnected'));
+  }
 
   return client;
 }
@@ -139,6 +160,18 @@ const { primary, redisClient: resolvedRedisClient } = await resolvePrimaryCache(
  * instead of opening a second ioredis socket.
  */
 export const redisClient: Redis | null = resolvedRedisClient;
+
+/**
+ * True when the shared Redis client is connected and ready to accept
+ * commands right now. Callers must check this before issuing a command:
+ * ioredis queues commands issued while `reconnecting` until the next
+ * background reconnect attempt fires (see `reconnectRetryStrategy`), which
+ * can take up to a few seconds and would otherwise stall the caller instead
+ * of failing fast to the file cache fallback.
+ */
+export function isRedisReady(): boolean {
+  return redisClient?.status === 'ready';
+}
 
 export const cache = new CacheManager({ primary, fallback, defaultTtl: ttl, debug });
 

@@ -1,0 +1,14 @@
+src/data/features.json
+  h_c7951bc64db670 34,52-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "54b12af1f3d3a75591758304e4610aed3749e8eb",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

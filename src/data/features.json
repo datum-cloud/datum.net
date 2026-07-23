@@ -1,8 +1,8 @@
 [
   {
-    "icon": "network",
-    "title": "Authoritative DNS",
-    "description": "A secure and resilient DNS service, served across 17 locations."
+    "icon": "terminal",
+    "title": "datumctl",
+    "description": "Authenticate and manage resources using a K8s-style syntax (get, apply, delete)."
   },
   {
     "icon": "globe",
@@ -31,18 +31,13 @@
   },
   {
     "icon": "cpu",
-    "title": "Service accounts",
+    "title": "Machine Accounts",
     "description": "Assign identity credentials to agents or applications and let the machines do the rest."
   },
   {
     "icon": "clipboard-list",
     "title": "Audit & Activity Logs",
     "description": "Production grade infrastructure with built in features for activity / audit logging."
-  },
-  {
-    "icon": "terminal",
-    "title": "datumctl",
-    "description": "Authenticate and manage resources using a K8s-style syntax (get, apply, delete)."
   },
   {
     "icon": "circle-gauge",
@@ -53,6 +48,11 @@
     "icon": "datum",
     "title": "Developer Tools",
     "description": "macOS, Windows, and Linux apps for exposing localhost to the internet."
+  },
+  {
+    "icon": "terminal",
+    "title": "AI assistant",
+    "description": "Ask datumctl about your Datum Cloud resources in natural language, from a one-shot question or an interactive session."
   },
   {
     "icon": "plus",

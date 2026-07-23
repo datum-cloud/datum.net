@@ -1,27 +1,24 @@
-// Dynamic markdown export of /roadmap. Pulls from the same Strapi source
-// that RoadmapStrapi.astro renders from, so this stays in sync with each
-// monthly release cycle without manual edits. SSR so Strapi webhook cache
-// invalidations propagate immediately.
+// Dynamic markdown export of /roadmap. Pulls from the same GitHub milestones
+// source that RoadmapGrid.astro renders from, so this stays in sync with each
+// monthly release cycle without manual edits. SSR so cache invalidations
+// propagate immediately.
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import {
-  fetchStrapiRoadmaps,
+  fetchGitHubRoadmaps,
   groupRoadmapsByDate,
   getMonthAbbreviation,
   getRoadmapSlug,
-} from '@libs/strapi';
-import type { StrapiRoadmap } from '@libs/strapi';
+} from '@libs/githubRoadmap';
+import type { RoadmapMilestone } from '@libs/githubRoadmap';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
-function renderMilestone(roadmap: StrapiRoadmap, includeDetail: boolean): string {
+function renderMilestone(roadmap: RoadmapMilestone, includeDetail: boolean): string {
   const month = getMonthAbbreviation(roadmap.releaseDate);
   const lines: string[] = [`### ${month} - ${roadmap.title}`];
-  if (roadmap.description) {
-    lines.push('', roadmap.description);
-  }
   if (includeDetail && roadmap.summary) {
     lines.push('', roadmap.summary);
   }
@@ -37,7 +34,7 @@ function renderMilestone(roadmap: StrapiRoadmap, includeDetail: boolean): string
 
 export const GET: APIRoute = async () => {
   try {
-    const roadmaps = await fetchStrapiRoadmaps();
+    const roadmaps = await fetchGitHubRoadmaps();
     const { upcoming, previous } = groupRoadmapsByDate(roadmaps);
 
     const sections: string[] = [

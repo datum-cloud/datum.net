@@ -183,6 +183,8 @@ For each supplied name:
 | `strapi-team-members`   | Derived list (`isTeam`); calls `getStrapiTeamMembers()`                                   |
 | `strapi-card-members`   | Derived list (`isCard`); calls `getStrapiCardMembers()`                                   |
 | `strapi-article-{slug}` | Single article payload; `{slug}` is the blog slug. Calls `fetchStrapiArticleBySlug(slug)` |
+| `github-roadmaps`       | **Not Strapi data** — see "GitHub-sourced keys" below                                     |
+| `github-backlog`        | **Not Strapi data** — see "GitHub-sourced keys" below                                     |
 
 The literal key `strapi-article-{slug}` is **not** a real key — substitute your post slug (for example `strapi-article-announcing-datum-platform`).
 
@@ -191,6 +193,21 @@ The literal key `strapi-article-{slug}` is **not** a real key — substitute you
 - Prefix must be **`strapi-article-`**.
 - The slug segment must be non-empty (trimmed).
 - Must not contain `/` or `\`, and must not be `.` or `..`.
+
+#### GitHub-sourced keys (`github-roadmaps`, `github-backlog`) — not actually Strapi data
+
+`github-roadmaps` and `github-backlog` are also accepted by Mode A (fill-missing) and Mode B (force) on this endpoint, even though neither comes from Strapi:
+
+- **`github-roadmaps`** — powers `/roadmap` and `/roadmap/[slug]`. Fetched via GraphQL from GitHub milestones on `datum-cloud/enhancements` (see [`src/libs/githubRoadmap.ts`](../src/libs/githubRoadmap.ts)). Each milestone's `summary` is the milestone description with an auto-generated **"What's included in this milestone"** list appended, built from the milestone's linked issues (`issues(first: 100)` in the GraphQL query) — one line per issue with its title and a link to the issue (opens in a new tab) that jumps straight to GitHub.
+- **`github-backlog`** — see [`src/libs/githubBacklog.ts`](../src/libs/githubBacklog.ts).
+
+**Caching mechanism differs from the rest of this doc:**
+
+- If `REDIS_URL` is set, entries are cached in Redis directly (key `${redisKeyPrefix}github:roadmaps` / `...github:backlog`) with a **30 minute TTL** (`CACHE_TTL_SECONDS`) — **not** the filesystem `.cache/` + fallback mirror that every other key on this page uses.
+- If `REDIS_URL` is **not** set (e.g. local dev), it falls back to a **module-level in-memory `Map`**, scoped to the running process. This cache is lost on every process/dev-server restart and is never shared across instances.
+- `forceRegenerateGitHubRoadmaps()` / `forceRegenerateGitHubBacklog()` clear the Redis key (when present) or the in-memory entry and refetch live from GitHub — they never touch `.cache/` on disk, so `GET /api/cache/:name` will **not** show these keys.
+
+> **TODO:** Pull `github-roadmaps` and `github-backlog` out of `POST /api/cache/strapi` into their own endpoint (e.g. `POST /api/cache/github`). They're grouped here today only because they were bolted onto the existing Strapi force-regen handler (`src/libs/strapi/regenerateCache.ts`) for convenience — the data source, auth needs, and cache backend (Redis/in-memory vs. filesystem) are unrelated to Strapi, and the current naming is misleading to anyone calling this API cold.
 
 #### Derived caches (`strapi-team-members`, `strapi-card-members`)
 

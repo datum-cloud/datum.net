@@ -71,9 +71,7 @@ const config = revalidateConfigSchema.parse({
   debug,
   webhook: {
     secret: readEnv('STRAPI_WEBHOOK_SECRET'),
-    tagMap: {
-      'api::roadmap.roadmap': ['roadmaps'],
-    },
+    tagMap: {},
   },
 });
 

@@ -4,12 +4,11 @@ export const prerender = false;
 
 import '@styles/page-roadmap.css';
 import {
-  fetchStrapiRoadmapBySlug,
-  fetchStrapiRoadmaps,
+  fetchGitHubRoadmaps,
   getRoadmapMonthKey,
   getRoadmapSlug,
-  getRoadmapCoverUrl,
-} from '@libs/strapi';
+  getRoadmapCoverImage,
+} from '@libs/githubRoadmap';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -18,16 +17,16 @@ import RoadmapDetailContent from '@components/roadmap/RoadmapDetailContent.astro
 
 const { slug } = Astro.params as { slug: string };
 
-let roadmap = await fetchStrapiRoadmapBySlug(slug);
+const roadmaps = await fetchGitHubRoadmaps();
 
-// Legacy URLs used YYYY-MM; redirect to the canonical Strapi slug when possible.
+let roadmap = roadmaps.find((entry) => entry.slug === slug);
+
+// Legacy URLs used YYYY-MM; redirect to the canonical slug when possible.
 if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
-  const legacyMatch = (await fetchStrapiRoadmaps()).find(
-    (entry) => getRoadmapMonthKey(entry.releaseDate) === slug
-  );
+  const legacyMatch = roadmaps.find((entry) => getRoadmapMonthKey(entry.releaseDate) === slug);
 
   if (legacyMatch) {
-    if (!getRoadmapCoverUrl(legacyMatch.cover)) {
+    if (!getRoadmapCoverImage(legacyMatch.number)) {
       return Astro.redirect('/roadmap', 302);
     }
 
@@ -43,7 +42,7 @@ if (!roadmap) {
   return Astro.redirect('/roadmap', 302);
 }
 
-if (!getRoadmapCoverUrl(roadmap.cover)) {
+if (!getRoadmapCoverImage(roadmap.number)) {
   return Astro.redirect('/roadmap', 302);
 }
 
@@ -51,7 +50,7 @@ const releaseDate = new Date(roadmap.releaseDate);
 const formattedDate = releaseDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
 const pageTitle = `${roadmap.title} — ${formattedDate} Roadmap`;
-const pageDescription = roadmap.description ?? `Datum roadmap for ${formattedDate}.`;
+const pageDescription = roadmap.summary ?? `Datum roadmap for ${formattedDate}.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription} bodyClass="page-roadmap">

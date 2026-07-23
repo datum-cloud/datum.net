@@ -52,7 +52,7 @@ export async function resolveMarkdownUrl(pathname: string): Promise<string | nul
     return `${path}.md`;
   }
 
-  // Strapi-backed roadmap detail pages: /roadmap/<slug>.
+  // GitHub-backed roadmap detail pages: /roadmap/<slug>.
   // /roadmap itself is a dedicated endpoint handled below by hasMarkdownForPath.
   // /roadmap/backlog is in DEDICATED_ENDPOINTS so hasMarkdownForPath catches it too,
   // but all sub-paths — dedicated or dynamic — resolve to the same .md URL.

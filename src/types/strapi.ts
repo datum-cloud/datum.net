@@ -111,23 +111,6 @@ export interface StrapiArticleResponse {
   articles: StrapiArticle[];
 }
 
-export interface StrapiRoadmap {
-  documentId: string;
-  title: string;
-  slug?: string;
-  description?: string;
-  summary?: string;
-  releaseDate: string;
-  githubUrl?: string;
-  /** When true, milestone appears in the Shipped roadmap filter. */
-  shipped?: boolean;
-  cover?: StrapiImage;
-}
-
-export interface StrapiRoadmapsResponse {
-  roadmaps: StrapiRoadmap[];
-}
-
 /**
  * Normalized article type for components (matches local blog structure)
  */

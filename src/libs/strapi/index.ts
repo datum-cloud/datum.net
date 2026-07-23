@@ -76,8 +76,6 @@ export type {
   StrapiArticleResponse,
   StrapiAuthorsResponse,
   NormalizedStrapiArticle,
-  StrapiRoadmap,
-  StrapiRoadmapsResponse,
   CardCategory,
 } from '../../types/strapi';
 export { getStrapiMediaUrl, normalizeArticle, resolveMarkdownStrapiUrls } from '../../types/strapi';
@@ -108,18 +106,3 @@ export {
   ensureStrapiArticleDetail,
   type StrapiArticleSitemapRow,
 } from './articles';
-
-// Re-export roadmaps module
-export {
-  ROADMAPS_QUERY,
-  fetchStrapiRoadmaps,
-  fetchStrapiRoadmapBySlug,
-  groupRoadmapsByDate,
-  getMonthAbbreviation,
-  getRoadmapMonthKey,
-  getRoadmapSlug,
-  getDaysUntilRelease,
-  getRoadmapCoverUrl,
-  isRoadmapShipped,
-  type GroupedRoadmaps,
-} from './roadmaps';

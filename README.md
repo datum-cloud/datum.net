@@ -78,6 +78,8 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build:cache`     | Warm up the Strapi cache (see `docs/STRAPI_CACHE_API.md`)                         |
 | `npm run preview`         | Preview your build locally, before deploying                                      |
 | `npm run start`           | Run the production Node server entry (`./server.mjs`)                             |
+| `npm run start:dev`       | Run the Node server entry with `.env` loaded, without rebuilding                  |
+| `npm run start:original`  | Run the raw Astro-generated server entry (`./dist/server/entry.mjs`)              |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                  |
 | `npm run astro -- --help` | Get help using the Astro CLI                                                      |
 | `npm run lint`            | Check for linting and formatting issues                                           |
@@ -89,6 +91,9 @@ All commands are run from the root of the project, from a terminal:
 | `npm run typecheck`       | Astro typescript check                                                            |
 | `npm run precommit`       | Typecheck, ESLint, and markdown lint (Husky formats/lints staged files on commit) |
 | `npm run test:e2e`        | Run Playwright E2E tests in headless mode                                         |
+| `npm run test:e2e:ui`     | Run Playwright E2E tests in interactive UI mode                                   |
+| `npm run test:e2e:debug`  | Run Playwright E2E tests in debug mode                                            |
+| `npm run test:e2e:report` | Show the last Playwright HTML report                                              |
 
 ---
 
@@ -137,10 +142,10 @@ All commands are run from the root of the project, from a terminal:
 minikube start
 ```
 
-2. Create `secret.yaml` with the data keys required by the deployment.
+2. Create a `secret.yaml` with the data keys required by the deployment.
    See [`.env.example`](./.env.example) for the full list of environment
-   variables the app expects (OIDC, Strapi, Postgres, GitHub App credentials,
-   etc.). Minimum baseline shown below — extend with whatever your local
+   variables the app expects (OIDC, Strapi, GitHub App credentials, etc.).
+   Minimum baseline shown below — extend with whatever your local
    deployment needs:
 
 ```yaml
@@ -151,8 +156,6 @@ metadata:
   namespace: datum-net
 type: Opaque
 data:
-  POSTGRES_USER:
-  POSTGRES_PASSWORD:
   APP_ID:
   APP_INSTALLATION_ID:
   APP_PRIVATE_KEY:
@@ -170,25 +173,13 @@ kubectl create namespace datum-net
 Apply secret:
 
 ```bash
-kubectl apply -f config/dev/secret.yaml
+kubectl apply -f secret.yaml -n datum-net
 ```
 
 Apply the kustomize config file:
 
 ```bash
 kubectl apply -k config/base
-```
-
-Apply the kustomize postgres config file:
-
-```bash
-kubectl apply -k config/dev/postgres-config.yaml
-```
-
-4. Install postgresql helm (example from bitnami source):
-
-```bash
-helm install postgresql -f config/dev/postgres-values.yaml -n datum-net oci://registry-1.docker.io/bitnamicharts/postgresql
 ```
 
 ---

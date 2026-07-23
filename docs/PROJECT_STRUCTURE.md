@@ -225,23 +225,22 @@ Reusable utility libraries:
 - `cache.ts` - Caching utilities
 - `cacheApiAuth.ts` - Auth guard for cache API routes
 - `cacheViewer.ts` - Cache inspection utilities
-- `cookie.ts` - Cookie handling
 - `datum.ts` - Datum API client
 - `events.ts` - Events data fetching/formatting
-- `file.ts` - File utilities
 - `github.ts` - GitHub API client
 - `githubBacklog.ts` - GitHub-backed roadmap backlog
 - `githubRoadmap.ts` - GitHub milestones-backed roadmap content (replaces the old Strapi-sourced roadmap; see `docs/STRAPI_CACHE_API.md` for caching)
 - `k8s-client.ts` - Kubernetes client
 - `mailer.ts` - Email sending (used by `actions/demo.ts`)
-- `miloapi.ts` - Milo IAM API client
 - `oidc.ts` - OIDC authentication flow
 - `postgres.ts` - Postgres client
+- `safeRedirect.ts` - Restricts redirect targets to same-origin paths
 - `string.ts` - String helpers
 - `strapi/` - Strapi CMS client
   - `_runtime.ts` - Shared runtime helpers
   - `articles.ts` - Blog article queries
   - `authors.ts` - Author queries
+  - `drivers/` - Cache driver backends (`redis.ts`, `resilient.ts`)
   - `graphqlPagination.ts` - GraphQL pagination helper
   - `httpCache.ts` - HTTP-level caching
   - `index.ts` - Strapi client exports
@@ -338,8 +337,7 @@ Static files served as-is:
 
 ## Kubernetes Config (`config/`)
 
-- `base/` - Deployment, service, and HTTP route kustomize base
-- `dev/` - Dev-environment Postgres values/config
+- `base/` - Deployment, service, HTTP route, and Redis kustomize base
 - `gateway/` - Gateway API configuration (endpoint, gateway, HTTP routes, namespace, kustomization)
 
 ## Database Init (`init/`)

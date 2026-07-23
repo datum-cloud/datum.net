@@ -179,8 +179,6 @@ function buildIssuesListMarkdown(issues: GitHubMilestoneIssueNode[]): string {
 
 /** Fetch all milestone pages from the GitHub GraphQL API. */
 async function fetchFromGitHub(): Promise<RoadmapMilestone[]> {
-  console.log(`[githubRoadmap] Fetching milestones from ${GITHUB_ORG}/${GITHUB_REPO}...`);
-
   const items: RoadmapMilestone[] = [];
   let cursor: string | null = null;
 
@@ -225,8 +223,6 @@ async function fetchFromGitHub(): Promise<RoadmapMilestone[]> {
     if (!page.pageInfo.hasNextPage || !page.pageInfo.endCursor) break;
     cursor = page.pageInfo.endCursor;
   }
-
-  console.log(`[githubRoadmap] Fetched ${items.length} milestones from GitHub`);
 
   return sortMilestones(items);
 }

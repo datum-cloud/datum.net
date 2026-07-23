@@ -15,7 +15,18 @@
     @apply rounded-sm;
     @apply flex items-center justify-center;
     @apply size-10;
-    @apply bg-iris-highlight-accent;
+
+    background-image: linear-gradient(
+      var(--color-iris-highlight-accent),
+      var(--color-iris-highlight-accent)
+    );
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition: background-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    &.highlight-animate {
+      background-size: 100% 100%;
+    }
 
     svg {
       @apply text-iris size-5;

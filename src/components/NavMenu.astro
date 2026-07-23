@@ -33,13 +33,17 @@ function isActivePath(href: string, currentPath: string): boolean {
   return false;
 }
 
-// Helper function to check if any child items are active
-function hasActiveChild(sections: NavData['main'][0]['children'], currentPath: string): boolean {
-  return (
-    sections?.some((section) =>
-      section.items?.some((item) => isActivePath(item.href, currentPath))
-    ) ?? false
-  );
+// Helper function to check if any child items (including aside cards) are active
+function hasActiveChild(item: NavMainItem, currentPath: string): boolean {
+  const hasActiveSection =
+    item.children?.some((section) =>
+      section.items?.some((childItem) => isActivePath(childItem.href, currentPath))
+    ) ?? false;
+
+  const hasActiveAsideCard =
+    item.asideCards?.some((card) => isActivePath(card.href, currentPath)) ?? false;
+
+  return hasActiveSection || hasActiveAsideCard;
 }
 
 /** Stable class for top-level nav label, e.g. `nav-dropdown-parent--product`. */
@@ -58,9 +62,7 @@ function navDropdownParentClass(text: string): string {
     {
       items.map((item) => {
         const isActive = isActivePath(item.href, currentPath);
-        const hasActiveChildItem = item.children
-          ? hasActiveChild(item.children, currentPath)
-          : false;
+        const hasActiveChildItem = hasActiveChild(item, currentPath);
         const isParentActive = isActive || hasActiveChildItem;
 
         return (

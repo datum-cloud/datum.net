@@ -1,0 +1,25 @@
+astro.config.mjs
+  s_be4722f80578e5::t_495789a8a72b2f 147,149
+  s_be4722f80578e5::t_0649abc2e5f81b 148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "2b4588d92ac3b71f5408eb72bc0c11983c53cefd",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_be4722f80578e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ed0ec50-9487-4b62-8f1d-5db3a97b3f97",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

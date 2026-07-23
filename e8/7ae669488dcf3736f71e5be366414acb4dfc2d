@@ -1,0 +1,77 @@
+src/libs/strapi/regenerateCache.ts
+  s_a95e864778627f::t_f7832c3239b10e 129,132
+  s_a95e864778627f::t_9e0b78ac37c94c 154-155
+  s_a95e864778627f::t_5669580cde7d55 233-241
+  s_a95e864778627f::t_722869dc69c9f2 84
+  s_a95e864778627f::t_b9f63ed845c4b7 31-35
+  s_a95e864778627f::t_50af3bf6f9be2d 50
+  s_a95e864778627f::t_440d065888f017 112
+  s_a95e864778627f::t_68b50cda09017e 242-244
+  s_a95e864778627f::t_93bae6632c6189 245
+scripts/warmup-cache.ts
+  s_a95e864778627f::t_120af7762a0d8a 54,73,78
+  s_a95e864778627f::t_841a47ceb7f84f 79-81
+  s_a95e864778627f::t_daa9375c94abd8 82-89
+src/components/roadmap/RoadmapGrid.astro
+  h_c7951bc64db670 18
+  s_a95e864778627f::t_a6a099ab95d0b3 3-4,8,15-16
+src/utils/markdownRegistry.ts
+  s_a95e864778627f::t_01c3175f666e9d 75
+src/components/roadmap/RoadmapCard.astro
+  s_a95e864778627f::t_ee7912b4bdf851 53-54
+  s_a95e864778627f::t_f1f2c398033170 3-4,9,11,15,25-26,32
+src/pages/roadmap.astro
+  s_3d0c15cf61ab93::t_71bbf4bda285f3 7
+  s_3d0c15cf61ab93::t_9ed3b64fb39816 27
+src/components/roadmap/RoadmapDetailContent.astro
+  s_a95e864778627f::t_cd1440ab21664b 64,66
+  s_a95e864778627f::t_667bc14bba530f 3,5-6,11,25-26
+src/pages/roadmap/[slug].md.ts
+  s_3d0c15cf61ab93::t_b7db62c957b1af 2-3,7,19-20,24
+src/utils/markdownExport.ts
+  s_a95e864778627f::t_5fab5eda3aab9f 55
+src/pages/roadmap.md.ts
+  s_a95e864778627f::t_cc464549daeeed 1-4,9,13-14,19
+  s_a95e864778627f::t_fb7f7a0514aec9 37
+src/libs/strapi/_runtime.ts
+  s_a95e864778627f::t_c0cfd92b27c573 74
+src/libs/githubRoadmap.ts
+  s_a95e864778627f::t_cb79300b7312b3 139-140
+  s_a95e864778627f::t_280ed514f19d32 181-182
+  s_3d0c15cf61ab93::t_09df2b40621462 1-138,141-180,183-353
+src/pages/roadmap/backlog.astro
+  s_a95e864778627f::t_83c49b59eabdd8 8
+  s_a95e864778627f::t_8eb9a2826d94a7 31
+src/pages/roadmap/[slug].astro
+  s_3d0c15cf61ab93::t_fafc7e4bbd09e4 20,22-24,26,29,45,53
+  s_3d0c15cf61ab93::t_f2d80b82bd1d1f 7,10-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "e87ae669488dcf3736f71e5be366414acb4dfc2d",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_3d0c15cf61ab93": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "13a488f6-cc5d-4552-80c4-b1b5f3981ac3",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    },
+    "s_a95e864778627f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9a86875e-5be4-4a93-8408-552f4ff0ba83",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

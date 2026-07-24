@@ -27,6 +27,15 @@ When a design doc is warranted, it lives as a comment or linked document on the 
 
 Get eyes on the design before writing code. It's much cheaper to argue about an approach on paper than to unwind it after a PR is half-merged.
 
+### Where designs actually live
+
+In practice we use two mechanisms, depending on scope:
+
+- **Cross-cutting concerns** — anything spanning multiple services or systems (a shared auth model, a new cross-cutting API convention, an infra-wide change) — go through [`datum-cloud/enhancements`](https://github.com/datum-cloud/enhancements). It uses a single, Kubernetes-KEP-inspired template (Summary, Motivation with Goals/Non-Goals, Proposal, Design Details, a Production Readiness Review questionnaire, Alternatives) for everything, from a scoped product feature up to an org-wide architectural pattern — the rigor and which sections get filled out scale with how far-reaching the change is, not a different template.
+- **Service-specific design** lives in that service's own repo, typically under a `docs/` directory, so it stays next to the code it describes and is versioned alongside it.
+
+For a concrete model of what a strong in-repo `docs/` looks like, `milo-os/search` and `milo-os/activity` are worth studying. `search`'s `docs/enhancements/` folder is a lightweight local version of the KEP pattern above, and `docs/components/resource-indexer.md` is a genuinely thorough component design (sequence diagrams for every event path, a decision table, an explicit error-handling taxonomy). `activity`'s `docs/architecture/` is the stronger model for the broader documentation *program*: a single `README.md` hub that cross-links every sub-doc, a `data-model.md` with real schema and rationale, and — notably for the [monitoring phase](/handbook/build/production-readiness#monitoring--observability) — dated incident write-ups under `docs/investigations/` and alert-driven runbooks under `docs/runbooks/` (see [incidents](/handbook/build/incidents)). Neither repo is "the" template to copy verbatim, but between them they show what good looks like: rigorous decision records from `search`, and a mature, cross-linked documentation program from `activity`.
+
 ## API design
 
 Datum's [backend](/handbook/build/components) and control plane are built around a declarative, resource-oriented model — closer to the Kubernetes API style than a traditional CRUD REST API. That shapes how we think about any new API surface, whether it's exposed by [Milo](/handbook/product/milo) or the broader platform:

@@ -31,9 +31,16 @@ Every change to production code goes through a pull request and requires review 
 
 Reviewers are expected to respond promptly — an async, distributed team lives or dies on how quickly a PR gets unstuck.
 
-## Continuous integration
+## Continuous integration & testing
 
 Changes that alter product functionality are tested by CI before merging, not locally and not in production — see the [testing policy](/handbook/policy/testing) for the full policy, including the incident-response exception. At minimum, CI should run type checking, linting, and the relevant automated test suite before a PR is mergeable.
+
+A few guidelines on how we test in practice:
+
+- **Prefer a fake over a real dependency for unit-level tests** - test controller and API server logic against an in-memory fake client rather than spinning up a live cluster. It's faster, more hermetic, and keeps the unit-test stage fast enough to run on every push.
+- **Save real integration/end-to-end testing for the stage that needs it** - standing up an ephemeral cluster, deploying the built image, and running a true end-to-end suite is valuable, but it's a heavier, slower CI stage. Reserve it for the services where a fake client genuinely can't give you confidence, not as the default for every PR.
+- **A skip needs a reason, and the reason should be an environment gate, not flakiness** - it's fine to skip a test that needs a prerequisite the current environment doesn't have (a missing credential, a local-only tool). It's not fine to skip a test because it's unreliable — a flaky test gets fixed or deleted, not silenced.
+- **CI failures block merge, without exception carved out for "it's probably fine"** - if a check is unreliable enough that people routinely ignore it, that's a signal to fix or remove the check, not to develop a habit of overriding it.
 
 ## Control-plane services
 

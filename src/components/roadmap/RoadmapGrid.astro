@@ -15,7 +15,6 @@ const { roadmaps, year = new Date().getFullYear() } = Astro.props as Props;
 // Build a lookup: "YYYY-MM" → RoadmapMilestone (grid slot by release month)
 const roadmapByMonth = new Map<string, RoadmapMilestone>();
 for (const r of roadmaps) {
-  console.log(r);
   roadmapByMonth.set(getRoadmapMonthKey(r.releaseDate), r);
 }
 

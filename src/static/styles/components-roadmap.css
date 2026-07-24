@@ -178,6 +178,67 @@
     @apply opacity-80;
   }
 
+  .roadmap-backlog-skeleton__row {
+    @apply border-app---dark---utility-1 flex flex-col items-start gap-4 border-t py-8 md:gap-8 lg:flex-row lg:items-center lg:gap-10;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-box {
+    @apply bg-midnight-fjord/10 rounded;
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .roadmap-backlog-skeleton__number {
+    @apply h-6 w-12 shrink-0;
+  }
+
+  .roadmap-backlog-skeleton__title {
+    @apply h-6 min-w-0 flex-1;
+  }
+
+  .roadmap-backlog-skeleton__status {
+    @apply h-7 w-24 shrink-0;
+  }
+
+  .roadmap-backlog-skeleton__link {
+    @apply h-5 w-20 shrink-0;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item {
+    animation-delay: calc(var(--index, 0) * 100ms);
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item[data-index='1'] {
+    --index: 0;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item[data-index='2'] {
+    --index: 1;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item[data-index='3'] {
+    --index: 2;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item[data-index='4'] {
+    --index: 3;
+  }
+
+  .roadmap-backlog-skeleton .skeleton-item[data-index='5'] {
+    --index: 4;
+  }
+
+  .roadmap-backlog-live {
+    @apply flex flex-col;
+  }
+
+  .roadmap-backlog-refresh-indicator {
+    @apply flex min-h-5 items-center justify-end pb-4;
+  }
+
+  .roadmap-backlog-refresh-spinner {
+    @apply border-glacier-mist-800 border-t-canyon-clay block size-5 animate-spin rounded-full border-2;
+  }
+
   /* ─────────────────────────────────────────────────────────────────────────
    * Roadmap v1 — legacy table layout (kept for backwards compatibility)
    * ───────────────────────────────────────────────────────────────────────── */

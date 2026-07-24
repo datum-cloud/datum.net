@@ -3,12 +3,15 @@
 export const prerender = false;
 export const partial = true;
 
-import { fetchGitHubBacklog } from '@libs/githubBacklog';
+import { fetchGitHubBacklog, getGitHubBacklogUpdatedAt } from '@libs/githubBacklog';
 import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
 
-const backlogItems = await fetchGitHubBacklog();
+const [backlogItems, backlogUpdatedAt] = await Promise.all([
+  fetchGitHubBacklog(),
+  getGitHubBacklogUpdatedAt(),
+]);
 
 Astro.response.headers.set('Cache-Control', 'no-store');
 ---
 
-<RoadmapBacklog items={backlogItems} />
+<RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />

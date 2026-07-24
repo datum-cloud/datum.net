@@ -1,0 +1,19 @@
+---
+// src/components/roadmap/RoadmapBacklogSkeleton.astro
+const SKELETON_ROWS = 5;
+---
+
+<section aria-label="Roadmap backlog" aria-busy="true">
+  <ul class="roadmap-backlog-list roadmap-backlog-skeleton">
+    {
+      Array.from({ length: SKELETON_ROWS }, (_, index) => (
+        <li class="roadmap-backlog-skeleton__row skeleton-item" data-index={String(index + 1)}>
+          <span class="skeleton-box roadmap-backlog-skeleton__number" />
+          <span class="skeleton-box roadmap-backlog-skeleton__title" />
+          <span class="skeleton-box roadmap-backlog-skeleton__status" />
+          <span class="skeleton-box roadmap-backlog-skeleton__link" />
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -46,6 +46,24 @@ We think about observability as five pillars, roughly in order of how early you 
 
 The same graduated scale applies here as everywhere else in this page: Minimum means basic alerting and no dashboard is required; Moderate adds structured logging and a working dashboard; High means full tracing and a public status page. Don't build out all five pillars for an internal tool nobody's paging on.
 
+### Dashboards are code
+
+Dashboards are generated from committed source (Jsonnet/Grafonnet), never hand-built by clicking around in the Grafana UI. That means:
+
+- A dashboard change is a pull request, reviewed like any other change, not a silent edit that only lives in Grafana's own history
+- CI regenerates dashboards from source and fails the build if the generated output has drifted from what's committed — the UI is a rendering of the source, not the source of truth
+- A dashboard is owned by the same team that owns the service it covers, and gets updated as part of any change that adds, removes, or renames what it monitors — a dashboard that still graphs a metric that no longer exists is worse than no dashboard, because it looks like signal
+
+We don't yet have a shared, reusable "golden signals" dashboard template — most dashboards today assemble their own latency/traffic/error panels from scratch. Building one and having every new service start from it, rather than writing its panels from first principles, would remove a lot of duplicated effort and inconsistency; that's an open gap worth closing rather than a solved problem.
+
+### Monitoring a rollout
+
+Shipping a change and watching a dashboard *afterward* is too late to catch most regressions cheaply. For anything that follows the [calendar event](/handbook/build/change) process, plan to actively watch the relevant dashboard during and immediately after the change — not just rely on alerts to page you if something goes wrong:
+
+- Know which panel you'd expect to move, and by roughly how much, before you make the change — "we'll watch p99 latency and error rate on this dashboard for the next 30 minutes" is a plan; "we'll keep an eye on things" is not
+- Prefer rolling a change out gradually (a canary, a percentage of traffic, one region first) over an all-at-once deploy whenever the blast radius justifies it, so a regression shows up against a small slice of traffic instead of all of it at once
+- Decide the rollback trigger *before* the rollout, not while it's happening — a specific threshold or condition that means "stop and roll back," agreed on ahead of time, is much easier to act on under pressure than a judgment call made live incident-style
+
 ## When you can't check every box
 
 Sometimes business needs require shipping before every box is checked. That's a real and acceptable decision. What matters is that the team has made it deliberately, documented the gaps, and committed to addressing them.

@@ -55,6 +55,16 @@ Every resource's status should be reportable in a shape a consumer (or another s
 - **A standard condition shape** - each condition carries a `type`, `status`, `reason`, `message`, and `lastTransitionTime`, so any consumer can parse any resource's health the same way instead of learning a bespoke status format per resource type
 - **`observedGeneration`** - status should report which version of the spec it was computed against, so a consumer can tell "the controller has processed my latest change" apart from "the controller just hasn't gotten to it yet" — without guessing from timestamps
 
+### Versioning scheme
+
+Every API version carries a stability stage in its name — `v1alpha1`, `v1beta1`, `v1` — and that stage is a promise about how much the shape can still change, not just a label:
+
+- **Alpha (`v1alphaN`)** - may be incomplete or change incompatibly at any time, including bumping straight from `v1alpha1` to `v1alpha2` with no conversion path between them. This is where every API we've shipped so far lives, and it's the right default for anything new — don't reach for beta just because a feature feels done.
+- **Beta (`v1betaN`)** - the shape is considered settled. Real usage is expected, so from here on a breaking change means a new version plus a conversion path between it and the previous one, not an in-place change. Moving something to beta is a deliberate call, not an automatic next step after alpha — treat it like the [design doc](#system-design) bar, since you're committing to support the shape going forward.
+- **Stable (`v1`)** - the [deprecation policy](#deprecation-policy) below applies in full; the shape is a long-term commitment to every consumer built against it.
+
+Since we're early, almost everything we run today is alpha, and that's the correct state for a platform this young — the scheme matters most as the thing that keeps "just add a beta label" from becoming a way to skip making an intentional decision.
+
 ### Deprecation policy
 
 "Backward compatible by default" needs a concrete rule to actually hold up:
@@ -62,5 +72,7 @@ Every resource's status should be reportable in a shape a consumer (or another s
 - A field or API version being removed is marked deprecated first, with a clear replacement documented, before it's ever removed
 - Deprecated fields keep working for a stated minimum number of releases, not "eventually"
 - Callers still using a deprecated field or version get a visible warning back from the API, not just a line in a changelog they may never read
+
+This policy fully applies from beta onward. Alpha versions are explicitly exempt — that's what makes alpha useful.
 
 As with system design, the level of rigor should match the size of the surface. A small internal endpoint doesn't need the same scrutiny as a customer-facing resource type that we'll be supporting for years.

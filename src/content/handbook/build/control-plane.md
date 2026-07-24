@@ -16,6 +16,8 @@ This is a detail page under [implementation standards](/handbook/build/standards
 
 ## Controllers
 
+Reach for a controller when something needs to continuously enforce a desired state rather than just respond to a single request — the resource can drift, depends on other resources changing over time, or needs cleanup logic that has to run reliably before it's deleted. If a request comes in, you do the work, and you return a result, that's a normal API handler — it doesn't need a controller. The signal for "this needs a controller" is ongoing reconciliation, not a one-off action.
+
 Every controller we build follows the same reconciler shape: one handler per resource that gets called whenever that resource (or something it watches) changes, rather than a service polling in a loop. A few conventions hold consistently across our control-plane services:
 
 - **Finalizers for cleanup** - cleanup-before-delete logic is registered as a finalizer, not handled as a special case inline
@@ -31,4 +33,13 @@ A CRD registered against the existing API server is the default — reach for it
 
 Within an aggregated API server, only the resources that actually need custom behavior should get hand-written storage — anything that persists normally can still use conventional storage underneath. Going the aggregated route doesn't mean every resource inside it has to be special-cased.
 
-If you're standing up a new control-plane service and think you need this, talk to the team first — it's a bigger commitment than a CRD, and there's precedent to build from rather than starting from scratch.
+## What to expect once you build one
+
+Both of these are durable, customer-facing API surfaces, not internal implementation detail, so they carry a higher bar than a typical feature:
+
+- **Design review first** - this almost always meets the bar for a written [design](/handbook/build/design) — it's a new API, and usually touches more than one component
+- **A [service tier](/handbook/build/service-tiers) and matching [production readiness](/handbook/build/production-readiness)** - a controller or API server that customers or other services depend on needs real monitoring and alerting from day one, not added after the fact
+- **Backward compatibility from the first version** - once a resource is in customers' hands, changing its shape is a breaking change; get the [API design](/handbook/build/design#api-design) right before it ships, not after
+- **An owner on the hook long-term** - these aren't "ship and forget" — someone needs to be on the [on-call](/handbook/build/oncall) rotation for it and keep maintaining it as the platform evolves
+
+If you're standing up a new control-plane service and think you need one of these, talk to the team first — it's a bigger commitment than a CRD, and there's precedent to build from rather than starting from scratch.

@@ -437,6 +437,18 @@ export async function fetchGitHubBacklog(): Promise<GitHubBacklogItem[]> {
  * no cache entry exists yet. Cheap — reads the cache only, never calls GitHub.
  */
 export async function getGitHubBacklogUpdatedAt(): Promise<number | null> {
+  const meta = await getGitHubBacklogMeta();
+  return meta.updatedAt;
+}
+
+/** Lightweight backlog cache status for live-update polling. */
+export async function getGitHubBacklogMeta(): Promise<{
+  updatedAt: number | null;
+  isRefreshing: boolean;
+}> {
   const cached = await readCache();
-  return cached?.updatedAt ?? null;
+  return {
+    updatedAt: cached?.updatedAt ?? null,
+    isRefreshing: refreshInFlight !== null,
+  };
 }

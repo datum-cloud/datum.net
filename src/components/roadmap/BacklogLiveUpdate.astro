@@ -2,21 +2,27 @@
 // src/components/roadmap/BacklogLiveUpdate.astro
 interface Props {
   updatedAt: number | null;
+  isRefreshing?: boolean;
 }
 
-const { updatedAt } = Astro.props as Props;
+const { updatedAt, isRefreshing = false } = Astro.props as Props;
 
 const POLL_INTERVAL_MS = 3 * 60 * 1000;
 const FAST_POLL_INTERVAL_MS = 2 * 1000;
 ---
 
 <div
+  class="roadmap-backlog-live"
   x-data={`{
     updatedAt: ${JSON.stringify(updatedAt)},
+    isRefreshing: ${JSON.stringify(isRefreshing)},
     poll() {
       fetch('/api/roadmap/backlog-meta', { cache: 'no-store' })
         .then((res) => res.json())
         .then((data) => {
+          if (typeof data.isRefreshing === 'boolean') {
+            this.isRefreshing = data.isRefreshing;
+          }
           if (data.updatedAt && data.updatedAt !== this.updatedAt) {
             this.updatedAt = data.updatedAt;
             this.refresh();
@@ -34,12 +40,25 @@ const FAST_POLL_INTERVAL_MS = 2 * 1000;
         .catch(() => {});
     },
     schedule() {
-      const delay = this.updatedAt ? ${POLL_INTERVAL_MS} : ${FAST_POLL_INTERVAL_MS};
+      const delay = !this.updatedAt || this.isRefreshing ? ${FAST_POLL_INTERVAL_MS} : ${POLL_INTERVAL_MS};
       setTimeout(() => this.poll(), delay);
+    },
+    showRefreshIndicator() {
+      return this.isRefreshing && this.updatedAt !== null;
     }
   }`}
   x-init="schedule()"
 >
+  <div
+    class="roadmap-backlog-refresh-indicator"
+    x-show="showRefreshIndicator()"
+    x-cloak
+    aria-live="polite"
+  >
+    <span class="roadmap-backlog-refresh-spinner" aria-hidden="true"></span>
+    <span class="sr-only">Updating backlog</span>
+  </div>
+
   <div x-ref="list">
     <slot />
   </div>

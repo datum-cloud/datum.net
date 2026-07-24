@@ -4,7 +4,7 @@ export const prerender = false;
 
 import '@styles/page-roadmap.css';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { fetchGitHubBacklog, getGitHubBacklogUpdatedAt } from '@libs/githubBacklog';
+import { fetchGitHubBacklog, getGitHubBacklogMeta } from '@libs/githubBacklog';
 import { fetchGitHubRoadmaps, isRoadmapShipped } from '@libs/githubRoadmap';
 
 import Layout from '@layouts/Layout.astro';
@@ -29,7 +29,8 @@ const layoutTitle = backlogMeta.title ?? 'Datum Product Backlog';
 const layoutDescription = backlogMeta.description ?? backlogPage.data.description;
 
 const [backlogItems, roadmaps] = await Promise.all([fetchGitHubBacklog(), fetchGitHubRoadmaps()]);
-const backlogUpdatedAt = await getGitHubBacklogUpdatedAt();
+const { updatedAt: backlogUpdatedAt, isRefreshing: backlogIsRefreshing } =
+  await getGitHubBacklogMeta();
 const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
 
 const tabItems = [
@@ -52,8 +53,8 @@ const tabItems = [
             items={tabItems}
           />
         </div>
-        <BacklogLiveUpdate updatedAt={backlogUpdatedAt}>
-          <RoadmapBacklog items={backlogItems} />
+        <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
+          <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
         </BacklogLiveUpdate>
       </div>
     </div>

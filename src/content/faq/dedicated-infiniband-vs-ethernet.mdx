@@ -1,0 +1,7 @@
+---
+question: "What's the difference between choosing InfiniBand and Ethernet for my cluster?"
+order: 6
+category: 'dedicated-cloud'
+---
+
+InfiniBand is the traditional choice for large-scale training: lower latency, a lossless RDMA fabric, and the longest track record at scale. Ethernet (with RoCE) has closed much of that gap, and it's often the easier option operationally — a wider vendor ecosystem and a networking model your team may already know. Which one fits depends on your workload (training versus inference), cluster scale, and in-house networking experience; we'll walk through the trade-off during scoping rather than default you into one.

@@ -1,0 +1,40 @@
+---
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import Icon from '@components/Icon.astro';
+import { whyDatum } from '@data/dedicatedCloud';
+---
+
+<section
+  class="section--block section--block--x-pad border-silver-mist bg-platinum relative overflow-hidden border-t"
+>
+  <div class="max-width-nav large-pad relative">
+    <SectionEyebrow position="left-top">{whyDatum.eyebrow}</SectionEyebrow>
+    <SectionLine left top />
+    <SectionLine right top />
+
+    <div class="max-width-nopad flex flex-col gap-10 md:gap-16">
+      <div class="flex flex-col gap-4">
+        <h2 class="section-title--sm text-midnight-fjord">{whyDatum.title}</h2>
+      </div>
+
+      <ul class="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
+        {
+          whyDatum.items.map((item) => (
+            <li class="flex items-start gap-3">
+              <Icon
+                name="check"
+                size="sm"
+                class="text-pine-forge---links stroke-2.5 mt-1 shrink-0"
+              />
+              <div class="flex flex-col gap-1">
+                <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
+                <p class="datum-text-base text-app---dark---utility-3">{item.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

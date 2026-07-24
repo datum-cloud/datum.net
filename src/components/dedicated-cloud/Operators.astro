@@ -1,0 +1,104 @@
+---
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import Icon from '@components/Icon.astro';
+import { fetchStrapiAuthorBySlug, getStrapiMediaUrl } from '@libs/strapi';
+import { operators, whyDatum } from '@data/dedicatedCloud';
+
+const AVATAR_BG = [
+  'bg-app---dark---utility-2',
+  'bg-app---dark---utility-1',
+  'bg-app---dark---utility-2',
+  'bg-app---dark---utility-1',
+];
+
+function initials(name: string): string {
+  return name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+// Real headshots come from Strapi when the person already exists there
+// (same source as /about); anyone not yet added falls back to an initials tile.
+const people = await Promise.all(
+  operators.items.map(async (person, index) => {
+    const author = await fetchStrapiAuthorBySlug(person.slug);
+    return {
+      ...person,
+      avatarUrl: author?.avatar ? getStrapiMediaUrl(author.avatar.url) : null,
+      linkedinUrl: person.linkedin ?? author?.social?.linkedin ?? null,
+      bgClass: AVATAR_BG[index % AVATAR_BG.length],
+    };
+  })
+);
+---
+
+<section
+  class="section--block section--block--pad section--block--x-pad bg-midnight-fjord relative overflow-hidden"
+>
+  <div class="max-width-nav relative">
+    <SectionEyebrow variant="app" class="mb-10 block md:mb-16">
+      {operators.eyebrow}
+    </SectionEyebrow>
+
+    <div class="max-width-nopad relative py-4 md:py-6">
+      <SectionLine left top class="bg-app---dark---utility-2" />
+      <SectionLine right top class="bg-app---dark---utility-2" />
+      <SectionLine left bottom class="bg-app---dark---utility-2" />
+      <SectionLine right bottom class="bg-app---dark---utility-2" />
+
+      <ul class="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+        {
+          people.map((person) => (
+            <li class="border-app---dark---utility-2 flex flex-col gap-4 border p-3">
+              {person.avatarUrl ? (
+                <img
+                  src={person.avatarUrl}
+                  alt={person.name}
+                  class="aspect-square w-full rounded-sm object-cover"
+                />
+              ) : (
+                <div
+                  class:list={[
+                    'flex aspect-square w-full items-center justify-center rounded-sm',
+                    person.bgClass,
+                  ]}
+                  aria-hidden="true"
+                >
+                  <span class="datum-text-3xl text-glacier-mist-700 font-semibold opacity-60">
+                    {initials(person.name)}
+                  </span>
+                </div>
+              )}
+              <div class="flex flex-col gap-1">
+                <p class="datum-text-base font-semibold text-white">{person.name}</p>
+                <p class="datum-text-xs text-aurora-moss font-dejavu uppercase">{person.role}</p>
+              </div>
+              <p class="datum-text-sm text-glacier-mist-700 opacity-75">{person.bio}</p>
+              {person.linkedinUrl && (
+                <a
+                  href={person.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="datum-text-xs text-glacier-mist-700 inline-flex items-center gap-1.5 opacity-75 transition-opacity hover:text-white hover:opacity-100"
+                >
+                  <Icon name="linkedin" size="sm" class="size-4" />
+                  LinkedIn
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <p
+    class="border-app---dark---utility-2 text-app---dark---utility-4 datum-text-sm mx-4 mt-14 border-t pt-6 text-center sm:mx-7 md:mt-20"
+  >
+    {whyDatum.tagline}
+  </p>
+</section>

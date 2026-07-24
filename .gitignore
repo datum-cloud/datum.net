@@ -55,3 +55,8 @@ bunfig.toml
 docs/PROJECT_RECOMMENDATIONS.md
 
 .superpowers/
+
+# locally-installed Claude Code skills (reconstructable via skill installer)
+.agents/
+.claude/skills/
+skills-lock.json

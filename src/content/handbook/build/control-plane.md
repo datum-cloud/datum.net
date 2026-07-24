@@ -35,11 +35,11 @@ Within an aggregated API server, only the resources that actually need custom be
 
 ## What to expect once you build one
 
-Both of these are durable, customer-facing API surfaces, not internal implementation detail, so they carry a higher bar than a typical feature:
+These carry different bars, because they aren't the same kind of commitment:
 
-- **Design review first** - this almost always meets the bar for a written [design](/handbook/build/design) — it's a new API, and usually touches more than one component
-- **A [service tier](/handbook/build/service-tiers) and matching [production readiness](/handbook/build/production-readiness)** - a controller or API server that customers or other services depend on needs real monitoring and alerting from day one, not added after the fact
-- **Backward compatibility from the first version** - once a resource is in customers' hands, changing its shape is a breaking change; get the [API design](/handbook/build/design#api-design) right before it ships, not after
-- **An owner on the hook long-term** - these aren't "ship and forget" — someone needs to be on the [on-call](/handbook/build/oncall) rotation for it and keep maintaining it as the platform evolves
+- **An aggregated API server is a new API almost by definition**, which means it automatically meets the [design](/handbook/build/design) page's bar for a written design — and because customers or other services will build against its shape, get the [API design](/handbook/build/design#api-design) right before it ships, since changing it later is a breaking change.
+- **A controller isn't automatically a new API** - it's often reconciling a resource that already exists. Whether it needs a written design follows the ordinary rule: does it touch more than one component, is it hard to reverse, is the service Tier 1 or higher. Plenty of controllers are small and don't clear that bar.
+- **Both need a [service tier](/handbook/build/service-tiers) and matching [production readiness](/handbook/build/production-readiness) once they're running against production** - a controller that misbehaves can silently drift or delete customer resources just as easily as a bad API response, so "it's just a controller, not an API" isn't a reason to skip monitoring and alerting.
+- **Both need an owner on the hook long-term** - someone needs to be on the [on-call](/handbook/build/oncall) rotation for it and keep maintaining it as the platform evolves, whichever one it is.
 
 If you're standing up a new control-plane service and think you need one of these, talk to the team first — it's a bigger commitment than a CRD, and there's precedent to build from rather than starting from scratch.

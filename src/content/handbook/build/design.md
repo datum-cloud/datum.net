@@ -41,8 +41,11 @@ For a concrete model of what a strong in-repo `docs/` looks like, `milo-os/searc
 Datum's [backend](/handbook/build/components) and control plane are built around a declarative, resource-oriented model — closer to the Kubernetes API style than a traditional CRUD REST API. That shapes how we think about any new API surface, whether it's exposed by [Milo](/handbook/product/milo) or the broader platform:
 
 - **Resources, not actions** - Model the thing being managed (a connection, a quota, a domain) as a resource with a desired state, rather than a collection of imperative endpoints
+- **Design for intent, not mechanism** - A resource should capture *what* the consumer wants to achieve, not the specific steps we currently take to get there. "Give me a database with these characteristics" is an intent; "create this exact set of low-level primitives" is a mechanism leaking through the API. Intent-based resources are what let us change how something is implemented underneath without breaking everyone who built against it
 - **Backward compatibility by default** - Existing fields and behavior shouldn't break for existing customers; new capabilities are additive or versioned
 - **Consistent with what's already there** - A new resource type should look and feel like the ones customers already use, not introduce a one-off convention
 - **AX and DX before UX** - Per our [product values](/handbook/product/index#product-values), design the agent and developer surface (API, SDK, `datumctl`) first; the portal UI is a consumer of the same API, not a special case
+
+A good test for intent vs. mechanism: if the implementation underneath a resource changed completely, would consumers need to change anything about how they use it? If yes, some mechanism has leaked into the API and it's worth another look before it ships.
 
 As with system design, the level of rigor should match the size of the surface. A small internal endpoint doesn't need the same scrutiny as a customer-facing resource type that we'll be supporting for years.

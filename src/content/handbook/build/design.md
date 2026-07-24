@@ -16,14 +16,14 @@ Design is the second phase of our SDLC, sitting between [planning](/handbook/pro
 
 ## System design
 
-We keep design lightweight and proportional to blast radius. Not every enhancement needs a formal document — a comment thread on the GitHub issue is often enough. A design doc earns its keep when a change:
+We keep design lightweight and proportional to blast radius. Not every enhancement needs a formal document — a discussion on the GitHub issue from planning is often enough. A design doc earns its keep when a change:
 
 - Touches more than one [component](/handbook/build/components) (infrastructure, platform, backend, or software)
 - Introduces a new API, resource type, or external dependency
 - Has a [service tier](/handbook/build/service-tiers) of Tier 1 or higher
 - Is hard to reverse once shipped
 
-When a design doc is warranted, it lives as a comment or linked document on the GitHub issue from planning — not a separate system. At minimum it should cover the problem being solved, the approach, alternatives considered and why they were rejected, and the operational cost (what it takes to run and monitor once shipped — see [production readiness](/handbook/build/production-readiness)).
+When a design doc is warranted, it's a committed document — not a GitHub issue comment — so it stays reviewable, linkable, and versioned alongside the code it describes (see [where designs actually live](#where-designs-actually-live) below). The issue from planning just links to it. At minimum it should cover the problem being solved, the approach, alternatives considered and why they were rejected, and the operational cost (what it takes to run and monitor once shipped — see [production readiness](/handbook/build/production-readiness)).
 
 Get eyes on the design before writing code. It's much cheaper to argue about an approach on paper than to unwind it after a PR is half-merged.
 

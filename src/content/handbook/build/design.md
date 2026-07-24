@@ -42,10 +42,25 @@ Datum's [backend](/handbook/build/components) and control plane are built around
 
 - **Resources, not actions** - Model the thing being managed (a connection, a quota, a domain) as a resource with a desired state, rather than a collection of imperative endpoints
 - **Design for intent, not mechanism** - A resource should capture *what* the consumer wants to achieve, not the specific steps we currently take to get there. "Give me a database with these characteristics" is an intent; "create this exact set of low-level primitives" is a mechanism leaking through the API. Intent-based resources are what let us change how something is implemented underneath without breaking everyone who built against it
-- **Backward compatibility by default** - Existing fields and behavior shouldn't break for existing customers; new capabilities are additive or versioned
+- **Backward compatibility by default** - Existing fields and behavior shouldn't break for existing customers; new capabilities are additive or versioned (see [deprecation policy](#deprecation-policy) below for what this means in practice)
 - **Consistent with what's already there** - A new resource type should look and feel like the ones customers already use, not introduce a one-off convention
 - **AX and DX before UX** - Per our [product values](/handbook/product/index#product-values), design the agent and developer surface (API, SDK, `datumctl`) first; the portal UI is a consumer of the same API, not a special case
 
 A good test for intent vs. mechanism: if the implementation underneath a resource changed completely, would consumers need to change anything about how they use it? If yes, some mechanism has leaked into the API and it's worth another look before it ships.
+
+### Status conventions
+
+Every resource's status should be reportable in a shape a consumer (or another service) can act on programmatically, not just read:
+
+- **A standard condition shape** - each condition carries a `type`, `status`, `reason`, `message`, and `lastTransitionTime`, so any consumer can parse any resource's health the same way instead of learning a bespoke status format per resource type
+- **`observedGeneration`** - status should report which version of the spec it was computed against, so a consumer can tell "the controller has processed my latest change" apart from "the controller just hasn't gotten to it yet" — without guessing from timestamps
+
+### Deprecation policy
+
+"Backward compatible by default" needs a concrete rule to actually hold up:
+
+- A field or API version being removed is marked deprecated first, with a clear replacement documented, before it's ever removed
+- Deprecated fields keep working for a stated minimum number of releases, not "eventually"
+- Callers still using a deprecated field or version get a visible warning back from the API, not just a line in a changelog they may never read
 
 As with system design, the level of rigor should match the size of the surface. A small internal endpoint doesn't need the same scrutiny as a customer-facing resource type that we'll be supporting for years.

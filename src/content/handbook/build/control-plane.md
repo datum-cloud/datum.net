@@ -24,6 +24,7 @@ Every controller we build follows the same reconciler shape: one handler per res
 - **Status via conditions** - resources report state through a set of conditions (a `Ready` condition plus resource-specific ones), not a single status enum
 - **Idempotent, requeue-driven reconciliation** - check current state, then create/update as needed, and requeue transient failures rather than hand-rolling retry loops
 - **Watch dependencies directly** - when a resource depends on state in another cluster or service, wire a watch against it instead of polling
+- **Owner references for cascading cleanup** - when one resource's lifecycle should be tied to another's (a child resource that shouldn't outlive its parent), express that with an owner reference rather than a bespoke delete hook the next engineer has to discover
 
 One pattern worth calling out: when the "real work" behind a resource is high-throughput (e.g. indexing, streaming), it's common to split it in two — a lightweight reconciler that only manages the resource's lifecycle and policy, plus a separate event-driven worker that does the actual work. Don't cram high-throughput processing into a reconcile loop.
 
@@ -32,6 +33,11 @@ One pattern worth calling out: when the "real work" behind a resource is high-th
 A CRD registered against the existing API server is the default — reach for it first. A custom, aggregated API server is worth the extra machinery specifically when a resource **can't be modeled as etcd-backed CRUD** — for example, a resource that represents a live query against another data store and returns a computed, non-persisted result rather than something we create and store.
 
 Within an aggregated API server, only the resources that actually need custom behavior should get hand-written storage — anything that persists normally can still use conventional storage underneath. Going the aggregated route doesn't mean every resource inside it has to be special-cased.
+
+A couple of API-serving conventions apply whether you're writing custom storage or not:
+
+- **Validate and default on the server, not the client** - every consumer (portal, CLI, SDK, another service) should get identical validation and defaulting behavior, which only holds if it lives in the API layer instead of being re-implemented per client
+- **Paginate large collections with a continue token, not an offset** - offsets get inconsistent under concurrent writes; a continue token doesn't
 
 ## What to expect once you build one
 

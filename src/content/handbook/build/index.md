@@ -28,5 +28,5 @@ Everything we ship moves through the same four phases, though the rigor applied 
 
 1. **[Planning](/handbook/product/roadmap)** - turning an idea into a scoped, prioritized enhancement
 2. **[Design](/handbook/build/design)** - working out the system design and API design before code is written
-3. **[Implementation](/handbook/build/standards)** - version control, code review, and CI standards for turning a design into shipped code
+3. **[Implementation](/handbook/build/standards)** - version control, code review, and CI standards for turning a design into shipped code, including [control plane implementation](/handbook/build/control-plane) patterns for controllers and aggregated API servers
 4. **Monitoring** - [production monitoring & observability](/handbook/build/production-readiness#monitoring--observability) to know a service is healthy, and [listening to customers](/handbook/product/customers#listening-to-customers) to know it's actually useful — both feed back into the next round of planning

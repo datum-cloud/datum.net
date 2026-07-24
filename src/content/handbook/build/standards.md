@@ -35,6 +35,10 @@ Reviewers are expected to respond promptly — an async, distributed team lives 
 
 Changes that alter product functionality are tested by CI before merging, not locally and not in production — see the [testing policy](/handbook/policy/testing) for the full policy, including the incident-response exception. At minimum, CI should run type checking, linting, and the relevant automated test suite before a PR is mergeable.
 
+## Control-plane services
+
+Building a controller or an aggregated API server for a control-plane service (`milo`, `search`, `activity`, and similar) has its own set of recurring conventions — reconciler shape, finalizers, when to reach for an aggregated API server instead of a CRD. See [control plane implementation](/handbook/build/control-plane) for the details.
+
 ## Operational readiness
 
 Implementation isn't done when the code merges — see [production readiness](/handbook/build/production-readiness). Monitoring, secrets, and rollback procedures should be designed in during implementation, not bolted on afterward. If a change has a large enough blast radius, coordinate it as a [calendar event](/handbook/build/change), not just a merged PR.

@@ -35,3 +35,17 @@ In other words, how do we go about getting more customers:
 
 ## Our guarantee:
 Having a guarantee is a really important part of our strategy. Our “work in progress” version right now is based on delivering value: Try our highest tier for 90 days. If you don’t get the value you expect, don’t pay.
+
+## Listening to customers
+
+The last phase of our SDLC is monitoring — and half of that is product monitoring: making sure real customer reaction actually makes it back into [planning](/handbook/product/roadmap), not just operational health (see [monitoring & observability](/handbook/build/production-readiness#monitoring--observability)).
+
+We don't run a single formal feedback tool. Instead we lean on a few channels that are already part of how we work in the open:
+
+- **[GitHub Discussions](https://github.com/orgs/datum-cloud/discussions)** - where feature ideas, complaints, and support questions surface first, and where we close the loop when an enhancement ships
+- **[Discord](https://link.datum.net/discord)** - real-time chat with the community, good for catching friction and confusion as it happens
+- **Monthly newsletter** - a two-way moment; we tell customers what shipped, and replies and forwards are a reliable signal of what landed and what didn't
+- **Community Huddle** - our recurring virtual meetup (see [rhythms](/handbook/operate/rhythms)) where we show early demos and hear reactions live, before something is fully baked
+- **Direct conversations** - support threads, sales calls, and Slack Connect channels with design partners are often the fastest way to hear when something is actually broken
+
+None of this is worth much if it stays anecdotal. When a piece of feedback changes a decision, it should show up as a comment on the relevant GitHub issue or discussion — that's what turns a Slack aside into something the next planning cycle can act on.

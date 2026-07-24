@@ -32,6 +32,20 @@ It's tempting to treat operational concerns as the last 10% of a project — som
 
 Start a readiness review at the beginning of a project, not the end. Use it to surface constraints early, identify missing data, and make sure the team has considered the full lifecycle of the service — not just the happy path.
 
+## Monitoring & observability
+
+This is the operational half of the monitoring phase — the other half is [listening to customers](/handbook/product/customers#listening-to-customers). Both close the loop back into [planning](/handbook/product/roadmap).
+
+We think about observability as five pillars, roughly in order of how early you need them:
+
+- **Metrics** - Services export [OpenTelemetry](https://opentelemetry.io/) metrics to Grafana Cloud. This is the baseline: request rates, error rates, latency, and resource usage for anything running in production.
+- **Logs** - Structured, not free text, so they're queryable and correlate cleanly with the request or resource that produced them. Structured logging is a Moderate-tier expectation above.
+- **Traces** - Exported alongside metrics via OTel, giving us a request's path across services. Most valuable for anything that crosses the control plane / backend (Milo) boundary, where a single customer action touches multiple components.
+- **Alerts** - Defined against the metrics that matter for a service's tier, routed through PagerDuty. An alert without an on-call owner isn't an alert, it's noise — see [on-call](/handbook/build/oncall).
+- **Dashboards** - Built in Grafana from the same metrics and traces. A dashboard's job is to answer "is this healthy right now?" at a glance, not to be an archive of every number we could possibly graph.
+
+The same graduated scale applies here as everywhere else in this page: Minimum means basic alerting and no dashboard is required; Moderate adds structured logging and a working dashboard; High means full tracing and a public status page. Don't build out all five pillars for an internal tool nobody's paging on.
+
 ## When you can't check every box
 
 Sometimes business needs require shipping before every box is checked. That's a real and acceptable decision. What matters is that the team has made it deliberately, documented the gaps, and committed to addressing them.

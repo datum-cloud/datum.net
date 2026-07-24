@@ -21,3 +21,12 @@ We’re not Frodo, we’re Gandalf (or maybe Samwise Gamgee). We’re not Luke, 
 This mindset informs a lot about what we do, and helps us know what we shouldn’t do. Ultimately, our north star is to be a foundational infrastructure partner to our customers, who we believe are building their value directly on top of that infrastructure. No pressure, right? 
 
 Ultimately, it comes down to things like trust, reliability, authenticity, transparency, responsiveness, and honesty. So as we build software, systems, and processes we work to balance the desire to finely craft every element to bullet-proof perfection, with a need to innovate at the speed of the market and our users.
+
+## Our SDLC
+
+Everything we ship moves through the same four phases, though the rigor applied to each scales with the size and blast radius of the change:
+
+1. **[Planning](/handbook/product/roadmap)** - turning an idea into a scoped, prioritized enhancement
+2. **[Design](/handbook/build/design)** - working out the system design and API design before code is written
+3. **[Implementation](/handbook/build/standards)** - version control, code review, and CI standards for turning a design into shipped code
+4. **Monitoring** - [production monitoring & observability](/handbook/build/production-readiness#monitoring--observability) to know a service is healthy, and [listening to customers](/handbook/product/customers#listening-to-customers) to know it's actually useful — both feed back into the next round of planning

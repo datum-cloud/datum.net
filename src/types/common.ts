@@ -138,6 +138,7 @@ export interface ButtonProps {
 }
 
 export interface FooterProps {
+  class?: string;
   showCTA?: boolean;
   showBackground?: boolean;
   showIllustration?: boolean;

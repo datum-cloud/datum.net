@@ -16,6 +16,7 @@ import BuiltForYou from '@components/dedicated-cloud/BuiltForYou.astro';
 import WhyDatum from '@components/dedicated-cloud/WhyDatum.astro';
 import Operators from '@components/dedicated-cloud/Operators.astro';
 import { meta, hero, contact } from '@data/dedicatedCloud';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 
 const faqs = (await getCollection('faq'))
   .filter((faq) => !faq.data.draft && faq.data.category === 'dedicated-cloud')
@@ -68,7 +69,7 @@ const jsonLd = {
         </div>
       </div>
     </div>
-
+    <ModuleConnector />
     <BuiltForYou />
     <WhyDatum />
     <Operators />
@@ -79,7 +80,7 @@ const jsonLd = {
     >
       <div class="max-width-nav large-pad relative">
         <SectionEyebrow position="left-top">{contact.eyebrow}</SectionEyebrow>
-        <SectionLine left top />
+        <SectionLine left top bottom />
         <SectionLine right top />
 
         <div class="max-width-nopad">
@@ -112,6 +113,8 @@ const jsonLd = {
           </div>
         </div>
       </div>
+
+      <ModuleConnector />
     </div>
 
     {
@@ -138,6 +141,6 @@ const jsonLd = {
       )
     }
 
-    <Footer showCTA={false} plainIllustration />
+    <Footer showCTA={false} plainIllustration class="bg-glacier-mist-700!" />
   </section>
 </Layout>

@@ -4,6 +4,7 @@ import SectionLine from '@components/SectionLine.astro';
 import Icon from '@components/Icon.astro';
 import { fetchStrapiAuthorBySlug, getStrapiMediaUrl } from '@libs/strapi';
 import { operators, whyDatum } from '@data/dedicatedCloud';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 
 const AVATAR_BG = [
   'bg-app---dark---utility-2',
@@ -36,13 +37,13 @@ const people = await Promise.all(
 );
 ---
 
-<section
-  class="section--block section--block--pad section--block--x-pad bg-midnight-fjord relative overflow-hidden"
->
-  <div class="max-width-nav relative">
-    <SectionEyebrow variant="app" class="mb-10 block md:mb-16">
+<section class="section--block section--block--x-pad bg-midnight-fjord relative overflow-hidden">
+  <div class="max-width-nav large-pad relative">
+    <SectionEyebrow variant="app" position="left-top">
       {operators.eyebrow}
     </SectionEyebrow>
+
+    <SectionLine left bottom class="bg-app---dark---utility-2" />
 
     <div class="max-width-nopad relative py-4 md:py-6">
       <SectionLine left top class="bg-app---dark---utility-2" />
@@ -94,11 +95,13 @@ const people = await Promise.all(
         }
       </ul>
     </div>
+    <div class="max-width-nopad relative">
+      <p
+        class="border-app---dark---utility-2 text-app---dark---utility-4 datum-text-sm mt-14 border-t pt-6 text-center md:mt-20"
+      >
+        {whyDatum.tagline}
+      </p>
+    </div>
   </div>
-
-  <p
-    class="border-app---dark---utility-2 text-app---dark---utility-4 datum-text-sm mx-4 mt-14 border-t pt-6 text-center sm:mx-7 md:mt-20"
-  >
-    {whyDatum.tagline}
-  </p>
+  <ModuleConnector barClass="bg-app---dark---utility-2" />
 </section>

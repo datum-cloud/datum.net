@@ -1,0 +1,51 @@
+.env.example
+  s_99aacd49f900d3::t_2d090013ee7cb7 47
+  h_c7951bc64db670 48-49
+src/libs/recaptchaClient.ts
+  s_99aacd49f900d3::t_f18c24a92e31f3 1-37
+src/components/forms/BookDemo.astro
+  s_99aacd49f900d3::t_fbbb9cfaa2c3ec 100-105,114
+  s_99aacd49f900d3::t_3adaca16dff3f2 129,135-139,148,151
+  s_99aacd49f900d3::t_c95227f97ebcc2 12-13,16
+src/actions/demo.ts
+  s_99aacd49f900d3::t_ac25adfe07e732 6-9
+  s_99aacd49f900d3::t_375f542d60cc4a 1,4-5
+  s_99aacd49f900d3::t_726f335ea78a8f 36,46
+  s_99aacd49f900d3::t_537a1874066c02 43-45,47-48
+  s_99aacd49f900d3::t_38324aa1613a1a 49-50
+src/libs/recaptcha.ts
+  s_99aacd49f900d3::t_c35f88272b22f6 1-9,11-29
+  h_c7951bc64db670 10
+src/components/forms/DedicatedCloudForm.astro
+  s_99aacd49f900d3::t_23a4cfcf4fa3f2 8,10
+  s_99aacd49f900d3::t_f3c68ed1d2f052 247
+  h_c7951bc64db670 9
+  s_99aacd49f900d3::t_6dd0bfabeb5768 188
+  s_99aacd49f900d3::t_4af4e5eed9f798 17
+  s_99aacd49f900d3::t_0af5374c6cb406 186
+  s_99aacd49f900d3::t_e7364834c93ea2 222
+  s_99aacd49f900d3::t_6668791de7e8c7 228
+  s_99aacd49f900d3::t_8030e1ac7dd1e6 199
+  s_99aacd49f900d3::t_283b0503002120 187
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "849358df934c7a3ffe291ea1d6972a02911bb128",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_99aacd49f900d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5e8ab5a9-e488-49f2-82e1-24c57c4b72cd",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

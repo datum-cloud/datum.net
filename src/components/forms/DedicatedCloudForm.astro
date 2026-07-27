@@ -5,13 +5,16 @@ export const prerender = false;
 import Icon from '@components/Icon.astro';
 import { formOptions } from '@data/dedicatedCloud';
 
+const recaptchaSiteKey =
+  process.env.PUBLIC_RECAPTCHA_SITE_KEY || import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
 const inputClass =
   'border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none';
 const selectClass = `${inputClass} w-full appearance-none pr-8`;
 const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
 ---
 
-<dedicated-cloud-form>
+<dedicated-cloud-form data-recaptcha-site-key={recaptchaSiteKey}>
   <div class="relative">
     <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
     <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
@@ -180,6 +183,9 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
 
 <script>
   import { actions } from 'astro:actions';
+  import { getRecaptchaToken } from '@libs/recaptchaClient';
+
+  const RECAPTCHA_ACTION = 'dedicated_cloud_form';
 
   class DedicatedCloudForm extends HTMLElement {
     form: HTMLFormElement;
@@ -190,6 +196,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
     sizingOutput: HTMLOutputElement;
     isSubmitting = false;
     loadedAt = Date.now();
+    recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
 
     constructor() {
       super();
@@ -212,12 +219,13 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
       });
     }
 
-    submitForm() {
+    async submitForm() {
       this.isSubmitting = true;
       this.submitBtn.disabled = true;
       this.submitBtnText.textContent = 'Sending...';
 
       const data = new FormData(this.form);
+      const recaptchaToken = await getRecaptchaToken(this.recaptchaSiteKey, RECAPTCHA_ACTION);
 
       actions
         .BookDemo({
@@ -236,6 +244,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
           storage: String(data.get('storage') || ''),
           locationRequirements: String(data.get('locationRequirements') || ''),
           fleetManagement: data.getAll('fleetManagement').map(String),
+          recaptchaToken,
         })
         .then((result) => {
           if (result.error) {

@@ -9,9 +9,11 @@ interface Props {
 }
 
 const { formType = 'demo' } = Astro.props as Props;
+
+const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
-<book-demo-form data-form-type={formType}>
+<book-demo-form data-form-type={formType} data-recaptcha-site-key={recaptchaSiteKey}>
   <div class="relative">
     <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
     <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
@@ -95,6 +97,12 @@ const { formType = 'demo' } = Astro.props as Props;
 
 <script>
   import { actions } from 'astro:actions';
+  import { getRecaptchaToken } from '@libs/recaptchaClient';
+
+  const RECAPTCHA_ACTIONS = {
+    demo: 'demo_form',
+    'dedicated-cloud': 'dedicated_cloud_form',
+  } as const;
 
   class BookDemoForm extends HTMLElement {
     form: HTMLFormElement;
@@ -103,6 +111,7 @@ const { formType = 'demo' } = Astro.props as Props;
     status: HTMLElement;
     isSubmitting = false;
     loadedAt = Date.now();
+    recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
 
     constructor() {
       super();
@@ -117,12 +126,17 @@ const { formType = 'demo' } = Astro.props as Props;
       });
     }
 
-    submitForm() {
+    async submitForm() {
       this.isSubmitting = true;
       this.submitBtn.disabled = true;
       this.submitBtnText.textContent = 'Sending...';
 
       const data = new FormData(this.form);
+      const formType = this.dataset.formType === 'dedicated-cloud' ? 'dedicated-cloud' : 'demo';
+      const recaptchaToken = await getRecaptchaToken(
+        this.recaptchaSiteKey,
+        RECAPTCHA_ACTIONS[formType]
+      );
 
       actions
         .BookDemo({
@@ -131,9 +145,10 @@ const { formType = 'demo' } = Astro.props as Props;
           company: String(data.get('company') || ''),
           workloadType: String(data.get('workloadType') || ''),
           message: String(data.get('message') || ''),
-          formType: this.dataset.formType === 'dedicated-cloud' ? 'dedicated-cloud' : 'demo',
+          formType,
           website: String(data.get('website') || ''),
           elapsedMs: Date.now() - this.loadedAt,
+          recaptchaToken,
         })
         .then((result) => {
           if (result.error) {

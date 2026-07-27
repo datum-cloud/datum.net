@@ -1,6 +1,12 @@
-import { defineAction } from 'astro:actions';
+import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'zod';
 import { sendMail } from '@libs/mailer';
+import { verifyRecaptcha } from '@libs/recaptcha';
+
+const RECAPTCHA_ACTIONS = {
+  demo: 'demo_form',
+  'dedicated-cloud': 'dedicated_cloud_form',
+} as const;
 
 const SUBJECTS = {
   demo: 'Request to book a demo',
@@ -27,10 +33,19 @@ const BookDemo = defineAction({
     storage: z.string().optional(),
     locationRequirements: z.string().optional(),
     fleetManagement: z.array(z.string()).optional(),
+    recaptchaToken: z.string().optional(),
   }),
   handler: async (input) => {
     if (input.website || input.elapsedMs < 3000) {
       return { success: true };
+    }
+
+    const isHuman =
+      !!input.recaptchaToken &&
+      (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType]));
+
+    if (!isHuman) {
+      throw new ActionError({ code: 'BAD_REQUEST', message: 'reCAPTCHA verification failed.' });
     }
 
     const lines = [

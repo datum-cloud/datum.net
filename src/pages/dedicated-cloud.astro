@@ -1,61 +1,146 @@
 ---
-// src/pages/demo.astro
+// src/pages/dedicated-cloud.astro
 export const prerender = false;
 
 import '@styles/global.css';
+import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
-import BookDemo from '@components/forms/BookDemo.astro';
-import { title, description, checklist } from '@data/dedicatedCloud';
+import SectionLine from '@components/SectionLine.astro';
+import FAQ from '@components/FAQ.astro';
+import DedicatedCloudForm from '@components/forms/DedicatedCloudForm.astro';
+import BuiltForYou from '@components/dedicated-cloud/BuiltForYou.astro';
+import WhyDatum from '@components/dedicated-cloud/WhyDatum.astro';
+import Operators from '@components/dedicated-cloud/Operators.astro';
+import { meta, hero, contact } from '@data/dedicatedCloud';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+
+const faqs = (await getCollection('faq'))
+  .filter((faq) => !faq.data.draft && faq.data.category === 'dedicated-cloud')
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/dedicated-cloud',
+      url: 'https://www.datum.net/dedicated-cloud',
+      name: meta.title,
+      description: meta.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-07-21',
+    },
+  ],
+};
 ---
 
-<Layout title={title} description={description} bodyClass="page-demo">
+<Layout
+  title={meta.title}
+  description={meta.description}
+  bodyClass="page-dedicated-cloud"
+  jsonLd={jsonLd}
+>
   <section class="datum-container">
-    <Hero class="light" hideContent={true} hideHero />
+    <Hero class="light" hideContent hideHero />
 
-    <div class="section--block relative overflow-hidden bg-white px-7">
+    <div class="section--block section--block--x-pad relative overflow-hidden bg-white">
       <div class="max-width-nav large-pad relative">
-        <span class="section-line section-line--left section-line--top"></span>
-        <SectionEyebrow position="left-top-keyline">Dedicated cloud</SectionEyebrow>
+        <SectionLine left top />
+
+        <div class="max-width-nopad flex flex-col items-center gap-8 text-center">
+          <div class="mx-auto flex max-w-3xl flex-col items-center gap-6">
+            <h1 class="datum-text-9xl text-midnight-fjord">{hero.title}</h1>
+            <p class="datum-text-lg text-app---dark---utility-3 max-w-2xl">{hero.description}</p>
+          </div>
+
+          <a href={hero.ctaHref} class="btn btn--midnight-fjord btn--glow-aurora w-fit">
+            {hero.ctaText}
+            <Icon name="arrow-right" size="sm" />
+          </a>
+
+          <p class="text-app---dark---utility-3 datum-text-sm">
+            {hero.proofLine}
+          </p>
+        </div>
+      </div>
+    </div>
+    <ModuleConnector />
+    <BuiltForYou />
+    <WhyDatum />
+    <Operators />
+
+    <div
+      id="contact"
+      class="section--block section--block--x-pad relative overflow-hidden bg-white"
+    >
+      <div class="max-width-nav large-pad relative">
+        <SectionEyebrow position="left-top">{contact.eyebrow}</SectionEyebrow>
+        <SectionLine left top bottom />
+        <SectionLine right top />
 
         <div class="max-width-nopad">
-          <div class="grid grid-cols-6 gap-8 md:gap-15 lg:gap-25 xl:gap-28">
-            <div class="col-span-6 flex flex-col gap-10 md:col-span-3">
+          <div class="grid grid-cols-6 gap-10 md:gap-15 lg:gap-25 xl:gap-28">
+            <div class="col-span-6 flex flex-col gap-7 md:col-span-2">
               <div class="flex flex-col gap-5">
-                <h1 class="datum-text-8xl text-midnight-fjord">{title}</h1>
-                <p class="datum-text-lg text-app---dark---utility-3">{description}</p>
+                <h2 class="section-title--sm text-midnight-fjord">{contact.title}</h2>
+                <p class="datum-text-lg text-app---dark---utility-3">{contact.description}</p>
               </div>
 
-              <ul class="flex flex-col gap-7">
+              <ul class="flex flex-col gap-3">
                 {
-                  checklist.map((item) => (
-                    <li class="flex items-start gap-4">
-                      <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center">
-                        <Icon name="check" size="md" class="text-app---dark---utility-3 stroke-1" />
-                      </div>
-                      <div class="flex flex-col gap-1">
-                        <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
-                        <p class="datum-text-base text-app---dark---utility-3 opacity-80">
-                          {item.description}
-                        </p>
-                      </div>
+                  contact.reassurance.map((line) => (
+                    <li class="datum-text-sm text-midnight-fjord flex items-center gap-3">
+                      <Icon
+                        name="check"
+                        size="sm"
+                        class="text-pine-forge---links stroke-2.5 shrink-0"
+                      />
+                      {line}
                     </li>
                   ))
                 }
               </ul>
             </div>
 
-            <div class="col-span-6 md:col-span-3">
-              <BookDemo formType="dedicated-cloud" />
+            <div class="col-span-6 md:col-span-4">
+              <DedicatedCloudForm />
             </div>
           </div>
         </div>
       </div>
+
+      <ModuleConnector />
     </div>
 
-    <Footer showCTA={false} plainIllustration />
+    {
+      faqs.length > 0 && (
+        <div class="section--block section--block--x-pad bg-glacier-mist-700 relative overflow-hidden">
+          <div class="max-width-nav large-pad relative">
+            <SectionEyebrow position="left-top">FAQ</SectionEyebrow>
+            <SectionLine left top />
+
+            <div class="max-width-nopad grid grid-cols-12 gap-8" x-data="{ expandedFaq: null }">
+              <div class="col-span-12 flex flex-col gap-4 md:col-span-5">
+                <h2 class="section-title--sm text-midnight-fjord">Questions we hear most often.</h2>
+              </div>
+              <div class="col-span-12 md:col-span-7">
+                <div class="faq-list">
+                  {faqs.map((faq, index) => (
+                    <FAQ faq={faq} index={index} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    <Footer showCTA={false} plainIllustration class="bg-glacier-mist-700!" />
   </section>
 </Layout>

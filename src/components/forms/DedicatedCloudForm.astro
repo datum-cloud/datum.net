@@ -1,0 +1,288 @@
+---
+// src/components/forms/DedicatedCloudForm.astro
+export const prerender = false;
+
+import Icon from '@components/Icon.astro';
+import { formOptions } from '@data/dedicatedCloud';
+
+const recaptchaSiteKey =
+  process.env.PUBLIC_RECAPTCHA_SITE_KEY || import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
+const inputClass =
+  'border-app---dark---utility-5 datum-text-sm text-midnight-fjord focus:ring-aurora-moss h-9 rounded-md border bg-white px-3 py-1 focus:ring-2 focus:outline-none';
+const selectClass = `${inputClass} w-full appearance-none pr-8`;
+const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
+---
+
+<dedicated-cloud-form data-recaptcha-site-key={recaptchaSiteKey}>
+  <div class="relative">
+    <span class="section-line bg-silver-mist -top-10 left-0 hidden md:block"></span>
+    <span class="section-line-h bg-silver-mist top-0 -left-10 hidden md:block"></span>
+    <span class="section-line bg-silver-mist right-0 -bottom-10 hidden md:block"></span>
+    <span class="section-line-h bg-silver-mist -right-10 bottom-0 hidden md:block"></span>
+
+    <form
+      class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-6 border p-6 md:p-10 lg:p-12"
+      onsubmit="return false;"
+    >
+      <label class="absolute -left-[9999px]" aria-hidden="true">
+        <span>Website</span>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Name</span>
+          <input type="text" name="name" class={inputClass} autocomplete="name" required />
+        </label>
+
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Work email</span>
+          <input type="email" name="email" class={inputClass} autocomplete="email" required />
+        </label>
+      </div>
+
+      <label class="flex flex-col gap-2">
+        <span class={labelClass}>Company</span>
+        <input type="text" name="company" class={inputClass} autocomplete="organization" required />
+      </label>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>GPU generation</span>
+          <div class="relative">
+            <select name="gpuGeneration" class={selectClass} required>
+              {formOptions.gpuGeneration.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <Icon
+              name="chevron-down"
+              size="sm"
+              class="text-midnight-fjord/60 pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+            />
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Networking</span>
+          <div class="relative">
+            <select name="networking" class={selectClass} required>
+              {formOptions.networking.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <Icon
+              name="chevron-down"
+              size="sm"
+              class="text-midnight-fjord/60 pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+            />
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Cooling</span>
+          <div class="relative">
+            <select name="cooling" class={selectClass} required>
+              {formOptions.cooling.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <Icon
+              name="chevron-down"
+              size="sm"
+              class="text-midnight-fjord/60 pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+            />
+          </div>
+        </label>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex items-baseline justify-between">
+          <span class={labelClass}>Sizing</span>
+          <span class="datum-text-sm text-midnight-fjord font-semibold">
+            <output data-sizing-output>{formOptions.sizingDefault}</output> GPUs
+          </span>
+        </div>
+        <input
+          type="range"
+          name="gpuCount"
+          min={formOptions.sizingMin}
+          max={formOptions.sizingMax}
+          step="8"
+          value={formOptions.sizingDefault}
+          data-sizing-input
+          class="bg-silver-mist [&::-moz-range-progress]:bg-midnight-fjord [&::-moz-range-thumb]:bg-midnight-fjord [&::-webkit-slider-thumb]:bg-midnight-fjord h-1.5 w-full cursor-pointer appearance-none rounded-full [&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-none [&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-none"
+        />
+        <div class="datum-text-xs text-app---dark---utility-3 flex justify-between">
+          <span>{formOptions.sizingMin}</span>
+          <span>{formOptions.sizingMax.toLocaleString()}+</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Storage</span>
+          <div class="relative">
+            <select name="storage" class={selectClass} required>
+              {formOptions.storage.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <Icon
+              name="chevron-down"
+              size="sm"
+              class="text-midnight-fjord/60 pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+            />
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-2">
+          <span class={labelClass}>Location requirements</span>
+          <input
+            type="text"
+            name="locationRequirements"
+            placeholder="Region, jurisdiction, latency, power..."
+            class:list={[inputClass, 'placeholder:text-midnight-fjord/40']}
+          />
+        </label>
+      </div>
+
+      <fieldset class="flex flex-col gap-3">
+        <legend class={`${labelClass} mb-2`}>Fleet management</legend>
+        <div class="grid grid-cols-2 gap-3">
+          {
+            formOptions.fleetManagement.map((option) => (
+              <label class="datum-text-sm text-midnight-fjord flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="fleetManagement"
+                  value={option}
+                  class="accent-aurora-moss size-4"
+                />
+                {option}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <label class="flex flex-col gap-2">
+        <span class={labelClass}>Anything else we should know?</span>
+        <textarea
+          name="message"
+          placeholder="Workload, timeline, in-house infra, existing infra..."
+          class:list={[inputClass, 'placeholder:text-midnight-fjord/40 h-[106px] resize-none']}
+        ></textarea>
+      </label>
+
+      <p class="form-status datum-text-sm hidden"></p>
+
+      <button
+        type="submit"
+        class="btn btn--midnight-fjord disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="submit-btn-text">Send request</span>
+        <Icon name="arrow-right" size="sm" />
+      </button>
+    </form>
+  </div>
+</dedicated-cloud-form>
+
+<script>
+  import { actions } from 'astro:actions';
+  import { getRecaptchaToken } from '@libs/recaptchaClient';
+
+  const RECAPTCHA_ACTION = 'dedicated_cloud_form';
+
+  class DedicatedCloudForm extends HTMLElement {
+    form: HTMLFormElement;
+    submitBtn: HTMLButtonElement;
+    submitBtnText: HTMLElement;
+    status: HTMLElement;
+    sizingInput: HTMLInputElement;
+    sizingOutput: HTMLOutputElement;
+    isSubmitting = false;
+    loadedAt = Date.now();
+    recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
+
+    constructor() {
+      super();
+      this.form = this.querySelector('form')!;
+      this.submitBtn = this.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      this.submitBtnText = this.querySelector<HTMLElement>('.submit-btn-text')!;
+      this.status = this.querySelector<HTMLElement>('.form-status')!;
+      this.sizingInput = this.querySelector<HTMLInputElement>('[data-sizing-input]')!;
+      this.sizingOutput = this.querySelector<HTMLOutputElement>('[data-sizing-output]')!;
+
+      this.paintSizingFill();
+      this.sizingInput.addEventListener('input', () => {
+        this.sizingOutput.textContent = Number(this.sizingInput.value).toLocaleString();
+        this.paintSizingFill();
+      });
+
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!this.isSubmitting) this.submitForm();
+      });
+    }
+
+    async submitForm() {
+      this.isSubmitting = true;
+      this.submitBtn.disabled = true;
+      this.submitBtnText.textContent = 'Sending...';
+
+      const data = new FormData(this.form);
+      const recaptchaToken = await getRecaptchaToken(this.recaptchaSiteKey, RECAPTCHA_ACTION);
+
+      actions
+        .BookDemo({
+          name: String(data.get('name') || ''),
+          email: String(data.get('email') || ''),
+          company: String(data.get('company') || ''),
+          workloadType: String(data.get('gpuGeneration') || ''),
+          message: String(data.get('message') || ''),
+          formType: 'dedicated-cloud',
+          website: String(data.get('website') || ''),
+          elapsedMs: Date.now() - this.loadedAt,
+          gpuGeneration: String(data.get('gpuGeneration') || ''),
+          networking: String(data.get('networking') || ''),
+          cooling: String(data.get('cooling') || ''),
+          gpuCount: Number(data.get('gpuCount') || 0),
+          storage: String(data.get('storage') || ''),
+          locationRequirements: String(data.get('locationRequirements') || ''),
+          fleetManagement: data.getAll('fleetManagement').map(String),
+          recaptchaToken,
+        })
+        .then((result) => {
+          if (result.error) {
+            this.showStatus('Something went wrong. Please try again in a minute or two.', false);
+          } else {
+            this.showStatus("Thanks — we'll be in touch shortly.", true);
+            this.form.reset();
+            this.sizingOutput.textContent = this.sizingInput.defaultValue;
+            this.paintSizingFill();
+          }
+        })
+        .catch(() => {
+          this.showStatus('Something went wrong. Please try again in a minute or two.', false);
+        })
+        .finally(() => {
+          this.isSubmitting = false;
+          this.submitBtnText.textContent = 'Send request';
+          this.submitBtn.disabled = false;
+        });
+    }
+
+    // Firefox paints the filled portion natively via ::-moz-range-progress; WebKit/Blink
+    // have no equivalent pseudo-element, so we fake it with a background gradient on the
+    // input itself, which shows through the (deliberately transparent) native track.
+    paintSizingFill() {
+      const min = Number(this.sizingInput.min);
+      const max = Number(this.sizingInput.max);
+      const value = Number(this.sizingInput.value);
+      const percent = ((value - min) / (max - min)) * 100;
+      this.sizingInput.style.background = `linear-gradient(to right, var(--color-midnight-fjord) ${percent}%, var(--color-silver-mist) ${percent}%)`;
+    }
+
+    showStatus(message: string, success: boolean) {
+      this.status.textContent = message;
+      this.status.classList.remove('hidden', 'text-red-600', 'text-midnight-fjord');
+      this.status.classList.add(success ? 'text-midnight-fjord' : 'text-red-600');
+    }
+  }
+
+  customElements.define('dedicated-cloud-form', DedicatedCloudForm);
+</script>

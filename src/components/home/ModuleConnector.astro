@@ -11,11 +11,11 @@
 // rather than a single instance spanning the whole page, so it can be
 // suppressed (via `class`) over WhatIsDatum at `lg`+, where that module
 // shows its own blueprint-grid SVG corner instead of a plain line.
-const { class: className = '' } = Astro.props;
+const { class: className = '', barClass = '' } = Astro.props;
 ---
 
 <div class:list={['module-connector', className]} aria-hidden="true">
   <div class="max-width-nav relative h-full">
-    <span class="module-connector-bar"></span>
+    <span class:list={['module-connector-bar', barClass]}></span>
   </div>
 </div>

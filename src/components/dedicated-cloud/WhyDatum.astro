@@ -4,6 +4,9 @@ import SectionLine from '@components/SectionLine.astro';
 import Icon from '@components/Icon.astro';
 import { whyDatum } from '@data/dedicatedCloud';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
+
+const WHY_DATUM_TITLE_HIGHLIGHT = '25 years';
+const whyDatumTitleRest = whyDatum.title.slice(WHY_DATUM_TITLE_HIGHLIGHT.length);
 ---
 
 <section
@@ -16,26 +19,31 @@ import ModuleConnector from '@components/home/ModuleConnector.astro';
 
     <div class="max-width-nopad flex flex-col gap-10 md:gap-16">
       <div class="flex flex-col gap-4">
-        <h2 class="section-title--sm text-midnight-fjord">{whyDatum.title}</h2>
+        <h2 class="section-title--sm text-midnight-fjord">
+          <span
+            class="text-pine-forge---links text-highlight bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
+            >{WHY_DATUM_TITLE_HIGHLIGHT}</span
+          >{whyDatumTitleRest}
+        </h2>
       </div>
 
-      <ul class="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
+      <div
+        class="border-silver-mist bg-silver-mist grid grid-cols-1 gap-px border sm:grid-cols-2 lg:grid-cols-4"
+      >
         {
           whyDatum.items.map((item) => (
-            <li class="flex items-start gap-3">
-              <Icon
-                name="check"
-                size="sm"
-                class="text-pine-forge---links stroke-2.5 mt-1 shrink-0"
-              />
-              <div class="flex flex-col gap-1">
-                <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
-                <p class="datum-text-base text-app---dark---utility-3">{item.description}</p>
+            <div class="bg-platinum flex flex-col items-start gap-7 p-8">
+              <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center rounded-sm">
+                <Icon name="check" size="sm" class="text-pine-forge---links stroke-2.5" />
               </div>
-            </li>
+              <div class="flex flex-col gap-2.5">
+                <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
+                <p class="datum-text-base text-midnight-fjord/80">{item.description}</p>
+              </div>
+            </div>
           ))
         }
-      </ul>
+      </div>
     </div>
   </div>
 

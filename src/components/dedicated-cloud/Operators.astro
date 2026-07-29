@@ -1,18 +1,18 @@
 ---
-import { Image } from 'astro:assets';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
 import Icon from '@components/Icon.astro';
 import { fetchStrapiAuthorBySlug, getStrapiMediaUrl } from '@libs/strapi';
 import { operators, whyDatum } from '@data/dedicatedCloud';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
-import DigitalRealtyLogo from '@assets/logos/dc-partners/digitalrealty.png';
+import DigitalRealtyLogo from '@assets/logos/dc-partners/digitalrealty.svg';
 import EquinixLogo from '@assets/logos/dc-partners/equinix.svg';
 import DatabankLogo from '@assets/logos/dc-partners/databank.svg';
 import SabeyLogo from '@assets/logos/dc-partners/sabey.svg';
 import QtsLogo from '@assets/logos/dc-partners/qts.svg';
 
-const DC_PARTNER_SVG_LOGOS = [
+const DC_PARTNER_LOGOS = [
+  { name: 'Digital Realty', Logo: DigitalRealtyLogo, class: 'h-12' },
   { name: 'Equinix', Logo: EquinixLogo, class: 'h-7' },
   { name: 'DataBank', Logo: DatabankLogo, class: 'h-7' },
   { name: 'Sabey Data Centers', Logo: SabeyLogo, class: 'h-9' },
@@ -120,11 +120,8 @@ const people = await Promise.all(
       </p>
       <span class="bg-app---dark---utility-3 hidden h-14 w-0.5 md:block" aria-hidden="true"></span>
       <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-        <li class="flex items-center opacity-80">
-          <Image src={DigitalRealtyLogo} alt="Digital Realty" class="h-7 w-auto" />
-        </li>
         {
-          DC_PARTNER_SVG_LOGOS.map(({ name, Logo, class: heightClass }) => (
+          DC_PARTNER_LOGOS.map(({ name, Logo, class: heightClass }) => (
             <li class="flex items-center opacity-80">
               <Logo class:list={['w-auto', heightClass]} aria-label={name} role="img" />
             </li>

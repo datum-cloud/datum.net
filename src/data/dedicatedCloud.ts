@@ -93,7 +93,7 @@ export const whyDatum = {
         'We work across hardware and DC partners rather than owning the stack, so the cluster is designed around your requirements — not our inventory.',
     },
   ] satisfies ChecklistItem[],
-  tagline: 'Our datacenter roots run deep.',
+  tagline: 'Our datacenter roots run deep',
 };
 
 export interface Operator {

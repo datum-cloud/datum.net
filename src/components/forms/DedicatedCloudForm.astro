@@ -32,12 +32,12 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
 
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <label class="flex flex-col gap-2">
-          <span class={labelClass}>Name</span>
+          <span class={labelClass}>Name <span class="text-red-600">*</span></span>
           <input type="text" name="name" class={inputClass} autocomplete="name" required />
         </label>
 
         <label class="flex flex-col gap-2">
-          <span class={labelClass}>Work email</span>
+          <span class={labelClass}>Work email <span class="text-red-600">*</span></span>
           <input type="email" name="email" class={inputClass} autocomplete="email" required />
         </label>
       </div>

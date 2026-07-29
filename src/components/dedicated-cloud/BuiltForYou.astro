@@ -28,11 +28,11 @@ import { builtForYou } from '@data/dedicatedCloud';
           {
             builtForYou.items.map((item) => (
               <div class="bg-platinum flex flex-col items-start gap-4 p-6 lg:p-8">
-                <div class="bg-aurora-moss/20 flex size-10 shrink-0 items-center justify-center rounded-sm">
+                <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center rounded-sm">
                   <Icon name={item.icon} size="sm" class="text-pine-forge---links" />
                 </div>
                 <div class="flex flex-col gap-1">
-                  <p class="datum-text-xl text-midnight-fjord font-semibold">{item.title}</p>
+                  <p class="datum-text-lg text-midnight-fjord font-semibold">{item.title}</p>
                   <p class="datum-text-base text-app---dark---utility-3">{item.description}</p>
                 </div>
               </div>

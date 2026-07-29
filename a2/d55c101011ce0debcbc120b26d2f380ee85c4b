@@ -1,0 +1,26 @@
+src/data/dedicatedCloud.ts
+  h_c7951bc64db670 32,34-35,54-55,60,64,66
+src/pages/dedicated-cloud.md.ts
+  s_adcfd5b671d641::t_2626d8160f6ebd 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "a2d55c101011ce0debcbc120b26d2f380ee85c4b",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_adcfd5b671d641": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eef0b781-e258-47ab-a532-015abcc46aff",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

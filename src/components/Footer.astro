@@ -11,6 +11,7 @@ import SectionEyebrow from '@components/SectionEyebrow.astro';
 import ImageTwoMen from '@assets/images/two-person-talking.png';
 import NewsletterModal from '@components/forms/NewsletterModal.astro';
 import FooterAiAgents from '@components/FooterAiAgents.astro';
+import FooterPrefooterGrid from '@assets/svgs/footer-prefooter-grid.svg';
 
 const {
   class: className = '',
@@ -45,22 +46,7 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
           </SectionEyebrow>
 
           <div class="footer-prefooter-grid" aria-hidden="true">
-            <svg
-              class="line-draw"
-              viewBox="0 0 255 282"
-              fill="none"
-              preserveAspectRatio="xMaxYMin slice"
-            >
-              <rect data-line-draw x="135" y="81.5" width="80" height="80" fill="#E6F59F" />
-              <rect data-line-draw x="16" y="121.5" width="40" height="40" fill="#E6F59F" />
-              <rect data-line-draw x="136" y="241.5" width="40" height="40" fill="#E6F59F" />
-              <path data-line-draw pathLength="1" d="M215 0.5L215 120.5" stroke="#C3C6C9" />
-              <path data-line-draw pathLength="1" d="M136 41.5L136 280.5" stroke="#C3C6C9" />
-              <path data-line-draw pathLength="1" d="M56 121.5L56 160.5" stroke="#C3C6C9" />
-              <path data-line-draw pathLength="1" d="M96 240.5H176" stroke="#C3C6C9" />
-              <path data-line-draw pathLength="1" d="M0 160.5L176 160.5" stroke="#C3C6C9" />
-              <path data-line-draw pathLength="1" d="M96 80.5L255 80.5" stroke="#C3C6C9" />
-            </svg>
+            <FooterPrefooterGrid class="line-draw" preserveAspectRatio="xMaxYMin slice" />
           </div>
           <div class="max-width-nopad flex flex-col items-center gap-5.5 pt-14 text-center md:gap-10 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40">
             <h2 class="section--title">

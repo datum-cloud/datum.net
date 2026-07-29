@@ -39,7 +39,11 @@ const people = await Promise.all(
 
 <section class="section--block section--block--x-pad bg-midnight-fjord relative overflow-hidden">
   <div class="max-width-nav large-pad relative">
-    <SectionEyebrow variant="app" position="left-top">
+    <SectionEyebrow
+      variant="app"
+      position="left-top"
+      class="text-aurora-moss [&_.section-eyebrow-cursor]:bg-aurora-moss"
+    >
       {operators.eyebrow}
     </SectionEyebrow>
 
@@ -96,9 +100,7 @@ const people = await Promise.all(
       </ul>
     </div>
     <div class="max-width-nopad relative">
-      <p
-        class="border-app---dark---utility-2 text-app---dark---utility-4 datum-text-sm mt-14 border-t pt-6 text-center md:mt-20"
-      >
+      <p class="text-app---dark---utility-4 datum-text-sm mt-14 text-center md:mt-20">
         {whyDatum.tagline}
       </p>
     </div>

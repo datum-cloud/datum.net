@@ -10,7 +10,7 @@ export const meta = {
 
 export const hero = {
   eyebrow: 'Dedicated cloud',
-  title: 'GPU clusters, built and operated by folks you can trust.',
+  title: 'GPU clusters, built and operated by folks you can trust',
   description:
     'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
   ctaText: 'Schedule a conversation',
@@ -29,7 +29,7 @@ export interface BuiltForYouItem extends ChecklistItem {
 
 export const builtForYou = {
   eyebrow: 'Built for you',
-  title: 'Like wealth managers, but for AI companies.',
+  title: 'Like wealth managers, but for AI companies',
   intro: [
     'It’s no easy task to assemble all the pieces of the digital infrastructure puzzle, and each situation at scale is unique.',
     "That's why we don't try to pretend it's easy. Instead, we show up with a simple promise: we'll put the work in, we'll be honest with you, and we'll do our best to help you win.",
@@ -41,7 +41,7 @@ export const builtForYou = {
       icon: 'waypoints',
     },
     {
-      title: 'Supply chain management',
+      title: 'Supply chain',
       description: 'Sourcing GPUs, servers, and networking gear from vetted hardware partners.',
       icon: 'package',
     },
@@ -71,7 +71,7 @@ export const builtForYou = {
 
 export const whyDatum = {
   eyebrow: 'Why Datum',
-  title: '25 years in bare metal, global networks, and datacenters.',
+  title: '25 years in bare metal, global networks, and datacenters',
   items: [
     {
       title: "Built by people who've done this before",
@@ -112,7 +112,7 @@ export const operators = {
     {
       name: 'Zac Smith',
       role: 'Co-Founder, CEO',
-      bio: "Founded Packet (acquired by Equinix) and led Equinix Metal. Twenty years building bare metal and interconnected infrastructure for the world's most demanding operators.",
+      bio: "Twenty years building bare metal and interconnected infrastructure for the world's most demanding operators.",
       slug: 'zachary-smith',
     },
     {
@@ -141,7 +141,7 @@ export const operators = {
 
 export const contact = {
   eyebrow: 'Contact',
-  title: 'Talk to our team.',
+  title: 'Talk to our team',
   description:
     "Tell us what you're building. We'll come back within one business day with a scoping call and the specialists relevant to your workload.",
   reassurance: [

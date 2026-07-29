@@ -72,6 +72,8 @@ const WELL_KNOWN_CONTENT_TYPES = {
 // Redirect configuration with Cache-Control: no-cache
 const AUTH_TARGET = 'https://auth.datum.net';
 const REDIRECTS = {
+  '/pricing': { destination: '/', status: 307 },
+  '/pricing/': { destination: '/', status: 307 },
   '/product': { destination: '/platform/deliver', status: 302 },
   '/feature/': { destination: '/platform/deliver', status: 302 },
   '/product/overview/overview': { destination: '/platform/deliver', status: 302 },

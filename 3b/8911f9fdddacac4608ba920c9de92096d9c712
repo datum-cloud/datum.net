@@ -1,0 +1,14 @@
+server.mjs
+  h_c7951bc64db670 75-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "3b8911f9fdddacac4608ba920c9de92096d9c712",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

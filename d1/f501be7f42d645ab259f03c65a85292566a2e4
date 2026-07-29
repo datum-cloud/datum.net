@@ -1,0 +1,27 @@
+src/components/home/DedicatedCloud.astro
+  s_8895cb4129f3da::t_f8c1e22f93c750 40
+src/content/pages/features/deliver/index.mdx
+  s_8895cb4129f3da::t_458de2d530a46e 2
+src/content/pages/features/build/index.mdx
+  s_8895cb4129f3da::t_645139b6f92891 2
+src/content/pages/features/connect/index.mdx
+  s_8895cb4129f3da::t_10454b05102938 2
+src/content/pages/home.mdx
+  s_8895cb4129f3da::t_aa13d1eb19b2c3 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "d1f501be7f42d645ab259f03c65a85292566a2e4",
+  "prompts": {},
+  "sessions": {
+    "s_8895cb4129f3da": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c31ae513-5a8d-4580-9693-1d60915b86dd",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

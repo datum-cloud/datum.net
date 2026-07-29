@@ -44,14 +44,14 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
 
       <label class="flex flex-col gap-2">
         <span class={labelClass}>Company</span>
-        <input type="text" name="company" class={inputClass} autocomplete="organization" required />
+        <input type="text" name="company" class={inputClass} autocomplete="organization" />
       </label>
 
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <label class="flex flex-col gap-2">
           <span class={labelClass}>GPU generation</span>
           <div class="relative">
-            <select name="gpuGeneration" class={selectClass} required>
+            <select name="gpuGeneration" class={selectClass}>
               {formOptions.gpuGeneration.map((option) => <option value={option}>{option}</option>)}
             </select>
             <Icon
@@ -65,7 +65,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
         <label class="flex flex-col gap-2">
           <span class={labelClass}>Networking</span>
           <div class="relative">
-            <select name="networking" class={selectClass} required>
+            <select name="networking" class={selectClass}>
               {formOptions.networking.map((option) => <option value={option}>{option}</option>)}
             </select>
             <Icon
@@ -79,7 +79,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
         <label class="flex flex-col gap-2">
           <span class={labelClass}>Cooling</span>
           <div class="relative">
-            <select name="cooling" class={selectClass} required>
+            <select name="cooling" class={selectClass}>
               {formOptions.cooling.map((option) => <option value={option}>{option}</option>)}
             </select>
             <Icon
@@ -114,56 +114,11 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <label class="flex flex-col gap-2">
-          <span class={labelClass}>Storage</span>
-          <div class="relative">
-            <select name="storage" class={selectClass} required>
-              {formOptions.storage.map((option) => <option value={option}>{option}</option>)}
-            </select>
-            <Icon
-              name="chevron-down"
-              size="sm"
-              class="text-midnight-fjord/60 pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
-            />
-          </div>
-        </label>
-
-        <label class="flex flex-col gap-2">
-          <span class={labelClass}>Location requirements</span>
-          <input
-            type="text"
-            name="locationRequirements"
-            placeholder="Region, jurisdiction, latency, power..."
-            class:list={[inputClass, 'placeholder:text-midnight-fjord/40']}
-          />
-        </label>
-      </div>
-
-      <fieldset class="flex flex-col gap-3">
-        <legend class={`${labelClass} mb-2`}>Fleet management</legend>
-        <div class="grid grid-cols-2 gap-3">
-          {
-            formOptions.fleetManagement.map((option) => (
-              <label class="datum-text-sm text-midnight-fjord flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="fleetManagement"
-                  value={option}
-                  class="accent-aurora-moss size-4"
-                />
-                {option}
-              </label>
-            ))
-          }
-        </div>
-      </fieldset>
-
       <label class="flex flex-col gap-2">
         <span class={labelClass}>Anything else we should know?</span>
         <textarea
           name="message"
-          placeholder="Workload, timeline, in-house infra, existing infra..."
+          placeholder="Tell us more about your requirements, timeline, connectivity, and anything else we should know."
           class:list={[inputClass, 'placeholder:text-midnight-fjord/40 h-[106px] resize-none']}
         ></textarea>
       </label>
@@ -241,9 +196,6 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
           networking: String(data.get('networking') || ''),
           cooling: String(data.get('cooling') || ''),
           gpuCount: Number(data.get('gpuCount') || 0),
-          storage: String(data.get('storage') || ''),
-          locationRequirements: String(data.get('locationRequirements') || ''),
-          fleetManagement: data.getAll('fleetManagement').map(String),
           recaptchaToken,
         })
         .then((result) => {

@@ -15,7 +15,6 @@ export const hero = {
     'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
   ctaText: 'Schedule a conversation',
   ctaHref: '#contact',
-  proofLine: 'Think you love silicon and hardware more than us? Prove it!',
 };
 
 export interface ChecklistItem {
@@ -169,12 +168,15 @@ export const formOptions = {
     'Nvidia Hopper (H200)',
     'Nvidia Blackwell (B300)',
     'Nvidia Blackwell Ultra (GB300)',
+    'AMD Helios',
+    'AMD Instinct MI400',
+    'AMD Instinct MI350',
   ],
-  networking: ['InfiniBand', 'Ethernet'],
+  networking: ['Ethernet', 'InfiniBand'],
   cooling: ['Liquid', 'Air'],
   storage: ['NFS', 'Object', 'Block'],
   fleetManagement: ['Kubernetes', 'Slurm', 'Observability', 'Security', 'Traffic Management'],
-  sizingMin: 0,
+  sizingMin: 16,
   sizingMax: 4096,
   sizingDefault: 512,
 };

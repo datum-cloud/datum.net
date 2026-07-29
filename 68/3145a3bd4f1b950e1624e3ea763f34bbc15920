@@ -1,0 +1,31 @@
+src/data/dedicatedCloud.ts
+  h_c7951bc64db670 171-173,175,179
+src/content/faq/dedicated-8-who-operates.mdx
+  h_c7951bc64db670 2,7
+src/content/faq/dedicated-7-vs-hyperscaler.mdx
+  h_c7951bc64db670 2-3,7
+src/components/forms/DedicatedCloudForm.astro
+  s_1766e7349f27b6::t_8d493d1dd628a1 47,54,68,82
+  s_1766e7349f27b6::t_8ae42c46dbaa4d 121
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "683145a3bd4f1b950e1624e3ea763f34bbc15920",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1766e7349f27b6": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "b4792b00-385f-42e0-ae0c-33fe634a720b",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

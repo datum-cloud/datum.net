@@ -1,8 +1,8 @@
 {
   "show": true,
-  "label": "Free Download",
-  "text": "Use 'datumctl console' to access a full interactive terminal UI + built in AI skills",
-  "href": "https://www.datum.net/download/datumctl/",
+  "label": "Try for free",
+  "text": "Datum is currently free under public beta, sign up",
+  "href": "https://auth.datum.net/id/signup",
   "icon": {
     "name": "arrow-right",
     "size": "md"

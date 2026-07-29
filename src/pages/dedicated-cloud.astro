@@ -54,106 +54,100 @@ const jsonLd = {
     <Hero class="light" hideContent hideHero />
 
     <div class="section--block section--block--x-pad relative overflow-hidden bg-white">
-      <div class="max-width-nav large-pad relative">
-        <HeroBlocksLeft
-          class="line-draw pointer-events-none absolute top-0 left-0 hidden lg:block"
-          aria-hidden="true"
-        />
-        <HeroBlocksRight
-          class="line-draw pointer-events-none absolute top-0 right-0 hidden lg:block"
-          aria-hidden="true"
-        />
-
-        <div class="max-width-nopad flex flex-col items-center gap-8 text-center">
-          <div class="mx-auto flex max-w-3xl flex-col items-center gap-6">
-            <h1 class="datum-text-9xl text-midnight-fjord">
-              {heroTitleLead}<span
-                class="text-pine-forge---links text-highlight bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
-                >{HERO_TITLE_HIGHLIGHT}</span
-              >
-            </h1>
-            <p class="datum-text-lg text-app---dark---utility-3 max-w-2xl">{hero.description}</p>
-          </div>
-
-          <a href={hero.ctaHref} class="btn btn--midnight-fjord btn--sm w-fit">
-            {hero.ctaText}
-            <Icon name="calendar" size="sm" />
-          </a>
+      <div class="max-width-nav large-pad relative flex flex-col items-center gap-8 text-center">
+        <SectionLine left top />
+        <div class="absolute top-0 -left-10 hidden lg:block">
+          <HeroBlocksLeft class="line-draw pointer-events-none" aria-hidden="true" />
         </div>
+
+        <div class="absolute -right-9.75 bottom-0 hidden lg:block">
+          <HeroBlocksRight class="line-draw pointer-events-none" aria-hidden="true" />
+        </div>
+        <div class="mx-auto flex max-w-3xl flex-col items-center gap-6">
+          <h1 class="datum-text-9xl text-midnight-fjord">
+            {heroTitleLead}<span
+              class="text-pine-forge---links text-highlight bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
+              >{HERO_TITLE_HIGHLIGHT}</span
+            >
+          </h1>
+          <p class="datum-text-lg text-app---dark---utility-3 max-w-2xl">{hero.description}</p>
+        </div>
+
+        <a href={hero.ctaHref} class="btn btn--midnight-fjord btn--sm w-fit">
+          {hero.ctaText}
+          <Icon name="calendar" size="sm" />
+        </a>
       </div>
     </div>
-    <ModuleConnector />
-    <BuiltForYou />
-    <WhyDatum />
-    <Operators />
-
-    <div
-      id="contact"
-      class="section--block section--block--x-pad relative overflow-hidden bg-white"
-    >
-      <div class="max-width-nav large-pad relative">
-        <SectionEyebrow position="left-top">{contact.eyebrow}</SectionEyebrow>
-        <SectionLine left top bottom />
-        <SectionLine right top />
-
-        <div class="max-width-nopad">
-          <div class="grid grid-cols-6 gap-10 md:gap-15 lg:gap-25 xl:gap-28">
-            <div class="col-span-6 flex flex-col gap-7 md:col-span-2">
-              <div class="flex flex-col gap-5">
-                <h2 class="section-title--sm text-midnight-fjord">{contact.title}</h2>
-                <p class="datum-text-lg text-app---dark---utility-3">{contact.description}</p>
-              </div>
-
-              <ul class="flex flex-col gap-3">
-                {
-                  contact.reassurance.map((line) => (
-                    <li class="datum-text-sm text-midnight-fjord flex items-center gap-3">
-                      <Icon
-                        name="check"
-                        size="sm"
-                        class="text-pine-forge---links stroke-2.5 shrink-0"
-                      />
-                      {line}
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
-
-            <div class="col-span-6 md:col-span-4">
-              <DedicatedCloudForm />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ModuleConnector />
-    </div>
-
-    {
-      faqs.length > 0 && (
-        <div class="section--block section--block--x-pad bg-glacier-mist-700 relative overflow-hidden">
-          <div class="max-width-nav large-pad relative">
-            <SectionEyebrow position="left-top">FAQ</SectionEyebrow>
-            <SectionLine left top />
-
-            <div class="max-width-nopad grid grid-cols-12 gap-8" x-data="{ expandedFaq: null }">
-              <div class="col-span-12 flex flex-col gap-4 md:col-span-5">
-                <h2 class="section-title--sm text-midnight-fjord">Questions we hear most often</h2>
-              </div>
-              <div class="col-span-12 md:col-span-7">
-                <div class="faq-list">
-                  {faqs.map((faq, index) => (
-                    <FAQ faq={faq} index={index} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    <Footer showCTA={false} plainIllustration class="bg-glacier-mist-700!" />
   </section>
+  <ModuleConnector />
+  <BuiltForYou />
+  <WhyDatum />
+  <Operators />
+
+  <div id="contact" class="section--block section--block--x-pad relative overflow-hidden bg-white">
+    <div class="max-width-nav large-pad relative">
+      <SectionEyebrow position="left-top">{contact.eyebrow}</SectionEyebrow>
+      <SectionLine left top bottom />
+      <SectionLine right top />
+
+      <div class="max-width-nopad">
+        <div class="grid grid-cols-6 gap-10 md:gap-15 lg:gap-25 xl:gap-28">
+          <div class="col-span-6 flex flex-col gap-7 md:col-span-2">
+            <div class="flex flex-col gap-5">
+              <h2 class="section-title--sm text-midnight-fjord">{contact.title}</h2>
+              <p class="datum-text-lg text-app---dark---utility-3">{contact.description}</p>
+            </div>
+
+            <ul class="flex flex-col gap-3">
+              {
+                contact.reassurance.map((line) => (
+                  <li class="datum-text-sm text-midnight-fjord flex items-center gap-3">
+                    <Icon
+                      name="check"
+                      size="sm"
+                      class="text-pine-forge---links stroke-2.5 shrink-0"
+                    />
+                    {line}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div class="col-span-6 md:col-span-4">
+            <DedicatedCloudForm />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ModuleConnector />
+  </div>
+
+  {
+    faqs.length > 0 && (
+      <div class="section--block section--block--x-pad bg-glacier-mist-700 relative overflow-hidden">
+        <div class="max-width-nav large-pad relative">
+          <SectionEyebrow position="left-top">FAQ</SectionEyebrow>
+          <SectionLine left top />
+
+          <div class="max-width-nopad grid grid-cols-12 gap-8" x-data="{ expandedFaq: null }">
+            <div class="col-span-12 flex flex-col gap-4 md:col-span-5">
+              <h2 class="section-title--sm text-midnight-fjord">Questions we hear most often</h2>
+            </div>
+            <div class="col-span-12 md:col-span-7">
+              <div class="faq-list">
+                {faqs.map((faq, index) => (
+                  <FAQ faq={faq} index={index} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <Footer showCTA={false} plainIllustration class="bg-glacier-mist-700!" />
 </Layout>

@@ -4,20 +4,104 @@
   <rect data-line-draw opacity="0.7" x="360" y="504" width="80" height="80" fill="#F6F6F5" />
   <rect data-line-draw opacity="0.7" x="321" y="584" width="40" height="40" fill="#F6F6F5" />
   <rect data-line-draw opacity="0.7" x="241" y="80" width="40" height="40" fill="#F6F6F5" />
-  <path data-line-draw pathLength="1" d="M440 -80L440 79" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M361 40L361 119" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M281 80L281 119" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M281 504L281 543" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M337.495 423.496L376.495 423.496" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M338.495 199.496L377.495 199.496" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M225 119L401 119" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M321 39L440 39" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M361 504L361 624" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M40 504L40 544" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M0 504H40" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M202 504H401" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M440 544L440 729" stroke="#C3C6C9" />
-  <path data-line-draw pathLength="1" d="M322 584H441" stroke="#C3C6C9" />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M440.5 -80L440.5 79"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M361.5 40L361.5 119"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M281.5 80L281.5 119"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M281.5 504L281.5 543"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M337.495 423.496L376.495 423.496"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M338.495 199.496L377.495 199.496"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M225 119.5L401 119.5"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M321 39.5L440 39.5"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M361.5 504L361.5 624"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M40.5 504L40.5 544"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M0 504.5H40"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M202 504.5H401"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M440.5 544L440.5 729"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
+  <path
+    data-line-draw
+    pathLength="1"
+    d="M322 584.5H441"
+    stroke="#C3C6C9"
+    shape-rendering="crispEdges"
+  />
   <g data-line-draw-panel filter="url(#filter0_d_15440_2049)">
     <rect x="40" y="119" width="532" height="385" fill="url(#paint0_linear_15440_2049)"
       shape-rendering="crispEdges" />

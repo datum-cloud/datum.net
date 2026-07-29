@@ -174,6 +174,24 @@ export function isRedisReady(): boolean {
 export const cache = new CacheManager({ primary, fallback, defaultTtl: ttl, debug });
 
 /**
+ * Delete a single key from the persistent fallback cache (`.cache/strapi-fallback`).
+ *
+ * Fallback entries normally outlive everything — they exist so Strapi outages
+ * don't take the site down — but an `entry.delete`/`entry.unpublish` webhook
+ * is an authoritative signal that the entry is really gone, not just that
+ * Strapi is unreachable. Without this, `getWithFallback`/`getFallback` can't
+ * tell "Strapi returned zero rows for this slug" apart from "Strapi timed
+ * out", so they'd keep serving the stale fallback copy of deleted content
+ * forever. Call this only when the caller has that authoritative signal.
+ */
+export async function deleteFallbackCache(key: string): Promise<void> {
+  await fallback.delete(key);
+  if (debug) {
+    console.debug(`[strapi-runtime] deleted fallback cache key "${key}"`);
+  }
+}
+
+/**
  * Delete all primary-cache keys whose names start with `prefix`.
  * Fallback entries are preserved (same semantics as `cache.delete`).
  * @returns Deleted key names

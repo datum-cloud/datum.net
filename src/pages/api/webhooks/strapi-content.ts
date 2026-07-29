@@ -17,7 +17,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { createWebhookHandler } from '@datum-cloud/strapi-revalidate';
 import type { WebhookEvent } from '@datum-cloud/strapi-revalidate';
-import { cache, config } from '@libs/strapi/_runtime';
+import { cache, config, deleteFallbackCache } from '@libs/strapi/_runtime';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/articles';
 import {
   fetchStrapiAuthors,
@@ -28,7 +28,10 @@ import {
 /** Primary cache keys — must stay aligned with the Strapi fetcher modules. */
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+/** Pre-migration fallback key for article detail, still read as a backstop by articles.ts. */
+const LEGACY_ARTICLE_FALLBACK_PREFIX = 'article-';
 const AUTHORS_CACHE_KEY = 'strapi-authors';
+const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
 /** Strapi events that mean "the entry no longer exists" — skip the per-slug warm. */
 const DELETE_EVENTS = new Set(['entry.delete', 'entry.unpublish']);
 
@@ -107,28 +110,42 @@ async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
         fetchStrapiArticles().then(() => assertPrimaryCache(ARTICLES_CACHE_KEY, 'articles list')),
       ];
 
-      if (event.slug && !isDelete) {
+      if (event.slug) {
         const slug = event.slug;
-        tasks.push(
-          fetchStrapiArticleBySlug(slug).then(async (article) => {
-            if (!article) {
-              throw new Error(`Cache warm failed: could not load article "${slug}"`);
-            }
-            await assertPrimaryCache(`${ARTICLE_CACHE_PREFIX}${slug}`, `article "${slug}"`);
-          })
-        );
+        if (isDelete) {
+          // entry.delete/entry.unpublish is an authoritative "this is really gone" signal.
+          // The fetch layer can't tell "Strapi returned zero rows" apart from "Strapi is
+          // unreachable" and falls back to stale fallback data in both cases — without this,
+          // the deleted/unpublished article would keep being served from fallback forever.
+          tasks.push(deleteFallbackCache(`${ARTICLE_CACHE_PREFIX}${slug}`));
+          tasks.push(deleteFallbackCache(`${LEGACY_ARTICLE_FALLBACK_PREFIX}${slug}`));
+        } else {
+          tasks.push(
+            fetchStrapiArticleBySlug(slug).then(async (article) => {
+              if (!article) {
+                throw new Error(`Cache warm failed: could not load article "${slug}"`);
+              }
+              await assertPrimaryCache(`${ARTICLE_CACHE_PREFIX}${slug}`, `article "${slug}"`);
+            })
+          );
+        }
       }
 
       await Promise.all(tasks);
       break;
     }
-    case 'author':
+    case 'author': {
       // Order matters: refresh the source list first so derived caches are
       // computed from fresh data when getStrapiTeamMembers/getStrapiCardMembers run.
       await fetchStrapiAuthors();
       await Promise.all([getStrapiTeamMembers(), getStrapiCardMembers()]);
       await assertPrimaryCache(AUTHORS_CACHE_KEY, 'authors list');
+      if (isDelete && event.slug) {
+        // Same authoritative-deletion reasoning as the article case above.
+        await deleteFallbackCache(`${AUTHOR_SLUG_CACHE_PREFIX}${event.slug}`);
+      }
       break;
+    }
     default:
       console.warn(`[Webhook] No warm strategy for model "${event.model}"`);
   }

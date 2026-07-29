@@ -215,14 +215,16 @@ Team and card caches are rebuilt from **`fetchStrapiAuthors()`** (after their ow
 
 #### Main cache vs fallback
 
-[`POST /api/webhooks/strapi-content`](../src/pages/api/webhooks/strapi-content.ts) invalidates **primary** cache entries by tag (`articles`, `authors`, `roadmaps`, plus per-slug tags like `article:<slug>`). **Fallback entries are intentionally preserved** — they exist to keep the site serving stale data when Strapi is unreachable, and clearing them defeats that purpose.
+[`POST /api/webhooks/strapi-content`](../src/pages/api/webhooks/strapi-content.ts) invalidates **primary** cache entries by tag (`articles`, `authors`, `roadmaps`, plus per-slug tags like `article:<slug>`). **Fallback entries are otherwise intentionally preserved** — they exist to keep the site serving stale data when Strapi is unreachable, and clearing them on every webhook would defeat that purpose.
 
-Named **force regeneration** also deletes only the primary entry (`CacheManager.delete` does not touch the fallback). On the next refetch, the package's `CacheManager.set` writes both the primary entry and a fallback mirror at the same key.
+**Exception — `entry.delete`/`entry.unpublish`:** the fetch layer can't tell "Strapi returned zero rows for this slug" apart from "Strapi is unreachable" — both read as a failure and fall back to the stale fallback copy. A delete/unpublish webhook is an authoritative signal that the entry is really gone, so the webhook additionally purges the fallback entry for that slug (`deleteFallbackCache` in [`_runtime.ts`](../src/libs/strapi/_runtime.ts)) — otherwise the deleted/unpublished article or author would keep being served from fallback indefinitely. A later `entry.publish` re-populates both caches normally.
+
+Named **force regeneration** deletes only the primary entry (`CacheManager.delete` does not touch the fallback). On the next refetch, the package's `CacheManager.set` writes both the primary entry and a fallback mirror at the same key.
 
 - On a **successful** Strapi response, the fallback mirror is overwritten with fresh data.
 - If Strapi is **unreachable** during a refetch, the fetcher (e.g. `fetchStrapiArticleBySlug`) reads the existing fallback entry via `cache.getFallback(...)` so the request still returns content.
 
-Operators who need to drop stale fallback data must delete the file(s) manually — for example `rm .cache/strapi-fallback/strapi-article-<slug>.json`. Neither the webhook nor the admin force-regen endpoint touches the fallback directory.
+Operators who need to drop stale fallback data for reasons other than delete/unpublish must delete the file(s) manually — for example `rm .cache/strapi-fallback/strapi-article-<slug>.json`. The admin force-regen endpoint doesn't touch the fallback directory.
 
 > **Legacy fallback files:** the pre-package layout stored fallbacks under different keys (e.g. `.cache/strapi-fallback/articles.json` mirrored `.cache/strapi-articles.json`). After the migration to `@datum-cloud/strapi-revalidate`, fallback keys match the primary key. Old files at `articles.json`, `article-<slug>.json`, `roadmaps.json` etc. are orphaned but harmless; delete them at your leisure.
 

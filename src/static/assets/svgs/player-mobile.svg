@@ -1,6 +1,6 @@
 <svg width="305" height="221" viewBox="0 0 305 221" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.285645" y="0.285156" width="304" height="220" fill="url(#paint0_linear_15414_4149)"/>
-<rect x="0.285645" y="0.285156" width="304" height="220" stroke="#C3C6C9" stroke-width="0.571429"/>
+<rect x="0.285645" y="0.285156" width="304" height="220" stroke="#C3C6C9" stroke-width="0.571429" shape-rendering="crispEdges"/>
 <rect x="8.28564" y="31.1406" width="29.7143" height="4.57143" rx="2.28571" fill="#E8E7E4"/>
 <rect x="76.2856" y="39.1406" width="29.7143" height="4.57143" rx="2.28571" fill="#E8E7E4"/>
 <rect x="76.2856" y="98.5703" width="29.7143" height="4.57143" rx="2.28571" fill="#E8E7E4"/>

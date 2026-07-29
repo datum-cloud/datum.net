@@ -223,9 +223,9 @@
     @apply pointer-events-none absolute top-0 overflow-hidden;
     @apply right-0 hidden lg:-right-6.25 lg:block xl:-right-10;
 
-    @apply md:h-34 md:w-28;
+    @apply md:h-30.75 md:w-28;
     @apply lg:h-44 lg:w-40;
-    @apply xl:h-[196.25px] xl:w-64;
+    @apply xl:h-70.5 xl:w-63.75;
   }
 
   .footer-illustration-container {

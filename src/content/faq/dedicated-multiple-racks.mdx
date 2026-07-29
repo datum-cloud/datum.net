@@ -1,7 +1,0 @@
----
-question: 'How do multiple NVL72 racks connect into one cluster?'
-order: 5
-category: 'dedicated-cloud'
----
-
-Each rack's NVLink domain covers the 72 GPUs inside it; scaling beyond one rack means stitching those domains together over a scale-out fabric — InfiniBand or Ethernet, depending on what you choose — in a spine-leaf topology. Our network team designs that fabric so many racks operate as one cluster rather than a collection of independent islands, with the topology matched to how your workload actually communicates across GPUs.

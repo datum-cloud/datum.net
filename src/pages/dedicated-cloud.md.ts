@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
       .filter((faq) => !faq.data.draft && faq.data.category === 'dedicated-cloud')
       .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
-    const sections: string[] = [`# ${hero.title}`, '', hero.description, '', hero.proofLine, ''];
+    const sections: string[] = [`# ${hero.title}`, '', hero.description, ''];
 
     sections.push(`## ${builtForYou.title}`, '', ...builtForYou.intro, '');
     for (const item of builtForYou.items) {

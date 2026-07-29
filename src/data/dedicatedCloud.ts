@@ -15,7 +15,6 @@ export const hero = {
     'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
   ctaText: 'Schedule a conversation',
   ctaHref: '#contact',
-  proofLine: 'Think you love silicon and hardware more than us? Prove it!',
 };
 
 export interface ChecklistItem {
@@ -30,10 +29,10 @@ export interface BuiltForYouItem extends ChecklistItem {
 
 export const builtForYou = {
   eyebrow: 'Built for you',
-  title: "We're like wealth managers, but for AI companies.",
+  title: 'Like wealth managers, but for AI companies.',
   intro: [
-    "It can be frustrating to assemble all the pieces of the digital infrastructure puzzle, and every client is unique. That's why we don't try to pretend it's easy.",
-    "Instead, we show up with a simple promise: we'll put the work in, we'll be honest with you, and we'll do our best to help you win.",
+    'It’s no easy task to assemble all the pieces of the digital infrastructure puzzle, and each situation at scale is unique.',
+    "That's why we don't try to pretend it's easy. Instead, we show up with a simple promise: we'll put the work in, we'll be honest with you, and we'll do our best to help you win.",
   ],
   items: [
     {
@@ -52,30 +51,19 @@ export const builtForYou = {
       icon: 'server',
     },
     {
-      title: 'Financing options',
-      description: "Flexible commercial structures so capex isn't the blocker.",
+      title: 'As a Service',
+      description: 'Depending on the financing stack, we can deliver fully managed bare metal.',
       icon: 'wallet-minimal',
+    },
+    {
+      title: 'Networking',
+      description: 'Cluster fabric design and implementation (either InfiniBand or Ethernet).',
+      icon: 'network',
     },
     {
       title: 'Operations',
       description:
         'Day-to-day management, monitoring, and incident response once the cluster is live.',
-      icon: 'settings',
-    },
-    {
-      title: 'Software',
-      description: 'The orchestration and platform layer needed to run workloads on the hardware.',
-      icon: 'code',
-    },
-    {
-      title: 'Networking',
-      description: 'Cluster fabric design and implementation — InfiniBand or Ethernet.',
-      icon: 'network',
-    },
-    {
-      title: 'Automation',
-      description:
-        "Provisioning, scaling, and lifecycle tooling so the cluster doesn't need a large ops team.",
       icon: 'zap',
     },
   ] satisfies BuiltForYouItem[],
@@ -169,12 +157,15 @@ export const formOptions = {
     'Nvidia Hopper (H200)',
     'Nvidia Blackwell (B300)',
     'Nvidia Blackwell Ultra (GB300)',
+    'AMD Helios',
+    'AMD Instinct MI400',
+    'AMD Instinct MI350',
   ],
-  networking: ['InfiniBand', 'Ethernet'],
+  networking: ['Ethernet', 'InfiniBand'],
   cooling: ['Liquid', 'Air'],
   storage: ['NFS', 'Object', 'Block'],
   fleetManagement: ['Kubernetes', 'Slurm', 'Observability', 'Security', 'Traffic Management'],
-  sizingMin: 0,
+  sizingMin: 16,
   sizingMax: 4096,
   sizingDefault: 512,
 };

@@ -63,15 +63,10 @@ const people = await Promise.all(
     <SectionLine left bottom class="bg-app---dark---utility-2" />
 
     <div class="max-width-nopad relative py-4 md:py-6">
-      <SectionLine left top class="bg-app---dark---utility-2" />
-      <SectionLine right top class="bg-app---dark---utility-2" />
-      <SectionLine left bottom class="bg-app---dark---utility-2" />
-      <SectionLine right bottom class="bg-app---dark---utility-2" />
-
-      <ul class="grid grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8">
+      <ul class="flex flex-wrap justify-center gap-6 md:gap-8">
         {
           people.map((person) => (
-            <li class="border-app---dark---utility-2 flex flex-col gap-4 border p-3">
+            <li class="border-app---dark---utility-2 flex w-[calc(50%-0.75rem)] flex-col gap-4 border p-3 md:w-[calc(25%-1.5rem)]">
               {person.avatarUrl ? (
                 <img
                   src={person.avatarUrl}

@@ -126,13 +126,6 @@ export const operators = {
       linkedin: 'https://www.linkedin.com/in/shelby-lindsey-0781b323/',
     },
     {
-      name: 'Evan Vetere',
-      role: 'Infrastructure Lead',
-      bio: "Runs data center sourcing, deployment, and day-two operations across Datum's dedicated GPU footprint.",
-      slug: 'evan-vetere',
-      linkedin: 'https://www.linkedin.com/in/vetere/',
-    },
-    {
       name: 'Scot Schuchert-Wells',
       role: 'Software Lead',
       bio: 'Leads the platform and orchestration layers that provide the reliability and creature comforts of our cloud.',

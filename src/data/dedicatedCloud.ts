@@ -76,22 +76,22 @@ export const whyDatum = {
   title: '25 years in the trenches',
   items: [
     {
-      title: "Built by people who've done this before",
+      title: 'Not our first rodeo',
       description:
         "Our core team has been in the hosting, bare metal, global networks, and datacenter game since the early 2000's. We love this stuff!",
     },
     {
-      title: 'Transparent and honest',
+      title: 'Transparent + Honest',
       description:
         'Foundational infrastructure is all about trust, and we earn it by being upfront, showing the details behind the numbers, and showing up with integrity.',
     },
     {
-      title: 'Hardware and datacenter relationships',
+      title: 'Industry relationships',
       description:
         "Securing the supply chain for advanced GPU clusters involves agility and iteration. We orchestrate hardware, power and facility stakeholders so you don't have to.",
     },
     {
-      title: 'Enabled by technology, driven by operations',
+      title: 'Technology + Operations',
       description:
         "AI infrastructure requires advanced networking, platform automation, and operational muscle. That's where we earn our keep, and where we shine.",
     },

@@ -12,11 +12,11 @@ import SabeyLogo from '@assets/logos/dc-partners/sabey.svg';
 import QtsLogo from '@assets/logos/dc-partners/qts.svg';
 
 const DC_PARTNER_LOGOS = [
-  { name: 'Digital Realty', Logo: DigitalRealtyLogo, class: 'h-12' },
+  { name: 'Digital Realty', Logo: DigitalRealtyLogo, class: 'h-14' },
   { name: 'Equinix', Logo: EquinixLogo, class: 'h-7' },
   { name: 'DataBank', Logo: DatabankLogo, class: 'h-7' },
-  { name: 'Sabey Data Centers', Logo: SabeyLogo, class: 'h-9' },
-  { name: 'QTS', Logo: QtsLogo, class: 'h-8' },
+  { name: 'Sabey Data Centers', Logo: SabeyLogo, class: 'h-8' },
+  { name: 'QTS', Logo: QtsLogo, class: 'h-6' },
 ];
 
 const AVATAR_BG = [
@@ -119,7 +119,7 @@ const people = await Promise.all(
         {whyDatum.tagline}
       </p>
       <span class="bg-app---dark---utility-3 hidden h-14 w-0.5 md:block" aria-hidden="true"></span>
-      <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+      <ul class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
         {
           DC_PARTNER_LOGOS.map(({ name, Logo, class: heightClass }) => (
             <li class="flex items-center opacity-80">

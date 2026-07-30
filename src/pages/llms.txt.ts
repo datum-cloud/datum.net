@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
+import { meta as dedicatedCloudMeta } from '@data/dedicatedCloud';
 
 // Note: handbook entries intentionally excluded — internal company ops content
 // is not relevant to AI agents consuming platform documentation.
@@ -56,6 +57,10 @@ export const GET: APIRoute = async () => {
       const pageTitle = stripHtml(page.data.title);
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }
+
+    // /dedicated-cloud is data-driven (src/data/dedicatedCloud.ts), not a `pages`
+    // collection entry, so the loop above never sees it — add it explicitly.
+    llmsContent += `- [${dedicatedCloudMeta.title}](${(site || '').replace(/\/+$/, '')}/dedicated-cloud) - ${dedicatedCloudMeta.description}\n`;
 
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;

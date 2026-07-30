@@ -57,17 +57,26 @@ const jsonLd = {
       <div class="max-width-nav large-pad relative flex flex-col items-center gap-8 text-center">
         <SectionLine left top />
         <div class="absolute top-0 -left-10 hidden lg:block">
-          <HeroBlocksLeft class="line-draw pointer-events-none" aria-hidden="true" />
+          <HeroBlocksLeft
+            class="line-draw pointer-events-none"
+            data-line-draw-eager
+            aria-hidden="true"
+          />
         </div>
 
         <div class="absolute -right-9.75 bottom-0 hidden lg:block">
-          <HeroBlocksRight class="line-draw pointer-events-none" aria-hidden="true" />
+          <HeroBlocksRight
+            class="line-draw pointer-events-none"
+            data-line-draw-eager
+            data-line-draw-delay="500"
+            aria-hidden="true"
+          />
         </div>
         <div class="mx-auto flex max-w-3xl flex-col items-center gap-6">
           <h1 class="datum-text-9xl text-midnight-fjord">
             {heroTitleLead}<span
               class="text-pine-forge---links text-highlight bg-[linear-gradient(to_bottom,transparent_42%,var(--color-aurora-moss)_42%,var(--color-aurora-moss)_92%,transparent_92%)] box-decoration-clone px-1"
-              >{HERO_TITLE_HIGHLIGHT}</span
+              data-highlight-delay="1000">{HERO_TITLE_HIGHLIGHT}</span
             >
           </h1>
           <p class="datum-text-lg text-app---dark---utility-3 max-w-2xl">{hero.description}</p>

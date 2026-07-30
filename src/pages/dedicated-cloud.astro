@@ -103,25 +103,25 @@ const jsonLd = {
       <div class="max-width-nopad">
         <div class="grid grid-cols-6 gap-10 md:gap-15 lg:gap-25 xl:gap-28">
           <div class="col-span-6 flex flex-col gap-7 md:col-span-2">
-            <div class="flex flex-col gap-5">
+            <div class="spacing-pad flex flex-col gap-5">
               <h2 class="section-title--sm text-midnight-fjord">{contact.title}</h2>
               <p class="datum-text-lg text-app---dark---utility-3">{contact.description}</p>
-            </div>
 
-            <ul class="flex flex-col gap-3">
-              {
-                contact.reassurance.map((line) => (
-                  <li class="datum-text-sm text-midnight-fjord flex items-center gap-3">
-                    <Icon
-                      name="check"
-                      size="sm"
-                      class="text-pine-forge---links stroke-2.5 shrink-0"
-                    />
-                    {line}
-                  </li>
-                ))
-              }
-            </ul>
+              <ul class="flex flex-col gap-3">
+                {
+                  contact.reassurance.map((line) => (
+                    <li class="datum-text-sm text-midnight-fjord flex items-center gap-3">
+                      <Icon
+                        name="check"
+                        size="sm"
+                        class="text-pine-forge---links stroke-2.5 shrink-0"
+                      />
+                      {line}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
           </div>
 
           <div class="col-span-6 md:col-span-4">
@@ -142,10 +142,10 @@ const jsonLd = {
           <SectionLine left top />
 
           <div class="max-width-nopad grid grid-cols-12 gap-8" x-data="{ expandedFaq: null }">
-            <div class="col-span-12 flex flex-col gap-4 md:col-span-5">
+            <div class="spacing-pad col-span-12 flex flex-col gap-4 md:col-span-5">
               <h2 class="section-title--sm text-midnight-fjord">Questions we hear most often</h2>
             </div>
-            <div class="col-span-12 md:col-span-7">
+            <div class="spacing-pad col-span-12 md:col-span-7">
               <div class="faq-list">
                 {faqs.map((faq, index) => (
                   <FAQ faq={faq} index={index} />

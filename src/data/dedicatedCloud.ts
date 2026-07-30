@@ -32,12 +32,12 @@ export const builtForYou = {
   title: 'Like wealth managers, but for AI companies',
   intro: [
     'It’s no easy task to assemble all the pieces of the digital infrastructure puzzle, and each situation at scale is unique.',
-    "That's why we don't try to pretend it's easy. Instead, we show up with a simple promise: we'll put the work in, we'll be honest with you, and we'll do our best to help you win.",
+    "That's why we show up with a simple promise: put the work in, be honest and transparent, and do our best to help you win.",
   ],
   items: [
     {
       title: 'Architecture & design',
-      description: 'Cluster topology, rack layout, and system design matched to your workload.',
+      description: 'Cluster topology, rack layout, and system design matched to your requirements.',
       icon: 'waypoints',
     },
     {
@@ -46,18 +46,20 @@ export const builtForYou = {
       icon: 'package',
     },
     {
-      title: 'Data center sourcing',
+      title: 'Data center and power',
       description: 'Facility capacity that fits your power, cooling, and location requirements.',
       icon: 'server',
     },
     {
-      title: 'As a Service',
-      description: 'Depending on the financing stack, we can deliver fully managed bare metal.',
+      title: 'Beyond bare metal',
+      description:
+        'We deliver fully managed bare metal as well as the right connectivity and orchestration.',
       icon: 'wallet-minimal',
     },
     {
-      title: 'Networking',
-      description: 'Cluster fabric design and implementation (either InfiniBand or Ethernet).',
+      title: 'Cluster Networking',
+      description:
+        'We follow best practices and can deliver either InfiniBand or Ethernet based deployments.',
       icon: 'network',
     },
     {
@@ -71,26 +73,27 @@ export const builtForYou = {
 
 export const whyDatum = {
   eyebrow: 'Why Datum',
-  title: '25 years in bare metal, global networks, and datacenters',
+  title: '25 years in the trenches',
   items: [
     {
       title: "Built by people who've done this before",
       description:
-        'Our team has designed, built, and operated infrastructure at scale since founding Datum.',
+        "Our core team has been in the hosting, bare metal, global networks, and datacenter game since the early 2000's. We love this stuff!",
     },
     {
-      title: 'Transparent by default',
-      description: 'We work in the open with every partner in the stack — not around them.',
-    },
-    {
-      title: 'Real hardware partner relationships',
+      title: 'Transparent and honest',
       description:
-        'Named categories, not vague categories: hardware Dell, Supermicro, Cisco, data center operators, and network providers. One point of contact instead of five vendor relationships.',
+        'Foundational infrastructure is all about trust, and we earn it by being upfront, showing the details behind the numbers, and showing up with integrity.',
     },
     {
-      title: 'Independent, not locked in',
+      title: 'Hardware and datacenter relationships',
       description:
-        'We work across hardware and DC partners rather than owning the stack, so the cluster is designed around your requirements — not our inventory.',
+        "Securing the supply chain for advanced GPU clusters involves agility and iteration. We orchestrate hardware, power and facility stakeholders so you don't have to.",
+    },
+    {
+      title: 'Enabled by technology, driven by operations',
+      description:
+        "AI infrastructure requires advanced networking, platform automation, and operational muscle. That's where we earn our keep, and where we shine.",
     },
   ] satisfies ChecklistItem[],
   tagline: 'Our datacenter roots run deep',
@@ -112,27 +115,20 @@ export const operators = {
     {
       name: 'Zac Smith',
       role: 'Co-Founder, CEO',
-      bio: "Twenty years building bare metal and interconnected infrastructure for the world's most demanding operators.",
+      bio: 'Twenty years building bare metal and interconnected infrastructure for demanding customers.',
       slug: 'zachary-smith',
     },
     {
       name: 'Shelby Lindsey',
       role: 'Lead Network Engineer',
-      bio: "Designs and operates the fabric — backbone, peering, and cluster networking — that ties Datum's footprint together.",
+      bio: 'A physical networking guru who oversees our backbone, peering, and edge fabrics.',
       slug: 'shelby-lindsey',
       linkedin: 'https://www.linkedin.com/in/shelby-lindsey-0781b323/',
     },
     {
-      name: 'Evan Vetere',
-      role: 'Infrastructure Lead',
-      bio: "Runs data center sourcing, deployment, and day-two operations across Datum's dedicated GPU footprint.",
-      slug: 'evan-vetere',
-      linkedin: 'https://www.linkedin.com/in/vetere/',
-    },
-    {
       name: 'Scot Schuchert-Wells',
       role: 'Software Lead',
-      bio: 'Leads the platform and orchestration layer — the software that turns racks of GPUs into a cluster teams can actually use.',
+      bio: 'Leads the platform and orchestration layers that provide the reliability and creature comforts of our cloud.',
       slug: 'scot-wells',
       linkedin: 'https://www.linkedin.com/in/scot-wells/',
     },
@@ -143,7 +139,7 @@ export const contact = {
   eyebrow: 'Contact',
   title: 'Talk to our team',
   description:
-    "Tell us what you're building. We'll come back within one business day with a scoping call and the specialists relevant to your workload.",
+    "Let us know what you're building. We'll come back within 1-2 business days, arrange a scoping call, and bring the right folks to the table.",
   reassurance: [
     'No sales-qualification gauntlet.',
     'Engineering in the first meeting.',

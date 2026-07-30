@@ -81,7 +81,7 @@ export const whyDatum = {
         "Our core team has been in the hosting, bare metal, global networks, and datacenter game since the early 2000's. We love this stuff!",
     },
     {
-      title: 'Transparent + Honest',
+      title: 'Transparent & honest',
       description:
         'Foundational infrastructure is all about trust, and we earn it by being upfront, showing the details behind the numbers, and showing up with integrity.',
     },
@@ -91,7 +91,7 @@ export const whyDatum = {
         "Securing the supply chain for advanced GPU clusters involves agility and iteration. We orchestrate hardware, power and facility stakeholders so you don't have to.",
     },
     {
-      title: 'Technology + Operations',
+      title: 'Technology & operations',
       description:
         "AI infrastructure requires advanced networking, platform automation, and operational muscle. That's where we earn our keep, and where we shine.",
     },

@@ -33,10 +33,21 @@ function touchRootMargin() {
 function initSectionLabels() {
   const labels = document.querySelectorAll('.section-label, .mission-label, .text-highlight');
   for (const label of Array.from(labels)) {
+    // Opt-in via [data-highlight-delay="<ms>"] — e.g. a hero title highlight
+    // that should animate in a beat after load rather than the instant the
+    // (already-visible) element is observed.
+    const delayMs = parseInt(label.dataset.highlightDelay, 10) || 0;
+    let timeoutId = null;
+
     const obs = trackObserver(
       new IntersectionObserver(
         (entries) => {
-          label.classList.toggle('highlight-animate', entries[0].isIntersecting);
+          clearTimeout(timeoutId);
+          if (entries[0].isIntersecting) {
+            timeoutId = setTimeout(() => label.classList.add('highlight-animate'), delayMs);
+          } else {
+            label.classList.remove('highlight-animate');
+          }
         },
         { threshold: 0.3 }
       )
@@ -128,13 +139,32 @@ function initSectionLines() {
 // Blueprint-grid "glass" graphics (hero, next-row, pre-footer) — lines draw
 // in, accent squares pop, then any content panel fades in, cued by the same
 // touch-lead as the module border wipe. Reverses on scroll-up.
+//
+// Graphics marked [data-line-draw-eager] (e.g. the page Hero) sit fully inside
+// the initial viewport with no scroll to cue against, so the touch-lead
+// rootMargin and the leisurely scroll-paced stagger below both read as a
+// stuck/late animation rather than a reveal — they get a real viewport
+// rootMargin and a compressed timeline that finishes almost immediately.
 function initLineDrawGraphics() {
   const PATH_STEP_MS = 55;
   const NODE_STEP_MS = 70;
   const GROUP_GAP_MS = 120;
 
+  const EAGER_PATH_STEP_MS = 12;
+  const EAGER_NODE_STEP_MS = 18;
+  const EAGER_GROUP_GAP_MS = 40;
+
   const graphics = document.querySelectorAll('.line-draw');
   for (const graphic of Array.from(graphics)) {
+    const eager = graphic.hasAttribute('data-line-draw-eager');
+    const pathStepMs = eager ? EAGER_PATH_STEP_MS : PATH_STEP_MS;
+    const nodeStepMs = eager ? EAGER_NODE_STEP_MS : NODE_STEP_MS;
+    const groupGapMs = eager ? EAGER_GROUP_GAP_MS : GROUP_GAP_MS;
+    // Lets one graphic's reveal start after a sibling's (e.g. the Hero's
+    // second corner graphic following the first) instead of both firing the
+    // instant they're intersecting.
+    const startDelayMs = parseInt(graphic.dataset.lineDrawDelay, 10) || 0;
+
     const paths = Array.from(graphic.querySelectorAll('path[data-line-draw]'));
     const nodes = Array.from(graphic.querySelectorAll('rect[data-line-draw]'));
     const panel = graphic.querySelector('[data-line-draw-panel]');
@@ -148,18 +178,20 @@ function initLineDrawGraphics() {
 
           if (entries[0].isIntersecting) {
             paths.forEach((el, i) =>
-              timeoutIds.push(setTimeout(() => el.classList.add('is-inview'), i * PATH_STEP_MS))
+              timeoutIds.push(
+                setTimeout(() => el.classList.add('is-inview'), startDelayMs + i * pathStepMs)
+              )
             );
 
-            const nodesStart = paths.length * PATH_STEP_MS + GROUP_GAP_MS;
+            const nodesStart = startDelayMs + paths.length * pathStepMs + groupGapMs;
             nodes.forEach((el, i) =>
               timeoutIds.push(
-                setTimeout(() => el.classList.add('is-inview'), nodesStart + i * NODE_STEP_MS)
+                setTimeout(() => el.classList.add('is-inview'), nodesStart + i * nodeStepMs)
               )
             );
 
             if (panel) {
-              const panelStart = nodesStart + nodes.length * NODE_STEP_MS + GROUP_GAP_MS;
+              const panelStart = nodesStart + nodes.length * nodeStepMs + groupGapMs;
               timeoutIds.push(setTimeout(() => panel.classList.add('is-inview'), panelStart));
             }
           } else {
@@ -168,7 +200,7 @@ function initLineDrawGraphics() {
             if (panel) panel.classList.remove('is-inview');
           }
         },
-        { threshold: 0, rootMargin: touchRootMargin() }
+        { threshold: 0, rootMargin: eager ? '0px' : touchRootMargin() }
       )
     );
     obs.observe(graphic);

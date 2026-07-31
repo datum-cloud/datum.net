@@ -21,44 +21,38 @@ function getPageUrl(page: number): string {
 <nav class="blog-pagination" aria-label="Pagination">
   <div class="blog-pagination--inner">
     {
-      prevUrl ? (
+      prevUrl && (
         <a href={prevUrl} class="blog-pagination--prev" aria-label="Previous page">
           <span aria-hidden="true">&larr;</span> Previous
         </a>
-      ) : (
-        <span class="blog-pagination--prev blog-pagination--disabled" aria-disabled="true">
-          <span aria-hidden="true">&larr;</span> Previous
-        </span>
       )
     }
 
     <div class="blog-pagination--pages">
       {
-        Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <a
-            href={getPageUrl(page)}
-            class:list={[
-              'blog-pagination--page',
-              { 'blog-pagination--page--active': page === currentPage },
-            ]}
-            aria-label={`Page ${page}`}
-            aria-current={page === currentPage ? 'page' : undefined}
-          >
-            {page}
-          </a>
-        ))
+        Array.from({ length: totalPages }, (_, i) => i + 1).map((page) =>
+          page === currentPage ? (
+            <span
+              class="blog-pagination--page blog-pagination--page--active"
+              aria-label={`Page ${page}`}
+              aria-current="page"
+            >
+              {page}
+            </span>
+          ) : (
+            <a href={getPageUrl(page)} class="blog-pagination--page" aria-label={`Page ${page}`}>
+              {page}
+            </a>
+          )
+        )
       }
     </div>
 
     {
-      nextUrl ? (
+      nextUrl && (
         <a href={nextUrl} class="blog-pagination--next" aria-label="Next page">
           Next <span aria-hidden="true">&rarr;</span>
         </a>
-      ) : (
-        <span class="blog-pagination--next blog-pagination--disabled" aria-disabled="true">
-          Next <span aria-hidden="true">&rarr;</span>
-        </span>
       )
     }
   </div>

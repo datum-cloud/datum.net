@@ -54,6 +54,10 @@
     @apply bg-aurora-moss;
   }
 
+  .section-eyebrow--app .section-eyebrow-cursor {
+    @apply bg-app---dark---utility-3;
+  }
+
   /* Text stays in the DOM at full size (no layout shift) but is clipped
      until typed — the monospace eyebrow font keeps clip-path steps evenly
      spaced per character. */

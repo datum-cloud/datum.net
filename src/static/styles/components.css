@@ -83,6 +83,10 @@
     @apply text-midnight-fjord;
   }
 
+  .section-eyebrow--aurora-moss {
+    @apply text-aurora-moss;
+  }
+
   .section-eyebrow--left-top {
     @apply absolute left-4 md:left-7;
     @apply top-5 md:top-6 lg:top-8;

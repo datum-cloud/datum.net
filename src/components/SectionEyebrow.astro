@@ -13,7 +13,9 @@ const variantClass =
         ? 'section-eyebrow--connect'
         : variant === 'iris'
           ? 'section-eyebrow--iris'
-          : '';
+          : variant === 'aurora-moss'
+            ? 'section-eyebrow--aurora-moss'
+            : '';
 
 const positionClass =
   position === 'left-top'

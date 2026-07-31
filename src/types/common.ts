@@ -209,7 +209,7 @@ export interface SecondaryTabNavProps {
 export interface SectionEyebrowProps {
   class?: string;
   /** Text colour + cursor colour. Defaults to canyon-clay. */
-  variant?: 'pine' | 'midnight-fjord' | 'connect' | 'iris';
+  variant?: 'pine' | 'midnight-fjord' | 'connect' | 'iris' | 'aurora-moss';
   /** Absolute positioning against the nearest `relative` ancestor. */
   position?: 'left-top' | 'left-top-keyline';
 }

@@ -80,6 +80,9 @@ export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'never',
   output: 'static',
+  redirects: {
+    '/platform': { status: 301, destination: '/platform/deliver' },
+  },
   security: {
     checkOrigin: false,
   },

@@ -10,7 +10,7 @@ meta:
   description: "The Finance team keeps Datum running cleanly so the rest of the company can move fast: payroll, contracts, vendors, governance, and reporting."
   og:
     title: "Finance at Datum"
-    description: "How the Finance team works and what it's accountable for."
+    description: "The Finance team keeps Datum running cleanly so the rest of the company can move fast: payroll, contracts, vendors, governance, and reporting."
 ---
 
 Finance keeps Datum running cleanly so the rest of the company can move fast: payroll, contracts, vendors, governance, and the reporting that decisions and fundraising rest on.

@@ -10,7 +10,7 @@ meta:
   description: "Datum's Business Development team focuses on building an open, vendor-neutral ecosystem through partnerships, design wins, and community."
   og:
     title: "Business Development at Datum"
-    description: "How the Biz Dev team works and what it's accountable for."
+    description: "Datum's Business Development team focuses on building an open, vendor-neutral ecosystem through partnerships, design wins, and community."
 ---
 
 Datum's fundamental premise is that connectivity between clouds, services, agents, and applications should be open and vendor-neutral. That's why we build solutions with our open-source community, with adjacent open-source projects, with technology partners, and with the startups and scale-ups defining what comes next.

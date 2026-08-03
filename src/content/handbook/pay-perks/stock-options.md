@@ -10,7 +10,7 @@ meta:
   description: "How Datum's stock option program works, including vesting, exercise windows, tax considerations, and what happens when you leave."
   og:
     title: "Stock Options at Datum"
-    description: "Everything you need to know about Datum's stock option program."
+    description: "How Datum's stock option program works, including vesting, exercise windows, tax considerations, and what happens when you leave."
 ---
 
 ## Overview

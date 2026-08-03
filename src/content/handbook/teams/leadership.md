@@ -10,7 +10,7 @@ meta:
   description: "The Datum leadership team charts the company's direction and is accountable to investors, the board, and the broader organization."
   og:
     title: "Datum's Leadership Team"
-    description: "Who leads Datum and what each leader is accountable for."
+    description: "The Datum leadership team charts the company's direction and is accountable to investors, the board, and the broader organization."
 ---
 
 The leadership team charts the direction of the company and is accountable to investors, the company's board, and the broader organization. While the makeup of the team can change over time, it is grounded around the core functions of the business.

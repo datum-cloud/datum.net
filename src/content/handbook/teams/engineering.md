@@ -10,7 +10,7 @@ meta:
   description: "Engineering builds and runs Datum's products, from software and release cycles to physical and logical capacity, security, and operations."
   og:
     title: "Engineering at Datum"
-    description: "How the Engineering team works and what it's accountable for."
+    description: "Engineering builds and runs Datum's products, from software and release cycles to physical and logical capacity, security, and operations."
 ---
 
 Engineering builds and runs Datum's products, from the software and release cycle to the physical and logical capacity, security, and operations.

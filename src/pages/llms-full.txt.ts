@@ -70,7 +70,7 @@ Datum uses a standard cloud hierarchy:
 \`\`\`
 Organization
   └── Project
-        └── Resources (AI Edge, Tunnels, DNS Zones, Domains, Secrets, etc.)
+        └── Resources (Application Load Balancer, Tunnels, DNS Zones, Domains, Secrets, etc.)
 \`\`\`
 
 - **Personal Org** — created automatically per user; no collaboration; personal sandbox
@@ -115,18 +115,19 @@ Organization (admin) → Project (admin, inherited) → Service Resources (admin
 
 ## Current Platform Features
 
-### 1. AI Edge (Generally Available — Free)
+### 1. Application Load Balancer (Generally Available — Free)
 
-An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**.
+An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**. In the portal nav this appears as **ALB**.
 
 - **Protocols supported:** HTTP/1.1, HTTP/2, gRPC, WebSockets, HTTPS
 - **WAF:** Coraza-based Web Application Firewall covering top OWASP threats; runs in \`observe\` mode by default, can be set to \`enforced\` (Level 1 Relaxed or Level 2 Balanced)
 - **Custom Hostnames:** Verify and attach custom domains; HTTPS enforced by default
-- **Basic Auth:** Username/password protection for any AI Edge endpoint
+- **Basic Auth:** Username/password protection for any Application Load Balancer endpoint
 - **Global reach:** 17+ regions across all major internet peering points (see Regions below)
-- **Default hostname:** Each AI Edge gets a generated HTTPS hostname automatically
+- **Default hostname:** Each Application Load Balancer gets a generated HTTPS hostname automatically
 - **Resource kinds:** \`HTTPProxy\`, \`HTTPRoute\`, \`Gateway\`, \`TrafficProtectionPolicy\`
 - **Observability:** Portal metrics include upstream latency percentiles (p90, p99), RPS by region, response codes; filter by region
+- **Docs:** https://www.datum.net/docs/alb/overview
 
 **Use case for agents:** Give any agent or app a global edge to absorb attacks, interact with the broader internet, and safely route traffic to backend services.
 
@@ -226,7 +227,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 | **Provider** | Custom             | Alt cloud providers; become a design partner                     |
 
 **Builder tier includes (forever free):**
-- AI Edge (Envoy Proxy + Coraza WAF)
+- Application Load Balancer (Envoy Proxy + Coraza WAF)
 - Connectors (QUIC Tunnels)
 - DNS and Domains
 - OTel Metrics Export
@@ -259,7 +260,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 1. Sign up at \`https://cloud.datum.net\`
 2. Create a project inside your Personal Org (or a new Standard Org)
-3. Create an AI Edge: navigate to AI Edge → New → configure upstream URL → get your generated HTTPS hostname
+3. Create an Application Load Balancer: navigate to ALB → New → configure upstream URL → get your generated HTTPS hostname
 4. (Optional) Add and verify a custom domain
 5. (Optional) Set up a Tunnel via the Desktop App to expose localhost
 
@@ -324,7 +325,7 @@ npx skills add https://github.com/datum-cloud/skills
 
 | Skill | Purpose |
 |-------|---------|
-| \`ai-edge\` | Manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
+| \`alb\` | Application Load Balancer: manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
 | \`client-traffic\` | Configure how edge gateways accept client connections — TLS termination, mTLS, HTTP/2, HTTP/3, timeouts, connection limits, real IP detection |
 | \`dns\` | Manage DNS zones and record sets (A, AAAA, CNAME, MX, TXT, ALIAS, CAA, SRV, SVCB, HTTPS, TLSA, etc.) |
 | \`domains\` | Attach and verify domain resources within a project |

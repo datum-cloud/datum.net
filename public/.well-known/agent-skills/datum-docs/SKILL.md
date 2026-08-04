@@ -18,7 +18,7 @@ Navigate to `https://www.datum.net/docs/` to browse documentation, or append `?q
 - **Quickstart:** https://www.datum.net/docs/quickstart/
 - **API Reference:** https://www.datum.net/docs/api/reference/
 - **datumctl CLI:** https://www.datum.net/docs/datumctl/
-- **AI Edge Runtime:** https://www.datum.net/docs/runtime/ai-edge/
+- **AI Edge Runtime:** https://www.datum.net/docs/alb/overview
 
 ## Authentication
 

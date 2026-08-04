@@ -97,7 +97,7 @@ export const operations = {
       icon: 'bot',
       title: 'MCP support',
       description:
-        'MCP support lets AI agents query and manage DNS zones under the same permissions as a human operator — not a bolted-on integration.',
+        'MCP support lets AI agents query and manage DNS zones with the same permissions as a human operator — not a bolted-on integration.',
     },
   ] satisfies IconItem[],
 };
@@ -149,7 +149,7 @@ export const domains = {
     {
       title: 'Add a domain',
       description:
-        'One at a time, in bulk via CSV/TXT import, or automatically when you attach a custom hostname to an AI Edge.',
+        'One at a time, in bulk via CSV/TXT import, or automatically when attaching a custom hostname to a Proxy.',
     },
     {
       title: 'Verify ownership',

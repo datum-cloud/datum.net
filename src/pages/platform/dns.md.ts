@@ -1,6 +1,8 @@
 // Dynamic markdown export of /platform/dns. Reads the same source the rendered
 // page consumes: src/data/dns.ts. Shared with platform/dns.astro so the two
 // can't drift out of sync.
+export const prerender = false;
+
 import type { APIRoute } from 'astro';
 import { hero, capabilities, operations, comparison, domains } from '@data/dns';
 import { toAsciiMarkdown } from '@utils/markdownExport';

@@ -1,0 +1,59 @@
+---
+// src/pages/platform/dns.astro
+// DNS product detail page — Figma node 15755:114768.
+import '@styles/page-dns.css';
+
+import Layout from '@layouts/Layout.astro';
+import Announcement from '@components/Announcement.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import Hero from '@components/dns/Hero.astro';
+import Capabilities from '@components/dns/Capabilities.astro';
+import Operations from '@components/dns/Operations.astro';
+import Comparison from '@components/dns/Comparison.astro';
+import Domains from '@components/dns/Domains.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'platform/dns');
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform/dns',
+      url: 'https://www.datum.net/platform/dns',
+      name: meta.title ?? title,
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-08-04',
+    },
+  ],
+};
+---
+
+<Layout bodyClass="page-dns" title={title} description={fm.description} meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container">
+    <header class="page-header">
+      <Announcement />
+      <Nav />
+    </header>
+
+    <div class="relative">
+      <Hero />
+      <Capabilities />
+      <Operations />
+      <Comparison />
+      <Domains />
+
+      <ModuleConnector />
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

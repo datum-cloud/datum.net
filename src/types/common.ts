@@ -224,3 +224,13 @@ export interface SectionLineProps {
   class?: string;
 }
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type
+
+export interface BreadcrumbItem {
+  text: string;
+  href: string;
+}
+
+export interface BreadcrumbsProps {
+  items: BreadcrumbItem[];
+  class?: string;
+}

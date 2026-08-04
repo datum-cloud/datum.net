@@ -1,0 +1,42 @@
+---
+// src/components/dns/Capabilities.astro
+// "Meet the internet in style" — 3-up bordered capability grid.
+// Figma node 15775:57055.
+
+import Icon from '@components/Icon.astro';
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import { capabilities } from '@data/dns';
+---
+
+<section
+  id="capabilities"
+  class="section--block section--block--x-pad border-silver-mist overflow-hidden border-t bg-white"
+>
+  <div class="max-width-nav section-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left right top bottom />
+
+    <div class="dns-section-header">
+      <SectionEyebrow variant="pine">{capabilities.eyebrow}</SectionEyebrow>
+      <h2 class="section-title">{capabilities.title}</h2>
+    </div>
+
+    <div class="max-width-nopad spacing-pad">
+      <div class="dns-capability-grid">
+        {
+          capabilities.items.map((item) => (
+            <div class="dns-capability-item">
+              <span class="dns-icon-tile">
+                <Icon name={item.icon} class="stroke-1.75" />
+              </span>
+              <div class="dns-capability-body">
+                <p class="dns-capability-title">{item.title}</p>
+                <p class="dns-capability-description">{item.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

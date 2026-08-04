@@ -1,0 +1,44 @@
+---
+// src/components/dns/Domains.astro
+// "Domains are infrastructure too" — numbered steps panel.
+// Figma node 15755:115248.
+
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import { domains } from '@data/dns';
+---
+
+<section
+  id="domains"
+  class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-y"
+>
+  <div class="max-width-nav section-pad relative">
+    <SectionEyebrow variant="pine" position="left-top">{domains.eyebrow}</SectionEyebrow>
+    <SectionLine left right top bottom />
+
+    <div class="dns-split spacing-pad">
+      <div class="dns-split-intro">
+        <h2 class="section-title">{domains.title}</h2>
+        <p class="dns-split-description">{domains.description}</p>
+      </div>
+
+      <div class="dns-split-panel">
+        <ol class="dns-steps">
+          {
+            domains.steps.map((step, index) => (
+              <li class="dns-step">
+                <span class="dns-step-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div class="dns-step-body">
+                  <p class="dns-step-title">{step.title}</p>
+                  <p class="dns-step-description">{step.description}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

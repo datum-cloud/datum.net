@@ -1,0 +1,166 @@
+@layer components {
+  /* Shared pale-green icon tile used by the capability grid and the operations
+     list — Figma nodes 15775:57082 / 15775:57154 */
+  .dns-icon-tile {
+    @apply bg-aurora-mist flex size-10 shrink-0 items-center justify-center rounded-sm;
+
+    svg {
+      @apply text-pine-forge---links size-5;
+    }
+  }
+
+  /* Centred eyebrow + heading used by the capability and operations sections */
+  .dns-section-header {
+    @apply max-width-section-nopad flex flex-col items-center gap-5 text-center;
+  }
+
+  /* Two-column intro/panel layout — Figma nodes 15755:115030 / 15755:115265 */
+  .dns-split {
+    @apply max-width-nopad flex flex-col gap-10 lg:flex-row lg:gap-20;
+  }
+
+  .dns-split-intro {
+    @apply flex flex-col gap-8 lg:w-2/5 lg:shrink-0;
+  }
+
+  .dns-split-description {
+    @apply datum-text-xl text-app---dark---utility-2/80 text-pretty;
+  }
+
+  .dns-split-panel {
+    @apply min-w-0 lg:flex-1;
+  }
+
+  /* Core capabilities grid — Figma node 15775:57080.
+     The container owns the top/left rules and each cell the right/bottom ones so
+     the final row can be short without leaving a dangling border. */
+  .dns-capability-grid {
+    @apply border-silver-mist grid grid-cols-1 border-t border-l sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .dns-capability-item {
+    @apply border-silver-mist flex flex-col items-start gap-7 border-r border-b bg-white p-8 lg:p-11;
+  }
+
+  .dns-capability-body {
+    @apply flex w-full flex-col gap-2;
+  }
+
+  .dns-capability-title {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .dns-capability-description {
+    @apply datum-text-base text-midnight-fjord/80;
+  }
+
+  /* Operations list — Figma node 15775:57152 */
+  .dns-operations-list {
+    @apply border-silver-mist m-0 list-none border p-0;
+  }
+
+  .dns-operations-item {
+    @apply bg-platinum flex flex-col gap-5 p-8 lg:flex-row lg:items-center lg:gap-7 lg:p-11;
+  }
+
+  .dns-operations-item + .dns-operations-item {
+    @apply border-silver-mist border-t;
+  }
+
+  .dns-operations-heading {
+    @apply flex items-center gap-7 lg:w-77 lg:shrink-0;
+  }
+
+  .dns-operations-title {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .dns-operations-description {
+    @apply datum-text-base text-midnight-fjord/80 lg:flex-1;
+  }
+
+  /* Datum vs Cloudflare table — Figma node 15755:115034.
+     Stays a real table at every breakpoint; below `xl` the panel scrolls
+     horizontally instead of reflowing into stacked blocks. Scrollbar is
+     hidden (same technique as .mobile-menu in components-nav.css) since the
+     panel's own edges already hint at the extra width. */
+  .dns-comparison-panel {
+    @apply border-silver-mist overflow-x-auto border;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .dns-comparison-table {
+    @apply w-full min-w-xl border-collapse text-left;
+  }
+
+  .dns-comparison-head-cell {
+    @apply datum-text-base text-midnight-fjord/60 w-2/5 p-10 text-center align-middle font-normal;
+  }
+
+  .dns-comparison-head-cell--spacer {
+    @apply w-1/5 p-0;
+  }
+
+  .dns-comparison-head-cell--datum {
+    @apply bg-aurora-moss text-midnight-fjord font-semibold;
+  }
+
+  .dns-comparison-brand {
+    @apply flex flex-col items-center gap-2;
+
+    svg {
+      @apply size-6;
+    }
+  }
+
+  .dns-comparison-row {
+    @apply border-silver-mist border-t;
+  }
+
+  .dns-comparison-label {
+    @apply datum-text-base text-midnight-fjord/60 w-1/5 p-10 font-normal;
+  }
+
+  .dns-comparison-cell {
+    @apply datum-text-base text-midnight-fjord/60 p-10 align-top;
+  }
+
+  .dns-comparison-cell--datum {
+    @apply bg-aurora-moss-pale text-midnight-fjord/80;
+  }
+
+  /* Numbered domain steps — Figma node 15755:115269 */
+  .dns-steps {
+    @apply border-silver-mist m-0 list-none border p-0;
+  }
+
+  .dns-step {
+    @apply bg-platinum flex items-start gap-7 p-8 lg:p-11;
+  }
+
+  .dns-step + .dns-step {
+    @apply border-silver-mist border-t;
+  }
+
+  .dns-step-number {
+    @apply bg-pine-forge---links font-dejavu datum-text-sm text-white;
+    @apply flex size-10 shrink-0 items-center justify-center rounded-sm font-bold;
+  }
+
+  .dns-step-body {
+    @apply flex flex-col gap-2.5;
+  }
+
+  .dns-step-title {
+    @apply text-midnight-fjord datum-text-xl font-semibold;
+  }
+
+  .dns-step-description {
+    @apply datum-text-base text-midnight-fjord/80;
+  }
+}

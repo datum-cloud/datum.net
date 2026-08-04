@@ -1,0 +1,212 @@
+@layer components {
+  /* Looping 7-step DNS import walkthrough — GitHub issue #1571.
+     Figma: static frames at 15907:15701, motion timeline at 15930:4131.
+
+     Every percentage below is transcribed from the Figma motion export, so the
+     loop matches the designer's timeline exactly. For reference, at the default
+     28s period:
+
+       step 1 dashboard     0.0s → 3.2s   (out by 4.0s)
+       step 2 import modal  4.0s → 7.2s   (out by 8.0s)
+       step 3 file picker   8.0s → 11.2s  (out by 12.0s)
+       step 4 preview      12.0s → 15.0s  (out by 15.5s)
+       step 5 selected     15.5s → 18.2s  (out by 19.0s)
+       step 6 created      19.0s → 22.7s  (out by 23.5s)
+       step 7 success      23.5s → 27.0s  (out by 28.0s)
+
+     Frames 2–7 enter from +80px and leave to -80px per kf_15930_4137 et al. 80px
+     of Figma's 368px-tall stage is 21.74cqh, so the travel scales with the stage
+     instead of growing proportionally larger as the hero shrinks. Step 1 only
+     cross-fades — in Figma the -80px on that frame belongs to an inner panel
+     that is hidden in the static composite, so sliding the whole dashboard would
+     be wrong. */
+  .dns-hero-anim {
+    @apply border-pine-forge---links w-full border;
+  }
+
+  .dns-hero-anim-stage {
+    @apply relative isolate w-full overflow-hidden;
+    aspect-ratio: 598 / 368;
+    /* Establishes cqh for the frame travel above. The stage size comes from the
+       aspect ratio and the column width, never from its contents, so size
+       containment is safe here. */
+    container-type: size;
+  }
+
+  /* Every frame is a fully composited 598×368 (897×552 @1.5×) render, so they
+     simply stack edge to edge — no separate backdrop or scrim layers. */
+  .dns-hero-anim-frame {
+    @apply absolute inset-0 h-full w-full object-cover;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  .dns-hero-anim-frame--1 {
+    animation-name: dns-hero-frame-1;
+  }
+
+  .dns-hero-anim-frame--2 {
+    animation-name: dns-hero-frame-2;
+  }
+
+  .dns-hero-anim-frame--3 {
+    animation-name: dns-hero-frame-3;
+  }
+
+  /* Steps 4 and 5 are the same frame apart from the ticks and the button label,
+     so 5 stays stacked on 4 and is revealed by a top-to-bottom wipe rather than
+     a second slide — that reads as the rows ticking in sequence, which is what
+     the issue asks for, without splitting the checkmarks into sprites. Both
+     leave together when step 6 arrives. */
+  .dns-hero-anim-frame--4,
+  .dns-hero-anim-frame--5 {
+    animation-name: dns-hero-frame-4;
+  }
+
+  .dns-hero-anim-frame--5 {
+    animation-name: dns-hero-frame-4, dns-hero-wipe-5;
+    animation-timing-function: ease, linear;
+  }
+
+  .dns-hero-anim-frame--6 {
+    animation-name: dns-hero-frame-6;
+  }
+
+  .dns-hero-anim-frame--7 {
+    animation-name: dns-hero-frame-7;
+  }
+
+  @keyframes dns-hero-frame-1 {
+    0%,
+    11.429% {
+      opacity: 1;
+    }
+    14.286%,
+    96.429% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-hero-frame-2 {
+    0%,
+    11.429% {
+      opacity: 0;
+      transform: translateY(21.74cqh);
+    }
+    14.286%,
+    25.714% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    28.571%,
+    100% {
+      opacity: 0;
+      transform: translateY(-21.74cqh);
+    }
+  }
+
+  @keyframes dns-hero-frame-3 {
+    0%,
+    25.714% {
+      opacity: 0;
+      transform: translateY(21.74cqh);
+    }
+    28.571%,
+    40% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    42.857%,
+    100% {
+      opacity: 0;
+      transform: translateY(-21.74cqh);
+    }
+  }
+
+  @keyframes dns-hero-frame-4 {
+    0%,
+    40% {
+      opacity: 0;
+      transform: translateY(21.74cqh);
+    }
+    42.857%,
+    65% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    67.857%,
+    100% {
+      opacity: 0;
+      transform: translateY(-21.74cqh);
+    }
+  }
+
+  /* Reveal window is 53.571% → 56.786% ≈ 900ms of sequential row ticking. */
+  @keyframes dns-hero-wipe-5 {
+    0%,
+    53.571% {
+      clip-path: inset(0 0 100% 0);
+    }
+    56.786%,
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes dns-hero-frame-6 {
+    0%,
+    65% {
+      opacity: 0;
+      transform: translateY(21.74cqh);
+    }
+    67.857%,
+    81.071% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    83.929%,
+    100% {
+      opacity: 0;
+      transform: translateY(-21.74cqh);
+    }
+  }
+
+  @keyframes dns-hero-frame-7 {
+    0%,
+    81.071% {
+      opacity: 0;
+      transform: translateY(21.74cqh);
+    }
+    83.929%,
+    96.429% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-21.74cqh);
+    }
+  }
+
+  /* Pin to step 1 — the clean DNS Records table — rather than just freezing
+     mid-transition, matching components-line-draw.css and
+     components-module-animate.css. */
+  @media (prefers-reduced-motion: reduce) {
+    .dns-hero-anim-frame {
+      animation: none;
+    }
+
+    .dns-hero-anim-frame--2,
+    .dns-hero-anim-frame--3,
+    .dns-hero-anim-frame--4,
+    .dns-hero-anim-frame--5,
+    .dns-hero-anim-frame--6,
+    .dns-hero-anim-frame--7 {
+      @apply invisible opacity-0;
+    }
+  }
+}

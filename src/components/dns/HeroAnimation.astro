@@ -1,0 +1,52 @@
+---
+// src/components/dns/HeroAnimation.astro
+// Looping 7-step DNS import walkthrough for the hero visual — GitHub issue #1571.
+// Frames come from Figma section 15907:15701; the 28s timing is transcribed from
+// the motion data on the sibling "DNS Import - Animated" node (15930:4131), so
+// the keyframe percentages in components-dns-hero-animation.css are a direct
+// copy of the designer's timeline rather than an approximation.
+//
+// Each PNG is a fully composited frame — the dimmed/blurred dashboard is baked
+// into steps 2/4/5/6/7 and step 3 carries its own pine backdrop — so this is a
+// plain cross-fade stack with no separate backdrop or scrim layers. Run through
+// astro:assets so the 897×552 sources ship as WebP instead of ~940KB of PNG.
+
+import { Image } from 'astro:assets';
+
+import step1 from '@assets/features/dns-hero-png/step-1.png';
+import step2 from '@assets/features/dns-hero-png/step-2.png';
+import step3 from '@assets/features/dns-hero-png/step-3.png';
+import step4 from '@assets/features/dns-hero-png/step-4.png';
+import step5 from '@assets/features/dns-hero-png/step-5.png';
+import step6 from '@assets/features/dns-hero-png/step-6.png';
+import step7 from '@assets/features/dns-hero-png/step-7.png';
+import { hero } from '@data/dns';
+
+const frames = [
+  { src: step1, step: 1, alt: 'DNS Records list' },
+  { src: step2, step: 2, alt: 'Import DNS Records dialog' },
+  { src: step3, step: 3, alt: 'Choosing a zone file' },
+  { src: step4, step: 4, alt: 'Seven records ready to import' },
+  { src: step5, step: 5, alt: 'All seven records selected' },
+  { src: step6, step: 6, alt: 'All seven records created' },
+  { src: step7, step: 7, alt: 'Imported 7 DNS records' },
+] as const;
+---
+
+<div class="dns-hero-anim" role="img" aria-label={hero.imageAlt}>
+  <div class="dns-hero-anim-stage" aria-hidden="true">
+    {
+      frames.map((frame) => (
+        <Image
+          class:list={['dns-hero-anim-frame', `dns-hero-anim-frame--${frame.step}`]}
+          src={frame.src}
+          alt=""
+          format="webp"
+          quality={82}
+          loading={frame.step === 1 ? 'eager' : 'lazy'}
+          decoding={frame.step === 1 ? 'sync' : 'async'}
+        />
+      ))
+    }
+  </div>
+</div>

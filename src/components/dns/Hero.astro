@@ -1,0 +1,65 @@
+---
+// src/components/dns/Hero.astro
+// Hero for /platform/dns: breadcrumb trail, product badge, headline and the
+// DNS zone screenshot. Figma node 15755:115476. Nav/Announcement are rendered
+// by the page (see src/pages/platform/dns.astro), not here.
+
+import { Image } from 'astro:assets';
+
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import SectionLine from '@components/SectionLine.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import heroImage from '@assets/features/dns-hero.png';
+import { breadcrumbs, hero } from '@data/dns';
+---
+
+<section
+  class="section--block bg-aurora-mist section--block--x-pad"
+  aria-labelledby="dns-hero-title"
+>
+  <div class="max-width-nav spacing-pad relative pt-5 pb-16 md:pb-24 lg:pb-32 xl:pb-36">
+    <SectionLine left right top bottom />
+
+    <Breadcrumbs items={breadcrumbs} />
+
+    <div
+      class="max-width-nopad mt-12 grid grid-cols-1 items-center gap-10 md:mt-16 md:gap-12 lg:mt-24 lg:grid-cols-2 lg:gap-20 xl:mt-26 xl:gap-30"
+    >
+      <div class="flex flex-col items-start gap-8 lg:gap-10">
+        <span
+          class="bg-pine-forge---links/15 text-pine-forge---links font-dejavu datum-text-lg inline-flex items-center gap-1.5 rounded-sm py-0.75 pr-2 pl-1.5 uppercase"
+        >
+          <Icon name={hero.badgeIcon} size="md" class="m-1" />
+          {hero.badge}
+        </span>
+
+        <div class="flex flex-col gap-5">
+          <h1 class="datum-text-9xl text-midnight-fjord text-pretty">{hero.title}</h1>
+          <p class="datum-text-xl text-midnight-fjord/80 text-pretty">{hero.description}</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-5">
+          <Button
+            class="btn btn--midnight-fjord"
+            text={hero.primaryCta.text}
+            href={hero.primaryCta.href}
+            icon={{ name: 'arrow-right', size: 'md' }}
+            target="_blank"
+            data-rybbit-event="DNS: Start for free"
+          />
+          <Button
+            class="btn btn--alpha"
+            text={hero.secondaryCta.text}
+            href={hero.secondaryCta.href}
+            target="_blank"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Image src={heroImage} alt={hero.imageAlt} loading="eager" class="h-auto w-full" />
+      </div>
+    </div>
+  </div>
+</section>

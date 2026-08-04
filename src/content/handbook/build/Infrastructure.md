@@ -29,7 +29,7 @@ As an example, by grounding every geography in its ISO-3166 two letter country c
 In the following example, “us-east-1a” represents the first region (1) and first availability zone (a) in the eastern United States.
 
 ```
-Example: us-east–1a
+Example: us-east-1a
 Formula: <Geography>-<Location>-<Number><Count>
 ```
 

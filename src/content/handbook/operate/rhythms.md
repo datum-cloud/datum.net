@@ -48,7 +48,7 @@ In addition to understanding our small size and big ambitions, it’s important 
 
 <h3>Semi-Annual</h3>
 
-* **Momentum Events** - LIke many companies, we aim for both a Spring and a Fall moment where we can bundle up our biggest announcements and attract a bit more attention. It’s also a huge driver of our thorniest work, helping us “write the press release” early in the cycle and aim towards a specific date.   
+* **Momentum Events** - Like many companies, we aim for both a Spring and a Fall moment where we can bundle up our biggest announcements and attract a bit more attention. It’s also a huge driver of our thorniest work, helping us “write the press release” early in the cycle and aim towards a specific date.   
 
 <h3>Annual</h3>
 

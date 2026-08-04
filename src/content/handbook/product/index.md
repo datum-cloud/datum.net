@@ -21,10 +21,10 @@ Humble pie note: even though we’re excited about our product vision, what we�
 No network team required.  :-)
 
 ## Core product strategy
-In addition to building our underlying platform and network, we're focused on releasing a self-service cloud product (e.g. Datum Cloud) that is more opinionated than we ultimately believe customers will require. These "house brand" services are designed to deliver real, low-friction value to users while building our operational muscle. Datum Cloud is backed by an AGPv3 license and we try hard to avoid weird sales gates or marketing fluff.
+In addition to building our underlying platform and network, we're focused on releasing a self-service cloud product (e.g. Datum Cloud) that is more opinionated than we ultimately believe customers will require. These "house brand" services are designed to deliver real, low-friction value to users while building our operational muscle. Datum Cloud is backed by an AGPLv3 license and we try hard to avoid weird sales gates or marketing fluff.
 
 * AI Edge – Protect apps, endpoints, and API’s with an intelligent global proxy and built in WAF (powered by Envoy)
-* Connectors – Orchestate a diverse portfolio of connections, starting with QUIC tunnels (powered by Iroh)
+* Connectors – Orchestrate a diverse portfolio of connections, starting with QUIC tunnels (powered by Iroh)
 * Galactic VPC - Virtual private backbones for improving performance, security, and reliability with an internet fast lane
 
 Some other core capabilities on our roadmap include a virtual "meet me room" and edge runtime.
@@ -34,7 +34,7 @@ Just as important as these features are the ways to interact with them. We're fo
 
 * AX - Datum MCP 
 * DX - datumctl and SDK's 
-* UX - Customer portal and desktop appls
+* UX - Customer portal and desktop apps
 
 ## Platform accoutrements
 We're aggressively maturing various platform features that help users adopt best practices. Our approach here is make everything programmatic and available to all users, not just larger accounts.

@@ -325,7 +325,7 @@ npx skills add https://github.com/datum-cloud/skills
 
 | Skill | Purpose |
 |-------|---------|
-| \`ai-edge\` | Application Load Balancer: manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
+| \`alb\` | Application Load Balancer: manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
 | \`client-traffic\` | Configure how edge gateways accept client connections — TLS termination, mTLS, HTTP/2, HTTP/3, timeouts, connection limits, real IP detection |
 | \`dns\` | Manage DNS zones and record sets (A, AAAA, CNAME, MX, TXT, ALIAS, CAA, SRV, SVCB, HTTPS, TLSA, etc.) |
 | \`domains\` | Attach and verify domain resources within a project |

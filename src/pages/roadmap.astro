@@ -22,7 +22,7 @@ const fm = page.data;
 const meta = fm.meta || {};
 const description = fm.description;
 const heroYear = new Date().getFullYear();
-const heroTitle = `${heroYear} Roadmap`;
+const heroTitle = `${heroYear} Product Roadmap`;
 
 const roadmaps = await fetchGitHubRoadmaps();
 const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));

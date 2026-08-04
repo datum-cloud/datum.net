@@ -24,7 +24,7 @@ const faqs = (await getCollection('faq'))
   .filter((faq) => !faq.data.draft && faq.data.category === 'dedicated-cloud')
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
-const HERO_TITLE_HIGHLIGHT = 'trust';
+const HERO_TITLE_HIGHLIGHT = 'expertise';
 const heroTitleLead = hero.title.slice(0, hero.title.lastIndexOf(HERO_TITLE_HIGHLIGHT));
 
 const jsonLd = {

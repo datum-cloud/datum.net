@@ -3,14 +3,14 @@
 // two can never drift out of sync.
 
 export const meta = {
-  title: 'Dedicated Cloud — GPU clusters built and operated by Datum',
+  title: 'Dedicated GPU Clusters - Datum Dedicated Cloud',
   description:
-    'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
+    'Get white-glove support for enterprise networking needs – from architecture and design to fully managed connectivity and orchestration.',
 };
 
 export const hero = {
   eyebrow: 'Dedicated cloud',
-  title: 'GPU clusters, built and operated by folks you can trust',
+  title: 'Advanced cloud networking expertise',
   description:
     'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
   ctaText: 'Schedule a conversation',

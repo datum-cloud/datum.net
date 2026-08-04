@@ -11,8 +11,8 @@ images:
     alt: Google-Cloud
   - img: images/svgs/Perplexity.svg
     alt: Perplexity
-  - img: images/svgs/Snowflakes.svg
-    alt: Snowflakes
+  - img: images/svgs/Snowflake.svg
+    alt: Snowflake
   - img: images/svgs/Anthropic.svg
     alt: Anthropic
   - img: images/svgs/Cockroach.svg
@@ -21,8 +21,8 @@ images:
     alt: Grafana
   - img: images/svgs/Harvey.svg
     alt: Harvey
-  - img: images/svgs/Loveable.svg
-    alt: Loveable
+  - img: images/svgs/Lovable.svg
+    alt: Lovable
   - img: images/svgs/OpenAI.svg
     alt: OpenAI
   - img: images/svgs/Robovision.svg

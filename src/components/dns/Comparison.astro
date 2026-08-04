@@ -1,0 +1,67 @@
+---
+// src/components/dns/Comparison.astro
+// "Why choose Datum?" — Datum DNS vs Cloudflare DNS comparison table.
+// Figma node 15755:115013.
+
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import DatumLogo from '@assets/icons/datum-logo.svg';
+import CloudflareLogo from '@assets/logos/svg/Cloudflare.svg';
+import { comparison } from '@data/dns';
+---
+
+<section
+  id="comparison"
+  class="section--block section--block--x-pad border-silver-mist overflow-hidden border-t bg-white"
+>
+  <div class="max-width-nav section-pad relative">
+    <SectionEyebrow variant="pine" position="left-top">{comparison.eyebrow}</SectionEyebrow>
+    <SectionLine left right top bottom />
+
+    <div class="dns-split spacing-pad">
+      <div class="dns-split-intro">
+        <h2 class="section-title">{comparison.title}</h2>
+        <p class="dns-split-description">{comparison.description}</p>
+      </div>
+
+      <div class="dns-split-panel">
+        <div class="dns-comparison-panel">
+          <table class="dns-comparison-table">
+            <thead>
+              <tr>
+                <th class="dns-comparison-head-cell--spacer">
+                  <span class="sr-only">Capability</span>
+                </th>
+                <th scope="col" class="dns-comparison-head-cell dns-comparison-head-cell--datum">
+                  <span class="dns-comparison-brand">
+                    <DatumLogo class="text-midnight-fjord" aria-hidden="true" />
+                    {comparison.datumLabel}
+                  </span>
+                </th>
+                <th scope="col" class="dns-comparison-head-cell">
+                  <span class="dns-comparison-brand">
+                    <CloudflareLogo aria-hidden="true" />
+                    {comparison.cloudflareLabel}
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                comparison.rows.map((row) => (
+                  <tr class="dns-comparison-row">
+                    <th scope="row" class="dns-comparison-label">
+                      {row.label}
+                    </th>
+                    <td class="dns-comparison-cell dns-comparison-cell--datum">{row.datum}</td>
+                    <td class="dns-comparison-cell">{row.cloudflare}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

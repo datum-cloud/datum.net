@@ -1,0 +1,42 @@
+---
+// src/components/dns/Operations.astro
+// "Built for platform teams" — full-width bordered rows.
+// Figma node 15775:57127.
+
+import Icon from '@components/Icon.astro';
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import { operations } from '@data/dns';
+---
+
+<section
+  id="operations"
+  class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-t"
+>
+  <div class="max-width-nav section-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left right top bottom />
+
+    <div class="dns-section-header">
+      <SectionEyebrow variant="pine">{operations.eyebrow}</SectionEyebrow>
+      <h2 class="section-title">{operations.title}</h2>
+    </div>
+
+    <div class="max-width-nopad spacing-pad">
+      <ul class="dns-operations-list">
+        {
+          operations.items.map((item) => (
+            <li class="dns-operations-item">
+              <div class="dns-operations-heading">
+                <span class="dns-icon-tile">
+                  <Icon name={item.icon} class="stroke-1.75" />
+                </span>
+                <p class="dns-operations-title">{item.title}</p>
+              </div>
+              <p class="dns-operations-description">{item.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

@@ -513,7 +513,16 @@
   }
 
   /* Breadcrumbs */
-
+  nav.breadcrumbs {
+    @apply pl-0 2xl:px-7;
+    a {
+      @apply text-app---dark---utility-3;
+    }
+    ol {
+      li {
+      }
+    }
+  }
   nav.c-breadcrumbs,
   nav.a-breadcrumbs {
     @apply datum-docs-sidebar-links mt-0 block items-center overflow-x-hidden px-0 opacity-80 md:px-0;
@@ -558,6 +567,34 @@
     }
     li:nth-child(3) {
       @apply inline-block;
+    }
+  }
+
+  /* Simple text breadcrumb trail (Breadcrumbs.astro). Unlike the
+     astro-breadcrumbs-driven `.a-breadcrumbs`/`.c-breadcrumbs` above, this has
+     no home icon or mobile crumb-hiding — just a flat, always-visible trail. */
+  nav.breadcrumbs {
+    @apply datum-text-sm text-midnight-fjord/70;
+
+    ol {
+      @apply m-0 flex list-none flex-wrap items-center gap-1.5 p-0;
+    }
+
+    li {
+      @apply flex items-center gap-1.5;
+    }
+
+    li:not(:last-child)::after {
+      content: '/';
+      @apply text-midnight-fjord/40;
+    }
+
+    a {
+      @apply hover:text-midnight-fjord underline underline-offset-4 transition-colors;
+    }
+
+    [aria-current='page'] {
+      @apply text-pine-forge---links font-semibold no-underline;
     }
   }
 

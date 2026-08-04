@@ -1,0 +1,25 @@
+---
+// src/components/Breadcrumbs.astro
+// Simple text breadcrumb trail. The last item renders as the current page
+// (no link); every other item links to its `href`.
+
+import type { BreadcrumbsProps } from '@/src/types/common';
+
+const { items, class: className = '' } = Astro.props as BreadcrumbsProps;
+---
+
+<nav class:list={['breadcrumbs', className]} aria-label="Breadcrumb">
+  <ol>
+    {
+      items.map((item, index) => (
+        <li>
+          {index === items.length - 1 ? (
+            <span aria-current="page">{item.text}</span>
+          ) : (
+            <a href={item.href}>{item.text}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

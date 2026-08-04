@@ -483,7 +483,7 @@
   /* Logo Dropdown Styles */
   .nav-logo-container {
     @apply relative md:col-span-2;
-    @apply pl-5 sm:pl-7;
+    @apply pl-5 lg:pl-7;
   }
 
   .nav-logo {

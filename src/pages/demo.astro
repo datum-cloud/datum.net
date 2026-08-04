@@ -13,6 +13,9 @@ import SectionLine from '@components/SectionLine.astro';
 
 const title = 'Book a demo';
 const description = 'See our modern alternative to global cloud solutions in action.';
+const metaTitle = 'Book a Datum Demo - See the Network Cloud in Action';
+const metaDescription =
+  'Book a live Datum demo and see connected infrastructure for AI companies and alternative cloud providers in action. See how you can scale with no network team.';
 
 const checklist = [
   {
@@ -27,7 +30,7 @@ const checklist = [
 ];
 ---
 
-<Layout title={title} description={description} bodyClass="page-demo">
+<Layout title={metaTitle} description={metaDescription} bodyClass="page-demo">
   <section class="datum-container">
     <Hero class="light" hideContent={true} hideHero />
 

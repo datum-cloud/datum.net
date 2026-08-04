@@ -21,8 +21,7 @@ const roadmapMeta = roadmapPage.data.meta || {};
 const backlogMeta = backlogPage.data.meta || {};
 const meta = { ...roadmapMeta, ...backlogMeta };
 
-const heroYear = new Date().getFullYear();
-const heroTitle = `${heroYear} Roadmap`;
+const heroTitle = 'Product backlog';
 const heroDescription = roadmapPage.data.description;
 
 const layoutTitle = backlogMeta.title ?? 'Datum Product Backlog';

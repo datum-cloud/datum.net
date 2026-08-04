@@ -76,7 +76,7 @@
   }
 
   .dns-operations-description {
-    @apply datum-text-base text-midnight-fjord/80 lg:flex-1;
+    @apply datum-text-base text-midnight-fjord/80 text-pretty lg:flex-1;
   }
 
   /* Datum vs Cloudflare table — Figma node 15755:115034.
@@ -161,6 +161,6 @@
   }
 
   .dns-step-description {
-    @apply datum-text-base text-midnight-fjord/80;
+    @apply datum-text-base text-midnight-fjord/80 text-pretty;
   }
 }

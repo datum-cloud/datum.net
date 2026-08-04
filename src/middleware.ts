@@ -2,7 +2,7 @@ import { stargazerCount } from '@libs/datum';
 import { sequence } from 'astro:middleware';
 import type { MiddlewareHandler } from 'astro';
 
-const PROTECTED_ROUTES = [/^\/dev($|\/.*)/];
+const PROTECTED_ROUTES = [/^\/dev($|\/.*)/, /^\/platform\/dns(\.md)?\/?$/];
 
 const HELLO_PROFILE_PATH = /^\/hello\/([^/]+)$/;
 
@@ -34,7 +34,7 @@ const routeGuard: MiddlewareHandler = async ({ url, redirect }, next) => {
   if (isProtected(pathName)) {
     // only for development mode, to ease testing
     if (mode == 'production') {
-      return redirect(`/`);
+      return redirect(`/`, 302);
     }
   }
 

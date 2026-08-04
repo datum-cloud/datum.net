@@ -7,7 +7,7 @@ const mode = process.env.MODE || import.meta.env.MODE;
 
 // only for development mode, to ease testing
 if (mode == 'production') {
-  return Astro.redirect('/');
+  return Astro.redirect('/', 302);
 }
 
 /**

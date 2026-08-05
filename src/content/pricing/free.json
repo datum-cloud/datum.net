@@ -10,7 +10,7 @@
   "cta": {
     "label": "Start for free",
     "class": "btn btn--pine-forge",
-    "href": "https://auth.datum.net/ui/v2/login/register",
+    "href": "https://auth.datum.net/id/signup",
     "isExternal": true,
     "rybbitEvent": "Pricing-Waitlist-Subscribe"
   },

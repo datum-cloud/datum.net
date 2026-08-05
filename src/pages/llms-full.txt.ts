@@ -244,7 +244,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 ## How to Sign Up
 
-1. **Go to:** \`https://cloud.datum.net\` (or \`https://auth.datum.net/ui/v2/login/register\`)
+1. **Go to:** \`https://cloud.datum.net\` (or \`https://auth.datum.net/id/signup\`)
 2. **Authenticate** using Google or GitHub OAuth — no email/password registration
 3. **Your account** is automatically associated with the primary email on your OAuth account
 4. A **Personal Org** is created for you automatically as a sandbox

@@ -19,7 +19,7 @@ export const hero = {
   title: 'Authoritative DNS without the upsell',
   description:
     'Fast and resilient DNS that is easily managed via our portal or CLI. The first 500k requests each month are free.',
-  primaryCta: { text: 'Start for free', href: 'https://auth.datum.net/ui/v2/login/register' },
+  primaryCta: { text: 'Start for free', href: 'https://auth.datum.net/id/signup' },
   secondaryCta: {
     text: 'View documentation',
     href: 'https://www.datum.net/docs/domain-dns/dns',

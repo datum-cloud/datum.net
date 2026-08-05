@@ -94,7 +94,7 @@
   "right": [
     {
       "text": "Request Access",
-      "href": "https://auth.datum.net/ui/v2/login/register",
+      "href": "https://auth.datum.net/id/signup",
       "isExternal": true
     }
   ],

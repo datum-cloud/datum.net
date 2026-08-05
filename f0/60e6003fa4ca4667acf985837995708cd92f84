@@ -1,0 +1,22 @@
+package.json
+  s_544e3dbe4cb51b::t_e51b6ed6e50360 89
+  s_544e3dbe4cb51b::t_8adc6d2f9702d3 103
+package-lock.json
+  s_544e3dbe4cb51b::t_b2a54e8c8c594d 22,35,862-891,2189-2191,2839,2874,5446-5460,5470-5578,9586-9588,9591,9599,13809
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "f060e6003fa4ca4667acf985837995708cd92f84",
+  "prompts": {},
+  "sessions": {
+    "s_544e3dbe4cb51b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb0c6522-a561-488a-a56a-742e3ff6ffdb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

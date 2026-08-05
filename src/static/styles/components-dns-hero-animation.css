@@ -1,761 +1,1396 @@
 @layer components {
-  /* Looping 7-step DNS import walkthrough — GitHub issue #1571.
-     Figma: static frames at 15907:15701, motion timeline at 15930:4131.
+  /* Looping DNS import walkthrough — GitHub issue #1571.
+     Rebuilt as real DOM instead of cross-fading 7 flattened screenshots, and
+     matched frame-by-frame against Figma node 15907:15701:
+       1. DNS Records table — records already in the zone
+       2. "Import & export" opens the Import DNS Records modal
+       3. "Select a file" swaps it for a native-style file picker on its own
+          solid backdrop (not the blurred app — a different background per
+          the source frame)
+       4. "Open" returns to the app; a SEPARATE import-preview panel appears
+          with its own table of the 7 records to import, unchecked
+       5. checkbox cascade checks all 7 rows; button becomes "Import 7 records"
+       6. checkbox column swaps for a Status column; rows resolve to
+          "Created" in sequence; button becomes "Done"
+       7. panel closes; a large centered success card holds, then the loop
+          returns to step 1
+     Canyon-clay (dusty rose) is the primary action color throughout —
+     checked checkboxes, the accent buttons — pine-forge green is reserved
+     for the "Created"/success states only, matching the source file.
 
-     SVG sprite (dns-hero-sprite.svg): chrome (#dns-hero-chrome / frame 1) stays
-     put; cards (#dns-hero-cards / frames 2–7) travel ±80px. Scrim dims chrome
-     while cards are up. Hit-target micro-anims use stable ids from the sprite
-     build (dns-hero-sN-hit-*).
+     Every element shares the same 28s animation-duration, and every
+     checkbox/status badge gets its own bespoke @keyframes with the
+     check/resolve moment baked in as an absolute loop percentage (see the
+     comment above .dns-anim-checkbox) — a shared keyframe offset by
+     animation-delay looks right once, but drifts out of phase with the
+     scene loop on every subsequent iteration since the delay only applies
+     before the first cycle.
 
-     At the default 28s period (--dns-hero-loop):
+     Timeline (28s):
+       0.0s            clean table
+       3.8s            click: Import & export
+       4.0s  – 7.9s    import modal open
+       7.6s            click: Select a file
+       7.9s  – 11.9s   native file picker open (its own solid backdrop)
+       11.6s           click: Open
+       12.2s           import-preview panel opens, checkboxes unchecked
+       15.5s – 16.55s  checkbox cascade (header, then rows 1–7)
+       16.6s           button: "Import 0 records" → "Import 7 records"
+       18.9s           click: Import 7 records
+       19.0s           checkbox column → Status column, spinners running
+       19.3s – 21.88s  rows resolve to Created, staggered
+       22.3s           button: "Import 7 records" → "Done"
+       23.15s          click: Done
+       23.5s           panel closes, success card fades in
+       26.5s – 26.8s   success card fades out, back to clean table
+  */
 
-       step 1 dashboard     0.0s → 2.6s   (cards start ~2.6s)
-       step 2 import modal  ~2.6s → 7.2s   (out by 8.0s)
-       step 3 file picker   8.0s → 11.2s  (out by 12.0s)
-       step 4 preview      12.0s → 15.0s  (out by 15.5s)
-       step 5 selected     15.5s → 18.2s  (out by 19.0s)
-       step 6 created      19.0s → 22.7s  (out by 23.5s)
-       step 7 success      23.5s → 27.0s  (out by 28.0s)
-
-     80px of Figma's 368px stage = 21.74cqh. */
   .dns-hero-anim {
-    @apply border-pine-forge---links w-full border;
+    @apply border-silver-mist w-full overflow-hidden rounded-md border;
+    /* Establishes cqw for the stage's font-size below, so the whole mini-UI
+       (text, icons, padding — all sized in em off that one root) scales
+       with the box's actual rendered width instead of staying pinned to a
+       fixed px size. Without this, the box itself shrinks correctly on
+       narrow viewports but its content doesn't, so mobile shows a cropped
+       fragment of desktop-sized content rather than a scaled-down whole. */
+    container-type: inline-size;
   }
 
   .dns-hero-anim-stage {
-    @apply relative isolate w-full overflow-hidden;
-    aspect-ratio: 598 / 368;
-    container-type: size;
+    @apply relative isolate w-full overflow-hidden bg-white;
+    aspect-ratio: 3 / 2;
+    /* 10px was the original fixed size, tuned against a 598px-wide desktop
+       stage (10 / 598 * 100 ≈ 1.6722cqw) — expressing it as cqw keeps that
+       same density at any container width. */
+    font-size: 1.6722cqw;
+    line-height: 1.4;
+    color: var(--color-midnight-fjord);
   }
 
-  .dns-hero-anim-chrome,
-  .dns-hero-anim-cards,
-  .dns-hero-anim-frost {
+  /* The <Icon> component sizes SVGs with Tailwind's h-4/w-5/w-6 (rem, tied
+     to the document's root font-size), not the em scale above — so on a
+     narrow mobile stage the icons stayed pixel-fixed while everything
+     around them (rail width, padding, text) shrank via cqw, leaving them
+     with almost no breathing room. Re-expressing each Tailwind size as its
+     em equivalent (1rem/1.25rem/1.5rem → 1.6/2/2.4em at the 10px baseline)
+     keeps icons in proportion at every container width. !important is
+     required: Tailwind's utility layer otherwise outranks @layer components
+     regardless of selector specificity or source order. */
+  .dns-hero-anim-stage svg {
+    width: 1.6em !important;
+    height: 1.6em !important;
+  }
+
+  .dns-app-header-logo svg,
+  .dns-anim-success svg {
+    width: 2em !important;
+    height: 2em !important;
+  }
+
+  .dns-anim-dropzone svg {
+    width: 2.4em !important;
+    height: 2.4em !important;
+  }
+
+  /* ---------------------------------------------------------------- chrome */
+  /* Matched against a screenshot of the real Datum Cloud app, not just the
+     Figma mock — the actual product chrome is a light sidebar with
+     canyon-clay icons and a top org/environment picker bar, not a dark rail. */
+
+  .dns-app-shell {
+    @apply absolute inset-0 flex flex-col;
+  }
+
+  .dns-app-header {
+    @apply flex shrink-0 items-center gap-[0.6em];
+    height: 4em;
+    padding-right: 1.2em;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-glacier-mist-900);
+    color: var(--color-canyon-clay);
+  }
+
+  /* Fixed to the same width as .dns-app-rail below it, with the icon
+     centered inside, so the logo and the sidebar icons form one aligned
+     column instead of drifting based on the header's own padding. */
+  .dns-app-header-logo {
+    @apply flex h-full items-center justify-center;
+    width: 3.2em;
+    color: var(--color-canyon-clay);
+    margin-right: 0.4em;
+  }
+
+  .dns-app-header-sep {
+    color: var(--color-silver-mist);
+  }
+
+  .dns-app-header-dropdown {
+    @apply flex items-center gap-[0.4em];
+    color: var(--color-app---dark---utility-3);
+  }
+
+  /* The second (project) dropdown stretches to fill the remaining header
+     width, so its chevron lands at the far right — matches the real app,
+     not a symmetric pair of fixed-width pills. */
+  .dns-app-header-dropdown--wide {
+    @apply flex-1;
+  }
+
+  .dns-app-header-dropdown-bar {
+    @apply inline-block;
+    width: 6em;
+    height: 0.9em;
+    border-radius: 0.3em;
+    background: var(--color-glacier-mist-800);
+  }
+
+  .dns-app-header-dropdown--wide .dns-app-header-dropdown-bar {
+    @apply flex-1;
+    max-width: 20em;
+  }
+
+  /* Shrink the dropdown/chevron icons via transform rather than width/height
+     — Tailwind's h-4/w-4 utilities live in a higher-precedence layer than
+     @layer components, so a transform is what actually wins here. Keeps the
+     logo the largest icon in the bar per the size hierarchy the real app
+     uses. */
+  .dns-app-header-icon {
+    transform: scale(0.7);
+  }
+
+  .dns-app {
+    @apply flex min-h-0 flex-1;
+  }
+
+  .dns-app-rail {
+    @apply flex flex-col items-center gap-[2.2em] py-[2em];
+    width: 3.2em;
+    background: var(--color-glacier-mist-700);
+    border-right: 1px solid var(--color-glacier-mist-900);
+    color: var(--color-canyon-clay);
+  }
+
+  .dns-app-main {
+    @apply min-w-0 flex-1 overflow-hidden;
+    background: var(--color-glacier-mist-700);
+    padding: 1.6em 1.8em;
+  }
+
+  .dns-app-breadcrumb {
+    @apply flex items-center gap-[0.4em];
+    color: var(--color-app---dark---utility-3);
+    margin-bottom: 1.4em;
+  }
+
+  .dns-app-breadcrumb-current {
+    color: var(--color-midnight-fjord);
+    font-weight: 600;
+  }
+
+  .dns-app-toolbar {
+    @apply flex flex-wrap items-center justify-between gap-[0.8em];
+    margin-bottom: 1.2em;
+  }
+
+  .dns-app-title {
+    font-size: 1.8em;
+    font-weight: 600;
+  }
+
+  .dns-app-actions {
+    @apply flex flex-wrap items-center gap-[0.6em];
+  }
+
+  .dns-app-search {
+    @apply flex items-center gap-[0.4em];
+    color: var(--color-app---dark---utility-3);
+    background: var(--color-glacier-mist-700);
+    border: 1px solid var(--color-silver-mist);
+    border-radius: 0.4em;
+    padding: 0.5em 0.8em;
+  }
+
+  .dns-app-btn {
+    @apply inline-flex items-center gap-[0.35em];
+    border-radius: 0.4em;
+    padding: 0.5em 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
+    transform: scale(1);
+  }
+
+  .dns-app-btn--ghost {
+    background: var(--color-white);
+    border: 1px solid var(--color-silver-mist);
+    color: var(--color-midnight-fjord);
+  }
+
+  .dns-app-btn--accent {
+    background: var(--color-canyon-clay);
+    color: var(--color-white);
+  }
+
+  .dns-app-btn--accent-muted {
+    background: var(--color-canyon-clay-pale);
+    color: var(--color-canyon-clay);
+  }
+
+  .dns-app-btn--dark {
+    background: var(--color-midnight-fjord);
+    color: var(--color-white);
+  }
+
+  .dns-app-btn--open {
+    background: #0a7cff;
+    color: var(--color-white);
+  }
+
+  .dns-app-table {
+    @apply w-full border-collapse;
+    table-layout: fixed;
+    background: var(--color-white);
+    border: 1px solid var(--color-glacier-mist-900);
+    border-radius: 0.5em;
+    overflow: hidden;
+  }
+
+  .dns-app-table th {
+    color: var(--color-midnight-fjord);
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid var(--color-glacier-mist-900);
+    padding: 0.6em 0.5em;
+  }
+
+  .dns-app-table th svg {
+    @apply inline-block align-middle;
+    margin-left: 0.3em;
+    color: var(--color-app---dark---utility-4);
+  }
+
+  .dns-app-table td {
+    border-bottom: 1px solid var(--color-glacier-mist-800);
+    padding: 0.7em 0.5em;
+    color: var(--color-midnight-fjord);
+  }
+
+  .dns-app-table-check {
+    width: 2em;
+  }
+
+  /* Width applies to both th and td, but flex layout only to the td — a
+     <th> with display:flex stops participating in the table's normal
+     cell-height sync, so its border-bottom row-line sits at a different
+     height than the sibling header cells (the header cell here has no
+     content, so it never needed flex in the first place). */
+  .dns-app-table-rowactions {
+    width: 5em;
+    color: var(--color-app---dark---utility-3);
+  }
+
+  td.dns-app-table-rowactions {
+    @apply flex items-center justify-end gap-[0.4em];
+  }
+
+  .dns-app-icon-btn {
+    @apply inline-flex items-center justify-center;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 0.6em;
+    border: 1px solid var(--color-glacier-mist-900);
+    background: var(--color-glacier-mist-700);
+    color: var(--color-app---dark---utility-3);
+  }
+
+  .dns-app-icon-btn svg {
+    transform: scale(0.85);
+  }
+
+  .dns-app-checkbox-static {
+    @apply inline-block;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 0.25em;
+    border: 1.5px solid var(--color-silver-mist);
+  }
+
+  .dns-app-table-pill {
+    background: var(--color-white);
+    border: 1px solid var(--color-glacier-mist-900);
+    border-radius: 0.3em;
+    padding: 0.15em 0.5em;
+    font-weight: 600;
+  }
+
+  .dns-app-table-content {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+    color: var(--color-app---dark---utility-3);
+    max-width: 1px; /* forces the ellipsis to respect table-layout: fixed's column width */
+  }
+
+  /* ------------------------------------------------------------- checkbox */
+
+  /* Each row gets its own keyframe with the check-moment baked in as an
+     absolute percentage, rather than one shared keyframe offset by
+     animation-delay. A shared keyframe + delay looks right on the FIRST
+     play-through, but animation-duration (28s) is also the loop length, so
+     after the first iteration each row's own 0%→100% cycle re-starts at
+     (delay mod 28s) — a wall-clock instant that lands inside the panel's
+     visible window on every subsequent loop, not at the loop boundary. The
+     visible symptom: on repeat loops the row shows already-checked when the
+     panel opens, then un-checks and re-checks mid-scene. Baking the moment
+     into the keyframe itself (delay always 0) keeps every row's state tied
+     to absolute loop position, so it's identical on every iteration. */
+  .dns-anim-checkbox {
+    @apply inline-flex items-center justify-center;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 0.25em;
+    border: 1.5px solid var(--color-silver-mist);
+    background: transparent;
+    color: var(--color-white);
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  .dns-anim-checkbox svg {
+    transform: scale(0);
+    opacity: 0;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .dns-anim-checkbox--all {
+    animation-name: dns-checkbox-check--all;
+  }
+  .dns-anim-checkbox--all svg {
+    animation-name: dns-checkbox-check-icon--all;
+  }
+  .dns-anim-checkbox--1 {
+    animation-name: dns-checkbox-check--1;
+  }
+  .dns-anim-checkbox--1 svg {
+    animation-name: dns-checkbox-check-icon--1;
+  }
+  .dns-anim-checkbox--2 {
+    animation-name: dns-checkbox-check--2;
+  }
+  .dns-anim-checkbox--2 svg {
+    animation-name: dns-checkbox-check-icon--2;
+  }
+  .dns-anim-checkbox--3 {
+    animation-name: dns-checkbox-check--3;
+  }
+  .dns-anim-checkbox--3 svg {
+    animation-name: dns-checkbox-check-icon--3;
+  }
+  .dns-anim-checkbox--4 {
+    animation-name: dns-checkbox-check--4;
+  }
+  .dns-anim-checkbox--4 svg {
+    animation-name: dns-checkbox-check-icon--4;
+  }
+  .dns-anim-checkbox--5 {
+    animation-name: dns-checkbox-check--5;
+  }
+  .dns-anim-checkbox--5 svg {
+    animation-name: dns-checkbox-check-icon--5;
+  }
+  .dns-anim-checkbox--6 {
+    animation-name: dns-checkbox-check--6;
+  }
+  .dns-anim-checkbox--6 svg {
+    animation-name: dns-checkbox-check-icon--6;
+  }
+  .dns-anim-checkbox--7 {
+    animation-name: dns-checkbox-check--7;
+  }
+  .dns-anim-checkbox--7 svg {
+    animation-name: dns-checkbox-check-icon--7;
+  }
+
+  @keyframes dns-checkbox-check--all {
+    0%,
+    55.36% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    56.36%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--all {
+    0%,
+    55.86% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    56.86%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--1 {
+    0%,
+    55.89% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    56.89%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--1 {
+    0%,
+    56.39% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    57.39%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--2 {
+    0%,
+    56.43% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    57.43%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--2 {
+    0%,
+    56.93% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    57.93%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--3 {
+    0%,
+    56.96% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    57.96%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--3 {
+    0%,
+    57.46% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    58.46%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--4 {
+    0%,
+    57.5% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    58.5%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--4 {
+    0%,
+    58% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    59%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--5 {
+    0%,
+    58.04% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    59.04%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--5 {
+    0%,
+    58.54% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    59.54%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--6 {
+    0%,
+    58.57% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    59.57%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--6 {
+    0%,
+    59.07% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    60.07%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dns-checkbox-check--7 {
+    0%,
+    59.11% {
+      background: transparent;
+      border-color: var(--color-silver-mist);
+    }
+    60.11%,
+    100% {
+      background: var(--color-canyon-clay);
+      border-color: var(--color-canyon-clay);
+    }
+  }
+  @keyframes dns-checkbox-check-icon--7 {
+    0%,
+    59.61% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    60.61%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Checkbox column disappears the moment the Status column takes over —
+     matches Figma step 6, where the two columns are mutually exclusive
+     rather than both showing at once. */
+  .dns-anim-modal-preview .dns-app-table-check {
+    animation: dns-checkbox-col-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-checkbox-col-visibility {
+    0%,
+    67.86% {
+      opacity: 1;
+    }
+    68.57%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* --------------------------------------------------------------- status */
+
+  .dns-anim-status-col {
+    opacity: 0;
+    animation: dns-status-col-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  .dns-anim-status {
+    @apply relative inline-flex items-center;
+    height: 1.4em;
+  }
+
+  .dns-anim-status-spinner {
     @apply absolute inset-0;
+    color: var(--color-app---dark---utility-3);
+    animation-duration: 0.9s, var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite, infinite;
+    animation-timing-function: linear, ease;
+    animation-name: dns-spin, none;
   }
 
-  .dns-hero-anim-chrome {
-    z-index: 0;
-    animation-name: dns-hero-chrome-blur;
+  .dns-anim-status-created {
+    @apply absolute inset-0 inline-flex items-center gap-[0.3em] whitespace-nowrap;
+    color: var(--color-pine-forge);
+    font-weight: 600;
+    opacity: 0;
+    transform: scale(0.7);
     animation-duration: var(--dns-hero-loop, 28s);
     animation-iteration-count: infinite;
-    animation-timing-function: ease;
-    /* Blur the HTML wrapper — CSS filter on SVG <g> does not reliably paint. */
-    will-change: filter;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .dns-hero-anim-frost {
-    z-index: 1;
-    pointer-events: none;
-    background: rgb(12 29 49 / 0.16);
-    animation-name: dns-hero-scrim;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
+  /* Same fix as the checkboxes above: bespoke per-row keyframe with the
+     resolve-moment baked in, instead of a shared keyframe + animation-delay
+     (which drifts out of phase with the scene loop after the first
+     iteration — see the long comment above .dns-anim-checkbox). */
+  .dns-anim-status--1 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--1;
+  }
+  .dns-anim-status--1 .dns-anim-status-created {
+    animation-name: dns-status-created-show--1;
+  }
+  .dns-anim-status--2 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--2;
+  }
+  .dns-anim-status--2 .dns-anim-status-created {
+    animation-name: dns-status-created-show--2;
+  }
+  .dns-anim-status--3 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--3;
+  }
+  .dns-anim-status--3 .dns-anim-status-created {
+    animation-name: dns-status-created-show--3;
+  }
+  .dns-anim-status--4 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--4;
+  }
+  .dns-anim-status--4 .dns-anim-status-created {
+    animation-name: dns-status-created-show--4;
+  }
+  .dns-anim-status--5 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--5;
+  }
+  .dns-anim-status--5 .dns-anim-status-created {
+    animation-name: dns-status-created-show--5;
+  }
+  .dns-anim-status--6 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--6;
+  }
+  .dns-anim-status--6 .dns-anim-status-created {
+    animation-name: dns-status-created-show--6;
+  }
+  .dns-anim-status--7 .dns-anim-status-spinner {
+    animation-name: dns-spin, dns-status-spinner-hide--7;
+  }
+  .dns-anim-status--7 .dns-anim-status-created {
+    animation-name: dns-status-created-show--7;
   }
 
-  .dns-hero-anim-cards {
-    z-index: 2;
-    pointer-events: none;
+  @keyframes dns-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
-  .dns-hero-anim-svg {
-    @apply block h-full w-full;
+  @keyframes dns-status-spinner-hide--1 {
+    0%,
+    68.93% {
+      opacity: 1;
+    }
+    69.93%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--1 {
+    0%,
+    69.43% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    70.43%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
-  .dns-hero-anim-frame {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
+  @keyframes dns-status-spinner-hide--2 {
+    0%,
+    70.46% {
+      opacity: 1;
+    }
+    71.46%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--2 {
+    0%,
+    70.96% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    71.96%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
-  .dns-hero-anim-frame--2,
-  .dns-hero-anim-frame--3,
-  .dns-hero-anim-frame--4,
-  .dns-hero-anim-frame--5,
-  .dns-hero-anim-frame--6,
-  .dns-hero-anim-frame--7 {
+  @keyframes dns-status-spinner-hide--3 {
+    0%,
+    72% {
+      opacity: 1;
+    }
+    73%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--3 {
+    0%,
+    72.5% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    73.5%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-status-spinner-hide--4 {
+    0%,
+    73.54% {
+      opacity: 1;
+    }
+    74.54%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--4 {
+    0%,
+    74.04% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    75.04%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-status-spinner-hide--5 {
+    0%,
+    75.07% {
+      opacity: 1;
+    }
+    76.07%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--5 {
+    0%,
+    75.57% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    76.57%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-status-spinner-hide--6 {
+    0%,
+    76.61% {
+      opacity: 1;
+    }
+    77.61%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--6 {
+    0%,
+    77.11% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    78.11%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-status-spinner-hide--7 {
+    0%,
+    78.14% {
+      opacity: 1;
+    }
+    79.14%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes dns-status-created-show--7 {
+    0%,
+    78.64% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    79.64%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-status-col-visibility {
+    0%,
+    67.86% {
+      opacity: 0;
+    }
+    68.57%,
+    83.93% {
+      opacity: 1;
+    }
+    85%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dns-status-spinner-hide {
+    0%,
+    2% {
+      opacity: 1;
+    }
+    4%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dns-status-created-show {
+    0%,
+    2% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    4%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ------------------------------------------------------------- scrim */
+
+  .dns-anim-scrim {
+    @apply absolute inset-0;
+    background: color-mix(in srgb, var(--color-midnight-fjord) 45%, transparent);
+    opacity: 0;
+    animation: dns-scrim-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-scrim-visibility {
+    0%,
+    14.29% {
+      opacity: 0;
+    }
+    15.36%,
+    28.21% {
+      opacity: 1;
+    }
+    29.29%,
+    42.5% {
+      opacity: 0;
+    }
+    43.57%,
+    94.64% {
+      opacity: 1;
+    }
+    95.71%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* ------------------------------------------------------------- modals */
+
+  .dns-anim-modal {
+    @apply absolute top-1/2 left-1/2 flex flex-col;
+    width: 68%;
+    transform: translate(-50%, -50%) scale(0.96);
+    background: var(--color-white);
+    border-radius: 0.6em;
+    box-shadow: 0 1.5em 3em -1em color-mix(in srgb, var(--color-midnight-fjord) 35%, transparent);
+    padding: 1.4em;
+    gap: 0.8em;
     opacity: 0;
   }
 
-  /* Chrome frame itself stays sharp inside the blurred HTML wrapper. */
-  .dns-hero-anim-frame--1 {
-    animation-name: none;
+  .dns-anim-modal-title {
+    font-weight: 700;
+    font-size: 1.2em;
+  }
+
+  .dns-anim-dropzone {
+    @apply flex flex-col items-center justify-center gap-[0.6em] text-center;
+    border: 1.5px dashed var(--color-silver-mist);
+    border-radius: 0.5em;
+    padding: 1.4em;
+    color: var(--color-app---dark---utility-3);
+  }
+
+  .dns-anim-btn-selectfile,
+  .dns-anim-btn-open {
+    text-decoration: underline;
+    display: inline-block;
+    transform: scale(1);
+  }
+
+  .dns-anim-modal-import {
+    animation: dns-modal-import-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-modal-import-visibility {
+    0%,
+    14.29% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    15.36%,
+    27.14% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    28.21%,
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+  }
+
+  /* ------------------------------------------------------------ file picker */
+
+  .dns-anim-filepicker-backdrop {
+    @apply absolute inset-0;
+    background: var(--color-pine-forge);
+    opacity: 0;
+    animation: dns-filepicker-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  .dns-anim-filepicker {
+    @apply absolute top-1/2 left-1/2 flex overflow-hidden;
+    width: 70%;
+    height: 62%;
+    transform: translate(-50%, -50%) scale(0.96);
+    background: var(--color-white);
+    border-radius: 0.7em;
+    box-shadow: 0 1.5em 3em -1em rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    animation: dns-filepicker-modal-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-filepicker-visibility {
+    0%,
+    28.21% {
+      opacity: 0;
+    }
+    29.29%,
+    41.43% {
+      opacity: 1;
+    }
+    42.5%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dns-filepicker-modal-visibility {
+    0%,
+    28.21% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    29.29%,
+    41.43% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    42.5%,
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+  }
+
+  .dns-anim-filepicker-sidebar {
+    @apply flex flex-col gap-[0.2em];
+    width: 34%;
+    background: var(--color-glacier-mist-700);
+    border-right: 1px solid var(--color-glacier-mist-900);
+    padding: 1em 0.8em;
+  }
+
+  .dns-anim-filepicker-item {
+    @apply flex items-center gap-[0.5em];
+    border-radius: 0.35em;
+    padding: 0.4em 0.5em;
+    color: var(--color-midnight-fjord);
+  }
+
+  .dns-anim-filepicker-item--active {
+    background: var(--color-glacier-mist-900);
+    font-weight: 600;
+  }
+
+  .dns-anim-filepicker-heading {
+    color: var(--color-app---dark---utility-3);
+    margin: 0.6em 0 0.1em 0.5em;
+    font-size: 0.9em;
+  }
+
+  .dns-anim-filepicker-main {
+    @apply flex min-w-0 flex-1 flex-col;
+    padding: 0.8em 1em;
+  }
+
+  .dns-anim-filepicker-toolbar {
+    @apply flex items-center gap-[0.6em];
+    color: var(--color-app---dark---utility-3);
+    margin-bottom: 0.8em;
+  }
+
+  .dns-anim-filepicker-path {
+    @apply flex flex-1 items-center gap-[0.4em];
+    background: var(--color-glacier-mist-700);
+    border-radius: 0.35em;
+    padding: 0.3em 0.6em;
+    color: var(--color-midnight-fjord);
+    font-weight: 600;
+  }
+
+  .dns-anim-filepicker-listhead {
+    @apply flex;
+    color: var(--color-app---dark---utility-3);
+    border-bottom: 1px solid var(--color-glacier-mist-900);
+    padding-bottom: 0.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .dns-anim-filepicker-listhead span:first-child {
+    flex: 2;
+  }
+
+  .dns-anim-filepicker-listhead span {
+    flex: 1;
+  }
+
+  .dns-anim-filepicker-row {
+    @apply flex;
+    background: #0a7cff;
+    color: var(--color-white);
+    border-radius: 0.3em;
+    padding: 0.4em 0.5em;
+    font-weight: 600;
+  }
+
+  .dns-anim-filepicker-row span:first-child {
+    flex: 2;
+  }
+
+  .dns-anim-filepicker-row span {
+    flex: 1;
+  }
+
+  .dns-anim-filepicker-actions {
+    @apply mt-auto flex items-center justify-end gap-[0.5em];
+  }
+
+  /* ----------------------------------------------------------- preview modal */
+
+  .dns-anim-modal-preview {
+    animation: dns-preview-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-preview-visibility {
+    0%,
+    42.5% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    43.57%,
+    83.93% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    85%,
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+  }
+
+  .dns-anim-preview-table {
+    @apply w-full border-collapse;
+    table-layout: fixed;
+  }
+
+  .dns-anim-preview-table th {
+    color: var(--color-app---dark---utility-3);
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid var(--color-glacier-mist-900);
+    padding: 0.5em;
+  }
+
+  .dns-anim-preview-table td {
+    border-bottom: 1px solid var(--color-glacier-mist-800);
+    padding: 0.6em 0.5em;
+    color: var(--color-midnight-fjord);
+  }
+
+  .dns-anim-preview-actions {
+    @apply relative flex justify-end;
+    height: 2.4em;
+    margin-top: 0.4em;
+  }
+
+  .dns-anim-preview-actions .dns-app-btn {
+    @apply absolute top-0 right-0;
+  }
+
+  .dns-anim-btn-import0 {
     opacity: 1;
+    animation: dns-btn-import0-visibility var(--dns-hero-loop, 28s) infinite ease;
   }
 
-  .dns-hero-anim-frame--2 {
-    animation-name: dns-hero-frame-2;
+  .dns-anim-btn-import7 {
+    opacity: 0;
+    animation:
+      dns-btn-import7-visibility var(--dns-hero-loop, 28s) infinite ease,
+      dns-pulse-import7 var(--dns-hero-loop, 28s) infinite ease;
   }
 
-  .dns-hero-anim-frame--3 {
-    animation-name: dns-hero-frame-3;
+  .dns-anim-btn-done {
+    opacity: 0;
+    animation:
+      dns-btn-done-visibility var(--dns-hero-loop, 28s) infinite ease,
+      dns-pulse-done var(--dns-hero-loop, 28s) infinite ease;
   }
 
-  /* Steps 4 and 5: same card travel; 5 reveals via wipe (checkbox cascade read). */
-  .dns-hero-anim-frame--4,
-  .dns-hero-anim-frame--5 {
-    animation-name: dns-hero-frame-4;
-  }
-
-  .dns-hero-anim-frame--5 {
-    animation-name: dns-hero-frame-4, dns-hero-wipe-5;
-    animation-timing-function: ease, linear;
-  }
-
-  .dns-hero-anim-frame--6 {
-    animation-name: dns-hero-frame-6;
-  }
-
-  .dns-hero-anim-frame--7 {
-    animation-name: dns-hero-frame-7;
-  }
-
-  /* —— Card travel (issue: ~80px vertical travel, smooth easing) —— */
-
-  @keyframes dns-hero-scrim {
+  @keyframes dns-btn-import0-visibility {
     0%,
-    9.143% {
-      opacity: 0;
-    }
-    12%,
-    96.429% {
+    59.29% {
       opacity: 1;
     }
+    60.36%,
     100% {
       opacity: 0;
     }
   }
 
-  @keyframes dns-hero-chrome-blur {
+  @keyframes dns-btn-import7-visibility {
     0%,
-    9.143% {
-      filter: blur(0px);
-    }
-    12%,
-    96.429% {
-      filter: blur(8px);
-    }
-    100% {
-      filter: blur(0px);
-    }
-  }
-
-  @keyframes dns-hero-frame-2 {
-    0%,
-    9.143% {
+    59.29% {
       opacity: 0;
-      transform: translateY(21.74cqh);
     }
-    12%,
-    25.714% {
+    60.36%,
+    79.64% {
       opacity: 1;
-      transform: translateY(0);
     }
-    28.571%,
+    80.71%,
     100% {
       opacity: 0;
-      transform: translateY(-21.74cqh);
     }
   }
 
-  @keyframes dns-hero-frame-3 {
+  @keyframes dns-btn-done-visibility {
     0%,
-    25.714% {
+    79.64% {
       opacity: 0;
-      transform: translateY(21.74cqh);
     }
-    28.571%,
-    40% {
+    80.71%,
+    100% {
       opacity: 1;
-      transform: translateY(0);
-    }
-    42.857%,
-    100% {
-      opacity: 0;
-      transform: translateY(-21.74cqh);
     }
   }
 
-  @keyframes dns-hero-frame-4 {
+  @keyframes dns-pulse-import7 {
     0%,
-    40% {
-      opacity: 0;
-      transform: translateY(21.74cqh);
-    }
-    42.857%,
-    65% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    67.857%,
-    100% {
-      opacity: 0;
-      transform: translateY(-21.74cqh);
-    }
-  }
-
-  /* Reveal window is 53.571% → 56.786% ≈ 900ms of sequential row ticking. */
-  @keyframes dns-hero-wipe-5 {
-    0%,
-    53.571% {
-      clip-path: inset(0 0 100% 0);
-    }
-    56.786%,
-    100% {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  @keyframes dns-hero-frame-6 {
-    0%,
-    65% {
-      opacity: 0;
-      transform: translateY(21.74cqh);
-    }
-    67.857%,
-    81.071% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    83.929%,
-    100% {
-      opacity: 0;
-      transform: translateY(-21.74cqh);
-    }
-  }
-
-  @keyframes dns-hero-frame-7 {
-    0%,
-    81.071% {
-      opacity: 0;
-      transform: translateY(21.74cqh);
-    }
-    83.929%,
-    96.429% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-21.74cqh);
-    }
-  }
-
-  /* —— Phase 3 micro-interactions (#1571) —— */
-
-  #dns-hero-s1-hit-import-export,
-  #dns-hero-s1-hit-add-record,
-  #dns-hero-s2-hit-select-file,
-  #dns-hero-s3-hit-open,
-  #dns-hero-s4-hit-import,
-  #dns-hero-s5-hit-import {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
-  }
-
-  /* Click pulse just before each card transition.
-     Add Record fires earlier (~2s) so there is a clear beat before the import
-     dialog enters at ~3.4s (12%). */
-  #dns-hero-s1-hit-import-export {
-    animation-name: dns-hero-click-1;
-  }
-
-  #dns-hero-s1-hit-add-record {
-    animation-name: dns-hero-click-add-record;
-  }
-
-  #dns-hero-s2-hit-select-file {
-    animation-name: dns-hero-click-2;
-  }
-
-  #dns-hero-s3-hit-open {
-    animation-name: dns-hero-click-3;
-  }
-
-  #dns-hero-s4-hit-import {
-    animation-name: dns-hero-click-4;
-  }
-
-  #dns-hero-s5-hit-import {
-    animation-name: dns-hero-click-5;
-  }
-
-  /* Shared click: brief shrink then release (issue: buttons shrink on click). */
-  @keyframes dns-hero-click-1 {
-    0%,
-    8.5% {
-      transform: scale(1);
-    }
-    9% {
-      transform: scale(0.94);
-    }
-    9.143%,
+    67.5%,
     100% {
       transform: scale(1);
     }
-  }
-
-  /* ~2.0s click, then ~1.3s hold before popup at ~3.4s. */
-  @keyframes dns-hero-click-add-record {
-    0%,
-    6.5% {
-      transform: scale(1);
-    }
-    7.2% {
+    67.86% {
       transform: scale(0.92);
     }
-    8%,
+  }
+
+  @keyframes dns-pulse-done {
+    0%,
+    82.68%,
     100% {
       transform: scale(1);
     }
+    83.04% {
+      transform: scale(0.92);
+    }
   }
 
-  @keyframes dns-hero-click-2 {
+  /* ---------------------------------------------------------- success card */
+
+  .dns-anim-success {
+    @apply absolute top-1/2 left-1/2 flex flex-col items-center justify-center gap-[0.6em];
+    width: 46%;
+    padding: 1.6em;
+    background: var(--color-aurora-mist);
+    color: var(--color-pine-forge);
+    border-radius: 0.6em;
+    font-weight: 700;
+    font-size: 1.3em;
+    box-shadow: 0 1.5em 3em -1em color-mix(in srgb, var(--color-midnight-fjord) 35%, transparent);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    animation: dns-success-visibility var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-success-visibility {
     0%,
-    24.8% {
-      transform: scale(1);
-    }
-    25.3% {
-      transform: scale(0.94);
-    }
-    25.714%,
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  /* ~1.5s after file picker in (8.0s), then click Open before step 4 at 12.0s. */
-  @keyframes dns-hero-click-3 {
-    0%,
-    33.5% {
-      transform: scale(1);
-    }
-    34% {
-      transform: scale(0.94);
-    }
-    34.5%,
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-click-4 {
-    0%,
-    52.8% {
-      transform: scale(1);
-    }
-    53.2% {
-      transform: scale(0.94);
-    }
-    53.571%,
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-click-5 {
-    0%,
-    64.2% {
-      transform: scale(1);
-    }
-    64.7% {
-      transform: scale(0.94);
-    }
-    65%,
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  /* (click-6 merged into dns-hero-done below) */
-
-  /* Step 4→5: staggered checkbox ticks (issue: cascade like Miter). */
-  #dns-hero-s5-check-all {
-    animation-name: dns-hero-check-all;
-  }
-
-  #dns-hero-s5-check-1 {
-    animation-name: dns-hero-check-1;
-  }
-
-  #dns-hero-s5-check-2 {
-    animation-name: dns-hero-check-2;
-  }
-
-  #dns-hero-s5-check-3 {
-    animation-name: dns-hero-check-3;
-  }
-
-  #dns-hero-s5-check-4 {
-    animation-name: dns-hero-check-4;
-  }
-
-  #dns-hero-s5-check-5 {
-    animation-name: dns-hero-check-5;
-  }
-
-  #dns-hero-s5-check-6 {
-    animation-name: dns-hero-check-6;
-  }
-
-  #dns-hero-s5-check-7 {
-    animation-name: dns-hero-check-7;
-  }
-
-  #dns-hero-s5-check-1,
-  #dns-hero-s5-check-2,
-  #dns-hero-s5-check-3,
-  #dns-hero-s5-check-4,
-  #dns-hero-s5-check-5,
-  #dns-hero-s5-check-6,
-  #dns-hero-s5-check-7,
-  #dns-hero-s5-check-all {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
-  }
-
-  @keyframes dns-hero-check-all {
-    0%,
-    53.4% {
+    83.93% {
       opacity: 0;
-      transform: scale(0.6);
+      transform: translate(-50%, -50%) scale(0.9);
     }
-    53.9%,
-    100% {
+    85%,
+    94.64% {
       opacity: 1;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
     }
-  }
-
-  @keyframes dns-hero-check-1 {
-    0%,
-    53.7% {
+    95.71%,
+    100% {
       opacity: 0;
-      transform: scale(0.6);
-    }
-    54.2%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(0.9);
     }
   }
 
-  @keyframes dns-hero-check-2 {
+  /* --------------------------------------------------------- click pulses */
+
+  .dns-anim-btn-import {
+    animation: dns-pulse-import var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-pulse-import {
     0%,
-    54% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    54.5%,
+    13.57%,
     100% {
-      opacity: 1;
       transform: scale(1);
+    }
+    13.93% {
+      transform: scale(0.92);
     }
   }
 
-  @keyframes dns-hero-check-3 {
+  .dns-anim-btn-selectfile {
+    animation: dns-pulse-selectfile var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-pulse-selectfile {
     0%,
-    54.3% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    54.8%,
+    26.79%,
     100% {
-      opacity: 1;
       transform: scale(1);
+    }
+    27.14% {
+      transform: scale(0.92);
     }
   }
 
-  @keyframes dns-hero-check-4 {
+  .dns-anim-btn-open {
+    animation: dns-pulse-open var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-pulse-open {
     0%,
-    54.6% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    55.1%,
+    41.07%,
     100% {
-      opacity: 1;
       transform: scale(1);
     }
-  }
-
-  @keyframes dns-hero-check-5 {
-    0%,
-    54.9% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    55.4%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
+    41.43% {
+      transform: scale(0.92);
     }
   }
 
-  @keyframes dns-hero-check-6 {
-    0%,
-    55.2% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    55.7%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-check-7 {
-    0%,
-    55.5% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    56%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Step 6: cascade Created states (no spinner layers in export — opacity pop). */
-  #dns-hero-s6-created-1,
-  #dns-hero-s6-status-1 {
-    animation-name: dns-hero-created-1;
-  }
-
-  #dns-hero-s6-created-2,
-  #dns-hero-s6-status-2 {
-    animation-name: dns-hero-created-2;
-  }
-
-  #dns-hero-s6-created-3,
-  #dns-hero-s6-status-3 {
-    animation-name: dns-hero-created-3;
-  }
-
-  #dns-hero-s6-created-4,
-  #dns-hero-s6-status-4 {
-    animation-name: dns-hero-created-4;
-  }
-
-  #dns-hero-s6-created-5,
-  #dns-hero-s6-status-5 {
-    animation-name: dns-hero-created-5;
-  }
-
-  #dns-hero-s6-created-6,
-  #dns-hero-s6-status-6 {
-    animation-name: dns-hero-created-6;
-  }
-
-  #dns-hero-s6-created-7,
-  #dns-hero-s6-status-7 {
-    animation-name: dns-hero-created-7;
-  }
-
-  #dns-hero-s6-created-1,
-  #dns-hero-s6-created-2,
-  #dns-hero-s6-created-3,
-  #dns-hero-s6-created-4,
-  #dns-hero-s6-created-5,
-  #dns-hero-s6-created-6,
-  #dns-hero-s6-created-7,
-  #dns-hero-s6-status-1,
-  #dns-hero-s6-status-2,
-  #dns-hero-s6-status-3,
-  #dns-hero-s6-status-4,
-  #dns-hero-s6-status-5,
-  #dns-hero-s6-status-6,
-  #dns-hero-s6-status-7 {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
-  }
-
-  @keyframes dns-hero-created-1 {
-    0%,
-    68% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    68.6%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-2 {
-    0%,
-    68.8% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    69.4%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-3 {
-    0%,
-    69.6% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    70.2%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-4 {
-    0%,
-    70.4% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    71%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-5 {
-    0%,
-    71.2% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    71.8%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-6 {
-    0%,
-    72% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    72.6%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes dns-hero-created-7 {
-    0%,
-    72.8% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    73.4%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  #dns-hero-s6-hit-done {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-name: dns-hero-done;
-    animation-duration: var(--dns-hero-loop, 28s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease;
-  }
-
-  @keyframes dns-hero-done {
-    0%,
-    74% {
-      opacity: 0;
-      transform: scale(1);
-    }
-    76%,
-    80.3% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    80.8% {
-      opacity: 1;
-      transform: scale(0.94);
-    }
-    81.071%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
+  /* ------------------------------------------------------- reduced motion */
 
   @media (prefers-reduced-motion: reduce) {
-    .dns-hero-anim-frame,
-    .dns-hero-anim-chrome,
-    .dns-hero-anim-frost,
-    #dns-hero-s1-hit-import-export,
-    #dns-hero-s1-hit-add-record,
-    #dns-hero-s2-hit-select-file,
-    #dns-hero-s3-hit-open,
-    #dns-hero-s4-hit-import,
-    #dns-hero-s5-hit-import,
-    #dns-hero-s6-hit-done,
-    #dns-hero-s5-check-1,
-    #dns-hero-s5-check-2,
-    #dns-hero-s5-check-3,
-    #dns-hero-s5-check-4,
-    #dns-hero-s5-check-5,
-    #dns-hero-s5-check-6,
-    #dns-hero-s5-check-7,
-    #dns-hero-s5-check-all,
-    #dns-hero-s6-created-1,
-    #dns-hero-s6-created-2,
-    #dns-hero-s6-created-3,
-    #dns-hero-s6-created-4,
-    #dns-hero-s6-created-5,
-    #dns-hero-s6-created-6,
-    #dns-hero-s6-created-7,
-    #dns-hero-s6-status-1,
-    #dns-hero-s6-status-2,
-    #dns-hero-s6-status-3,
-    #dns-hero-s6-status-4,
-    #dns-hero-s6-status-5,
-    #dns-hero-s6-status-6,
-    #dns-hero-s6-status-7 {
-      animation: none !important;
+    .dns-anim-checkbox,
+    .dns-anim-checkbox svg,
+    .dns-anim-status-col,
+    .dns-anim-status-spinner,
+    .dns-anim-status-created,
+    .dns-anim-scrim,
+    .dns-anim-modal-import,
+    .dns-anim-filepicker-backdrop,
+    .dns-anim-filepicker,
+    .dns-anim-modal-preview,
+    .dns-anim-btn-import0,
+    .dns-anim-btn-import7,
+    .dns-anim-btn-done,
+    .dns-anim-success,
+    .dns-anim-btn-import,
+    .dns-anim-btn-selectfile,
+    .dns-anim-btn-open {
+      animation: none;
     }
 
-    .dns-hero-anim-frame--2,
-    .dns-hero-anim-frame--3,
-    .dns-hero-anim-frame--4,
-    .dns-hero-anim-frame--5,
-    .dns-hero-anim-frame--6,
-    .dns-hero-anim-frame--7,
-    .dns-hero-anim-frost {
-      opacity: 0;
+    /* Pin to the clean table — same reduced-motion behavior as the rest of
+       the site's scroll animations (components-line-draw.css et al). */
+    .dns-anim-status-col,
+    .dns-anim-scrim,
+    .dns-anim-modal-import,
+    .dns-anim-filepicker-backdrop,
+    .dns-anim-filepicker,
+    .dns-anim-modal-preview,
+    .dns-anim-btn-import7,
+    .dns-anim-btn-done,
+    .dns-anim-success {
+      @apply invisible opacity-0;
     }
 
-    .dns-hero-anim-chrome,
-    .dns-hero-anim-frame--1 {
+    .dns-anim-btn-import0 {
       opacity: 1;
-      filter: none;
     }
   }
 }

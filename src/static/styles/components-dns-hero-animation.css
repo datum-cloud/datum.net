@@ -2,24 +2,22 @@
   /* Looping 7-step DNS import walkthrough — GitHub issue #1571.
      Figma: static frames at 15907:15701, motion timeline at 15930:4131.
 
-     Every percentage below is transcribed from the Figma motion export, so the
-     loop matches the designer's timeline exactly. For reference, at the default
-     28s period:
+     SVG sprite (dns-hero-sprite.svg): chrome (#dns-hero-chrome / frame 1) stays
+     put; cards (#dns-hero-cards / frames 2–7) travel ±80px. Scrim dims chrome
+     while cards are up. Hit-target micro-anims use stable ids from the sprite
+     build (dns-hero-sN-hit-*).
 
-       step 1 dashboard     0.0s → 3.2s   (out by 4.0s)
-       step 2 import modal  4.0s → 7.2s   (out by 8.0s)
+     At the default 28s period (--dns-hero-loop):
+
+       step 1 dashboard     0.0s → 2.6s   (cards start ~2.6s)
+       step 2 import modal  ~2.6s → 7.2s   (out by 8.0s)
        step 3 file picker   8.0s → 11.2s  (out by 12.0s)
        step 4 preview      12.0s → 15.0s  (out by 15.5s)
        step 5 selected     15.5s → 18.2s  (out by 19.0s)
        step 6 created      19.0s → 22.7s  (out by 23.5s)
        step 7 success      23.5s → 27.0s  (out by 28.0s)
 
-     Frames 2–7 enter from +80px and leave to -80px per kf_15930_4137 et al. 80px
-     of Figma's 368px-tall stage is 21.74cqh, so the travel scales with the stage
-     instead of growing proportionally larger as the hero shrinks. Step 1 only
-     cross-fades — in Figma the -80px on that frame belongs to an inner panel
-     that is hidden in the static composite, so sliding the whole dashboard would
-     be wrong. */
+     80px of Figma's 368px stage = 21.74cqh. */
   .dns-hero-anim {
     @apply border-pine-forge---links w-full border;
   }
@@ -27,23 +25,65 @@
   .dns-hero-anim-stage {
     @apply relative isolate w-full overflow-hidden;
     aspect-ratio: 598 / 368;
-    /* Establishes cqh for the frame travel above. The stage size comes from the
-       aspect ratio and the column width, never from its contents, so size
-       containment is safe here. */
     container-type: size;
   }
 
-  /* Every frame is a fully composited 598×368 (897×552 @1.5×) render, so they
-     simply stack edge to edge — no separate backdrop or scrim layers. */
-  .dns-hero-anim-frame {
-    @apply absolute inset-0 h-full w-full object-cover;
+  .dns-hero-anim-chrome,
+  .dns-hero-anim-cards,
+  .dns-hero-anim-frost {
+    @apply absolute inset-0;
+  }
+
+  .dns-hero-anim-chrome {
+    z-index: 0;
+    animation-name: dns-hero-chrome-blur;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    /* Blur the HTML wrapper — CSS filter on SVG <g> does not reliably paint. */
+    will-change: filter;
+  }
+
+  .dns-hero-anim-frost {
+    z-index: 1;
+    pointer-events: none;
+    background: rgb(12 29 49 / 0.16);
+    animation-name: dns-hero-scrim;
     animation-duration: var(--dns-hero-loop, 28s);
     animation-iteration-count: infinite;
     animation-timing-function: ease;
   }
 
+  .dns-hero-anim-cards {
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .dns-hero-anim-svg {
+    @apply block h-full w-full;
+  }
+
+  .dns-hero-anim-frame {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  .dns-hero-anim-frame--2,
+  .dns-hero-anim-frame--3,
+  .dns-hero-anim-frame--4,
+  .dns-hero-anim-frame--5,
+  .dns-hero-anim-frame--6,
+  .dns-hero-anim-frame--7 {
+    opacity: 0;
+  }
+
+  /* Chrome frame itself stays sharp inside the blurred HTML wrapper. */
   .dns-hero-anim-frame--1 {
-    animation-name: dns-hero-frame-1;
+    animation-name: none;
+    opacity: 1;
   }
 
   .dns-hero-anim-frame--2 {
@@ -54,11 +94,7 @@
     animation-name: dns-hero-frame-3;
   }
 
-  /* Steps 4 and 5 are the same frame apart from the ticks and the button label,
-     so 5 stays stacked on 4 and is revealed by a top-to-bottom wipe rather than
-     a second slide — that reads as the rows ticking in sequence, which is what
-     the issue asks for, without splitting the checkmarks into sprites. Both
-     leave together when step 6 arrives. */
+  /* Steps 4 and 5: same card travel; 5 reveals via wipe (checkbox cascade read). */
   .dns-hero-anim-frame--4,
   .dns-hero-anim-frame--5 {
     animation-name: dns-hero-frame-4;
@@ -77,27 +113,43 @@
     animation-name: dns-hero-frame-7;
   }
 
-  @keyframes dns-hero-frame-1 {
+  /* —— Card travel (issue: ~80px vertical travel, smooth easing) —— */
+
+  @keyframes dns-hero-scrim {
     0%,
-    11.429% {
-      opacity: 1;
-    }
-    14.286%,
-    96.429% {
+    9.143% {
       opacity: 0;
     }
-    100% {
+    12%,
+    96.429% {
       opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dns-hero-chrome-blur {
+    0%,
+    9.143% {
+      filter: blur(0px);
+    }
+    12%,
+    96.429% {
+      filter: blur(8px);
+    }
+    100% {
+      filter: blur(0px);
     }
   }
 
   @keyframes dns-hero-frame-2 {
     0%,
-    11.429% {
+    9.143% {
       opacity: 0;
       transform: translateY(21.74cqh);
     }
-    14.286%,
+    12%,
     25.714% {
       opacity: 1;
       transform: translateY(0);
@@ -192,12 +244,502 @@
     }
   }
 
-  /* Pin to step 1 — the clean DNS Records table — rather than just freezing
-     mid-transition, matching components-line-draw.css and
-     components-module-animate.css. */
+  /* —— Phase 3 micro-interactions (#1571) —— */
+
+  #dns-hero-s1-hit-import-export,
+  #dns-hero-s1-hit-add-record,
+  #dns-hero-s2-hit-select-file,
+  #dns-hero-s3-hit-open,
+  #dns-hero-s4-hit-import,
+  #dns-hero-s5-hit-import {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  /* Click pulse just before each card transition.
+     Add Record fires earlier (~2s) so there is a clear beat before the import
+     dialog enters at ~3.4s (12%). */
+  #dns-hero-s1-hit-import-export {
+    animation-name: dns-hero-click-1;
+  }
+
+  #dns-hero-s1-hit-add-record {
+    animation-name: dns-hero-click-add-record;
+  }
+
+  #dns-hero-s2-hit-select-file {
+    animation-name: dns-hero-click-2;
+  }
+
+  #dns-hero-s3-hit-open {
+    animation-name: dns-hero-click-3;
+  }
+
+  #dns-hero-s4-hit-import {
+    animation-name: dns-hero-click-4;
+  }
+
+  #dns-hero-s5-hit-import {
+    animation-name: dns-hero-click-5;
+  }
+
+  /* Shared click: brief shrink then release (issue: buttons shrink on click). */
+  @keyframes dns-hero-click-1 {
+    0%,
+    8.5% {
+      transform: scale(1);
+    }
+    9% {
+      transform: scale(0.94);
+    }
+    9.143%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* ~2.0s click, then ~1.3s hold before popup at ~3.4s. */
+  @keyframes dns-hero-click-add-record {
+    0%,
+    6.5% {
+      transform: scale(1);
+    }
+    7.2% {
+      transform: scale(0.92);
+    }
+    8%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-click-2 {
+    0%,
+    24.8% {
+      transform: scale(1);
+    }
+    25.3% {
+      transform: scale(0.94);
+    }
+    25.714%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* ~1.5s after file picker in (8.0s), then click Open before step 4 at 12.0s. */
+  @keyframes dns-hero-click-3 {
+    0%,
+    33.5% {
+      transform: scale(1);
+    }
+    34% {
+      transform: scale(0.94);
+    }
+    34.5%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-click-4 {
+    0%,
+    52.8% {
+      transform: scale(1);
+    }
+    53.2% {
+      transform: scale(0.94);
+    }
+    53.571%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-click-5 {
+    0%,
+    64.2% {
+      transform: scale(1);
+    }
+    64.7% {
+      transform: scale(0.94);
+    }
+    65%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* (click-6 merged into dns-hero-done below) */
+
+  /* Step 4→5: staggered checkbox ticks (issue: cascade like Miter). */
+  #dns-hero-s5-check-all {
+    animation-name: dns-hero-check-all;
+  }
+
+  #dns-hero-s5-check-1 {
+    animation-name: dns-hero-check-1;
+  }
+
+  #dns-hero-s5-check-2 {
+    animation-name: dns-hero-check-2;
+  }
+
+  #dns-hero-s5-check-3 {
+    animation-name: dns-hero-check-3;
+  }
+
+  #dns-hero-s5-check-4 {
+    animation-name: dns-hero-check-4;
+  }
+
+  #dns-hero-s5-check-5 {
+    animation-name: dns-hero-check-5;
+  }
+
+  #dns-hero-s5-check-6 {
+    animation-name: dns-hero-check-6;
+  }
+
+  #dns-hero-s5-check-7 {
+    animation-name: dns-hero-check-7;
+  }
+
+  #dns-hero-s5-check-1,
+  #dns-hero-s5-check-2,
+  #dns-hero-s5-check-3,
+  #dns-hero-s5-check-4,
+  #dns-hero-s5-check-5,
+  #dns-hero-s5-check-6,
+  #dns-hero-s5-check-7,
+  #dns-hero-s5-check-all {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  @keyframes dns-hero-check-all {
+    0%,
+    53.4% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    53.9%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-1 {
+    0%,
+    53.7% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    54.2%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-2 {
+    0%,
+    54% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    54.5%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-3 {
+    0%,
+    54.3% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    54.8%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-4 {
+    0%,
+    54.6% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    55.1%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-5 {
+    0%,
+    54.9% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    55.4%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-6 {
+    0%,
+    55.2% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    55.7%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-check-7 {
+    0%,
+    55.5% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    56%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Step 6: cascade Created states (no spinner layers in export — opacity pop). */
+  #dns-hero-s6-created-1,
+  #dns-hero-s6-status-1 {
+    animation-name: dns-hero-created-1;
+  }
+
+  #dns-hero-s6-created-2,
+  #dns-hero-s6-status-2 {
+    animation-name: dns-hero-created-2;
+  }
+
+  #dns-hero-s6-created-3,
+  #dns-hero-s6-status-3 {
+    animation-name: dns-hero-created-3;
+  }
+
+  #dns-hero-s6-created-4,
+  #dns-hero-s6-status-4 {
+    animation-name: dns-hero-created-4;
+  }
+
+  #dns-hero-s6-created-5,
+  #dns-hero-s6-status-5 {
+    animation-name: dns-hero-created-5;
+  }
+
+  #dns-hero-s6-created-6,
+  #dns-hero-s6-status-6 {
+    animation-name: dns-hero-created-6;
+  }
+
+  #dns-hero-s6-created-7,
+  #dns-hero-s6-status-7 {
+    animation-name: dns-hero-created-7;
+  }
+
+  #dns-hero-s6-created-1,
+  #dns-hero-s6-created-2,
+  #dns-hero-s6-created-3,
+  #dns-hero-s6-created-4,
+  #dns-hero-s6-created-5,
+  #dns-hero-s6-created-6,
+  #dns-hero-s6-created-7,
+  #dns-hero-s6-status-1,
+  #dns-hero-s6-status-2,
+  #dns-hero-s6-status-3,
+  #dns-hero-s6-status-4,
+  #dns-hero-s6-status-5,
+  #dns-hero-s6-status-6,
+  #dns-hero-s6-status-7 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  @keyframes dns-hero-created-1 {
+    0%,
+    68% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    68.6%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-2 {
+    0%,
+    68.8% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    69.4%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-3 {
+    0%,
+    69.6% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    70.2%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-4 {
+    0%,
+    70.4% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    71%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-5 {
+    0%,
+    71.2% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    71.8%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-6 {
+    0%,
+    72% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    72.6%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dns-hero-created-7 {
+    0%,
+    72.8% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    73.4%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  #dns-hero-s6-hit-done {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-name: dns-hero-done;
+    animation-duration: var(--dns-hero-loop, 28s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+
+  @keyframes dns-hero-done {
+    0%,
+    74% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    76%,
+    80.3% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    80.8% {
+      opacity: 1;
+      transform: scale(0.94);
+    }
+    81.071%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .dns-hero-anim-frame {
-      animation: none;
+    .dns-hero-anim-frame,
+    .dns-hero-anim-chrome,
+    .dns-hero-anim-frost,
+    #dns-hero-s1-hit-import-export,
+    #dns-hero-s1-hit-add-record,
+    #dns-hero-s2-hit-select-file,
+    #dns-hero-s3-hit-open,
+    #dns-hero-s4-hit-import,
+    #dns-hero-s5-hit-import,
+    #dns-hero-s6-hit-done,
+    #dns-hero-s5-check-1,
+    #dns-hero-s5-check-2,
+    #dns-hero-s5-check-3,
+    #dns-hero-s5-check-4,
+    #dns-hero-s5-check-5,
+    #dns-hero-s5-check-6,
+    #dns-hero-s5-check-7,
+    #dns-hero-s5-check-all,
+    #dns-hero-s6-created-1,
+    #dns-hero-s6-created-2,
+    #dns-hero-s6-created-3,
+    #dns-hero-s6-created-4,
+    #dns-hero-s6-created-5,
+    #dns-hero-s6-created-6,
+    #dns-hero-s6-created-7,
+    #dns-hero-s6-status-1,
+    #dns-hero-s6-status-2,
+    #dns-hero-s6-status-3,
+    #dns-hero-s6-status-4,
+    #dns-hero-s6-status-5,
+    #dns-hero-s6-status-6,
+    #dns-hero-s6-status-7 {
+      animation: none !important;
     }
 
     .dns-hero-anim-frame--2,
@@ -205,8 +747,15 @@
     .dns-hero-anim-frame--4,
     .dns-hero-anim-frame--5,
     .dns-hero-anim-frame--6,
-    .dns-hero-anim-frame--7 {
-      @apply invisible opacity-0;
+    .dns-hero-anim-frame--7,
+    .dns-hero-anim-frost {
+      opacity: 0;
+    }
+
+    .dns-hero-anim-chrome,
+    .dns-hero-anim-frame--1 {
+      opacity: 1;
+      filter: none;
     }
   }
 }

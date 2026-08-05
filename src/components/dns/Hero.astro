@@ -4,13 +4,11 @@
 // DNS zone screenshot. Figma node 15755:115476. Nav/Announcement are rendered
 // by the page (see src/pages/platform/dns.astro), not here.
 
-import { Image } from 'astro:assets';
-
 import Icon from '@components/Icon.astro';
 import Button from '@components/Button.astro';
 import SectionLine from '@components/SectionLine.astro';
 import Breadcrumbs from '@components/Breadcrumbs.astro';
-import heroImage from '@assets/features/dns-hero.png';
+import HeroAnimation from '@components/dns/HeroAnimation.astro';
 import { breadcrumbs, hero } from '@data/dns';
 ---
 
@@ -58,7 +56,7 @@ import { breadcrumbs, hero } from '@data/dns';
       </div>
 
       <div>
-        <Image src={heroImage} alt={hero.imageAlt} loading="eager" class="h-auto w-full" />
+        <HeroAnimation />
       </div>
     </div>
   </div>

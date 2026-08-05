@@ -42,7 +42,7 @@
     "@octokit/core": "^7.0.7",
     "@octokit/graphql": "^9.0.4",
     "@octokit/types": "^17.0.0",
-    "@playform/compress": "^0.2.3",
+    "@playform/compress": "^0.2.4",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
@@ -99,7 +99,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "secretlint": "^13.0.4",
     "shx": "^0.4.0",
-    "tsx": "^4.23.7",
+    "tsx": "^4.23.8",
     "typescript": "^6.0.3",
     "yaml": "^2.9.0"
   },

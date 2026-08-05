@@ -82,7 +82,11 @@ const jsonLd = {
           <p class="datum-text-lg text-app---dark---utility-3 max-w-2xl">{hero.description}</p>
         </div>
 
-        <a href={hero.ctaHref} class="btn btn--midnight-fjord btn--sm w-fit">
+        <a
+          href={hero.ctaHref}
+          class="btn btn--midnight-fjord btn--sm w-fit"
+          data-rybbit-event="Dedicated: Schedule a conversation"
+        >
           {hero.ctaText}
           <Icon name="calendar" size="sm" />
         </a>

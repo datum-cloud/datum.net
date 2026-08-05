@@ -16,9 +16,23 @@ Implementation is the third phase of our SDLC — turning an agreed [design](/ha
 
 ## Version control
 
-- Work happens in a feature branch off the default branch; the [GitHub issue](/handbook/operate/using-github) it implements should already exist from planning
+- Work happens in a feature branch off the default branch; the [GitHub issue](/handbook/operate/using-github) it implements must already exist from planning, and the pull request must link it
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore:`, `docs:`, etc.) so history and changelogs stay generatable
 - Keep pull requests focused on one feature or fix — a bug fix doesn't need a drive-by refactor riding along with it
+
+### Why every pull request needs an issue
+
+A pull request says what changed. It cannot say what was wrong. Six months on, the diff is still there and the reason is gone — the reader sees a fix and has to guess the fault. The issue is where the fault lives, and it outlives the branch.
+
+An issue also puts the problem up for argument before anyone spends a day on the answer. Review a pull request and you are reviewing a solution someone has already built; by then, saying "wrong approach" costs a rewrite, so it mostly goes unsaid. The issue is cheap to disagree with. That is the point of it.
+
+Work with no issue is invisible work. It is not on the board, not in planning, and nobody knows it is in flight — so two people fix the same thing, or two branches touch the same file and collide at merge. Ten minutes filing beats a day untangling.
+
+And a fix is not done when the symptom clears. It is done when whatever let it happen is closed off. The pull request merges and takes its context with it; the issue is what holds the follow-up, the coverage gap, the thing we chose not to do yet.
+
+The rule is not paperwork. It is the difference between a repository that records decisions and one that records keystrokes.
+
+**This is binding.** A pull request opens with a linked issue, or it does not open. Repositories enforce it as a required pull request check; automated dependency updates are the only exemption.
 
 ## Code review
 

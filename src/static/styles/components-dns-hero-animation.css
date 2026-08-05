@@ -67,6 +67,31 @@
     color: var(--color-midnight-fjord);
   }
 
+  /* The <Icon> component sizes SVGs with Tailwind's h-4/w-5/w-6 (rem, tied
+     to the document's root font-size), not the em scale above — so on a
+     narrow mobile stage the icons stayed pixel-fixed while everything
+     around them (rail width, padding, text) shrank via cqw, leaving them
+     with almost no breathing room. Re-expressing each Tailwind size as its
+     em equivalent (1rem/1.25rem/1.5rem → 1.6/2/2.4em at the 10px baseline)
+     keeps icons in proportion at every container width. !important is
+     required: Tailwind's utility layer otherwise outranks @layer components
+     regardless of selector specificity or source order. */
+  .dns-hero-anim-stage svg {
+    width: 1.6em !important;
+    height: 1.6em !important;
+  }
+
+  .dns-app-header-logo svg,
+  .dns-anim-success svg {
+    width: 2em !important;
+    height: 2em !important;
+  }
+
+  .dns-anim-dropzone svg {
+    width: 2.4em !important;
+    height: 2.4em !important;
+  }
+
   /* ---------------------------------------------------------------- chrome */
   /* Matched against a screenshot of the real Datum Cloud app, not just the
      Figma mock — the actual product chrome is a light sidebar with

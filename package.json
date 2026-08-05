@@ -99,7 +99,7 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "secretlint": "^13.0.4",
     "shx": "^0.4.0",
-    "tsx": "^4.23.6",
+    "tsx": "^4.23.7",
     "typescript": "^6.0.3",
     "yaml": "^2.9.0"
   },

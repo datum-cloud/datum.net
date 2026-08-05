@@ -102,7 +102,7 @@
     }
   }
 
-  /* Desktop Actions: Sign in + Book a demo */
+  /* Desktop Actions: Sign in + Start for free */
   .nav-cta-signin {
     @apply border-silver-mist text-midnight-fjord datum-text-base flex h-full items-center justify-center gap-3 border-x px-4 whitespace-nowrap transition-colors duration-150;
     @apply hover:bg-glacier-mist-800 md:px-7;

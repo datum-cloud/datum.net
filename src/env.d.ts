@@ -4,6 +4,9 @@ declare module '@alpinejs/collapse';
 
 interface Window {
   Alpine: import('alpinejs').Alpine;
+  rybbit?: {
+    event: (name: string) => void;
+  };
 }
 
 declare namespace App {

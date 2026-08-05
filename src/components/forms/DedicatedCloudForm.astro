@@ -202,6 +202,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
           if (result.error) {
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {
+            if (window.rybbit) window.rybbit.event('Dedicated: Send request');
             this.showStatus("Thanks — we'll be in touch shortly.", true);
             this.form.reset();
             this.sizingOutput.textContent = this.sizingInput.defaultValue;

@@ -1,43 +1,322 @@
 ---
 // src/components/dns/HeroAnimation.astro
-// Looping 7-step DNS import walkthrough for the hero visual — GitHub issue #1571.
-// Frames come from Figma section 15907:15701; the 28s timing is transcribed from
-// the motion data on the sibling "DNS Import - Animated" node (15930:4131).
+// Looping DNS import walkthrough for the hero visual — GitHub issue #1571.
+// Rebuilt as real DOM (table rows, modal, native-style file picker, checkboxes,
+// status badges) rather than cross-fading flattened screenshots: each piece
+// animates on its own schedule off one shared timeline, and every pixel is
+// real text/SVG so it stays crisp at any zoom or pixel density instead of
+// upscaling a raster export.
 //
-// Chrome + cards are split from one sprite into HTML layers so we can blur the
-// dashboard via a real HTML wrapper (CSS filter on SVG <g> is unreliable).
+// Sequence follows the 7 static frames at Figma node 15907:15701 exactly:
+//   1. DNS Records table (existing records already in the zone)
+//   2. "Import & export" click opens the Import DNS Records modal
+//   3. "Select a file" swaps it for a native-style file picker dialog on its
+//      own solid backdrop (not the blurred app — a different background per
+//      the source frame)
+//   4. "Open" returns to the app; a SEPARATE import-preview panel appears
+//      with its own table of the 7 records about to be imported, checkboxes
+//      unchecked, "Import 0 records" disabled
+//   5. Header checkbox cascades all 7 rows checked, button becomes the
+//      active "Import 7 records"
+//   6. Checkbox column swaps for a Status column; each row's spinner
+//      resolves to a green "Created" in sequence; button becomes "Done"
+//   7. Panel closes; a large centered success card ("Imported 7 DNS
+//      records") holds, then fades, and the loop returns to step 1
+//
+// Checkboxes are decorative spans, not real <input> elements — CSS keyframes
+// can't toggle a real checkbox's checked state, only style :checked after
+// something else sets it, so a styled span is what's actually animatable here.
+//
+// Each checkbox/status span below carries a --N modifier class
+// (dns-anim-checkbox--1, dns-anim-status--3, etc.) that maps to its own
+// bespoke @keyframes in components-dns-hero-animation.css, with the
+// check/resolve moment baked in as an absolute loop percentage. Per-row
+// timing isn't computed here — see the timeline comment at the top of that
+// CSS file for why a shared keyframe + animation-delay doesn't work for a
+// looping animation (it drifts out of phase after the first iteration).
 
-import spriteRaw from '@assets/features/dns-hero/dns-hero-sprite.svg?raw';
+import Icon from '@components/Icon.astro';
 import { hero } from '@data/dns';
 
-const STAGE_ATTRS =
-  'xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="598" height="368" viewBox="0 0 598 368" fill="none" class="dns-hero-anim-svg" role="presentation" aria-hidden="true"';
+const existingRecords = [
+  { type: 'A', name: '@', content: '203.0.113.10', ttl: '5 mins' },
+  { type: 'A', name: 'www', content: '203.0.113.10', ttl: 'Auto' },
+  { type: 'CNAME', name: 'blog', content: 'example.medium.com', ttl: 'Auto' },
+  { type: 'MX', name: '@', content: '10 mail.example.com', ttl: 'Auto' },
+  { type: 'TXT', name: '@', content: '"v=spf1 include:datummail…"', ttl: '5 mins' },
+] as const;
 
-/**
- * Pull a marked section out of the generated sprite and wrap it as a mini SVG.
- * @param raw - Full sprite source
- * @param name - Marker name (`chrome` | `cards`)
- */
-const extractLayer = (raw: string, name: 'chrome' | 'cards'): string => {
-  const start = `<!--dns-hero:${name}:start-->`;
-  const end = `<!--dns-hero:${name}:end-->`;
-  const from = raw.indexOf(start);
-  const to = raw.indexOf(end);
-  if (from === -1 || to === -1 || to <= from) {
-    throw new Error(`dns-hero sprite missing ${name} markers`);
-  }
-  const inner = raw.slice(from + start.length, to).trim();
-  return `<svg ${STAGE_ATTRS}>\n${inner}\n</svg>`;
-};
-
-const chromeMarkup = extractLayer(spriteRaw, 'chrome');
-const cardsMarkup = extractLayer(spriteRaw, 'cards');
+const importRecords = [
+  { type: 'A', name: '@', content: '203.0.113.10', ttl: '1 hr' },
+  { type: 'AAAA', name: '@', content: '2001:db8::10', ttl: '1 hr' },
+  { type: 'A', name: 'www', content: '203.0.113.10', ttl: '1 hr' },
+  { type: 'AAAA', name: 'www', content: '2001:db8::10', ttl: '1 hr' },
+  { type: 'A', name: 'ns1', content: '203.0.113.11', ttl: '1 hr' },
+  { type: 'A', name: 'ns2', content: '203.0.113.12', ttl: '1 hr' },
+  { type: 'CNAME', name: 'mail', content: 'www.new-zone.com', ttl: '1 hr' },
+] as const;
 ---
 
 <div class="dns-hero-anim" role="img" aria-label={hero.imageAlt}>
-  <div class="dns-hero-anim-stage" aria-hidden="true">
-    <div class="dns-hero-anim-chrome" set:html={chromeMarkup} />
-    <div class="dns-hero-anim-frost"></div>
-    <div class="dns-hero-anim-cards" set:html={cardsMarkup} />
+  <div class="dns-hero-anim-stage">
+    <div class="dns-app-shell">
+      <div class="dns-app-header" aria-hidden="true">
+        <span class="dns-app-header-logo"><Icon name="datum-logo" size="md" /></span>
+        <span class="dns-app-header-dropdown">
+          <Icon name="building-2" size="sm" class="dns-app-header-icon" />
+          <span class="dns-app-header-dropdown-bar"></span>
+          <Icon name="chevron-down" size="sm" class="dns-app-header-icon" />
+        </span>
+        <span class="dns-app-header-sep">/</span>
+        <span class="dns-app-header-dropdown dns-app-header-dropdown--wide">
+          <Icon name="folder-key" size="sm" class="dns-app-header-icon" />
+          <span class="dns-app-header-dropdown-bar"></span>
+          <Icon name="chevron-down" size="sm" class="dns-app-header-icon" />
+        </span>
+      </div>
+
+      <div class="dns-app">
+        <aside class="dns-app-rail" aria-hidden="true">
+          <Icon name="house" size="sm" />
+          <Icon name="network" size="sm" />
+          <Icon name="chart-line" size="sm" />
+          <Icon name="folder-dot" size="sm" />
+          <Icon name="settings" size="sm" />
+        </aside>
+
+        <div class="dns-app-main">
+          <div class="dns-app-breadcrumb" aria-hidden="true">
+            <Icon name="house" size="sm" />
+            <span>Runtime</span>
+            <Icon name="chevron-right" size="sm" />
+            <span>DNS</span>
+            <Icon name="chevron-right" size="sm" />
+            <span>example.com</span>
+            <Icon name="chevron-right" size="sm" />
+            <span class="dns-app-breadcrumb-current">DNS Records</span>
+          </div>
+
+          <div class="dns-app-toolbar" aria-hidden="true">
+            <h2 class="dns-app-title">DNS Records</h2>
+
+            <div class="dns-app-actions">
+              <span class="dns-app-search">
+                <Icon name="search" size="sm" />
+                Search DNS records
+              </span>
+              <button class="dns-app-btn dns-app-btn--ghost" type="button" tabindex="-1">
+                <Icon name="sliders-vertical" size="sm" />
+                Filter
+              </button>
+              <button
+                class="dns-app-btn dns-app-btn--ghost dns-anim-btn-import"
+                type="button"
+                tabindex="-1"
+              >
+                <Icon name="download" size="sm" />
+                Import &amp; export
+              </button>
+              <button class="dns-app-btn dns-app-btn--accent" type="button" tabindex="-1">
+                <Icon name="plus" size="sm" />
+                Add record
+              </button>
+            </div>
+          </div>
+
+          <table class="dns-app-table">
+            <thead>
+              <tr>
+                <th class="dns-app-table-check">
+                  <span class="dns-app-checkbox-static"></span>
+                </th>
+                <th>
+                  Type
+                  <Icon name="info" size="sm" />
+                </th>
+                <th>
+                  Name
+                  <Icon name="info" size="sm" />
+                </th>
+                <th>
+                  Content
+                  <Icon name="info" size="sm" />
+                </th>
+                <th>
+                  TTL
+                  <Icon name="info" size="sm" />
+                </th>
+                <th class="dns-app-table-rowactions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                existingRecords.map((record) => (
+                  <tr>
+                    <td class="dns-app-table-check">
+                      <span class="dns-app-checkbox-static" />
+                    </td>
+                    <td>
+                      <span class="dns-app-table-pill">{record.type}</span>
+                    </td>
+                    <td>{record.name}</td>
+                    <td class="dns-app-table-content">{record.content}</td>
+                    <td>{record.ttl}</td>
+                    <td class="dns-app-table-rowactions">
+                      <span class="dns-app-icon-btn">
+                        <Icon name="pencil" size="sm" />
+                      </span>
+                      <span class="dns-app-icon-btn">
+                        <Icon name="trash-2" size="sm" />
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="dns-anim-scrim" aria-hidden="true"></div>
+
+    <div class="dns-anim-modal dns-anim-modal-import" aria-hidden="true">
+      <p class="dns-anim-modal-title">Import DNS Records</p>
+      <div class="dns-anim-dropzone">
+        <Icon name="file-text" size="lg" />
+        <p>
+          <span class="dns-anim-btn-selectfile">Select a file</span> or drag it here
+          <br />
+          (BIND format only)
+        </p>
+      </div>
+      <p class="dns-anim-modal-title">Export DNS Records</p>
+      <span class="dns-app-btn dns-app-btn--dark">
+        <Icon name="download" size="sm" />
+        Download file
+      </span>
+    </div>
+
+    <div class="dns-anim-filepicker-backdrop" aria-hidden="true"></div>
+
+    <div class="dns-anim-filepicker" aria-hidden="true">
+      <div class="dns-anim-filepicker-sidebar">
+        <span class="dns-anim-filepicker-item">
+          <Icon name="file-text" size="sm" />
+          Text Edit
+        </span>
+        <span class="dns-anim-filepicker-item">
+          <Icon name="clock" size="sm" />
+          Recents
+        </span>
+        <span class="dns-anim-filepicker-item">
+          <Icon name="users" size="sm" />
+          Shared
+        </span>
+        <p class="dns-anim-filepicker-heading">Favorites</p>
+        <span class="dns-anim-filepicker-item dns-anim-filepicker-item--active">
+          <Icon name="house" size="sm" />
+          Desktop
+        </span>
+        <span class="dns-anim-filepicker-item">
+          <Icon name="file-text" size="sm" />
+          Documents
+        </span>
+        <span class="dns-anim-filepicker-item">
+          <Icon name="download" size="sm" />
+          Downloads
+        </span>
+      </div>
+      <div class="dns-anim-filepicker-main">
+        <div class="dns-anim-filepicker-toolbar">
+          <Icon name="chevron-left" size="sm" />
+          <Icon name="chevron-right" size="sm" />
+          <span class="dns-anim-filepicker-path">
+            <Icon name="folder" size="sm" />
+            Desktop
+          </span>
+          <Icon name="search" size="sm" />
+        </div>
+        <div class="dns-anim-filepicker-listhead">
+          <span>Name</span>
+          <span>Size</span>
+          <span>Kind</span>
+        </div>
+        <div class="dns-anim-filepicker-row">
+          <span>new-zone.com.zone</span>
+          <span>601 bytes</span>
+          <span>Text edit</span>
+        </div>
+        <div class="dns-anim-filepicker-actions">
+          <span class="dns-app-btn dns-app-btn--ghost">Show Options</span>
+          <span class="dns-app-btn dns-app-btn--ghost">Cancel</span>
+          <span class="dns-app-btn dns-app-btn--open dns-anim-btn-open">Open</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dns-anim-modal dns-anim-modal-preview" aria-hidden="true">
+      <table class="dns-anim-preview-table">
+        <thead>
+          <tr>
+            <th class="dns-app-table-check">
+              <span class="dns-anim-checkbox dns-anim-checkbox--all">
+                <Icon name="check" size="sm" />
+              </span>
+            </th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Content</th>
+            <th>TTL</th>
+            <th class="dns-anim-status-col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            importRecords.map((record, i) => (
+              <tr>
+                <td class="dns-app-table-check">
+                  <span class={`dns-anim-checkbox dns-anim-checkbox--${i + 1}`}>
+                    <Icon name="check" size="sm" />
+                  </span>
+                </td>
+                <td>
+                  <span class="dns-app-table-pill">{record.type}</span>
+                </td>
+                <td>{record.name}</td>
+                <td class="dns-app-table-content">{record.content}</td>
+                <td>{record.ttl}</td>
+                <td class="dns-anim-status-col">
+                  <span class={`dns-anim-status dns-anim-status--${i + 1}`}>
+                    <Icon name="loader-circle" size="sm" class="dns-anim-status-spinner" />
+                    <span class="dns-anim-status-created">
+                      <Icon name="circle-check" size="sm" />
+                      Created
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <div class="dns-anim-preview-actions">
+        <span class="dns-app-btn dns-app-btn--accent-muted dns-anim-btn-import0">
+          <Icon name="plus" size="sm" />
+          Import 0 records
+        </span>
+        <span class="dns-app-btn dns-app-btn--accent dns-anim-btn-import7">
+          <Icon name="plus" size="sm" />
+          Import 7 records
+        </span>
+        <span class="dns-app-btn dns-app-btn--accent dns-anim-btn-done">Done</span>
+      </div>
+    </div>
+
+    <div class="dns-anim-success" aria-hidden="true">
+      <p>Imported 7 DNS records</p>
+      <Icon name="circle-check" size="lg" />
+    </div>
   </div>
 </div>

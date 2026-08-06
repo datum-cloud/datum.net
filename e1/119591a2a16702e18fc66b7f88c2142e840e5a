@@ -1,0 +1,14 @@
+config/base/deployment.yaml
+  h_c7951bc64db670 64,73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "e1119591a2a16702e18fc66b7f88c2142e840e5a",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -16,8 +16,8 @@
 //   4. "Open" returns to the app; a SEPARATE import-preview panel appears
 //      with its own table of the 7 records about to be imported, checkboxes
 //      unchecked, "Import 0 records" disabled
-//   5. Header checkbox cascades all 7 rows checked, button becomes the
-//      active "Import 7 records"
+//   5. Clicking the header checkbox instantly checks all 7 rows, button
+//      becomes the active "Import 7 records"
 //   6. Checkbox column swaps for a Status column; each row's spinner
 //      resolves to a green "Created" in sequence; button becomes "Done"
 //   7. Panel closes; a large centered success card ("Imported 7 DNS
@@ -317,6 +317,10 @@ const importRecords = [
     <div class="dns-anim-success" aria-hidden="true">
       <p>Imported 7 DNS records</p>
       <Icon name="circle-check" size="lg" />
+    </div>
+
+    <div class="dns-anim-cursor" aria-hidden="true">
+      <Icon name="mouse-pointer-2" size="sm" />
     </div>
   </div>
 </div>

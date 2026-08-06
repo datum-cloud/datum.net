@@ -9,7 +9,8 @@
           the source frame)
        4. "Open" returns to the app; a SEPARATE import-preview panel appears
           with its own table of the 7 records to import, unchecked
-       5. checkbox cascade checks all 7 rows; button becomes "Import 7 records"
+       5. clicking the header checkbox instantly checks all 7 rows; button
+          becomes "Import 7 records"
        6. checkbox column swaps for a Status column; rows resolve to
           "Created" in sequence; button becomes "Done"
        7. panel closes; a large centered success card holds, then the loop
@@ -26,21 +27,28 @@
      scene loop on every subsequent iteration since the delay only applies
      before the first cycle.
 
-     Timeline (28s):
+     Timeline (28s). The mouse holds still between clicks then snaps to the
+     next target in a fast ~0.5s glide (see .dns-anim-cursor) rather than
+     drifting the whole gap — that freed up 1s, spent extending the pre-Done
+     hold below so "all 7 rows say Created" gets more screen time before the
+     click, while the Done click itself and everything after it (success
+     card, clean-table dwell) still land on the same absolute time as before:
        0.0s            clean table
        3.8s            click: Import & export
-       4.0s  – 7.9s    import modal open
-       7.6s            click: Select a file
-       7.9s  – 11.9s   native file picker open (its own solid backdrop)
-       11.6s           click: Open
-       12.2s           import-preview panel opens, checkboxes unchecked
-       15.5s – 16.55s  checkbox cascade (header, then rows 1–7)
-       16.6s           button: "Import 0 records" → "Import 7 records"
-       18.9s           click: Import 7 records
-       19.0s           checkbox column → Status column, spinners running
-       19.3s – 21.88s  rows resolve to Created, staggered
-       22.3s           button: "Import 7 records" → "Done"
-       23.15s          click: Done
+       4.0s  – 7.6s    import modal open
+       7.3s            click: Select a file
+       7.6s  – 11.3s   native file picker open (its own solid backdrop)
+       11.0s           click: Open
+       11.6s           import-preview panel opens, checkboxes unchecked
+       14.5s           click: header checkbox — all 7 rows check at once
+       15.6s           button: "Import 0 records" → "Import 7 records"
+       18.0s           click: Import 7 records
+       18.2s           checkbox column → Status column, spinners running
+       18.3s – 20.88s  rows resolve to Created, staggered
+       21.3s           button: "Import 7 records" → "Done"
+       23.15s          click: Done (unchanged — this is where the saved 1s
+                        goes: "Created" now shows for ~1.85s before the
+                        click instead of ~0.85s)
        23.5s           panel closes, success card fades in
        26.5s – 26.8s   success card fades out, back to clean table
   */
@@ -413,11 +421,11 @@
 
   @keyframes dns-checkbox-check--all {
     0%,
-    55.36% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    56.36%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -425,24 +433,26 @@
   }
   @keyframes dns-checkbox-check-icon--all {
     0%,
-    55.86% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    56.86%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
     }
   }
 
+  /* Rows 1-7 share the exact same threshold as --all: clicking the header
+     checkbox checks every row at once, not one at a time top-to-bottom. */
   @keyframes dns-checkbox-check--1 {
     0%,
-    55.89% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    56.89%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -450,11 +460,11 @@
   }
   @keyframes dns-checkbox-check-icon--1 {
     0%,
-    56.39% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    57.39%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -463,11 +473,11 @@
 
   @keyframes dns-checkbox-check--2 {
     0%,
-    56.43% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    57.43%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -475,11 +485,11 @@
   }
   @keyframes dns-checkbox-check-icon--2 {
     0%,
-    56.93% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    57.93%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -488,11 +498,11 @@
 
   @keyframes dns-checkbox-check--3 {
     0%,
-    56.96% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    57.96%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -500,11 +510,11 @@
   }
   @keyframes dns-checkbox-check-icon--3 {
     0%,
-    57.46% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    58.46%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -513,11 +523,11 @@
 
   @keyframes dns-checkbox-check--4 {
     0%,
-    57.5% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    58.5%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -525,11 +535,11 @@
   }
   @keyframes dns-checkbox-check-icon--4 {
     0%,
-    58% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    59%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -538,11 +548,11 @@
 
   @keyframes dns-checkbox-check--5 {
     0%,
-    58.04% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    59.04%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -550,11 +560,11 @@
   }
   @keyframes dns-checkbox-check-icon--5 {
     0%,
-    58.54% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    59.54%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -563,11 +573,11 @@
 
   @keyframes dns-checkbox-check--6 {
     0%,
-    58.57% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    59.57%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -575,11 +585,11 @@
   }
   @keyframes dns-checkbox-check-icon--6 {
     0%,
-    59.07% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    60.07%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -588,11 +598,11 @@
 
   @keyframes dns-checkbox-check--7 {
     0%,
-    59.11% {
+    51.79% {
       background: transparent;
       border-color: var(--color-silver-mist);
     }
-    60.11%,
+    52.79%,
     100% {
       background: var(--color-canyon-clay);
       border-color: var(--color-canyon-clay);
@@ -600,11 +610,11 @@
   }
   @keyframes dns-checkbox-check-icon--7 {
     0%,
-    59.61% {
+    52.29% {
       transform: scale(0);
       opacity: 0;
     }
-    60.61%,
+    53.29%,
     100% {
       transform: scale(1);
       opacity: 1;
@@ -620,10 +630,10 @@
 
   @keyframes dns-checkbox-col-visibility {
     0%,
-    67.86% {
+    64.29% {
       opacity: 1;
     }
-    68.57%,
+    65%,
     100% {
       opacity: 0;
     }
@@ -716,21 +726,21 @@
 
   @keyframes dns-status-spinner-hide--1 {
     0%,
-    68.93% {
+    65.36% {
       opacity: 1;
     }
-    69.93%,
+    66.36%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--1 {
     0%,
-    69.43% {
+    65.86% {
       opacity: 0;
       transform: scale(0.7);
     }
-    70.43%,
+    66.86%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -739,21 +749,21 @@
 
   @keyframes dns-status-spinner-hide--2 {
     0%,
-    70.46% {
+    66.89% {
       opacity: 1;
     }
-    71.46%,
+    67.89%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--2 {
     0%,
-    70.96% {
+    67.39% {
       opacity: 0;
       transform: scale(0.7);
     }
-    71.96%,
+    68.39%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -762,21 +772,21 @@
 
   @keyframes dns-status-spinner-hide--3 {
     0%,
-    72% {
+    68.43% {
       opacity: 1;
     }
-    73%,
+    69.43%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--3 {
     0%,
-    72.5% {
+    68.93% {
       opacity: 0;
       transform: scale(0.7);
     }
-    73.5%,
+    69.93%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -785,21 +795,21 @@
 
   @keyframes dns-status-spinner-hide--4 {
     0%,
-    73.54% {
+    69.96% {
       opacity: 1;
     }
-    74.54%,
+    70.96%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--4 {
     0%,
-    74.04% {
+    70.46% {
       opacity: 0;
       transform: scale(0.7);
     }
-    75.04%,
+    71.46%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -808,21 +818,21 @@
 
   @keyframes dns-status-spinner-hide--5 {
     0%,
-    75.07% {
+    71.5% {
       opacity: 1;
     }
-    76.07%,
+    72.5%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--5 {
     0%,
-    75.57% {
+    72% {
       opacity: 0;
       transform: scale(0.7);
     }
-    76.57%,
+    73%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -831,21 +841,21 @@
 
   @keyframes dns-status-spinner-hide--6 {
     0%,
-    76.61% {
+    73.04% {
       opacity: 1;
     }
-    77.61%,
+    74.04%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--6 {
     0%,
-    77.11% {
+    73.54% {
       opacity: 0;
       transform: scale(0.7);
     }
-    78.11%,
+    74.54%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -854,21 +864,21 @@
 
   @keyframes dns-status-spinner-hide--7 {
     0%,
-    78.14% {
+    74.57% {
       opacity: 1;
     }
-    79.14%,
+    75.57%,
     100% {
       opacity: 0;
     }
   }
   @keyframes dns-status-created-show--7 {
     0%,
-    78.64% {
+    75.07% {
       opacity: 0;
       transform: scale(0.7);
     }
-    79.64%,
+    76.07%,
     100% {
       opacity: 1;
       transform: scale(1);
@@ -877,10 +887,10 @@
 
   @keyframes dns-status-col-visibility {
     0%,
-    67.86% {
+    64.29% {
       opacity: 0;
     }
-    68.57%,
+    65%,
     83.93% {
       opacity: 1;
     }
@@ -929,14 +939,14 @@
       opacity: 0;
     }
     15.36%,
-    28.21% {
+    27.14% {
       opacity: 1;
     }
-    29.29%,
-    42.5% {
+    28.21%,
+    40.36% {
       opacity: 0;
     }
-    43.57%,
+    41.43%,
     94.64% {
       opacity: 1;
     }
@@ -991,11 +1001,11 @@
       transform: translate(-50%, -50%) scale(0.96);
     }
     15.36%,
-    27.14% {
+    26.07% {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
-    28.21%,
+    27.14%,
     100% {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.96);
@@ -1025,14 +1035,14 @@
 
   @keyframes dns-filepicker-visibility {
     0%,
-    28.21% {
+    27.14% {
       opacity: 0;
     }
-    29.29%,
-    41.43% {
+    28.21%,
+    39.29% {
       opacity: 1;
     }
-    42.5%,
+    40.36%,
     100% {
       opacity: 0;
     }
@@ -1040,16 +1050,16 @@
 
   @keyframes dns-filepicker-modal-visibility {
     0%,
-    28.21% {
+    27.14% {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.96);
     }
-    29.29%,
-    41.43% {
+    28.21%,
+    39.29% {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
-    42.5%,
+    40.36%,
     100% {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.96);
@@ -1147,11 +1157,11 @@
 
   @keyframes dns-preview-visibility {
     0%,
-    42.5% {
+    40.36% {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.96);
     }
-    43.57%,
+    41.43%,
     83.93% {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
@@ -1213,10 +1223,10 @@
 
   @keyframes dns-btn-import0-visibility {
     0%,
-    59.29% {
+    55.71% {
       opacity: 1;
     }
-    60.36%,
+    56.79%,
     100% {
       opacity: 0;
     }
@@ -1224,14 +1234,14 @@
 
   @keyframes dns-btn-import7-visibility {
     0%,
-    59.29% {
+    55.71% {
       opacity: 0;
     }
-    60.36%,
-    79.64% {
+    56.79%,
+    76.07% {
       opacity: 1;
     }
-    80.71%,
+    77.14%,
     100% {
       opacity: 0;
     }
@@ -1239,10 +1249,10 @@
 
   @keyframes dns-btn-done-visibility {
     0%,
-    79.64% {
+    76.07% {
       opacity: 0;
     }
-    80.71%,
+    77.14%,
     100% {
       opacity: 1;
     }
@@ -1250,11 +1260,11 @@
 
   @keyframes dns-pulse-import7 {
     0%,
-    67.5%,
+    63.93%,
     100% {
       transform: scale(1);
     }
-    67.86% {
+    64.29% {
       transform: scale(0.92);
     }
   }
@@ -1305,6 +1315,152 @@
     }
   }
 
+  /* -------------------------------------------------------------- cursor */
+  /* A visible mouse pointer travels between each clickable target and
+     presses (scales down) in sync with that target's own click-pulse
+     keyframe, so it's clear WHERE each click in the story is happening
+     rather than just inferring it from a button's own tiny scale-dip.
+
+     Position animates via left/top percentages of the stage box, NOT
+     transform: translate(em). em is relative to font-size, and even though
+     the stage's font-size is itself cqw-derived, browsers don't rasterize
+     text/icons/borders at perfectly continuous sub-pixel ratios across
+     every container width — the accumulated rounding was enough to visibly
+     drift the cursor off its target at non-reference viewport widths
+     (correct at the 1440px width it was measured at, off by a
+     growing margin at others). Percentages of the containing block resolve
+     directly against the stage's actual box size with no intermediate
+     unit, so they track exactly at any size. transform is reserved for the
+     scale-only click-press effect, with transform-origin left so scaling
+     doesn't itself shift the tip position.
+
+     Positions are measured centers (as % of stage width/height) of the six
+     targets clicked over the loop: import & export, select a file, open,
+     the header checkbox, import 7 records, and done.
+
+     The opening beat is the one exception to "hold still, then snap" above:
+     the cursor is visible and already travelling from a far corner the
+     instant the loop starts (no fade-in, no initial hold), so there's
+     unmistakable motion in the very first frame — otherwise a viewer
+     landing mid-hold could easily mistake the hero for a static screenshot
+     before the first click ever happens.
+
+     Between clicks the cursor holds still at the departure point, then
+     covers the whole distance in one fast ~0.5s glide that ends exactly on
+     the next click — a continuous multi-second drift across the whole gap
+     read as sluggish ("grandpa speed"), so most of each gap is now a still
+     hold and only the final snap is animated. */
+  .dns-anim-cursor {
+    @apply pointer-events-none absolute;
+    transform-origin: top left;
+    color: var(--color-midnight-fjord);
+    filter: drop-shadow(
+      0 0.2em 0.3em color-mix(in srgb, var(--color-midnight-fjord) 45%, transparent)
+    );
+    opacity: 0;
+    animation: dns-cursor-move var(--dns-hero-loop, 28s) infinite ease;
+  }
+
+  @keyframes dns-cursor-move {
+    0% {
+      opacity: 1;
+      left: 8%;
+      top: 90%;
+      transform: scale(1);
+    }
+    5.36%,
+    11.79% {
+      opacity: 1;
+      left: 52.46%;
+      top: 33.39%;
+      transform: scale(1);
+    }
+    13.57% {
+      opacity: 1;
+      left: 52.46%;
+      top: 33.39%;
+      transform: scale(0.8);
+    }
+    14.29%,
+    24.29% {
+      opacity: 1;
+      left: 52.46%;
+      top: 33.39%;
+      transform: scale(1);
+    }
+    26.07% {
+      opacity: 1;
+      left: 44.65%;
+      top: 47.83%;
+      transform: scale(0.8);
+    }
+    26.43%,
+    37.5% {
+      opacity: 1;
+      left: 44.65%;
+      top: 47.83%;
+      transform: scale(1);
+    }
+    39.29% {
+      opacity: 1;
+      left: 78.6%;
+      top: 74.7%;
+      transform: scale(0.8);
+    }
+    39.64%,
+    50% {
+      opacity: 1;
+      left: 78.6%;
+      top: 74.7%;
+      transform: scale(1);
+    }
+    51.79% {
+      opacity: 1;
+      left: 21.45%;
+      top: 18.38%;
+      transform: scale(0.8);
+    }
+    52.14%,
+    62.5% {
+      opacity: 1;
+      left: 21.45%;
+      top: 18.38%;
+      transform: scale(1);
+    }
+    64.29% {
+      opacity: 1;
+      left: 71.23%;
+      top: 81.73%;
+      transform: scale(0.8);
+    }
+    64.64%,
+    80.89% {
+      opacity: 1;
+      left: 71.23%;
+      top: 81.73%;
+      transform: scale(1);
+    }
+    82.68% {
+      opacity: 1;
+      left: 77.06%;
+      top: 81.49%;
+      transform: scale(0.8);
+    }
+    83.04% {
+      opacity: 1;
+      left: 77.06%;
+      top: 81.49%;
+      transform: scale(1);
+    }
+    83.93%,
+    100% {
+      opacity: 0;
+      left: 8%;
+      top: 90%;
+      transform: scale(1);
+    }
+  }
+
   /* --------------------------------------------------------- click pulses */
 
   .dns-anim-btn-import {
@@ -1328,11 +1484,11 @@
 
   @keyframes dns-pulse-selectfile {
     0%,
-    26.79%,
+    25.71%,
     100% {
       transform: scale(1);
     }
-    27.14% {
+    26.07% {
       transform: scale(0.92);
     }
   }
@@ -1343,11 +1499,11 @@
 
   @keyframes dns-pulse-open {
     0%,
-    41.07%,
+    38.93%,
     100% {
       transform: scale(1);
     }
-    41.43% {
+    39.29% {
       transform: scale(0.92);
     }
   }
@@ -1371,7 +1527,8 @@
     .dns-anim-success,
     .dns-anim-btn-import,
     .dns-anim-btn-selectfile,
-    .dns-anim-btn-open {
+    .dns-anim-btn-open,
+    .dns-anim-cursor {
       animation: none;
     }
 
@@ -1385,7 +1542,8 @@
     .dns-anim-modal-preview,
     .dns-anim-btn-import7,
     .dns-anim-btn-done,
-    .dns-anim-success {
+    .dns-anim-success,
+    .dns-anim-cursor {
       @apply invisible opacity-0;
     }
 

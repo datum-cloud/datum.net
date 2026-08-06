@@ -54,7 +54,7 @@ export const capabilities = {
       icon: 'arrow-down-up',
       title: 'Bulk import and export',
       description:
-        "Bring in existing zone files (BIND format), import from a screenshot of another provider's DNS panel, or sync by querying existing records. Export your configuration any time.",
+        'Bring in existing zone files (BIND format), or sync by querying existing records. Export your configuration any time.',
     },
     {
       icon: 'file-text',

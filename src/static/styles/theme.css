@@ -76,6 +76,11 @@
   --color-connect-highlight: #dde8f2;
   --color-connect-highlight-panel: #f1f6fb;
 
+  /* Meter fills — the boot-time comparison bars on /platform/compute read as
+     "good" vs "bad", so they need saturation the pale surface tones can't give. */
+  --color-aurora-moss-deep: #b3d56f;
+  --color-alert-red---light: #d25b5b;
+
   --color-app---dark---utility-1: #223143;
   --color-app---dark---utility-2: #384555;
   --color-app---dark---utility-3: #67717c;

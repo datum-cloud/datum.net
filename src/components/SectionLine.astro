@@ -10,6 +10,8 @@ const {
   top = false,
   bottom = false,
   overlap = false,
+  extended = false,
+  bottomOverlap = false,
   class: className = '',
 } = Astro.props as SectionLineProps;
 
@@ -22,32 +24,98 @@ if (right && bottom) corners.push({ horizontal: 'right', vertical: 'bottom' });
 ---
 
 {
-  corners.map(({ horizontal, vertical }) =>
-    overlap ? (
-      <>
-        <span
-          class:list={[
-            'section-line--overlap',
-            horizontal === 'left' && 'section-line--left',
-            horizontal === 'right' && 'section-line--right',
-            vertical === 'top' && 'section-line--top',
-            vertical === 'bottom' && 'section-line--bottom',
-            className,
-          ]}
-        />
-        <span
-          class:list={[
-            'section-line-h--overlap',
-            horizontal === 'left' && 'section-line--left',
-            horizontal === 'right' && 'section-line--right',
-            vertical === 'top' && 'section-line--top',
-            vertical === 'bottom' && 'section-line--bottom',
-            className,
-          ]}
-        />
-      </>
-    ) : (
+  corners.map(({ horizontal, vertical }) => {
+    const isBottomOverlapCorner = bottomOverlap && horizontal === 'right' && vertical === 'bottom';
+
+    if (isBottomOverlapCorner) {
+      return (
+        <>
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line',
+              'section-line--right',
+              'section-line--bottom-overlap',
+              className,
+            ]}
+          />
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line-h',
+              'section-line-h--bottom-overlap',
+              'section-line--right',
+              'section-line--bottom',
+              className,
+            ]}
+          />
+        </>
+      );
+    }
+
+    if (extended) {
+      return (
+        <>
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line',
+              'section-line--extended',
+              horizontal === 'left' && 'section-line--left',
+              horizontal === 'right' && 'section-line--right',
+              vertical === 'top' && 'section-line--top',
+              vertical === 'bottom' && 'section-line--bottom',
+              className,
+            ]}
+          />
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line-h',
+              'section-line-h--extended',
+              horizontal === 'left' && 'section-line--left',
+              horizontal === 'right' && 'section-line--right',
+              vertical === 'top' && 'section-line--top',
+              vertical === 'bottom' && 'section-line--bottom',
+              className,
+            ]}
+          />
+        </>
+      );
+    }
+
+    if (overlap) {
+      return (
+        <>
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line--overlap',
+              horizontal === 'left' && 'section-line--left',
+              horizontal === 'right' && 'section-line--right',
+              vertical === 'top' && 'section-line--top',
+              vertical === 'bottom' && 'section-line--bottom',
+              className,
+            ]}
+          />
+          <span
+            aria-hidden="true"
+            class:list={[
+              'section-line-h--overlap',
+              horizontal === 'left' && 'section-line--left',
+              horizontal === 'right' && 'section-line--right',
+              vertical === 'top' && 'section-line--top',
+              vertical === 'bottom' && 'section-line--bottom',
+              className,
+            ]}
+          />
+        </>
+      );
+    }
+
+    return (
       <span
+        aria-hidden="true"
         class:list={[
           'section-line',
           horizontal === 'left' && 'section-line--left',
@@ -57,6 +125,6 @@ if (right && bottom) corners.push({ horizontal: 'right', vertical: 'bottom' });
           className,
         ]}
       />
-    )
-  )
+    );
+  })
 }

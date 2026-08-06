@@ -99,12 +99,12 @@
   }
 
   .section-line {
-    @apply bg-silver-mist absolute block w-px;
+    @apply bg-silver-mist pointer-events-none absolute block w-px;
     @apply h-5 md:h-10 lg:h-15 xl:h-20;
   }
 
   .section-line--overlap {
-    @apply bg-silver-mist absolute block w-px;
+    @apply bg-silver-mist pointer-events-none absolute block w-px;
     @apply h-5 md:h-10;
 
     &.section-line--left {
@@ -122,7 +122,7 @@
   }
 
   .section-line-h--overlap {
-    @apply bg-silver-mist absolute block h-px;
+    @apply bg-silver-mist pointer-events-none absolute block h-px;
     @apply w-5 md:w-10;
 
     &.section-line--left {
@@ -140,7 +140,7 @@
   }
 
   .section-line-h {
-    @apply bg-silver-mist absolute block h-px;
+    @apply bg-silver-mist pointer-events-none absolute block h-px;
     @apply w-12 md:w-16 lg:w-20;
   }
   .section-line--left {
@@ -160,6 +160,48 @@
   .section-line--bottom-overlap {
     @apply hidden md:-bottom-7 md:block lg:-bottom-10;
     @apply md:h-7 lg:h-20 xl:h-20;
+  }
+
+  .section-line--extended {
+    @apply hidden md:block;
+
+    &.section-line--left {
+      @apply left-0;
+    }
+    &.section-line--right {
+      @apply right-0;
+    }
+    &.section-line--top {
+      @apply -top-10;
+    }
+    &.section-line--bottom {
+      @apply -bottom-10;
+    }
+  }
+
+  .section-line-h--extended {
+    @apply hidden md:block;
+
+    &.section-line--left {
+      @apply -left-10;
+    }
+    &.section-line--right {
+      @apply -right-10;
+    }
+    &.section-line--top {
+      @apply top-0;
+    }
+    &.section-line--bottom {
+      @apply bottom-0;
+    }
+  }
+
+  .section-line-h--bottom-overlap {
+    @apply hidden md:block;
+
+    &.section-line--right.section-line--bottom {
+      @apply -right-10 bottom-0;
+    }
   }
 
   .section-title {
@@ -595,6 +637,14 @@
 
     [aria-current='page'] {
       @apply text-pine-forge---links font-semibold no-underline;
+    }
+  }
+
+  /* Canyon-palette pages (e.g. /platform/compute) tint the current crumb to
+     match their accent instead of the default pine. */
+  nav.breadcrumbs.breadcrumbs--canyon {
+    [aria-current='page'] {
+      @apply text-canyon-clay---links;
     }
   }
 

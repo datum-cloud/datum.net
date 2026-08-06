@@ -2,7 +2,11 @@ import { stargazerCount } from '@libs/datum';
 import { sequence } from 'astro:middleware';
 import type { MiddlewareHandler } from 'astro';
 
-const PROTECTED_ROUTES = [/^\/dev($|\/.*)/, /^\/platform\/dns(\.md)?\/?$/];
+const PROTECTED_ROUTES = [
+  /^\/dev($|\/.*)/,
+  /^\/platform\/dns(\.md)?\/?$/,
+  /^\/platform\/compute(\.md)?\/?$/,
+];
 
 const HELLO_PROFILE_PATH = /^\/hello\/([^/]+)$/;
 

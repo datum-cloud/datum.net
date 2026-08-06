@@ -1,0 +1,35 @@
+---
+// src/components/compute/UseCases.astro
+// "Use Cases" — accordion of workload types, first panel open on load.
+// Figma nodes 15991:8697 (section) and 15878:66123 (expanded panels).
+
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import UseCaseItem from '@components/compute/UseCaseItem.astro';
+import { useCases } from '@data/compute';
+---
+
+<section
+  id="use-cases"
+  class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-b"
+>
+  <div class="max-width-nav section-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left right top bottom />
+
+    <div class="compute-section-header">
+      <SectionEyebrow>{useCases.eyebrow}</SectionEyebrow>
+      <h2 class="datum-text-8xl text-midnight-fjord text-pretty">{useCases.title}</h2>
+      <p class="datum-text-xl text-app---dark---utility-2/80 text-pretty">
+        {useCases.description}
+      </p>
+    </div>
+
+    <div class="max-width-nopad spacing-pad relative">
+      <SectionLine left top extended />
+      <SectionLine right bottom bottomOverlap />
+      <div class="compute-accordion" x-data="{ open: 0 }">
+        {useCases.items.map((item, index) => <UseCaseItem item={item} index={index} />)}
+      </div>
+    </div>
+  </div>
+</section>

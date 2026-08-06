@@ -20,6 +20,7 @@ import MissionTwoIcon from '@assets/icons/2_.svg';
 import MissionThreeIcon from '@assets/icons/3_.svg';
 import ArrowRightIcon from '@assets/svgs/arrow-right.svg';
 import QuestionMarkIcon from '@assets/icons/question-mark.svg';
+import PointerIcon from '@assets/icons/pointer.svg';
 
 const { name, class: className = '', size = 'md' } = Astro.props;
 
@@ -80,6 +81,8 @@ const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || sizeClasses.m
     <ArrowRightIcon class={`${sizeClass} ${className}`} />
   ) : name === 'question-mark' ? (
     <QuestionMarkIcon class={`${sizeClass} ${className}`} />
+  ) : name === 'pointer' ? (
+    <PointerIcon class={`${sizeClass} ${className}`} />
   ) : IconComponent ? (
     <IconComponent class={`${sizeClass} ${className}`} />
   ) : (

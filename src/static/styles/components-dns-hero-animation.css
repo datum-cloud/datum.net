@@ -651,8 +651,17 @@
     height: 1.4em;
   }
 
+  /* inset-0 (not just inset-y-0) would stretch these to the *parent's* width
+     — but .dns-anim-status has no in-flow content of its own (both children
+     are position:absolute), so its intrinsic width is 0, and inset-0 would
+     force both this and .dns-anim-status-created down to that same 0 width.
+     The visible symptom: the "Created" text still rendered (text overflows
+     a zero-width nowrap flex box just fine) but its checkmark icon — a flex
+     item with room to shrink — collapsed to nothing. inset-y-0 left-0 keeps
+     the vertical stretch/overlap needed for the spinner→checkmark cross-fade
+     while leaving width to size off each one's own content instead. */
   .dns-anim-status-spinner {
-    @apply absolute inset-0;
+    @apply absolute inset-y-0 left-0;
     color: var(--color-app---dark---utility-3);
     animation-duration: 0.9s, var(--dns-hero-loop, 28s);
     animation-iteration-count: infinite, infinite;
@@ -661,7 +670,7 @@
   }
 
   .dns-anim-status-created {
-    @apply absolute inset-0 inline-flex items-center gap-[0.3em] whitespace-nowrap;
+    @apply absolute inset-y-0 left-0 inline-flex items-center gap-[0.3em] whitespace-nowrap;
     color: var(--color-pine-forge);
     font-weight: 600;
     opacity: 0;
@@ -1258,6 +1267,15 @@
     }
   }
 
+  /* Each pulse needs its own explicit "release" stop right after the press
+     dip — without one, the only remaining keyframe is 100% (scale(1)), so
+     the button spends the ENTIRE rest of the loop slowly easing back up
+     rather than snapping back immediately. That's invisible for clicks
+     that get covered by a modal/scrim right after (import, select a file,
+     open), but "Import 7 records" and "Done" both stay on screen for
+     several seconds after their own click with nothing covering them —
+     without the release stop they'd visibly sit shrunken for that whole
+     stretch instead of springing back like a real button press. */
   @keyframes dns-pulse-import7 {
     0%,
     63.93%,
@@ -1266,6 +1284,9 @@
     }
     64.29% {
       transform: scale(0.92);
+    }
+    64.64% {
+      transform: scale(1);
     }
   }
 
@@ -1277,6 +1298,9 @@
     }
     83.04% {
       transform: scale(0.92);
+    }
+    83.39% {
+      transform: scale(1);
     }
   }
 
@@ -1330,28 +1354,34 @@
      (correct at the 1440px width it was measured at, off by a
      growing margin at others). Percentages of the containing block resolve
      directly against the stage's actual box size with no intermediate
-     unit, so they track exactly at any size. transform is reserved for the
-     scale-only click-press effect, with transform-origin left so scaling
-     doesn't itself shift the tip position.
+     unit, so they track exactly at any size. left/top place the icon's
+     center on the target (transform-origin: center + translate(-50%, -50%)
+     in the keyframe below), and transform layers the click-press scale on
+     top of that same centering translate.
 
      Positions are measured centers (as % of stage width/height) of the six
      targets clicked over the loop: import & export, select a file, open,
      the header checkbox, import 7 records, and done.
 
-     The cursor is always either travelling toward the next target or
-     mid-click — never sitting still while visible. It fades in already
-     moving from a far corner the instant the loop starts (no fade-in hold),
-     so there's unmistakable motion from the very first frame, and every gap
-     between clicks is one continuous glide covering the whole distance
-     rather than a stop-and-snap — a static-looking pause between clicks
-     reads as dead air, not deliberate motion. */
+     Each gap between clicks is a glide covering roughly 2/3 of the
+     available time, arriving at the next target early and holding there
+     (not at the departure point) until the moment it actually clicks —
+     the cursor is always either genuinely travelling or already sitting on
+     the thing it's about to click, never stalled in transit or hanging in
+     empty space, which is what read as "running slow"/"dead air" in
+     earlier passes. After the Done click the cursor fades out in place
+     rather than while still sliding back toward its next-loop start
+     position — repositioning happens only once it's already invisible, so
+     it never looks like it's fleeing the scene. */
+  /* A real filled two-tone icon (dark outline shape behind, white fill
+     shape on top — see src/static/assets/icons/pointer.svg) rather than a
+     stroke-only glyph faked into looking filled: a stroke-based icon's
+     paths only enclose the thin area right along each line, so no amount
+     of stroke-width or layering ever makes the palm interior actually
+     opaque — it stays see-through against whatever's behind it. */
   .dns-anim-cursor {
     @apply pointer-events-none absolute;
-    transform-origin: top left;
-    color: var(--color-midnight-fjord);
-    filter: drop-shadow(
-      0 0.2em 0.3em color-mix(in srgb, var(--color-midnight-fjord) 45%, transparent)
-    );
+    transform-origin: center;
     opacity: 0;
     animation: dns-cursor-move var(--dns-hero-loop, 28s) infinite ease;
   }
@@ -1361,86 +1391,127 @@
       opacity: 1;
       left: 8%;
       top: 90%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    9.05% {
+      opacity: 1;
+      left: 52.46%;
+      top: 33.39%;
+      transform: translate(-50%, -50%) scale(1);
     }
     13.57% {
       opacity: 1;
       left: 52.46%;
       top: 33.39%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     14.29% {
       opacity: 1;
       left: 52.46%;
       top: 33.39%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    22.14% {
+      opacity: 1;
+      left: 44.65%;
+      top: 47.83%;
+      transform: translate(-50%, -50%) scale(1);
     }
     26.07% {
       opacity: 1;
       left: 44.65%;
       top: 47.83%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     26.43% {
       opacity: 1;
       left: 44.65%;
       top: 47.83%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    35% {
+      opacity: 1;
+      left: 78.6%;
+      top: 74.7%;
+      transform: translate(-50%, -50%) scale(1);
     }
     39.29% {
       opacity: 1;
       left: 78.6%;
       top: 74.7%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     39.64% {
       opacity: 1;
       left: 78.6%;
       top: 74.7%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    47.74% {
+      opacity: 1;
+      left: 21.45%;
+      top: 18.38%;
+      transform: translate(-50%, -50%) scale(1);
     }
     51.79% {
       opacity: 1;
       left: 21.45%;
       top: 18.38%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     52.14% {
       opacity: 1;
       left: 21.45%;
       top: 18.38%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    60.24% {
+      opacity: 1;
+      left: 71.23%;
+      top: 81.73%;
+      transform: translate(-50%, -50%) scale(1);
     }
     64.29% {
       opacity: 1;
       left: 71.23%;
       top: 81.73%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     64.64% {
       opacity: 1;
       left: 71.23%;
       top: 81.73%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
+    }
+    76.67% {
+      opacity: 1;
+      left: 77.06%;
+      top: 81.49%;
+      transform: translate(-50%, -50%) scale(1);
     }
     82.68% {
       opacity: 1;
       left: 77.06%;
       top: 81.49%;
-      transform: scale(0.8);
+      transform: translate(-50%, -50%) scale(0.8);
     }
     83.04% {
       opacity: 1;
       left: 77.06%;
       top: 81.49%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
     }
-    83.93%,
+    83.93% {
+      opacity: 0;
+      left: 77.06%;
+      top: 81.49%;
+      transform: translate(-50%, -50%) scale(1);
+    }
     100% {
       opacity: 0;
       left: 8%;
       top: 90%;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 
@@ -1459,6 +1530,9 @@
     13.93% {
       transform: scale(0.92);
     }
+    14.29% {
+      transform: scale(1);
+    }
   }
 
   .dns-anim-btn-selectfile {
@@ -1474,6 +1548,9 @@
     26.07% {
       transform: scale(0.92);
     }
+    26.43% {
+      transform: scale(1);
+    }
   }
 
   .dns-anim-btn-open {
@@ -1488,6 +1565,9 @@
     }
     39.29% {
       transform: scale(0.92);
+    }
+    39.64% {
+      transform: scale(1);
     }
   }
 

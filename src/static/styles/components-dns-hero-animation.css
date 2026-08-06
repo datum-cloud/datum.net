@@ -1338,18 +1338,13 @@
      targets clicked over the loop: import & export, select a file, open,
      the header checkbox, import 7 records, and done.
 
-     The opening beat is the one exception to "hold still, then snap" above:
-     the cursor is visible and already travelling from a far corner the
-     instant the loop starts (no fade-in, no initial hold), so there's
-     unmistakable motion in the very first frame — otherwise a viewer
-     landing mid-hold could easily mistake the hero for a static screenshot
-     before the first click ever happens.
-
-     Between clicks the cursor holds still at the departure point, then
-     covers the whole distance in one fast ~0.5s glide that ends exactly on
-     the next click — a continuous multi-second drift across the whole gap
-     read as sluggish ("grandpa speed"), so most of each gap is now a still
-     hold and only the final snap is animated. */
+     The cursor is always either travelling toward the next target or
+     mid-click — never sitting still while visible. It fades in already
+     moving from a far corner the instant the loop starts (no fade-in hold),
+     so there's unmistakable motion from the very first frame, and every gap
+     between clicks is one continuous glide covering the whole distance
+     rather than a stop-and-snap — a static-looking pause between clicks
+     reads as dead air, not deliberate motion. */
   .dns-anim-cursor {
     @apply pointer-events-none absolute;
     transform-origin: top left;
@@ -1368,21 +1363,13 @@
       top: 90%;
       transform: scale(1);
     }
-    5.36%,
-    11.79% {
-      opacity: 1;
-      left: 52.46%;
-      top: 33.39%;
-      transform: scale(1);
-    }
     13.57% {
       opacity: 1;
       left: 52.46%;
       top: 33.39%;
       transform: scale(0.8);
     }
-    14.29%,
-    24.29% {
+    14.29% {
       opacity: 1;
       left: 52.46%;
       top: 33.39%;
@@ -1394,8 +1381,7 @@
       top: 47.83%;
       transform: scale(0.8);
     }
-    26.43%,
-    37.5% {
+    26.43% {
       opacity: 1;
       left: 44.65%;
       top: 47.83%;
@@ -1407,8 +1393,7 @@
       top: 74.7%;
       transform: scale(0.8);
     }
-    39.64%,
-    50% {
+    39.64% {
       opacity: 1;
       left: 78.6%;
       top: 74.7%;
@@ -1420,8 +1405,7 @@
       top: 18.38%;
       transform: scale(0.8);
     }
-    52.14%,
-    62.5% {
+    52.14% {
       opacity: 1;
       left: 21.45%;
       top: 18.38%;
@@ -1433,8 +1417,7 @@
       top: 81.73%;
       transform: scale(0.8);
     }
-    64.64%,
-    80.89% {
+    64.64% {
       opacity: 1;
       left: 71.23%;
       top: 81.73%;

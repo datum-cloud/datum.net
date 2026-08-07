@@ -225,6 +225,10 @@ export interface SectionLineProps {
   bottom?: boolean;
   /** Renders corner overlap lines (vertical + horizontal) instead of standard section lines */
   overlap?: boolean;
+  /** Renders extended corner lines (vertical + horizontal) visible from md breakpoint */
+  extended?: boolean;
+  /** Renders bottom-right overlap lines (vertical + horizontal) visible from md breakpoint */
+  bottomOverlap?: boolean;
   class?: string;
 }
 // TOC interfaces removed - now using Astro's built-in MarkdownHeading type
@@ -236,5 +240,20 @@ export interface BreadcrumbItem {
 
 export interface BreadcrumbsProps {
   items: BreadcrumbItem[];
+  class?: string;
+}
+
+export interface TerminalProps {
+  /** Window title, centred in the title bar. */
+  title: string;
+  /** Shows the "● live" badge on the right of the title bar. */
+  live?: boolean;
+  /**
+   * Output blocks. Each inner array is a run of consecutive lines; blocks are
+   * separated by a blank line.
+   */
+  blocks: string[][];
+  /** Draws a blinking block cursor after the final line. */
+  cursor?: boolean;
   class?: string;
 }

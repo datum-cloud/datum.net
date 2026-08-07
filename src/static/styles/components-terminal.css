@@ -1,0 +1,86 @@
+@layer components {
+  /* Static terminal illustration (Terminal.astro) — Figma node 15991:9413.
+
+     Everything inside is sized in `em` off a single cqw-derived font-size, so
+     the window keeps its exact proportions at any container width instead of
+     overflowing its box on narrow screens. Same technique as .dns-hero-anim;
+     the divisor is the Figma stage width (10 / 480 * 100 ≈ 2.0833cqw). The
+     floor keeps the text legible once the column drops below ~430px, where
+     pure cqw would take it under 9px. */
+  .terminal {
+    @apply bg-app---dark---utility-1 relative w-full overflow-hidden rounded-xl shadow-md;
+    container-type: inline-size;
+  }
+
+  .terminal-bar,
+  .terminal-body {
+    @apply font-dejavu;
+    font-size: max(9px, 2.0833cqw);
+  }
+
+  .terminal-bar {
+    @apply border-app---dark---utility-2 relative flex items-center border-b;
+    height: 2.5em;
+    padding-inline: 0.8em;
+  }
+
+  .terminal-lights {
+    @apply flex items-center;
+    gap: 0.46em;
+  }
+
+  .terminal-light {
+    @apply bg-app---dark---utility-3 block shrink-0 rounded-full;
+    width: 0.77em;
+    height: 0.77em;
+  }
+
+  /* Centred on the bar as a whole rather than on the space left of the
+     lights, matching the absolute placement in the source frame. */
+  .terminal-title {
+    @apply text-app---dark---utility-4 absolute left-1/2 -translate-x-1/2 leading-none;
+  }
+
+  .terminal-live {
+    @apply text-aurora-moss ml-auto leading-none;
+  }
+
+  .terminal-body {
+    @apply text-app---dark---utility-5;
+    padding: 2em 2em 2.5em;
+  }
+
+  .terminal-block {
+    @apply m-0 whitespace-pre-wrap;
+    line-height: 1.4em;
+  }
+
+  .terminal-block + .terminal-block {
+    margin-top: 1.4em;
+  }
+
+  .terminal-cursor {
+    @apply bg-aurora-moss inline-block align-text-bottom;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 0.2em;
+    animation: terminal-cursor-blink 1.1s steps(1, end) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-cursor {
+      animation: none;
+    }
+  }
+}
+
+@keyframes terminal-cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}

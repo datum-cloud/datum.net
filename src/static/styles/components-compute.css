@@ -1,0 +1,367 @@
+@layer components {
+  /* ----------------------------------------------------------------- shared */
+
+  /* Centred eyebrow + heading block used by the use-case and feature sections */
+  .compute-section-header {
+    @apply max-width-section-nopad flex flex-col items-center gap-5 text-center;
+  }
+
+  /* Product badge in the hero — Figma node 15991:8575 */
+  .compute-badge {
+    @apply bg-canyon-clay/20 text-canyon-clay---links font-dejavu datum-text-lg;
+    @apply inline-flex items-center gap-1.5 rounded-sm py-0.75 pr-2 pl-1.5 uppercase;
+  }
+
+  /* Check bullets — shared by the performance list and the use-case panels.
+     Ticks are midnight by default and canyon inside the accordion, matching
+     Figma nodes 15991:8653 and 15878:66138. */
+  .compute-check-list {
+    @apply m-0 flex list-none flex-col gap-4 p-0;
+  }
+
+  .compute-check-item {
+    @apply flex items-start gap-4;
+  }
+
+  .compute-check-icon {
+    @apply text-midnight-fjord mt-0.5 shrink-0;
+  }
+
+  .compute-check-icon--canyon {
+    @apply text-canyon-clay---links;
+  }
+
+  .compute-check-text {
+    @apply datum-text-lg text-midnight-fjord font-semibold text-pretty;
+  }
+
+  /* ------------------------------------------------------------------- hero */
+
+  /* Figma node 15991:8573 splits the 1316px content row unevenly — 638px of
+     copy, an 80px gap, then a 598px panel. An even split leaves the copy column
+     20px short, which is just enough to wrap "Build ephemeral databases" onto a
+     second line and cost the headline its three-line shape. No token exists for
+     this ratio, hence the explicit track sizes. */
+  .compute-hero-layout {
+    @apply mt-12 grid grid-cols-1 items-center gap-10;
+    @apply md:mt-16 md:gap-12 lg:mt-24 lg:gap-20 xl:mt-26;
+    @apply lg:grid-cols-[638fr_598fr];
+  }
+
+  /* Blush panel behind the hero terminal. The grid texture sits underneath at
+     low opacity and is clipped by the panel; the terminal floats on top with
+     its own inset so the texture stays visible around it.
+     Figma node 15991:9076. */
+  .compute-hero-panel {
+    @apply bg-blush-quartz/50 border-canyon-clay relative isolate overflow-hidden border;
+    @apply flex items-center justify-center;
+    @apply p-6 md:p-8 lg:p-10;
+  }
+
+  .compute-hero-grid {
+    @apply pointer-events-none absolute inset-0 -z-10 size-full max-w-none object-cover opacity-20;
+  }
+
+  .compute-hero-terminal {
+    @apply w-full;
+  }
+
+  /* Establishes the query context the headline below measures itself against. */
+  .compute-hero-copy {
+    container-type: inline-size;
+  }
+
+  /* Cycling fragment of the hero headline — Figma annotation on node 15991:8580.
+     Only this span animates. */
+  .compute-headline-phrase {
+    @apply text-canyon-clay---links inline-block;
+    @apply transition-[opacity,transform] duration-300 ease-out;
+
+    &.is-out {
+      @apply opacity-0;
+      transform: translateY(-0.15em);
+    }
+  }
+
+  /* Hold each phrase on one line — but only while the column can actually take
+     it. The widest phrase measures 490px at the 54px headline size, and the
+     copy column is ~326px on a phone, so an unconditional `nowrap` overflows
+     and gets silently clipped by the section. Keyed to the column rather than
+     the viewport because the two-column layout narrows the column again at lg. */
+  @container (min-width: 500px) {
+    .compute-headline-phrase {
+      @apply whitespace-nowrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .compute-headline-phrase {
+      @apply transition-none;
+    }
+  }
+
+  /* -------------------------------------------------------------- meter card */
+
+  /* Boot-time comparison — Figma node 15991:8622 */
+  .compute-meter-card {
+    @apply border-silver-mist flex flex-col gap-10 border p-8 lg:p-16;
+  }
+
+  .compute-meter-title {
+    @apply datum-text-xl text-midnight-fjord font-semibold;
+  }
+
+  .compute-meter-list {
+    @apply m-0 flex list-none flex-col gap-10 p-0;
+  }
+
+  .compute-meter-item {
+    @apply flex flex-col gap-1;
+  }
+
+  /* Scroll reveal — see initMeterReveal() in static/scripts/module-animate.js.
+     `.is-ready` is added by that script only, so the resting state above is the
+     finished chart: without JS, or under reduced motion, the bars render at
+     their real widths instead of an empty track. */
+  .compute-meter-list.is-ready {
+    .compute-meter-item {
+      @apply opacity-0;
+      transform: translateY(0.5rem);
+    }
+
+    .compute-meter-fill {
+      width: 0;
+    }
+  }
+
+  /* Transitions are withheld until `.is-armed` lands a frame later, so the
+     collapse to zero is instant. Animating that collapse would make a card
+     that is already on screen at load deflate from full width before replaying. */
+  .compute-meter-list.is-ready.is-armed {
+    .compute-meter-item {
+      @apply transition-[opacity,transform] duration-500 ease-out;
+    }
+
+    /* Duration scales with boot time (--compute-meter-duration from data) so
+       microVM snaps, container is moderate, and the traditional VM bar crawls. */
+    .compute-meter-fill {
+      transition: width var(--compute-meter-duration, 900ms) cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .compute-meter-fill--alert {
+      transition-timing-function: linear;
+    }
+
+    /* Staggered in reading order so the story lands in sequence: microVM barely
+       moves, container reaches out, traditional VM runs the whole track. Each
+       bar starts a beat after its own row has arrived. */
+    .compute-meter-item:nth-child(2) {
+      transition-delay: 140ms;
+    }
+
+    .compute-meter-item:nth-child(3) {
+      transition-delay: 280ms;
+    }
+
+    .compute-meter-item:nth-child(1) .compute-meter-fill {
+      transition-delay: 200ms;
+    }
+
+    .compute-meter-item:nth-child(2) .compute-meter-fill {
+      transition-delay: 340ms;
+    }
+
+    .compute-meter-item:nth-child(3) .compute-meter-fill {
+      transition-delay: 480ms;
+    }
+  }
+
+  .compute-meter-list.is-ready.is-inview {
+    .compute-meter-item {
+      @apply opacity-100;
+      transform: translateY(0);
+    }
+
+    .compute-meter-fill {
+      width: var(--compute-meter-fill, 0%);
+    }
+  }
+
+  .compute-meter-head {
+    @apply text-midnight-fjord flex items-start justify-between gap-4;
+  }
+
+  .compute-meter-label {
+    @apply datum-text-base font-medium;
+  }
+
+  .compute-meter-value {
+    @apply font-dejavu datum-text-base opacity-60;
+  }
+
+  .compute-meter-track {
+    @apply bg-glacier-mist-700 h-3 w-full overflow-hidden rounded-full;
+  }
+
+  /* Width is the only per-bar value, passed in as --compute-meter-fill. */
+  .compute-meter-fill {
+    @apply block h-full rounded-full;
+    width: var(--compute-meter-fill, 0%);
+  }
+
+  .compute-meter-fill--moss {
+    @apply bg-aurora-moss-deep;
+  }
+
+  .compute-meter-fill--alert {
+    @apply bg-alert-red---light;
+  }
+
+  .compute-meter-caption {
+    @apply datum-text-base text-app---dark---utility-2/80 text-pretty;
+  }
+
+  /* -------------------------------------------------------------- accordion */
+
+  /* Use-case accordion — Figma node 15878:66123 */
+  .compute-accordion {
+    @apply border-silver-mist border bg-white;
+  }
+
+  .compute-accordion-item + .compute-accordion-item {
+    @apply border-silver-mist border-t;
+  }
+
+  .compute-accordion-heading {
+    @apply m-0;
+  }
+
+  .compute-accordion-toggle {
+    @apply flex w-full cursor-pointer items-center gap-6 p-6 text-left lg:p-11;
+    @apply bg-platinum hover:bg-canyon-clay-pale/40 transition-colors;
+
+    /* Open panel reads as part of the white body below it rather than a
+       distinct platinum bar sitting above its own content. */
+    &[aria-expanded='true'] {
+      @apply bg-white;
+    }
+  }
+
+  .compute-accordion-icon {
+    @apply bg-canyon-clay-pale text-canyon-clay---links flex size-10 shrink-0 items-center justify-center rounded-sm;
+  }
+
+  .compute-accordion-title {
+    @apply datum-text-2xl text-midnight-fjord font-semibold;
+  }
+
+  .compute-accordion-chevron {
+    @apply border-midnight-fjord text-midnight-fjord ml-auto flex size-10 shrink-0 items-center justify-center rounded-md border;
+    @apply transition-transform duration-200;
+
+    &.is-open {
+      @apply rotate-180;
+    }
+  }
+
+  .compute-accordion-panel {
+    @apply overflow-hidden;
+  }
+
+  /* The divider is the panel's top edge rather than a border on the toggle, so
+     it only appears while the panel is open — as in the source frame. */
+  .compute-accordion-body {
+    @apply border-silver-mist mx-6 grid grid-cols-1 gap-10 border-t py-10 lg:mx-11 lg:grid-cols-2 lg:gap-16;
+  }
+
+  .compute-accordion-copy {
+    @apply flex flex-col items-start gap-7;
+  }
+
+  /* --------------------------------------------------------- feature tabs */
+
+  /* Segmented tab strip — Figma node 15991:8822. Scrolls horizontally on
+     narrow viewports; the scrollbar is hidden since the pill edges already
+     signal the overflow (same technique as .dns-comparison-panel). */
+  .compute-tablist-wrap {
+    @apply flex overflow-x-auto;
+    /* `safe` matters: with plain `center`, an overflowing strip is centred by
+       pushing its start edge outside the scroll origin, so the first tabs
+       become unreachable on narrow viewports. */
+    justify-content: safe center;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .compute-tablist {
+    @apply bg-glacier-mist-800 inline-flex shrink-0 items-center gap-0 rounded-lg p-0.5;
+  }
+
+  .compute-tab {
+    @apply datum-text-sm text-midnight-fjord/60 cursor-pointer rounded-md px-6 py-2.5 font-medium whitespace-nowrap;
+    @apply hover:text-midnight-fjord/80 transition-colors;
+
+    &.is-active {
+      @apply text-canyon-clay---links bg-white font-semibold;
+    }
+  }
+
+  .compute-feature-panels {
+    @apply border-silver-mist bg-platinum mt-12 border md:mt-16;
+  }
+
+  .compute-feature-panel {
+    @apply grid grid-cols-1 lg:grid-cols-2;
+  }
+
+  .compute-feature-copy {
+    @apply flex flex-col gap-5 p-8 lg:p-16;
+  }
+
+  .compute-feature-title {
+    @apply datum-text-2xl text-midnight-fjord font-semibold;
+  }
+
+  .compute-feature-diagram {
+    @apply bg-canyon-clay-pale flex flex-col gap-10 p-8 lg:p-16;
+  }
+
+  .compute-feature-diagram-label {
+    @apply datum-text-xs text-midnight-fjord/40 font-dejavu tracking-widest uppercase;
+  }
+
+  /* Numbered stages joined by a vertical rule — Figma nodes 15991:8860/8875.
+     The connector is a pseudo-element on every item but the last, positioned
+     over the gap so it can't hang off the end of the list. */
+  .compute-stage-list {
+    @apply m-0 flex list-none flex-col gap-10 p-0;
+  }
+
+  .compute-stage {
+    @apply border-canyon-clay relative flex items-center gap-2.5 border border-dashed p-4;
+
+    &:not(:last-child)::after {
+      @apply bg-canyon-clay absolute w-px;
+      content: '';
+      left: 1.5rem;
+      top: 100%;
+      height: calc(var(--spacing) * 10);
+    }
+  }
+
+  .compute-stage-number {
+    @apply font-dejavu datum-text-base text-canyon-clay---links;
+  }
+
+  .compute-stage-label {
+    @apply datum-text-base text-midnight-fjord font-medium;
+  }
+
+  .compute-feature-note {
+    @apply datum-text-sm text-midnight-fjord/60 text-pretty;
+  }
+}

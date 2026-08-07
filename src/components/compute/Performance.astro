@@ -1,0 +1,88 @@
+---
+// src/components/compute/Performance.astro
+// "Fast-booting VMs for any code" — boot-time comparison card beside the
+// capability checklist. Figma node 15991:8604.
+
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import { performance } from '@data/compute';
+
+const { chart } = performance;
+---
+
+<section
+  id="performance"
+  class="section--block section--block--x-pad border-silver-mist overflow-hidden border-b bg-white"
+>
+  <div class="max-width-nav large-pad relative">
+    <SectionEyebrow position="left-top">{performance.eyebrow}</SectionEyebrow>
+
+    <SectionLine left right top bottom />
+
+    <div class="max-width-nopad grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-20">
+      <div class="relative">
+        <SectionLine left top extended />
+        <div class="compute-meter-card">
+          <p class="compute-meter-title">{chart.title}</p>
+
+          {
+            /* Observed as one list, not per row, so the staggered reveal starts
+            together instead of drifting with each row's own scroll position. */
+          }
+          <ul class="compute-meter-list" data-meter-reveal>
+            {
+              chart.bars.map((bar) => (
+                <li class="compute-meter-item">
+                  <div class="compute-meter-head">
+                    <span class="compute-meter-label">{bar.label}</span>
+                    <span class="compute-meter-value">{bar.value}</span>
+                  </div>
+                  {/* The bar is illustrative — the figure beside the label is
+                    what carries the meaning — so it stays out of the a11y tree.
+                    Only the datum travels inline; the width rule lives in CSS. */}
+                  <div class="compute-meter-track" aria-hidden="true">
+                    <span
+                      class:list={['compute-meter-fill', `compute-meter-fill--${bar.tone}`]}
+                      style={`--compute-meter-fill: ${bar.fill}%; --compute-meter-duration: ${bar.durationMs}ms`}
+                    />
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+
+          <p class="compute-meter-caption">{chart.caption}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-start gap-8">
+        <h2 class="datum-text-8xl text-midnight-fjord text-pretty">{performance.title}</h2>
+        <p class="datum-text-xl text-app---dark---utility-2/80 text-pretty">
+          {performance.description}
+        </p>
+
+        <ul class="compute-check-list">
+          {
+            performance.points.map((point) => (
+              <li class="compute-check-item">
+                <Icon name="check" size="lg" class="compute-check-icon" />
+                <span class="compute-check-text">{point}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <Button
+          class="btn btn--midnight-fjord"
+          text={performance.cta.text}
+          href={performance.cta.href}
+          icon={{ name: 'arrow-right', size: 'md' }}
+          target="_blank"
+          data-rybbit-event="Compute: Try Datum Compute (performance)"
+        />
+      </div>
+    </div>
+  </div>
+</section>

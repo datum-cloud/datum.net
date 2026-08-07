@@ -53,6 +53,10 @@ export interface HeroProps {
   hideHero?: boolean;
   /** Renders decorative corner grid lines inside the hero container */
   showSectionLines?: boolean;
+  /** Colors the trailing word(s) of the title with a platform accent, so copy edits keep the highlight without hand-authored markup */
+  titleHighlightVariant?: 'pine' | 'canyon' | 'connect';
+  /** Number of trailing words to highlight when titleHighlightVariant is set (default 1) */
+  titleHighlightWords?: number;
 }
 
 export interface HomeHeroProps {

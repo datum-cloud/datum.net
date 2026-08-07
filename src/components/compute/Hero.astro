@@ -15,6 +15,10 @@ import Breadcrumbs from '@components/Breadcrumbs.astro';
 import gridTexture from '@assets/images/compute-hero-grid.png';
 import { breadcrumbs, hero } from '@data/compute';
 
+const longestHeadlinePhrase = hero.titlePhrases.reduce((longest, phrase) =>
+  phrase.length > longest.length ? phrase : longest
+);
+
 // Cycles the clay-coloured fragment of the headline. Figma annotation on node
 // 15991:8580 is the source of the phrase list.
 const headlineCycler = `{
@@ -59,15 +63,25 @@ const headlineCycler = `{
           }
           <h1
             id="compute-hero-title"
-            class="datum-text-9xl text-midnight-fjord max-w-full text-pretty"
+            class="compute-hero-title datum-text-9xl text-midnight-fjord max-w-full"
             x-data={headlineCycler}
           >
-            {hero.titleLead}
-            <span
-              class="compute-headline-phrase"
-              x-text="phrases[index]"
-              :class="{ 'is-out': !visible }">{hero.titlePhrases[0]}</span
-            ><br />
+            <span class="compute-headline-lead">
+              {hero.titleLead}{' '}
+              <span class="compute-headline-phrase-slot">
+                <span
+                  class="compute-headline-phrase compute-headline-phrase--sizer"
+                  aria-hidden="true"
+                >
+                  {longestHeadlinePhrase}
+                </span>
+                <span
+                  class="compute-headline-phrase"
+                  x-text="phrases[index]"
+                  :class="{ 'is-out': !visible }">{hero.titlePhrases[0]}</span
+                >
+              </span>
+            </span>
             {hero.titleTail}
           </h1>
           <p class="datum-text-xl text-midnight-fjord/80 text-pretty">{hero.description}</p>

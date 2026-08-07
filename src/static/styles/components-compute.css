@@ -71,26 +71,40 @@
     container-type: inline-size;
   }
 
+  /* Scale the headline down in narrow copy columns so "Build {phrase}" stays on
+     one line without clipping. ID beats the datum-text-9xl utility in the cascade. */
+  #compute-hero-title {
+    font-size: clamp(var(--32px), 9.5cqi, var(--text-9xl-canela-font-size));
+    line-height: clamp(var(--38px), 11.5cqi, var(--text-9xl-canela-line-height));
+  }
+
+  /* First headline row — "Build" plus the cycling phrase. */
+  .compute-headline-lead {
+    @apply block whitespace-nowrap;
+  }
+
+  /* Grid stack reserves the widest phrase width so cycling never shifts line two. */
+  .compute-headline-phrase-slot {
+    @apply inline-grid align-bottom;
+  }
+
+  .compute-headline-phrase-slot > .compute-headline-phrase {
+    grid-area: 1 / 1;
+  }
+
+  .compute-headline-phrase--sizer {
+    @apply pointer-events-none invisible;
+  }
+
   /* Cycling fragment of the hero headline — Figma annotation on node 15991:8580.
      Only this span animates. */
   .compute-headline-phrase {
-    @apply text-canyon-clay---links inline-block;
+    @apply text-canyon-clay---links inline-block whitespace-nowrap;
     @apply transition-[opacity,transform] duration-300 ease-out;
 
     &.is-out {
       @apply opacity-0;
       transform: translateY(-0.15em);
-    }
-  }
-
-  /* Hold each phrase on one line — but only while the column can actually take
-     it. The widest phrase measures 490px at the 54px headline size, and the
-     copy column is ~326px on a phone, so an unconditional `nowrap` overflows
-     and gets silently clipped by the section. Keyed to the column rather than
-     the viewport because the two-column layout narrows the column again at lg. */
-  @container (min-width: 500px) {
-    .compute-headline-phrase {
-      @apply whitespace-nowrap;
     }
   }
 

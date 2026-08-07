@@ -48,7 +48,9 @@ test.describe('Compute product page', () => {
     await page.goto(PATH);
     await page.evaluate(() => document.fonts.ready);
 
-    const phrase = page.locator('.compute-headline-phrase');
+    const phrase = page.locator(
+      '.compute-headline-phrase-slot > .compute-headline-phrase:not(.compute-headline-phrase--sizer)'
+    );
     const first = await phrase.innerText();
 
     // A phrase must never break mid-way, so it always occupies one line box.

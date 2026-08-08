@@ -1,0 +1,45 @@
+---
+// src/components/compute/FeaturePanel.astro
+// One feature tab panel: description beside a numbered stage diagram.
+// Figma node 15991:8854.
+
+import type { Feature } from '@data/compute';
+
+export interface Props {
+  item: Feature;
+  index: number;
+}
+
+const { item, index } = Astro.props;
+---
+
+<div
+  class="compute-feature-panel"
+  id={`${item.id}-panel`}
+  role="tabpanel"
+  aria-labelledby={`${item.id}-tab`}
+  tabindex="0"
+  x-show={`active === '${item.id}'`}
+  x-cloak={index === 0 ? undefined : true}
+>
+  <div class="compute-feature-copy">
+    <h3 class="compute-feature-title">{item.title}</h3>
+    <p class="datum-text-xl text-midnight-fjord/80 text-pretty">{item.description}</p>
+  </div>
+
+  <div class="compute-feature-diagram">
+    <p class="compute-feature-diagram-label">{item.label.toUpperCase()}</p>
+    <ol class="compute-stage-list">
+      {
+        item.steps.map((step, stepIndex) => (
+          <li class="compute-stage">
+            <span class="compute-stage-number">{String(stepIndex + 1).padStart(2, '0')}</span>
+            <span class="compute-stage-label">{step}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    {item.note && <p class="compute-feature-note">{item.note}</p>}
+  </div>
+</div>

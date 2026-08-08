@@ -10,7 +10,10 @@ interface SectionGroupProps {
   label?: string;
   eyebrowVariant?: 'pine' | 'canyon' | 'connect' | 'iris' | 'app';
   showSectionLines?: boolean;
-  sectionLines?: Pick<SectionLineProps, 'left' | 'right' | 'top' | 'bottom' | 'overlap'>;
+  sectionLines?: Pick<
+    SectionLineProps,
+    'left' | 'right' | 'top' | 'bottom' | 'overlap' | 'extended' | 'bottomOverlap'
+  >;
   listClass?: string;
   class?: string;
 }

@@ -1,0 +1,126 @@
+---
+// src/components/compute/Hero.astro
+// Hero for /platform/compute: breadcrumb trail, product badge, the cycling
+// headline and the CLI terminal on its blush grid panel. Figma node 15991:8570.
+// Nav/Announcement are rendered by the page (see src/pages/platform/compute.astro),
+// not here.
+
+import { Image } from 'astro:assets';
+
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import Terminal from '@components/Terminal.astro';
+import SectionLine from '@components/SectionLine.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import gridTexture from '@assets/images/compute-hero-grid.png';
+import { breadcrumbs, hero } from '@data/compute';
+
+const longestHeadlinePhrase = hero.titlePhrases.reduce((longest, phrase) =>
+  phrase.length > longest.length ? phrase : longest
+);
+
+// Cycles the clay-coloured fragment of the headline. Figma annotation on node
+// 15991:8580 is the source of the phrase list.
+const headlineCycler = `{
+  phrases: ${JSON.stringify([...hero.titlePhrases])},
+  index: 0,
+  visible: true,
+  init() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (this.phrases.length < 2) return;
+    setInterval(() => {
+      this.visible = false;
+      setTimeout(() => {
+        this.index = (this.index + 1) % this.phrases.length;
+        this.visible = true;
+      }, 320);
+    }, 2600);
+  },
+}`;
+---
+
+<section
+  class="section--block section--block--x-pad bg-canyon-clay-pale border-silver-mist border-b"
+  aria-labelledby="compute-hero-title"
+>
+  <div class="max-width-nav spacing-pad relative pt-5 pb-16 md:pb-24 lg:pb-32 xl:pb-36">
+    <SectionLine left right top bottom />
+
+    <Breadcrumbs items={breadcrumbs} class="breadcrumbs--canyon" />
+
+    <div class="max-width-nopad compute-hero-layout">
+      <div class="compute-hero-copy flex flex-col items-start gap-8 lg:gap-10">
+        <span class="compute-badge">
+          <Icon name={hero.badgeIcon} size="md" class="m-1" />
+          {hero.badge}
+        </span>
+
+        <div class="flex flex-col gap-5">
+          {
+            /* The break after the phrase gives the first line to "Build" plus the
+              cycling phrase and nothing else, and keeps the rest of the headline
+              anchored to line two however long the phrase is. */
+          }
+          <h1
+            id="compute-hero-title"
+            class="compute-hero-title datum-text-9xl text-midnight-fjord max-w-full"
+            x-data={headlineCycler}
+          >
+            <span class="compute-headline-lead">
+              {hero.titleLead}{' '}
+              <span class="compute-headline-phrase-slot">
+                <span
+                  class="compute-headline-phrase compute-headline-phrase--sizer"
+                  aria-hidden="true"
+                >
+                  {longestHeadlinePhrase}
+                </span>
+                <span
+                  class="compute-headline-phrase"
+                  x-text="phrases[index]"
+                  :class="{ 'is-out': !visible }">{hero.titlePhrases[0]}</span
+                >
+              </span>
+            </span>
+            {hero.titleTail}
+          </h1>
+          <p class="datum-text-xl text-midnight-fjord/80 text-pretty">{hero.description}</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-5">
+          <Button
+            class="btn btn--midnight-fjord"
+            text={hero.primaryCta.text}
+            href={hero.primaryCta.href}
+            icon={{ name: 'arrow-right', size: 'md' }}
+            target="_blank"
+            data-rybbit-event="Compute: Try Datum Compute"
+          />
+          <Button
+            class="btn btn--alpha"
+            text={hero.secondaryCta.text}
+            href={hero.secondaryCta.href}
+            target="_blank"
+          />
+        </div>
+      </div>
+
+      <div class="compute-hero-panel">
+        <Image
+          src={gridTexture}
+          alt=""
+          class="compute-hero-grid"
+          aria-hidden="true"
+          loading="eager"
+        />
+        <Terminal
+          title={hero.terminal.title}
+          live={hero.terminal.live}
+          blocks={hero.terminal.blocks}
+          cursor={hero.terminal.cursor}
+          class="compute-hero-terminal"
+        />
+      </div>
+    </div>
+  </div>
+</section>

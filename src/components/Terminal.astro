@@ -1,0 +1,51 @@
+---
+// src/components/Terminal.astro
+// Dark terminal window used to show CLI output as a static illustration:
+// traffic lights, centred title, optional "live" badge, then monospace blocks.
+// Decorative by design — the content is mirrored in the surrounding prose, so
+// the whole thing is hidden from assistive tech.
+// Styles: import components-terminal.css from the page stylesheet.
+// Figma node 15991:9413.
+
+import type { TerminalProps } from '@/src/types/common';
+
+const {
+  title,
+  live = false,
+  blocks,
+  cursor = false,
+  class: className = '',
+} = Astro.props as TerminalProps;
+
+const lastBlockIndex = blocks.length - 1;
+---
+
+<div class:list={['terminal', className]} role="img" aria-label={`Terminal showing ${title}`}>
+  <div class="terminal-bar">
+    <span class="terminal-lights" aria-hidden="true">
+      <span class="terminal-light"></span>
+      <span class="terminal-light"></span>
+      <span class="terminal-light"></span>
+    </span>
+    <span class="terminal-title">{title}</span>
+    {live && <span class="terminal-live">● live</span>}
+  </div>
+
+  <div class="terminal-body" aria-hidden="true">
+    {
+      blocks.map((block, blockIndex) => (
+        <p class="terminal-block">
+          {block.map((line, lineIndex) => (
+            <>
+              {line}
+              {cursor && blockIndex === lastBlockIndex && lineIndex === block.length - 1 && (
+                <span class="terminal-cursor" />
+              )}
+              {lineIndex < block.length - 1 && <br />}
+            </>
+          ))}
+        </p>
+      ))
+    }
+  </div>
+</div>

@@ -322,20 +322,16 @@ export function isRoadmapShipped(milestone: Pick<RoadmapMilestone, 'shipped'>): 
 }
 
 /**
- * Group roadmaps into upcoming and previous based on releaseDate.
- * Milestones with releaseDate >= today are "upcoming".
+ * Group roadmaps into upcoming and previous based on shipped status.
+ * releaseDate is a due date (target completion), not a ship date, so a
+ * closed milestone is "previous" even if its due date hasn't passed yet.
  */
 export function groupRoadmapsByDate(roadmaps: RoadmapMilestone[]): GroupedRoadmaps {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   const upcoming: RoadmapMilestone[] = [];
   const previous: RoadmapMilestone[] = [];
 
   for (const roadmap of roadmaps) {
-    const releaseDate = new Date(roadmap.releaseDate);
-    releaseDate.setHours(0, 0, 0, 0);
-    (releaseDate >= today ? upcoming : previous).push(roadmap);
+    (isRoadmapShipped(roadmap) ? previous : upcoming).push(roadmap);
   }
 
   upcoming.sort((a, b) => new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime());

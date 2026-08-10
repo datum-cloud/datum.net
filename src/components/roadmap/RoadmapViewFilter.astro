@@ -12,21 +12,11 @@
 
   function applyRoadmapViewFilter() {
     const shippedView = isShippedView();
-    const cards = document.querySelectorAll<HTMLElement>('.roadmap-card');
+    const sections = document.querySelectorAll<HTMLElement>('[data-roadmap-view]');
 
-    cards.forEach((card) => {
-      const shippedAttr = card.dataset.roadmapShipped;
-
-      if (!shippedView) {
-        card.hidden = shippedAttr === 'true';
-        return;
-      }
-
-      if (shippedAttr === undefined) {
-        card.hidden = true;
-        return;
-      }
-      card.hidden = shippedAttr !== 'true';
+    sections.forEach((section) => {
+      const view = section.dataset.roadmapView;
+      section.hidden = shippedView ? view !== 'shipped' : view !== 'upcoming';
     });
   }
 

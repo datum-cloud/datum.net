@@ -1,0 +1,29 @@
+src/pages/api/webhooks/github-milestone.ts
+  s_84e7d24c892f30::t_921f602b53d14f 1-91
+  s_84e7d24c892f30::t_ad0c0283f51285 92-94
+src/libs/githubWebhookAuth.ts
+  s_84e7d24c892f30::t_6ecbbbbcf00eb6 1-27
+.env.example
+  s_84e7d24c892f30::t_2ac8e2e9970b60 17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "e591a2667364f817e1f6974327f6d5fda26fda00",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_84e7d24c892f30": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1fe092f5-74c9-45e2-ac0c-28453646e2ce",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

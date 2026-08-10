@@ -152,12 +152,20 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     {/* Analytics (Rybbit) - Load early but defer execution */}
     {
       isProduction && (
-        <script
-          src="https://app.rybbit.io/api/script.js"
-          data-site-id="abbcab984f01"
-          defer
-          is:inline
-        />
+        <>
+          <script
+            src="https://app.rybbit.io/api/script.js"
+            data-site-id="abbcab984f01"
+            defer
+            is:inline
+          />
+          <script
+            src="https://app.rybbit.io/api/script.js"
+            data-site-id="997f89789d8f"
+            defer
+            is:inline
+          />
+        </>
       )
     }
   </head>

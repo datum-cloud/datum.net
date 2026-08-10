@@ -142,6 +142,8 @@ const REDIRECTS = {
   '/platform/': { destination: '/platform/deliver', status: 301 },
   '/features': { destination: '/platform/deliver', status: 301 },
   '/features/': { destination: '/platform/deliver', status: 301 },
+  '/features/deliver': { destination: '/platform/deliver', status: 301 },
+  '/features/deliver/': { destination: '/platform/deliver', status: 301 },
   '/features/build': { destination: '/platform/build', status: 301 },
   '/features/build/': { destination: '/platform/build', status: 301 },
   '/features/connect': { destination: '/platform/connect', status: 301 },

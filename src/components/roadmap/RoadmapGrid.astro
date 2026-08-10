@@ -1,7 +1,7 @@
 ---
 // src/components/roadmap/RoadmapGrid.astro
 import type { RoadmapMilestone } from '@libs/githubRoadmap';
-import { getRoadmapMonthKey } from '@libs/githubRoadmap';
+import { getRoadmapMonthKey, isRoadmapShipped } from '@libs/githubRoadmap';
 import RoadmapCard from './RoadmapCard.astro';
 
 interface Props {
@@ -23,12 +23,40 @@ const months = Array.from({ length: 12 }, (_, i) => {
   const monthNum = i + 1;
   const monthKey = `${year}-${String(monthNum).padStart(2, '0')}`;
   const isoDate = `${monthKey}-01`;
-  return { monthKey, isoDate, roadmap: roadmapByMonth.get(monthKey) };
+  const roadmap = roadmapByMonth.get(monthKey);
+  return {
+    monthKey,
+    isoDate,
+    // Upcoming view skips shipped milestones entirely (same as the old client-side filter).
+    roadmap: roadmap && !isRoadmapShipped(roadmap) ? roadmap : undefined,
+    skip: Boolean(roadmap && isRoadmapShipped(roadmap)),
+  };
 });
+
+const shippedRoadmaps = roadmaps
+  .filter(
+    (roadmap) =>
+      isRoadmapShipped(roadmap) && getRoadmapMonthKey(roadmap.releaseDate).startsWith(String(year))
+  )
+  .sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime());
 ---
 
-<section aria-label="Roadmap releases">
+<section aria-label="Upcoming roadmap releases" data-roadmap-view="upcoming">
   <ul class="roadmap-grid">
-    {months.map((month) => <RoadmapCard monthDate={month.isoDate} roadmap={month.roadmap} />)}
+    {
+      months.map((month) =>
+        month.skip ? null : <RoadmapCard monthDate={month.isoDate} roadmap={month.roadmap} />
+      )
+    }
+  </ul>
+</section>
+
+<section aria-label="Shipped roadmap releases" data-roadmap-view="shipped" hidden>
+  <ul class="roadmap-grid">
+    {
+      shippedRoadmaps.map((roadmap) => (
+        <RoadmapCard monthDate={roadmap.releaseDate} roadmap={roadmap} />
+      ))
+    }
   </ul>
 </section>

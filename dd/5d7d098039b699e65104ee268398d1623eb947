@@ -1,0 +1,19 @@
+src/libs/githubRoadmap.ts
+  s_84e7d24c892f30::t_a667acf22f443b 325-327,334
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "dd5d7d098039b699e65104ee268398d1623eb947",
+  "prompts": {},
+  "sessions": {
+    "s_84e7d24c892f30": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1fe092f5-74c9-45e2-ac0c-28453646e2ce",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

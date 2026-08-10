@@ -7,7 +7,9 @@
  * separately from static repo assets (see `getRoadmapCoverImage`).
  *
  * Cache strategy:
- *  - Redis (when REDIS_URL is set): key `${redisKeyPrefix}github:roadmaps`, TTL 30 min
+ *  - Redis (when REDIS_URL is set): key `${redisKeyPrefix}github:roadmaps`, TTL 1 day
+ *    (the github-milestone webhook invalidates this actively on status changes;
+ *    the TTL is just a fallback)
  *  - In-memory Map: fallback for local dev (single-instance, no persistence)
  *
  * Auth: uses existing APP_ID / APP_PRIVATE_KEY / APP_INSTALLATION_ID env vars
@@ -29,7 +31,10 @@ export interface RoadmapMilestone {
 
 const GITHUB_ORG = 'datum-cloud';
 const GITHUB_REPO = 'enhancements';
-const CACHE_TTL_SECONDS = 30 * 60; // 30 minutes
+// The github-milestone webhook actively invalidates this cache on status
+// changes, so the TTL is just a fallback safety net rather than the primary
+// refresh mechanism.
+const CACHE_TTL_SECONDS = 24 * 60 * 60; // 1 day
 
 const REDIS_CACHE_KEY = `${redisKeyPrefix}github:roadmaps`;
 

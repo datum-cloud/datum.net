@@ -17,7 +17,7 @@ const page = await getCollectionEntry('pages', 'essentials');
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const theTitle = 'Open source networking primitives, all the essentials included';
+const theTitle = 'Batteries included.';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -25,7 +25,7 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': 'https://www.datum.net/essentials',
       url: 'https://www.datum.net/essentials',
-      name: 'Open Source Network Infrastructure - Datum Essentials',
+      name: 'Batteries included – Enterprise-grade networking primitives',
       description: 'We think core cloud features are essential, not optional.',
       isPartOf: { '@id': 'https://www.datum.net/#organization' },
       inLanguage: 'en-US',

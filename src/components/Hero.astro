@@ -20,9 +20,34 @@ const {
   hideContent = false,
   hideHero = false,
   showSectionLines = false,
+  titleHighlightVariant,
+  titleHighlightWords = 1,
 } = Astro.props as HeroProps;
 
 const TitleTag = titleTag;
+
+const TITLE_HIGHLIGHT_CLASSES: Record<NonNullable<HeroProps['titleHighlightVariant']>, string> = {
+  pine: 'text-pine-forge',
+  canyon: 'text-canyon-clay---links',
+  connect: 'text-connect-slate',
+};
+
+function withTrailingHighlight(text: string, wordCount: number, className: string): string {
+  const words = text.trim().split(/\s+/);
+  if (wordCount < 1 || wordCount >= words.length) return text;
+
+  const lead = words.slice(0, -wordCount).join(' ');
+  const highlighted = words.slice(-wordCount).join(' ');
+  return `${lead} <span class="${className}">${highlighted}</span>`;
+}
+
+const renderedTitle = titleHighlightVariant
+  ? withTrailingHighlight(
+      title,
+      titleHighlightWords,
+      TITLE_HIGHLIGHT_CLASSES[titleHighlightVariant]
+    )
+  : title;
 ---
 
 <header class:list={['hero--main', className]}>
@@ -58,7 +83,7 @@ const TitleTag = titleTag;
                   {title && (
                     <TitleTag
                       class="hero--main-content-title"
-                      set:html={marked.parseInline(title)}
+                      set:html={marked.parseInline(renderedTitle)}
                     />
                   )}
                   {description && (

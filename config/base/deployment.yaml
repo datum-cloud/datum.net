@@ -61,7 +61,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 10
             httpGet:
-              path: /
+              path: /livez
               port: 4321
               scheme: HTTP
           readinessProbe:
@@ -70,7 +70,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 10
             httpGet:
-              path: /
+              path: /readyz
               port: 4321
               scheme: HTTP
       dnsPolicy: ClusterFirst

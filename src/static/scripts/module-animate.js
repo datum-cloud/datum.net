@@ -14,6 +14,9 @@ const TOUCH_LEAD_PX = 150;
 
 let activeObservers = [];
 let bottomLineScrollHandlers = [];
+// Bumped on every init so deferred setup (see initMeterReveal) can tell whether
+// the run that scheduled it is still the current one.
+let initGeneration = 0;
 
 function trackBottomLineScroll(handler) {
   bottomLineScrollHandlers.push(handler);
@@ -227,6 +230,55 @@ function initModuleBorderWipe() {
   }
 }
 
+// Meter reveal — rows of a comparison meter fade up and their bars grow from
+// zero once the list scrolls into view, staggered in reading order. Reverses on
+// scroll-out like the other reveals.
+//
+// The zeroed starting state lives behind `.is-ready`, which only this function
+// adds: without JS — or with reduced motion, where it returns early — the base
+// rules leave every bar at its real width instead of an empty chart.
+//
+// `.is-armed` follows a frame later and is what actually enables the
+// transitions. Without that split the collapse to zero is itself animated, so a
+// card already on screen at load visibly deflates from full width before it
+// replays.
+//
+// Observation starts only once armed. An IntersectionObserver reports its first
+// entry almost immediately, so observing up front meant a card that was already
+// in view on a tall screen got `.is-inview` while transitions were still off —
+// the bars snapped to full length and the reveal was never seen.
+function initMeterReveal() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const generation = initGeneration;
+  const lists = document.querySelectorAll('[data-meter-reveal]');
+
+  for (const list of Array.from(lists)) {
+    list.classList.remove('is-inview');
+    list.classList.add('is-ready');
+
+    const obs = trackObserver(
+      new IntersectionObserver(
+        (entries) => {
+          list.classList.toggle('is-inview', entries[0].isIntersecting);
+        },
+        { threshold: 0, rootMargin: `0px 0px -${REVEAL_OFFSET_PX}px 0px` }
+      )
+    );
+
+    // Two frames: the first paints the collapsed state, the second lets the
+    // transition properties take effect before anything can change them.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // A re-init (bfcache, popstate) has already disconnected this observer.
+        if (generation !== initGeneration) return;
+        list.classList.add('is-armed');
+        obs.observe(list);
+      });
+    });
+  }
+}
+
 // Eyebrow typeout — the coloured cursor square "types" the eyebrow text
 // character by character, then returns to its resting position on the left.
 // The full text stays in the DOM throughout (only visually clipped), so
@@ -270,6 +322,7 @@ function initEyebrowTypeout() {
 }
 
 function initModuleAnimate() {
+  initGeneration += 1;
   activeObservers.forEach((obs) => obs.disconnect());
   activeObservers = [];
 
@@ -283,6 +336,7 @@ function initModuleAnimate() {
   initSectionLines();
   initLineDrawGraphics();
   initModuleBorderWipe();
+  initMeterReveal();
   initEyebrowTypeout();
 }
 

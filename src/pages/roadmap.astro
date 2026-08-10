@@ -22,7 +22,7 @@ const fm = page.data;
 const meta = fm.meta || {};
 const description = fm.description;
 const heroYear = new Date().getFullYear();
-const heroTitle = `${heroYear} Product Roadmap`;
+const heroTitle = `${heroYear} Roadmap`;
 
 const roadmaps = await fetchGitHubRoadmaps();
 const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
@@ -38,7 +38,7 @@ const tabItems = [
   <section class="datum-container">
     <Hero class="light content-alt" title={heroTitle} description={description} />
 
-    <div class="section--block section--block--pad bg-glacier-mist-700 pt-0">
+    <div class="section--block section--block--pad bg-platinum pt-0">
       <div class="max-width">
         <div class="mb-8 md:mb-13 lg:mb-18">
           <SecondaryTabNav

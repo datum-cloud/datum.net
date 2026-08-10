@@ -1,0 +1,65 @@
+---
+// src/pages/platform/compute.astro
+// Compute product detail page — Figma node 15991:8507.
+export const prerender = false;
+
+import '@styles/page-compute.css';
+
+import Layout from '@layouts/Layout.astro';
+import Announcement from '@components/Announcement.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import Hero from '@components/compute/Hero.astro';
+import Performance from '@components/compute/Performance.astro';
+import UseCases from '@components/compute/UseCases.astro';
+import Features from '@components/compute/Features.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'platform/compute');
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform/compute',
+      url: 'https://www.datum.net/platform/compute',
+      name: meta.title ?? title,
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-08-06',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-compute"
+  title={title}
+  description={fm.description}
+  meta={meta}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <header class="page-header">
+      <Announcement />
+      <Nav />
+    </header>
+
+    <div class="relative">
+      <Hero />
+      <Performance />
+      <UseCases />
+      <Features />
+
+      <ModuleConnector />
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

@@ -1,0 +1,28 @@
+---
+// src/components/compute/FeatureTab.astro
+// One button in the feature tab strip. Split out for the same reason as
+// UseCaseItem.astro — Alpine's `@`/`:` attributes are unparseable inside a
+// `.map()` expression. Figma node 15991:8823.
+
+import type { Feature } from '@data/compute';
+
+export interface Props {
+  item: Feature;
+}
+
+const { item } = Astro.props;
+---
+
+<button
+  type="button"
+  role="tab"
+  id={`${item.id}-tab`}
+  class="compute-tab"
+  aria-controls={`${item.id}-panel`}
+  @click={`active = '${item.id}'`}
+  :aria-selected={`active === '${item.id}'`}
+  :tabindex={`active === '${item.id}' ? 0 : -1`}
+  :class={`active === '${item.id}' && 'is-active'`}
+>
+  {item.label}
+</button>

@@ -1,0 +1,50 @@
+---
+// src/components/compute/Features.astro
+// "Virtual machines that are tiny and mighty" — tabbed feature panels, each a
+// description beside a numbered stage diagram. Figma node 15991:8797.
+
+import SectionLine from '@components/SectionLine.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import FeatureTab from '@components/compute/FeatureTab.astro';
+import FeaturePanel from '@components/compute/FeaturePanel.astro';
+import { features } from '@data/compute';
+
+const initialTab = features.items[0]!.id;
+---
+
+<section
+  id="features"
+  class="section--block section--block--x-pad border-silver-mist overflow-hidden border-b bg-white"
+>
+  <div class="max-width-nav section-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left right top bottom />
+
+    <div class="compute-section-header">
+      <SectionEyebrow>{features.eyebrow}</SectionEyebrow>
+      <h2 class="datum-text-8xl text-midnight-fjord text-pretty">
+        {features.titleLead}
+        <span class="text-canyon-clay---links">{features.titleAccent}</span>
+        {features.titleTail}
+      </h2>
+    </div>
+
+    <div class="max-width-nopad spacing-pad" x-data={`{ active: '${initialTab}' }`}>
+      {
+        /* Scrolls rather than wraps below xl, so the strip stays one row like the
+          source frame instead of collapsing into a ragged block. */
+      }
+      <div class="compute-tablist-wrap">
+        <div class="compute-tablist" role="tablist" aria-label={features.title}>
+          {features.items.map((item) => <FeatureTab item={item} />)}
+        </div>
+      </div>
+      <div class="relative">
+        <SectionLine left top extended />
+        <SectionLine right bottom bottomOverlap />
+        <div class="compute-feature-panels">
+          {features.items.map((item, index) => <FeaturePanel item={item} index={index} />)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

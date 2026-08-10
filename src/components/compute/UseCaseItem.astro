@@ -1,0 +1,91 @@
+---
+// src/components/compute/UseCaseItem.astro
+// One row of the use-case accordion. Split out of UseCases.astro because
+// Alpine's `@`/`:` attributes can't be parsed inside a `.map()` expression —
+// same reason FAQ.astro exists as its own component.
+// Figma node 15878:66123.
+
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import Terminal from '@components/Terminal.astro';
+import type { UseCase } from '@data/compute';
+
+export interface Props {
+  item: UseCase;
+  index: number;
+}
+
+const { item, index } = Astro.props;
+const panelId = `${item.id}-panel`;
+---
+
+<div class="compute-accordion-item" id={item.id}>
+  <h3 class="compute-accordion-heading">
+    <button
+      type="button"
+      class="compute-accordion-toggle"
+      @click={`open = open === ${index} ? null : ${index}`}
+      :aria-expanded={`open === ${index}`}
+      aria-controls={panelId}
+    >
+      <span class="compute-accordion-icon">
+        <Icon name={item.icon} size="md" />
+      </span>
+      <span class="compute-accordion-title">{item.title}</span>
+      {
+        /* Rotation lives on the wrapper: Icon.astro only forwards name/size/class,
+          so Alpine bindings would never reach the svg. */
+      }
+      <span
+        class="compute-accordion-chevron"
+        aria-hidden="true"
+        :class={`open === ${index} && 'is-open'`}
+      >
+        <Icon name="chevron-down" size="lg" />
+      </span>
+    </button>
+  </h3>
+
+  <div
+    class="compute-accordion-panel"
+    id={panelId}
+    x-show={`open === ${index}`}
+    x-collapse
+    x-cloak={index === 0 ? undefined : true}
+  >
+    <div class="compute-accordion-body">
+      <div class="compute-accordion-copy">
+        <p class="datum-text-xl text-app---dark---utility-2/80 text-pretty">{item.description}</p>
+
+        <ul class="compute-check-list">
+          {
+            item.points.map((point) => (
+              <li class="compute-check-item">
+                <Icon
+                  name="check"
+                  size="lg"
+                  class="compute-check-icon compute-check-icon--canyon"
+                />
+                <span class="compute-check-text">{point}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <Button
+          class="btn btn--alpha btn--sm"
+          text={item.cta.text}
+          href={item.cta.href}
+          target="_blank"
+          data-rybbit-event={`Compute: View docs (${item.id})`}
+        />
+      </div>
+
+      <Terminal
+        title={item.terminal.title}
+        live={item.terminal.live}
+        blocks={item.terminal.blocks}
+      />
+    </div>
+  </div>
+</div>

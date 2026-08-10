@@ -10,7 +10,7 @@ export const meta = {
 
 export const hero = {
   eyebrow: 'Dedicated cloud',
-  title: 'Advanced cloud networking expertise',
+  title: 'GPU clusters, built and operated by folks you can trust',
   description:
     'Leverage our decades of experience, deep industry relationships, flexible platform, and operational muscle to accelerate your business.',
   ctaText: 'Schedule a conversation',

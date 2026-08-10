@@ -1,5 +1,5 @@
 ---
-title: "System components & architecture"
+title: "Components"
 sidebar:
   label: Components
   order: 1

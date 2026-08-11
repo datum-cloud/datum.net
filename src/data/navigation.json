@@ -199,6 +199,11 @@
         { "text": "Privacy Policy", "href": "/legal/privacy" },
         { "text": "AUP", "href": "/legal/aup" },
         { "text": "Sub-Processors", "href": "/legal/subprocessors" },
+        { "text": "Master Services Agreement", "href": "/legal/master-services-agreement" },
+        { "text": "Data Processing Agreement", "href": "/legal/data-processing-agreement" },
+        { "text": "Security Addendum", "href": "/legal/security-addendum" },
+        { "text": "Service Level Agreement", "href": "/legal/service-level-agreement" },
+        { "text": "Third-Party Terms Addendum", "href": "/legal/third-party-terms-addendum" },
         { "text": "Status", "href": "https://status.datum.net", "isExternal": true }
       ]
     }

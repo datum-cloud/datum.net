@@ -3,7 +3,9 @@ import '@styles/page-legal.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import Sidebar from '@components/legal/Sidebar.astro';
 import { getCollection, render } from 'astro:content';
+import type { LegalNavItem } from '@/src/types/common';
 
 export async function getStaticPaths() {
   const legal = await getCollection('legal');
@@ -28,15 +30,25 @@ const { Content } = await render(page);
 const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
 
-// Build ordered side nav (matching design order)
-const navOrder = ['terms', 'privacy', 'aup', 'service-country-specific-terms', 'subprocessors'];
-const sortedLegal = [...allLegal].sort((a, b) => {
-  const ai = navOrder.indexOf(a.id);
-  const bi = navOrder.indexOf(b.id);
-  const aIdx = ai === -1 ? navOrder.length : ai;
-  const bIdx = bi === -1 ? navOrder.length : bi;
-  return aIdx - bIdx;
-});
+// Sort side nav by frontmatter sidebar.order (content-editable, like handbook)
+const sortedLegal = [...allLegal].sort(
+  (a, b) => (a.data.sidebar?.order ?? 0) - (b.data.sidebar?.order ?? 0)
+);
+
+const navItems: LegalNavItem[] = await Promise.all(
+  sortedLegal.map(async (entry) => {
+    const { headings } = await render(entry);
+    return {
+      id: entry.id,
+      title: entry.data.sidebar?.label || entry.data.title,
+      headings: headings.map((heading) => ({
+        slug: heading.slug,
+        text: heading.text,
+        depth: heading.depth,
+      })),
+    };
+  })
+);
 ---
 
 <Layout
@@ -54,75 +66,11 @@ const sortedLegal = [...allLegal].sort((a, b) => {
     <div class="section--block section--block--small-pad bg-glacier-mist-700">
       <div class="max-width">
         <div class="legal-layout">
-          <!-- Side Nav -->
-          <aside
-            class="legal-sidenav"
-            x-data="{ open: false }"
-            @click.away="open = false"
-            @resize.window="if (window.innerWidth >= 768) open = false"
-          >
-            <button
-              class="legal-sidenav-toggle md:hidden"
-              @click="open = !open"
-              :aria-expanded="open"
-              aria-controls="legal-sidenav-menu"
-            >
-              <span class="legal-sidenav-toggle--text">Menu</span>
-              <svg
-                x-show="!open"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                ><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"
-                ></line><line x1="3" y1="18" x2="21" y2="18"></line></svg
-              >
-              <svg
-                x-show="open"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                ><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"
-                ></line></svg
-              >
-            </button>
+          <Sidebar items={navItems} currentId={page.id} />
 
-            <nav id="legal-sidenav-menu" x-show="open" x-transition style="display: none;">
-              {
-                sortedLegal.map((entry) => (
-                  <a
-                    href={`/legal/${entry.id}`}
-                    class:list={[
-                      'legal-sidenav-item',
-                      { 'legal-sidenav-item--active': entry.id === page.id },
-                    ]}
-                    @click="open = false"
-                  >
-                    {entry.data.title}
-                  </a>
-                ))
-              }
-            </nav>
-          </aside>
-
-          <!-- Main Content -->
           <main class="legal-content">
             <Content />
           </main>
-
-          <!-- On this page (reserved column) -->
-          <!-- <div class="legal-on-this-page" aria-hidden="true"></div> -->
         </div>
       </div>
     </div>

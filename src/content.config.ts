@@ -112,6 +112,12 @@ const legal = defineCollection({
       subtitle: z.string().optional(),
       description: z.string().optional(),
       iconName: z.string().optional(),
+      sidebar: z
+        .object({
+          label: z.string().optional(),
+          order: z.number().optional(),
+        })
+        .optional(),
       meta: metaSchema(image),
     }),
 });

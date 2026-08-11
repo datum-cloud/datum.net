@@ -1,0 +1,185 @@
+---
+// src/components/legal/Sidebar.astro
+import type { LegalNavHeading, LegalNavItem, LegalSidebarProps } from '@/src/types/common';
+
+const { items, currentId } = Astro.props as LegalSidebarProps;
+
+const currentTitle = items.find((item) => item.id === currentId)?.title ?? 'Legal';
+---
+
+<aside
+  class="legal-sidenav"
+  x-data="{ open: false }"
+  @click.away="open = false"
+  @resize.window="if (window.innerWidth >= 768) open = false"
+>
+  <button
+    class="legal-sidenav-toggle md:hidden"
+    @click="open = !open"
+    :aria-expanded="open"
+    aria-controls="legal-sidenav-menu"
+  >
+    <span class="legal-sidenav-toggle--text">{currentTitle}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="legal-sidenav-toggle--icon"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <nav id="legal-sidenav-menu" class="legal-sidenav-menu" x-show="open" x-transition x-cloak>
+    <div class="legal-sidenav-container">
+      {
+        items.map((item: LegalNavItem) => {
+          const isCurrent = item.id === currentId;
+          const sectionHeadings = item.headings.filter(
+            (heading: LegalNavHeading) => heading.depth === 2
+          );
+          const hasSections = sectionHeadings.length > 0;
+
+          return (
+            <div
+              x-data={`{ isExpanded: ${isCurrent} }`}
+              class="legal-sidenav-category"
+              id={`legal-nav-${item.id}`}
+            >
+              <div class="legal-sidenav-category-header">
+                {hasSections ? (
+                  <button
+                    type="button"
+                    class="legal-sidenav-chevron-button"
+                    x-on:click="isExpanded = !isExpanded"
+                    x-bind:aria-expanded="isExpanded"
+                    aria-controls={`legal-nav-sections-${item.id}`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="legal-sidenav-chevron"
+                      aria-hidden="true"
+                      x-bind:class="isExpanded ? 'rotate-90' : ''"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+                ) : (
+                  <span class="legal-sidenav-chevron-spacer" aria-hidden="true" />
+                )}
+
+                <a
+                  href={`/legal/${item.id}`}
+                  class:list={[
+                    'legal-sidenav-item',
+                    'legal-sidenav-parent',
+                    { 'legal-sidenav-item--active': isCurrent },
+                  ]}
+                  @click="open = false"
+                >
+                  {item.title}
+                </a>
+              </div>
+
+              {hasSections && (
+                <ul
+                  id={`legal-nav-sections-${item.id}`}
+                  x-show="isExpanded"
+                  x-collapse
+                  x-cloak
+                  class="legal-sidenav-sections"
+                >
+                  {sectionHeadings.map((heading: LegalNavHeading) => (
+                    <li class="legal-sidenav-section-item">
+                      <a
+                        href={isCurrent ? `#${heading.slug}` : `/legal/${item.id}#${heading.slug}`}
+                        class="legal-sidenav-item legal-sidenav-section-link"
+                        data-legal-section={isCurrent ? heading.slug : undefined}
+                        @click="open = false"
+                      >
+                        {heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+  </nav>
+</aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sectionLinks = document.querySelectorAll<HTMLAnchorElement>(
+      '.legal-sidenav-section-link[data-legal-section]'
+    );
+    if (sectionLinks.length === 0) return;
+
+    function setActiveLink(slug: string | null) {
+      sectionLinks.forEach((link) => {
+        const sectionSlug = link.getAttribute('data-legal-section');
+        link.classList.toggle('legal-sidenav-item--active', !!slug && sectionSlug === slug);
+      });
+    }
+
+    const headingElements: HTMLElement[] = [];
+    sectionLinks.forEach((link) => {
+      const slug = link.getAttribute('data-legal-section');
+      if (slug) {
+        const el = document.getElementById(slug);
+        if (el) headingElements.push(el);
+      }
+    });
+
+    const visibleHeadings = new Set();
+
+    function pickActiveSlug(): string | null {
+      for (const el of headingElements) {
+        if (visibleHeadings.has(el.id)) return el.id;
+      }
+      return null;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleHeadings.add(entry.target.id);
+          } else {
+            visibleHeadings.delete(entry.target.id);
+          }
+        });
+        setActiveLink(pickActiveSlug());
+      },
+      { rootMargin: '0px 0px 0% 0px', threshold: 0 }
+    );
+
+    headingElements.forEach((el) => observer.observe(el));
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) setActiveLink(hash);
+    });
+
+    const initialHash = window.location.hash.slice(1);
+    if (initialHash) setActiveLink(initialHash);
+  });
+</script>

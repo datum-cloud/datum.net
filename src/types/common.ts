@@ -81,6 +81,16 @@ export interface SidebarProps {
   items: SidebarItems[];
 }
 
+export interface LegalNavItem {
+  id: string;
+  title: string;
+}
+
+export interface LegalSidebarProps {
+  items: LegalNavItem[];
+  currentId: string;
+}
+
 export interface ContentProps {
   content: {
     id: string;

@@ -2,11 +2,11 @@
 
 @layer components {
   .legal-layout {
-    @apply flex w-full flex-col items-start md:flex-row;
+    @apply flex w-full flex-col items-stretch md:flex-row;
   }
 
   .legal-sidenav {
-    @apply w-full shrink-0 self-start pb-8 md:sticky md:top-0 md:w-64.75 md:overflow-auto md:pr-7 md:pb-7;
+    @apply w-full shrink-0 self-start pt-5 pb-8 md:w-64.75 md:overflow-auto md:pt-12 md:pr-7 md:pb-7 lg:pt-16;
 
     /* Mobile toggle button */
     .legal-sidenav-toggle {
@@ -15,11 +15,19 @@
       .legal-sidenav-toggle--text {
         @apply datum-text-base font-medium text-gray-900;
       }
+
+      .legal-sidenav-toggle--icon {
+        @apply text-midnight-fjord/60 transition-transform duration-200;
+      }
+
+      &[aria-expanded='true'] .legal-sidenav-toggle--icon {
+        @apply rotate-180;
+      }
     }
 
     /* Nav list — hidden on mobile until toggled, always visible on desktop */
-    nav {
-      @apply flex flex-col gap-1 rounded-md border border-t-0 border-gray-200 bg-white p-2 md:border-0 md:bg-transparent md:p-0;
+    .legal-sidenav-menu {
+      @apply mt-0 flex flex-col gap-1 rounded-md border border-t-0 border-gray-200 bg-white p-2 md:mt-0 md:border-0 md:bg-transparent md:p-0;
 
       @media (min-width: 768px) {
         display: flex !important;
@@ -54,8 +62,17 @@
     }
   }
 
+  .legal-toc {
+    @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
+    @apply pt-9 pr-0 md:pt-12 md:pl-4 lg:pt-16 lg:pl-7;
+  }
+
+  .legal-toc .toc-container {
+    @apply top-9! max-h-[calc(100vh-5rem)] overflow-y-auto;
+  }
+
   .legal-content {
-    @apply flex-1 p-0;
+    @apply flex-1 px-0 pt-9 pb-0 md:pt-12 lg:pt-16;
 
     table {
       @apply my-6 w-full border-separate;
@@ -79,9 +96,5 @@
     tbody tr:hover td {
       @apply bg-glacier-mist-800;
     }
-  }
-
-  .legal-on-this-page {
-    @apply w-53.25 shrink-0 self-stretch;
   }
 }

@@ -1,0 +1,142 @@
+---
+title: "Service Level Agreement"
+slug: service-level-agreement
+sidebar:
+  label: "Service Level Agreement"
+  order: 7
+description: "Datum's Service Level Agreement describes availability commitments, service credits, and related terms."
+meta:
+  title: "Service Level Agreement - Datum Cloud"
+  description: "Read the draft Service Level Agreement covering availability, service credits, exclusions, and reporting."
+  og:
+    title: "Service Level Agreement - Datum Cloud"
+---
+import Container from '@components/Container.astro';
+
+<Container tag="article" class="datum-prose-article max-w-4xl pb-1 flow-root *:first:mt-0">
+
+<p class="mb-4 font-semibold">Datum Technology, Inc.</p>
+<small class="mb-2 block italic">Version 1.0 · August 1, 2026</small>
+<small class="mb-4 block italic">Exhibit A to Master Services Agreement</small>
+
+## 1. Purpose and Scope
+
+This Service Level Agreement ("SLA") is Exhibit A to the Master Services Agreement between Datum Technology, Inc. ("Datum") and Customer (the "MSA"). This SLA sets out Datum's commitments regarding the availability and performance of the Datum Platform ("Services"), the methodology for measuring compliance, and the remedies available to Customer in the event those commitments are not met. Capitalized terms not defined herein have the meanings given in the MSA.
+
+This SLA applies to the production environment of the Services. It does not apply to: (a) pre-production, staging, or evaluation environments; (b) Third-Party Software components (which are governed by the Third-Party Terms Addendum); or (c) any outage or degradation caused by Customer's own infrastructure, traffic, or configurations.
+
+## 2. Definitions
+
+| Term | Definition |
+| :---- | :---- |
+| **Monthly Uptime Percentage** | The total number of minutes in a calendar month, less the total minutes of Downtime in that month, divided by the total number of minutes in that month, expressed as a percentage. Calculated per Service region separately. |
+| **Downtime** | A period during which the Services are unavailable to Customer due to a failure within Datum's infrastructure or software. Downtime is measured from the time Customer submits a valid support ticket or Datum's monitoring systems detect the failure, whichever is earlier, to the time the Services are restored. |
+| **Uptime Commitment** | Datum's commitment to maintain a Monthly Uptime Percentage of at least 99.95% for each Service region in which Customer has active deployments. |
+| **Scheduled Maintenance** | Planned maintenance by Datum of which Customer receives at least 48 hours' prior written notice. Scheduled Maintenance does not count as Downtime. |
+| **Emergency Maintenance** | Unplanned maintenance required to address critical security vulnerabilities or imminent infrastructure failures. Datum will provide notice as promptly as practicable. Emergency Maintenance of up to four (4) hours per calendar month does not count as Downtime. |
+| **Service Credit** | A credit applied to Customer's next invoice as a percentage of the Monthly Recurring Fees paid for the affected Service region for the month in which the SLA failure occurred. |
+| **Monthly Recurring Fees** | The recurring fees paid by Customer for the Services in the affected Service region for the relevant calendar month, excluding one-time fees, professional services fees, and usage-based overages. |
+| **Incident** | A single, continuous period of Downtime, regardless of the number of support tickets filed in relation to that period. |
+| **Service Region** | A discrete geographic deployment region in which Datum provides the Services, as listed in the applicable Order Form. |
+| **Exclusion** | A period of unavailability that does not constitute Downtime, as further described in Section 5. |
+
+## 3. Uptime Commitment
+
+### 3.1 Commitment
+
+Datum commits to a Monthly Uptime Percentage of at least 99.95% for each Service Region. This equates to a maximum of approximately 21.9 minutes of Downtime per calendar month per Service Region.
+
+| Uptime Target | Max Monthly Downtime | Max Annual Downtime | Credit Trigger |
+| :---- | :---- | :---- | :---- |
+| 99.95% | ~21.9 minutes | ~4.38 hours | < 99.95% |
+
+### 3.2 Redundancy Architecture
+
+Datum maintains redundant infrastructure within each Service Region, including standby server capacity, redundant network paths, and automated failover mechanisms, designed to minimize the impact of individual component failures. The redundancy architecture does not guarantee protection against all causes of Downtime and does not modify the SLA credit structure in Section 4.
+
+### 3.3 Measurement
+
+Datum measures availability using its internal monitoring systems, which record availability at one-minute intervals. Datum's measurements are the authoritative source for SLA calculations unless Customer can demonstrate a material discrepancy with its own monitoring data. Customer may submit monitoring data from commercially reasonable third-party monitoring tools as supporting evidence in a credit claim, but such data is not determinative.
+
+## 4. Service Credits
+
+### 4.1 Credit Schedule
+
+If the Monthly Uptime Percentage for a Service Region falls below the Uptime Commitment in a given calendar month, Customer is eligible for a Service Credit according to the following schedule:
+
+| Monthly Uptime Percentage | Downtime in Month | Service Credit |
+| :---- | :---- | :---- |
+| 99.00% – < 99.95% | ~21.9 min – ~7.2 hrs | 10% of Monthly Recurring Fees |
+| 95.00% – < 99.00% | ~7.2 hrs – ~36.5 hrs | 25% of Monthly Recurring Fees |
+| < 95.00% | > ~36.5 hrs | 50% of Monthly Recurring Fees |
+
+### 4.2 Credit Cap
+
+Service Credits in any calendar month will not exceed fifty percent (50%) of the Monthly Recurring Fees for the affected Service Region for that month. Service Credits are cumulative within a month but do not carry over to subsequent months.
+
+### 4.3 Chronic Outage Termination Right
+
+If Customer experiences Downtime that would entitle Customer to a Service Credit of 50% or more in three (3) or more separate calendar months within any rolling twelve (12) month period, Customer may, upon thirty (30) days' written notice to Datum, terminate the affected Services without penalty and receive a pro-rata refund of any prepaid, unused fees for the terminated Service Region. This right is Customer's sole remedy for chronic underperformance beyond the credit schedule above.
+
+### 4.4 Claim Process
+
+To receive a Service Credit, Customer must submit a written credit request to Datum at support@datum.net within thirty (30) days of the end of the calendar month in which the SLA failure occurred. The request must include: (a) the date(s) and time(s) of the claimed Downtime; (b) the affected Service Region(s); (c) Customer's support ticket number(s) for the Incident; and (d) any supporting monitoring data Customer wishes Datum to consider. Datum will review the claim and respond within fifteen (15) business days. Approved credits will be applied to Customer's next invoice. Credits will not be issued as cash refunds unless the MSA is terminated.
+
+### 4.5 Exclusive Remedy
+
+Service Credits are Customer's sole and exclusive remedy for any failure by Datum to meet the Uptime Commitment. Except as provided in Section 4.3, SLA failures do not give Customer the right to terminate the MSA or any Order Form, and do not reduce Customer's payment obligations for undisputed invoices.
+
+## 5. Exclusions
+
+The following do not constitute Downtime and are not counted toward SLA calculations:
+
+* Scheduled Maintenance, as defined in Section 2, provided Customer received at least 48 hours' prior notice.
+
+* Emergency Maintenance not exceeding four (4) hours per calendar month, as defined in Section 2.
+
+* Unavailability caused by Customer's own actions, configurations, software, or third-party services not managed by Datum, including Customer-initiated provisioning changes, misconfigurations, or traffic overloads attributable to Customer's workloads.
+
+* Unavailability of Third-Party Software components, which are governed separately by the Third-Party Terms Addendum and the applicable upstream SLAs, if any.
+
+* Unavailability resulting from Force Majeure Events as defined in the MSA, including internet backbone disruptions, DNS failures outside Datum's control, or power utility failures.
+
+* Periods during which Customer has not paid undisputed invoices and Datum has suspended Services in accordance with the MSA.
+
+* Unavailability in pre-production, staging, development, or evaluation environments.
+
+* Brief interruptions of less than one (1) minute duration that do not materially affect Customer's ability to use the Services.
+
+## 6. Incident Response and Communication
+
+### 6.1 Priority Levels
+
+| Priority | Name | Description | Initial Response | Status Updates |
+| :---- | :---- | :---- | :---- | :---- |
+| P1 | Critical | Complete Service outage or critical security incident affecting all or substantially all Customers | 30 minutes | Every 60 minutes |
+| P2 | High | Significant degradation affecting core Services or a majority of Customer's active deployments | 2 hours | Every 4 hours |
+| P3 | Medium | Partial degradation or isolated failures not affecting core Service availability | 8 business hours | Daily |
+| P4 | Low | Minor issues, informational inquiries, feature requests | 2 business days | As needed |
+
+### 6.2 Status Page
+
+Datum will maintain a publicly accessible status page at status.datum.net (or equivalent) that displays real-time and historical availability for each Service Region. Customers may subscribe to status notifications. The status page is informational only and does not modify the SLA credit calculation process.
+
+### 6.3 Post-Incident Reports
+
+For P1 Incidents, Datum will provide Customer with a written post-incident report within five (5) business days of resolution. The report will include: (a) a timeline of the Incident; (b) root cause analysis; (c) actions taken to restore service; and (d) remediation steps to prevent recurrence.
+
+## 7. Maintenance Windows
+
+### 7.1 Scheduled Maintenance
+
+Datum will perform Scheduled Maintenance during the following preferred windows (Customer's local time): Sunday 02:00–06:00. Datum will provide at least 48 hours' prior written notice via email and the status page. Datum will use commercially reasonable efforts to minimize the duration of Scheduled Maintenance and to complete maintenance within the notified window.
+
+### 7.2 Emergency Maintenance
+
+Datum may perform Emergency Maintenance at any time without advance notice when required to address critical security vulnerabilities, data integrity risks, or imminent infrastructure failures. Datum will: (a) notify Customer via the status page and email as promptly as practicable; (b) use commercially reasonable efforts to minimize the duration of Emergency Maintenance; and (c) provide a post-incident summary within two (2) business days.
+
+## 8. Modifications to this SLA
+
+Datum may update this SLA from time to time. Datum will provide at least thirty (30) days' prior written notice of any material reduction in the Uptime Commitment or Service Credit percentages. If a material reduction would adversely affect Customer's rights, Customer may terminate the affected Services upon written notice within the notice period, with a pro-rata refund of prepaid, unused fees. Non-material updates (e.g., clarifications, addition of new Service Regions, improvements to credit percentages) take effect upon posting.
+
+</Container>

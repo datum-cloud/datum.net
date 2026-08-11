@@ -1,0 +1,56 @@
+---
+// src/components/legal/Sidebar.astro
+import type { LegalNavItem, LegalSidebarProps } from '@/src/types/common';
+
+const { items, currentId } = Astro.props as LegalSidebarProps;
+
+const currentTitle = items.find((item) => item.id === currentId)?.title ?? 'Legal';
+---
+
+<aside
+  class="legal-sidenav"
+  x-data="{ open: false }"
+  @click.away="open = false"
+  @resize.window="if (window.innerWidth >= 768) open = false"
+>
+  <button
+    class="legal-sidenav-toggle md:hidden"
+    @click="open = !open"
+    :aria-expanded="open"
+    aria-controls="legal-sidenav-menu"
+  >
+    <span class="legal-sidenav-toggle--text">{currentTitle}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="legal-sidenav-toggle--icon"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <nav id="legal-sidenav-menu" class="legal-sidenav-menu" x-show="open" x-transition x-cloak>
+    {
+      items.map((item: LegalNavItem) => (
+        <a
+          href={`/legal/${item.id}`}
+          class:list={[
+            'legal-sidenav-item',
+            { 'legal-sidenav-item--active': item.id === currentId },
+          ]}
+          @click="open = false"
+        >
+          {item.title}
+        </a>
+      ))
+    }
+  </nav>
+</aside>

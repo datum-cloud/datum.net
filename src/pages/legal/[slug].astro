@@ -4,6 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Sidebar from '@components/legal/Sidebar.astro';
+import TableOfContents from '@components/TableOfContents.astro';
 import { getCollection, render } from 'astro:content';
 import type { LegalNavItem } from '@/src/types/common';
 
@@ -26,7 +27,7 @@ const allLegal = Astro.props.legal;
 // SEO
 const fm = page.data;
 const meta = fm.meta || {};
-const { Content } = await render(page);
+const { Content, headings } = await render(page);
 const title = fm.title ? fm.title : 'Datum - Privacy Policy';
 const description = fm.description;
 
@@ -35,20 +36,10 @@ const sortedLegal = [...allLegal].sort(
   (a, b) => (a.data.sidebar?.order ?? 0) - (b.data.sidebar?.order ?? 0)
 );
 
-const navItems: LegalNavItem[] = await Promise.all(
-  sortedLegal.map(async (entry) => {
-    const { headings } = await render(entry);
-    return {
-      id: entry.id,
-      title: entry.data.sidebar?.label || entry.data.title,
-      headings: headings.map((heading) => ({
-        slug: heading.slug,
-        text: heading.text,
-        depth: heading.depth,
-      })),
-    };
-  })
-);
+const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
+  id: entry.id,
+  title: entry.data.sidebar?.label || entry.data.title,
+}));
 ---
 
 <Layout
@@ -71,6 +62,15 @@ const navItems: LegalNavItem[] = await Promise.all(
           <main class="legal-content">
             <Content />
           </main>
+
+          <aside class="legal-toc">
+            <TableOfContents
+              headings={headings}
+              title="On This Page"
+              showTitle={true}
+              sticky={true}
+            />
+          </aside>
         </div>
       </div>
     </div>

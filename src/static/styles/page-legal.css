@@ -2,11 +2,11 @@
 
 @layer components {
   .legal-layout {
-    @apply flex w-full flex-col items-start md:flex-row;
+    @apply flex w-full flex-col items-stretch md:flex-row;
   }
 
   .legal-sidenav {
-    @apply w-full shrink-0 self-start pb-8 md:sticky md:top-0 md:w-64.75 md:overflow-auto md:pr-7 md:pb-7;
+    @apply w-full shrink-0 self-start pt-5 pb-8 md:w-64.75 md:overflow-auto md:pt-12 md:pr-7 md:pb-7 lg:pt-16;
 
     /* Mobile toggle button */
     .legal-sidenav-toggle {
@@ -35,50 +35,11 @@
     }
   }
 
-  .legal-sidenav-container {
-    @apply flex w-full flex-col gap-1;
-  }
-
-  .legal-sidenav-category {
-    @apply w-full;
-  }
-
-  .legal-sidenav-category-header {
-    @apply flex w-full items-start gap-0.5;
-  }
-
-  .legal-sidenav-chevron-button {
-    @apply text-midnight-fjord mt-1.5 flex shrink-0 items-center justify-center p-0.5;
-  }
-
-  .legal-sidenav-chevron {
-    @apply inline-block h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(.36,.66,.6,1)];
-  }
-
-  .legal-sidenav-chevron-spacer {
-    @apply mt-1.5 inline-block h-4 w-4 shrink-0;
-  }
-
-  .legal-sidenav-sections {
-    @apply border-glacier-mist-900 mt-1 ml-[9px] border-l-2 pl-3;
-  }
-
-  .legal-sidenav-section-item {
-    @apply p-0;
-  }
-
   .legal-sidenav-item {
-    @apply datum-text-sm text-midnight-fjord/60 block flex-1 rounded-md p-2 font-medium transition-colors duration-150;
+    @apply datum-text-sm text-midnight-fjord/60 block rounded-md p-2 font-medium transition-colors duration-150;
     @apply hover:text-midnight-fjord/80;
 
-    /* Parent doc: bold only, no background */
-    &.legal-sidenav-parent.legal-sidenav-item--active {
-      @apply text-midnight-fjord font-semibold;
-      @apply hover:text-midnight-fjord bg-transparent hover:bg-transparent;
-    }
-
-    /* Section links keep canyon-clay + white bg active state */
-    &.legal-sidenav-section-link.legal-sidenav-item--active {
+    &.legal-sidenav-item--active {
       @apply text-canyon-clay---links bg-white font-semibold;
       @apply hover:text-canyon-clay---links hover:bg-white;
     }
@@ -91,15 +52,7 @@
         @apply text-midnight-fjord/80;
       }
 
-      &.legal-sidenav-parent.legal-sidenav-item--active {
-        @apply text-midnight-fjord bg-transparent font-semibold;
-
-        &:hover {
-          @apply text-midnight-fjord bg-transparent;
-        }
-      }
-
-      &.legal-sidenav-section-link.legal-sidenav-item--active {
+      &.legal-sidenav-item--active {
         @apply text-canyon-clay---links bg-white font-semibold;
 
         &:hover {
@@ -109,12 +62,17 @@
     }
   }
 
-  .legal-sidenav-section-link {
-    @apply datum-text-sm;
+  .legal-toc {
+    @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
+    @apply pt-9 pr-0 md:pt-12 md:pl-4 lg:pt-16 lg:pl-7;
+  }
+
+  .legal-toc .toc-container {
+    @apply top-9! max-h-[calc(100vh-5rem)] overflow-y-auto;
   }
 
   .legal-content {
-    @apply flex-1 p-0;
+    @apply flex-1 px-0 pt-9 pb-0 md:pt-12 lg:pt-16;
 
     table {
       @apply my-6 w-full border-separate;
@@ -138,9 +96,5 @@
     tbody tr:hover td {
       @apply bg-glacier-mist-800;
     }
-  }
-
-  .legal-on-this-page {
-    @apply w-53.25 shrink-0 self-stretch;
   }
 }

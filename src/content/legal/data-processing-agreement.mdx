@@ -3,7 +3,7 @@ title: "Data Processing Agreement"
 slug: data-processing-agreement
 sidebar:
   label: "Data Processing Agreement"
-  order: 7
+  order: 5
 description: "Datum's Data Processing Agreement describes how personal data is processed in connection with the Services."
 meta:
   title: "Data Processing Agreement - Datum Cloud"
@@ -15,38 +15,229 @@ import Container from '@components/Container.astro';
 
 <Container tag="article" class="datum-prose-article max-w-4xl pb-1 flow-root *:first:mt-0">
 
-<small class="mb-8 block italic">Draft — content forthcoming. This page is staged for structure and navigation while legal copy is finalized.</small>
+<p class="mb-4 font-semibold">Datum Technology, Inc.</p>
+<small class="mb-2 block italic">Version 1.0 · August 1, 2026</small>
+<small class="mb-4 block italic">Exhibit B to Master Services Agreement</small>
 
-## Roles and Scope
+<small class="mb-8 block italic">Draft: This DPA reflects Datum's limited data processor role: account/contact/billing data for Customer's authorized users, plus network traffic metadata. Datum does not access Customer payload data. Review with counsel before execution, particularly Schedule 2 technical measures.</small>
 
-Draft — content forthcoming.
+## Recitals
 
-## Processing Details
+This Data Processing Agreement ("DPA") is Exhibit B to the Master Services Agreement between Datum Technology, Inc. ("Datum") and Customer (the "MSA") and governs Datum's processing of Personal Data on behalf of Customer in connection with the Services.
 
-Draft — content forthcoming.
+The parties acknowledge that:
 
-## Security
+* Customer is a Controller in respect of Personal Data relating to Customer's Authorized Users and billing contacts that Customer submits to Datum in connection with account management and use of the Services.
 
-Draft — content forthcoming.
+* Datum acts as a Processor of such Personal Data on Customer's behalf, processing it only as necessary to provide the Services and in accordance with Customer's documented instructions.
 
-## Sub-processors
+* Customer's end-user traffic transmitted over Datum's network infrastructure is not Personal Data processed by Datum. Datum provides network connectivity infrastructure; it does not inspect, access, or process the content or payload of Customer's network traffic. Customer retains full responsibility for any Personal Data contained in Customer's network traffic.
 
-Draft — content forthcoming.
+* Datum uses Stripe and other third-party payment processors for billing. Payment card data and other sensitive financial information is not stored by or accessible to Datum directly; such data is processed by Stripe under Stripe's own data processing terms and PCI DSS compliance framework.
 
-## International Transfers
+## 1. Definitions
 
-Draft — content forthcoming.
+| Term | Meaning |
+| :---- | :---- |
+| **Controller** | The entity that determines the purposes and means of processing Personal Data. Customer is the Controller of Account Personal Data. |
+| **Processor** | The entity that processes Personal Data on behalf of the Controller. Datum is the Processor of Account Personal Data. |
+| **Account Personal Data** | Personal Data relating to Customer's Authorized Users and billing contacts that Customer provides to Datum for the purpose of account setup, user management, authentication, support, and billing administration. This includes names, business email addresses, business telephone numbers, business postal addresses, job titles, and IP addresses used to access the Datum management console. It does not include payment card data or Customer network traffic payload. |
+| **Personal Data** | Any information relating to an identified or identifiable natural person, as defined under applicable Data Protection Laws. |
+| **Data Protection Laws** | All applicable laws and regulations relating to the processing of Personal Data and privacy, including (as applicable): the EU General Data Protection Regulation (GDPR) (Regulation (EU) 2016/679); the UK GDPR and Data Protection Act 2018; the California Consumer Privacy Act (CCPA) as amended by the CPRA; and any other applicable national or state data protection legislation. |
+| **Processing** | Any operation performed on Personal Data, including collection, recording, storage, use, disclosure, transmission, and deletion. |
+| **Security Incident** | A confirmed breach of Datum's security leading to the accidental or unlawful destruction, loss, alteration, unauthorized disclosure of, or access to, Account Personal Data. |
+| **Sub-processor** | Any third party engaged by Datum to process Account Personal Data on Datum's behalf in connection with the Services. |
+| **SCCs** | Standard Contractual Clauses for the transfer of Personal Data to third countries, as adopted by the European Commission or the UK ICO, as applicable. |
+| **EEA** | The European Economic Area. |
 
-## Data Subject Rights
+## 2. Scope, Role, and Instructions
 
-Draft — content forthcoming.
+### 2.1 Scope of Processing
 
-## Audit
+This DPA applies solely to Datum's processing of Account Personal Data in connection with providing the Services. The nature, purpose, duration, and categories of Account Personal Data processed are described in Schedule 1 (Processing Activities).
 
-Draft — content forthcoming.
+### 2.2 Processing on Instructions
 
-## Termination
+Datum will process Account Personal Data only: (a) on Customer's documented instructions, as set out in this DPA and the MSA; (b) as required by applicable law, in which case Datum will inform Customer of that legal requirement before processing unless prohibited by law; or (c) as otherwise agreed in writing by the parties. Datum will promptly inform Customer if, in Datum's opinion, an instruction violates applicable Data Protection Laws.
 
-Draft — content forthcoming.
+### 2.3 Network Traffic
+
+For the avoidance of doubt, Datum does not process the content or payload of Customer's network traffic as part of the Services. Datum provides infrastructure-level connectivity; it does not inspect, intercept, store, or analyze Customer's network traffic beyond the collection of aggregate network performance metrics (packet counts, throughput statistics, error rates) that do not constitute Personal Data. Customer is solely responsible for the lawfulness of any Personal Data transmitted by Customer or its end users over Datum's network infrastructure.
+
+### 2.4 Payment Data
+
+Payment card data, bank account information, and related financial data submitted by Customer for billing purposes is processed directly by Datum's third-party payment processor (currently Stripe, Inc.) and is not stored by or accessible to Datum. Stripe's data processing is governed by Stripe's own terms and privacy policy. Customer should review Stripe's DPA and privacy documentation separately.
+
+## 3. Datum's Obligations
+
+### 3.1 Confidentiality
+
+Datum will ensure that persons authorized to process Account Personal Data are subject to binding confidentiality obligations and process Account Personal Data only as necessary to provide the Services.
+
+### 3.2 Security Measures
+
+Datum will implement and maintain appropriate technical and organizational security measures to protect Account Personal Data against unauthorized or unlawful processing and against accidental loss, destruction, damage, or disclosure. The current technical and organizational measures are described in Schedule 2. Datum may update the measures in Schedule 2 from time to time, provided that the overall level of security is not materially reduced.
+
+### 3.3 Security Incidents
+
+In the event of a confirmed Security Incident, Datum will: (a) notify Customer without undue delay, and in any event within seventy-two (72) hours of becoming aware of the Security Incident; (b) provide Customer with sufficient information to allow Customer to meet its own notification obligations under applicable Data Protection Laws; and (c) cooperate with Customer's reasonable investigation of the Security Incident. Datum's notification will include, to the extent known at the time: the nature of the Security Incident; the categories and approximate number of individuals and records affected; the likely consequences; and the measures taken or proposed to address the incident.
+
+### 3.4 Data Subject Rights
+
+Datum will, taking into account the nature of the processing, assist Customer by appropriate technical and organizational measures to fulfill Customer's obligation to respond to requests from data subjects exercising their rights under applicable Data Protection Laws (including rights of access, rectification, erasure, restriction, portability, and objection). If Datum receives a request directly from a data subject relating to Account Personal Data, Datum will promptly forward the request to Customer and will not respond to the data subject directly except as instructed by Customer or required by law.
+
+### 3.5 Data Protection Impact Assessments
+
+Datum will provide reasonable assistance to Customer in relation to any data protection impact assessments or prior consultations with supervisory authorities that Customer is required to carry out under applicable Data Protection Laws, to the extent such assessments relate to Account Personal Data processed by Datum.
+
+### 3.6 Records of Processing
+
+Datum will maintain records of processing activities carried out on behalf of Customer as required by applicable Data Protection Laws and will make such records available to Customer or competent supervisory authorities upon request.
+
+## 4. Customer's Obligations
+
+Customer represents and warrants that: (a) it has a lawful basis for providing Account Personal Data to Datum and for Datum's processing of such data as described in this DPA; (b) it has provided all required notices to and obtained all required consents from data subjects whose Personal Data is included in Account Personal Data; (c) the instructions it gives to Datum comply with applicable Data Protection Laws; and (d) it will promptly inform Datum of any changes to applicable law that affect Datum's processing obligations under this DPA.
+
+## 5. Sub-processors
+
+### 5.1 Authorized Sub-processors
+
+Customer grants Datum general authorization to engage Sub-processors to process Account Personal Data in connection with the Services. The current list of Datum's Sub-processors is set out in Schedule 3. Datum will ensure each Sub-processor is bound by data processing obligations at least as protective as those in this DPA.
+
+### 5.2 Changes to Sub-processors
+
+Datum will notify Customer at least thirty (30) days before adding or replacing a Sub-processor that will process Account Personal Data. Datum will make such notification via email to Customer's designated contact or through the Datum customer portal. If Customer has a reasonable objection to a new Sub-processor on data protection grounds, Customer will notify Datum within fifteen (15) days of Datum's notice. The parties will work in good faith to resolve the objection. If the objection cannot be resolved, Customer may, as its sole remedy, terminate the Services that cannot be provided without the objected Sub-processor, with a pro-rata refund of prepaid fees.
+
+## 6. International Data Transfers
+
+### 6.1 Transfer Mechanisms
+
+Datum will not transfer Account Personal Data originating from the EEA, UK, or Switzerland to a country not recognized as providing adequate protection under applicable Data Protection Laws without: (a) implementing appropriate transfer safeguards, including Standard Contractual Clauses as approved by the relevant supervisory authority; or (b) relying on another lawful transfer mechanism under applicable Data Protection Laws.
+
+### 6.2 SCCs
+
+Where SCCs are required for a transfer of Account Personal Data, the parties agree that the SCCs are incorporated into and form part of this DPA. The SCCs will be deemed completed with the details set out in Schedule 1 and this DPA. In the event of a conflict between this DPA and the SCCs, the SCCs will prevail with respect to the international transfer.
+
+### 6.3 US Operations
+
+Datum is incorporated and primarily operates in the United States. Account Personal Data relating to Customer's Authorized Users will be stored and processed on Datum's infrastructure located in the United States unless Customer's Order Form specifies a different Service Region. Datum will comply with applicable US data protection laws, including the CCPA/CPRA with respect to California residents.
+
+## 7. Data Retention and Deletion
+
+### 7.1 Retention During Term
+
+Datum will retain Account Personal Data for as long as necessary to provide the Services or as required by applicable law. Datum will not retain Account Personal Data longer than necessary for the purposes described in Schedule 1.
+
+### 7.2 Deletion on Termination
+
+Upon termination or expiration of the MSA, Datum will, at Customer's election, either: (a) delete all Account Personal Data in Datum's possession within sixty (60) days of the termination date; or (b) return Account Personal Data to Customer in a machine-readable format within thirty (30) days of the termination date, and delete all copies thereafter. Datum will provide written certification of deletion upon Customer's request. Datum may retain Account Personal Data to the extent required by applicable law, in which case Datum will notify Customer of the retention obligation and continue to protect such data in accordance with this DPA.
+
+## 8. Audits and Compliance
+
+### 8.1 Audit Rights
+
+Upon Customer's written request (and not more than once per calendar year absent reasonable cause), Datum will: (a) make available to Customer information reasonably necessary to demonstrate Datum's compliance with this DPA; and (b) allow for and contribute to audits, including inspections, conducted by Customer or a qualified third-party auditor appointed by Customer, subject to the following conditions: the auditor is not a competitor of Datum; Customer provides at least thirty (30) days' prior written notice; and the audit is conducted during business hours with minimal disruption to Datum's operations.
+
+### 8.2 Certifications
+
+Datum will pursue and maintain industry-standard security certifications appropriate to its infrastructure platform (including SOC 2 Type II). Datum will make current certification reports available to Customer under NDA upon request. Where available, Datum's existing certifications may satisfy Customer's audit requirements without requiring a separate on-site audit.
+
+## 9. California Consumer Privacy Act (CCPA/CPRA)
+
+To the extent the CCPA/CPRA applies to Datum's processing of Account Personal Data: (a) Datum is a "Service Provider" as defined under the CCPA/CPRA and processes Account Personal Data only for the Business Purposes described in Schedule 1; (b) Datum will not sell or share Account Personal Data, retain, use, or disclose Account Personal Data outside the direct business relationship between Datum and Customer, or combine Account Personal Data with personal information obtained from other sources except as permitted by the CCPA/CPRA; and (c) Datum will comply with applicable obligations for Service Providers under the CCPA/CPRA and will notify Customer if it determines it can no longer comply with such obligations.
+
+## 10. General
+
+This DPA forms part of, and is subject to, the terms of the MSA. In the event of a conflict between this DPA and the MSA with respect to the processing of Personal Data, this DPA controls. This DPA does not limit either party's rights or obligations under the MSA except as expressly stated herein. This DPA will remain in effect for as long as Datum processes Account Personal Data under the MSA. If any provision of this DPA is found invalid or unenforceable, the remaining provisions continue in full force.
+
+## SCHEDULE 1 — DESCRIPTION OF PROCESSING ACTIVITIES
+
+| Element | Details |
+| :---- | :---- |
+| **Controller** | Customer (as identified in the MSA cover page) |
+| **Processor** | Datum Technology, Inc., 120 Broadway, 26th Floor, New York, NY 10271 |
+| **Subject Matter** | Account management, user authentication, support, and billing administration for Customer's use of the Datum Platform |
+| **Duration** | For the term of the MSA, and for such additional period as required by applicable law or as necessary to fulfill Datum's post-termination deletion obligations |
+| **Nature of Processing** | Collection, storage, use, disclosure to Sub-processors, and deletion of Account Personal Data as necessary to provide the Services |
+| **Purpose of Processing** | (a) Account creation and management; (b) User authentication and access control; (c) Provision of the Services; (d) Technical support and customer service; (e) Service communications (maintenance notices, security alerts, product updates); (f) Billing administration (coordinating with payment processor; not storing payment card data directly); (g) Legal compliance and fraud prevention |
+| **Categories of Personal Data** | Names; Business email addresses; Business telephone numbers; Business postal/billing addresses; Job titles; IP addresses used to access the Datum management console; Support ticket contents (which may incidentally contain Personal Data); Usage logs tied to Authorized User accounts |
+| **Categories of Data Subjects** | Customer's Authorized Users (employees, contractors, and agents authorized to access the Services); Customer's billing and legal contacts |
+| **Special Category Data** | None intended. Customer must not submit special category data (as defined under GDPR Article 9) to Datum's systems without prior written agreement |
+| **Network Traffic** | Explicitly out of scope. Datum does not process the content of Customer's network traffic. See Section 2.3 |
+| **Payment Card Data** | Explicitly out of scope. Processed by Stripe. See Section 2.4 |
+
+## SCHEDULE 2 — TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES
+
+<small class="mb-4 block italic">The measures below reflect standard infrastructure security practices. Engineering should review and confirm each measure is implemented before execution. Add certifications (SOC 2, ISO 27001) once obtained.</small>
+
+Datum implements the following technical and organizational measures to protect Account Personal Data:
+
+### Access Controls
+
+* Role-based access control (RBAC) limiting access to Account Personal Data to personnel who require it to perform their duties
+
+* Multi-factor authentication (MFA) required for all Datum personnel accessing production systems
+
+* Privileged access management with logging and regular access reviews
+
+* Automated de-provisioning of access upon employee or contractor termination
+
+### Encryption
+
+* Account Personal Data encrypted at rest using AES-256 or equivalent
+
+* Account Personal Data encrypted in transit using TLS 1.2 or higher
+
+* Encryption keys managed via a dedicated key management service with regular rotation
+
+### Network and Infrastructure Security
+
+* Network segmentation separating management plane (which processes Account Personal Data) from customer data plane (which carries network traffic)
+
+* Firewall and intrusion detection systems protecting management infrastructure
+
+* Regular vulnerability scanning and patch management with critical patches applied within [14] days of release
+
+* DDoS mitigation controls on management console endpoints
+
+### Monitoring and Logging
+
+* Security information and event management (SIEM) system monitoring access to Account Personal Data
+
+* Audit logs of access to and modifications of Account Personal Data retained for [12] months
+
+* Automated alerts for anomalous access patterns
+
+### Organizational Measures
+
+* Information security policy reviewed annually
+
+* Security awareness training for all personnel with access to Account Personal Data upon onboarding and annually thereafter
+
+* Incident response plan with defined escalation procedures and breach notification workflow
+
+* Third-party security assessments [annually / upon material architecture changes]
+
+### Backup and Recovery
+
+* Account Personal Data backed up [daily] with backups encrypted and stored in a separate geographic location
+
+* Backup restoration tested [quarterly]
+
+* Defined recovery time objective (RTO) and recovery point objective (RPO) for management systems
+
+## SCHEDULE 3 — APPROVED SUB-PROCESSORS
+
+<small class="mb-4 block italic">Complete this list with all vendors who access Account Personal Data. The table below includes known likely sub-processors; confirm and add any others before execution.</small>
+
+| Sub-processor | Location | Processing Activity | Data Processed |
+| :---- | :---- | :---- | :---- |
+| **Stripe, Inc.** | United States | Payment processing and billing administration | Billing contact name and address only; payment card data processed entirely by Stripe |
+| **Google Cloud Platform (GCP)** | United States / [regions] | Cloud infrastructure hosting for management plane and account data storage | Account Personal Data (stored and processed on GCP infrastructure) |
+| **Servers.com** | United States / [regions] | Bare metal and dedicated server infrastructure for network platform deployment | Network infrastructure only; limited Account Personal Data exposure — [CONFIRM WITH ENGINEERING] |
+| **NetActuate** | United States / [regions] | Network hosting and colocation infrastructure for Service Region deployments | Network infrastructure only; limited Account Personal Data exposure — [CONFIRM WITH ENGINEERING] |
+| **Google Workspace** | United States | Internal collaboration, email, and support ticket management | Support ticket contents; Authorized User contact details |
+| **Help Scout** | United States | Customer support ticketing | Authorized User names, email addresses, support correspondence |
+| **JumpCloud** | United States | User authentication and single sign-on | Authorized User email addresses and authentication tokens |
 
 </Container>

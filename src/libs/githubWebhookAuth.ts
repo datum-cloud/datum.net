@@ -9,7 +9,7 @@ import crypto from 'node:crypto';
  * so it needs its own verifier.
  */
 export function verifyGitHubWebhookSignature(request: Request, rawBody: string): boolean {
-  const webhookSecret = process.env.GITHUB_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRAPI_WEBHOOK_SECRET;
   if (!webhookSecret) return false;
 
   const signatureHeader = request.headers.get('X-Hub-Signature-256');

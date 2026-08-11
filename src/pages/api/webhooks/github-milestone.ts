@@ -27,8 +27,8 @@ interface MilestoneWebhookPayload {
 export const POST: APIRoute = async ({ request }) => {
   // Fail closed: reject if the secret isn't configured, rather than silently
   // skipping verification and leaving this cache-purge endpoint open.
-  if (!process.env.GITHUB_WEBHOOK_SECRET) {
-    console.error('[github-webhook] GITHUB_WEBHOOK_SECRET is not configured — rejecting request');
+  if (!process.env.STRAPI_WEBHOOK_SECRET) {
+    console.error('[github-webhook] STRAPI_WEBHOOK_SECRET is not configured — rejecting request');
     return new Response(JSON.stringify({ ok: false, error: 'Webhook secret not configured' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },

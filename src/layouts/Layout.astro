@@ -1,4 +1,5 @@
 ---
+import '@styles/base.css';
 import fontsCss from '@styles/fonts.css?raw';
 import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
@@ -182,7 +183,6 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
       <slot />
     </main>
     <script>
-      import '@/src/static/scripts/scroll-effects.js';
       import '@/src/static/scripts/module-animate.js';
     </script>
 

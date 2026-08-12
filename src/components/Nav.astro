@@ -63,13 +63,20 @@ const { class: className = '' } = Astro.props as NavProps;
 </section>
 
 <script>
+  let navBackdropRaf = 0;
+  let lastNavBackdropTop = '';
+
   const syncNavDropdownBackdropTop = () => {
-    const container = document.querySelector('.nav--main-container');
-    if (!container) return;
-    document.documentElement.style.setProperty(
-      '--nav-dropdown-backdrop-top',
-      `${container.getBoundingClientRect().bottom}px`
-    );
+    if (navBackdropRaf) return;
+    navBackdropRaf = requestAnimationFrame(() => {
+      navBackdropRaf = 0;
+      const container = document.querySelector('.nav--main-container');
+      if (!container) return;
+      const next = `${container.getBoundingClientRect().bottom}px`;
+      if (next === lastNavBackdropTop) return;
+      lastNavBackdropTop = next;
+      document.documentElement.style.setProperty('--nav-dropdown-backdrop-top', next);
+    });
   };
 
   const initNavDropdownBackdropTop = () => {
@@ -78,9 +85,9 @@ const { class: className = '' } = Astro.props as NavProps;
 
     syncNavDropdownBackdropTop();
 
+    // ResizeObserver + window resize cover nav/announcement height changes.
+    // Scroll is omitted: sticky nav bottom edge does not move with scrollY.
     window.addEventListener('resize', syncNavDropdownBackdropTop, { passive: true });
-    window.addEventListener('scroll', syncNavDropdownBackdropTop, { passive: true });
-
     new ResizeObserver(syncNavDropdownBackdropTop).observe(container);
 
     const announcement = document.getElementById('announcement');

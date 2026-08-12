@@ -35,7 +35,7 @@ As used in this Agreement, the following terms have the meanings set forth below
 | **Deprovisioning** | Datum will use commercially reasonable efforts to complete Deprovisioning promptly following receipt of a valid request; under normal operating conditions, Deprovisioning typically completes within minutes of a valid request. During a Force Majeure Event, a Datum-initiated maintenance window, or a platform incident, completion may be delayed. Customer remains liable for Usage Fees accruing until Deprovisioning is confirmed complete, regardless of the time elapsed since submission of the request. |
 | **Effective Date** | The date on which the last party executes this Agreement or the applicable Order Form, whichever is later. |
 | **Fees** | All amounts payable by Customer to Datum under this Agreement, including Contracted Services fees, Usage Fees, and any other charges set forth in an Order Form or incurred through consumption of Usage Services. |
-| **Infrastructure** | The physical and virtual network resources through which Datum delivers the Services, including servers, network fabric, switching and routing equipment, colocation facilities, and connectivity assets hosted across Datum's infrastructure providers (currently GCP, Servers.com, and NetActuate) within each Service Region. |
+| **Infrastructure** | The physical and virtual compute and network resources through which Datum delivers the Services, including servers, network fabric, switching and routing equipment, colocation facilities, and connectivity assets hosted across Datum's infrastructure providers within each Service Region. |
 | **Order Form** | A written order document executed by both parties specifying the Contracted Services, pricing, Subscription Term, Service Regions, Usage Limits, and any additional terms applicable to a particular engagement. An Order Form may also establish Usage Services parameters, Prepaid Credit requirements, or professional services scope. |
 | **Platform** | Datum's proprietary and open-source software layer through which the Services are delivered, including the management console, APIs, CLI tooling, network control plane software, and associated software components. The Platform does not include Customer's own workloads, applications, or network traffic. |
 | **Prepaid Credits** | Monetary credits purchased by Customer in advance and held in Customer's Datum account, which may be applied against any Fees owed under this Agreement, including Contracted Services fees and Usage Fees. Prepaid Credits are non-refundable, non-transferable, and expire as specified at the time of purchase or in the applicable Order Form. |
@@ -44,15 +44,15 @@ As used in this Agreement, the following terms have the meanings set forth below
 | **Subscription Term** | The committed period during which Customer is authorized to access Contracted Services, as specified in the applicable Order Form. |
 | **Third-Party Software** | Software or services developed and owned by third-party technology partners incorporated into or required for the Services. |
 | **Usage Fees** | Charges incurred by Customer for Usage Services, calculated based on actual consumption at Datum's then-current Usage Rates. |
-| **Usage Rates** | Datum's then-current published rates for Usage Services, available at datum.net/pricing, as updated from time to time in accordance with Section 3.6. |
+| **Usage Rates** | Datum's then-current published rates for Usage Services, available at upon request as updated from time to time in accordance with Section 3.6. |
 | **Usage Services** | Any Services or Infrastructure resources consumed by Customer that are not governed by a pre-executed Order Form, including network bandwidth, compute, data transfer, API calls, and any other metered resource made available by Datum. Usage Services are charged to the designated Billing Account based on actual consumption at Usage Rates and require no minimum commitment. |
-| **Usage Limits** | The quantitative consumption parameters (including bandwidth, data transfer volume, node count, API call rates, and other metrics) specified in the applicable Order Form or, where not specified, Datum's then-current Fair Use Policy available at datum.net/fair-use. Datum will not materially reduce Customer's rights under the Fair Use Policy without at least thirty (30) days' prior written notice. |
+| **Usage Limits** | The quantitative consumption parameters (including bandwidth, data transfer volume, node count, API call rates, and other metrics) specified in the applicable Order Form or, where not specified, Datum's then-current Acceptable Use Policy available at datum.net/legal/aup. . Datum will not materially reduce Customer's rights under the Fair Use Policy without at least thirty (30) days' prior written notice. |
 
 ## 2. Services
 
 ### 2.1 How Datum's Services Work
 
-Datum provides network cloud infrastructure and connectivity services through two complementary commercial tracks. Contracted Services give Customer a committed baseline - defined resources, pricing certainty, and Subscription Term protections - suited to predictable or production-grade workloads. Usage Services give Customer the flexibility to consume additional resources on demand without a prior commitment - suited to burst capacity, new regions, variable workloads, or any consumption that falls outside Customer's contracted footprint. Most Customers use both: committing to a baseline via an Order Form while augmenting dynamically through Usage Services as their needs evolve. Both tracks are governed by this Agreement and subject to the same service levels, acceptable use requirements, and data handling commitments.
+Datum provides cloud infrastructure and connectivity services through two complementary commercial tracks. Contracted Services give Customer a committed baseline - defined resources, pricing certainty, and Subscription Term protections - suited to predictable or production-grade workloads. Usage Services give Customer the flexibility to consume additional resources on demand without a prior commitment - suited to burst capacity, new regions, variable workloads, or any consumption that falls outside Customer's contracted footprint. Most Customers use both: committing to a baseline via an Order Form while augmenting dynamically through Usage Services as their needs evolve. Both tracks are governed by this Agreement and subject to the same service levels, acceptable use requirements, and data handling commitments.
 
 ### 2.2 Contracted Services
 
@@ -80,15 +80,15 @@ Customer is responsible for all actions taken by its Authorized Users. Customer 
 
 ### 2.8 Third-Party Service Providers
 
-Datum may engage third-party service providers to deliver or support the Services, including infrastructure hosting providers (currently GCP, Servers.com, and NetActuate), network connectivity partners, and technical operations vendors. Datum remains responsible for its obligations under this Agreement regardless of such arrangements. Where any third-party service provider processes personal data in connection with the Services, that processing is governed by the DPA. Datum will maintain a current list of material third-party service providers and will notify Customer of material changes in accordance with the DPA sub-processor notification process.
+Datum may engage third-party service providers to deliver or support the Services, including infrastructure hosting providers, network connectivity partners, and technical operations vendors. Datum remains responsible for its obligations under this Agreement regardless of such arrangements. Where any third-party service provider processes personal data in connection with the Services, that processing is governed by the DPA. Datum will maintain a current list of material third-party service providers and will notify Customer of material changes in accordance with the DPA sub-processor notification process.
 
 ### 2.9 Acceptable Use
 
-Customer and its Authorized Users may not use or consume the Services to: (a) violate any applicable law or regulation; (b) infringe, misappropriate, or otherwise violate any third-party intellectual property, privacy, or other rights; (c) transmit any content that is unlawful, harmful, fraudulent, or abusive; (d) interfere with or disrupt the integrity or performance of the Services or third-party systems; (e) attempt unauthorized access to any part of the Services or Datum's or other customers' systems; (f) circumvent, disable, or interfere with security features of the Services; (g) use or consume the Services in connection with the design, development, production, or use of nuclear, chemical, or biological weapons or missile delivery systems; or (h) export, re-export, or transfer the Services or any related technology to any country, entity, or individual subject to applicable export restrictions or sanctions, including OFAC's Specially Designated Nationals List or BIS's Denied Persons or Entity List, or otherwise in violation of U.S. Export Administration Regulations or applicable sanctions programs. Customer will obtain all required export authorizations for its use and consumption of the Services.
+Customer and its Authorized Users may not use or consume the Services to: (a) violate any applicable law or regulation; (b) infringe, misappropriate, or otherwise violate any third-party intellectual property, privacy, or other rights; (c) transmit any content that is unlawful, harmful, fraudulent, or abusive; (d) interfere with or disrupt the integrity or performance of the Services or third-party systems; (e) attempt unauthorized access to any part of the Services or Datum's or other customers' systems; (f) circumvent, disable, or interfere with security features of the Services; (g) use or consume the Services in connection with the design, development, production, or use of nuclear, chemical, or biological weapons or missile delivery systems; or (h) export, re-export, or transfer the Services or any related technology to any country, entity, or individual subject to applicable export restrictions or sanctions, including OFAC's Specially Designated Nationals List or BIS's Denied Persons or Entity List, or otherwise in violation of U.S. Export Administration Regulations or applicable sanctions programs. Customer will obtain all required export authorizations for its use and consumption of the Services. Customer's use of the Services is also subject to Datum's then-current Acceptable Use Policy, available at datum.net/legal/aup, incorporated herein; Datum will not materially reduce Customer's rights under the AUP without at least thirty (30) days' prior written notice.
 
 ### 2.10 Usage Limits and Fair Use
 
-Customer's consumption of the Services is subject to the Usage Limits specified in the applicable Order Form. In the absence of specified limits, Customer's consumption is subject to Datum's then-current Fair Use Policy, available at datum.net/fair-use or upon request; Datum will not materially reduce Customer's rights under the Fair Use Policy without at least thirty (30) days' prior written notice. If Customer's consumption materially exceeds applicable Usage Limits, Datum may: (a) invoice Customer for overages at the rates set forth in the applicable Order Form or Datum's then-current overage schedule; (b) throttle or rate-limit Customer's consumption until the next billing period; or (c) work with Customer to adjust the applicable Order Form. Datum will provide reasonable advance notice before throttling, except where excess consumption is causing or is likely to cause degradation to other customers or to Datum's Infrastructure.
+Customer's consumption of the Services is subject to the Usage Limits specified in the applicable Order Form. In the absence of specified limits, Customer's consumption is subject to Datum's then-current Acceptable Use Policy, available at datum.net/legal/aup or upon request ; Datum will not materially reduce Customer's rights under the Fair Use Policy without at least thirty (30) days' prior written notice. If Customer's consumption materially exceeds applicable Usage Limits, Datum may: (a) invoice Customer for overages at the rates set forth in the applicable Order Form or Datum's then-current overage schedule; (b) throttle or rate-limit Customer's consumption until the next billing period; or (c) work with Customer to adjust the applicable Order Form. Datum will provide reasonable advance notice before throttling, except where excess consumption is causing or is likely to cause degradation to other customers or to Datum's Infrastructure.
 
 ## 3. Fees and Payment
 
@@ -116,7 +116,7 @@ Customer must notify Datum in writing of any disputed invoice amount within fift
 
 Contracted Services fees specified in an Order Form are locked for the current Subscription Term. Datum may adjust Contracted Services fees for renewals upon at least thirty (30) days' prior written notice before the end of the then-current Subscription Term. No mid-term increases to Contracted Services fees apply without Customer's written consent.
 
-Usage Rates are published rates and may be updated by Datum at any time upon at least thirty (30) days' prior notice posted at datum.net/pricing or communicated to Customer via email. Updated Usage Rates apply to consumption incurred after the effective date of the change. Customer's continued consumption of Usage Services after the effective date of a rate change constitutes acceptance of the new rates. If Customer objects to a rate change, Customer may discontinue consumption of the affected Usage Services before the effective date without penalty.
+Usage Rates are published rates and may be updated by Datum at any time upon at least thirty (30) days' prior notice communicated to Customer via email. Updated Usage Rates apply to consumption incurred after the effective date of the change. Customer's continued consumption of Usage Services after the effective date of a rate change constitutes acceptance of the new rates. If Customer objects to a rate change, Customer may discontinue consumption of the affected Usage Services before the effective date without penalty.
 
 ## 4. Suspension of Services
 
@@ -156,7 +156,7 @@ Customer grants Datum a perpetual, irrevocable, royalty-free, worldwide license 
 
 ### 5.5 Open Source Software
 
-The Platform incorporates open source software components governed by their respective licenses. Nothing in this Agreement limits Customer's rights under applicable open source licenses. Datum will make open source license notices available at datum.net/oss or upon request.
+The Platform incorporates open source software components governed by their respective licenses. Nothing in this Agreement limits Customer's rights under applicable open source licenses. Datum will make open source license notices available upon request.
 
 ## 6. Confidentiality
 
@@ -180,11 +180,11 @@ Each party acknowledges that breach of this Section may cause irreparable harm f
 
 ### 7.1 Data Processing Agreement
 
-To the extent Datum processes personal data on behalf of Customer, the parties' rights and obligations are governed by the Data Processing Agreement attached as Exhibit B, incorporated herein. In the event of a conflict between the DPA and this Agreement with respect to personal data, the DPA controls.
+The parties' rights and obligations with respect to Account Personal Data (as defined in the DPA)are governed by the Data Processing Agreement referenced as Exhibit B, incorporated herein. In the event of a conflict between the DPA and this Agreement with respect to personal data, the DPA controls.
 
 ### 7.2 Security Program
 
-Datum maintains a written information security program designed to protect Customer Data and personal data processed in connection with the Services against unauthorized access, disclosure, alteration, and destruction. Datum is pursuing SOC 2 Type II certification. Security commitments and technical and organizational measures applicable to a particular engagement may be set forth in the applicable Order Form or in security documentation provided to Customer in connection with that engagement.
+Datum maintains a written information security program designed to protect Customer Data and personal data processed in connection with the Services against unauthorized access, disclosure, alteration, and destruction. Security commitments and technical and organizational measures applicable to a particular engagement may be set forth in the applicable Order Form or in security documentation provided to Customer in connection with that engagement.
 
 ### 7.3 Security Incidents
 
@@ -196,7 +196,7 @@ Customer is responsible for: (a) maintaining the security of its account credent
 
 ### 7.5 Audit Rights
 
-Datum will make available to Customer, upon written request and not more than once per calendar year, security documentation including Datum's then-current SOC 2 Type II report (once obtained), penetration testing summary reports, and other relevant security certifications, subject to Customer's execution of a reasonable non-disclosure agreement. Customer's review of such documentation constitutes Customer's audit right under this Agreement. On-site audits of Datum's Infrastructure by Customer are not permitted; however, Datum will cooperate with reasonable questionnaire-based security assessments from Customer's procurement or security team.
+Datum will make available to Customer, upon written request and not more than once per calendar year, security documentation including Datum's then-current SOC 2 Type II report, penetration testing summary reports, and other relevant security certifications, subject to Customer's execution of a reasonable non-disclosure agreement. Customer's review of such documentation constitutes Customer's audit right under this Agreement. On-site audits of Datum's Infrastructure by Customer are not permitted; however, Datum will cooperate with reasonable questionnaire-based security assessments from Customer's procurement or security team.
 
 ## 8. Warranties
 
@@ -242,7 +242,7 @@ IN NO EVENT WILL EITHER PARTY BE LIABLE TO THE OTHER FOR ANY INDIRECT, INCIDENTA
 
 ### 10.2 Aggregate Liability Cap
 
-(a) General Cap. Subject to Section 10.2(b) and Section 10.3, each party's total aggregate liability arising out of or related to this Agreement - under any theory of liability, including contract, tort, statute, or otherwise - will not exceed the total Fees paid or payable by Customer in the twelve (12) months immediately preceding the event giving rise to the claim (the "Annual Fee Amount").
+(a) General Cap. Subject to Section 10.2(b) and Section 10.3, each party's total aggregate liability arising out of or related to this Agreement - under any theory of liability, including contract, tort, statute, or otherwise - will not exceed the total Fees paid or payable by Customer in the six (6) months immediately preceding the event giving rise to the claim (the "Annual Fee Amount").
 
 (b) Master Aggregate Ceiling. Notwithstanding any other provision of this Agreement - including the category caps in Section 9.5, the general cap in Section 10.2(a), and any other limitation or exception - each party's total aggregate liability to the other arising out of or related to this Agreement across all claims, all theories, and all categories of liability combined will not exceed three times (3x) the Annual Fee Amount (the "Master Aggregate Ceiling"). All amounts paid or payable by a party under this Agreement count toward and reduce that party's Master Aggregate Ceiling. Once a party's Master Aggregate Ceiling is reached, that party has no further liability to the other party under this Agreement regardless of the nature or number of remaining claims.
 
@@ -252,7 +252,7 @@ The exclusions and limitations in Sections 10.1 and 10.2 do not apply to: (a) Cu
 
 ### 10.4 Essential Basis
 
-The parties acknowledge that the liability limitations in this Section reflect a reasonable allocation of risk and are an essential basis of the bargain, without which Datum would not have entered into this Agreement at the pricing set forth herein.
+The parties acknowledge that the liability limitations in this Section reflect a reasonable allocation of risk and are an essential basis of the bargain, without which Datum would not have entered into this Agreement or any Order Form hereunder.
 
 ## 11. Term and Termination
 
@@ -278,7 +278,7 @@ Upon any expiration or termination: (a) all licenses and access rights for Contr
 
 ## 12. Service Levels and Support
 
-Datum commits to providing the Services in accordance with the Service Level Agreement ("SLA") attached as Exhibit A at execution and maintained at datum.net/sla. Datum may update the SLA by posting a revised version at datum.net/sla with at least thirty (30) days' prior written notice of any material change; if an update would materially reduce Customer's remedies, Customer may terminate the affected Contracted Services within the notice period with a pro-rata refund of prepaid, unused fees. Service credits issued under the SLA: (a) are Customer's sole and exclusive remedy for Datum's failure to meet uptime commitments; (b) are applied to future invoices only and have no cash value; (c) are non-transferable and non-refundable; (d) may not be applied to offset any past-due, disputed, or otherwise outstanding invoice balance; and (e) expire if unused within twelve (12) months of issuance or upon termination of this Agreement, whichever is earlier. For Usage Services, credits are applied as account credits toward future Usage Fees on the applicable Billing Account. Datum will provide technical support in accordance with the support tier in the applicable Order Form and Datum's Support Policy at datum.net/support, covering both Contracted Services and Usage Services. Datum may perform scheduled maintenance with at least forty-eight (48) hours' advance notice, and emergency maintenance without advance notice where required to address critical security or stability issues, with notification to Customer as promptly as practicable.
+Datum commits to providing the Services in accordance with the Service Level Agreement ("SLA") referenced as Exhibit A at execution and maintained at datum.net/legal/service-level-agreement. Datum may update the SLA by posting a revised version at datum.net/legal/service-level-agreement with at least thirty (30) days' prior written notice of any material change; if an update would materially reduce Customer's remedies, Customer may terminate the affected Contracted Services within the notice period with a pro-rata refund of prepaid, unused fees. Service credits issued under the SLA: (a) are Customer's sole and exclusive remedy for Datum's failure to meet uptime commitments; (b) are applied to future invoices only and have no cash value; (c) are non-transferable and non-refundable; (d) may not be applied to offset any past-due, disputed, or otherwise outstanding invoice balance; and (e) expire if unused within twelve (12) months of issuance or upon termination of this Agreement, whichever is earlier. For Usage Services, credits are applied as account credits toward future Usage Fees on the applicable Billing Account. Datum will provide technical support in accordance with the support tier in the applicable Order Form and Datum's Support Policy per Order form, covering both Contracted Services and Usage Services. Datum may perform scheduled maintenance with at least forty-eight (48) hours' advance notice, and emergency maintenance without advance notice where required to address critical security or stability issues, with notification to Customer as promptly as practicable.
 
 ## 13. General
 
@@ -324,11 +324,11 @@ The following Sections survive termination or expiration: 1 (Definitions), 3 (Fe
 
 ## EXHIBIT A — SERVICE LEVEL AGREEMENT
 
-*The Service Level Agreement (Exhibit A) is maintained at datum.net/sla and is incorporated into this Agreement by reference as of the version in effect on the Effective Date.*
+Incorporated by reference. See MSA Section 12 and datum.net/legal/service-level-agreement.
 
 ## EXHIBIT B — DATA PROCESSING AGREEMENT
 
-*The Data Processing Agreement (Exhibit B) is maintained at datum.net/dpa and is incorporated into this Agreement by reference as of the version in effect on the Effective Date.*
+Incorporated by reference. See MSA Section 7.1 and datum.net/legal/data-processing-agreement.
 
 </Container>
 

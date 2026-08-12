@@ -35,8 +35,9 @@ import NavMenu from '@components/NavMenu.astro';
         target="_blank"
         data-rybbit-event="Nav: Start for free"
       >
+        {/* Mobile shows "Start"; sr-only keeps full text for SEO/a11y (Lighthouse). */}
+        <span class="inline-flex lg:hidden">Start<span class="sr-only"> for free</span></span>
         <span class="hidden lg:inline-flex">Start for free</span>
-        <span class="inline-flex lg:hidden">Start</span>
         <Icon name="arrow-right" size="md" class="hidden lg:inline-flex" />
       </a>
     </div>

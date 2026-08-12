@@ -9,7 +9,7 @@ import { getCollection, render } from 'astro:content';
 import type { LegalNavItem } from '@/src/types/common';
 
 export async function getStaticPaths() {
-  const legal = await getCollection('legal');
+  const legal = await getCollection('legal', ({ data }) => !data.draft);
 
   return legal.map((entry) => {
     return {

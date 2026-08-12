@@ -4,6 +4,7 @@ slug: data-processing-agreement
 sidebar:
   label: "Data Processing Agreement"
   order: 5
+draft: true
 description: "Datum's Data Processing Agreement describes how personal data is processed in connection with the Services."
 meta:
   title: "Data Processing Agreement - Datum Cloud"
@@ -168,8 +169,6 @@ This DPA forms part of, and is subject to, the terms of the MSA. In the event of
 
 ## SCHEDULE 2 — TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES
 
-<small class="mb-4 block italic">The measures below reflect standard infrastructure security practices. Engineering should review and confirm each measure is implemented before execution. Add certifications (SOC 2, ISO 27001) once obtained.</small>
-
 Datum implements the following technical and organizational measures to protect Account Personal Data:
 
 ### Access Controls
@@ -180,7 +179,7 @@ Datum implements the following technical and organizational measures to protect 
 
 * Privileged access management with logging and regular access reviews
 
-* Automated de-provisioning of access upon employee or contractor termination
+* De-provisioning of access within one (1) business day of employee or contractor termination
 
 ### Encryption
 
@@ -188,23 +187,23 @@ Datum implements the following technical and organizational measures to protect 
 
 * Account Personal Data encrypted in transit using TLS 1.2 or higher
 
-* Encryption keys managed via a dedicated key management service with regular rotation
+* Encryption keys managed via a dedicated key management service
 
 ### Network and Infrastructure Security
 
 * Network segmentation separating management plane (which processes Account Personal Data) from customer data plane (which carries network traffic)
 
-* Firewall and intrusion detection systems protecting management infrastructure
+* Datum operates a zero-trust access model for management infrastructure; access is authenticated and authorized per-session rather than based on network location or IP allowlisting. Datum does not currently operate intrusion detection systems on management plane traffic.
 
-* Regular vulnerability scanning and patch management with critical patches applied within [14] days of release
+* Regular vulnerability scanning and patch management with critical patches applied within 14 days of release
 
 * DDoS mitigation controls on management console endpoints
 
 ### Monitoring and Logging
 
-* Security information and event management (SIEM) system monitoring access to Account Personal Data
+* Access to Account Personal Data is monitored via GCP audit logging and Datum's internal platform activity service; Datum does not currently operate a dedicated SIEM.
 
-* Audit logs of access to and modifications of Account Personal Data retained for [12] months
+* Audit logs of access to and modifications of Account Personal Data retained for 12 months
 
 * Automated alerts for anomalous access patterns
 
@@ -216,26 +215,24 @@ Datum implements the following technical and organizational measures to protect 
 
 * Incident response plan with defined escalation procedures and breach notification workflow
 
-* Third-party security assessments [annually / upon material architecture changes]
+* Datum intends to conduct third-party security assessments on an annual basis; no third-party assessment has been performed to date.
 
 ### Backup and Recovery
 
-* Account Personal Data backed up [daily] with backups encrypted and stored in a separate geographic location
+* Account Personal Data backed up daily with encryption. Backups are currently stored in the same region as the primary data store; geographic separation is not yet implemented.
 
-* Backup restoration tested [quarterly]
+* Backup restoration tested at least annually.
 
 * Defined recovery time objective (RTO) and recovery point objective (RPO) for management systems
 
 ## SCHEDULE 3 — APPROVED SUB-PROCESSORS
 
-<small class="mb-4 block italic">Complete this list with all vendors who access Account Personal Data. The table below includes known likely sub-processors; confirm and add any others before execution.</small>
-
 | Sub-processor | Location | Processing Activity | Data Processed |
 | :---- | :---- | :---- | :---- |
 | **Stripe, Inc.** | United States | Payment processing and billing administration | Billing contact name and address only; payment card data processed entirely by Stripe |
-| **Google Cloud Platform (GCP)** | United States / [regions] | Cloud infrastructure hosting for management plane and account data storage | Account Personal Data (stored and processed on GCP infrastructure) |
-| **Servers.com** | United States / [regions] | Bare metal and dedicated server infrastructure for network platform deployment | Network infrastructure only; limited Account Personal Data exposure — [CONFIRM WITH ENGINEERING] |
-| **NetActuate** | United States / [regions] | Network hosting and colocation infrastructure for Service Region deployments | Network infrastructure only; limited Account Personal Data exposure — [CONFIRM WITH ENGINEERING] |
+| **Google Cloud Platform (GCP)** | United States | Cloud infrastructure hosting for management plane and account data storage | Account Personal Data (stored and processed on GCP infrastructure) |
+| **Servers.com** | United States | Bare metal and dedicated server infrastructure for network platform deployment | Network infrastructure only; limited Account Personal Data exposure |
+| **NetActuate** | United States | Network hosting and colocation infrastructure for Service Region deployments | Network infrastructure only; limited Account Personal Data exposure |
 | **Google Workspace** | United States | Internal collaboration, email, and support ticket management | Support ticket contents; Authorized User contact details |
 | **Help Scout** | United States | Customer support ticketing | Authorized User names, email addresses, support correspondence |
 | **JumpCloud** | United States | User authentication and single sign-on | Authorized User email addresses and authentication tokens |

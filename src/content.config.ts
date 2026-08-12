@@ -118,6 +118,7 @@ const legal = defineCollection({
           order: z.number().optional(),
         })
         .optional(),
+      draft: z.boolean().optional().default(false),
       meta: metaSchema(image),
     }),
 });

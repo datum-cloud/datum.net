@@ -3,12 +3,11 @@ title: "Data Processing Agreement"
 slug: data-processing-agreement
 sidebar:
   label: "Data Processing Agreement"
-  order: 5
-draft: true
+  order: 8
 description: "Datum's Data Processing Agreement describes how personal data is processed in connection with the Services."
 meta:
   title: "Data Processing Agreement - Datum Cloud"
-  description: "Read the draft Data Processing Agreement covering roles, security, sub-processors, transfers, and data subject rights."
+  description: "Read the Data Processing Agreement covering roles, security, sub-processors, transfers, and data subject rights."
   og:
     title: "Data Processing Agreement - Datum Cloud"
 ---
@@ -19,8 +18,6 @@ import Container from '@components/Container.astro';
 <p class="mb-4 font-semibold">Datum Technology, Inc.</p>
 <small class="mb-2 block italic">Version 1.0 · August 1, 2026</small>
 <small class="mb-4 block italic">Exhibit B to Master Services Agreement</small>
-
-<small class="mb-8 block italic">Draft: This DPA reflects Datum's limited data processor role: account/contact/billing data for Customer's authorized users, plus network traffic metadata. Datum does not access Customer payload data. Review with counsel before execution, particularly Schedule 2 technical measures.</small>
 
 ## Recitals
 
@@ -187,7 +184,7 @@ Datum implements the following technical and organizational measures to protect 
 
 * Account Personal Data encrypted in transit using TLS 1.2 or higher
 
-* Encryption keys managed via a dedicated key management service
+* Encryption keys managed via a dedicated key management service. Datum does not currently support automated rotation for access-token signing keys.
 
 ### Network and Infrastructure Security
 

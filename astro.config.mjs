@@ -122,6 +122,7 @@ export default defineConfig({
     mermaid({
       theme: 'forest',
       autoTheme: true,
+      enableLog: false,
     }),
     playformCompress({
       // CSS minification disabled: csso@5 (bundled by @playform/compress) drops

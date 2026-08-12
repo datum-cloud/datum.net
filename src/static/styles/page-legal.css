@@ -68,11 +68,21 @@
   }
 
   .legal-toc .toc-container {
-    @apply top-9! max-h-[calc(100vh-5rem)] overflow-y-auto;
+    /* pl-2 keeps the active-dot indicator (which intentionally bleeds left onto
+       the dashed guide line) inside the padding box — overflow-y: auto forces
+       overflow-x to clip too, and without this the dot gets cut off. */
+    @apply top-9! max-h-[calc(100vh-5rem)] overflow-y-auto pl-2;
+  }
+
+  /* Sub-headings read smaller than their parent section, and the smaller
+     line-height widens the gap between separate items relative to a
+     wrapped line within one item. */
+  .legal-toc .toc-item--level-3 {
+    @apply datum-text-xs;
   }
 
   .legal-content {
-    @apply flex-1 px-0 pt-9 pb-0 md:pt-12 lg:pt-16;
+    @apply flex-1 px-0 pt-9 pb-0 md:px-10 md:pt-12 lg:px-16 lg:pt-16;
 
     table {
       @apply my-6 w-full border-separate;

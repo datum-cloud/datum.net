@@ -706,6 +706,41 @@
     left: calc(-1rem - 1px);
   }
 
+  /* Collapsible TOC groups (opt-in via the `collapsible` prop) — an h2 with its
+     h3 sub-headings collapsed behind a toggle instead of always listed out. */
+  .toc-group {
+    @apply datum-text-sm text-midnight-fjord/60 relative list-none;
+  }
+
+  .toc-group-header {
+    @apply relative flex w-full items-start justify-between gap-2;
+  }
+
+  .toc-group-header:has(.toc-link.active)::before {
+    @apply bg-blush-quartz absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full content-[''];
+    left: calc(-1rem - 1px);
+  }
+
+  .toc-group-toggle {
+    @apply text-midnight-fjord/40 hover:text-midnight-fjord mt-0.5 flex shrink-0 items-center justify-center rounded p-0.5 transition-colors duration-150;
+  }
+
+  .toc-group-chevron {
+    @apply h-3.5 w-3.5 transition-transform duration-200 ease-out;
+  }
+
+  .toc-group.is-open .toc-group-chevron {
+    @apply rotate-90;
+  }
+
+  .toc-sublist {
+    @apply flex max-h-0 flex-col gap-2 overflow-hidden pt-2 transition-[max-height] duration-300 ease-in-out;
+  }
+
+  .toc-group.is-open .toc-sublist {
+    @apply max-h-[600px];
+  }
+
   /* figure */
   figure {
     .figure-image-wrapper {

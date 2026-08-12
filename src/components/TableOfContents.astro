@@ -7,26 +7,98 @@ const {
   class: className,
   showTitle = true,
   sticky = true,
+  collapsible = false,
 } = Astro.props;
 
 // Filter headings if needed (e.g., only show h2 and h3)
 const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.depth <= 3);
+
+// When collapsible, group h3s under their preceding h2 so long docs can hide
+// sub-sections behind a toggle instead of listing every heading at once.
+interface TocGroup {
+  heading: MarkdownHeading;
+  children: MarkdownHeading[];
+}
+
+const groups: TocGroup[] = [];
+if (collapsible) {
+  for (const heading of filteredHeadings) {
+    if (heading.depth === 2 || groups.length === 0) {
+      groups.push({ heading, children: [] });
+    } else {
+      groups[groups.length - 1].children.push(heading);
+    }
+  }
+}
 ---
 
 {
   filteredHeadings.length > 0 && (
     <aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
       {showTitle && <h3 class="toc-title">{title}</h3>}
-      <nav class={`toc-nav`}>
-        <ul class="toc-list">
-          {filteredHeadings.map((heading: MarkdownHeading) => (
-            <li class={`toc-item toc-item--level-${heading.depth}`}>
-              <a href={`#${heading.slug}`} class="toc-link" data-toc-level={heading.depth}>
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <nav class="toc-nav">
+        {collapsible ? (
+          <ul class="toc-list">
+            {groups.map((group, index) => (
+              <li
+                class:list={['toc-group', { 'is-open': index === 0 }]}
+                data-toc-group={group.heading.slug}
+              >
+                <div class="toc-group-header">
+                  <a href={`#${group.heading.slug}`} class="toc-link" data-toc-level={2}>
+                    {group.heading.text}
+                  </a>
+                  {group.children.length > 0 && (
+                    <button
+                      type="button"
+                      class="toc-group-toggle"
+                      aria-expanded={index === 0 ? 'true' : 'false'}
+                      aria-label={`Toggle ${group.heading.text} sub-sections`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="toc-group-chevron"
+                        aria-hidden="true"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                {group.children.length > 0 && (
+                  <ul class="toc-sublist">
+                    {group.children.map((child) => (
+                      <li class="toc-item toc-item--level-3">
+                        <a href={`#${child.slug}`} class="toc-link" data-toc-level={3}>
+                          {child.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul class="toc-list">
+            {filteredHeadings.map((heading: MarkdownHeading) => (
+              <li class={`toc-item toc-item--level-${heading.depth}`}>
+                <a href={`#${heading.slug}`} class="toc-link" data-toc-level={heading.depth}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </nav>
     </aside>
   )
@@ -37,12 +109,39 @@ const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.d
     const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
     if (tocLinks.length === 0) return;
 
+    const groupEls = document.querySelectorAll<HTMLElement>('.toc-group');
+
+    function setGroupOpen(groupEl: HTMLElement, open: boolean) {
+      groupEl.classList.toggle('is-open', open);
+      groupEl.querySelector('.toc-group-toggle')?.setAttribute('aria-expanded', String(open));
+    }
+
+    // Expand the group containing the active heading (as top-level or child),
+    // collapse the rest — keeps only the relevant sub-sections visible.
+    function openGroupForSlug(slug: string | null) {
+      if (groupEls.length === 0) return;
+      groupEls.forEach((groupEl) => {
+        const isOwnHeading = !!slug && groupEl.getAttribute('data-toc-group') === slug;
+        const hasActiveChild = !!slug && !!groupEl.querySelector(`.toc-sublist a[href="#${slug}"]`);
+        setGroupOpen(groupEl, isOwnHeading || hasActiveChild);
+      });
+    }
+
     function setActiveLink(slug: string | null) {
       tocLinks.forEach((link) => {
         const href = link.getAttribute('href');
         link.classList.toggle('active', !!slug && href === `#${slug}`);
       });
+      openGroupForSlug(slug);
     }
+
+    // Manual expand/collapse via the chevron button, independent of scroll
+    groupEls.forEach((groupEl) => {
+      const toggle = groupEl.querySelector<HTMLButtonElement>('.toc-group-toggle');
+      toggle?.addEventListener('click', () => {
+        setGroupOpen(groupEl, !groupEl.classList.contains('is-open'));
+      });
+    });
 
     // Collect all heading elements referenced by TOC links
     const headingElements: HTMLElement[] = [];
@@ -87,7 +186,7 @@ const filteredHeadings = headings.filter((heading: MarkdownHeading) => heading.d
       if (hash) setActiveLink(hash);
     });
 
-    // Seed from current hash on load
+    // Seed from current hash on load (the first group is already open by default)
     const initialHash = window.location.hash.slice(1);
     if (initialHash) setActiveLink(initialHash);
   });

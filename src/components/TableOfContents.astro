@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { PanelRight } from '@lucide/astro';
 
 const {
   headings = [] as MarkdownHeading[],
@@ -8,6 +9,7 @@ const {
   showTitle = true,
   sticky = true,
   collapsible = false,
+  panelCollapsible = false,
 } = Astro.props;
 
 // Filter headings if needed (e.g., only show h2 and h3)
@@ -35,7 +37,15 @@ if (collapsible) {
 {
   filteredHeadings.length > 0 && (
     <aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
-      {showTitle && <h3 class="toc-title">{title}</h3>}
+      {showTitle &&
+        (panelCollapsible ? (
+          <button type="button" class="toc-panel-toggle" aria-expanded="true">
+            <PanelRight class="toc-panel-icon" aria-hidden="true" />
+            <h3 class="toc-title">{title}</h3>
+          </button>
+        ) : (
+          <h3 class="toc-title">{title}</h3>
+        ))}
       <nav class="toc-nav">
         {collapsible ? (
           <ul class="toc-list">
@@ -108,6 +118,29 @@ if (collapsible) {
   document.addEventListener('DOMContentLoaded', () => {
     const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
     if (tocLinks.length === 0) return;
+
+    // Whole-panel collapse (opt-in via the `panelCollapsible` prop). Toggling
+    // collapses the nav under its title, and dispatches an event so a page can
+    // additionally hide the whole column and let its content reflow into the
+    // freed space — see the `datum:toc-panel-toggle` listener in [slug].astro.
+    const panelToggles = document.querySelectorAll<HTMLElement>('.toc-panel-toggle');
+    panelToggles.forEach((panelToggle) => {
+      const container = panelToggle.closest('.toc-container');
+      panelToggle.addEventListener('click', () => {
+        const collapsed = container?.classList.toggle('is-collapsed') ?? false;
+        panelToggle.setAttribute('aria-expanded', String(!collapsed));
+        window.dispatchEvent(new CustomEvent('datum:toc-panel-toggle', { detail: { collapsed } }));
+      });
+    });
+
+    // Allow an external control (e.g. a page-level "reopen" button) to reset
+    // this panel back to its expanded state.
+    window.addEventListener('datum:toc-panel-show', () => {
+      panelToggles.forEach((panelToggle) => {
+        panelToggle.closest('.toc-container')?.classList.remove('is-collapsed');
+        panelToggle.setAttribute('aria-expanded', 'true');
+      });
+    });
 
     const groupEls = document.querySelectorAll<HTMLElement>('.toc-group');
 

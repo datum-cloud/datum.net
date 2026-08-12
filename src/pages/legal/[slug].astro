@@ -5,6 +5,7 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Sidebar from '@components/legal/Sidebar.astro';
 import TableOfContents from '@components/TableOfContents.astro';
+import { PanelRight } from '@lucide/astro';
 import { getCollection, render } from 'astro:content';
 import type { LegalNavItem } from '@/src/types/common';
 
@@ -60,6 +61,13 @@ const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
           <Sidebar items={navItems} currentId={page.id} />
 
           <main class="legal-content">
+            <div class="legal-toc-reopen-row">
+              <button type="button" class="legal-toc-reopen" hidden aria-label="Show On This Page">
+                <PanelRight class="h-3.5 w-3.5" aria-hidden="true" />
+                On This Page
+              </button>
+            </div>
+
             <Content />
           </main>
 
@@ -70,6 +78,7 @@ const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
               showTitle={true}
               sticky={true}
               collapsible={true}
+              panelCollapsible={true}
             />
           </aside>
         </div>
@@ -79,3 +88,26 @@ const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
     <Footer showCTA={false} />
   </section>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector<HTMLElement>('.legal-toc');
+    const reopenButton = document.querySelector<HTMLButtonElement>('.legal-toc-reopen');
+    if (!wrapper || !reopenButton) return;
+
+    // Hiding the whole column (not just the nav inside it) lets .legal-content's
+    // flex-1 reclaim that width — a wider content column wraps fewer lines, so
+    // there's less overall page height to scroll through.
+    window.addEventListener('datum:toc-panel-toggle', (event) => {
+      const collapsed = (event as CustomEvent<{ collapsed: boolean }>).detail?.collapsed ?? false;
+      wrapper.classList.toggle('is-hidden', collapsed);
+      reopenButton.hidden = !collapsed;
+    });
+
+    reopenButton.addEventListener('click', () => {
+      wrapper.classList.remove('is-hidden');
+      reopenButton.hidden = true;
+      window.dispatchEvent(new CustomEvent('datum:toc-panel-show'));
+    });
+  });
+</script>

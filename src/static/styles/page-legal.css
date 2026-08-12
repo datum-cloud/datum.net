@@ -65,6 +65,24 @@
   .legal-toc {
     @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
     @apply pt-9 pr-0 md:pt-12 md:pl-4 lg:pt-16 lg:pl-7;
+
+    /* `!` wins over the responsive lg:flex above regardless of viewport —
+       hiding the whole column (not just its nav) lets .legal-content's
+       flex-1 reclaim the width. Toggled from the script at the bottom of
+       [slug].astro in response to the TOC's own panel-toggle button. */
+    &.is-hidden {
+      @apply hidden!;
+    }
+  }
+
+  .legal-toc-reopen-row {
+    /* top-9 matches the TOC's own sticky offset, so the reopen affordance
+       stays reachable at the same scroll position the panel would occupy. */
+    @apply sticky top-9 z-10 hidden justify-end lg:flex;
+  }
+
+  .legal-toc-reopen {
+    @apply border-glacier-mist-900 text-midnight-fjord/60 hover:text-midnight-fjord datum-text-xs mb-6 flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 font-medium transition-colors duration-150;
   }
 
   .legal-toc .toc-container {

@@ -658,7 +658,10 @@
   }
 
   .toc-nav {
-    @apply border-glacier-mist-900 relative max-h-[3000px] w-full overflow-hidden border-l-2 border-dashed pb-9 pl-4 transition-[max-height] duration-300 ease-in-out md:pb-12 lg:pb-16;
+    /* No overflow-hidden here (even for the collapse below) — the active-dot
+       indicator on descendants intentionally bleeds left onto this dashed
+       border, and any overflow:hidden/auto ancestor close to it clips it. */
+    @apply border-glacier-mist-900 relative w-full border-l-2 border-dashed pb-9 pl-4 md:pb-12 lg:pb-16;
   }
 
   /* Shared pill-toggle look — reused by both the TOC's own panel-toggle
@@ -667,6 +670,15 @@
      so the two states can't visually drift apart from each other again. */
   .toc-pill-toggle {
     @apply border-glacier-mist-900 mb-6 inline-flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 transition-colors duration-150;
+  }
+
+  /* Sizes the icon in EITHER pill-toggle button — .toc-panel-icon on its own,
+     not scoped to .toc-panel-toggle specifically, since .legal-toc-reopen
+     (page-legal.css) carries the same icon class but not that parent class.
+     Without this unscoped rule, that icon fell back to Lucide's 24x24
+     default and overflowed the pill's padding. */
+  .toc-panel-icon {
+    @apply h-3.5 w-3.5 shrink-0;
   }
 
   /* Whole-panel collapse (opt-in via the `panelCollapsible` prop) — hides the
@@ -683,12 +695,8 @@
     @apply pb-0 text-inherit;
   }
 
-  .toc-panel-toggle .toc-panel-icon {
-    @apply h-3.5 w-3.5 shrink-0;
-  }
-
   .toc-container.is-collapsed .toc-nav {
-    @apply max-h-0;
+    @apply hidden;
   }
 
   .toc-list {
@@ -763,12 +771,14 @@
     @apply rotate-90;
   }
 
+  /* No overflow-hidden here either, for the same reason as .toc-nav above —
+     active h3 sub-items use the same bleeding dot indicator. */
   .toc-sublist {
-    @apply flex max-h-0 flex-col gap-2 overflow-hidden pt-2 transition-[max-height] duration-300 ease-in-out;
+    @apply hidden flex-col gap-2 pt-2;
   }
 
   .toc-group.is-open .toc-sublist {
-    @apply max-h-[600px];
+    @apply flex;
   }
 
   /* figure */

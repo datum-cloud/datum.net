@@ -1,6 +1,6 @@
 ---
 import type { MarkdownHeading } from 'astro';
-import { PanelRight } from '@lucide/astro';
+import { PanelRightClose } from '@lucide/astro';
 
 const {
   headings = [] as MarkdownHeading[],
@@ -40,7 +40,7 @@ if (collapsible) {
       {showTitle &&
         (panelCollapsible ? (
           <button type="button" class="toc-panel-toggle toc-pill-toggle" aria-expanded="true">
-            <PanelRight class="toc-panel-icon" aria-hidden="true" />
+            <PanelRightClose class="toc-panel-icon" width={14} height={14} aria-hidden="true" />
             <h3 class="toc-title">{title}</h3>
           </button>
         ) : (
@@ -141,6 +141,17 @@ if (collapsible) {
         panelToggle.setAttribute('aria-expanded', 'true');
       });
     });
+
+    // Default to collapsed on narrow viewports — matches the sidenav's own
+    // mobile toggle (collapsed dropdown, tap to expand) rather than the
+    // desktop default of expanded. Only affects the initial state; the
+    // toggle above still works normally afterward regardless of viewport.
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      panelToggles.forEach((panelToggle) => {
+        panelToggle.closest('.toc-container')?.classList.add('is-collapsed');
+        panelToggle.setAttribute('aria-expanded', 'false');
+      });
+    }
 
     const groupEls = document.querySelectorAll<HTMLElement>('.toc-group');
 

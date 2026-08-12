@@ -6,7 +6,9 @@
   }
 
   .legal-sidenav {
-    @apply w-full shrink-0 self-start pt-5 pb-8 md:w-64.75 md:overflow-auto md:pt-12 md:pr-7 md:pb-7 lg:pt-16;
+    /* order puts the sidenav first when .legal-layout is stacked (below md)
+       — see .legal-toc below for why order matters here. */
+    @apply order-1 w-full shrink-0 self-start pt-5 pb-8 md:order-none md:w-64.75 md:overflow-auto md:pt-12 md:pr-7 md:pb-7 lg:pt-16;
 
     /* Mobile toggle button */
     .legal-sidenav-toggle {
@@ -63,35 +65,79 @@
   }
 
   .legal-toc {
-    @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
-    @apply pt-9 pr-0 md:pt-12 md:pl-4 lg:pt-16 lg:pl-7;
+    /* Visible at every breakpoint now (was hidden below lg) — below lg it
+       renders as the same collapsed-by-default dropdown pattern the
+       sidenav's own mobile toggle uses, just for in-page sections instead
+       of switching documents. order-2 puts it right after the sidenav
+       when .legal-layout is stacked (below md), instead of after all the
+       article content where plain DOM order would otherwise land it —
+       useless for a "jump to section" aid if you have to scroll past
+       everything to reach it. order-none from md on restores normal
+       left-to-right DOM order (sidenav, content, toc). */
+    @apply relative order-2 flex w-full flex-col gap-y-4 md:order-none md:max-w-53.25 md:min-w-53.25 lg:flex;
+    /* pt-0/pb-1 (not pt-5/pb-8) below md — this column is sandwiched between
+       .legal-sidenav's own pb-8 above it and .legal-content's own pt-9
+       below it in the stacked mobile layout, and padding doesn't collapse
+       between separate elements, so its own top/bottom padding stacked
+       additively on top of both, ballooning into ~52px/~68px gaps. */
+    @apply pt-0 pr-0 pb-1 md:pt-12 md:pb-0 lg:pt-16 lg:pl-7;
 
     /* `!` wins over the responsive lg:flex above regardless of viewport —
        hiding the whole column (not just its nav) lets .legal-content's
        flex-1 reclaim the width. Toggled from the script at the bottom of
-       [slug].astro in response to the TOC's own panel-toggle button. */
+       [slug].astro in response to the TOC's own panel-toggle button. Only
+       relevant at lg+ — there's no side-by-side width to reclaim below
+       lg, since the columns are stacked, not adjacent. */
     &.is-hidden {
-      @apply hidden!;
+      @apply lg:hidden!;
     }
   }
 
   .legal-toc-reopen-row {
-    /* top-9 matches the TOC's own sticky offset, so the reopen affordance
+    /* Plain full-width block, not a flex container — the button inside is
+       position:absolute, so this row never needs to size around it (an
+       empty block naturally renders at ~0 height on its own) and never
+       needs align-items to fight over, unlike the old flex-row version.
+       top-9 matches the TOC's own sticky offset, so the reopen affordance
        stays reachable at the same scroll position the panel would occupy. */
-    @apply sticky top-9 z-10 hidden justify-end lg:flex;
+    @apply sticky top-9 z-10 hidden lg:block;
   }
 
   /* Shape/border/padding/cursor come from .toc-pill-toggle (components.css) —
-     this only adds what's unique to this instance. */
+     this only adds what's unique to this instance.
+
+     left: calc(100% - 7.0625rem) is the position fix. Since % in an
+     absolutely-positioned element's `left` resolves against its containing
+     block's width (this row, which spans .legal-content's own content-box
+     — inside its lg:px-16 padding, not the full layout width), this lands
+     the button's LEFT edge exactly where the TOC's own toggle sits,
+     measured from the row's right edge. Confirmed empirically via
+     getBoundingClientRect on both states (7.0625rem = 113px), not derived
+     from the column-width math alone — that math missed both
+     .legal-content's own right padding and .toc-container's extra pl-2,
+     so trust this number over rederiving it by hand. */
   .legal-toc-reopen {
-    @apply datum-text-xs text-midnight-fjord/60 hover:text-midnight-fjord font-medium;
+    /* width: max-content is required here, not cosmetic — for an absolutely
+       positioned element with only `left` set (no `width`), the spec's
+       shrink-to-fit sizing uses "available space" (containing block width
+       minus the left offset) as the width ceiling, not the content's actual
+       natural width. Since our left offset consumes nearly the whole row,
+       that leaves ~113px of "available" space — enough for "On This" but
+       not "Page", so the text wrapped without this override. */
+    @apply datum-text-xs text-midnight-fjord/60 hover:text-midnight-fjord absolute w-max font-medium;
+    left: calc(100% - 7.0625rem);
   }
 
   .legal-toc .toc-container {
     /* pl-2 keeps the active-dot indicator (which intentionally bleeds left onto
-       the dashed guide line) inside the padding box — overflow-y: auto forces
-       overflow-x to clip too, and without this the dot gets cut off. */
-    @apply top-9! max-h-[calc(100vh-5rem)] overflow-y-auto pl-2;
+       the dashed guide line) inside the padding box, unconditionally — harmless
+       at any breakpoint even though it only matters where overflow-y is set.
+
+       Below lg: static/visible, matching the sidenav's own mobile toggle —
+       it's a collapsed dropdown that scrolls with the page, not a side
+       column, so sticking it and clipping its height would be wrong there.
+       At lg+: sticky + capped height + scrolls internally, same as before. */
+    @apply static! max-h-none! overflow-visible! pl-2 lg:sticky! lg:top-9! lg:max-h-[calc(100vh-5rem)]! lg:overflow-y-auto!;
   }
 
   /* Sub-headings read smaller than their parent section, and the smaller
@@ -102,7 +148,7 @@
   }
 
   .legal-content {
-    @apply flex-1 px-0 pt-9 pb-0 md:px-10 md:pt-12 lg:px-16 lg:pt-16;
+    @apply order-3 flex-1 px-0 pt-9 pb-0 md:order-none md:px-10 md:pt-12 lg:px-16 lg:pt-16;
 
     table {
       @apply my-6 w-full border-separate;

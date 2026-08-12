@@ -1,4 +1,5 @@
-@import './base.css';
+@reference './base.css';
+@import './layers.css';
 @import './components-events.css';
 @import './components-secondary-tab-nav.css';
 

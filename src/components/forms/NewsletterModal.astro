@@ -1,6 +1,7 @@
 ---
 // src/components/forms/NewsletterModal.astro
 // Popup modal for newsletter signup — form layout from Figma (node 9185-41852).
+import '@styles/components-modal.css';
 import Icon from '@components/Icon.astro';
 ---
 
@@ -203,7 +204,6 @@ import Icon from '@components/Icon.astro';
 </newsletter-modal>
 
 <script>
-  import { actions } from 'astro:actions';
   const NEWSLETTER_MODAL_OPEN_EVENT = 'newsletter-modal-open';
   const NEWSLETTER_MODAL_CLOSE_EVENT = 'newsletter-modal-close';
 
@@ -288,44 +288,43 @@ import Icon from '@components/Icon.astro';
       });
     }
 
-    submitForm() {
+    async submitForm() {
       // Set loading state
       this.isSubmitting = true;
       this.submitBtn.disabled = true;
       this.submitBtnText.textContent = 'Please wait';
 
-      actions
-        .NewsletterSignup({
+      try {
+        // Load astro:actions only on submit so it stays off the critical path.
+        const { actions } = await import('astro:actions');
+        const result = await actions.NewsletterSignup({
           email: this.form.email.value,
           givenName: this.form.givenName.value,
           familyName: this.form.familyName.value,
-        })
-        .then((result) => {
-          if (!result.data || result.data != 200) {
-            if (result.data == 422) {
-              this.showSuccessMessage("Looks like you're already subscribed!", false);
-            } else {
-              this.showSuccessMessage(
-                'Something went wrong. Please try again in a minute or two.',
-                false
-              );
-            }
-          } else {
-            this.showSuccessMessage("You're on the list");
-          }
-        })
-        .catch(() => {
-          this.showSuccessMessage(
-            'Something went wrong. Please try again in a minute or two.',
-            false
-          );
-        })
-        .finally(() => {
-          // Reset loading state
-          this.isSubmitting = false;
-          this.submitBtnText.textContent = 'Subscribe';
-          this.submitBtn.disabled = !this.consentCheckbox.checked;
         });
+
+        if (!result.data || result.data != 200) {
+          if (result.data == 422) {
+            this.showSuccessMessage("Looks like you're already subscribed!", false);
+          } else {
+            this.showSuccessMessage(
+              'Something went wrong. Please try again in a minute or two.',
+              false
+            );
+          }
+        } else {
+          this.showSuccessMessage("You're on the list");
+        }
+      } catch {
+        this.showSuccessMessage(
+          'Something went wrong. Please try again in a minute or two.',
+          false
+        );
+      } finally {
+        this.isSubmitting = false;
+        this.submitBtnText.textContent = 'Subscribe';
+        this.submitBtn.disabled = !this.consentCheckbox.checked;
+      }
     }
 
     showSuccessMessage(message: string, success: boolean = true) {

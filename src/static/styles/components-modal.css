@@ -1,3 +1,6 @@
+@reference './base.css';
+@import './layers.css';
+
 @layer components {
   .modal-frame {
     @apply shadow-modal relative flex w-full grow flex-col overflow-hidden rounded-lg bg-white p-10;

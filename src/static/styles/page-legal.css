@@ -81,8 +81,10 @@
     @apply sticky top-9 z-10 hidden justify-end lg:flex;
   }
 
+  /* Shape/border/padding/cursor come from .toc-pill-toggle (components.css) —
+     this only adds what's unique to this instance. */
   .legal-toc-reopen {
-    @apply border-glacier-mist-900 text-midnight-fjord/60 hover:text-midnight-fjord datum-text-xs mb-6 flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 font-medium transition-colors duration-150;
+    @apply datum-text-xs text-midnight-fjord/60 hover:text-midnight-fjord font-medium;
   }
 
   .legal-toc .toc-container {

@@ -39,7 +39,7 @@ if (collapsible) {
     <aside class={`toc-container ${className || ''} ${sticky ? 'sticky top-0' : ''}`}>
       {showTitle &&
         (panelCollapsible ? (
-          <button type="button" class="toc-panel-toggle" aria-expanded="true">
+          <button type="button" class="toc-panel-toggle toc-pill-toggle" aria-expanded="true">
             <PanelRight class="toc-panel-icon" aria-hidden="true" />
             <h3 class="toc-title">{title}</h3>
           </button>

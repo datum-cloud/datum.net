@@ -661,25 +661,30 @@
     @apply border-glacier-mist-900 relative max-h-[3000px] w-full overflow-hidden border-l-2 border-dashed pb-9 pl-4 transition-[max-height] duration-300 ease-in-out md:pb-12 lg:pb-16;
   }
 
-  /* Whole-panel collapse (opt-in via the `panelCollapsible` prop) — hides the
-     entire nav under its title, independent of the per-group collapse above.
-     Styled to match .legal-toc-reopen (the button that replaces this when
-     collapsed) so the toggle looks identical in both states. */
-  .toc-panel-toggle {
+  /* Shared pill-toggle look — reused by both the TOC's own panel-toggle
+     button below and the page-level reopen button that replaces it when
+     collapsed (.legal-toc-reopen in page-legal.css carries this class too),
+     so the two states can't visually drift apart from each other again. */
+  .toc-pill-toggle {
     @apply border-glacier-mist-900 mb-6 inline-flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 transition-colors duration-150;
   }
 
+  /* Whole-panel collapse (opt-in via the `panelCollapsible` prop) — hides the
+     entire nav under its title, independent of the per-group collapse above. */
+  .toc-panel-toggle {
+    @apply text-midnight-fjord/60;
+  }
+
+  .toc-panel-toggle:hover {
+    @apply text-midnight-fjord;
+  }
+
   .toc-panel-toggle .toc-title {
-    @apply pb-0;
+    @apply pb-0 text-inherit;
   }
 
   .toc-panel-toggle .toc-panel-icon {
-    @apply text-midnight-fjord/60 h-3.5 w-3.5 shrink-0 transition-colors duration-150;
-  }
-
-  .toc-panel-toggle:hover .toc-title,
-  .toc-panel-toggle:hover .toc-panel-icon {
-    @apply text-midnight-fjord;
+    @apply h-3.5 w-3.5 shrink-0;
   }
 
   .toc-container.is-collapsed .toc-nav {

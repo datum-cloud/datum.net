@@ -62,7 +62,12 @@ const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
 
           <main class="legal-content">
             <div class="legal-toc-reopen-row">
-              <button type="button" class="legal-toc-reopen" hidden aria-label="Show On This Page">
+              <button
+                type="button"
+                class="legal-toc-reopen toc-pill-toggle"
+                hidden
+                aria-label="Show On This Page"
+              >
                 <PanelRight class="h-3.5 w-3.5" aria-hidden="true" />
                 On This Page
               </button>

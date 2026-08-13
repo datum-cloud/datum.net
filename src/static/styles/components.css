@@ -667,18 +667,40 @@
   /* Shared pill-toggle look — reused by both the TOC's own panel-toggle
      button below and the page-level reopen button that replaces it when
      collapsed (.legal-toc-reopen in page-legal.css carries this class too),
-     so the two states can't visually drift apart from each other again. */
+     so the two states can't visually drift apart from each other again.
+     shadow-sm + a visible hover background were added after user testing
+     showed people didn't realize this pill was clickable at all — a flat
+     bg-white pill with a thin border reads as a label, not a button. */
   .toc-pill-toggle {
-    @apply border-glacier-mist-900 mb-6 inline-flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 transition-colors duration-150;
+    @apply border-glacier-mist-900 hover:bg-glacier-mist-800 mb-6 inline-flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 shadow-sm transition-colors duration-150;
   }
 
-  /* Sizes the icon in EITHER pill-toggle button — .toc-panel-icon on its own,
-     not scoped to .toc-panel-toggle specifically, since .legal-toc-reopen
-     (page-legal.css) carries the same icon class but not that parent class.
-     Without this unscoped rule, that icon fell back to Lucide's 24x24
-     default and overflowed the pill's padding. */
-  .toc-panel-icon {
-    @apply h-3.5 w-3.5 shrink-0;
+  /* Sizes the chevron in EITHER pill-toggle button — .toc-panel-chevron on
+     its own, not scoped to .toc-panel-toggle specifically, since
+     .legal-toc-reopen (page-legal.css) carries the same chevron class but
+     not that parent class. Without this unscoped rule, an icon here fell
+     back to a much larger default size and overflowed the pill's padding.
+
+     This is the exact same chevron markup/rotation convention as
+     .toc-group-chevron below — deliberately, not coincidentally: the panel
+     toggle used to have its own distinct "panel" icon, and testers didn't
+     recognize it as clickable because it didn't look like the (already
+     understood) per-section chevrons. Reusing the identical glyph and
+     rotation direction makes both controls read as "the same kind of
+     thing" at a glance. */
+  .toc-panel-chevron {
+    @apply h-3.5 w-3.5 shrink-0 transition-transform duration-200 ease-out;
+  }
+
+  /* Base above defaults to un-rotated (pointing right, "closed") — matching
+     a freshly-collapsed .toc-group's chevron, and correct as-is for
+     .legal-toc-reopen (page-legal.css), which is only ever shown while
+     collapsed. .toc-panel-toggle (shown state) starts aria-expanded="true"
+     and needs the opposite default, so it gets its own rotated override
+     instead of relying on an un-rotate override that would never match a
+     chevron outside .toc-panel-toggle entirely. */
+  .toc-panel-toggle[aria-expanded='true'] .toc-panel-chevron {
+    @apply rotate-90;
   }
 
   /* Whole-panel collapse (opt-in via the `panelCollapsible` prop) — hides the

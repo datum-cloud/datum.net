@@ -4,6 +4,9 @@
 
 import type { SecondaryTabNavItem } from '@/src/types/common';
 
+/** Matches `process.env.MODE`. Omit to show the item in every environment. */
+export type NavMode = 'development' | 'production' | 'local';
+
 export interface NavItem {
   text: string;
   desc?: string;
@@ -12,6 +15,7 @@ export interface NavItem {
   image?: string;
   isExternal?: boolean;
   label?: string;
+  mode?: NavMode;
 }
 
 export interface NavSection {
@@ -28,6 +32,8 @@ export interface NavMainItem {
   desc?: string;
   href: string;
   isExternal?: boolean;
+  /** When set, the item is omitted unless `process.env.MODE` matches. */
+  mode?: NavMode;
   isMegaDropdown?: boolean;
   /** Visual theme for the dropdown panel. 'dark' renders the midnight-fjord mega-menu. */
   theme?: 'dark';
@@ -47,6 +53,7 @@ export interface NavFooterCard {
   href: string;
   icon: string;
   isExternal?: boolean;
+  mode?: NavMode;
 }
 
 export interface NavFooterDocsSection {

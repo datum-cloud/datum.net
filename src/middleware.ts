@@ -1,11 +1,13 @@
 import { stargazerCount } from '@libs/datum';
 import { sequence } from 'astro:middleware';
 import type { MiddlewareHandler } from 'astro';
+import protectedRoutes from '@data/protectedRoutes.json';
 
-const PROTECTED_ROUTES = [
-  /^\/dev($|\/.*)/,
-  /^\/platform\/dns(\.md)?\/?$/,
-  /^\/platform\/compute(\.md)?\/?$/,
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const PROTECTED_ROUTES: RegExp[] = [
+  ...protectedRoutes.prefix.map((path) => new RegExp(`^${escapeRegExp(path)}($|/.*)`)),
+  ...protectedRoutes.pages.map((path) => new RegExp(`^${escapeRegExp(path)}(\\.md)?/?$`)),
 ];
 
 const HELLO_PROFILE_PATH = /^\/hello\/([^/]+)$/;

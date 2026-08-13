@@ -1,0 +1,76 @@
+---
+// src/components/pricing/Hero.astro
+// Hero for /pricing: headline column paired with the dark "Why is pricing so
+// complicated?" panel. Figma node 16187:93036. Nav/Announcement are rendered by
+// the page (see src/pages/pricing.astro), not here.
+
+import { Image } from 'astro:assets';
+import Icon from '@components/Icon.astro';
+import Button from '@components/Button.astro';
+import SectionLine from '@components/SectionLine.astro';
+import starfieldImage from '@assets/images/dedicated-cloud-starfield.png';
+import { hero, callout } from '@data/pricing';
+---
+
+<section class="section--block section--block--x-pad bg-white" aria-labelledby="pricing-hero-title">
+  <div class="max-width-nav spacing-pad relative pt-12 pb-14 md:pt-16 md:pb-16 lg:pt-24 lg:pb-20">
+    <SectionLine left right top />
+
+    <div class="pricing-hero">
+      <div class="pricing-hero-intro">
+        <div class="pricing-hero-copy">
+          <h1 id="pricing-hero-title" class="pricing-hero-title">{hero.title}</h1>
+          <p class="pricing-hero-description">{hero.description}</p>
+        </div>
+
+        <Button
+          class="btn btn--midnight-fjord"
+          text={hero.primaryCta.text}
+          href={hero.primaryCta.href}
+          icon={{ name: 'arrow-right', size: 'md' }}
+          target="_blank"
+          data-rybbit-event="Pricing: Start for free"
+        />
+      </div>
+
+      <div class="pricing-hero-panel">
+        <Image
+          src={starfieldImage}
+          alt=""
+          class="pricing-hero-panel-starfield"
+          aria-hidden="true"
+          loading="eager"
+        />
+        <span class="pricing-hero-panel-tile pricing-hero-panel-tile--top" aria-hidden="true"
+        ></span>
+        <span class="pricing-hero-panel-tile pricing-hero-panel-tile--bottom" aria-hidden="true"
+        ></span>
+
+        <div class="pricing-hero-panel-body">
+          <p class="pricing-hero-panel-title">{callout.title}</p>
+          <p class="pricing-hero-panel-description">{callout.description}</p>
+
+          <ul class="pricing-hero-panel-list">
+            {
+              callout.items.map((item) => (
+                <li class="pricing-hero-panel-item">
+                  <Icon name="check" size="sm" />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <Button
+          class="btn btn--midnight-fjord-alpha pricing-hero-panel-cta"
+          text={callout.cta.text}
+          href={callout.cta.href}
+          icon={{ name: 'external-link', size: 'md' }}
+          target="_blank"
+          data-rybbit-event="Pricing: Learn more"
+        />
+      </div>
+    </div>
+  </div>
+</section>

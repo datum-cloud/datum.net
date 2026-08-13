@@ -1,0 +1,78 @@
+---
+// src/components/pricing/RateRows.astro
+
+import Icon from '@components/Icon.astro';
+import RatePrice from '@components/pricing/RatePrice.astro';
+import type { RateGroup } from '@data/pricing';
+
+export interface RateRowsProps {
+  group: RateGroup;
+  /** Every group but the last closes with the gap and the midnight rule. */
+  spacer?: boolean;
+}
+
+const { group, spacer = false } = Astro.props as RateRowsProps;
+
+const rowCount = group.features.reduce((total, feature) => total + feature.rows.length, 0);
+---
+
+<tbody class="pricing-rate-group">
+  {
+    group.features.flatMap((feature, featureIndex) =>
+      feature.rows.map((row, rowIndex) => (
+        <tr class="pricing-rate-row">
+          {featureIndex === 0 && rowIndex === 0 && (
+            <th
+              scope="rowgroup"
+              rowspan={rowCount}
+              class:list={['pricing-rate-category', `pricing-rate-category--${group.id}`]}
+              data-rate-card-category-cell
+            >
+              <span class="pricing-rate-category-inner">
+                <span class="pricing-rate-category-label">
+                  <Icon name={group.icon} class="pricing-rate-category-icon" />
+                  {group.name}
+                </span>
+                {group.note && (
+                  <span class="pricing-rate-note">
+                    <span>{group.note.text}</span>
+                    <Icon name={group.note.icon} class="pricing-rate-note-icon" />
+                  </span>
+                )}
+              </span>
+            </th>
+          )}
+
+          {rowIndex === 0 && (
+            <th scope="rowgroup" rowspan={feature.rows.length} class="pricing-rate-feature">
+              <span class="pricing-rate-feature-inner">
+                <span class="pricing-rate-feature-label">
+                  {feature.name}
+                  {feature.info && (
+                    <span class="pricing-rate-info" title={feature.info} aria-label={feature.info}>
+                      <Icon name="info" size="sm" />
+                    </span>
+                  )}
+                </span>
+                {feature.badge && <span class="pricing-rate-badge">{feature.badge}</span>}
+              </span>
+            </th>
+          )}
+
+          <td class="pricing-rate-unit">{row.unit}</td>
+          <td class="pricing-rate-price">
+            <RatePrice row={row} />
+          </td>
+        </tr>
+      ))
+    )
+  }
+
+  {
+    spacer && (
+      <tr class="pricing-rate-spacer">
+        <td colspan="4" />
+      </tr>
+    )
+  }
+</tbody>

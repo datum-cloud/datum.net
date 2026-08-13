@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import navigation from '@data/navigation.json';
 import type { NavData, NavFooterCard, NavItem } from '@/src/types/navigation';
 import type { FooterProps } from '@/src/types/common';
+import { filterNavFooterCards, filterNavFooterSections } from '@utils/navigationUtils';
 import ImageFooter from '@assets/images/footer-illustration.png';
 import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
@@ -20,10 +21,30 @@ const {
   showIllustration = false,
   showSignup = true,
   plainIllustration = false,
+  ctaTitle = 'go anywhere',
+  ctaTitleAccent = 'Start here,',
+  ctaDescription = 'Own more of your stack, reduce latency across regions, and connect privately with customers.',
+  ctaButtons = [
+    {
+      text: 'Start for free',
+      href: 'https://auth.datum.net/id/signup',
+      class: 'btn btn--midnight-fjord btn--glow-aurora',
+      icon: { name: 'arrow-right', size: 'md' },
+      target: '_blank',
+      event: 'Pre-footer: Start for free',
+    },
+    {
+      text: 'Request a demo',
+      href: '/demo',
+      class: 'btn btn--alpha',
+      event: 'Pre-footer: Request a demo',
+    },
+  ],
 } = Astro.props as FooterProps;
 
 const navData = navigation as NavData;
-const [platformSection, resourcesSection, companySection] = navData.footer;
+const footerCards = filterNavFooterCards(navData.footerCards);
+const [platformSection, resourcesSection, companySection] = filterNavFooterSections(navData.footer);
 ---
 
 <footer
@@ -50,29 +71,22 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
           </div>
           <div class="max-width-nopad flex flex-col items-center gap-5.5 pt-14 text-center md:gap-10 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40">
             <h2 class="section--title">
-              <span class="text-pine-forge---links">Start here,</span> go anywhere
+              <span class="text-pine-forge---links">{ctaTitleAccent}</span> {ctaTitle}
             </h2>
-            <p class="datum-text-xl max-w-5xl text-pretty opacity-80">
-              Own more of your stack, reduce latency across regions, and connect privately with
-              customers.
-            </p>
+            <p class="datum-text-xl max-w-5xl text-pretty opacity-80">{ctaDescription}</p>
             <div class="flex items-center justify-center gap-4">
-              <Button
-                class="btn btn--midnight-fjord btn--glow-aurora"
-                text="Start for free"
-                icon={{ name: 'arrow-right', size: 'md' }}
-                iconPosition="right"
-                iconClass="stroke-1.5"
-                target="_blank"
-                href="https://auth.datum.net/id/signup"
-                data-rybbit-event="Pre-footer: Start for free"
-              />
-              <Button
-                class="btn btn--alpha"
-                text="Request a demo"
-                href="/demo"
-                data-rybbit-event="Pre-footer: Request a demo"
-              />
+              {ctaButtons.map((button) => (
+                <Button
+                  class={button.class}
+                  text={button.text}
+                  icon={button.icon}
+                  iconPosition="right"
+                  iconClass="stroke-1.5"
+                  target={button.target}
+                  href={button.href}
+                  data-rybbit-event={button.event}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -123,7 +137,7 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
       <div class="footer-grid">
         <div class="footer-cards">
           {
-            navData.footerCards.map((card: NavFooterCard) => (
+            footerCards.map((card: NavFooterCard) => (
               <a
                 href={card.href}
                 class="footer-card"

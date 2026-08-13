@@ -289,7 +289,7 @@
   }
 
   .footer-main {
-    @apply max-width bg-midnight-fjord relative z-10 mx-auto flex flex-col gap-10 py-14 lg:py-20;
+    @apply max-width-full bg-midnight-fjord relative z-10 mx-auto flex flex-col gap-10 py-14 lg:py-20;
   }
 
   .footer-grid {
@@ -329,19 +329,11 @@
   }
 
   .footer-nav-container {
-    @apply flex w-full flex-1 flex-col gap-10 sm:flex-row sm:flex-wrap sm:justify-between lg:gap-20;
+    @apply grid w-full flex-1 grid-cols-2 gap-10 sm:flex sm:flex-row sm:flex-wrap sm:justify-between lg:gap-20;
   }
 
   .footer-nav-section {
-    @apply w-full sm:w-auto sm:min-w-36 sm:flex-1;
-  }
-
-  .footer-nav-section--stacked {
-    @apply flex flex-col gap-10;
-  }
-
-  .footer-nav-group {
-    @apply flex flex-col;
+    @apply min-w-0 sm:w-auto sm:min-w-36 sm:flex-1;
   }
 
   .footer-status-badge {

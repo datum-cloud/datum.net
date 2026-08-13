@@ -122,6 +122,32 @@ handbooks.forEach((collection) => {
 
       {/* Main Content Area */}
       <article class="handbook-content">
+        <div class="handbook-toc-reopen-row">
+          <button
+            type="button"
+            class="handbook-toc-reopen toc-pill-toggle"
+            hidden
+            aria-label="Show On This Page"
+          >
+            On This Page
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="toc-panel-chevron"
+              aria-hidden="true"
+            >
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </button>
+        </div>
+
         {
           showTitle && (
             <header class="article-header">
@@ -167,7 +193,14 @@ handbooks.forEach((collection) => {
       </article>
 
       <aside class="handbook-toc">
-        <TableOfContents headings={headings} title="On This Page" showTitle={true} sticky={true} />
+        <TableOfContents
+          headings={headings}
+          title="On This Page"
+          showTitle={true}
+          sticky={true}
+          collapsible={true}
+          panelCollapsible={true}
+        />
       </aside>
     </div>
   </div>
@@ -200,6 +233,26 @@ handbooks.forEach((collection) => {
         `;
 
         heading.appendChild(anchorLink);
+      });
+    }
+
+    // Wire the reopen button to the TOC panel's own toggle events — same
+    // contract as the legal pages' equivalent in [slug].astro. Hiding the
+    // whole column (not just the nav inside it) lets .handbook-content's
+    // own flex-grow reclaim that width.
+    const wrapper = document.querySelector<HTMLElement>('.handbook-toc');
+    const reopenButton = document.querySelector<HTMLButtonElement>('.handbook-toc-reopen');
+    if (wrapper && reopenButton) {
+      window.addEventListener('datum:toc-panel-toggle', (event) => {
+        const collapsed = (event as CustomEvent<{ collapsed: boolean }>).detail?.collapsed ?? false;
+        wrapper.classList.toggle('is-hidden', collapsed);
+        reopenButton.hidden = !collapsed;
+      });
+
+      reopenButton.addEventListener('click', () => {
+        wrapper.classList.remove('is-hidden');
+        reopenButton.hidden = true;
+        window.dispatchEvent(new CustomEvent('datum:toc-panel-show'));
       });
     }
   });

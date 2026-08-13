@@ -150,6 +150,20 @@
   .legal-content {
     @apply order-3 flex-1 px-0 pt-9 pb-0 md:order-none md:px-10 md:pt-12 lg:px-16 lg:pt-16;
 
+    /* Widen the article's own reading measure when the TOC column is
+       hidden — otherwise hiding it only grows .legal-content's outer box
+       (flex-1 reclaiming the freed width), while the <article> inside
+       stays capped at its own max-w-4xl (set per-page via the Container
+       component in each .mdx file) and never visibly uses the extra
+       space. :has() reaches "backward" to .legal-toc — a later sibling in
+       the DOM — since a forward-only combinator (~) can't select .legal-content
+       from something that comes after it. Specificity here (two classes +
+       :has() + an element type) intentionally beats the single-class
+       max-w-4xl utility set inline per-page. */
+    &:has(~ .legal-toc.is-hidden) article {
+      @apply max-w-6xl!;
+    }
+
     table {
       @apply my-6 w-full border-separate;
       @apply bg-glacier-mist-900;

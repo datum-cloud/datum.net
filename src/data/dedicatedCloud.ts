@@ -119,6 +119,13 @@ export const operators = {
       slug: 'zachary-smith',
     },
     {
+      name: 'Megan O’Conner',
+      role: 'Chief of Staff & Strategic Accounts',
+      bio: 'Turns complex infrastructure into clear, human-led paths to what’s next for our biggest accounts.',
+      slug: 'megan-oconner',
+      linkedin: 'https://www.linkedin.com/in/meganoconnorco/',
+    },
+    {
       name: 'Shelby Lindsey',
       role: 'Lead Network Engineer',
       bio: 'A physical networking guru who oversees our backbone, peering, and edge fabrics.',

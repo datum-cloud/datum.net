@@ -169,35 +169,25 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
 
           {
             resourcesSection && (
-              <div class="footer-nav-section footer-nav-section--stacked">
-                <div class="footer-nav-group">
-                  <p class="footer-nav-header">{resourcesSection.title}</p>
-                  <ul class="footer-nav-list">
-                    {resourcesSection.items.map((item: NavItem) => (
-                      <li>
-                        <a
-                          href={item.href}
-                          class="footer-nav-link"
-                          target={item.isExternal ? '_blank' : undefined}
-                          rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                          data-astro-prefetch="hover"
-                          title={item.text}
-                          tabindex="0"
-                        >
-                          {item.text}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div class="footer-nav-group">
-                  <p class="footer-nav-header">Status</p>
-                  <div
-                    id="hyperping-badge"
-                    class="footer-status-badge datum-docs-sidebar-headings text-glacier-mist-700 [&>div]:bg-logo-object/15 min-w-[140px] normal-case [&>div]:rounded-md [&>div]:px-2 [&>div]:py-1"
-                  />
-                </div>
+              <div class="footer-nav-section">
+                <p class="footer-nav-header">{resourcesSection.title}</p>
+                <ul class="footer-nav-list">
+                  {resourcesSection.items.map((item: NavItem) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        class="footer-nav-link"
+                        target={item.isExternal ? '_blank' : undefined}
+                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        data-astro-prefetch="hover"
+                        title={item.text}
+                        tabindex="0"
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )
           }
@@ -227,6 +217,15 @@ const [platformSection, resourcesSection, companySection] = navData.footer;
               </div>
             )
           }
+
+          <div class="footer-nav-section">
+            <p class="footer-nav-header">Status</p>
+            <div
+              id="hyperping-badge"
+              class="footer-status-badge datum-docs-sidebar-headings text-glacier-mist-700 [&>div]:bg-logo-object/15 min-w-[140px] normal-case [&>div]:rounded-md [&>div]:px-2 [&>div]:py-1"
+            >
+            </div>
+          </div>
         </div>
       </div>
 

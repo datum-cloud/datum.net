@@ -30,6 +30,10 @@
   @apply max-w-8xl mx-auto w-full px-7;
 }
 
+@utility max-width-full {
+  @apply mx-auto w-full max-w-(--datum-max-width-nav) px-7;
+}
+
 @utility max-width-nopad {
   @apply max-w-8xl mx-auto w-full;
 }

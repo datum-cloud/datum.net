@@ -111,12 +111,12 @@ handbooks.forEach((collection) => {
 
 <section
   class:list={[
-    'handbook-article bg-glacier-mist-700 section--block border-glacier-mist-900 overflow-visible border-b',
+    'handbook-article bg-glacier-mist-700 section--block section--block--small-pad border-glacier-mist-900 overflow-visible border-b',
     className,
   ]}
   id="handbook-article-container"
 >
-  <div class="max-width">
+  <div class="max-width-full">
     <div class:list={['handbook-container', !showSidebar && 'handbook-container--no-sidebar']}>
       {showSidebar && <Sidebar selectedId={articleId} items={items} />}
 

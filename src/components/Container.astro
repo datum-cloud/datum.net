@@ -7,7 +7,7 @@ import type { ContainerProps } from '@/src/types/common';
 const { class: className = '', tag = 'div' } = Astro.props as ContainerProps;
 
 // Default container classes
-const defaultClasses = 'm-auto max-w-3xl';
+const defaultClasses = 'm-auto';
 const containerClasses = className ? `${defaultClasses} ${className}` : defaultClasses;
 
 // Determine the HTML tag to use

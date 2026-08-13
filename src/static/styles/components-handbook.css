@@ -93,10 +93,39 @@
     .article-aside {
       @apply mb-6;
     }
+
+    /* Hiding the whole column (not just its nav) lets .handbook-content's
+       flex-grow reclaim the width. Toggled from the script at the bottom of
+       Article.astro in response to the TOC's own panel-toggle button. */
+    &.is-hidden {
+      @apply lg:hidden!;
+    }
   }
 
   .handbook-toc .toc-container {
     @apply top-9!;
+  }
+
+  .handbook-toc-reopen-row {
+    /* top-9 matches the TOC's own sticky offset, so the reopen affordance
+       stays reachable at the same scroll position the panel would occupy. */
+    @apply sticky top-9 z-10 hidden lg:block;
+  }
+
+  /* left: calc(100% - 7.5625rem) lands the button's left edge exactly where
+     the TOC's own toggle sits — confirmed empirically via getBoundingClientRect
+     on both states, not derived from the column-width math (same lesson as
+     the legal-page equivalent: that math kept missing real padding
+     contributions). 7.5625rem here vs. 7.0625rem for legal's version — the
+     0.5rem difference is .legal-toc .toc-container's extra pl-2 (added there
+     for the active-dot indicator), which .handbook-toc doesn't have.
+     w-max is required, not cosmetic: shrink-to-fit sizing for an absolutely
+     positioned element with only `left` set uses "available space" as its
+     width ceiling, not natural content width, which silently wraps the text
+     otherwise. */
+  .handbook-toc-reopen {
+    @apply datum-text-xs text-midnight-fjord/60 hover:text-midnight-fjord absolute w-max font-medium;
+    left: calc(100% - 7.5625rem);
   }
 
   .handbook-sidebar {

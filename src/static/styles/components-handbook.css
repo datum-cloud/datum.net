@@ -11,7 +11,9 @@
   /* Main Content */
 
   .handbook-content {
-    @apply flex max-w-none grow flex-col;
+    /* order-3 pairs with .handbook-sidebar's order-1 and .handbook-toc's
+       order-2 below — see the comment on .handbook-toc for why. */
+    @apply order-3 flex max-w-none grow flex-col md:order-none;
 
     @apply p-9 pr-0 pl-0 md:p-12 md:pr-10 md:pl-10 lg:p-16;
   }
@@ -86,7 +88,15 @@
   }
 
   .handbook-toc {
-    @apply relative hidden w-full flex-col gap-y-4 md:max-w-53.25 md:min-w-53.25 lg:flex;
+    /* Visible at every breakpoint (not just lg+) — below lg it renders as
+       the same collapsed-by-default dropdown pattern the legal pages'
+       equivalent uses, via TableOfContents.astro's own matchMedia check,
+       rather than disappearing entirely on mobile/tablet. order-2 puts it
+       right after the sidebar when .handbook-container is stacked (below
+       md) instead of after all the article content where DOM order would
+       otherwise land it. md:order-none restores normal left-to-right order
+       (sidebar, content, toc) once the columns sit side by side. */
+    @apply relative order-2 flex w-full flex-col gap-y-4 md:order-none md:max-w-53.25 md:min-w-53.25;
     @apply pt-9 md:pt-12 lg:pt-16;
     @apply pr-0 md:pl-4 lg:pl-7;
 
@@ -103,7 +113,12 @@
   }
 
   .handbook-toc .toc-container {
-    @apply top-9!;
+    /* Below lg: static/visible, matching the sidebar's own mobile toggle —
+       it's a collapsed dropdown that scrolls with the page, not a side
+       column, so sticking it and clipping its height would be wrong there
+       (same reasoning as the legal pages' equivalent rule). At lg+: sticky
+       + capped height + scrolls internally. */
+    @apply static! max-h-none! overflow-visible! lg:sticky! lg:top-9! lg:max-h-[calc(100vh-5rem)]! lg:overflow-y-auto!;
   }
 
   .handbook-toc-reopen-row {
@@ -129,7 +144,9 @@
   }
 
   .handbook-sidebar {
-    @apply relative w-full flex-col gap-y-0 md:max-w-55 md:min-w-55 md:gap-y-4 lg:max-w-64.75 lg:min-w-64.75;
+    /* order-1 pairs with .handbook-toc's order-2 and .handbook-content's
+       order-3 above — see the comment on .handbook-toc for why. */
+    @apply relative order-1 w-full flex-col gap-y-0 md:order-none md:max-w-55 md:min-w-55 md:gap-y-4 lg:max-w-64.75 lg:min-w-64.75;
     @apply px-7 pt-5 pl-0 md:px-0 md:pt-12 lg:pt-16;
     @apply pr-0 md:pr-4 lg:pr-7;
     @apply flex md:flex;

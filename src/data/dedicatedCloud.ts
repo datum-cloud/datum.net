@@ -107,6 +107,13 @@ export interface Operator {
   slug: string;
   /** Override when the Strapi author record doesn't have `social.linkedin` set. */
   linkedin?: string;
+  /**
+   * Override when this operator's `/about` avatar color (assigned by array index there)
+   * doesn't match the glacier-mist scheme this section standardized on. Points at the
+   * person's glacier-mist variant directly so the two pages can show different color
+   * variants of the same headshot without fighting over one shared Strapi `avatar` field.
+   */
+  avatarOverrideUrl?: string;
 }
 
 export const operators = {
@@ -117,6 +124,8 @@ export const operators = {
       role: 'Co-Founder, CEO',
       bio: 'Twenty years building bare metal and interconnected infrastructure for demanding customers.',
       slug: 'zachary-smith',
+      avatarOverrideUrl:
+        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/zachary_smith_glacier_mist_b7a391652b.png',
     },
     {
       name: 'Megan O’Conner',
@@ -138,6 +147,8 @@ export const operators = {
       bio: 'Leads the platform and orchestration layers that provide the reliability and creature comforts of our cloud.',
       slug: 'scot-wells',
       linkedin: 'https://www.linkedin.com/in/scot-wells/',
+      avatarOverrideUrl:
+        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/scot_wells_glacier_mist_c4f150a7a9.png',
     },
   ] satisfies Operator[],
 };

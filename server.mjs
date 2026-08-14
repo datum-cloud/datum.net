@@ -106,6 +106,7 @@ const REDIRECTS = {
     destination: '/blog/internet-superpowers-for-every-builder',
     status: 301,
   },
+  '/legal': { destination: '/legal/terms', status: 301 },
   '/legal/': { destination: '/legal/terms', status: 301 },
   '/privacy-policy/': { destination: '/legal/privacy', status: 301 },
   '/privacy/': { destination: '/legal/privacy', status: 301 },

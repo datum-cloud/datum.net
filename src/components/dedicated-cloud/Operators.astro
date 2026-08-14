@@ -42,7 +42,11 @@ const people = await Promise.all(
     const author = await fetchStrapiAuthorBySlug(person.slug);
     return {
       ...person,
-      avatarUrl: author?.avatar ? getStrapiMediaUrl(author.avatar.url) : null,
+      avatarUrl: person.avatarOverrideUrl
+        ? getStrapiMediaUrl(person.avatarOverrideUrl)
+        : author?.avatar
+          ? getStrapiMediaUrl(author.avatar.url)
+          : null,
       linkedinUrl: person.linkedin ?? author?.social?.linkedin ?? null,
       bgClass: AVATAR_BG[index % AVATAR_BG.length],
     };

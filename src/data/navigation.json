@@ -157,8 +157,8 @@
         { "text": "Typography", "href": "/brand/typography" },
         { "text": "Color", "href": "/brand/color" },
         { "text": "Logos", "href": "/brand/logos" },
+        { "text": "Graphics", "href": "/brand/graphics" },
         { "text": "Iconography", "href": "/brand/iconography" },
-        { "text": "Illustration Suite", "href": "/brand/imagery" },
         { "text": "Social", "href": "/brand/social" },
         { "text": "Templates", "href": "/brand/templates" },
         { "text": "UI Guidelines", "href": "https://storybook.datum.net/" }

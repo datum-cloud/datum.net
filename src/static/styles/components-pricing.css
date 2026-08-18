@@ -26,12 +26,16 @@
   }
 
   .pricing-hero-panel {
-    @apply bg-midnight-fjord relative flex flex-col justify-center gap-7 overflow-clip p-10;
+    @apply bg-midnight-fjord relative flex flex-col justify-center gap-7 p-10;
     @apply w-full lg:w-105 lg:shrink-0;
   }
 
+  .pricing-hero-panel-starfield-wrap {
+    @apply pointer-events-none absolute inset-0 overflow-clip;
+  }
+
   .pricing-hero-panel-starfield {
-    @apply pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none;
+    @apply absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none;
     @apply -translate-y-1/2 rotate-16 opacity-60;
   }
 
@@ -91,7 +95,7 @@
   /* Pinned column header. Sits outside the scroll container, clipping a track
      that pricing-rate-card.js shifts to match the body's scrollLeft. */
   .pricing-rates-head {
-    @apply bg-platinum border-midnight-fjord sticky top-0 z-30 overflow-hidden border-b;
+    @apply bg-platinum border-midnight-fjord sticky top-3 z-30 overflow-hidden border-b xl:top-4;
   }
 
   /* Below xl the 1092px design width is more scroll than content; a 48rem

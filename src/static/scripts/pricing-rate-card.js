@@ -36,8 +36,13 @@ function initRateCard(card) {
     const padTop = parseFloat(getComputedStyle(cells[0]).paddingTop);
     const boxes = cells.map((cell) => cell.getBoundingClientRect());
 
+    const headStickyTop = parseFloat(getComputedStyle(headBar).top) || 0;
+
     railTrack.style.width = `${inner.offsetWidth}px`;
-    rail.style.setProperty('--pricing-rail-top', `${headBar.offsetHeight + padTop}px`);
+    rail.style.setProperty(
+      '--pricing-rail-top',
+      `${headStickyTop + headBar.offsetHeight + padTop}px`
+    );
 
     boxes.forEach((box, index) => {
       groups[index].style.top = `${box.top - cardTop}px`;

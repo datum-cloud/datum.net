@@ -34,17 +34,11 @@ import { hero, callout } from '@data/pricing';
       </div>
 
       <div class="pricing-hero-panel">
-        <Image
-          src={starfieldImage}
-          alt=""
-          class="pricing-hero-panel-starfield"
-          aria-hidden="true"
-          loading="eager"
-        />
-        <span class="pricing-hero-panel-tile pricing-hero-panel-tile--top" aria-hidden="true"
-        ></span>
-        <span class="pricing-hero-panel-tile pricing-hero-panel-tile--bottom" aria-hidden="true"
-        ></span>
+        <SectionLine left top overlap class="bg-midnight-fjord" />
+
+        <div class="pricing-hero-panel-starfield-wrap" aria-hidden="true">
+          <Image src={starfieldImage} alt="" class="pricing-hero-panel-starfield" loading="eager" />
+        </div>
 
         <div class="pricing-hero-panel-body">
           <p class="pricing-hero-panel-title">{callout.title}</p>

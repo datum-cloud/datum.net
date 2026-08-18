@@ -1,5 +1,7 @@
 ---
-title: "Color"
+title: "Our palette"
+subtitle: "Color"
+iconName: "palette"
 meta:
   title: "Datum Brand Colors: Official Palette & Design Codes"
   description: "Access the official color palette for Datum. Get hex codes, primary and secondary color usage for the open network cloud brand identity."
@@ -12,6 +14,7 @@ meta:
 import Container from '@components/Container.astro';
 import BrandCardImage from '@components/brand/BrandCardImage.astro';
 import ColorPalette from '@components/brand/ColorPalette.astro';
+import UtilityPalette from '@components/brand/UtilityPalette.astro';
 import Button from '@components/Button.astro';
 
 ## Core Palette
@@ -23,15 +26,31 @@ The Datum core color palette was chosen to evoke a certain technological adventu
     ![Core Pallete](./assets/colors.png)
   </BrandCardImage>
 
-  <ColorPalette />
+  <ColorPalette variant="core" />
 </Container>
 
 ## Color Weighting
 
-Datum colors can be used in a variety of configurations, often being used as pairs for maximum impact.
+Our colors are most effective when used with a clear sense of hierarchy. Choose one color to lead the composition, supported by one or two contrasting accents. Avoid giving every color equal weight, as this can reduce clarity and visual impact.
 
-<Container class="brand-card-pad max-w-none">
+<Container class="brand-card-pad max-w-none mb-8 md:mb-12">
 <BrandCardImage>
   ![Color Weighting](./assets/color-weight.png)
 </BrandCardImage>
+</Container>
+
+## Secondary Palette
+
+The secondary palette extends our core colors and provides additional flexibility when more variety is needed. Use these colors selectively for supporting graphics, illustrations, and content themes, rather than as a replacement for the core palette.
+
+<Container class="max-w-none brand-card-pad mb-8 md:mb-12">
+  <ColorPalette variant="secondary" />
+</Container>
+
+## Utility Palette
+
+The utility palette communicates status and feedback across all digital touchpoints. These colors have specific functional meanings and should be used consistently for states such as success, warning, error, information, and usage notes.
+
+<Container class="max-w-none brand-card-pad">
+  <UtilityPalette />
 </Container>

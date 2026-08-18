@@ -6,10 +6,10 @@ description: "Resources rooted in our brand foundation that reflect and amplify 
 slug: "brand"
 meta:
   title: "Datum Brand Assets: Logos, Guidelines & Identity"
-  description: "Explore the Datum brand design system: design principles, typography, color palettes, logos, and illustration suite for a hyperscale-ready framework."
+  description: "Explore the Datum brand design system: design principles, typography, color palettes, logos, and graphics for a hyperscale-ready framework."
   og:
     title: Our visual identity
-    description: "Explore the Datum brand design system: principles, typography, color palettes, logos, and illustration suite."
+    description: "Explore the Datum brand design system: principles, typography, color palettes, logos, and graphics."
     image: "../../images/og/brand.png"
 ---
 
@@ -55,20 +55,20 @@ import BrandCard from '@components/brand/BrandCard.astro';
 </BrandCard>
 
 <BrandCard
+  title="Graphics"
+  url="/brand/graphics"
+>
+  <Fragment slot="image">
+    ![Graphics](./assets/graphics.png)
+  </Fragment>
+</BrandCard>
+
+<BrandCard
   title="Iconography"
   url="/brand/iconography"
 >
   <Fragment slot="image">
     ![Iconography](./assets/iconography.png)
-  </Fragment>
-</BrandCard>
-
-<BrandCard
-  title="Illustration Suite"
-  url="/brand/imagery"
->
-  <Fragment slot="image">
-    ![Illustration Suite](./assets/illustration.png)
   </Fragment>
 </BrandCard>
 

@@ -1,0 +1,89 @@
+---
+// src/components/brand/UtilityPalette.astro
+import type { ColorSwatch } from './ColorPalette.astro';
+
+export interface UtilityColorRow {
+  name: string;
+  swatches: ColorSwatch[];
+  usedFor: string[];
+}
+
+const UTILITY_PALETTE: UtilityColorRow[] = [
+  {
+    name: 'Alert red',
+    swatches: [
+      { name: 'Alert red', shade: '900', hex: '#D25B5B' },
+      { name: 'Alert red', shade: '800', hex: '#F08C8C' },
+      { name: 'Alert red', shade: '200', hex: '#ECDFDE' },
+    ],
+    usedFor: ['Form errors', 'Negative status badges', 'Unsuccessful outcomes'],
+  },
+  {
+    name: 'Intermediate orange',
+    swatches: [
+      { name: 'Intermediate orange', shade: '900', hex: '#D28D5B' },
+      { name: 'Intermediate orange', shade: '200', hex: '#F3ECE6' },
+    ],
+    usedFor: ['Warnings', "Intermediate status badges e.g. 'Pending'"],
+  },
+  {
+    name: 'Success green',
+    swatches: [
+      { name: 'Success green', shade: '900', hex: '#86A182' },
+      { name: 'Success green', shade: '200', hex: '#F1F4F0' },
+    ],
+    usedFor: ['Confirmation messages', 'Positive status badges', 'Successful outcomes'],
+  },
+  {
+    name: 'Neutral blue',
+    swatches: [
+      { name: 'Neutral blue', shade: '900', hex: '#4E809D' },
+      { name: 'Neutral blue', shade: '800', hex: '#769DB3' },
+      { name: 'Neutral blue', shade: '200', hex: '#DCE6EB' },
+    ],
+    usedFor: ['Information', 'Neutral status badges'],
+  },
+  {
+    name: 'Help yellow',
+    swatches: [{ name: 'Help yellow', shade: '900', hex: '#FFFBC5' }],
+    usedFor: ['Background colour for boxes displaying information about the UI'],
+  },
+];
+
+interface Props {
+  rows?: UtilityColorRow[];
+}
+
+const { rows = UTILITY_PALETTE } = Astro.props as Props;
+---
+
+<div class="utility-palette">
+  {
+    rows.map((row) => (
+      <div class="utility-palette--row">
+        <div class="color-group">
+          <h3 class="color-group--name">{row.name}</h3>
+          <div class="color-group--swatches">
+            {row.swatches.map((swatch) => (
+              <div class="color-swatch">
+                <div class="color-swatch--preview" style={`background-color: ${swatch.hex}`} />
+                <div class="color-swatch--info">
+                  <span class="color-swatch--shade">{swatch.shade}</span>
+                  <span class="color-swatch--hex">{swatch.hex}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="utility-palette--used-for">
+          <p>Used for:</p>
+          <ul>
+            {row.usedFor.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))
+  }
+</div>

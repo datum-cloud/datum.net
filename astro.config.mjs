@@ -80,6 +80,9 @@ export default defineConfig({
   site: siteUrl || `http://localhost:${port}`,
   trailingSlash: 'never',
   output: 'static',
+  redirects: {
+    '/brand/imagery': '/brand/graphics',
+  },
   security: {
     checkOrigin: false,
   },

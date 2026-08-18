@@ -142,13 +142,13 @@ export const operators = {
       linkedin: 'https://www.linkedin.com/in/shelby-lindsey-0781b323/',
     },
     {
-      name: 'Scot Schuchert-Wells',
-      role: 'Software Lead',
-      bio: 'Leads the platform and orchestration layers that provide the reliability and creature comforts of our cloud.',
-      slug: 'scot-wells',
-      linkedin: 'https://www.linkedin.com/in/scot-wells/',
+      name: 'Nicholas Schmidt',
+      role: 'GPU Solutions',
+      bio: 'Two-plus decades building internet infrastructure, now bringing that range to compute and capacity here at Datum.',
+      slug: 'nicholas-schmidt',
+      linkedin: 'https://www.linkedin.com/in/nicholas-schmidt-26983b1/',
       avatarOverrideUrl:
-        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/scot_wells_glacier_mist_c4f150a7a9.png',
+        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/nicholas_schmidt_glacier_mist_af24a9e885.png',
     },
   ] satisfies Operator[],
 };

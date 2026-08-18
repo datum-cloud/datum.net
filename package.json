@@ -55,7 +55,7 @@
     "cheerio": "^1.2.0",
     "dayjs": "^1.11.23",
     "ioredis": "^6.0.0",
-    "marked": "^18.0.9",
+    "marked": "^18.0.10",
     "mermaid": "^11.16.1",
     "openid-client": "^6.8.5",
     "postgres": "^3.4.9",

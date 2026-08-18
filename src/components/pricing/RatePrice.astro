@@ -1,0 +1,36 @@
+---
+// src/components/pricing/RatePrice.astro
+// Contents of a single "Price per unit" cell. The currency sign, the bold
+// figure and the suffix must sit flush against each other — "$0.005/IP-hr" has
+// no space anywhere — so the line is assembled as a string and injected with
+// set:html rather than as adjacent elements a formatter could reflow into
+// whitespace. Figma node 16187:93176.
+
+import type { PriceLine, RateRow } from '@data/pricing';
+
+const { row } = Astro.props as { row: RateRow };
+
+const escapeHtml = (value: string): string =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** Regular `$`, bold figure, then the suffix exactly as authored. */
+const lineHtml = (line: PriceLine): string =>
+  `<span>$</span><strong>${escapeHtml(line.amount)}</strong>${escapeHtml(line.suffix ?? '')}`;
+---
+
+{row.free && <span class="pricing-rate-free">Free</span>}
+{
+  row.link && (
+    <a class="pricing-rate-link" href={row.link.href}>
+      {row.link.text}
+    </a>
+  )
+}
+{
+  row.lines?.map((line) => (
+    <span class="pricing-rate-price-line">
+      <span set:html={lineHtml(line)} />
+      {line.note && <span class="pricing-rate-price-note">{line.note}</span>}
+    </span>
+  ))
+}

@@ -6,10 +6,10 @@ import Logo from '@assets/svgs/datum-logo-h.svg';
 import DiscordIcon from '@assets/icons/discord.svg';
 import GithubIcon from '@assets/icons/github.svg';
 import navigation from '@data/navigation.json';
+import { filterNavMain } from '@utils/navigationUtils';
 
-// Type-safe navigation data
 const navData = navigation as NavData;
-const mainNav = navData.main;
+const mainNav = filterNavMain(navData.main);
 ---
 
 <div

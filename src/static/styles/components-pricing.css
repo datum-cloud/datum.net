@@ -1,0 +1,336 @@
+@layer components {
+  /* ---------------------------------------------------------------------
+     Hero — Figma node 16187:93036
+     Headline column beside the fixed-width dark "why is pricing so
+     complicated?" panel. Below lg the panel drops under the headline and
+     stretches full width.
+     --------------------------------------------------------------------- */
+  .pricing-hero {
+    @apply max-width-section-nopad flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12;
+  }
+
+  .pricing-hero-intro {
+    @apply flex flex-1 flex-col items-start justify-center gap-7;
+  }
+
+  .pricing-hero-copy {
+    @apply text-midnight-fjord flex w-full flex-col gap-5;
+  }
+
+  .pricing-hero-title {
+    @apply datum-text-10xl text-pretty;
+  }
+
+  .pricing-hero-description {
+    @apply datum-text-xl text-pretty opacity-80;
+  }
+
+  .pricing-hero-panel {
+    @apply bg-midnight-fjord relative flex flex-col justify-center gap-7 overflow-clip p-10;
+    @apply w-full lg:w-105 lg:shrink-0;
+  }
+
+  .pricing-hero-panel-starfield {
+    @apply pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none;
+    @apply -translate-y-1/2 rotate-16 opacity-60;
+  }
+
+  .pricing-hero-panel-tile {
+    @apply pointer-events-none absolute right-0 hidden size-20 bg-white/10 md:block;
+  }
+
+  .pricing-hero-panel-tile--top {
+    @apply top-0;
+  }
+
+  .pricing-hero-panel-tile--bottom {
+    @apply bottom-0;
+  }
+
+  .pricing-hero-panel-body {
+    @apply text-glacier-mist-700 relative z-10 flex flex-col gap-4;
+  }
+
+  .pricing-hero-panel-title {
+    @apply datum-text-xl font-semibold;
+  }
+
+  .pricing-hero-panel-description {
+    @apply datum-text-base opacity-87;
+  }
+
+  .pricing-hero-panel-list {
+    @apply m-0 flex list-none flex-col gap-1 p-0;
+  }
+
+  .pricing-hero-panel-item {
+    @apply datum-text-base flex items-center gap-2 text-white opacity-80;
+
+    svg {
+      @apply text-aurora-moss size-4 shrink-0;
+    }
+  }
+
+  .pricing-hero-panel-cta {
+    @apply relative z-10 self-start;
+  }
+
+  /* ---------------------------------------------------------------------
+     Rate card — Figma nodes 16187:93085 / 16187:93570
+     All four category groups live in one table so the column header can stay
+     pinned across the whole card. `.pricing-rates` deliberately has no
+     overflow of its own: it is the sticky containing block, so the header
+     releases exactly when the card ends. The scroll container is the body
+     below it, with its scrollbar hidden the same way .dns-comparison-panel and
+     .mobile-menu hide theirs — the panel edges already hint at the extra width.
+     --------------------------------------------------------------------- */
+  .pricing-rates {
+    @apply max-width-section-nopad relative;
+  }
+
+  /* Pinned column header. Sits outside the scroll container, clipping a track
+     that pricing-rate-card.js shifts to match the body's scrollLeft. */
+  .pricing-rates-head {
+    @apply bg-platinum border-midnight-fjord sticky top-0 z-30 overflow-hidden border-b;
+  }
+
+  /* Below xl the 1092px design width is more scroll than content; a 48rem
+     floor plus tighter cells (below) cuts the overflow roughly in half
+     without wrapping the longest price strings. */
+  .pricing-rates-head-track,
+  .pricing-rates-inner {
+    @apply min-w-3xl xl:min-w-(--datum-max-width-section);
+  }
+
+  .pricing-rates-body {
+    @apply overflow-x-auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .pricing-rate-table {
+    @apply w-full table-fixed border-collapse text-left;
+  }
+
+  /* The 84px gap and midnight rule the design draws between groups. Untinted,
+     so a group's category cell stops at its last data row. */
+  .pricing-rate-spacer > td {
+    @apply border-midnight-fjord h-10 border-b xl:h-21;
+  }
+
+  .pricing-rate-col--category {
+    width: 22.5%;
+  }
+
+  .pricing-rate-col--feature {
+    width: 27%;
+  }
+
+  .pricing-rate-col--unit {
+    width: 27%;
+  }
+
+  .pricing-rate-col--price {
+    width: 23.5%;
+  }
+
+  /* Surface and rule belong to .pricing-rates-head so they stay put while the
+     track underneath is transformed. */
+  .pricing-rate-head-cell {
+    @apply datum-text-sm text-midnight-fjord h-12 px-3 font-normal xl:h-21 xl:px-6;
+  }
+
+  /* Dividers hang off the bottom of every cell except the category one, so a
+     rowspanned feature draws its rule where the feature ends rather than after
+     each of its rows — exactly how the design steps the line in from the
+     Feature column to the Unit column and back. */
+  .pricing-rate-feature,
+  .pricing-rate-unit,
+  .pricing-rate-price {
+    @apply border-glacier-mist-900 border-b;
+  }
+
+  .pricing-rate-category {
+    @apply text-midnight-fjord h-16 px-3 py-4 text-left align-top font-normal xl:h-21 xl:px-6 xl:py-7;
+  }
+
+  .pricing-rate-category--deliver {
+    @apply bg-aurora-mist/50;
+  }
+
+  .pricing-rate-category--build {
+    @apply bg-canyon-highlight/30;
+  }
+
+  .pricing-rate-category--connect {
+    @apply bg-connect-highlight/50;
+  }
+
+  .pricing-rate-category--transfer {
+    @apply bg-platinum;
+  }
+
+  .pricing-rate-category-inner {
+    @apply block;
+  }
+
+  /* Category labels are duplicated into a rail outside .pricing-rates-body so
+     plain sticky works. Inside the body the nearest scroll container never
+     scrolls vertically, and offsetting from JS trailed the compositor by a
+     frame — a whole wheel step of visible bounce. overflow: clip trims the rail
+     without making it a scroll container, which sticky would resolve against. */
+  .pricing-rates-rail {
+    @apply pointer-events-none absolute inset-0 z-20 select-none;
+    overflow: clip;
+  }
+
+  .pricing-rates-rail:not([data-ready]) {
+    @apply hidden;
+  }
+
+  .pricing-rates-rail-track {
+    @apply absolute inset-y-0 left-0 w-full;
+  }
+
+  .pricing-rates-rail-group {
+    @apply absolute left-0 px-3 py-4 xl:px-6 xl:py-7;
+    width: 22.5%;
+  }
+
+  .pricing-rates-rail .pricing-rate-category-inner {
+    position: sticky;
+    top: var(--pricing-rail-top, 4rem);
+  }
+
+  /* Kept in flow for the accessibility tree and the no-JS view; the rail owns
+     the pixels once it has measured itself. */
+  .pricing-rates-rail[data-ready] ~ .pricing-rates-body .pricing-rate-category-inner {
+    @apply opacity-0 select-none;
+  }
+
+  .pricing-rate-category-label {
+    @apply datum-text-base text-midnight-fjord flex items-center gap-2 font-semibold;
+  }
+
+  .pricing-rate-category-icon {
+    @apply size-5.5 shrink-0;
+  }
+
+  /* "Ingress to our network is always free" — Figma node 16220:94168 */
+  .pricing-rate-note {
+    @apply border-pine-forge---links/40 text-pine-forge---links/80 datum-text-xs;
+    @apply mt-3 flex w-fit max-w-full items-center gap-2 rounded-sm border px-2 py-1 xl:mt-7 xl:gap-3 xl:px-2.5 xl:py-1.5;
+  }
+
+  .pricing-rate-note-icon {
+    @apply size-5 shrink-0;
+  }
+
+  .pricing-rate-feature {
+    @apply datum-text-base text-midnight-fjord h-16 px-3 py-4 text-left align-top font-semibold xl:h-21 xl:px-6 xl:py-7;
+  }
+
+  .pricing-rate-feature-inner {
+    @apply flex flex-col items-start gap-1.5 xl:block;
+  }
+
+  .pricing-rate-feature-label {
+    @apply inline-flex items-center gap-2 align-middle;
+  }
+
+  .pricing-rate-info {
+    @apply text-midnight-fjord/60 inline-flex shrink-0 cursor-help;
+
+    svg {
+      @apply size-4;
+    }
+  }
+
+  /* Availability chip beside a feature name — Figma node 16198:94022 */
+  .pricing-rate-badge {
+    @apply bg-harbor-blue/20 border-harbor-blue/70 text-harbor-blue datum-docs-sidebar-headings;
+    @apply text-9 tracking-badge ml-0 inline-flex items-center rounded-sm border px-1.5 align-middle xl:ml-4;
+  }
+
+  .pricing-rate-unit {
+    @apply datum-text-base text-midnight-fjord h-16 px-3 align-middle xl:h-21 xl:px-6;
+  }
+
+  .pricing-rate-price {
+    @apply font-dejavu text-midnight-fjord h-16 px-3 align-middle xl:h-21 xl:px-6;
+    @apply text-xs leading-4 xl:text-sm xl:leading-4.5;
+  }
+
+  .pricing-rate-price-line {
+    @apply block opacity-60;
+
+    strong {
+      @apply font-bold;
+    }
+  }
+
+  .pricing-rate-price-note {
+    @apply block;
+  }
+
+  .pricing-rate-free {
+    @apply font-dejavu text-midnight-fjord text-xs font-bold uppercase opacity-60 xl:text-sm;
+  }
+
+  .pricing-rate-link {
+    @apply datum-text-sm text-canyon-clay---links font-alliance underline;
+    @apply hover:text-canyon-clay---links/80;
+  }
+
+  /* ---------------------------------------------------------------------
+     FAQ — Figma node 16187:93783
+     Static list: every answer is visible, so there is no toggle affordance.
+     --------------------------------------------------------------------- */
+  .pricing-faq-title {
+    @apply datum-text-9xl text-midnight-fjord text-pretty;
+  }
+
+  .pricing-faq-list {
+    @apply border-glacier-mist-900 m-0 border p-0;
+  }
+
+  .pricing-faq-item {
+    @apply flex flex-col gap-3 p-7 lg:p-9;
+  }
+
+  .pricing-faq-item + .pricing-faq-item {
+    @apply border-glacier-mist-900 border-t;
+  }
+
+  .pricing-faq-question {
+    @apply datum-text-lg text-midnight-fjord font-semibold;
+  }
+
+  .pricing-faq-answer {
+    @apply datum-text-base text-midnight-fjord/70 m-0 flex flex-col gap-4 text-pretty;
+
+    p {
+      @apply m-0;
+    }
+  }
+
+  .pricing-faq-checks {
+    @apply m-0 flex list-none flex-col gap-2 p-0;
+
+    li {
+      @apply flex items-start gap-3;
+    }
+
+    strong {
+      @apply text-midnight-fjord font-semibold;
+    }
+
+    svg {
+      @apply text-pine-forge---links mt-1 size-4 shrink-0;
+    }
+  }
+}

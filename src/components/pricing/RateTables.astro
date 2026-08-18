@@ -1,0 +1,46 @@
+---
+// src/components/pricing/RateTables.astro
+
+import RateHead from '@components/pricing/RateHead.astro';
+import RateRail from '@components/pricing/RateRail.astro';
+import RateRows from '@components/pricing/RateRows.astro';
+import { rates } from '@data/pricing';
+import SectionLine from '@components/SectionLine.astro';
+
+const lastIndex = rates.groups.length - 1;
+---
+
+<section id="rates" class="section--block section--block--x-pad bg-white" aria-label="Rate card">
+  <div class="max-width-nav spacing-pad relative pb-16 md:pb-20 lg:pb-24 xl:pb-32">
+    <SectionLine left right bottom />
+
+    <div class="pricing-rates" data-rate-card>
+      <div class="pricing-rates-head" aria-hidden="true" data-rate-card-headbar>
+        <div class="pricing-rates-head-track" data-rate-card-head>
+          <table class="pricing-rate-table">
+            <RateHead columns={rates.columns} />
+          </table>
+        </div>
+      </div>
+
+      <RateRail groups={rates.groups} />
+
+      <div class="pricing-rates-body" data-rate-card-body>
+        <div class="pricing-rates-inner" data-rate-card-inner>
+          <table class="pricing-rate-table">
+            <RateHead columns={rates.columns} srOnly />
+            {
+              rates.groups.map((group, index) => (
+                <RateRows group={group} spacer={index !== lastIndex} />
+              ))
+            }
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '@/src/static/scripts/pricing-rate-card.js';
+</script>

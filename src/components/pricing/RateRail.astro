@@ -1,0 +1,35 @@
+---
+// src/components/pricing/RateRail.astro
+
+import Icon from '@components/Icon.astro';
+import type { RateGroup } from '@data/pricing';
+
+export interface RateRailProps {
+  groups: RateGroup[];
+}
+
+const { groups } = Astro.props as RateRailProps;
+---
+
+<div class="pricing-rates-rail" aria-hidden="true" data-rate-card-rail>
+  <div class="pricing-rates-rail-track" data-rate-card-rail-track>
+    {
+      groups.map((group) => (
+        <div class="pricing-rates-rail-group" data-rate-card-rail-group>
+          <span class="pricing-rate-category-inner">
+            <span class="pricing-rate-category-label">
+              <Icon name={group.icon} class="pricing-rate-category-icon" />
+              {group.name}
+            </span>
+            {group.note && (
+              <span class="pricing-rate-note">
+                <span>{group.note.text}</span>
+                <Icon name={group.note.icon} class="pricing-rate-note-icon" />
+              </span>
+            )}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</div>

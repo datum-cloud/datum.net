@@ -240,45 +240,6 @@ const features = defineCollection({
     }),
 });
 
-// Define pricing collections
-const pricing = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/content/pricing' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      subtitle: z.string().optional(),
-      description: z.string(),
-      order: z.number().optional().default(0),
-      price: z
-        .object({
-          badge: z.string().optional(),
-          prefix: z.string().optional(),
-          amount: z.string().optional(),
-          suffix: z.string().optional(),
-          note: z.string().optional(),
-        })
-        .optional(),
-      cta: z
-        .object({
-          label: z.string(),
-          href: z.string().optional(),
-          class: z.string().optional(),
-          isExternal: z.boolean().optional(),
-          rybbitEvent: z.string().optional(),
-        })
-        .optional(),
-      featureGroups: z
-        .array(
-          z.object({
-            title: z.string().optional(),
-            items: z.array(z.string()),
-          })
-        )
-        .optional(),
-      meta: metaSchema(image),
-    }),
-});
-
 // Define FAQ collections
 const faq = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/faq' }),
@@ -349,7 +310,6 @@ export const collections = {
   handbooks,
   changelog,
   features,
-  pricing,
   faq,
   download,
   events,

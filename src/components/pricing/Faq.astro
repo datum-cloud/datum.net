@@ -1,0 +1,45 @@
+---
+// src/components/pricing/Faq.astro
+// Static FAQ list — the design shows every answer open with no toggle
+// affordance, so this deliberately does not reuse the Alpine accordion in
+// FAQ.astro. Figma node 16187:93783.
+
+import { getCollection, render } from 'astro:content';
+import SectionLine from '@components/SectionLine.astro';
+import { faqTitle } from '@data/pricing';
+
+const faqs = (await getCollection('faq'))
+  .filter((faq) => !faq.data.draft && faq.data.category === 'pricing')
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+const entries = await Promise.all(
+  faqs.map(async (faq) => ({ faq, Content: (await render(faq)).Content }))
+);
+---
+
+<section
+  id="faq"
+  class="section--block section--block--x-pad bg-glacier-mist-700 border-glacier-mist-900 border-t"
+  aria-labelledby="pricing-faq-title"
+>
+  <div class="max-width-nav spacing-pad section-pad relative">
+    <SectionLine left right top bottom />
+
+    <div class="max-width-section-nopad flex flex-col gap-10 md:gap-14">
+      <h2 id="pricing-faq-title" class="pricing-faq-title">{faqTitle}</h2>
+
+      <dl class="pricing-faq-list">
+        {
+          entries.map(({ faq, Content }) => (
+            <div class="pricing-faq-item">
+              <dt class="pricing-faq-question">{faq.data.question}</dt>
+              <dd class="pricing-faq-answer">
+                <Content />
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

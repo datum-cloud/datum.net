@@ -2,10 +2,10 @@
 import Icon from '@components/Icon.astro';
 import navigation from '@data/navigation.json';
 import type { NavData, NavMainItem } from '@/src/types/navigation';
+import { filterNavMain } from '@utils/navigationUtils';
 
-// Type-safe navigation data
 const navData = navigation as NavData;
-const mainNav = navData.main;
+const mainNav = filterNavMain(navData.main);
 
 // Define component props
 type Props = {

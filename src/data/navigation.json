@@ -93,7 +93,7 @@
     {
       "text": "Pricing",
       "href": "/pricing",
-      "mode": "development"
+      "mode": "staging"
     }
   ],
   "right": [
@@ -115,7 +115,7 @@
       "description": "Simple, transparent pricing with everything you need to get started.",
       "href": "/pricing",
       "icon": "dollar-sign",
-      "mode": "development"
+      "mode": "staging"
     },
     {
       "title": "Legal",

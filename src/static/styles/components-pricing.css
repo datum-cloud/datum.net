@@ -95,7 +95,7 @@
   /* Pinned column header. Sits outside the scroll container, clipping a track
      that pricing-rate-card.js shifts to match the body's scrollLeft. */
   .pricing-rates-head {
-    @apply bg-platinum border-midnight-fjord sticky top-0 z-30 overflow-hidden border-b;
+    @apply bg-platinum border-midnight-fjord sticky top-3 z-30 overflow-hidden border-b xl:top-4;
   }
 
   /* Below xl the 1092px design width is more scroll than content; a 48rem

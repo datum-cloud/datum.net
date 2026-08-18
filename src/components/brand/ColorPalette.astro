@@ -1,41 +1,35 @@
 ---
 // src/components/brand/ColorPalette.astro
-interface ColorSwatch {
+export interface ColorSwatch {
   name: string;
   shade: string;
   hex: string;
   pantone?: string;
 }
 
-interface ColorGroup {
+export interface ColorGroup {
   name: string;
   swatches: ColorSwatch[];
 }
 
-const colorGroups: ColorGroup[] = [
+const CORE_PALETTE: ColorGroup[] = [
   {
     name: 'Midnight Fjord',
-    swatches: [{ name: 'Midnight Fjord', shade: '900', hex: '#0C1D31', pantone: 'Pantone 533 C' }],
+    swatches: [
+      { name: 'Midnight Fjord', shade: '900', hex: '#0C1D31', pantone: 'Pantone 533 C' },
+      { name: 'Midnight Fjord', shade: '800', hex: '#223143' },
+      { name: 'Midnight Fjord', shade: '700', hex: '#384555' },
+      { name: 'Midnight Fjord', shade: '600', hex: '#67717C' },
+      { name: 'Midnight Fjord', shade: '500', hex: '#90969C' },
+      { name: 'Midnight Fjord', shade: '400', hex: '#E3E2DF' },
+    ],
   },
   {
     name: 'Aurora Moss',
-    swatches: [{ name: 'Aurora Moss', shade: '900', hex: '#E6F59F', pantone: 'Pantone 379 C' }],
-  },
-  {
-    name: 'Blush Quartz',
-    swatches: [{ name: 'Blush Quartz', shade: '900', hex: '#ECD0D0', pantone: 'Pantone 684 C' }],
-  },
-  {
-    name: 'Canyon Clay',
-    swatches: [{ name: 'Canyon Clay', shade: '900', hex: '#BF9595', pantone: 'Pantone 694 C' }],
-  },
-  {
-    name: 'Pine Forge',
-    swatches: [{ name: 'Pine Forge', shade: '900', hex: '#4D6356', pantone: 'Pantone 5545 C' }],
-  },
-  {
-    name: '',
-    swatches: [],
+    swatches: [
+      { name: 'Aurora Moss', shade: '900', hex: '#E6F59F', pantone: 'Pantone 379 C' },
+      { name: 'Aurora Moss', shade: '100', hex: '#F3F8DD' },
+    ],
   },
   {
     name: 'Glacier Mist',
@@ -43,14 +37,71 @@ const colorGroups: ColorGroup[] = [
       { name: 'Glacier Mist', shade: '900', hex: '#E8E7E4', pantone: 'Pantone Cool Gray 3 C' },
       { name: 'Glacier Mist', shade: '800', hex: '#EFEFED', pantone: 'Pantone Cool Gray 2 C' },
       { name: 'Glacier Mist', shade: '700', hex: '#F6F6F5', pantone: 'Pantone Cool Gray 1 C' },
+      { name: 'Glacier Mist', shade: '600', hex: '#F9F9F8' },
+    ],
+  },
+  {
+    name: 'Pine Forge',
+    swatches: [
+      { name: 'Pine Forge', shade: '900', hex: '#4D6356', pantone: 'Pantone 5545 C' },
+      { name: 'Pine Forge', shade: '800', hex: '#417958' },
+      { name: 'Pine Forge', shade: '100', hex: '#E2EDE7' },
+    ],
+  },
+  {
+    name: 'Canyon Clay',
+    swatches: [
+      { name: 'Canyon Clay', shade: '900', hex: '#9C7979' },
+      { name: 'Canyon Clay', shade: '800', hex: '#BF9595', pantone: 'Pantone 694 C' },
+    ],
+  },
+  {
+    name: 'Blush Quartz',
+    swatches: [
+      { name: 'Blush Quartz', shade: '900', hex: '#ECD0D0', pantone: 'Pantone 684 C' },
+      { name: 'Blush Quartz', shade: '800', hex: '#F0D9D9' },
     ],
   },
 ];
+
+const SECONDARY_PALETTE: ColorGroup[] = [
+  {
+    name: 'Ocean Swell',
+    swatches: [
+      { name: 'Ocean Swell', shade: '900', hex: '#5F7286' },
+      { name: 'Ocean Swell', shade: '800', hex: '#5C7693' },
+      { name: 'Ocean Swell', shade: '100', hex: '#DDE8F2' },
+    ],
+  },
+  {
+    name: 'Heather Meadow',
+    swatches: [
+      { name: 'Heather Meadow', shade: '900', hex: '#7A6F8A' },
+      { name: 'Heather Meadow', shade: '100', hex: '#D3CFE5' },
+    ],
+  },
+  {
+    name: 'Spring Pasture',
+    swatches: [{ name: 'Spring Pasture', shade: '900', hex: '#B3D56F' }],
+  },
+];
+
+interface Props {
+  variant?: 'core' | 'secondary';
+  groups?: ColorGroup[];
+}
+
+const VARIANTS: Record<'core' | 'secondary', ColorGroup[]> = {
+  core: CORE_PALETTE,
+  secondary: SECONDARY_PALETTE,
+};
+
+const { variant = 'core', groups = VARIANTS[variant] } = Astro.props as Props;
 ---
 
 <div class="color-palette">
   {
-    colorGroups
+    groups
       .filter((group) => group.swatches)
       .map((group) => (
         <div class="color-group">

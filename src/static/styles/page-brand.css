@@ -126,7 +126,7 @@
       @apply bg-white p-6.5 md:p-10 lg:p-14.75 xl:p-18.5;
     }
 
-    &.small-pad {
+    &.compact {
       .brand-card-image--content {
         @apply p-8 lg:p-10.75;
       }
@@ -136,39 +136,85 @@
   /* Color Palette Component */
   .color-palette {
     @apply bg-white p-6.5 md:p-10 lg:p-14.75 xl:p-18.5;
-    @apply grid grid-cols-3 grid-rows-2 items-start justify-between gap-6 md:gap-12;
+    @apply grid grid-cols-1 items-start justify-between gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3;
+  }
 
-    .color-group {
-      .color-group--name {
-        @apply mb-5 text-base text-gray-900;
+  /* Shared by ColorPalette and UtilityPalette */
+  .color-group {
+    @apply w-full sm:w-60;
+
+    .color-group--name {
+      @apply mt-0 mb-5 text-base text-gray-900;
+    }
+
+    .color-group--swatches {
+      @apply space-y-3;
+    }
+  }
+
+  .color-swatch {
+    @apply flex items-center gap-4;
+
+    .color-swatch--preview {
+      @apply h-10 w-10 shrink-0 rounded-sm;
+    }
+
+    .color-swatch--info {
+      @apply flex flex-col space-y-0;
+
+      .color-swatch--shade {
+        @apply text-sm font-medium text-gray-900;
       }
 
-      .color-group--swatches {
-        @apply space-y-3;
+      .color-swatch--hex {
+        @apply font-mono text-sm text-gray-600;
+      }
+
+      .color-swatch--pantone {
+        @apply text-sm text-gray-600;
+      }
+    }
+  }
+
+  /* Graphic Item Component */
+  .graphic-item {
+    @apply flex flex-col gap-8 rounded-md bg-white p-6.5 md:flex-row md:gap-12 md:p-10 lg:p-14.75 xl:p-18.5;
+
+    .graphic-item--images {
+      @apply flex flex-1 flex-col gap-6;
+
+      img {
+        @apply m-0! w-full rounded;
       }
     }
 
-    .color-swatch {
-      @apply flex flex-col items-start gap-2 md:flex-row md:items-start md:gap-0 md:space-x-4;
+    .graphic-item--note {
+      @apply datum-text-sm max-w-sm text-gray-600 md:max-w-69 md:shrink-0;
 
-      .color-swatch--preview {
-        @apply h-14 w-14 rounded-sm;
+      p + p {
+        @apply mt-3;
+      }
+    }
+  }
+
+  /* Utility Palette Component */
+  .utility-palette {
+    @apply bg-white p-6.5 md:p-10 lg:p-14.75 xl:p-18.5;
+    @apply space-y-10;
+
+    .utility-palette--row {
+      @apply flex flex-col items-start gap-6 md:flex-row;
+    }
+
+    .utility-palette--used-for {
+      @apply min-w-0 flex-1 space-y-1.5 text-sm text-gray-600;
+
+      p {
+        @apply mt-0 text-gray-900;
       }
 
-      .color-swatch--info {
-        @apply flex flex-col space-y-0;
-
-        .color-swatch--shade {
-          @apply text-sm font-medium text-gray-900;
-        }
-
-        .color-swatch--hex {
-          @apply font-mono text-sm text-gray-600;
-        }
-
-        .color-swatch--pantone {
-          @apply text-sm text-gray-600;
-        }
+      ul {
+        @apply list-disc space-y-1.5 ps-5.25;
       }
     }
   }

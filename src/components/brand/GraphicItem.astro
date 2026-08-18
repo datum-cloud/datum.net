@@ -1,0 +1,13 @@
+---
+// src/components/brand/GraphicItem.astro
+// Card pairing one or more graphic examples with a usage note, used on the Graphics page.
+---
+
+<div class="graphic-item">
+  <div class="graphic-item--images">
+    <slot name="image" />
+  </div>
+  <div class="graphic-item--note">
+    <slot />
+  </div>
+</div>

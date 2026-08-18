@@ -26,12 +26,16 @@
   }
 
   .pricing-hero-panel {
-    @apply bg-midnight-fjord relative flex flex-col justify-center gap-7 overflow-clip p-10;
+    @apply bg-midnight-fjord relative flex flex-col justify-center gap-7 p-10;
     @apply w-full lg:w-105 lg:shrink-0;
   }
 
+  .pricing-hero-panel-starfield-wrap {
+    @apply pointer-events-none absolute inset-0 overflow-clip;
+  }
+
   .pricing-hero-panel-starfield {
-    @apply pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none;
+    @apply absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none;
     @apply -translate-y-1/2 rotate-16 opacity-60;
   }
 

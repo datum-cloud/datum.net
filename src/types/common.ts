@@ -53,10 +53,19 @@ export interface HeroProps {
   hideHero?: boolean;
   /** Renders decorative corner grid lines inside the hero container */
   showSectionLines?: boolean;
+  /** Which corners to draw when showSectionLines is true. Defaults to all four. */
+  sectionLines?: Pick<SectionLineProps, 'left' | 'right' | 'top' | 'bottom'>;
+  /** Extra class(es) applied to the nav bar itself (e.g. to match a page's background) */
+  navClass?: string;
   /** Colors the trailing word(s) of the title with a platform accent, so copy edits keep the highlight without hand-authored markup */
   titleHighlightVariant?: 'pine' | 'canyon' | 'connect';
   /** Number of trailing words to highlight when titleHighlightVariant is set (default 1) */
   titleHighlightWords?: number;
+}
+
+export interface NavProps {
+  /** Extra class(es) applied to the nav bar container (e.g. to match a page's background) */
+  class?: string;
 }
 
 export interface HomeHeroProps {
@@ -170,6 +179,8 @@ export interface FooterProps {
   showSignup?: boolean;
   /** Illustration only — no tint/padding (demo, dedicated-cloud) */
   plainIllustration?: boolean;
+  /** Background utility class for the illustration strip when `showCTA` is false. Defaults to `bg-glacier-mist-700`; brand pages pass `bg-platinum` to match their page background. */
+  illustrationBgClass?: string;
   /** Prefooter copy overrides. Omit for the site-wide default. */
   ctaTitle?: string;
   /** Leading fragment of the prefooter headline, tinted pine-forge. */

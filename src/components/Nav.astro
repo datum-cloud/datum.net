@@ -4,9 +4,12 @@ import MobileMenu from '@components/MobileMenu.astro';
 import Icon from '@components/Icon.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
+import type { NavProps } from '@/src/types/common';
+
+const { class: className = '' } = Astro.props as NavProps;
 ---
 
-<section class="nav--main-container relative">
+<section class:list={['nav--main-container relative', className]}>
   <nav class="nav--main" role="navigation" aria-label="Main navigation">
     {/* Logo */}
 

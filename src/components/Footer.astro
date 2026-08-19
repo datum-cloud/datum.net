@@ -21,6 +21,7 @@ const {
   showIllustration = false,
   showSignup = true,
   plainIllustration = false,
+  illustrationBgClass = 'bg-glacier-mist-700',
   ctaTitle = 'go anywhere',
   ctaTitleAccent = 'Start here,',
   ctaDescription = 'Own more of your stack, reduce latency across regions, and connect privately with customers.',
@@ -99,7 +100,9 @@ const [platformSection, resourcesSection, companySection] = filterNavFooterSecti
       <div
         class:list={[
           'footer-illustration-container',
-          !showCTA && !plainIllustration && 'bg-glacier-mist-700 pt-12 md:pt-20 lg:pt-24 xl:pt-30',
+          !showCTA &&
+            !plainIllustration &&
+            `${illustrationBgClass} pt-12 md:pt-20 lg:pt-24 xl:pt-30`,
           plainIllustration && 'footer-illustration-container--plain',
         ]}
       >

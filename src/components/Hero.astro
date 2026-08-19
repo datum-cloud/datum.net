@@ -20,8 +20,10 @@ const {
   hideContent = false,
   hideHero = false,
   showSectionLines = false,
+  sectionLines = { left: true, right: true, top: true, bottom: true },
   titleHighlightVariant,
   titleHighlightWords = 1,
+  navClass,
 } = Astro.props as HeroProps;
 
 const TitleTag = titleTag;
@@ -52,7 +54,7 @@ const renderedTitle = titleHighlightVariant
 
 <header class:list={['hero--main', className]}>
   <Announcement />
-  <Nav />
+  <Nav class={navClass} />
 
   {
     !hideHero && (
@@ -111,7 +113,7 @@ const renderedTitle = titleHighlightVariant
             </div>
           )}
 
-          {showSectionLines && <SectionLine left right top bottom />}
+          {showSectionLines && <SectionLine {...sectionLines} />}
         </div>
       </div>
     )

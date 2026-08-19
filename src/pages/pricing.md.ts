@@ -1,69 +1,48 @@
 // Dynamic markdown export of /pricing. Reads the same sources the rendered
 // page consumes:
-//   - src/content/pages/pricing.mdx     (title + intro)
-//   - src/content/pricing/*.json        (tier cards)
-//   - src/content/faq/*.mdx category=pricing  (FAQ section)
+//   - src/content/pages/pricing.mdx          (title + intro)
+//   - src/data/pricing.ts                    (rate card)
+//   - src/content/faq/*.mdx category=pricing (FAQ section)
 // Any edit to those files updates this endpoint on next request.
+export const prerender = false;
+
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
+import { faqToMarkdown } from '@utils/faqText';
+import { callout, faqTitle, rates, type RateGroup, type RateRow } from '@data/pricing';
 
-interface PricingTier {
-  title: string;
-  subtitle?: string;
-  description?: string;
-  order?: number;
-  price?: { amount?: string; suffix?: string };
-  cta?: { label?: string; href?: string };
-  featureGroups?: Array<{ title?: string; items?: string[] }>;
+/** Flattens a price cell to the same string the table renders. */
+function renderPrice(row: RateRow): string {
+  if (row.free) return 'FREE';
+  if (row.link) return row.link.text;
+
+  return (row.lines ?? [])
+    .map((line) => `$${line.amount}${line.suffix ?? ''}${line.note ? ` ${line.note}` : ''}`)
+    .join('; ');
 }
 
-function renderTier(tier: PricingTier): string {
-  const price = tier.price?.amount ?? '';
-  const suffix = tier.price?.suffix?.trim() ?? '';
-  const heading = price
-    ? `### ${tier.title} - ${price}${suffix ? ' ' + suffix : ''}`
-    : `### ${tier.title}`;
-  const lines: string[] = [heading];
+function renderGroup(group: RateGroup): string[] {
+  const lines: string[] = [`### ${group.name}`, ''];
 
-  if (tier.subtitle || tier.description) {
-    const sub = tier.subtitle ? `**${tier.subtitle}.** ` : '';
-    lines.push('', `${sub}${tier.description ?? ''}`.trim());
-  }
+  if (group.note) lines.push(`_${group.note.text}_`, '');
 
-  for (const group of tier.featureGroups ?? []) {
-    if (group.title) lines.push('', group.title);
-    for (const item of group.items ?? []) {
-      lines.push(`- ${item}`);
+  lines.push('| Feature | Unit of measure | Price per unit |', '| --- | --- | --- |');
+
+  for (const feature of group.features) {
+    const label = feature.badge ? `${feature.name} (${feature.badge})` : feature.name;
+    for (const row of feature.rows) {
+      lines.push(`| ${label} | ${row.unit} | ${renderPrice(row)} |`);
     }
   }
 
-  if (tier.cta?.label && tier.cta?.href && tier.cta.href !== '#') {
-    lines.push('', `[${tier.cta.label}](${tier.cta.href})`);
-  } else if (tier.cta?.label) {
-    lines.push('', `_${tier.cta.label}_`);
-  }
-
-  return lines.join('\n');
-}
-
-function stripFaqBody(body: string): string {
-  // Strip MDX import lines and component tags. FAQ bodies are simple
-  // prose today, but this guards against future MDX edits.
-  return body
-    .replace(/^import\s+.*$/gm, '')
-    .replace(/<[^>]+>/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  return lines;
 }
 
 export const GET: APIRoute = async () => {
   try {
     const page = await getEntry('pages', 'pricing');
-    const tiers = (await getCollection('pricing'))
-      .map((entry) => entry.data as PricingTier)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
     const faqs = (await getCollection('faq'))
       .filter((f) => !f.data.draft && f.data.category === 'pricing')
@@ -71,25 +50,26 @@ export const GET: APIRoute = async () => {
 
     const sections: string[] = [`# ${page?.data.title ?? 'Datum Pricing'}`, ''];
 
-    if (page?.data.subtitle) {
-      sections.push(page.data.subtitle, '');
-    }
     if (page?.data.description) {
       sections.push(page.data.description, '');
     }
-    if (page?.data.meta?.description) {
-      sections.push(page.data.meta.description, '');
-    }
 
-    sections.push('## Plans');
-    for (const tier of tiers) {
-      sections.push('', renderTier(tier));
+    sections.push(`## ${callout.title}`, '', callout.description, '');
+    for (const item of callout.items) {
+      sections.push(`- ${item}`);
     }
+    sections.push('');
+
+    sections.push('## Rates');
+    for (const group of rates.groups) {
+      sections.push('', ...renderGroup(group));
+    }
+    sections.push('');
 
     if (faqs.length > 0) {
-      sections.push('', '## Common Questions');
+      sections.push('', `## ${faqTitle}`);
       for (const faq of faqs) {
-        sections.push('', `### ${faq.data.question}`, '', stripFaqBody(faq.body ?? ''));
+        sections.push('', `### ${faq.data.question}`, '', faqToMarkdown(faq.body ?? ''));
       }
     }
 

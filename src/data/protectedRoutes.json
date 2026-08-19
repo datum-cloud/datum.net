@@ -1,0 +1,4 @@
+{
+  "prefix": ["/dev"],
+  "pages": ["/platform/dns", "/platform/compute", "/pricing"]
+}

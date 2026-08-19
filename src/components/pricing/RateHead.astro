@@ -1,0 +1,30 @@
+---
+// src/components/pricing/RateHead.astro
+
+export interface RateHeadProps {
+  columns: string[];
+  /** Set on the body table's copy, which exists only for assistive tech. */
+  srOnly?: boolean;
+}
+
+const { columns, srOnly = false } = Astro.props as RateHeadProps;
+---
+
+<colgroup>
+  <col class="pricing-rate-col--category" />
+  <col class="pricing-rate-col--feature" />
+  <col class="pricing-rate-col--unit" />
+  <col class="pricing-rate-col--price" />
+</colgroup>
+
+<thead class:list={['pricing-rate-head', srOnly && 'sr-only']}>
+  <tr>
+    {
+      columns.map((column) => (
+        <th scope="col" class="pricing-rate-head-cell">
+          {column}
+        </th>
+      ))
+    }
+  </tr>
+</thead>

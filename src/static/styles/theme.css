@@ -90,6 +90,8 @@
   /* Font Sizes */
   --text-xsm: 13px;
   --text-smb: 15px;
+  /* Availability chips on the /pricing rate card — Figma node 16198:94022 */
+  --text-9: 9px;
   --text-10: 10px;
   --text-11: 11px;
   --text-13: 13px;
@@ -109,6 +111,7 @@
 
   /* letter-spacing */
   --tracking-1: -1.5px;
+  --tracking-badge: 0.3px;
 
   /* Font Families */
   --font-primary:

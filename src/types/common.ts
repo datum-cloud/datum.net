@@ -151,6 +151,17 @@ export interface ButtonProps {
   [key: `data-${string}`]: string | undefined;
 }
 
+/** One prefooter CTA button. Mirrors the props Button.astro takes. */
+export interface FooterCtaButton {
+  text: string;
+  href: string;
+  class?: string;
+  icon?: { name: string; size?: string };
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  /** Value passed through as `data-rybbit-event`. */
+  event?: string;
+}
+
 export interface FooterProps {
   class?: string;
   showCTA?: boolean;
@@ -159,6 +170,12 @@ export interface FooterProps {
   showSignup?: boolean;
   /** Illustration only — no tint/padding (demo, dedicated-cloud) */
   plainIllustration?: boolean;
+  /** Prefooter copy overrides. Omit for the site-wide default. */
+  ctaTitle?: string;
+  /** Leading fragment of the prefooter headline, tinted pine-forge. */
+  ctaTitleAccent?: string;
+  ctaDescription?: string;
+  ctaButtons?: FooterCtaButton[];
 }
 
 export interface ContainerProps {

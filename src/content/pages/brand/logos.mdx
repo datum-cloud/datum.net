@@ -11,7 +11,6 @@ meta:
 ---
 
 import Container from '@components/Container.astro';
-import BrandCardImage from '@components/brand/BrandCardImage.astro';
 import Button from '@components/Button.astro';
 
 <p class="mb-8 md:mb-12">Our logo is the most recognizable expression of the Datum brand. Its stamp is built around the idea of a datum: a single point of data and the starting point for something larger. Combined with our wordmark, it creates a distinctive symbol of connected infrastructure.</p>
@@ -22,42 +21,74 @@ The stacked logo is our most expressive configuration, placing the stamp above t
 
 Use one of the approved color combinations shown below, choosing the version that provides the clearest contrast against the background.
 
-<Container tag="section" class="space-y-8 max-w-none lg:mb-24 md:mb-18 mb-12 brand-card-pad [&_img]:bg-white!">
+<Container tag="section" class="space-y-8 max-w-none lg:mb-24 md:mb-18 mb-12 brand-card-pad [&_img]:m-0!">
 
-  ![Stacked light](./assets/logos/stacked-light.png)
+<div class="bg-white flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-52 md:[&_img]:w-64">
 
-  ![Stacked dark](./assets/logos/stacked-dark.png)
+![Stacked logo, two-tone canyon clay and midnight fjord, on white](./assets/logos/logo-stacked-2tone-dark.svg)
 
-  ![Stacked canyon clay](./assets/logos/stacked-canyon-clay.png)
+</div>
 
-  ![Stacked aurora moss](./assets/logos/stacked-aurora-moss.png)
+<div class="bg-midnight-fjord flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-52 md:[&_img]:w-64">
 
-  <Button class="btn btn--alpha" text="Download the logos" target="_blank" href="https://link.datum.net/logos" />
+![Stacked logo, two-tone aurora moss and white, on midnight fjord](./assets/logos/logo-stacked-2tone-light.svg)
+
+</div>
+
+<div class="bg-canyon-clay flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-52 md:[&_img]:w-64">
+
+![Stacked logo, mono white, on canyon clay](./assets/logos/logo-stacked-mono-light.svg)
+
+</div>
+
+<div class="bg-aurora-moss flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-52 md:[&_img]:w-64">
+
+![Stacked logo, mono midnight fjord, on aurora moss](./assets/logos/logo-stacked-mono-dark.svg)
+
+</div>
+
+<Button class="btn btn--alpha" text="Download the logos" target="_blank" href="https://link.datum.net/logos" />
 
 </Container>
 
-## Horizontal Version
+## Flat Version
 
-The horizontal logo places the stamp and wordmark side by side, creating a compact and versatile configuration. It is best suited to wider or shallower spaces, including website headers, navigation, documents, and presentation footers.
+The flat logo places the stamp and wordmark side by side, creating a compact and versatile configuration. It is best suited to wider or shallower spaces, including website headers, navigation, documents, and presentation footers.
 
 Use one of the approved color combinations shown below, ensuring the logo remains clear and legible at its intended size.
 
-<Container tag="section" class="space-y-8 max-w-none mb-8 md:mb-12 brand-card-pad [&_img]:bg-white!">
+<Container tag="section" class="space-y-8 max-w-none mb-8 md:mb-12 brand-card-pad [&_img]:m-0!">
 
-  ![Horizontal light](./assets/logos/horizontal-light.png)
+<div class="bg-white flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-64 md:[&_img]:w-80">
 
-  ![Horizontal dark](./assets/logos/horizontal-dark.png)
+![Flat logo, two-tone canyon clay and midnight fjord, on white](./assets/logos/logo-flat-2tone-dark.svg)
 
-  ![Horizontal canyon clay](./assets/logos/horizontal-canyon-clay.png)
+</div>
 
-  ![Horizontal aurora moss](./assets/logos/horizontal-aurora-moss.png)
+<div class="bg-midnight-fjord flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-64 md:[&_img]:w-80">
 
-  <Button
-  class="btn btn--alpha"
-  text="Download the logos"
-  target="_blank"
-  href="https://link.datum.net/logos"
-  />
+![Flat logo, two-tone aurora moss and white, on midnight fjord](./assets/logos/logo-flat-2tone-light.svg)
+
+</div>
+
+<div class="bg-canyon-clay flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-64 md:[&_img]:w-80">
+
+![Flat logo, mono white, on canyon clay](./assets/logos/logo-flat-mono-light.svg)
+
+</div>
+
+<div class="bg-aurora-moss flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-64 md:[&_img]:w-80">
+
+![Flat logo, mono midnight fjord, on aurora moss](./assets/logos/logo-flat-mono-dark.svg)
+
+</div>
+
+<Button
+class="btn btn--alpha"
+text="Download the logos"
+target="_blank"
+href="https://link.datum.net/logos"
+/>
 
 </Container>
 
@@ -67,21 +98,37 @@ The stamp can be used independently when the Datum brand is already established 
 
 The stamp should not replace the complete logo when an audience may be unfamiliar with Datum. Use only the approved color combinations and maintain sufficient contrast against the background.
 
-<Container tag="section" class="space-y-8 max-w-none brand-card-pad [&_img]:bg-white!">
+<Container tag="section" class="space-y-8 max-w-none brand-card-pad [&_img]:m-0!">
 
-  ![Stamp light](./assets/logos/stamp-light.png)
+<div class="bg-white flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-24 md:[&_img]:w-28">
 
-  ![Stamp dark](./assets/logos/stamp-dark.png)
+![Stamp, canyon clay, on white](./assets/logos/stamp-canyon-clay.svg)
 
-  ![Stamp canyon clay](./assets/logos/stamp-canyon-clay.png)
+</div>
 
-  ![Stamp aurora moss](./assets/logos/stamp-aurora-moss.png)
+<div class="bg-midnight-fjord flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-24 md:[&_img]:w-28">
 
-  <Button
-  class="btn btn--alpha"
-  text="Download the logos"
-  target="_blank"
-  href="https://link.datum.net/logos"
-  />
+![Stamp, aurora moss, on midnight fjord](./assets/logos/stamp-aurora-moss.svg)
+
+</div>
+
+<div class="bg-canyon-clay flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-24 md:[&_img]:w-28">
+
+![Stamp, white, on canyon clay](./assets/logos/stamp-white.svg)
+
+</div>
+
+<div class="bg-aurora-moss flex aspect-[16/9] items-center justify-center p-10 md:p-14 [&_img]:w-24 md:[&_img]:w-28">
+
+![Stamp, midnight fjord, on aurora moss](./assets/logos/stamp-midnight-fjord.svg)
+
+</div>
+
+<Button
+class="btn btn--alpha"
+text="Download the logos"
+target="_blank"
+href="https://link.datum.net/logos"
+/>
 
 </Container>

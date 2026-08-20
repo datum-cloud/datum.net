@@ -11,7 +11,6 @@ import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import Card from '@components/events/Card.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
-import SectionLine from '@components/SectionLine.astro';
 
 const page = await getCollectionEntry('pages', 'events');
 
@@ -93,13 +92,11 @@ const jsonLd = {
     <div class="relative">
       <div class="section--block section--block--x-pad bg-platinum">
         <div class="max-width-nav relative pb-10 md:pb-16 lg:pb-20 xl:pb-28">
-          <SectionLine left top bottom />
           <div class="max-width-nopad">
             <Card />
           </div>
         </div>
       </div>
-      <ModuleConnector />
     </div>
 
     <Footer showIllustration={false} showBackground={false} showCTA={false} />

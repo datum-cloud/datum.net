@@ -6,6 +6,7 @@ import '@styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import BlogStrapiIndex from '@components/blog/BlogStrapi.astro';
 import defaultOgImage from '@content/images/og/blog.png';
@@ -68,18 +69,23 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={icon}
-      title={title}
-      subtitle={subtitle}
-      description={description}
-    />
+    <div class="relative">
+      <Hero
+        class="light"
+        iconName={icon}
+        title={title}
+        subtitle={subtitle}
+        description={description}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark">
-      <div class="max-width">
-        <BlogStrapiIndex page={1} />
+      <div class="section--block section--block--pad bg-midnight-fjord dark">
+        <div class="max-width">
+          <BlogStrapiIndex page={1} />
+        </div>
       </div>
+      <ModuleConnector />
     </div>
 
     <GlobalSection />

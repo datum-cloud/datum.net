@@ -1,6 +1,8 @@
 ---
 // src/components/career/Benefits.astro
 import Icon from '@components/Icon.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 
 const benefits = [
   {
@@ -41,26 +43,34 @@ const benefits = [
 ];
 ---
 
-<section id="benefits" class="section--block section--block--pad bg-glacier-mist-700">
-  <div class="max-width">
-    <h2 class="datum-text-8xl mb-10 text-center font-medium">Open by design</h2>
-    <p class="datum-text-lg mb-10 text-center text-pretty md:mb-18">What to expect working here</p>
-    <div class="border-midnight-fjord border bg-white p-7 md:p-16">
-      <div class="flex flex-wrap gap-x-13 gap-y-8">
-        {
-          benefits.map((benefit) => (
-            <div class="flex w-full items-start gap-6 md:w-[calc(33.333%-35px)]">
-              <div class="bg-canyon-clay/20 text-canyon-clay---links flex h-10 w-10 shrink-0 items-center justify-center rounded-[4.7px] p-2">
-                <Icon name={benefit.icon} size="md" />
-              </div>
-              <div class="text-midnight-fjord flex min-w-0 flex-1 flex-col gap-2.5">
-                <h3 class="datum-text-lg font-medium">{benefit.title}</h3>
-                <p class="datum-text-base opacity-80">{benefit.description}</p>
-              </div>
-            </div>
-          ))
-        }
+<div class="relative">
+  <section id="benefits" class="section--block section--block--x-pad bg-glacier-mist-700">
+    <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+      <SectionLine left top />
+      <div class="max-width-nopad">
+        <h2 class="datum-text-8xl mb-10 text-center font-medium">Open by design</h2>
+        <p class="datum-text-lg mb-10 text-center text-pretty md:mb-18">
+          What to expect working here
+        </p>
+        <div class="border-midnight-fjord border bg-white p-7 md:p-16">
+          <div class="flex flex-wrap gap-x-13 gap-y-8">
+            {
+              benefits.map((benefit) => (
+                <div class="flex w-full items-start gap-6 md:w-[calc(33.333%-35px)]">
+                  <div class="bg-canyon-clay/20 text-canyon-clay---links flex h-10 w-10 shrink-0 items-center justify-center rounded-[4.7px] p-2">
+                    <Icon name={benefit.icon} size="md" />
+                  </div>
+                  <div class="text-midnight-fjord flex min-w-0 flex-1 flex-col gap-2.5">
+                    <h3 class="datum-text-lg font-medium">{benefit.title}</h3>
+                    <p class="datum-text-base opacity-80">{benefit.description}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+  <ModuleConnector />
+</div>

@@ -8,6 +8,8 @@ import Mission from '@components/career/Mission.astro';
 import Culture from '@components/career/Culture.astro';
 import Benefits from '@components/career/Benefits.astro';
 import JobList from '@components/career/JobList.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 // Get career landing page from pages/career.mdx
@@ -41,32 +43,38 @@ const description = fm.description || '';
       <Benefits />
     </div>
 
-    <section id="roles" class="section--block section--block--pad bg-white">
-      <div class="max-width">
-        <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
+    <div class="relative">
+      <section id="roles" class="section--block section--block--x-pad bg-white">
+        <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+          <SectionLine left top bottom />
+          <div class="max-width-nopad">
+            <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
 
-        <!-- Job List (shown when no ashby_jid) -->
-        <div x-show="!hasAshbyJobId" x-cloak>
-          <JobList server:defer>
-            <div slot="fallback" class="mx-auto max-w-4xl py-12 text-center">
-              <div
-                class="border-glacier-mist-800 border-t-canyon-clay mx-auto mb-4 size-8 animate-spin rounded-full border-3"
-              >
-              </div>
-              <p class="text-midnight-fjord/60 text-sm">Loading open positions...</p>
+            <!-- Job List (shown when no ashby_jid) -->
+            <div x-show="!hasAshbyJobId" x-cloak>
+              <JobList server:defer>
+                <div slot="fallback" class="mx-auto max-w-4xl py-12 text-center">
+                  <div
+                    class="border-glacier-mist-800 border-t-canyon-clay mx-auto mb-4 size-8 animate-spin rounded-full border-3"
+                  >
+                  </div>
+                  <p class="text-midnight-fjord/60 text-sm">Loading open positions...</p>
+                </div>
+              </JobList>
             </div>
-          </JobList>
-        </div>
 
-        <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
-        <div x-show="hasAshbyJobId" x-cloak>
-          <div id="ashby_embed"></div>
-          <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
-            <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+            <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
+            <div x-show="hasAshbyJobId" x-cloak>
+              <div id="ashby_embed"></div>
+              <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
+                <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <ModuleConnector />
+    </div>
 
     <script is:inline>
       window.__Ashby = {

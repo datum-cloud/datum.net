@@ -9,7 +9,6 @@ import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import EventSeriesCard from '@components/events/EventSeriesCard.astro';
 import CommunityHuddlePastModal from '@components/events/CommunityHuddlePastModal.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
-import SectionLine from '@components/SectionLine.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 const page = await getCollectionEntry('pages', 'community-huddles');
@@ -52,7 +51,6 @@ const communityHuddlesPast = past.filter(isEventCommunityHuddle);
     <div class="relative">
       <section class="event-series-content section--block section--block--x-pad bg-platinum">
         <div class="max-width-nav relative pb-10 md:pb-16 lg:pb-20 xl:pb-28">
-          <SectionLine left top bottom />
           <div class="mx-auto w-full max-w-5xl">
             <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
               <div class="event-series-tabs">
@@ -104,7 +102,6 @@ const communityHuddlesPast = past.filter(isEventCommunityHuddle);
           </div>
         </div>
       </section>
-      <ModuleConnector />
     </div>
 
     <CommunityHuddlePastModal />

@@ -4,6 +4,7 @@ import Layout from '@layouts/LayoutSimple.astro';
 import Footer from '@components/Footer.astro';
 import Hero from '@components/Hero.astro';
 import NavBrand from '@components/brand/NavBrand.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -45,27 +46,30 @@ const currentPath = Astro.url.pathname;
   meta={meta}
 >
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={icon}
-      title={title}
-      subtitle={subtitle}
-      showSectionLines
-      sectionLines={{ left: true, right: true, top: true }}
-    />
-    <div class="section--block bg-platinum">
-      <div class="max-width m-auto grid grid-cols-1 md:grid-cols-12 md:gap-10 lg:gap-12">
-        <sidebar class="brand-sidebar">
-          <NavBrand currentPath={currentPath} />
-        </sidebar>
-        <div class="brand-wrapper">
-          <article class="brand-article">
-            <div class="brand-article--content">
-              <Content />
-            </div>
-          </article>
+    <div class="relative">
+      <Hero
+        class="light"
+        iconName={icon}
+        title={title}
+        subtitle={subtitle}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
+      <div class="section--block bg-platinum">
+        <div class="max-width m-auto grid grid-cols-1 md:grid-cols-12 md:gap-10 lg:gap-12">
+          <sidebar class="brand-sidebar">
+            <NavBrand currentPath={currentPath} />
+          </sidebar>
+          <div class="brand-wrapper">
+            <article class="brand-article">
+              <div class="brand-article--content">
+                <Content />
+              </div>
+            </article>
+          </div>
         </div>
       </div>
+      <ModuleConnector />
     </div>
     <Footer showCTA={false} illustrationBgClass="bg-platinum" />
   </section>

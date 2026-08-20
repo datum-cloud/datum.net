@@ -1,0 +1,47 @@
+@import './base.css';
+
+@layer components {
+  .contact-panel {
+    @apply bg-midnight-fjord relative w-full p-7 md:p-16 lg:p-20;
+  }
+
+  .contact-panel-inner {
+    @apply relative z-10 flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-16;
+  }
+
+  .contact-copy {
+    @apply text-glacier-mist-700 flex flex-1 flex-col items-start gap-7;
+  }
+
+  .contact-title {
+    @apply datum-text-8xl text-glacier-mist-700 text-pretty;
+  }
+
+  .contact-prose {
+    @apply datum-prose-lg text-glacier-mist-700;
+
+    a {
+      @apply text-aurora-moss decoration-aurora-moss hover:text-aurora-moss/80;
+    }
+  }
+
+  .contact-card {
+    @apply bg-app---dark---utility-1/80 flex w-full flex-col items-center justify-center gap-10 rounded-sm p-5 text-center md:p-10 lg:w-120 lg:shrink-0;
+  }
+
+  .contact-card-copy {
+    @apply text-glacier-mist-700 flex flex-col items-center gap-5;
+  }
+
+  .contact-card-title {
+    @apply datum-text-2xl font-medium;
+  }
+
+  .contact-card-description {
+    @apply datum-text-lg opacity-80;
+  }
+
+  .contact-card-image {
+    @apply size-auto max-w-60;
+  }
+}

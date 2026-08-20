@@ -1,56 +1,72 @@
 ---
-import '@styles/global.css';
+// src/pages/contact.astro
+
+import '@styles/page-contact.css';
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import { getCollectionEntry } from '@utils/collectionUtils';
-import { render } from 'astro:content';
 import Button from '@components/Button.astro';
-import ImageFounder from '@content/pages/assets/chat/founders.png';
-import Image from 'astro/components/Image.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import ImageFounder from '@content/pages/assets/chat/founders.png';
+import starfieldImage from '@assets/images/dedicated-cloud-starfield.png';
 
 const page = await getCollectionEntry('pages', 'contact');
 
-// SEO
 const fm = page.data;
 const meta = fm.meta || {};
 
 const { Content } = await render(page);
+
+const highlightedTitle = fm.title.replace(/\bchat\b/, '<span class="text-aurora-moss">chat</span>');
 ---
 
 <Layout title={fm.title} description={fm.description} bodyClass={`page-${page.id}`} meta={meta}>
   <section class="datum-container">
-    <Hero class="light" hideContent={true} hideHero />
+    <Hero class="light" hideHero />
 
-    <div class="section--block section--block--x-pad relative bg-white">
-      <div class="max-width-nav large-pad relative">
-        <SectionLine left top />
-        <SectionEyebrow position="left-top-keyline">Contact</SectionEyebrow>
+    <div class="relative">
+      <div class="section--block section--block--x-pad bg-platinum relative overflow-hidden">
+        <div class="max-width-nav large-pad relative">
+          <SectionLine left right top />
 
-        <div class="max-width-nopad spacing-pad">
-          <div class="grid grid-cols-6 gap-8 md:gap-15 lg:gap-25 xl:gap-28">
-            <div class="col-span-6 md:col-span-3">
-              <h1 class="datum-text-8xl mb-5 lg:mb-8">{fm.title}</h1>
-              <div class="datum-prose-lg">
-                <Content />
-              </div>
-            </div>
-            <div class="col-span-6 md:col-span-3">
-              <div
-                class="rounded-lg border border-(--app---dark---utility-2) bg-white px-7 py-9 shadow-sm"
-              >
-                <div class="flex flex-col items-center justify-center gap-2.5 text-center">
-                  <Image src={ImageFounder} alt="Founders" class="mb-4.5 size-auto max-w-60" />
-                  <h3 class="datum-text-2xl font-semibold">Schedule time with a founder</h3>
-                  <p class="datum-text-sm m-auto mb-4 max-w-59 opacity-80">
-                    Connect with a founder for coffee, questions or idea sharing.
-                  </p>
+          <div class="max-width-nopad">
+            <div class="contact-panel">
+              <SectionLine left top overlap class="bg-midnight-fjord" />
+              <SectionLine right bottom bottomOverlap class="bg-midnight-fjord" />
+
+              <Image
+                src={starfieldImage}
+                alt=""
+                class="pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none -translate-y-1/2 rotate-16 opacity-60"
+                aria-hidden="true"
+                loading="eager"
+              />
+
+              <div class="contact-panel-inner">
+                <div class="contact-copy">
+                  <SectionEyebrow variant="aurora-moss">Contact</SectionEyebrow>
+                  <h1 class="contact-title" set:html={highlightedTitle} />
+                  <div class="contact-prose">
+                    <Content />
+                  </div>
+                </div>
+
+                <div class="contact-card">
+                  <div class="contact-card-copy">
+                    <h2 class="contact-card-title">Schedule time with a founder</h2>
+                    <p class="contact-card-description">
+                      Connect with a founder for coffee, questions or idea sharing.
+                    </p>
+                  </div>
+                  <Image src={ImageFounder} alt="Founders" class="contact-card-image" />
                   <Button
                     text="Book a time"
-                    class="btn btn--canyon-clay---links btn--sm"
+                    class="btn btn--aurora-moss btn--sm"
                     href="https://link.datum.net/founders"
                     target="_blank"
                     data-rybbit-event="Contact: Founder Meeting"
@@ -61,8 +77,9 @@ const { Content } = await render(page);
           </div>
         </div>
       </div>
+      <ModuleConnector />
     </div>
-    <ModuleConnector />
-    <Footer showCTA={false} plainIllustration />
+
+    <Footer showCTA={false} illustrationBgClass="bg-platinum" />
   </section>
 </Layout>

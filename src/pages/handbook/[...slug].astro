@@ -4,6 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollection, render } from 'astro:content';
@@ -126,9 +127,19 @@ const handbookJsonLd = {
   jsonLd={handbookJsonLd}
 >
   <section class="datum-container">
-    <Hero class="light linear-gradient-light" title="Handbook" titleTag="h2" />
+    <div class="relative">
+      <Hero
+        class="light"
+        title="Handbook"
+        titleTag="h2"
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <Article articleId={slug} />
+      <Article articleId={slug} />
+
+      <ModuleConnector />
+    </div>
 
     <Footer />
   </section>

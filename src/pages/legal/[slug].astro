@@ -5,6 +5,7 @@ import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Sidebar from '@components/legal/Sidebar.astro';
 import TableOfContents from '@components/TableOfContents.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import { getCollection, render } from 'astro:content';
 import type { LegalNavItem } from '@/src/types/common';
 
@@ -49,58 +50,63 @@ const navItems: LegalNavItem[] = sortedLegal.map((entry) => ({
   meta={meta}
 >
   <section class="datum-container">
-    <Hero
-      class="light bg-glacier-mist-800 [&_.hero--main-content-title]:max-w-none"
-      title={fm.title}
-    />
+    <div class="relative">
+      <Hero
+        class="light [&_.hero--main-content-title]:max-w-none"
+        title={fm.title}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <div class="section--block section--block--small-pad bg-glacier-mist-700">
-      <div class="max-width-full">
-        <div class="legal-layout">
-          <Sidebar items={navItems} currentId={page.id} />
+      <div class="section--block bg-platinum">
+        <div class="max-width-full">
+          <div class="legal-layout">
+            <Sidebar items={navItems} currentId={page.id} />
 
-          <main class="legal-content">
-            <div class="legal-toc-reopen-row">
-              <button
-                type="button"
-                class="legal-toc-reopen toc-pill-toggle"
-                hidden
-                aria-label="Show On This Page"
-              >
-                On This Page
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="toc-panel-chevron"
-                  aria-hidden="true"
+            <main class="legal-content">
+              <div class="legal-toc-reopen-row">
+                <button
+                  type="button"
+                  class="legal-toc-reopen toc-pill-toggle"
+                  hidden
+                  aria-label="Show On This Page"
                 >
-                  <path d="m9 18 6-6-6-6"></path>
-                </svg>
-              </button>
-            </div>
+                  On This Page
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="toc-panel-chevron"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6"></path>
+                  </svg>
+                </button>
+              </div>
 
-            <Content />
-          </main>
+              <Content />
+            </main>
 
-          <aside class="legal-toc">
-            <TableOfContents
-              headings={headings}
-              title="On This Page"
-              showTitle={true}
-              sticky={true}
-              collapsible={true}
-              panelCollapsible={true}
-            />
-          </aside>
+            <aside class="legal-toc">
+              <TableOfContents
+                headings={headings}
+                title="On This Page"
+                showTitle={true}
+                sticky={true}
+                collapsible={true}
+                panelCollapsible={true}
+              />
+            </aside>
+          </div>
         </div>
       </div>
+      <ModuleConnector />
     </div>
 
     <Footer showCTA={false} />

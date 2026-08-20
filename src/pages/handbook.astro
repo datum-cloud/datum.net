@@ -4,6 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Article from '@components/handbook/Article.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import defaultOgImage from '@content/images/og/handbook.png';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -28,9 +29,18 @@ const handbookMeta = {
 
 <Layout title={title} description={description} bodyClass="page-handbook" meta={handbookMeta}>
   <section class="datum-container">
-    <Hero class="light linear-gradient-light" title="Handbook" />
+    <div class="relative">
+      <Hero
+        class="light"
+        title="Handbook"
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <Article articleId="index" showTitle={false} />
+      <Article articleId="index" showTitle={false} />
+
+      <ModuleConnector />
+    </div>
 
     <Footer />
   </section>

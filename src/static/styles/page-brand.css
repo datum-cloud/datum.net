@@ -137,6 +137,12 @@
   .color-palette {
     @apply bg-white p-6.5 md:p-10 lg:p-14.75 xl:p-18.5;
     @apply grid grid-cols-1 items-start justify-between gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3;
+
+    /* Shorter card for single-row usage (e.g. Iconography > Color Guidance) —
+       the default padding scale is sized for the full multi-row Color page grid. */
+    &.compact {
+      @apply p-8 lg:p-10.75;
+    }
   }
 
   /* Shared by ColorPalette and UtilityPalette */
@@ -156,7 +162,7 @@
     @apply flex items-center gap-4;
 
     .color-swatch--preview {
-      @apply h-10 w-10 shrink-0 rounded-sm;
+      @apply h-10 w-10 shrink-0 rounded-sm border border-gray-200;
     }
 
     .color-swatch--info {
@@ -173,6 +179,23 @@
       .color-swatch--pantone {
         @apply text-sm text-gray-600;
       }
+    }
+  }
+
+  /* Icon spec table (e.g. Iconography > Size and Stroke Width Guidance) */
+  .icon-spec-table {
+    @apply overflow-hidden rounded-md border border-gray-200 bg-white;
+
+    table {
+      @apply w-full border-collapse text-left;
+    }
+
+    th {
+      @apply bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-900;
+    }
+
+    td {
+      @apply border-t border-gray-200 px-6 py-3 text-sm text-gray-600;
     }
   }
 

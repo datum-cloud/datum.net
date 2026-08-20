@@ -4,6 +4,8 @@ import { getStrapiTeamMembers, getTeamBgColor } from '@libs/strapi';
 import { getStrapiMediaUrl } from '@/src/types/strapi';
 import type { StrapiAuthorFull } from '@libs/strapi';
 import ProfileModal from './ProfileModal.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import '@styles/page-about.css';
 
 // Fetch all team members from Strapi (authors where isTeam is true)
@@ -27,64 +29,68 @@ const teamMembersData = teamMembers.map((member, index) => ({
 }));
 ---
 
-<section class="bg-glacier-mist-700 section--block section--block--pad">
-  <div class="max-width">
-    <div class="relative z-10">
-      <h3 class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:max-w-md lg:mb-10">
-        Meet the people behind Datum
-      </h3>
+<div class="relative">
+  <section class="section--block section--block--x-pad bg-glacier-mist-700">
+    <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+      <SectionLine left top />
+      <div class="max-width-nopad relative z-10">
+        <h3 class="datum-text-8xl mx-auto mb-8 max-w-sm text-center md:max-w-md lg:mb-10">
+          Meet the people behind Datum
+        </h3>
 
-      <p
-        class="datum-text-lg mx-auto mb-8 max-w-sm text-center md:mb-12 lg:mb-16 lg:max-w-lg xl:mb-21"
-      >
-        We are infrastructure, open source software, and design nerds who love building for the
-        future.
-      </p>
+        <p
+          class="datum-text-lg mx-auto mb-8 max-w-sm text-center md:mb-12 lg:mb-16 lg:max-w-lg xl:mb-21"
+        >
+          We are infrastructure, open source software, and design nerds who love building for the
+          future.
+        </p>
 
-      {
-        teamMembers.length === 0 ? (
-          <div class="py-12 text-center">
-            <p class="text-gray-500">No team members found.</p>
-          </div>
-        ) : (
-          <div class="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-5">
-            {teamMembers.map((member, index) => (
-              <button
-                class="people--card"
-                data-member-trigger
-                data-member-index={index}
-                type="button"
-                tabindex={0}
-                aria-label={`View ${member.name}'s profile`}
-              >
-                {member.avatar && (
-                  <div class="people--card-avatar">
-                    <img
-                      src={getStrapiMediaUrl(member.avatar.url)}
-                      alt={member.name}
-                      class="size-auto w-full bg-cover"
-                      style={`background-color: ${getTeamBgColor(index)}`}
-                    />
-                    {/* Check if member.title contains "Co-Founder" and show Founder label */}
-                    {member.title && member.title.includes('Co-Founder') && (
-                      <span class="people--card-founder-label">Founder</span>
-                    )}
-                  </div>
-                )}
+        {
+          teamMembers.length === 0 ? (
+            <div class="py-12 text-center">
+              <p class="text-gray-500">No team members found.</p>
+            </div>
+          ) : (
+            <div class="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-5">
+              {teamMembers.map((member, index) => (
+                <button
+                  class="people--card"
+                  data-member-trigger
+                  data-member-index={index}
+                  type="button"
+                  tabindex={0}
+                  aria-label={`View ${member.name}'s profile`}
+                >
+                  {member.avatar && (
+                    <div class="people--card-avatar">
+                      <img
+                        src={getStrapiMediaUrl(member.avatar.url)}
+                        alt={member.name}
+                        class="size-auto w-full bg-cover"
+                        style={`background-color: ${getTeamBgColor(index)}`}
+                      />
+                      {/* Check if member.title contains "Co-Founder" and show Founder label */}
+                      {member.title && member.title.includes('Co-Founder') && (
+                        <span class="people--card-founder-label">Founder</span>
+                      )}
+                    </div>
+                  )}
 
-                <h4 class="people--card-name">{member.name}</h4>
+                  <h4 class="people--card-name">{member.name}</h4>
 
-                <div class="people--card-title">{member.title && <p>{member.title}</p>}</div>
-              </button>
-            ))}
-          </div>
-        )
-      }
+                  <div class="people--card-title">{member.title && <p>{member.title}</p>}</div>
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </div>
     </div>
-  </div>
 
-  <ProfileModal />
-</section>
+    <ProfileModal />
+  </section>
+  <ModuleConnector />
+</div>
 
 <script is:inline define:vars={{ teamMembersData }}>
   const teamData = teamMembersData;

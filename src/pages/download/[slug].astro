@@ -9,6 +9,7 @@ import Footer from '@components/Footer.astro';
 import Download from '@components/download/Download.astro';
 import CollectionEntryBody from '@components/CollectionEntryBody.astro';
 import Icon from '@components/Icon.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import { getEntry } from 'astro:content';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -322,31 +323,40 @@ const jsonLd = appSchema
     })();
   </script>
   <section class="datum-container">
-    <Hero
-      class="light linear-gradient-light"
-      title={pageFm.title}
-      description={pageFm.description}
-    />
+    <div class="relative">
+      <Hero
+        class="light"
+        title={pageFm.title}
+        description={pageFm.description}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <div class="section--block section--block--small-pad">
-      <div class="max-width">
-        <Download activeId={entry.data.slug}>
-          <div class="download-content-frame">
-            <div class="download-content-header">
-              <div class="download-content-title">
-                <div>
-                  {fm.icon && <Icon name={fm.icon} size="xl" class="download-content-title-icon" />}
+      <div class="section--block bg-platinum">
+        <div class="max-width">
+          <Download activeId={entry.data.slug}>
+            <div class="download-content-frame">
+              <div class="download-content-header">
+                <div class="download-content-title">
+                  <div>
+                    {
+                      fm.icon && (
+                        <Icon name={fm.icon} size="xl" class="download-content-title-icon" />
+                      )
+                    }
+                  </div>
+                  <h1 class="download-content-title-text">{fm.title}</h1>
                 </div>
-                <h1 class="download-content-title-text">{fm.title}</h1>
+              </div>
+
+              <div class="download-section">
+                <CollectionEntryBody entry={entry} />
               </div>
             </div>
-
-            <div class="download-section">
-              <CollectionEntryBody entry={entry} />
-            </div>
-          </div>
-        </Download>
+          </Download>
+        </div>
       </div>
+      <ModuleConnector />
     </div>
     <Footer class="z-10" showCTA={false} />
   </section>

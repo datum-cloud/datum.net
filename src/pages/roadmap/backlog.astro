@@ -10,6 +10,7 @@ import { fetchGitHubRoadmaps, isRoadmapShipped } from '@libs/githubRoadmap';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
 import BacklogLiveUpdate from '@components/roadmap/BacklogLiveUpdate.astro';
@@ -42,21 +43,30 @@ const tabItems = [
 
 <Layout title={layoutTitle} description={layoutDescription} bodyClass="page-backlog" meta={meta}>
   <section class="datum-container">
-    <Hero class="light content-alt" title={heroTitle} description={heroDescription} />
+    <div class="relative">
+      <Hero
+        class="light content-alt"
+        title={heroTitle}
+        description={heroDescription}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
 
-    <div class="section--block section--block--pad bg-platinum pt-0">
-      <div class="max-width">
-        <div class="mb-8 md:mb-13 lg:mb-18">
-          <SecondaryTabNav
-            ariaLabel="Roadmap sections"
-            mobileLabel="Roadmap section"
-            items={tabItems}
-          />
+      <div class="section--block section--block--pad bg-platinum pt-0">
+        <div class="max-width">
+          <div class="mb-8 md:mb-13 lg:mb-18">
+            <SecondaryTabNav
+              ariaLabel="Roadmap sections"
+              mobileLabel="Roadmap section"
+              items={tabItems}
+            />
+          </div>
+          <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
+            <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
+          </BacklogLiveUpdate>
         </div>
-        <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
-          <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
-        </BacklogLiveUpdate>
       </div>
+      <ModuleConnector />
     </div>
 
     <Footer />

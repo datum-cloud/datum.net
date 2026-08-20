@@ -6,6 +6,8 @@ import '@styles/page-blog.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import GlobalSection from '@components/GlobalSection.astro';
 import BlogStrapiIndex from '@components/blog/BlogStrapi.astro';
 import defaultOgImage from '@content/images/og/blog.png';
@@ -68,18 +70,29 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <section class="datum-container">
-    <Hero
-      class="light"
-      iconName={icon}
-      title={title}
-      subtitle={subtitle}
-      description={description}
-    />
+    <div class="relative">
+      <Hero
+        class="light"
+        iconName={icon}
+        title={title}
+        subtitle={subtitle}
+        description={description}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      />
+      <ModuleConnector />
+    </div>
 
-    <div class="section--block section--block--pad bg-midnight-fjord dark">
-      <div class="max-width">
-        <BlogStrapiIndex page={1} />
+    <div class="relative">
+      <div class="section--block section--block--x-pad bg-midnight-fjord dark">
+        <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+          <SectionLine left top bottom class="bg-app---dark---utility-2" />
+          <div class="max-width">
+            <BlogStrapiIndex page={1} />
+          </div>
+        </div>
       </div>
+      <ModuleConnector barClass="bg-app---dark---utility-2" />
     </div>
 
     <GlobalSection />

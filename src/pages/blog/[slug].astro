@@ -11,6 +11,8 @@ import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
 import {
   getStrapiMediaUrl,
@@ -300,18 +302,29 @@ const processedBlocks: ProcessedBlock[] =
       meta={{ og: { image: defaultOgImage } }}
     >
       <section class="datum-container">
-        <Hero
-          class="light"
-          iconName="book-image"
-          title={blogPage?.data?.title}
-          subtitle={blogPage?.data?.subtitle ?? 'Blog'}
-          description={blogPage?.data?.description ?? ''}
-        />
+        <div class="relative">
+          <Hero
+            class="light"
+            iconName="book-image"
+            title={blogPage?.data?.title}
+            subtitle={blogPage?.data?.subtitle ?? 'Blog'}
+            description={blogPage?.data?.description ?? ''}
+            showSectionLines
+            sectionLines={{ left: true, right: true, top: true }}
+          />
+          <ModuleConnector />
+        </div>
 
-        <div class="section--block section--block--pad bg-midnight-fjord dark">
-          <div class="max-width">
-            <BlogStrapiPage page={parsedPage} />
+        <div class="relative">
+          <div class="section--block section--block--x-pad bg-midnight-fjord dark">
+            <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+              <SectionLine left top bottom class="bg-app---dark---utility-2" />
+              <div class="max-width">
+                <BlogStrapiPage page={parsedPage} />
+              </div>
+            </div>
           </div>
+          <ModuleConnector barClass="bg-app---dark---utility-2" />
         </div>
 
         <GlobalSection />
@@ -334,238 +347,248 @@ const processedBlocks: ProcessedBlock[] =
       <section class="datum-container">
         <Hero class="light" hideContent={true} hideHero />
 
-        <section class="bg-glacier-mist-700 section--block pt-6 md:pt-10 xl:pt-16">
-          <div class="max-width blog-detail max-w-256.5 pb-14 md:pb-20 lg:pb-28">
-            <aside class="blog-aside">
-              <div class="blog-aside-content sticky top-0">
-                <Button
-                  class="btn btn--alpha btn--fluid mb-11"
-                  text="Back to Blog"
-                  icon={{ name: 'arrow-left', size: 'md' }}
-                  iconPosition="left"
-                  iconClass="stroke-1.5"
-                  href="/blog"
-                />
+        <div class="relative">
+          <section class="section--block section--block--x-pad bg-glacier-mist-700">
+            <div class="max-width-nav relative pt-6 md:pt-10 xl:pt-16">
+              <SectionLine left top bottom />
+              <div class="max-width blog-detail max-w-256.5 pb-14 md:pb-20 lg:pb-28">
+                <aside class="blog-aside">
+                  <div class="blog-aside-content sticky top-0">
+                    <Button
+                      class="btn btn--alpha btn--fluid mb-11"
+                      text="Back to Blog"
+                      icon={{ name: 'arrow-left', size: 'md' }}
+                      iconPosition="left"
+                      iconClass="stroke-1.5"
+                      href="/blog"
+                    />
 
-                {/* Author Information */}
-                {authorName && (
-                  <div class="blog-article-author">
-                    <div class="blog-article-author-avatar">
-                      {authorAvatar ? (
-                        hasAuthorHref ? (
-                          <a href={authorHref} class="blog-article-author-image">
-                            <Image
-                              src={authorAvatar}
-                              alt={authorName}
-                              width={64}
-                              height={64}
-                              class="h-full w-full object-cover"
+                    {/* Author Information */}
+                    {authorName && (
+                      <div class="blog-article-author">
+                        <div class="blog-article-author-avatar">
+                          {authorAvatar ? (
+                            hasAuthorHref ? (
+                              <a href={authorHref} class="blog-article-author-image">
+                                <Image
+                                  src={authorAvatar}
+                                  alt={authorName}
+                                  width={64}
+                                  height={64}
+                                  class="h-full w-full object-cover"
+                                  style={
+                                    authorBgColor ? `background-color: ${authorBgColor}` : undefined
+                                  }
+                                />
+                              </a>
+                            ) : (
+                              <div class="blog-article-author-image">
+                                <Image
+                                  src={authorAvatar}
+                                  alt={authorName}
+                                  width={64}
+                                  height={64}
+                                  class="h-full w-full object-cover"
+                                  style={
+                                    authorBgColor ? `background-color: ${authorBgColor}` : undefined
+                                  }
+                                />
+                              </div>
+                            )
+                          ) : hasAuthorHref ? (
+                            <a
+                              href={authorHref}
+                              class="blog-article-author-image"
                               style={
                                 authorBgColor ? `background-color: ${authorBgColor}` : undefined
                               }
-                            />
+                            >
+                              <span class="text-lg font-bold text-gray-600">
+                                {authorName.charAt(0)}
+                              </span>
+                            </a>
+                          ) : (
+                            <div
+                              class="blog-article-author-image"
+                              style={
+                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
+                              }
+                            >
+                              <span class="text-lg font-bold text-gray-600">
+                                {authorName.charAt(0)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        {hasAuthorHref ? (
+                          <a href={authorHref} class="blog-article-author-name">
+                            {authorName}
                           </a>
                         ) : (
-                          <div class="blog-article-author-image">
-                            <Image
-                              src={authorAvatar}
-                              alt={authorName}
-                              width={64}
-                              height={64}
-                              class="h-full w-full object-cover"
-                              style={
-                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
-                              }
-                            />
-                          </div>
-                        )
-                      ) : hasAuthorHref ? (
-                        <a
-                          href={authorHref}
-                          class="blog-article-author-image"
-                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
-                        >
-                          <span class="text-lg font-bold text-gray-600">
-                            {authorName.charAt(0)}
-                          </span>
-                        </a>
-                      ) : (
-                        <div
-                          class="blog-article-author-image"
-                          style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
-                        >
-                          <span class="text-lg font-bold text-gray-600">
-                            {authorName.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {hasAuthorHref ? (
-                      <a href={authorHref} class="blog-article-author-name">
-                        {authorName}
-                      </a>
-                    ) : (
-                      <span class="blog-article-author-name">{authorName}</span>
+                          <span class="blog-article-author-name">{authorName}</span>
+                        )}
+                      </div>
                     )}
-                  </div>
-                )}
 
-                <span class="icon-label">
-                  <div class="icon-bg">
-                    <Icon name="clock" size="sm" />
-                  </div>
-                  <span class="icon-label-text">{readingTime.text}</span>
-                </span>
+                    <span class="icon-label">
+                      <div class="icon-bg">
+                        <Icon name="clock" size="sm" />
+                      </div>
+                      <span class="icon-label-text">{readingTime.text}</span>
+                    </span>
 
-                <span class="icon-label">
-                  <div class="icon-bg">
-                    <Icon name="calendar" size="sm" />
-                  </div>
-                  <span class="icon-label-text">{formattedDate}</span>
-                </span>
+                    <span class="icon-label">
+                      <div class="icon-bg">
+                        <Icon name="calendar" size="sm" />
+                      </div>
+                      <span class="icon-label-text">{formattedDate}</span>
+                    </span>
 
-                <span class="icon-label">
-                  <div class="icon-bg">
-                    <Icon name="copy" size="sm" />
+                    <span class="icon-label">
+                      <div class="icon-bg">
+                        <Icon name="copy" size="sm" />
+                      </div>
+                      <span class="icon-label-text">
+                        <button
+                          type="button"
+                          class="border-b hover:cursor-pointer"
+                          x-data="{ copied: false }"
+                          @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                          x-text="copied ? 'Copied!' : 'Copy URL'"
+                        />
+                      </span>
+                    </span>
                   </div>
-                  <span class="icon-label-text">
-                    <button
-                      type="button"
-                      class="border-b hover:cursor-pointer"
-                      x-data="{ copied: false }"
-                      @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                      x-text="copied ? 'Copied!' : 'Copy URL'"
-                    />
+                </aside>
+
+                <article class="blog-article">
+                  <span class="hidden" style="display: none;">
+                    {' '}
+                    post{' '}
                   </span>
-                </span>
-              </div>
-            </aside>
+                  <span class="hidden" style="display: none;">
+                    {authorName}
+                  </span>
+                  <span class="hidden" style="display: none;">
+                    {categoryName}
+                  </span>
 
-            <article class="blog-article">
-              <span class="hidden" style="display: none;">
-                {' '}
-                post{' '}
-              </span>
-              <span class="hidden" style="display: none;">
-                {authorName}
-              </span>
-              <span class="hidden" style="display: none;">
-                {categoryName}
-              </span>
+                  {/* Article Header */}
+                  <header class="blog-article-header">
+                    <div class="blog-article-breadcrumbs">
+                      <Breadcrumbs
+                        linkTextFormat="sentence"
+                        mainBemClass="a-breadcrumbs"
+                        crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
+                      >
+                        <svg
+                          slot="index"
+                          aria-label="Home Page"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
+                          <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                      </Breadcrumbs>
+                    </div>
+                    <h1 class="blog-article-title">{fm?.title}</h1>
+                    <div class="datum-text-sm mt-4 flex flex-wrap gap-1 opacity-60 md:hidden">
+                      <a href={authorHref ?? '#'} class="blog-article-author-name">
+                        {authorName},
+                      </a>
+                      <span class="blog-article-meta-date">{readingTime.text}, </span>
+                      <span class="blog-article-meta-date">{formattedDate}, </span>
+                      <button
+                        type="button"
+                        class="blog-article-meta-share"
+                        x-data="{ copied: false }"
+                        @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
+                        x-text="copied ? 'Copied!' : 'Copy URL'"
+                      />
+                    </div>
+                  </header>
 
-              {/* Article Header */}
-              <header class="blog-article-header">
-                <div class="blog-article-breadcrumbs">
-                  <Breadcrumbs
-                    linkTextFormat="sentence"
-                    mainBemClass="a-breadcrumbs"
-                    crumbs={breadcrumbData.length > 0 ? breadcrumbData : undefined}
-                  >
-                    <svg
-                      slot="index"
-                      aria-label="Home Page"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"> </path>
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                  </Breadcrumbs>
-                </div>
-                <h1 class="blog-article-title">{fm?.title}</h1>
-                <div class="datum-text-sm mt-4 flex flex-wrap gap-1 opacity-60 md:hidden">
-                  <a href={authorHref ?? '#'} class="blog-article-author-name">
-                    {authorName},
-                  </a>
-                  <span class="blog-article-meta-date">{readingTime.text}, </span>
-                  <span class="blog-article-meta-date">{formattedDate}, </span>
-                  <button
-                    type="button"
-                    class="blog-article-meta-share"
-                    x-data="{ copied: false }"
-                    @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                    x-text="copied ? 'Copied!' : 'Copy URL'"
-                  />
-                </div>
-              </header>
+                  {/* Featured Image */}
+                  {fm?.featuredImage && (
+                    <div class="blog-article-image">
+                      <Image
+                        src={fm.featuredImage}
+                        alt={article?.cover?.alternativeText || fm?.title}
+                        width={1200}
+                        height={630}
+                        widths={[400, 800, 1200]}
+                        sizes="(max-width: 768px) 400px, (max-width: 1200px) 800px, 1200px"
+                        format="webp"
+                        loading="eager"
+                        fetchpriority="high"
+                      />
+                    </div>
+                  )}
 
-              {/* Featured Image */}
-              {fm?.featuredImage && (
-                <div class="blog-article-image">
-                  <Image
-                    src={fm.featuredImage}
-                    alt={article?.cover?.alternativeText || fm?.title}
-                    width={1200}
-                    height={630}
-                    widths={[400, 800, 1200]}
-                    sizes="(max-width: 768px) 400px, (max-width: 1200px) 800px, 1200px"
-                    format="webp"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
-              )}
-
-              {/* Article Content */}
-              <div class="blog-article-content">
-                {processedBlocks.map((block) => {
-                  if (block.kind === 'quote') {
-                    return (
-                      <blockquote class="blog-article-quote">
-                        <h3>{block.title}</h3>
-                        <p set:html={block.html} />
-                      </blockquote>
-                    );
-                  }
-
-                  if (block.kind === 'rich') {
-                    return <div set:html={block.html} />;
-                  }
-
-                  return null;
-                })}
-              </div>
-
-              {/* Article Navigation */}
-              <ArticleNavigation
-                previousArticle={
-                  previousArticle
-                    ? {
-                        id: previousArticle.slug,
-                        title: previousArticle.title,
-                        url: `/blog/${previousArticle.slug}`,
-                        navLabel: 'Next article',
+                  {/* Article Content */}
+                  <div class="blog-article-content">
+                    {processedBlocks.map((block) => {
+                      if (block.kind === 'quote') {
+                        return (
+                          <blockquote class="blog-article-quote">
+                            <h3>{block.title}</h3>
+                            <p set:html={block.html} />
+                          </blockquote>
+                        );
                       }
-                    : undefined
-                }
-                nextArticle={
-                  nextArticle
-                    ? {
-                        id: nextArticle.slug,
-                        title: nextArticle.title,
-                        url: `/blog/${nextArticle.slug}`,
-                        navLabel: 'Previous article',
+
+                      if (block.kind === 'rich') {
+                        return <div set:html={block.html} />;
                       }
-                    : undefined
-                }
+
+                      return null;
+                    })}
+                  </div>
+
+                  {/* Article Navigation */}
+                  <ArticleNavigation
+                    previousArticle={
+                      previousArticle
+                        ? {
+                            id: previousArticle.slug,
+                            title: previousArticle.title,
+                            url: `/blog/${previousArticle.slug}`,
+                            navLabel: 'Next article',
+                          }
+                        : undefined
+                    }
+                    nextArticle={
+                      nextArticle
+                        ? {
+                            id: nextArticle.slug,
+                            title: nextArticle.title,
+                            url: `/blog/${nextArticle.slug}`,
+                            navLabel: 'Previous article',
+                          }
+                        : undefined
+                    }
+                  />
+                </article>
+              </div>
+
+              <MediaLightbox
+                selector=".blog-article-content img, .blog-article-image img"
+                videoSelector=""
               />
-            </article>
-          </div>
+            </div>
+          </section>
+          <ModuleConnector />
+        </div>
 
-          <MediaLightbox
-            selector=".blog-article-content img, .blog-article-image img"
-            videoSelector=""
-          />
-
-          <Footer />
-        </section>
+        <Footer />
       </section>
     </Layout>
   )

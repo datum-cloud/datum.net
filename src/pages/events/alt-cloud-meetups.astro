@@ -8,6 +8,8 @@ import Footer from '@components/Footer.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import EventSeriesCard from '@components/events/EventSeriesCard.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 const page = await getCollectionEntry('pages', 'alt-cloud-meetups');
@@ -24,65 +26,80 @@ const altMeetupsPast = past.filter(isEventAltCloudMeetup);
 
 <Layout title={title} description={description} bodyClass="page-event-series" meta={meta}>
   <section class="datum-container">
-    <Hero class="light content-alt pb-0" title={title} description={description}>
-      <SecondaryTabNav
-        slot="before-content"
-        ariaLabel="Event categories"
-        mobileLabel="Event category"
-        items={[
-          { label: 'All events', href: '/events', exact: true },
-          { label: 'Community Huddles', href: '/events/community-huddles' },
-          { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups' },
-        ]}
-      />
-    </Hero>
+    <div class="relative">
+      <Hero
+        class="light content-alt pb-0"
+        title={title}
+        description={description}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      >
+        <SecondaryTabNav
+          slot="before-content"
+          ariaLabel="Event categories"
+          mobileLabel="Event category"
+          items={[
+            { label: 'All events', href: '/events', exact: true },
+            { label: 'Community Huddles', href: '/events/community-huddles' },
+            { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups' },
+          ]}
+        />
+      </Hero>
+      <ModuleConnector />
+    </div>
 
-    <section class="event-series-content section--block section--block--pad bg-platinum pt-0">
-      <div class="max-width-5xl">
-        <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
-          <div class="event-series-tabs">
-            <button
-              type="button"
-              class="event-series-tab"
-              x-bind:class="{ 'event-series-tab--active': activeTab === 'upcoming' }"
-              x-on:click="activeTab = 'upcoming'">Upcoming</button
-            >
-            <button
-              type="button"
-              class="event-series-tab"
-              x-bind:class="{ 'event-series-tab--active': activeTab === 'past' }"
-              x-on:click="activeTab = 'past'">Past</button
-            >
-          </div>
+    <div class="relative">
+      <section class="event-series-content section--block section--block--x-pad bg-platinum">
+        <div class="max-width-nav relative pb-10 md:pb-16 lg:pb-20 xl:pb-28">
+          <SectionLine left top bottom />
+          <div class="mx-auto w-full max-w-5xl">
+            <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
+              <div class="event-series-tabs">
+                <button
+                  type="button"
+                  class="event-series-tab"
+                  x-bind:class="{ 'event-series-tab--active': activeTab === 'upcoming' }"
+                  x-on:click="activeTab = 'upcoming'">Upcoming</button
+                >
+                <button
+                  type="button"
+                  class="event-series-tab"
+                  x-bind:class="{ 'event-series-tab--active': activeTab === 'past' }"
+                  x-on:click="activeTab = 'past'">Past</button
+                >
+              </div>
 
-          <div x-show="activeTab === 'upcoming'" class="event-series-list">
-            {
-              altMeetupsUpcoming.length > 0 ? (
-                altMeetupsUpcoming.map((event) => (
-                  <EventSeriesCard event={event} isPast={false} showVideo={false} />
-                ))
-              ) : (
-                <p class="event-series-empty">
-                  No upcoming Alt Cloud Meetups at the moment. Check back soon!
-                </p>
-              )
-            }
-          </div>
+              <div x-show="activeTab === 'upcoming'" class="event-series-list">
+                {
+                  altMeetupsUpcoming.length > 0 ? (
+                    altMeetupsUpcoming.map((event) => (
+                      <EventSeriesCard event={event} isPast={false} showVideo={false} />
+                    ))
+                  ) : (
+                    <p class="event-series-empty">
+                      No upcoming Alt Cloud Meetups at the moment. Check back soon!
+                    </p>
+                  )
+                }
+              </div>
 
-          <div x-show="activeTab === 'past'" class="event-series-list" style="display: none;">
-            {
-              altMeetupsPast.length > 0 ? (
-                altMeetupsPast.map((event) => (
-                  <EventSeriesCard event={event} isPast={true} showVideo={true} />
-                ))
-              ) : (
-                <p class="event-series-empty">No past Alt Cloud Meetups recorded yet.</p>
-              )
-            }
+              <div x-show="activeTab === 'past'" class="event-series-list" style="display: none;">
+                {
+                  altMeetupsPast.length > 0 ? (
+                    altMeetupsPast.map((event) => (
+                      <EventSeriesCard event={event} isPast={true} showVideo={true} />
+                    ))
+                  ) : (
+                    <p class="event-series-empty">No past Alt Cloud Meetups recorded yet.</p>
+                  )
+                }
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <ModuleConnector />
+    </div>
 
     <MediaLightbox selector="" />
     <Footer showIllustration={false} showBackground={false} showCTA={false} />

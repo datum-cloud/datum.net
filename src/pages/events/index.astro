@@ -10,6 +10,8 @@ import Hero from '@components/Hero.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import Footer from '@components/Footer.astro';
 import Card from '@components/events/Card.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 
 const page = await getCollectionEntry('pages', 'events');
 
@@ -66,23 +68,38 @@ const jsonLd = {
 
 <Layout title={title} description={description} bodyClass="page-events" meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
-    <Hero class="light content-alt pb-0" title={title} description={description}>
-      <SecondaryTabNav
-        slot="before-content"
-        ariaLabel="Event categories"
-        mobileLabel="Event category"
-        items={[
-          { label: 'All events', href: '/events', exact: true },
-          { label: 'Community Huddles', href: '/events/community-huddles' },
-          { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups' },
-        ]}
-      />
-    </Hero>
+    <div class="relative">
+      <Hero
+        class="light content-alt pb-0"
+        title={title}
+        description={description}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      >
+        <SecondaryTabNav
+          slot="before-content"
+          ariaLabel="Event categories"
+          mobileLabel="Event category"
+          items={[
+            { label: 'All events', href: '/events', exact: true },
+            { label: 'Community Huddles', href: '/events/community-huddles' },
+            { label: 'Alt Cloud Meetups', href: '/events/alt-cloud-meetups' },
+          ]}
+        />
+      </Hero>
+      <ModuleConnector />
+    </div>
 
-    <div class="section--block section--block--pad bg-platinum pt-0">
-      <div class="max-width">
-        <Card />
+    <div class="relative">
+      <div class="section--block section--block--x-pad bg-platinum">
+        <div class="max-width-nav relative pb-10 md:pb-16 lg:pb-20 xl:pb-28">
+          <SectionLine left top bottom />
+          <div class="max-width-nopad">
+            <Card />
+          </div>
+        </div>
       </div>
+      <ModuleConnector />
     </div>
 
     <Footer showIllustration={false} showBackground={false} showCTA={false} />

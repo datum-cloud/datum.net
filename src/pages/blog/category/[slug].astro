@@ -7,6 +7,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import { fetchStrapiArticlesByCategory } from '@libs/strapi';
 import { normalizeArticle } from '@/src/types/strapi';
 import BlogItemStrapi from '@components/blog/BlogItemStrapi.astro';
@@ -61,32 +62,38 @@ const subtitle = 'Blog';
         showSectionLines
         sectionLines={{ left: true, right: true, top: true }}
       />
+      <ModuleConnector />
+    </div>
 
-      <div class="section--block section--block--pad bg-midnight-fjord dark">
-        <div class="max-width relative">
-          <!-- Hidden meta tag to identify this as a category page -->
-          <span style="display: none;">category</span>
+    <div class="relative">
+      <div class="section--block section--block--x-pad section--block--pad bg-midnight-fjord dark">
+        <div class="max-width-nav relative">
+          <SectionLine left top bottom class="bg-app---dark---utility-2" />
+          <div class="max-width relative">
+            <!-- Hidden meta tag to identify this as a category page -->
+            <span style="display: none;">category</span>
 
-          <!-- Blog List -->
-          <div class="blog-list">
-            {currentPageData.map((post) => <BlogItemStrapi post={post} baseUrl="/blog" />)}
+            <!-- Blog List -->
+            <div class="blog-list">
+              {currentPageData.map((post) => <BlogItemStrapi post={post} baseUrl="/blog" />)}
+            </div>
+
+            <!-- Pagination -->
+            {
+              totalPages > 1 && (
+                <BlogPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  baseUrl={baseUrl}
+                  prevUrl={prevUrl}
+                  nextUrl={nextUrl}
+                />
+              )
+            }
           </div>
-
-          <!-- Pagination -->
-          {
-            totalPages > 1 && (
-              <BlogPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                baseUrl={baseUrl}
-                prevUrl={prevUrl}
-                nextUrl={nextUrl}
-              />
-            )
-          }
         </div>
       </div>
-      <ModuleConnector />
+      <ModuleConnector barClass="bg-app---dark---utility-2" />
     </div>
 
     <Footer />

@@ -2,7 +2,8 @@
 // src/components/brand/ColorPalette.astro
 export interface ColorSwatch {
   name: string;
-  shade: string;
+  /** Omitted for swatches outside a numbered tint scale (e.g. White). */
+  shade?: string;
   hex: string;
   pantone?: string;
 }
@@ -86,20 +87,46 @@ const SECONDARY_PALETTE: ColorGroup[] = [
   },
 ];
 
+// Recommended icon colors — Figma Datum Master, node 16514-69470. `shade` is
+// omitted for White since it isn't part of a numbered tint scale.
+const ICON_GUIDANCE_PALETTE: ColorGroup[] = [
+  {
+    name: 'Midnight Fjord',
+    swatches: [
+      { name: 'Midnight Fjord', shade: '900', hex: '#0C1D31', pantone: 'Pantone 533 C' },
+      { name: 'Midnight Fjord', shade: '600', hex: '#67717C' },
+    ],
+  },
+  {
+    name: 'Canyon Clay',
+    swatches: [{ name: 'Canyon Clay', shade: '900', hex: '#9C7979' }],
+  },
+  {
+    name: 'White',
+    swatches: [{ name: 'White', hex: '#FFFFFF' }],
+  },
+];
+
 interface Props {
-  variant?: 'core' | 'secondary';
+  variant?: 'core' | 'secondary' | 'icon-guidance';
   groups?: ColorGroup[];
+  class?: string;
 }
 
-const VARIANTS: Record<'core' | 'secondary', ColorGroup[]> = {
+const VARIANTS: Record<'core' | 'secondary' | 'icon-guidance', ColorGroup[]> = {
   core: CORE_PALETTE,
   secondary: SECONDARY_PALETTE,
+  'icon-guidance': ICON_GUIDANCE_PALETTE,
 };
 
-const { variant = 'core', groups = VARIANTS[variant] } = Astro.props as Props;
+const {
+  variant = 'core',
+  groups = VARIANTS[variant],
+  class: className = '',
+} = Astro.props as Props;
 ---
 
-<div class="color-palette">
+<div class:list={['color-palette', className]}>
   {
     groups
       .filter((group) => group.swatches)
@@ -108,7 +135,7 @@ const { variant = 'core', groups = VARIANTS[variant] } = Astro.props as Props;
           {group.name && <h3 class="color-group--name">{group.name}</h3>}
           <div class="color-group--swatches">
             {group.swatches
-              .filter((swatch) => swatch.hex && swatch.shade)
+              .filter((swatch) => swatch.hex)
               .map((swatch) => (
                 <div class="color-swatch">
                   <div class="color-swatch--preview" style={`background-color: ${swatch.hex}`} />

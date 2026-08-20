@@ -42,6 +42,13 @@ import Icon from '@components/Icon.astro';
               </span>
               <span class="sr-only">Watch recap on YouTube (opens in new tab)</span>
             </a>
+            <p
+              class="community-huddle-past-modal__recap-placeholder"
+              data-past-modal-recap-placeholder
+              hidden
+            >
+              Coming soon
+            </p>
           </div>
           <div class="community-huddle-past-modal__covered" data-past-modal-covered hidden>
             <h3 class="community-huddle-past-modal__section-title">We covered</h3>
@@ -105,6 +112,7 @@ import Icon from '@components/Icon.astro';
     elTitle: HTMLElement;
     elRecap: HTMLElement;
     elRecapLink: HTMLAnchorElement;
+    elRecapPlaceholder: HTMLElement;
     elCover: HTMLImageElement;
     elCovered: HTMLElement;
     elCoveredBody: HTMLElement;
@@ -120,6 +128,7 @@ import Icon from '@components/Icon.astro';
       this.elTitle = this.querySelector('[data-past-modal-title]')!;
       this.elRecap = this.querySelector('[data-past-modal-recap]')!;
       this.elRecapLink = this.querySelector<HTMLAnchorElement>('[data-past-modal-recap-link]')!;
+      this.elRecapPlaceholder = this.querySelector('[data-past-modal-recap-placeholder]')!;
       this.elCover = this.querySelector<HTMLImageElement>('[data-past-modal-cover]')!;
       this.elCovered = this.querySelector('[data-past-modal-covered]')!;
       this.elCoveredBody = this.querySelector('[data-past-modal-covered-body]')!;
@@ -165,13 +174,18 @@ import Icon from '@components/Icon.astro';
       this.elDate.textContent = p.dateLine;
       this.elTitle.textContent = p.title;
 
+      // Always show the "Watch the recap" section — fall back to a "Coming soon"
+      // placeholder when a recording hasn't been published yet.
+      this.elRecap.hidden = false;
       const video = p.videoUrl?.trim() ?? '';
       if (video && isSafeYoutubeWatchTabUrl(video)) {
-        this.elRecap.hidden = false;
+        this.elRecapLink.hidden = false;
         this.elRecapLink.href = video;
+        this.elRecapPlaceholder.hidden = true;
       } else {
-        this.elRecap.hidden = true;
+        this.elRecapLink.hidden = true;
         this.elRecapLink.href = '#';
+        this.elRecapPlaceholder.hidden = false;
       }
 
       if (p.coverUrl.trim()) {

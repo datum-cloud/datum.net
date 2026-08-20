@@ -162,6 +162,10 @@
     @apply border-aurora-moss bg-aurora-moss text-midnight-fjord absolute top-1/2 left-1/2 flex size-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 shadow-sm;
   }
 
+  .community-huddle-past-modal__recap-placeholder {
+    @apply bg-glacier-mist-700 text-app---dark---utility-4 datum-text-base m-0 flex aspect-16/9 w-full max-w-[311px] items-center justify-center rounded-md;
+  }
+
   .community-huddle-past-modal__covered-body {
     @apply text-midnight-fjord datum-text-base m-0 min-w-0 break-words;
 

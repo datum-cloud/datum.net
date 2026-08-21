@@ -14,6 +14,7 @@ import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
 import BacklogLiveUpdate from '@components/roadmap/BacklogLiveUpdate.astro';
+import SectionLine from '@components/SectionLine.astro';
 
 const roadmapPage = await getCollectionEntry('pages', 'roadmap');
 const backlogPage = await getCollectionEntry('pages', 'backlog');
@@ -52,18 +53,21 @@ const tabItems = [
         sectionLines={{ left: true, right: true, top: true }}
       />
 
-      <div class="section--block section--block--pad bg-platinum pt-0">
-        <div class="max-width">
-          <div class="mb-8 md:mb-13 lg:mb-18">
-            <SecondaryTabNav
-              ariaLabel="Roadmap sections"
-              mobileLabel="Roadmap section"
-              items={tabItems}
-            />
+      <div class="section--block bg-platinum relative pt-0">
+        <div class="max-width-nav bottom-pad relative">
+          <SectionLine left right bottom />
+          <div class="max-width">
+            <div class="mb-8 md:mb-13 lg:mb-18">
+              <SecondaryTabNav
+                ariaLabel="Roadmap sections"
+                mobileLabel="Roadmap section"
+                items={tabItems}
+              />
+            </div>
+            <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
+              <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
+            </BacklogLiveUpdate>
           </div>
-          <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
-            <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
-          </BacklogLiveUpdate>
         </div>
       </div>
       <ModuleConnector />

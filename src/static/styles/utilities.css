@@ -1,3 +1,7 @@
+@utility bottom-pad {
+  @apply pb-10 md:pb-16 lg:pb-20 xl:pb-28;
+}
+
 @utility large-pad {
   @apply py-16 md:py-20 lg:py-30 xl:py-35 2xl:py-40;
 }

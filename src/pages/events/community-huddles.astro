@@ -59,7 +59,15 @@ const communityHuddlesPast = past.filter(isEventCommunityHuddle);
                   const hash = window.location.hash.slice(1);
                   activeTab = hash.startsWith('past') ? 'past' : 'upcoming';
                   if (hash.startsWith('past-')) {
-                    $nextTick(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+                    $nextTick(() => {
+                      const entry = document.getElementById(hash);
+                      const openTrigger = entry?.querySelector('[data-community-huddle-past-open]');
+                      if (openTrigger instanceof HTMLElement) {
+                        openTrigger.click();
+                      } else {
+                        entry?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    });
                   }
                 };
                 applyHash();

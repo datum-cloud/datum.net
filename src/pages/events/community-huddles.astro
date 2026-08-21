@@ -52,19 +52,43 @@ const communityHuddlesPast = past.filter(isEventCommunityHuddle);
       <section class="event-series-content section--block section--block--x-pad bg-platinum">
         <div class="max-width-nav relative pb-10 md:pb-16 lg:pb-20 xl:pb-28">
           <div class="mx-auto w-full max-w-5xl">
-            <div x-data="{ activeTab: 'upcoming' }" class="event-series-tabs-container">
+            <div
+              x-data="{ activeTab: 'upcoming' }"
+              x-init="
+                const applyHash = () => {
+                  const hash = window.location.hash.slice(1);
+                  activeTab = hash.startsWith('past') ? 'past' : 'upcoming';
+                  if (hash.startsWith('past-')) {
+                    $nextTick(() => {
+                      const entry = document.getElementById(hash);
+                      const openTrigger = entry?.querySelector('[data-community-huddle-past-open]');
+                      if (openTrigger instanceof HTMLElement) {
+                        openTrigger.click();
+                      } else {
+                        entry?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    });
+                  }
+                };
+                applyHash();
+                window.addEventListener('hashchange', applyHash);
+              "
+              class="event-series-tabs-container"
+            >
               <div class="event-series-tabs">
                 <button
                   type="button"
                   class="event-series-tab"
                   x-bind:class="{ 'event-series-tab--active': activeTab === 'upcoming' }"
-                  x-on:click="activeTab = 'upcoming'">Upcoming</button
+                  x-on:click="activeTab = 'upcoming'; history.replaceState(null, '', window.location.pathname)"
+                  >Upcoming</button
                 >
                 <button
                   type="button"
                   class="event-series-tab"
                   x-bind:class="{ 'event-series-tab--active': activeTab === 'past' }"
-                  x-on:click="activeTab = 'past'">Past</button
+                  x-on:click="activeTab = 'past'; history.replaceState(null, '', window.location.pathname + '#past')"
+                  >Past</button
                 >
               </div>
 

@@ -74,6 +74,16 @@ const pastDateLine = formatDate(
   { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
   event.timezone
 );
+// Deep-link anchor for past entries, e.g. "past-august-2026" (/events/community-huddles#past-august-2026).
+const pastMonthSlug = formatDate(
+  event.start_at,
+  'en-US',
+  { month: 'long', year: 'numeric' },
+  event.timezone
+)
+  .toLowerCase()
+  .replace(/\s+/g, '-');
+const pastAnchorId = `past-${pastMonthSlug}`;
 const pastModalPayloadJson =
   isPast && pastOpensDetailModal
     ? JSON.stringify({
@@ -114,6 +124,7 @@ const timezoneAbbr = event.timezone
   isPast ? (
     pastOpensDetailModal && pastModalPayloadJson ? (
       <article
+        id={pastAnchorId}
         class:list={[
           'event-calendar-list__item',
           'event-calendar-list__item--past-datum',
@@ -138,6 +149,7 @@ const timezoneAbbr = event.timezone
       </article>
     ) : (
       <article
+        id={pastAnchorId}
         class:list={[
           'event-calendar-list__item',
           'event-calendar-list__item--past-datum',

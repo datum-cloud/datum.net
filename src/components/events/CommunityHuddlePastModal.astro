@@ -143,6 +143,14 @@ import Icon from '@components/Icon.astro';
         document.body.toggleAttribute('data-event-modal-open', false);
         window.removeEventListener('click', this.onWindowClick);
         this.clearPayload();
+        // Drop the entry-specific anchor on close, but stay on the Past tab.
+        if (/^#past-/.test(window.location.hash)) {
+          history.replaceState(
+            null,
+            '',
+            `${window.location.pathname}${window.location.search}#past`
+          );
+        }
       });
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && this.dialog.open) {
@@ -229,6 +237,16 @@ import Icon from '@components/Icon.astro';
       document.body.toggleAttribute('data-event-modal-open', true);
       this.dialogOpenedAt = Date.now();
       setTimeout(() => window.addEventListener('click', this.onWindowClick), 100);
+
+      // Make the open entry shareable, e.g. #past-august-2026.
+      const anchorId = btn.closest<HTMLElement>('article[id^="past-"]')?.id;
+      if (anchorId && window.location.hash.slice(1) !== anchorId) {
+        history.replaceState(
+          null,
+          '',
+          `${window.location.pathname}${window.location.search}#${anchorId}`
+        );
+      }
     }
 
     closeModal() {

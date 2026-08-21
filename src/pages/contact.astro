@@ -34,44 +34,42 @@ const highlightedTitle = fm.title.replace(/\bchat\b/, '<span class="text-aurora-
         <div class="max-width-nav large-pad relative">
           <SectionLine left right top />
 
-          <div class="max-width-nopad">
-            <div class="contact-panel">
-              <SectionLine left top overlap class="bg-midnight-fjord" />
-              <SectionLine right bottom bottomOverlap class="bg-midnight-fjord" />
+          <div class="contact-panel">
+            <SectionLine left top overlap class="bg-midnight-fjord" />
+            <SectionLine right bottom bottomOverlap class="bg-midnight-fjord" />
 
-              <Image
-                src={starfieldImage}
-                alt=""
-                class="pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none -translate-y-1/2 rotate-16 opacity-60"
-                aria-hidden="true"
-                loading="eager"
-              />
+            <Image
+              src={starfieldImage}
+              alt=""
+              class="pointer-events-none absolute top-1/2 left-1/4 h-auto w-[200%] max-w-none -translate-y-1/2 rotate-16 opacity-60"
+              aria-hidden="true"
+              loading="eager"
+            />
 
-              <div class="contact-panel-inner">
-                <div class="contact-copy">
-                  <SectionEyebrow variant="aurora-moss">Contact</SectionEyebrow>
-                  <h1 class="contact-title" set:html={highlightedTitle} />
-                  <div class="contact-prose">
-                    <Content />
-                  </div>
+            <div class="contact-panel-inner">
+              <div class="contact-copy">
+                <SectionEyebrow variant="aurora-moss">Contact</SectionEyebrow>
+                <h1 class="contact-title" set:html={highlightedTitle} />
+                <div class="contact-prose">
+                  <Content />
                 </div>
+              </div>
 
-                <div class="contact-card">
-                  <div class="contact-card-copy">
-                    <h2 class="contact-card-title">Schedule time with a founder</h2>
-                    <p class="contact-card-description">
-                      Connect with a founder for coffee, questions or idea sharing.
-                    </p>
-                  </div>
-                  <Image src={ImageFounder} alt="Founders" class="contact-card-image" />
-                  <Button
-                    text="Book a time"
-                    class="btn btn--aurora-moss btn--sm"
-                    href="https://link.datum.net/founders"
-                    target="_blank"
-                    data-rybbit-event="Contact: Founder Meeting"
-                  />
+              <div class="contact-card">
+                <div class="contact-card-copy">
+                  <h2 class="contact-card-title">Schedule time with a founder</h2>
+                  <p class="contact-card-description">
+                    Connect with a founder for coffee, questions or idea sharing.
+                  </p>
                 </div>
+                <Image src={ImageFounder} alt="Founders" class="contact-card-image" />
+                <Button
+                  text="Book a time"
+                  class="btn btn--aurora-moss btn--sm"
+                  href="https://link.datum.net/founders"
+                  target="_blank"
+                  data-rybbit-event="Contact: Founder Meeting"
+                />
               </div>
             </div>
           </div>

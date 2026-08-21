@@ -13,6 +13,7 @@ import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
 import RoadmapViewFilter from '@components/roadmap/RoadmapViewFilter.astro';
+import SectionLine from '@components/SectionLine.astro';
 
 if (Astro.url.searchParams.get('tab') === 'backlog') {
   return Astro.redirect('/roadmap/backlog', 301);
@@ -46,17 +47,20 @@ const tabItems = [
         sectionLines={{ left: true, right: true, top: true }}
       />
 
-      <div class="section--block section--block--pad bg-platinum pt-0">
-        <div class="max-width">
-          <div class="mb-8 md:mb-13 lg:mb-18">
-            <SecondaryTabNav
-              ariaLabel="Roadmap sections"
-              mobileLabel="Roadmap section"
-              items={tabItems}
-            />
+      <div class="section--block bg-platinum pt-0">
+        <div class="max-width-nav bottom-pad relative">
+          <SectionLine left right bottom />
+          <div class="max-width">
+            <div class="mb-8 md:mb-13 lg:mb-18">
+              <SecondaryTabNav
+                ariaLabel="Roadmap sections"
+                mobileLabel="Roadmap section"
+                items={tabItems}
+              />
+            </div>
+            <RoadmapGrid roadmaps={roadmaps} />
+            <RoadmapViewFilter />
           </div>
-          <RoadmapGrid roadmaps={roadmaps} />
-          <RoadmapViewFilter />
         </div>
       </div>
       <ModuleConnector />

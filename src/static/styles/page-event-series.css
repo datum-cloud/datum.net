@@ -82,4 +82,9 @@
     @apply focus-visible:ring-midnight-fjord/40 border-app---dark---utility-5 cursor-pointer transition-[box-shadow,transform,border-color] duration-200 ease-out focus-visible:ring-2 focus-visible:outline-none;
     @apply hover:border-app---dark---utility-3;
   }
+
+  /* Highlight a past entry when deep-linked via #past-<month>-<year> */
+  .event-calendar-list__item:target {
+    @apply border-midnight-fjord ring-midnight-fjord/40 ring-2;
+  }
 }

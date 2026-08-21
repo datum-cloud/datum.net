@@ -1,65 +1,64 @@
 ---
-// src/components/NavBrand.astro
+// src/components/brand/NavBrand.astro
 import navigation from '@data/navigation.json';
 import type { NavData, NavFooterSection, NavItem } from '@/src/types/navigation';
-import { getIcon } from '@utils/iconMap';
 
 const { currentPath } = Astro.props;
 
-// Type-safe navigation data
 const navData = navigation as NavData;
 const navBrand = navData.brand;
 
-// Get the Lucide icons for menu toggle
-const MenuIcon = getIcon('menu');
-const XIcon = getIcon('x');
+const allItems: NavItem[] =
+  navBrand?.flatMap((section: NavFooterSection) => section.items ?? []) ?? [];
+
+const currentTitle = allItems.find((item) => item.href === currentPath)?.text ?? 'Menu';
 ---
 
-<nav
-  class="brand-nav"
+<aside
+  class="legal-sidenav pt-0"
   x-data="{ open: false }"
   @click.away="open = false"
   @resize.window="if (window.innerWidth >= 768) open = false"
 >
   <button
-    class="brand-nav-mobile-toggle md:hidden"
+    class="legal-sidenav-toggle md:hidden"
     @click="open = !open"
     :aria-expanded="open"
     aria-controls="brand-nav-menu"
   >
-    <span class="brand-nav-mobile-toggle--text">Menu</span>
-    {
-      MenuIcon && (
-        <MenuIcon class="brand-nav-mobile-toggle--icon" x-show="!open" width="16" height="16" />
-      )
-    }
-    {XIcon && <XIcon class="brand-nav-mobile-toggle--icon" x-show="open" width="16" height="16" />}
+    <span class="legal-sidenav-toggle--text">{currentTitle}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="legal-sidenav-toggle--icon"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
   </button>
 
-  <div id="brand-nav-menu" class="brand-nav-menu" x-show="open" x-transition style="display: none;">
+  <nav id="brand-nav-menu" class="legal-sidenav-menu" x-show="open" x-transition x-cloak>
     {
-      navBrand &&
-        navBrand.map((section: NavFooterSection) => (
-          <div class="brand-nav-section">
-            <ul class="brand-nav-items">
-              {section.items?.map((item: NavItem) => {
-                const isActive = currentPath === item.href;
-                return (
-                  <li class="brand-nav-item">
-                    <a
-                      href={item.href}
-                      class={`brand-nav-link ${isActive ? 'active' : ''}`}
-                      data-astro-prefetch="hover"
-                      @click="open = false"
-                    >
-                      {item.text}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))
+      allItems.map((item: NavItem) => (
+        <a
+          href={item.href}
+          class:list={[
+            'legal-sidenav-item',
+            { 'legal-sidenav-item--active': item.href === currentPath },
+          ]}
+          data-astro-prefetch="hover"
+          @click="open = false"
+        >
+          {item.text}
+        </a>
+      ))
     }
-  </div>
-</nav>
+  </nav>
+</aside>

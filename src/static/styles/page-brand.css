@@ -8,52 +8,56 @@
   .brand-wrapper {
     @apply col-span-1 md:col-span-10 lg:col-span-9;
   }
-  .brand-nav {
-    @apply flex flex-col gap-0 space-y-8;
+  .legal-sidenav {
+    @apply w-full shrink-0 self-start pt-5 pb-0 md:overflow-auto md:pt-12 md:pr-7 md:pb-7 lg:pt-16;
 
-    /* Mobile Toggle Button */
-    .brand-nav-mobile-toggle {
-      @apply mb-0 flex w-full items-center justify-between border border-gray-200 bg-white p-3 text-left;
-      @apply transition-colors duration-200 hover:bg-gray-50;
+    .legal-sidenav-toggle {
+      @apply flex w-full items-center justify-between border border-gray-200 bg-white p-3 text-left transition-colors duration-200 hover:bg-gray-50 md:hidden;
 
-      .brand-nav-mobile-toggle--text {
-        @apply font-medium text-gray-900;
+      .legal-sidenav-toggle--text {
+        @apply datum-text-base font-medium text-gray-900;
       }
 
-      .brand-nav-mobile-toggle--icon {
-        @apply transition-transform duration-200;
+      .legal-sidenav-toggle--icon {
+        @apply text-midnight-fjord/60 transition-transform duration-200;
       }
 
-      &[aria-expanded='true'] .brand-nav-mobile-toggle--icon {
+      &[aria-expanded='true'] .legal-sidenav-toggle--icon {
         @apply rotate-180;
       }
     }
 
-    /* Navigation Menu */
-    .brand-nav-menu {
-      @apply w-full rounded-md border border-t-0 border-gray-200 bg-white md:mt-0 md:block md:border-0 md:bg-transparent;
+    .legal-sidenav-menu {
+      @apply mt-0 flex flex-col gap-1 rounded-md border border-t-0 border-gray-200 bg-white p-2 md:mt-0 md:border-0 md:bg-transparent md:p-0;
 
-      /* Always show on desktop - override Alpine x-show */
       @media (min-width: 768px) {
-        display: block !important;
+        display: flex !important;
       }
     }
+  }
 
-    .brand-nav-section {
-      @apply space-y-4;
-      @apply datum-text-base relative w-full overflow-y-auto;
+  .legal-sidenav-item {
+    @apply datum-text-sm text-midnight-fjord/60 block rounded-md p-2 font-medium transition-colors duration-150;
+    @apply hover:text-midnight-fjord/80;
+
+    &.legal-sidenav-item--active {
+      @apply text-canyon-clay---links bg-white font-semibold;
+      @apply hover:text-canyon-clay---links hover:bg-white;
     }
 
-    .brand-nav-item {
-      @apply list-none px-3 py-1;
-    }
+    @media (max-width: 767px) {
+      @apply datum-text-base text-midnight-fjord/60 rounded-md px-3 py-2;
 
-    .brand-nav-link {
-      @apply inline-block py-1 transition-colors duration-300 ease-out;
-      @apply text-midnight-fjord hover:text-canyon-clay---links;
+      &:hover {
+        @apply text-midnight-fjord/80;
+      }
 
-      &.active {
-        @apply text-canyon-clay---links hover:text-midnight-fjord font-semibold;
+      &.legal-sidenav-item--active {
+        @apply text-canyon-clay---links bg-white font-semibold;
+
+        &:hover {
+          @apply text-canyon-clay---links bg-white;
+        }
       }
     }
   }

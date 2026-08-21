@@ -57,7 +57,7 @@
     "ioredis": "^6.0.0",
     "marked": "^18.0.10",
     "mermaid": "^11.17.0",
-    "openid-client": "^6.8.6",
+    "openid-client": "^6.8.7",
     "postgres": "^3.4.9",
     "rehype-expressive-code": "^0.44.1",
     "rehype-raw": "^7.0.0",
@@ -103,7 +103,7 @@
     "yaml": "^2.9.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "4.62.4"
+    "@rollup/rollup-linux-arm64-gnu": "4.62.5"
   },
   "lint-staged": {
     "*": [

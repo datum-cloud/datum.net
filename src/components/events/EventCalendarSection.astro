@@ -54,6 +54,7 @@ const eventsData = allEvents.map((e) => {
     isDatumHosted: isEventDatumHosted(e),
     isRecurringSeries: isEventRecurringSeries(e),
     isAltCloudMeetup: isEventAltCloudMeetup(e),
+    tags: e.tags ?? [],
     guests: guestsData,
   };
 });
@@ -194,7 +195,12 @@ const eventsJson = JSON.stringify(eventsData);
                       Datum Hosted
                     </span>
                   </template>
-                  <template x-if="event.isExternal">
+                  <template x-if="event.isExternal && event.tags.length > 0">
+                    <template x-for="tag in event.tags" :key="tag">
+                      <span class="event-badge event-badge--attending" x-text="tag"></span>
+                    </template>
+                  </template>
+                  <template x-if="event.isExternal && event.tags.length === 0">
                     <span class="event-badge event-badge--attending">We'll be there</span>
                   </template>
                 </div>

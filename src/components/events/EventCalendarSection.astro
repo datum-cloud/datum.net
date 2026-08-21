@@ -150,13 +150,13 @@ const eventsJson = JSON.stringify(eventsData);
           <template x-if="!isEventExpanded(event)">
             <div
               class="event-calendar-list__item-collapsed"
-              x-bind:class="{ 'event-calendar-list__item-collapsed--clickable': event.isDatumHosted || event.isExternal }"
-              x-bind:role="(event.isDatumHosted || event.isExternal) ? 'button' : false"
-              x-bind:tabindex="(event.isDatumHosted || event.isExternal) ? 0 : false"
-              x-bind:aria-label="(event.isDatumHosted || event.isExternal) ? 'Show full details for ' + event.name : false"
-              x-on:click="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.enter.prevent="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.space.prevent="(event.isDatumHosted || event.isExternal) && selectDay(event.start_at.slice(0, 10))"
+              x-bind:class="{ 'event-calendar-list__item-collapsed--clickable': event.isDatumHosted }"
+              x-bind:role="event.isDatumHosted ? 'button' : false"
+              x-bind:tabindex="event.isDatumHosted ? 0 : false"
+              x-bind:aria-label="event.isDatumHosted ? 'Show full details for ' + event.name : false"
+              x-on:click="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.enter.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
+              x-on:keydown.space.prevent="event.isDatumHosted && selectDay(event.start_at.slice(0, 10))"
             >
               <div class="event-calendar-list__item-header">
                 <p class="event-calendar-list__item-name" x-text="event.name"></p>
@@ -281,122 +281,107 @@ const eventsJson = JSON.stringify(eventsData);
 
           {/* --- Expanded state (day selected + Datum hosted event) --- */}
           <template x-if="isEventExpanded(event)">
-            <div class="event-calendar-list__item-expanded">
-              {/* Left: Title + Agenda */}
-              <div class="event-calendar-list__expanded-body">
-                <p class="event-calendar-list__expanded-title" x-text="event.name"></p>
+            <div class="event-calendar-list__expanded-container">
+              <button
+                type="button"
+                class="event-calendar-list__back-btn"
+                x-on:click="selectedDay = null"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"><path d="m15 18-6-6 6-6"></path></svg
+                >
+                Back to calendar
+              </button>
 
-                <template x-if="event.description_html">
-                  <div class="event-calendar-list__expanded-description datum-prose">
-                    <h4 class="event-calendar-list__expanded-heading">Agenda</h4>
-                    <div x-html="event.description_html"></div>
-                  </div>
-                </template>
+              <div class="event-calendar-list__item-expanded">
+                {/* Left: Title + Agenda */}
+                <div class="event-calendar-list__expanded-body">
+                  <p class="event-calendar-list__expanded-title" x-text="event.name"></p>
 
-                <template x-if="event.guests && event.guests.length > 0">
-                  <div class="event-calendar-list__expanded-speakers">
-                    <h4
-                      class="event-calendar-list__expanded-heading"
-                      x-text="event.isAltCloudMeetup ? 'Speakers' : 'Guests'"
-                    >
-                    </h4>
-                    <div class="event-calendar-list__expanded-speakers-list">
-                      <template x-for="guest in event.guests" :key="guest.name">
-                        <div class="event-series-card__speaker">
-                          <template x-if="guest.avatarSrc">
-                            <img
-                              src=""
-                              alt="Guest"
-                              x-bind:src="guest.avatarSrc"
-                              x-bind:alt="guest.name"
-                              width="48"
-                              height="48"
-                              loading="lazy"
-                              class="event-series-card__speaker-avatar"
-                            />
-                          </template>
-                          <div>
-                            <p class="event-series-card__speaker-name" x-text="guest.name"></p>
-                            <template x-if="guest.title">
-                              <p class="event-series-card__speaker-title" x-text="guest.title"></p>
-                            </template>
-                          </div>
-                        </div>
-                      </template>
+                  <template x-if="event.description_html">
+                    <div class="event-calendar-list__expanded-description datum-prose">
+                      <h4 class="event-calendar-list__expanded-heading">Agenda</h4>
+                      <div x-html="event.description_html"></div>
                     </div>
-                  </div>
-                </template>
-              </div>
+                  </template>
 
-              {/* Right: Cover + Meta + CTA */}
-              <div class="event-calendar-list__expanded-sidebar">
-                <template x-if="event.cover_url">
-                  <div class="event-calendar-list__expanded-cover">
-                    <img
-                      src=""
-                      alt="Event cover"
-                      x-bind:src="event.cover_url"
-                      x-bind:alt="event.name"
-                      loading="lazy"
-                    />
-                  </div>
-                </template>
+                  <template x-if="event.guests && event.guests.length > 0">
+                    <div class="event-calendar-list__expanded-speakers">
+                      <h4
+                        class="event-calendar-list__expanded-heading"
+                        x-text="event.isAltCloudMeetup ? 'Speakers' : 'Guests'"
+                      >
+                      </h4>
+                      <div class="event-calendar-list__expanded-speakers-list">
+                        <template x-for="guest in event.guests" :key="guest.name">
+                          <div class="event-series-card__speaker">
+                            <template x-if="guest.avatarSrc">
+                              <img
+                                src=""
+                                alt="Guest"
+                                x-bind:src="guest.avatarSrc"
+                                x-bind:alt="guest.name"
+                                width="48"
+                                height="48"
+                                loading="lazy"
+                                class="event-series-card__speaker-avatar"
+                              />
+                            </template>
+                            <div>
+                              <p class="event-series-card__speaker-name" x-text="guest.name"></p>
+                              <template x-if="guest.title">
+                                <p class="event-series-card__speaker-title" x-text="guest.title">
+                                </p>
+                              </template>
+                            </div>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+                </div>
 
-                <template x-if="event.isRecurringSeries">
-                  <span class="event-badge event-badge--recurring">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      ><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"
-                      ></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"
-                      ></path></svg
-                    >
-                    Recurring Series
-                  </span>
-                </template>
+                {/* Right: Cover + Meta + CTA */}
+                <div class="event-calendar-list__expanded-sidebar">
+                  <template x-if="event.cover_url">
+                    <div class="event-calendar-list__expanded-cover">
+                      <img
+                        src=""
+                        alt="Event cover"
+                        x-bind:src="event.cover_url"
+                        x-bind:alt="event.name"
+                        loading="lazy"
+                      />
+                    </div>
+                  </template>
 
-                <div class="event-calendar-list__expanded-meta">
-                  <div class="event-calendar-list__expanded-meta-row">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      ><path d="M8 2v4"></path><path d="M16 2v4"></path><path
-                        d="M21 17V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11"></path><path
-                        d="M3 10h18"></path><path d="M15 22l2-2v-4h4"></path></svg
-                    >
-                    <span x-text="formatEventShortDate(event.start_at, event.timezone)"></span>
-                  </div>
-                  <div class="event-calendar-list__expanded-meta-row">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      ><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"
-                      ></polyline></svg
-                    >
-                    <span x-text="formatEventTime(event.start_at, event.timezone)"></span>
-                  </div>
-                  <template x-if="event.city">
+                  <template x-if="event.isRecurringSeries">
+                    <span class="event-badge event-badge--recurring">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"
+                        ></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"
+                        ></path></svg
+                      >
+                      Recurring Series
+                    </span>
+                  </template>
+
+                  <div class="event-calendar-list__expanded-meta">
                     <div class="event-calendar-list__expanded-meta-row">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -408,11 +393,13 @@ const eventsJson = JSON.stringify(eventsData);
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        x-show="event.city === 'Virtual'"
-                        ><path
-                          d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
-                        ></path><rect width="14" height="12" x="2" y="6" rx="2"></rect></svg
+                        ><path d="M8 2v4"></path><path d="M16 2v4"></path><path
+                          d="M21 17V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11"
+                        ></path><path d="M3 10h18"></path><path d="M15 22l2-2v-4h4"></path></svg
                       >
+                      <span x-text="formatEventShortDate(event.start_at, event.timezone)"></span>
+                    </div>
+                    <div class="event-calendar-list__expanded-meta-row">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -423,38 +410,71 @@ const eventsJson = JSON.stringify(eventsData);
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        x-show="event.city !== 'Virtual'"
-                        ><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle
-                          cx="12"
-                          cy="10"
-                          r="3"></circle></svg
+                        ><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"
+                        ></polyline></svg
                       >
-                      <span x-text="event.city"></span>
+                      <span x-text="formatEventTime(event.start_at, event.timezone)"></span>
                     </div>
-                  </template>
-                </div>
+                    <template x-if="event.city">
+                      <div class="event-calendar-list__expanded-meta-row">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          x-show="event.city === 'Virtual'"
+                          ><path
+                            d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+                          ></path><rect width="14" height="12" x="2" y="6" rx="2"></rect></svg
+                        >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          x-show="event.city !== 'Virtual'"
+                          ><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle
+                            cx="12"
+                            cy="10"
+                            r="3"></circle></svg
+                        >
+                        <span x-text="event.city"></span>
+                      </div>
+                    </template>
+                  </div>
 
-                <a
-                  x-bind:href="event.url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="event-calendar-list__register-btn"
-                >
-                  Register
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path
-                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg
+                  <a
+                    x-bind:href="event.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="event-calendar-list__register-btn"
                   >
-                </a>
+                    Register
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg
+                    >
+                  </a>
+                </div>
               </div>
             </div>
           </template>
@@ -589,9 +609,7 @@ const eventsJson = JSON.stringify(eventsData);
 
       isEventExpanded: function (event) {
         return (
-          this.selectedDay &&
-          (event.isDatumHosted || event.isExternal) &&
-          event.start_at.startsWith(this.selectedDay)
+          this.selectedDay && event.isDatumHosted && event.start_at.startsWith(this.selectedDay)
         );
       },
 

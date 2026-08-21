@@ -369,6 +369,14 @@
     @apply p-6 md:p-8 lg:p-10;
   }
 
+  .event-calendar-list__expanded-container {
+    @apply flex flex-col gap-4 md:gap-6;
+  }
+
+  .event-calendar-list__back-btn {
+    @apply text-app---dark---utility-4 hover:text-midnight-fjord datum-text-sm inline-flex w-fit cursor-pointer items-center gap-1.5 font-medium transition-colors duration-150;
+  }
+
   .event-calendar-list__item-collapsed {
     @apply flex flex-col gap-4;
   }

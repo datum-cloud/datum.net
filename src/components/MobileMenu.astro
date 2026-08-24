@@ -152,8 +152,11 @@ const mainNav = filterNavMain(navData.main);
                 <div class="mobile-dropdown-content" x-show="open" x-collapse>
                   {item.children.map((section) => (
                     <div class="mobile-dropdown-section">
+                      {/* p, not a heading — decorative mobile-menu column label, ahead of
+                          the page's own h1 in DOM order; see NavMenu.astro's equivalent
+                          rule for why this can't be a heading tag. */}
                       {'title' in section && section.title && (
-                        <h3 class="mobile-dropdown-title">
+                        <p class="mobile-dropdown-title">
                           {section.href ? (
                             <a
                               href={section.href}
@@ -165,7 +168,7 @@ const mainNav = filterNavMain(navData.main);
                           ) : (
                             section.title
                           )}
-                        </h3>
+                        </p>
                       )}
                       <ul class="mobile-dropdown-items">
                         {section.items?.map((subItem) => (

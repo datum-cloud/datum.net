@@ -88,8 +88,13 @@ function navDropdownParentClass(text: string): string {
                     <li
                       class={`nav-dropdown-section ${item.children!.length > 1 ? 'nav-dropdown-mega-section' : ''}`}
                     >
+                      {/* p, not a heading — this is a decorative mega-menu column label,
+                          not part of the page's content outline. A real heading here (this
+                          renders on every page, ahead of the page's own h1) breaks the
+                          document's heading hierarchy for a11y tools and content-extraction
+                          crawlers (see is-agentic "Content without JavaScript" check). */}
                       {'title' in section && section.title && (
-                        <h3 class="nav-dropdown-title">
+                        <p class="nav-dropdown-title">
                           {section.href ? (
                             <a
                               href={section.href}
@@ -105,7 +110,7 @@ function navDropdownParentClass(text: string): string {
                           ) : (
                             <span>{section.title}</span>
                           )}
-                        </h3>
+                        </p>
                       )}
                       <ul
                         class={

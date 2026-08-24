@@ -25,6 +25,16 @@ const { class: className = '' } = Astro.props;
       >
         <div class="spacing-pad flex flex-col gap-7">
           <SectionEyebrow>What is Datum?</SectionEyebrow>
+          {
+            /* sr-only: visually the eyebrow above already reads as this section's label,
+              but it's a <span> (decorative, animated typeout), not a heading — this section's
+              body copy was otherwise the only real content on the homepage with no heading
+              anchoring it at all, which reads as a broken/flat outline to a11y tools and
+              content-extraction crawlers (see is-agentic "Content without JavaScript" check).
+              A visible duplicate heading would look redundant next to the eyebrow, so this
+              stays sr-only rather than changing the visual design. */
+          }
+          <h2 class="sr-only">What is Datum?</h2>
           <div
             class="datum-text-2xl text-midnight-fjord flex flex-col gap-7 text-pretty [&>p]:opacity-80"
           >

@@ -93,6 +93,10 @@ export {
   getAuthorBgColorFromStrapi,
 } from './authors';
 
+// /hello-only avatar resolution, decoupled from the shared `avatar` field
+// (see helloPineForgeAvatars.ts for why).
+export { getHelloPineForgeAvatarUrl } from './helloPineForgeAvatars';
+
 // Re-export articles module (queries and cached fetchers)
 export {
   ARTICLES_QUERY,

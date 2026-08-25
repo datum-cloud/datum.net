@@ -1,7 +1,7 @@
 ---
 // src/components/hello/HelloPeople.astro
 import Icon from '@components/Icon.astro';
-import { getStrapiCardMembers, getTeamBgColor } from '@libs/strapi';
+import { getHelloPineForgeAvatarUrl, getStrapiCardMembers, getTeamBgColor } from '@libs/strapi';
 import type { CardCategory, StrapiAuthorFull } from '@libs/strapi';
 import { getStrapiMediaUrl } from '@/src/types/strapi';
 import HelloCard from './HelloCard.astro';
@@ -9,7 +9,19 @@ import HelloModal from './HelloModal.astro';
 import HelloSupportCard from './HelloSupportCard.astro';
 import HelloBehindCard from './HelloBehindCard.astro';
 
-const cardMembers: StrapiAuthorFull[] = await getStrapiCardMembers();
+const strapiCardMembers: StrapiAuthorFull[] = await getStrapiCardMembers();
+
+// /hello always shows the pine-forge avatar variant, resolved independently of
+// the shared `avatar` field the /about team grid depends on — mutating that
+// field to satisfy /hello breaks /about's color-matched cards instead.
+// See helloPineForgeAvatars.ts.
+const cardMembers: StrapiAuthorFull[] = await Promise.all(
+  strapiCardMembers.map(async (member) => {
+    const pineForgeUrl = member.slug ? await getHelloPineForgeAvatarUrl(member.slug) : undefined;
+    if (!pineForgeUrl) return member;
+    return { ...member, avatar: { ...member.avatar, url: pineForgeUrl } };
+  })
+);
 
 const helloMembersData = cardMembers.map((member, index) => ({
   slug: member.slug || member.documentId,

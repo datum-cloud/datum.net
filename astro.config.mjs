@@ -30,6 +30,38 @@ const WELL_KNOWN_TYPES = {
   '/.well-known/oauth-authorization-server': 'application/json',
 };
 
+// Merge one or more tokens into an existing Vary header value without
+// duplicating anything already present. Kept in sync with the identical
+// helper in server.mjs (that one runs standalone in production with no
+// build step, so it can't import this file).
+function mergeVary(existing, tokens) {
+  const existingValue = Array.isArray(existing) ? existing.join(', ') : existing || '';
+  const set = new Set(
+    existingValue
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean)
+  );
+  for (const token of tokens) set.add(token);
+  return [...set].join(', ');
+}
+
+// Short markdown body for a 404 response — kept in sync with
+// buildAgentNotFoundMarkdown in server.mjs.
+function buildAgentNotFoundMarkdown(pathname) {
+  return `# 404 — Page not found
+
+\`${pathname}\` does not exist on this site.
+
+## Where to look next
+
+- [Sitemap](/sitemap.xml) — every URL on this site
+- [llms.txt](/llms.txt) — curated page index for agents
+- [Docs](/docs) — product documentation
+- [Home](/) — start over from the homepage
+`;
+}
+
 function wellKnownDevPlugin() {
   return {
     name: 'well-known-content-types',
@@ -61,9 +93,48 @@ function wellKnownDevPlugin() {
           if (existsSync(filePath)) {
             res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
             res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+            res.setHeader('Vary', mergeVary(res.getHeader('Vary'), ['Accept']));
             createReadStream(filePath).pipe(res);
             return;
           }
+
+          // No static markdown export for this path here in dev (real content
+          // pages export markdown via their own [...].md.ts route, prerendered
+          // to dist/client/*.md only at build time — server.mjs serves that in
+          // production). If Astro's own downstream routing is about to 404,
+          // substitute a short agent-recoverable markdown body instead of
+          // falling through to the HTML 404 page, mirroring server.mjs's
+          // handleSSR so dev/test behavior matches production for genuinely
+          // unknown paths. See is-agentic's "Agent-friendly 404s" check.
+          const origWriteHead = res.writeHead.bind(res);
+          const origWrite = res.write.bind(res);
+          const origEnd = res.end.bind(res);
+          let substitute404 = false;
+          let body404 = null;
+
+          res.writeHead = (statusCode, headers) => {
+            if (statusCode === 404) {
+              substitute404 = true;
+              body404 = Buffer.from(buildAgentNotFoundMarkdown(url), 'utf-8');
+              return origWriteHead(404, {
+                'Content-Type': 'text/markdown; charset=utf-8',
+                'Content-Length': body404.length,
+                Vary: mergeVary(null, ['Accept']),
+              });
+            }
+            return origWriteHead(statusCode, headers);
+          };
+          res.write = (chunk, enc, cb) => {
+            if (substitute404) {
+              if (cb) cb();
+              return true;
+            }
+            return origWrite(chunk, enc, cb);
+          };
+          res.end = (chunk, enc, cb) => {
+            if (substitute404) return origEnd(body404);
+            return origEnd(chunk, enc, cb);
+          };
         }
 
         next();

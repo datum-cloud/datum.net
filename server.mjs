@@ -57,9 +57,42 @@ const COMPRESSIBLE_EXTENSIONS = /\.(html|css|js|mjs|json|xml|svg|txt|map)$/;
 const AGENT_LINK_HEADERS = [
   '</.well-known/api-catalog>; rel="api-catalog"',
   '</docs/>; rel="service-doc"',
+  '</openapi.json>; rel="service-desc"',
   '</.well-known/openid-configuration>; rel="openid-configuration"',
   '</.well-known/mcp/server-card.json>; rel="describedby"',
 ].join(', ');
+
+// Merge one or more tokens into an existing Vary header value without duplicating
+// anything already present (headers passed to writeHead may already carry one).
+function mergeVary(existing, tokens) {
+  const existingValue = Array.isArray(existing) ? existing.join(', ') : existing || '';
+  const set = new Set(
+    existingValue
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean)
+  );
+  for (const token of tokens) set.add(token);
+  return [...set].join(', ');
+}
+
+// Short markdown body for a 404 response, so an agent that asked for
+// `Accept: text/markdown` gets something it can parse to recover (sitemap,
+// llms.txt, docs, home) instead of an HTML error page it can't read without a
+// browser. See is-agentic's "Agent-friendly 404s" check.
+function buildAgentNotFoundMarkdown(pathname) {
+  return `# 404 — Page not found
+
+\`${pathname}\` does not exist on this site.
+
+## Where to look next
+
+- [Sitemap](/sitemap.xml) — every URL on this site
+- [llms.txt](/llms.txt) — curated page index for agents
+- [Docs](/docs) — product documentation
+- [Home](/) — start over from the homepage
+`;
+}
 
 // Content-type overrides for .well-known files that have no file extension
 const WELL_KNOWN_CONTENT_TYPES = {
@@ -303,16 +336,24 @@ function serveCompressed(req, res, next) {
       const etag = generateETag(stat);
       const lastModified = stat.mtime;
 
-      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
-
       const brContentType = getContentType(url);
+      // HTML pages also have a markdown representation reachable via Accept
+      // negotiation (see the markdown branch below) — Vary must include
+      // Accept too, or a CDN can serve the cached HTML variant to an agent
+      // asking for markdown (or vice versa) depending on cache order.
+      const brVary = brContentType.includes('text/html')
+        ? mergeVary(null, ['Accept', 'Accept-Encoding'])
+        : 'Accept-Encoding';
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, brVary)) return;
+
       res.writeHead(200, {
         'Content-Type': brContentType,
         'Content-Encoding': 'br',
         'Content-Length': statSync(brPath).size,
         ETag: etag,
         'Last-Modified': lastModified.toUTCString(),
-        Vary: 'Accept-Encoding',
+        Vary: brVary,
         'Cache-Control': cacheControl,
         'X-Cache': 'MISS',
         ...(brContentType.includes('text/html') && { Link: AGENT_LINK_HEADERS }),
@@ -334,16 +375,20 @@ function serveCompressed(req, res, next) {
       const etag = generateETag(stat);
       const lastModified = stat.mtime;
 
-      if (handleConditional(req, res, etag, lastModified, cacheControl, 'Accept-Encoding')) return;
-
       const gzContentType = getContentType(url);
+      const gzVary = gzContentType.includes('text/html')
+        ? mergeVary(null, ['Accept', 'Accept-Encoding'])
+        : 'Accept-Encoding';
+
+      if (handleConditional(req, res, etag, lastModified, cacheControl, gzVary)) return;
+
       res.writeHead(200, {
         'Content-Type': gzContentType,
         'Content-Encoding': 'gzip',
         'Content-Length': statSync(gzPath).size,
         ETag: etag,
         'Last-Modified': lastModified.toUTCString(),
-        Vary: 'Accept-Encoding',
+        Vary: gzVary,
         'Cache-Control': cacheControl,
         'X-Cache': 'MISS',
         ...(gzContentType.includes('text/html') && { Link: AGENT_LINK_HEADERS }),
@@ -418,6 +463,9 @@ const SSR_COMPRESSIBLE = /^(text\/|application\/(javascript|json|xml|manifest\+j
 // Wrap the Astro SSR handler with streaming compression and cache headers
 function handleSSR(req, res) {
   const acceptEncoding = req.headers['accept-encoding'] ?? '';
+  const wantsMarkdown =
+    (req.method === 'GET' || req.method === 'HEAD') &&
+    (req.headers['accept'] || '').includes('text/markdown');
 
   let compressor = null;
   let encoding = null;
@@ -439,6 +487,12 @@ function handleSSR(req, res) {
   const origEnd = res.end.bind(res);
 
   let compressionActive = false;
+  // Set when Astro is about to render its (HTML) 404 page but the request
+  // asked for text/markdown — substitutes a short markdown 404 body instead,
+  // so an agent gets something it can parse. See is-agentic's "Agent-friendly
+  // 404s" check and buildAgentNotFoundMarkdown above.
+  let substituteMarkdown404 = false;
+  let markdown404Buffer = null;
 
   res.writeHead = (statusCode, headers) => {
     const h = headers && typeof headers === 'object' ? { ...headers } : {};
@@ -446,13 +500,35 @@ function handleSSR(req, res) {
     const ct = String(
       h['content-type'] ?? h['Content-Type'] ?? res.getHeader('content-type') ?? ''
     );
+
+    if (statusCode === 404 && wantsMarkdown) {
+      substituteMarkdown404 = true;
+      markdown404Buffer = Buffer.from(buildAgentNotFoundMarkdown(req.url.split('?')[0]), 'utf-8');
+      return origWriteHead(404, {
+        'Content-Type': 'text/markdown; charset=utf-8',
+        'Content-Length': markdown404Buffer.length,
+        'Cache-Control': 'no-cache',
+        Vary: mergeVary(null, ['Accept', 'Accept-Encoding']),
+        Link: AGENT_LINK_HEADERS,
+      });
+    }
+
     compressionActive = !!compressor && SSR_COMPRESSIBLE.test(ct);
 
     if (compressionActive) {
       delete h['content-length'];
       delete h['Content-Length'];
       h['Content-Encoding'] = encoding;
-      h['Vary'] = 'Accept-Encoding';
+    }
+
+    // Any HTML (or markdown) response here also has the other representation
+    // reachable via Accept negotiation — Vary must include Accept, or a CDN
+    // can serve the wrong cached variant depending on which landed in cache
+    // first. Harmless to set on other content types too.
+    if (ct.includes('text/html') || ct.includes('text/markdown')) {
+      h['Vary'] = mergeVary(h['Vary'] ?? h['vary'], ['Accept', 'Accept-Encoding']);
+    } else if (compressionActive) {
+      h['Vary'] = mergeVary(h['Vary'] ?? h['vary'], ['Accept-Encoding']);
     }
 
     if (!h['Cache-Control'] && !h['cache-control']) {
@@ -466,21 +542,29 @@ function handleSSR(req, res) {
     return origWriteHead(statusCode, h);
   };
 
+  res.write = (chunk, enc, cb) => {
+    if (substituteMarkdown404) {
+      if (cb) cb();
+      return true;
+    }
+    if (!compressionActive) return origWrite(chunk, enc, cb);
+    return compressor.write(chunk, enc, cb);
+  };
+
+  res.end = (chunk, enc, cb) => {
+    if (substituteMarkdown404) {
+      if (req.method === 'HEAD') return origEnd();
+      return origEnd(markdown404Buffer);
+    }
+    if (!compressionActive) return origEnd(chunk, enc, cb);
+    if (chunk) compressor.write(chunk);
+    compressor.end();
+  };
+
   if (compressor) {
     compressor.on('data', (chunk) => origWrite(chunk));
     compressor.on('end', () => origEnd());
     compressor.on('error', () => origEnd());
-
-    res.write = (chunk, enc, cb) => {
-      if (!compressionActive) return origWrite(chunk, enc, cb);
-      return compressor.write(chunk, enc, cb);
-    };
-
-    res.end = (chunk, enc, cb) => {
-      if (!compressionActive) return origEnd(chunk, enc, cb);
-      if (chunk) compressor.write(chunk);
-      compressor.end();
-    };
   }
 
   handler(req, res);
@@ -544,6 +628,10 @@ const server = createServer((req, res) => {
         'Content-Type': 'text/markdown; charset=utf-8',
         'Cache-Control': 'public, max-age=0, must-revalidate',
         'Content-Length': stat.size,
+        // This URL also has an HTML representation — Vary: Accept tells any
+        // CDN in front to key its cache on Accept, not just Accept-Encoding,
+        // so it doesn't serve this markdown body to a browser (or vice versa).
+        Vary: mergeVary(null, ['Accept', 'Accept-Encoding']),
         Link: AGENT_LINK_HEADERS,
       });
       if (req.method === 'HEAD') {

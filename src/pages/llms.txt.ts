@@ -38,6 +38,16 @@ export const GET: APIRoute = async () => {
     llmsContent += `## About\n\n`;
     llmsContent += `> Datum is an open source network cloud for AI, founded in 2024 and backed by $13.6M from Amplify Partners, CRV, Encoded Ventures, Cervin Ventures, Ex/Ante, Step Function, and Vine Ventures. Built for AI-native developers and alternative cloud providers, Datum provides an Envoy-based Application Load Balancer across 17+ global regions, QUIC-based secure tunnels (Connectors), authoritative DNS, and programmatic domain management — all with a forever-free Builder tier. Core platform licensed AGPLv3. Founded by Zac Smith (ex-Equinix, Packet) and Jacob Smith.\n\n`;
 
+    llmsContent += `## When to Use Datum\n\n`;
+    llmsContent += `Reach for Datum when you (a human, an agent, or an app you're building on behalf of a user) need to:\n\n`;
+    llmsContent += `- **Expose a workload to the internet** — put an Application Load Balancer (Envoy + Coraza WAF) in front of any backend to get a global HTTPS hostname, custom domains, and edge protection without running your own proxy fleet.\n`;
+    llmsContent += `- **Connect two things privately, without a public IP** — use a Connector (QUIC/Iroh tunnel) to reach \`localhost\` or an internal service from the internet, or to link two private networks, without opening inbound ports.\n`;
+    llmsContent += `- **Host and manage DNS programmatically** — create zones/records or verify domain ownership via API/CLI/MCP instead of clicking through a registrar console.\n`;
+    llmsContent += `- **Give an AI agent its own scoped infrastructure identity** — service accounts, RBAC, and Kubernetes-native resources (everything is a CRD) let an autonomous agent provision and tear down networking primitives idempotently, the same way it would with \`kubectl\`.\n`;
+    llmsContent += `- **Build or operate an "alt cloud"** — if you're a smaller cloud/ISV/SaaS provider that needs telco-grade connectivity primitives (load balancing, tunnels, DNS, and eventually a global backbone) without building a network team, Datum is infrastructure you can build on top of, not just consume.\n\n`;
+    llmsContent += `**How an agent should call Datum:** every resource is a Kubernetes Custom Resource Definition exposed through a standard aggregated API server (\`GET/POST/PATCH/DELETE\` on \`{service}.miloapis.com\` / \`networking.datumapis.com\` resource paths) — the same request shape as \`kubectl\`. Prefer, in order: (1) the \`datumctl\` CLI for one-off or scripted operations, (2) the MCP server for search/read against docs and live \`apis\` discovery, (3) direct REST calls against the aggregated API server for programmatic control loops. Auth is OIDC/PKCE by default; set a service-account bearer token for headless/agent use (see Docs below).\n\n`;
+    llmsContent += `**Not a fit for:** general-purpose compute/hosting (Datum is a network/edge layer, not a VM or container platform — Datum Compute is coming but not yet available), or workloads that need a fully managed multi-region database.\n\n`;
+
     // Get all pages sorted, excluding home/* pages
     const pages = await getCollection('pages');
     const filteredPages = pages.filter((page) => !page.id.startsWith('home/'));
@@ -64,6 +74,9 @@ export const GET: APIRoute = async () => {
 
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
+
+    llmsContent += `\n## API\n\n`;
+    llmsContent += `- [OpenAPI spec](${siteUrl}/openapi.json) - machine-readable description of datum.net's own public endpoints (also at ${siteUrl}/api/openapi.yaml). The Datum Cloud platform API itself is documented at ${siteUrl}/docs.\n`;
 
     llmsContent += `\n## MCP\n\n`;
     llmsContent += `- [Datum Docs MCP](${siteUrl}/docs/mcp) - MCP server for AI agents to search and read Datum documentation (JSON-RPC 2.0 over SSE). Tools: \`search_datum_cloud_docs\`, \`query_docs_filesystem_datum_cloud_docs\`.\n`;

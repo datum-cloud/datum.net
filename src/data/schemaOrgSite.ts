@@ -34,7 +34,22 @@ export const organizationSchema = {
     '@type': 'ContactPoint',
     contactType: 'customer support',
     url: 'https://www.datum.net/contact/',
+    email: 'support@datum.net',
     availableLanguage: 'English',
+  },
+  // Matches the "General inquiries" address published in the Privacy
+  // Policy's "How to contact us" section (src/content/legal/privacy.mdx) —
+  // NOT the address in the Data Processing Agreement's Processor row
+  // ("120 Broadway, 26th Floor... 10271"), which disagrees with this one
+  // and looks like stale/inconsistent legal content. Flagged for a human to
+  // reconcile; this file shouldn't guess which one is authoritative.
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '29 Broadway, 31st Floor',
+    addressLocality: 'New York',
+    addressRegion: 'NY',
+    postalCode: '10006',
+    addressCountry: 'US',
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',

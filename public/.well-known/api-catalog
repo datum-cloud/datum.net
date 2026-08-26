@@ -12,6 +12,10 @@
         {
           "href": "https://www.datum.net/docs/",
           "type": "text/html"
+        },
+        {
+          "href": "https://www.datum.net/developers",
+          "type": "text/html"
         }
       ],
       "api-catalog": [

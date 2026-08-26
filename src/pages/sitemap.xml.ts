@@ -18,6 +18,7 @@ const STATIC_ROUTES = [
   '/careers',
   '/changelog',
   '/contact',
+  '/developers',
   '/download',
   '/essentials',
   '/events',

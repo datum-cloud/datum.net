@@ -1,0 +1,147 @@
+---
+// src/pages/developers.astro
+//
+// A single-page index of Datum's developer-facing resources, named and
+// linked explicitly (API docs, OpenAPI spec, auth docs, developer portal,
+// MCP server, CLI, rate limits, changelog, status) — addresses is-agentic's
+// "Developer resource discoverability" check ("only 1/8 resources found by
+// name"). Also linked from llms.txt (automatic — see src/pages/llms.txt.ts,
+// which lists every `pages` collection entry) and .well-known/api-catalog.
+import '@styles/page-developers.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SectionGroup from '@components/SectionGroup.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import Icon from '@components/Icon.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'developers');
+const fm = page.data;
+const meta = fm.meta || {};
+
+interface DevResource {
+  icon: string;
+  title: string;
+  description: string;
+  href: string;
+  external?: boolean;
+}
+
+const resources: DevResource[] = [
+  {
+    icon: 'compass',
+    title: 'API docs',
+    description:
+      "Guides, auth, and reference for both Datum's own site API and the Datum Cloud platform API.",
+    href: '/docs',
+    external: true,
+  },
+  {
+    icon: 'code',
+    title: 'OpenAPI spec',
+    description:
+      'Machine-readable description of datum.net’s own public endpoints — versioning, rate limits, and error schema included.',
+    href: '/openapi.json',
+  },
+  {
+    icon: 'key',
+    title: 'Auth docs',
+    description:
+      'OIDC/PKCE sign-in, service accounts, and scoped tokens for headless and agent use.',
+    href: '/docs/platform/setup',
+    external: true,
+  },
+  {
+    icon: 'globe',
+    title: 'Developer portal',
+    description:
+      'The full documentation hub — guides, CLI reference, API reference, and agent-facing docs.',
+    href: '/docs',
+    external: true,
+  },
+  {
+    icon: 'bot',
+    title: 'MCP server',
+    description:
+      'Datum MCP — OAuth-authenticated, tools for organizations, projects, domains, and DNS. Stdio today; hosted Streamable HTTP is planned.',
+    href: '/download/datum-mcp',
+  },
+  {
+    icon: 'terminal',
+    title: 'CLI (datumctl)',
+    description: 'Install, authenticate, and script against Datum Cloud from the terminal or CI.',
+    href: '/download/datumctl',
+  },
+  {
+    icon: 'zap',
+    title: 'Rate limits',
+    description:
+      'RateLimit-* response headers and self-throttling conventions, documented alongside each endpoint.',
+    href: '/openapi.json',
+  },
+  {
+    icon: 'history',
+    title: 'Changelog',
+    description: 'What shipped, and when.',
+    href: '/changelog',
+  },
+  {
+    icon: 'server',
+    title: 'Status',
+    description: 'Real-time and historical availability per region.',
+    href: 'https://www.datumstatus.net',
+    external: true,
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://www.datum.net/developers',
+  url: 'https://www.datum.net/developers',
+  name: fm.title,
+  description: fm.description,
+  isPartOf: { '@id': 'https://www.datum.net/#organization' },
+  inLanguage: 'en-US',
+};
+---
+
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container">
+    <Hero class="light" title={fm.title} description={fm.description} showSectionLines={true} />
+
+    <section
+      class="section--block border-silver-mist bg-platinum section--block--x-pad overflow-hidden border-t"
+    >
+      <SectionGroup label="Resources" eyebrowVariant="iris">
+        <div class="spacing-pad relative">
+          <div class="essentials-grid">
+            {
+              resources.map((resource) => (
+                <a
+                  href={resource.href}
+                  class="essentials-item transition-opacity hover:opacity-80"
+                  target={resource.external ? '_blank' : undefined}
+                  rel={resource.external ? 'noopener' : undefined}
+                >
+                  <div class="essentials-item-icon">
+                    <Icon name={resource.icon} class="stroke-1.75" />
+                  </div>
+                  <div class="essentials-item-content">
+                    <p class="essentials-item-title">{resource.title}</p>
+                    <p class="essentials-item-description">{resource.description}</p>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </SectionGroup>
+    </section>
+
+    <ModuleConnector />
+
+    <Footer />
+  </section>
+</Layout>

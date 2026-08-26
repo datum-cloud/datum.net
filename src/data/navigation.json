@@ -76,6 +76,7 @@
           "title": "Get Started:",
           "items": [
             { "text": "Docs", "href": "/docs" },
+            { "text": "Developers", "href": "/developers" },
             { "text": "Download", "href": "/download" },
             { "text": "Roadmap", "href": "/roadmap" }
           ]

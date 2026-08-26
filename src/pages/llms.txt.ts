@@ -75,10 +75,14 @@ export const GET: APIRoute = async () => {
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
 
+    llmsContent += `\n## Developers\n\n`;
+    llmsContent += `- [Datum Developer Resources](${siteUrl}/developers) - index of every developer-facing resource Datum publishes (API docs, OpenAPI spec, auth docs, developer portal, MCP server, CLI, rate limits, changelog, status), at predictable URLs.\n`;
+
     llmsContent += `\n## API\n\n`;
-    llmsContent += `- [OpenAPI spec](${siteUrl}/openapi.json) - machine-readable description of datum.net's own public endpoints (also at ${siteUrl}/api/openapi.yaml). The Datum Cloud platform API itself is documented at ${siteUrl}/docs.\n`;
+    llmsContent += `- [OpenAPI spec](${siteUrl}/openapi.json) - machine-readable description of datum.net's own public endpoints, versioned at \`/api/v1/\` (also at ${siteUrl}/api/openapi.yaml). The Datum Cloud platform API itself is documented at ${siteUrl}/docs and discoverable at \`https://api.datum.net/openapi/v3\` (requires an authenticated bearer token).\n`;
 
     llmsContent += `\n## MCP\n\n`;
+    llmsContent += `- [Datum MCP](${siteUrl}/download/datum-mcp) - official MCP server for managing Datum Cloud infrastructure (organizations, projects, domains, DNS). OAuth 2.1 (PKCE) authenticated. Manifest at ${siteUrl}/mcp/server-card (also ${siteUrl}/server.json and ${siteUrl}/.well-known/mcp/server-card.json). Stdio transport today; hosted Streamable HTTP is planned but not yet live.\n`;
     llmsContent += `- [Datum Docs MCP](${siteUrl}/docs/mcp) - MCP server for AI agents to search and read Datum documentation (JSON-RPC 2.0 over SSE). Tools: \`search_datum_cloud_docs\`, \`query_docs_filesystem_datum_cloud_docs\`.\n`;
 
     llmsContent += `\n## Skills\n\n`;

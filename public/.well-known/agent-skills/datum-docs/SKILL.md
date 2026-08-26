@@ -14,10 +14,11 @@ Navigate to `https://www.datum.net/docs/` to browse documentation, or append `?q
 
 ## Key Resources
 
-- **Overview:** https://www.datum.net/docs/overview/
-- **Quickstart:** https://www.datum.net/docs/quickstart/
-- **API Reference:** https://www.datum.net/docs/api/reference/
-- **datumctl CLI:** https://www.datum.net/docs/datumctl/
+- **Overview:** https://www.datum.net/docs/overview
+- **Quickstart:** https://www.datum.net/docs/datumctl/quickstart
+- **API Reference (this site's own endpoints):** https://www.datum.net/openapi.json (also https://www.datum.net/api/openapi.yaml)
+- **Platform API discovery:** https://api.datum.net/openapi/v3 (Kubernetes-native OpenAPI v3; requires an authenticated bearer token) — for a human-readable path into the same resource types, see https://www.datum.net/docs/datumctl/discovering-resources
+- **datumctl CLI:** https://www.datum.net/docs/datumctl/overview
 - **Application Load Balancer:** https://www.datum.net/docs/alb/overview
 
 ## Authentication

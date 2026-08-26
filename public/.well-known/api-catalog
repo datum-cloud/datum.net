@@ -2,6 +2,12 @@
   "linkset": [
     {
       "anchor": "https://www.datum.net",
+      "service-desc": [
+        {
+          "href": "https://www.datum.net/openapi.json",
+          "type": "application/json"
+        }
+      ],
       "service-doc": [
         {
           "href": "https://www.datum.net/docs/",
@@ -19,8 +25,8 @@
       "anchor": "https://api.datum.net",
       "service-desc": [
         {
-          "href": "https://www.datum.net/docs/api/reference/",
-          "type": "text/html"
+          "href": "https://api.datum.net/openapi/v3",
+          "type": "application/json"
         }
       ],
       "service-doc": [

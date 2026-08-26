@@ -130,7 +130,14 @@ const pillars: { icon: string; title: string; description: string }[] = [
                       class="text-pine-forge---links stroke-1.75"
                     />
                   </div>
-                  <p class="datum-text-xl text-midnight-fjord font-semibold">{pillar.title}</p>
+                  {/* Real heading, not a styled <p>: each pillar is a distinct
+                      named topic (title + description) — the only content on
+                      this section that had no heading anchoring it, which read
+                      as flat to a11y tools and content-extraction crawlers (see
+                      is-agentic "Content without JavaScript" check). Sibling to
+                      the "Private, protected, performant." <h3> above under the
+                      same <h2> section, so h3 (not h4) avoids a level skip. */}
+                  <h3 class="datum-text-xl text-midnight-fjord font-semibold">{pillar.title}</h3>
                 </div>
                 <p class="datum-text-base text-app---dark---utility-2 opacity-80">
                   {pillar.description}

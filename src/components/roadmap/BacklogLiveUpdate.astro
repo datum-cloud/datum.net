@@ -17,7 +17,7 @@ const FAST_POLL_INTERVAL_MS = 2 * 1000;
     updatedAt: ${JSON.stringify(updatedAt)},
     isRefreshing: ${JSON.stringify(isRefreshing)},
     poll() {
-      fetch('/api/roadmap/backlog-meta', { cache: 'no-store' })
+      fetch('/api/v1/roadmap/backlog-meta', { cache: 'no-store' })
         .then((res) => res.json())
         .then((data) => {
           if (typeof data.isRefreshing === 'boolean') {

@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Search and retrieve Datum network cloud documentation, API references, and developer guides",
       "url": "https://www.datum.net/.well-known/agent-skills/datum-docs/SKILL.md",
-      "digest": "sha256:58ae49b044760e924bc64b385f4e97e2ffb51fdcb8a444abfb255ada0cf4805f"
+      "digest": "sha256:b9dd72b02d59b2981c614ec519d43361e4823ce28618ccc6e1a227a9f5ca8665"
     }
   ]
 }

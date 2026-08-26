@@ -129,8 +129,13 @@ const REDIRECTS = {
   },
   '/handbook/go-to-market/approach-gtm/': { destination: '/handbook/about/model', status: 301 },
   '/netzero/overview/overview': { destination: '/', status: 301 },
+  // The generated API reference this used to point at was retired (see the
+  // "Currently disabled" note in README.md's API Documentation section) —
+  // '/docs/api/reference' itself now just redirects to the generic docs
+  // home, so send legacy crawls straight there instead of through that
+  // extra hop.
   '/api-reference/invite/deletes-a-invite-by-id': {
-    destination: '/docs/api/reference',
+    destination: '/docs',
     status: 301,
   },
   '/blog/internet-superpowers-for-every-builder/)_/': {

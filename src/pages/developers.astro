@@ -3,10 +3,10 @@
 //
 // A single-page index of Datum's developer-facing resources, named and
 // linked explicitly (OpenAPI spec, agents.datum.net, auth docs, MCP server,
-// CLI, rate limits, changelog, status) — addresses is-agentic's "Developer
-// resource discoverability" check ("only 1/8 resources found by name"). Also
-// linked from llms.txt (automatic — see src/pages/llms.txt.ts, which lists
-// every `pages` collection entry) and .well-known/api-catalog.
+// CLI, rate limits, changelog, roadmap, status) — addresses is-agentic's
+// "Developer resource discoverability" check ("only 1/8 resources found by
+// name"). Also linked from llms.txt (automatic — see src/pages/llms.txt.ts,
+// which lists every `pages` collection entry) and .well-known/api-catalog.
 //
 // Deliberately does NOT list "API docs" or "Developer portal" as their own
 // entries, even though the is-agentic evidence names "API docs" directly —
@@ -88,6 +88,13 @@ const resources: DevResource[] = [
     href: '/changelog',
   },
   {
+    icon: 'waypoints',
+    title: 'Roadmap',
+    description:
+      'What’s upcoming, already shipped, and in the backlog — live from GitHub Projects.',
+    href: '/roadmap',
+  },
+  {
     icon: 'server',
     title: 'Status',
     description: 'Real-time and historical availability per region.',
@@ -103,9 +110,22 @@ const resources: DevResource[] = [
 // which reads as a solid gray block rather than a gap. Stretch the last card
 // to fully occupy the remainder instead, at both breakpoints that use a
 // multi-column layout, so this holds regardless of how many cards exist.
+const needsMdSpan = resources.length % 2 === 1;
+const lgRemainder = resources.length % 3;
+
 const lastItemSpanClass = [
-  resources.length % 2 === 1 ? 'md:col-span-2' : '',
-  resources.length % 3 === 1 ? 'lg:col-span-3' : resources.length % 3 === 2 ? 'lg:col-span-2' : '',
+  needsMdSpan ? 'md:col-span-2' : '',
+  // Tailwind breakpoints are min-width, so md:col-span-2 above would keep
+  // cascading into the lg (3-column) layout and beyond unless explicitly
+  // reset here — even when lg's own row is already complete on its own
+  // (lgRemainder === 0) and needs no span of its own.
+  lgRemainder === 1
+    ? 'lg:col-span-3'
+    : lgRemainder === 2
+      ? 'lg:col-span-2'
+      : needsMdSpan
+        ? 'lg:col-span-1'
+        : '',
 ]
   .filter(Boolean)
   .join(' ');

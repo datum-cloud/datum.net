@@ -296,6 +296,7 @@ test.describe('Developer resources page', () => {
       'CLI (datumctl)',
       'Rate limits',
       'Changelog',
+      'Roadmap',
       'Status',
     ]) {
       await expect(page.getByText(label, { exact: true })).toBeVisible();

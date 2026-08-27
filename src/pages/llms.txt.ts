@@ -76,7 +76,7 @@ export const GET: APIRoute = async () => {
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;
 
     llmsContent += `\n## Developers\n\n`;
-    llmsContent += `- [Datum Developer Resources](${siteUrl}/developers) - index of every developer-facing resource Datum publishes (OpenAPI spec, agents.datum.net, auth docs, MCP server, CLI, rate limits, changelog, status), at predictable URLs.\n`;
+    llmsContent += `- [Datum Developer Resources](${siteUrl}/developers) - index of every developer-facing resource Datum publishes (OpenAPI spec, agents.datum.net, auth docs, MCP server, CLI, rate limits, changelog, roadmap, status), at predictable URLs.\n`;
 
     llmsContent += `\n## API\n\n`;
     llmsContent += `- [OpenAPI spec](${siteUrl}/openapi.json) - machine-readable description of datum.net's own public endpoints, versioned at \`/api/v1/\` (also at ${siteUrl}/api/openapi.yaml). The Datum Cloud platform API itself is documented at ${siteUrl}/docs and discoverable at \`https://api.datum.net/openapi/v3\` (requires an authenticated bearer token).\n`;

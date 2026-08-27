@@ -15,7 +15,15 @@ const description = 'The page you are looking for does not exist.';
   <section class="datum-container">
     <Hero class="light" title={title} />
 
-    <div class="section--block bg-glacier-mist-700 pb-14 md:pb-20 lg:pb-28">
+    {
+      /* bg-platinum, matching the Hero above it: the section previously used
+        bg-glacier-mist-700 (#f6f6f5), a near-but-not-quite match for the
+        Hero's bg-platinum (#f9f9f8) with nothing (no image/form) between
+        them to break up the seam — read as an unintentional two-tone glitch
+        rather than a deliberate section break. Same color = no seam, matching
+        the pattern already used on /essentials and /developers. */
+    }
+    <div class="section--block bg-platinum pb-14 md:pb-20 lg:pb-28">
       <main class="mx-auto max-w-391 px-6">
         <Image src={Image404} alt="404" class="mx-auto mb-12 h-auto w-full max-w-[423px]" />
         <article class="prose prose-xl mx-auto text-center">

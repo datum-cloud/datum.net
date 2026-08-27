@@ -1,0 +1,204 @@
+---
+// src/pages/developers.astro
+//
+// A single-page index of Datum's developer-facing resources, named and
+// linked explicitly (OpenAPI spec, agents.datum.net, auth docs, MCP server,
+// CLI, rate limits, changelog, roadmap, status) — addresses is-agentic's
+// "Developer resource discoverability" check ("only 1/8 resources found by
+// name"). Also linked from llms.txt (automatic — see src/pages/llms.txt.ts,
+// which lists every `pages` collection entry) and .well-known/api-catalog.
+//
+// Deliberately does NOT list "API docs" or "Developer portal" as their own
+// entries, even though the is-agentic evidence names "API docs" directly —
+// neither exists as real, distinct published content today (confirmed:
+// datum.net/docs has no API reference section). Claiming them here would
+// just be a differently-shaped version of the same overclaiming problem
+// this repo avoids everywhere else (see the header comment in
+// src/data/openapi.ts) — a card that leads to nothing is worse for
+// discoverability than not having the card. The OpenAPI spec below is the
+// real, working API documentation this site actually has.
+import '@styles/page-developers.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import Icon from '@components/Icon.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+
+const page = await getCollectionEntry('pages', 'developers');
+const fm = page.data;
+const meta = fm.meta || {};
+
+interface DevResource {
+  icon: string;
+  title: string;
+  description: string;
+  href: string;
+  external?: boolean;
+}
+
+const resources: DevResource[] = [
+  {
+    icon: 'code',
+    title: 'OpenAPI spec',
+    description:
+      'Machine-readable description of datum.net’s own public endpoints — versioning, rate limits, and error schema included.',
+    href: '/openapi.json',
+  },
+  {
+    icon: 'radar',
+    title: 'Agents overview',
+    description:
+      'A dedicated, agent-optimized entry point — company and platform overview, the Kubernetes-style resource model, and Markdown/llms.txt versions of the whole site.',
+    href: 'https://agents.datum.net',
+    external: true,
+  },
+  {
+    icon: 'key',
+    title: 'Auth docs',
+    description:
+      'OIDC/PKCE sign-in, service accounts, and scoped tokens for headless and agent use.',
+    href: '/docs/platform/setup',
+    external: true,
+  },
+  {
+    icon: 'bot',
+    title: 'MCP server',
+    description:
+      'Datum MCP — OAuth-authenticated, tools for organizations, projects, domains, and DNS. Stdio today; hosted Streamable HTTP is planned.',
+    href: '/download/datum-mcp',
+  },
+  {
+    icon: 'terminal',
+    title: 'CLI (datumctl)',
+    description: 'Install, authenticate, and script against Datum Cloud from the terminal or CI.',
+    href: '/download/datumctl',
+  },
+  {
+    icon: 'zap',
+    title: 'Rate limits',
+    description:
+      'RateLimit-* response headers and self-throttling conventions, documented alongside each endpoint.',
+    href: '/openapi.json',
+  },
+  {
+    icon: 'history',
+    title: 'Changelog',
+    description: 'What shipped, and when.',
+    href: '/changelog',
+  },
+  {
+    icon: 'waypoints',
+    title: 'Roadmap',
+    description:
+      'What’s upcoming, already shipped, and in the backlog — live from GitHub Projects.',
+    href: '/roadmap',
+  },
+  {
+    icon: 'server',
+    title: 'Status',
+    description: 'Real-time and historical availability per region.',
+    href: 'https://www.datumstatus.net',
+    external: true,
+  },
+];
+
+// essentials-grid's border/divider lines come from the grid container's own
+// background showing through 1px gaps (see components-essentials.css) — an
+// incomplete last row (any resources.length not divisible by the column
+// count) leaves empty grid cells with nothing covering that background,
+// which reads as a solid gray block rather than a gap. Stretch the last card
+// to fully occupy the remainder instead, at both breakpoints that use a
+// multi-column layout, so this holds regardless of how many cards exist.
+const needsMdSpan = resources.length % 2 === 1;
+const lgRemainder = resources.length % 3;
+
+const lastItemSpanClass = [
+  needsMdSpan ? 'md:col-span-2' : '',
+  // Tailwind breakpoints are min-width, so md:col-span-2 above would keep
+  // cascading into the lg (3-column) layout and beyond unless explicitly
+  // reset here — even when lg's own row is already complete on its own
+  // (lgRemainder === 0) and needs no span of its own.
+  lgRemainder === 1
+    ? 'lg:col-span-3'
+    : lgRemainder === 2
+      ? 'lg:col-span-2'
+      : needsMdSpan
+        ? 'lg:col-span-1'
+        : '',
+]
+  .filter(Boolean)
+  .join(' ');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://www.datum.net/developers',
+  url: 'https://www.datum.net/developers',
+  name: fm.title,
+  description: fm.description,
+  isPartOf: { '@id': 'https://www.datum.net/#organization' },
+  inLanguage: 'en-US',
+};
+---
+
+<Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
+  <section class="datum-container">
+    {
+      /* showSectionLines left at Hero's own default (false): true draws a
+        line meant to continue into a ModuleConnector between sections
+        (see the pattern in HomeHero.astro) — this page doesn't have one,
+        so the line just dangled past the Hero with nothing to connect to. */
+    }
+    <Hero class="light" title={fm.title} description={fm.description} />
+
+    <section class="section--block bottom-pad bg-platinum section--block--x-pad overflow-hidden">
+      {
+        /* No top padding here (no section--block--pad): that's the same
+          "Hero bottom padding + section top padding" combo used everywhere
+          else on the site (275px on essentials.astro's own hero-to-grid
+          gap), normal for a page with more going on before the grid, but
+          too much dead space on this one. handbook.astro (no eyebrow,
+          minimal content) skips a padded wrapper and lets content sit
+          right under the Hero — same approach here.
+
+          bottom-pad IS kept, though: essentials.astro's grid-to-footer gap
+          (140px) came from the same SectionGroup large-pad this page no
+          longer uses — dropping it silently killed that gap too, leaving
+          the grid butted right up against the footer with nothing between
+          them. bottom-pad is the dedicated one-sided utility for this. */
+      }
+      <div class="max-width-nav relative">
+        <div class="spacing-pad relative">
+          <div class="essentials-grid">
+            {
+              resources.map((resource, index) => (
+                <a
+                  href={resource.href}
+                  class:list={[
+                    'essentials-item transition-opacity hover:opacity-80',
+                    index === resources.length - 1 && lastItemSpanClass,
+                  ]}
+                  target={resource.external ? '_blank' : undefined}
+                  rel={resource.external ? 'noopener' : undefined}
+                >
+                  <div class="essentials-item-icon">
+                    <Icon name={resource.icon} class="stroke-1.75" />
+                  </div>
+                  <div class="essentials-item-content">
+                    <p class="essentials-item-title">{resource.title}</p>
+                    <p class="essentials-item-description">{resource.description}</p>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <ModuleConnector />
+
+    <Footer />
+  </section>
+</Layout>

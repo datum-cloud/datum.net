@@ -290,6 +290,7 @@ test.describe('Developer resources page', () => {
 
     for (const label of [
       'OpenAPI spec',
+      'Agents overview',
       'Auth docs',
       'MCP server',
       'CLI (datumctl)',
@@ -306,6 +307,32 @@ test.describe('Developer resources page', () => {
     // the header comment in src/pages/developers.astro.
     await expect(page.getByText('API docs', { exact: true })).toHaveCount(0);
     await expect(page.getByText('Developer portal', { exact: true })).toHaveCount(0);
+  });
+
+  test('the resource grid has no incomplete-row gap at the 3-column breakpoint', async ({
+    page,
+  }) => {
+    // essentials-grid's dividers come from the container's own background
+    // showing through 1px gaps — an incomplete last row leaves empty cells
+    // with nothing covering that background, rendering as a solid gray
+    // block. developers.astro stretches the last card to fill the
+    // remainder; assert it actually did by checking the last card is wider
+    // than a normal (single-column) card at the lg breakpoint.
+    await page.setViewportSize({ width: 1280, height: 1200 });
+    await page.goto('/developers');
+
+    const items = page.locator('.essentials-grid > a');
+    const count = await items.count();
+    const firstBox = await items.first().boundingBox();
+    const lastBox = await items.last().boundingBox();
+    expect(firstBox).not.toBeNull();
+    expect(lastBox).not.toBeNull();
+
+    if (count % 3 !== 0) {
+      expect(lastBox!.width).toBeGreaterThan(firstBox!.width * 1.5);
+    } else {
+      expect(lastBox!.width).toBeCloseTo(firstBox!.width, -1);
+    }
   });
 
   test('/developers is listed in llms.txt and sitemap.xml', async ({ request }) => {

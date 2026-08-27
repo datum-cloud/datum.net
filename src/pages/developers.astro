@@ -2,11 +2,11 @@
 // src/pages/developers.astro
 //
 // A single-page index of Datum's developer-facing resources, named and
-// linked explicitly (OpenAPI spec, auth docs, MCP server, CLI, rate limits,
-// changelog, status) — addresses is-agentic's "Developer resource
-// discoverability" check ("only 1/8 resources found by name"). Also linked
-// from llms.txt (automatic — see src/pages/llms.txt.ts, which lists every
-// `pages` collection entry) and .well-known/api-catalog.
+// linked explicitly (OpenAPI spec, agents.datum.net, auth docs, MCP server,
+// CLI, rate limits, changelog, status) — addresses is-agentic's "Developer
+// resource discoverability" check ("only 1/8 resources found by name"). Also
+// linked from llms.txt (automatic — see src/pages/llms.txt.ts, which lists
+// every `pages` collection entry) and .well-known/api-catalog.
 //
 // Deliberately does NOT list "API docs" or "Developer portal" as their own
 // entries, even though the is-agentic evidence names "API docs" directly —
@@ -44,6 +44,14 @@ const resources: DevResource[] = [
     description:
       'Machine-readable description of datum.net’s own public endpoints — versioning, rate limits, and error schema included.',
     href: '/openapi.json',
+  },
+  {
+    icon: 'radar',
+    title: 'Agents overview',
+    description:
+      'A dedicated, agent-optimized entry point — company and platform overview, the Kubernetes-style resource model, and Markdown/llms.txt versions of the whole site.',
+    href: 'https://agents.datum.net',
+    external: true,
   },
   {
     icon: 'key',
@@ -88,6 +96,20 @@ const resources: DevResource[] = [
   },
 ];
 
+// essentials-grid's border/divider lines come from the grid container's own
+// background showing through 1px gaps (see components-essentials.css) — an
+// incomplete last row (any resources.length not divisible by the column
+// count) leaves empty grid cells with nothing covering that background,
+// which reads as a solid gray block rather than a gap. Stretch the last card
+// to fully occupy the remainder instead, at both breakpoints that use a
+// multi-column layout, so this holds regardless of how many cards exist.
+const lastItemSpanClass = [
+  resources.length % 2 === 1 ? 'md:col-span-2' : '',
+  resources.length % 3 === 1 ? 'lg:col-span-3' : resources.length % 3 === 2 ? 'lg:col-span-2' : '',
+]
+  .filter(Boolean)
+  .join(' ');
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -130,10 +152,13 @@ const jsonLd = {
         <div class="spacing-pad relative">
           <div class="essentials-grid">
             {
-              resources.map((resource) => (
+              resources.map((resource, index) => (
                 <a
                   href={resource.href}
-                  class="essentials-item transition-opacity hover:opacity-80"
+                  class:list={[
+                    'essentials-item transition-opacity hover:opacity-80',
+                    index === resources.length - 1 && lastItemSpanClass,
+                  ]}
                   target={resource.external ? '_blank' : undefined}
                   rel={resource.external ? 'noopener' : undefined}
                 >

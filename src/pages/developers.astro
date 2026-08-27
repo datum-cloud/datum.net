@@ -116,17 +116,21 @@ const jsonLd = {
     }
     <Hero class="light" title={fm.title} description={fm.description} />
 
-    <section class="section--block bg-platinum section--block--x-pad overflow-hidden">
+    <section class="section--block bottom-pad bg-platinum section--block--x-pad overflow-hidden">
       {
-        /* No section--block--pad here: that's the same "Hero bottom padding
-          + section top padding" combo used everywhere else on the site
-          (275px on essentials.astro's own hero-to-grid gap), which is
-          normal for a page with more going on before the grid, but reads
-          as too much dead space on this page. handbook.astro (no eyebrow,
-          minimal content) skips a padded wrapper entirely and lets its
-          content sit right under the Hero — same approach here, relying on
-          essentials-grid's own item padding (p-8 lg:p-11) instead of a
-          section-level pad. */
+        /* No top padding here (no section--block--pad): that's the same
+          "Hero bottom padding + section top padding" combo used everywhere
+          else on the site (275px on essentials.astro's own hero-to-grid
+          gap), normal for a page with more going on before the grid, but
+          too much dead space on this one. handbook.astro (no eyebrow,
+          minimal content) skips a padded wrapper and lets content sit
+          right under the Hero — same approach here.
+
+          bottom-pad IS kept, though: essentials.astro's grid-to-footer gap
+          (140px) came from the same SectionGroup large-pad this page no
+          longer uses — dropping it silently killed that gap too, leaving
+          the grid butted right up against the footer with nothing between
+          them. bottom-pad is the dedicated one-sided utility for this. */
       }
       <div class="max-width-nav relative">
         <div class="spacing-pad relative">

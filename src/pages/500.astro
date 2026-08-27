@@ -14,7 +14,11 @@ const description = 'An unexpected error occurred. Our team has been notified.';
   <section class="datum-container">
     <Hero class="light" title={title} />
 
-    <div class="section--block bg-glacier-mist-700 pb-14 md:pb-20 lg:pb-28">
+    {
+      /* bg-platinum, matching the Hero above it — see the same fix and
+        rationale in src/pages/404.astro. */
+    }
+    <div class="section--block bg-platinum pb-14 md:pb-20 lg:pb-28">
       <main class="mx-auto max-w-391 px-6">
         <article class="prose prose-xl mx-auto text-center">
           <p class="mb-4 text-lg">We're sorry — an unexpected error occurred on our end.</p>

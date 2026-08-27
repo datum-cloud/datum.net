@@ -2,11 +2,21 @@
 // src/pages/developers.astro
 //
 // A single-page index of Datum's developer-facing resources, named and
-// linked explicitly (API docs, OpenAPI spec, auth docs, developer portal,
-// MCP server, CLI, rate limits, changelog, status) — addresses is-agentic's
-// "Developer resource discoverability" check ("only 1/8 resources found by
-// name"). Also linked from llms.txt (automatic — see src/pages/llms.txt.ts,
-// which lists every `pages` collection entry) and .well-known/api-catalog.
+// linked explicitly (OpenAPI spec, auth docs, MCP server, CLI, rate limits,
+// changelog, status) — addresses is-agentic's "Developer resource
+// discoverability" check ("only 1/8 resources found by name"). Also linked
+// from llms.txt (automatic — see src/pages/llms.txt.ts, which lists every
+// `pages` collection entry) and .well-known/api-catalog.
+//
+// Deliberately does NOT list "API docs" or "Developer portal" as their own
+// entries, even though the is-agentic evidence names "API docs" directly —
+// neither exists as real, distinct published content today (confirmed:
+// datum.net/docs has no API reference section). Claiming them here would
+// just be a differently-shaped version of the same overclaiming problem
+// this repo avoids everywhere else (see the header comment in
+// src/data/openapi.ts) — a card that leads to nothing is worse for
+// discoverability than not having the card. The OpenAPI spec below is the
+// real, working API documentation this site actually has.
 import '@styles/page-developers.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -29,14 +39,6 @@ interface DevResource {
 
 const resources: DevResource[] = [
   {
-    icon: 'compass',
-    title: 'API docs',
-    description:
-      "Guides, auth, and reference for both Datum's own site API and the Datum Cloud platform API.",
-    href: '/docs',
-    external: true,
-  },
-  {
     icon: 'code',
     title: 'OpenAPI spec',
     description:
@@ -49,14 +51,6 @@ const resources: DevResource[] = [
     description:
       'OIDC/PKCE sign-in, service accounts, and scoped tokens for headless and agent use.',
     href: '/docs/platform/setup',
-    external: true,
-  },
-  {
-    icon: 'globe',
-    title: 'Developer portal',
-    description:
-      'The full documentation hub — guides, CLI reference, API reference, and agent-facing docs.',
-    href: '/docs',
     external: true,
   },
   {

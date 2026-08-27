@@ -289,10 +289,8 @@ test.describe('Developer resources page', () => {
     await expect(page.locator('h1')).toHaveText('Datum Developer Resources');
 
     for (const label of [
-      'API docs',
       'OpenAPI spec',
       'Auth docs',
-      'Developer portal',
       'MCP server',
       'CLI (datumctl)',
       'Rate limits',
@@ -301,6 +299,13 @@ test.describe('Developer resources page', () => {
     ]) {
       await expect(page.getByText(label, { exact: true })).toBeVisible();
     }
+
+    // Regression guard: neither exists as real, distinct published content
+    // today (confirmed against datum.net/docs) — a card that leads to
+    // nothing is worse for discoverability than not having the card. See
+    // the header comment in src/pages/developers.astro.
+    await expect(page.getByText('API docs', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('Developer portal', { exact: true })).toHaveCount(0);
   });
 
   test('/developers is listed in llms.txt and sitemap.xml', async ({ request }) => {

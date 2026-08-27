@@ -114,7 +114,13 @@ const jsonLd = {
     <section
       class="section--block border-silver-mist bg-platinum section--block--x-pad overflow-hidden border-t"
     >
-      <SectionGroup label="Resources" eyebrowVariant="iris">
+      {
+        /* showSectionLines={false}: the default crosshair (SectionGroup's
+          own doc) pairs with extra SectionLine elements woven through the
+          content below on pages like /essentials — without that, it just
+          floats next to the label as a stray plus sign. */
+      }
+      <SectionGroup label="Resources" eyebrowVariant="iris" showSectionLines={false}>
         <div class="spacing-pad relative">
           <div class="essentials-grid">
             {

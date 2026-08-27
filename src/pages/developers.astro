@@ -11,7 +11,6 @@ import '@styles/page-developers.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import SectionGroup from '@components/SectionGroup.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import Icon from '@components/Icon.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
@@ -117,14 +116,18 @@ const jsonLd = {
     }
     <Hero class="light" title={fm.title} description={fm.description} />
 
-    <section class="section--block bg-platinum section--block--x-pad overflow-hidden">
+    <section
+      class="section--block section--block--pad bg-platinum section--block--x-pad overflow-hidden"
+    >
       {
-        /* showSectionLines={false}: the default crosshair (SectionGroup's
-          own doc) pairs with extra SectionLine elements woven through the
-          content below on pages like /essentials — without that, it just
-          floats next to the label as a stray plus sign. */
+        /* Plain wrapper, not SectionGroup: SectionGroup's own vertical
+          padding (large-pad, up to py-40) is sized to make room for its
+          eyebrow label + section lines — with neither in use here (the
+          Hero title/description above already introduces this content),
+          that padding was just an empty gap. section--block--pad on the
+          outer <section> above provides normal section spacing instead. */
       }
-      <SectionGroup label="Resources" eyebrowVariant="iris" showSectionLines={false}>
+      <div class="max-width-nav relative">
         <div class="spacing-pad relative">
           <div class="essentials-grid">
             {
@@ -147,7 +150,7 @@ const jsonLd = {
             }
           </div>
         </div>
-      </SectionGroup>
+      </div>
     </section>
 
     <ModuleConnector />

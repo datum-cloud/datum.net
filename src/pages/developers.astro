@@ -116,16 +116,17 @@ const jsonLd = {
     }
     <Hero class="light" title={fm.title} description={fm.description} />
 
-    <section
-      class="section--block section--block--pad bg-platinum section--block--x-pad overflow-hidden"
-    >
+    <section class="section--block bg-platinum section--block--x-pad overflow-hidden">
       {
-        /* Plain wrapper, not SectionGroup: SectionGroup's own vertical
-          padding (large-pad, up to py-40) is sized to make room for its
-          eyebrow label + section lines — with neither in use here (the
-          Hero title/description above already introduces this content),
-          that padding was just an empty gap. section--block--pad on the
-          outer <section> above provides normal section spacing instead. */
+        /* No section--block--pad here: that's the same "Hero bottom padding
+          + section top padding" combo used everywhere else on the site
+          (275px on essentials.astro's own hero-to-grid gap), which is
+          normal for a page with more going on before the grid, but reads
+          as too much dead space on this page. handbook.astro (no eyebrow,
+          minimal content) skips a padded wrapper entirely and lets its
+          content sit right under the Hero — same approach here, relying on
+          essentials-grid's own item padding (p-8 lg:p-11) instead of a
+          section-level pad. */
       }
       <div class="max-width-nav relative">
         <div class="spacing-pad relative">

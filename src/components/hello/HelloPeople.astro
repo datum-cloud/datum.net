@@ -1,7 +1,11 @@
 ---
 // src/components/hello/HelloPeople.astro
 import Icon from '@components/Icon.astro';
-import { getHelloPineForgeAvatarUrl, getStrapiCardMembers, getTeamBgColor } from '@libs/strapi';
+import {
+  getHelloPineForgeAvatarUrl,
+  getStrapiCardMembers,
+  PINE_FORGE_BG_COLOR,
+} from '@libs/strapi';
 import type { CardCategory, StrapiAuthorFull } from '@libs/strapi';
 import { getStrapiMediaUrl } from '@/src/types/strapi';
 import HelloCard from './HelloCard.astro';
@@ -30,7 +34,7 @@ const helloMembersData = cardMembers.map((member, index) => ({
     name: member.name,
     title: member.title,
     helloBio: member.helloBio?.trim() || undefined,
-    avatarBgColor: getTeamBgColor(index),
+    avatarBgColor: PINE_FORGE_BG_COLOR,
     avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
     location: member.location,
     timezone: member.timezone,

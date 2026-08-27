@@ -82,6 +82,9 @@ function normalizeAuthorFromGraphQL(row: GraphQLAuthorRow): StrapiAuthorFull {
 
 const TEAM_BG_COLORS = ['#5F735E', '#BF9595', '#D1CDC0'] as const;
 
+/** Background color matching the pine-forge avatar variant that /hello always displays. */
+export const PINE_FORGE_BG_COLOR = TEAM_BG_COLORS[0];
+
 export const AUTHORS_QUERY = `
   query GetAuthors($start: Int!, $limit: Int!) {
     authors(pagination: { start: $start, limit: $limit }) {

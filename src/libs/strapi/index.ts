@@ -91,6 +91,7 @@ export {
   getStrapiCardMembers,
   getTeamBgColor,
   getAuthorBgColorFromStrapi,
+  PINE_FORGE_BG_COLOR,
 } from './authors';
 
 // /hello-only avatar resolution, decoupled from the shared `avatar` field

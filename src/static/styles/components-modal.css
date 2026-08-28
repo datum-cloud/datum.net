@@ -52,19 +52,23 @@
   }
 
   .media-lightbox-frame {
-    @apply items-center justify-center p-4 md:p-10;
+    @apply items-center justify-center p-0;
   }
 
   .media-lightbox-content {
-    @apply m-0 min-h-0 items-center justify-center gap-3;
+    @apply m-0 min-h-0 items-center justify-center gap-0;
+  }
+
+  .media-lightbox-figure {
+    @apply m-0 flex w-full flex-col items-center;
   }
 
   .media-lightbox-img {
-    @apply max-h-[calc(100vh-12rem)] w-auto max-w-full rounded-md object-contain;
+    @apply h-auto max-h-[calc(100vh-12rem)] w-full rounded-none object-contain;
   }
 
   .media-lightbox-caption {
-    @apply datum-text-sm text-midnight-fjord/60 pt-2 text-center;
+    @apply datum-text-sm text-midnight-fjord/60 w-full px-4 py-3 text-center md:px-10 md:pb-10;
   }
 
   /* Clickable content/featured images that open the lightbox */

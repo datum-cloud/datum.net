@@ -22,6 +22,7 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import Icon from '@components/Icon.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -103,13 +104,13 @@ const resources: DevResource[] = [
   },
 ];
 
-// essentials-grid's border/divider lines come from the grid container's own
-// background showing through 1px gaps (see components-essentials.css) — an
-// incomplete last row (any resources.length not divisible by the column
-// count) leaves empty grid cells with nothing covering that background,
-// which reads as a solid gray block rather than a gap. Stretch the last card
-// to fully occupy the remainder instead, at both breakpoints that use a
-// multi-column layout, so this holds regardless of how many cards exist.
+// developers-grid's border/divider lines come from the grid container's own
+// background showing through 1px gaps — an incomplete last row (any
+// resources.length not divisible by the column count) leaves empty grid
+// cells with nothing covering that background, which reads as a solid gray
+// block rather than a gap. Stretch the last card to fully occupy the
+// remainder instead, at both breakpoints that use a multi-column layout, so
+// this holds regardless of how many cards exist.
 const needsMdSpan = resources.length % 2 === 1;
 const lgRemainder = resources.length % 3;
 
@@ -144,50 +145,38 @@ const jsonLd = {
 
 <Layout bodyClass={`page-${page.id}`} meta={meta} jsonLd={jsonLd}>
   <section class="datum-container">
-    {
-      /* showSectionLines left at Hero's own default (false): true draws a
-        line meant to continue into a ModuleConnector between sections
-        (see the pattern in HomeHero.astro) — this page doesn't have one,
-        so the line just dangled past the Hero with nothing to connect to. */
-    }
-    <Hero class="light" title={fm.title} description={fm.description} />
+    <Hero
+      class="light"
+      title={fm.title}
+      description={fm.description}
+      showSectionLines={true}
+      sectionLines={{ left: true, top: true, bottom: true, right: true }}
+    />
 
-    <section class="section--block bottom-pad bg-platinum section--block--x-pad overflow-hidden">
-      {
-        /* No top padding here (no section--block--pad): that's the same
-          "Hero bottom padding + section top padding" combo used everywhere
-          else on the site (275px on essentials.astro's own hero-to-grid
-          gap), normal for a page with more going on before the grid, but
-          too much dead space on this one. handbook.astro (no eyebrow,
-          minimal content) skips a padded wrapper and lets content sit
-          right under the Hero — same approach here.
-
-          bottom-pad IS kept, though: essentials.astro's grid-to-footer gap
-          (140px) came from the same SectionGroup large-pad this page no
-          longer uses — dropping it silently killed that gap too, leaving
-          the grid butted right up against the footer with nothing between
-          them. bottom-pad is the dedicated one-sided utility for this. */
-      }
-      <div class="max-width-nav relative">
-        <div class="spacing-pad relative">
-          <div class="essentials-grid">
+    <section
+      class="section--block section--block--x-pad border-silver-mist bg-platinum relative overflow-hidden border-t"
+    >
+      <div class="max-width-nav section-pad relative">
+        <SectionLine left right top />
+        <div class="max-width-nopad">
+          <div class="developers-grid">
             {
               resources.map((resource, index) => (
                 <a
                   href={resource.href}
                   class:list={[
-                    'essentials-item transition-opacity hover:opacity-80',
+                    'developers-item transition-opacity hover:opacity-80',
                     index === resources.length - 1 && lastItemSpanClass,
                   ]}
                   target={resource.external ? '_blank' : undefined}
                   rel={resource.external ? 'noopener' : undefined}
                 >
-                  <div class="essentials-item-icon">
-                    <Icon name={resource.icon} class="stroke-1.75" />
+                  <div class="developers-item-icon">
+                    <Icon name={resource.icon} size="sm" class="text-pine-forge---links" />
                   </div>
-                  <div class="essentials-item-content">
-                    <p class="essentials-item-title">{resource.title}</p>
-                    <p class="essentials-item-description">{resource.description}</p>
+                  <div class="developers-item-content">
+                    <p class="developers-item-title">{resource.title}</p>
+                    <p class="developers-item-description">{resource.description}</p>
                   </div>
                 </a>
               ))
@@ -196,9 +185,8 @@ const jsonLd = {
         </div>
       </div>
     </section>
-
     <ModuleConnector />
-
-    <Footer />
   </section>
+
+  <Footer />
 </Layout>

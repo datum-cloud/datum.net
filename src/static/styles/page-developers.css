@@ -1,2 +1,31 @@
 @import './base.css';
-@import './components-essentials.css';
+
+@layer components {
+  .developers-grid {
+    @apply border-silver-mist bg-silver-mist grid grid-cols-1 gap-px border md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .developers-item {
+    @apply bg-platinum flex flex-col items-start gap-7 p-8;
+  }
+
+  .developers-item-icon {
+    @apply bg-aurora-moss flex size-10 shrink-0 items-center justify-center rounded-sm;
+
+    svg {
+      @apply text-pine-forge---links size-5;
+    }
+  }
+
+  .developers-item-content {
+    @apply flex w-full flex-col gap-2.5;
+  }
+
+  .developers-item-title {
+    @apply datum-text-lg text-midnight-fjord font-semibold;
+  }
+
+  .developers-item-description {
+    @apply datum-text-base text-midnight-fjord/80;
+  }
+}

@@ -313,7 +313,7 @@ test.describe('Developer resources page', () => {
   test('the resource grid has no incomplete-row gap at the 3-column breakpoint', async ({
     page,
   }) => {
-    // essentials-grid's dividers come from the container's own background
+    // developers-grid's dividers come from the container's own background
     // showing through 1px gaps — an incomplete last row leaves empty cells
     // with nothing covering that background, rendering as a solid gray
     // block. developers.astro stretches the last card to fill the
@@ -322,7 +322,7 @@ test.describe('Developer resources page', () => {
     await page.setViewportSize({ width: 1280, height: 1200 });
     await page.goto('/developers');
 
-    const items = page.locator('.essentials-grid > a');
+    const items = page.locator('.developers-grid > a');
     const count = await items.count();
     const firstBox = await items.first().boundingBox();
     const lastBox = await items.last().boundingBox();

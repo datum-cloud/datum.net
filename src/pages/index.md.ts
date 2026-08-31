@@ -74,8 +74,9 @@ export const GET: APIRoute = async () => {
       '## For agents and developers',
       '',
       '- [Documentation](/docs/) - Quickstart and API reference',
-      '- [Download datumctl](/download/datumctl/) - CLI for managing your network cloud',
-      '- [Download Datum MCP](/download/datum-mcp/) - MCP server for AI tools',
+      '- [datumctl documentation](/docs/datumctl/quickstart) - install and use the CLI for managing your network cloud',
+      '- [Datum MCP documentation](/docs/datum-mcp) - connect AI tools to Datum Cloud',
+      '- [Desktop app documentation](/docs/desktop-apps) - install the macOS, Windows, or Linux app',
       '- [GitHub](https://github.com/datum-cloud) - Open source under AGPLv3',
       ''
     );

@@ -1,7 +1,6 @@
 // Catch-all markdown endpoint. Handles every content-collection-backed URL
 // that matches a pattern in src/utils/markdownRegistry.ts:
 //
-//   /download/<slug>        -> download collection
 //   /legal/<slug>           -> legal collection
 //   /handbook/<...id>       -> handbooks collection
 //   /brand/<slug>           -> pages collection, id "brand/<slug>"

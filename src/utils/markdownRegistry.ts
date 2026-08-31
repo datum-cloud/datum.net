@@ -30,7 +30,6 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/changelog',
   '/contact',
   '/dedicated-cloud',
-  '/download',
   '/essentials',
   '/roadmap',
   '/roadmap/backlog',
@@ -64,7 +63,6 @@ const PAGES_URL_OVERRIDES: Record<string, string> = {
 const PAGES_SKIP = new Set<string>([
   '/', // dedicated (home: hero + WhatIsDatum + items.json)
   'contact', // dedicated (body + founder CTA)
-  'download', // dedicated (body + download collection listing)
   'essentials', // dedicated (body + features.json + FAQ)
   'features', // dedicated (component-composed)
   'about', // dedicated (mission/companies/investors/team + Strapi people)
@@ -90,8 +88,6 @@ const COLLECTION_PATTERNS: Array<{
   /** Build a URL path for an entry, or return null to skip it. */
   pathFor: (id: string) => string | null;
 }> = [
-  // /download/<slug>
-  { collection: 'download', pathFor: (id) => `/download/${id}` },
   // /legal/<slug>
   { collection: 'legal', pathFor: (id) => `/legal/${id}` },
   // /handbook/<...id>

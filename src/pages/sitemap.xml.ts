@@ -8,7 +8,7 @@ import { fetchStrapiArticleSitemapRows } from '@libs/strapi/articles';
 const SITE_URL = 'https://www.datum.net';
 const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
 
-// Known static routes (dedicated .astro files, not driven by content collections)
+// Known site routes (dedicated .astro files plus the reverse-proxied docs root)
 const STATIC_ROUTES = [
   '/',
   '/about',
@@ -18,8 +18,8 @@ const STATIC_ROUTES = [
   '/careers',
   '/changelog',
   '/contact',
+  '/docs',
   '/developers',
-  '/download',
   '/essentials',
   '/events',
   '/events/alt-cloud-meetups',

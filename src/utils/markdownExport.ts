@@ -30,7 +30,6 @@ function normalisePath(pathname: string): string {
  * Examples:
  *   /                  -> /index.md          (dedicated endpoint)
  *   /pricing           -> /pricing.md        (dedicated endpoint)
- *   /download/mac-os   -> /download/mac-os.md (auto-derived catch-all)
  *   /brand/principles  -> /brand/principles.md (auto-derived catch-all)
  *   /blog/some-post    -> /blog/some-post.md  (Strapi)
  *   /unknown-page      -> null

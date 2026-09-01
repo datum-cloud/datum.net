@@ -1,15 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
   "lockFileMaintenance": {
     "enabled": true
   },
   "packageRules": [
     {
       "matchManagers": ["npm"],
-      "updateLockFiles": true,
       "rangeStrategy": "bump",
-      "groupName": "npm dependencies"
+      "updateLockFiles": true
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "npm dependencies (safe)"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "npm dependencies (major)"
     },
     {
       "description": "Block eslint major upgrades until eslint-plugin-jsx-a11y supports eslint v10",

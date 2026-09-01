@@ -90,6 +90,7 @@ export {
   getStrapiTeamMembers,
   getStrapiCardMembers,
   getTeamBgColor,
+  getAvatarVariantBgColor,
   getAuthorBgColorFromStrapi,
   PINE_FORGE_BG_COLOR,
 } from './authors';

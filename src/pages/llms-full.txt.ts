@@ -268,13 +268,7 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 \`datumctl\` is modeled after \`kubectl\`. If you've used Kubernetes, the patterns are identical.
 
-**Install:**
-\`\`\`bash
-# macOS via Homebrew
-brew install --cask datum-cloud/tap/desktop
-
-# Or download from: https://www.datum.net/download
-\`\`\`
+**Install:** Follow the [datumctl Quickstart](https://www.datum.net/docs/datumctl/quickstart) for Homebrew, pre-built binaries, Nix, Windows, and source-build instructions.
 
 **Auth:**
 \`\`\`bash

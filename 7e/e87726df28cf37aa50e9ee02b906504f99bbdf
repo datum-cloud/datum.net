@@ -1,0 +1,31 @@
+renovate.json
+  s_e580abb658effe::t_8235a5739890fc 14-18,23
+  s_e580abb658effe::t_cf61354ada0f29 4-5,13,19-22
+package.json
+  s_e580abb658effe::t_b3d9791259ba1f 109-111
+.github/workflows/quality-checks.yml
+  s_e580abb658effe::t_4d8de87d02c8d6 54-56
+package-lock.json
+  s_e580abb658effe::t_33eac1e7fb6126 7934-7946,7949
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "7ee87726df28cf37aa50e9ee02b906504f99bbdf",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_e580abb658effe": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "def78039-5efe-4047-a622-a0c7396f6928",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

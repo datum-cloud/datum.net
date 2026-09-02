@@ -167,6 +167,7 @@ Not “unused” — inventory of client/inline JS surfaces.
 | `src/pages/_features-legacy.astro`                     |               2 | [ ]    |
 | `src/pages/404.astro`                                  |               1 | [ ]    |
 | `src/pages/careers.astro`                              |               3 | [ ]    |
+| `src/pages/download/[slug].astro`                      |               1 | [ ]    |
 | `src/pages/essentials.astro`                           |               1 | [ ]    |
 | `src/pages/locations.astro`                            |               1 | [ ]    |
 | `src/pages/shop/index.astro`                           |               2 | [ ]    |

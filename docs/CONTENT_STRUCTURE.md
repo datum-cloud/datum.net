@@ -38,6 +38,16 @@ src/content/
 │   ├── 0.1.1.md
 │   └── index.md (main page)
 │
+├── download/ (/download)
+│   ├── datum-mcp.mdx
+│   ├── datumctl.mdx
+│   ├── go.mdx
+│   ├── linux.mdx
+│   ├── mac-os.mdx
+│   ├── rust.mdx
+│   ├── typescript.mdx
+│   └── windows.mdx
+│
 ├── events/ (/events)
 │   ├── images/
 │   │   ├── guests/
@@ -88,7 +98,7 @@ src/content/
 │   ├── events/ - Events landing content (index, alt-cloud-meetups, community-huddles)
 │   ├── home/ - Homepage sections (items.json, what-does-good-look-like.md, why-evolve.md) + images/
 │   ├── resources/ - Open-source projects page + images/
-│   ├── backlog.mdx, blog.mdx, career.mdx, contact.mdx, docs.mdx,
+│   ├── backlog.mdx, blog.mdx, career.mdx, contact.mdx, docs.mdx, download.mdx,
 │   │   essentials.mdx, features.mdx, global-section.md, home.mdx (main page),
 │   │   locations.mdx, pricing.mdx, roadmap.mdx
 │
@@ -100,7 +110,7 @@ src/content/
 
 ## Content Organization
 
-Each top-level directory (except `images/`) is registered as an Astro content collection in `src/content.config.ts`: `pages`, `about`, `legal`, `categories`, `handbooks`, `changelog`, `features`, `pricing`, `faq`, `events`.
+Each top-level directory (except `images/`) is registered as an Astro content collection in `src/content.config.ts`: `pages`, `about`, `legal`, `categories`, `handbooks`, `changelog`, `features`, `pricing`, `faq`, `download`, `events`.
 
 ### About (`about/`)
 
@@ -117,6 +127,10 @@ Blog post category definitions used to tag Strapi-sourced blog posts.
 ### Changelog (`changelog/`)
 
 Version changelog entries plus the main changelog index page.
+
+### Download (`download/`)
+
+One entry per download target/tool (CLI, OS-specific installers, SDKs).
 
 ### Events (`events/`)
 

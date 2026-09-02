@@ -38,7 +38,7 @@ const baseServerCard = {
   description:
     'Official Datum Cloud MCP server — gives AI agents tools to list and manage organizations, projects, domains, HTTP proxies/routes, gateways, traffic protection policies, and DNS zones/records. OAuth 2.1 (PKCE) authenticated. Distributed today as a stdio binary; a hosted Streamable HTTP transport is planned but not yet live.',
   version: DATUM_MCP_VERSION,
-  websiteUrl: 'https://www.datum.net/docs/datum-mcp',
+  websiteUrl: 'https://www.datum.net/download/datum-mcp',
   packages: [
     {
       registryType: 'github',

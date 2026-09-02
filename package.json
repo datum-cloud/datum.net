@@ -107,7 +107,7 @@
     "@rollup/rollup-linux-arm64-gnu": "4.63.1"
   },
   "overrides": {
-    "deepmerge-ts": "^8.0.0"
+    "deepmerge-ts": "^8.0.2"
   },
   "lint-staged": {
     "*": [

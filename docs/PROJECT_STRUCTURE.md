@@ -111,6 +111,11 @@ Reusable UI components organized by feature:
 - `Note.astro` / `TabItem.astro` / `Tabs.astro` - MDX content primitives (callouts, tabbed content)
 - `index.ts` / `tabs.ts` - Content component exports and tab logic
 
+**Download** (`download/`)
+
+- `Download.astro` - Download link/button
+- `DownloadNav.astro` - Download page navigation
+
 **Events** (`events/`)
 
 - `Card.astro` - Event card component
@@ -174,6 +179,7 @@ Static data files:
 
 - `ai-prompt.md` - AI agent system prompt content
 - `announcement.json` - Announcement banner config
+- `downloads.json` - Download page entries
 - `features.json` - Feature descriptions
 - `locations.json` - Office/location data
 - `logos.json` - Logo data
@@ -191,6 +197,7 @@ Content files organized by content type. See [CONTENT_STRUCTURE.md](./CONTENT_ST
 - `careers/` - Career content and assets
 - `categories/` - Blog post categories
 - `changelog/` - Changelog entries
+- `download/` - Downloads content
 - `events/` - Event entries
 - `faq/` - Frequently asked questions
 - `features/` - Feature descriptions
@@ -251,7 +258,7 @@ File-based routes. Notable routes beyond the obvious top-level pages:
   - `api/cache/index.ts` / `api/cache/[name].ts` / `api/cache/strapi.ts` - Cache inventory (**GET**), single-key JSON (**GET** `/api/cache/:name`), Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
   - `api/webhooks/strapi-content.ts` - Strapi content-change webhook
 - `auth/` - `callback.astro`, `login.astro`, `logout.astro` - OIDC auth pages
-- `blog/`, `authors/`, `roadmap/` - Dynamic listing/detail pages, each with a matching `*.md.ts` markdown-export route
+- `blog/`, `authors/`, `roadmap/`, `download/` - Dynamic listing/detail pages, each with a matching `*.md.ts` markdown-export route
 - `dev/` - `build.astro`, `info.astro` - Build status/info pages
 - `demo.astro` - Book-a-demo page (renders `components/forms/BookDemo.astro`)
 - `llms.txt.ts` / `llms-full.txt.ts` - LLMs.txt endpoints
@@ -321,7 +328,7 @@ Static files served as-is:
 
 - `fonts/` - Web fonts
 - `images/` - Static images
-- `download/` - Downloadable brand assets
+- `download/` - Downloadable assets
 - `favicons/` - Favicon files
 - `favicon.ico`, `favicon.png`, `favicon.svg` - Root favicons
 - `site.webmanifest` - Web app manifest

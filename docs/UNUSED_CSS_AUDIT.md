@@ -66,6 +66,9 @@ No literal usage, but matches a dynamic prefix — usually still live.
 | `.dns-anim-status--5`                | `src/static/styles/components-dns-hero-animation.css` | `dns-anim-status--`          | [ ]    |
 | `.dns-anim-status--6`                | `src/static/styles/components-dns-hero-animation.css` | `dns-anim-status--`          | [ ]    |
 | `.dns-anim-status--7`                | `src/static/styles/components-dns-hero-animation.css` | `dns-anim-status--`          | [ ]    |
+| `.note--caution`                     | `src/static/styles/components-download.css`           | `note--`                     | [ ]    |
+| `.note--note`                        | `src/static/styles/components-download.css`           | `note--`                     | [ ]    |
+| `.note--tip`                         | `src/static/styles/components-download.css`           | `note--`                     | [ ]    |
 
 ## Candidate unused classes (by file)
 
@@ -86,6 +89,12 @@ No literal usage, but matches a dynamic prefix — usually still live.
 | Class                        | Lines | Review | Notes |
 | ---------------------------- | ----- | ------ | ----- |
 | `.btn--midnight-fjord-alpha` | 54    | [ ]    |       |
+
+### `src/static/styles/components-download.css`
+
+| Class                   | Lines  | Review | Notes |
+| ----------------------- | ------ | ------ | ----- |
+| `.download-nav-divider` | 77, 81 | [ ]    |       |
 
 ### `src/static/styles/components-events.css`
 

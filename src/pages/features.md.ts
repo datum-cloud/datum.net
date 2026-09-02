@@ -66,9 +66,8 @@ export const GET: APIRoute = async () => {
       '## Get started',
       '',
       '- [Pricing](/pricing/) - Forever-free Builder tier, Scaler from $20/month, custom Provider',
-      '- [datumctl documentation](/docs/datumctl/quickstart) - install and use the CLI for managing your network cloud',
-      '- [Datum MCP documentation](/docs/datum-mcp) - connect AI tools to Datum Cloud',
-      '- [Desktop app documentation](/docs/desktop-apps) - install the macOS, Windows, or Linux app',
+      '- [Download datumctl](/download/datumctl/) - CLI for managing your network cloud',
+      '- [Download Datum MCP](/download/datum-mcp/) - MCP server for AI tools',
       ''
     );
 

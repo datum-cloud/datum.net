@@ -128,10 +128,10 @@ export const operators = {
         'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/zachary_smith_glacier_mist_b7a391652b.png',
     },
     {
-      name: 'Megan O’Conner',
+      name: 'Megan O’Connor',
       role: 'Chief of Staff & Strategic Accounts',
       bio: 'Turns complex infrastructure into clear, human-led paths to what’s next for our biggest accounts.',
-      slug: 'megan-oconner',
+      slug: 'megan-oconnor',
       linkedin: 'https://www.linkedin.com/in/meganoconnorco/',
     },
     {

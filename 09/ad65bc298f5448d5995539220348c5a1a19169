@@ -1,0 +1,30 @@
+Dockerfile
+  s_9575b6de1e4ada::t_5a108f3c01f917 17-18
+scripts/sync-locations.ts
+  s_9575b6de1e4ada::t_097a5732149139 1-99,109-125,127-128
+  s_9575b6de1e4ada::t_593aab4e52d032 100-108,126
+  s_9575b6de1e4ada::t_21a9539b5f56b6 129-130
+package.json
+  s_9575b6de1e4ada::t_23650d5a7a3bb9 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "09ad65bc298f5448d5995539220348c5a1a19169",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9575b6de1e4ada": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "74f68638-1cea-4f5c-acbc-d4d6d3639475",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

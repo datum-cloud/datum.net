@@ -1,5 +1,7 @@
 ---
 // src/pages/locations.astro
+export const prerender = false;
+
 import '@styles/page-locations.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
@@ -10,11 +12,13 @@ import SecondaryTabNav from '@components/SecondaryTabNav.astro';
 import SectionGroup from '@components/SectionGroup.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import navigation from '@data/navigation.json';
+import { getLocations } from '@libs/locations';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 const page = await getCollectionEntry('pages', 'locations');
 const fm = page.data;
+const locationEntries = await getLocations();
 
 // SEO
 const meta = fm.meta || {};
@@ -66,9 +70,9 @@ const jsonLd = {
       >
         <div class="spacing-pad relative">
           <section class="max-width max-w-6xl">
-            <LocationsMap />
+            <LocationsMap locations={locationEntries} />
           </section>
-          <LocationsList />
+          <LocationsList locations={locationEntries} />
         </div>
       </SectionGroup>
     </section>

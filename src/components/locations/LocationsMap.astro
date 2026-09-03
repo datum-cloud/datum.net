@@ -3,14 +3,22 @@
 import { Image } from 'astro:assets';
 
 import mapImage from '@assets/images/world-map-dots.png';
-import locations from '@data/locations.json';
+import type { LocationEntry } from '@/src/types/locations';
 
-const pins = locations.map((loc, i) => ({
-  ...loc,
-  x: loc.mapX,
-  y: loc.mapY,
-  pulseDelay: ((i * 0.4) % 2.5).toFixed(1),
-}));
+interface Props {
+  locations: LocationEntry[];
+}
+
+const { locations } = Astro.props as Props;
+
+const pins = locations
+  .filter((loc) => loc.mapX !== undefined && loc.mapY !== undefined)
+  .map((loc, i) => ({
+    ...loc,
+    x: loc.mapX,
+    y: loc.mapY,
+    pulseDelay: ((i * 0.4) % 2.5).toFixed(1),
+  }));
 ---
 
 <div

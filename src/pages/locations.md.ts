@@ -1,35 +1,21 @@
-// Dynamic markdown export of /locations. Pulls from src/data/locations.json
-// so newly added regions appear in the markdown without manual edits.
+// Dynamic markdown export of /locations. Pulls from the live Datum Cloud
+// Locations API (falling back to src/data/locations.json) so newly added
+// regions appear in the markdown without manual edits.
 import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
-import locations from '@data/locations.json';
+import { getLocations } from '@libs/locations';
+import { GROUP_ORDER, GROUP_META } from '@data/locationGroups';
+import type { LocationEntry } from '@/src/types/locations';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
-
-interface Location {
-  regionCode: string;
-  metro: string;
-  group: string;
-}
-
-// Display order for region groups, matching the rendered /locations page.
-const GROUP_ORDER = ['NA', 'LATAM', 'EU', 'MEA', 'APAC'] as const;
-
-const GROUP_HEADINGS: Record<string, string> = {
-  NA: 'North America (NA)',
-  LATAM: 'Latin America (LATAM)',
-  EU: 'Europe (EU)',
-  MEA: 'Middle East & Africa (MEA)',
-  APAC: 'Asia Pacific (APAC)',
-};
 
 export const GET: APIRoute = async () => {
   try {
     const page = await getEntry('pages', 'locations');
-    const all = locations as Location[];
+    const all = await getLocations();
 
     // Group by region. Unknown groups go to the end alphabetically.
-    const byGroup = new Map<string, Location[]>();
+    const byGroup = new Map<string, LocationEntry[]>();
     for (const loc of all) {
       const arr = byGroup.get(loc.group) ?? [];
       arr.push(loc);
@@ -58,7 +44,7 @@ export const GET: APIRoute = async () => {
     sections.push('', lede);
 
     for (const group of orderedGroups) {
-      const heading = GROUP_HEADINGS[group] ?? group;
+      const heading = GROUP_META[group as keyof typeof GROUP_META]?.heading ?? group;
       sections.push('', `## ${heading}`, '');
       const items = byGroup.get(group) ?? [];
       for (const loc of items) {

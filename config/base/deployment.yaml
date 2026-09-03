@@ -43,6 +43,8 @@ spec:
               value: https://github.com/datum-cloud/datum.net
             - name: API_URL
               value: https://api.datum.net
+            - name: DATUM_PROJECT_ID
+              value: personal-project-86e0525b
             - name: REDIS_URL
               value: redis://redis:6379
           envFrom:

@@ -1,21 +1,18 @@
 ---
 // src/components/locations/LocationsList.astro
-import locations from '@data/locations.json';
 import SectionLine from '@components/SectionLine.astro';
+import { GROUP_ORDER, GROUP_META } from '@data/locationGroups';
+import type { LocationEntry } from '@/src/types/locations';
 
-const groupMeta: Record<string, { name: string; inline?: boolean }> = {
-  NA: { name: 'North America' },
-  LATAM: { name: 'Latin America' },
-  EU: { name: 'Europe' },
-  MEA: { name: 'Middle East & Africa' },
-  APAC: { name: 'Asia Pacific' },
-};
+interface Props {
+  locations: LocationEntry[];
+}
 
-const groupOrder = ['NA', 'LATAM', 'EU', 'MEA', 'APAC'];
+const { locations } = Astro.props as Props;
 
-const grouped = groupOrder.map((key) => ({
+const grouped = GROUP_ORDER.map((key) => ({
   key,
-  ...groupMeta[key],
+  ...GROUP_META[key],
   items: locations
     .filter((loc) => loc.group === key)
     .sort((a, b) => a.metro.localeCompare(b.metro)),
@@ -32,17 +29,9 @@ const grouped = groupOrder.map((key) => ({
         <div class="locations-list--group">
           <div class="locations-list--header-row">
             <h3 class="locations-list--header">
-              {group.inline ? (
-                <>
-                  {group.name} ({group.key})
-                </>
-              ) : (
-                <>
-                  {group.name}
-                  <br />
-                  <span>({group.key})</span>
-                </>
-              )}
+              {group.name}
+              <br />
+              <span>({group.key})</span>
             </h3>
           </div>
           <div class="locations-list--items-row">

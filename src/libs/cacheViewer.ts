@@ -79,6 +79,12 @@ function classifySource(key: string): CacheEntry['source'] {
 
 const CACHE_KEY_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/;
 
+// Cache keys holding live credentials/tokens — never exposed via the GET
+// viewer endpoints (list or single-entry), even to callers with a valid
+// X-Webhook-Secret. DELETE is unaffected: deleting these is a safe, valid
+// way to force a fresh token mint on the next request.
+const HIDDEN_CACHE_KEYS = new Set(['locationsApiToken']);
+
 export type CacheSourceFilter = 'main' | 'fallback' | 'auto';
 
 export type CacheEntryByName = {
@@ -172,6 +178,42 @@ function readCacheFile(
   };
 }
 
+export type DeleteCacheEntryResult = { status: 'ok'; deleted: string[] } | { status: 'not_found' };
+
+/**
+ * Deletes a cache entry's .json/.expires files from disk so the next request
+ * regenerates it fresh. Works for any key managed by src/libs/cache.ts's
+ * Cache class, not just Strapi's.
+ */
+export function deleteCacheEntryByName(
+  name: string,
+  options?: { source?: CacheSourceFilter }
+): DeleteCacheEntryResult {
+  const sourceFilter = options?.source ?? 'auto';
+  const CACHE_BASE = path.resolve(process.cwd(), '.cache');
+  const STRAPI_FALLBACK = path.join(CACHE_BASE, 'strapi-fallback');
+
+  const dirs: string[] = [];
+  if (sourceFilter === 'main' || sourceFilter === 'auto') dirs.push(CACHE_BASE);
+  if (sourceFilter === 'fallback' || sourceFilter === 'auto') dirs.push(STRAPI_FALLBACK);
+
+  const deleted: string[] = [];
+  for (const dir of dirs) {
+    for (const suffix of ['.json', '.expires']) {
+      const filePath = path.join(dir, `${name}${suffix}`);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        deleted.push(filePath);
+      }
+    }
+  }
+
+  if (deleted.length === 0) {
+    return { status: 'not_found' };
+  }
+  return { status: 'ok', deleted };
+}
+
 /**
  * Reads a single cache entry from disk without mutating expired TTL files.
  */
@@ -179,6 +221,10 @@ export function getCacheEntryByName(
   name: string,
   options?: { source?: CacheSourceFilter }
 ): GetCacheEntryResult {
+  if (HIDDEN_CACHE_KEYS.has(name)) {
+    return { status: 'not_found' };
+  }
+
   const sourceFilter = options?.source ?? 'auto';
   const CACHE_BASE = path.resolve(process.cwd(), '.cache');
   const STRAPI_FALLBACK = path.join(CACHE_BASE, 'strapi-fallback');
@@ -222,9 +268,9 @@ export function getCacheViewerData(): CacheViewerData {
 
   const fallbackEntries = readCacheDir(STRAPI_FALLBACK, 'strapi-fallback');
 
-  const allEntries = [...mainEntries, ...fallbackEntries].sort((a, b) =>
-    `${a.source}-${a.key}`.localeCompare(`${b.source}-${b.key}`)
-  );
+  const allEntries = [...mainEntries, ...fallbackEntries]
+    .filter((e) => !HIDDEN_CACHE_KEYS.has(e.key))
+    .sort((a, b) => `${a.source}-${a.key}`.localeCompare(`${b.source}-${b.key}`));
 
   const bySource = {
     luma: allEntries.filter((e) => e.source === 'luma'),

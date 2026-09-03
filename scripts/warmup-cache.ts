@@ -7,7 +7,8 @@
  * then writes to .cache/ so the build can use cached data instead of hitting APIs.
  *
  * Run: npm run build:cache (or tsx scripts/warmup-cache.ts)
- * Env: STRAPI_URL, STRAPI_TOKEN, APP_ID, APP_PRIVATE_KEY, APP_INSTALLATION_ID
+ * Env: STRAPI_URL, STRAPI_TOKEN, APP_ID, APP_PRIVATE_KEY, APP_INSTALLATION_ID,
+ *      DATUM_SA_CLIENT_ID, DATUM_SA_PRIVATE_KEY_ID, DATUM_SA_PRIVATE_KEY, DATUM_SA_SCOPE, DATUM_PROJECT_ID
  */
 
 import { loadEnv } from 'vite';
@@ -85,6 +86,19 @@ async function warmup(): Promise<void> {
       '[warmup-cache] GitHub roadmaps failed:',
       err instanceof Error ? err.message : err
     );
+  }
+
+  // Datum Cloud Locations API (src/libs/locations.ts). getLocations() already
+  // falls back to static locations.json internally and never throws, but this
+  // stays wrapped like every other step here for consistency and defense in
+  // depth (e.g. an import-time error, which getLocations()'s own try/catch
+  // can't cover).
+  try {
+    const { getLocations } = await import('../src/libs/locations');
+    const locations = await getLocations();
+    console.log(`[warmup-cache] Locations: ${locations.length} entries`);
+  } catch (err) {
+    console.warn('[warmup-cache] Locations failed:', err instanceof Error ? err.message : err);
   }
 
   console.log('\n[warmup-cache] Done.');

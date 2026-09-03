@@ -24,6 +24,12 @@ declare namespace NodeJS {
     AUTH_OIDC_CLIENT_SECRET?: string;
     AUTH_OIDC_REDIRECT_URI?: string;
     API_URL?: string;
+    DATUM_SA_CLIENT_ID?: string;
+    DATUM_SA_PRIVATE_KEY_ID?: string;
+    DATUM_SA_PRIVATE_KEY?: string;
+    DATUM_SA_SCOPE?: string;
+    DATUM_SA_AUTH_HOSTNAME?: string;
+    DATUM_PROJECT_ID?: string;
     SMTP_HOST?: string;
     SMTP_PORT?: string;
     SMTP_USER?: string;

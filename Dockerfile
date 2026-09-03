@@ -14,6 +14,8 @@ COPY . .
 RUN chmod -R 755 src/pages
 # Warmup: .cache in layer, so production gets it at runtime
 RUN npm run build:cache
+# Sync locations.json from the live API; log-only, keeps existing data on failure so the build never breaks
+RUN npm run sync:locations || echo "[sync-locations] FAILED — continuing build with existing src/data/locations.json"
 # Build: cache mount speeds up rebuilds; .cache from layer above persists after unmount
 RUN --mount=type=cache,target=/app/.cache npm run build
 

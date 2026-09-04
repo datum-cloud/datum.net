@@ -8,7 +8,6 @@
     "dev": "npm run dev:astro",
     "build": "npm run build:astro",
     "build:cache": "tsx scripts/warmup-cache.ts",
-    "sync:locations": "tsx scripts/sync-locations.ts",
     "start": "node ./server.mjs",
     "start:dev": "node --env-file=.env ./server.mjs",
     "start:original": "node ./dist/server/entry.mjs",

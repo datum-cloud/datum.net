@@ -58,7 +58,6 @@
     "ioredis": "^6.0.0",
     "marked": "^18.0.11",
     "mermaid": "^11.17.2",
-    "openid-client": "^6.8.8",
     "postgres": "^3.4.9",
     "rehype-expressive-code": "^0.44.2",
     "rehype-raw": "^7.0.0",

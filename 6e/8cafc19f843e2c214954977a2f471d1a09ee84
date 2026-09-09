@@ -1,0 +1,29 @@
+package.json
+  s_e2ab8dbc255039::t_4a223acc15dd3e 85
+astro.config.mjs
+  s_e2ab8dbc255039::t_d95a3d6d0986ec 198-207
+  s_e2ab8dbc255039::t_9030d94f5306e8 14
+package-lock.json
+  s_e2ab8dbc255039::t_2089cfc00a54ec 62,1728,1730-2267,2269-2271,2273-2296,2370-2380,3187-3215,4572-4588,4881-4887,5830-5909,7003,7065-7075,7215-7237,8186-8205,8413-8423,10541-10572,12033-12042,13571-13581,14097-14107,14244-14254,15073-15082,15697-15746,16023-16043,16773-16798,16963-16964
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "6e8cafc19f843e2c214954977a2f471d1a09ee84",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_e2ab8dbc255039": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69d66e5f-dd04-41dd-93e9-77013070acdb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

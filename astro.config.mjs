@@ -11,6 +11,7 @@ import { loadEnv } from 'vite';
 import node from '@astrojs/node';
 
 import compressor from 'astro-compressor';
+import compress from 'astro-compress';
 
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
@@ -193,6 +194,16 @@ export default defineConfig({
       theme: 'forest',
       autoTheme: true,
       enableLog: false,
+    }),
+    // csso (astro-compress's alternate CSS minifier) drops MQ Level 4 range
+    // syntax `@media (width >= 40rem)`, used by Tailwind v4's responsive
+    // variants and by src/static/styles/variables-breakpoints.css. Keep
+    // lightningcss, astro-compress's default CSS minifier, instead.
+    compress({
+      CSS: {
+        csso: false,
+        lightningcss: true,
+      },
     }),
     compressor({
       gzip: true,

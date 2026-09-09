@@ -1,5 +1,6 @@
 ---
 // src/components/career/JobList.astro
+import Icon from '@components/Icon.astro';
 import {
   fetchJobPostings,
   groupJobsByDepartment,
@@ -13,6 +14,32 @@ const { jobs, error } = await fetchJobPostings();
 const fetchFailed = jobs === null;
 const groupedJobs = fetchFailed ? {} : groupJobsByDepartment(jobs);
 const totalJobs = fetchFailed ? 0 : jobs.length;
+
+// Ways to get involved with the community — shown after the job list (or in
+// its place when there are no open roles)
+const communityLinks = [
+  {
+    icon: 'users',
+    title: 'Huddles',
+    description: 'Join our community huddles and meet the team.',
+    href: '/events/community-huddles',
+    external: false,
+  },
+  {
+    icon: 'github',
+    title: 'GitHub',
+    description: "Dig into the code and see what we're building in the open.",
+    href: 'https://github.com/datum-cloud',
+    external: true,
+  },
+  {
+    icon: 'discord',
+    title: 'Discord',
+    description: 'Chat with the team and the community.',
+    href: 'https://discord.com/invite/AeA9XZu4Py',
+    external: true,
+  },
+] as const;
 ---
 
 <div class="mx-auto max-w-4xl">
@@ -26,11 +53,13 @@ const totalJobs = fetchFailed ? 0 : jobs.length;
   {
     !error && (
       <>
-        <div class="mb-6">
-          <h3 class="datum-text-2xl text-midnight-fjord font-semibold">
-            Open Positions ({totalJobs})
-          </h3>
-        </div>
+        {totalJobs > 0 && (
+          <div class="mb-6">
+            <h3 class="datum-text-2xl text-midnight-fjord font-semibold">
+              Open Positions ({totalJobs})
+            </h3>
+          </div>
+        )}
 
         <div class="space-y-6">
           {Object.entries(groupedJobs).map(([department, deptJobs]) => (
@@ -57,13 +86,47 @@ const totalJobs = fetchFailed ? 0 : jobs.length;
           ))}
         </div>
 
-        {totalJobs === 0 && (
-          <div class="py-12 text-center">
-            <p class="text-midnight-fjord/70 mb-4">
-              No open positions at the moment. Check back later!
+        <div
+          class:list={[
+            'text-center',
+            totalJobs > 0 ? 'border-midnight-fjord/10 mt-10 border-t pt-10 pb-12' : 'pb-12',
+          ]}
+        >
+          {totalJobs === 0 ? (
+            <>
+              <h4 class="datum-text-2xl text-midnight-fjord mb-4 font-semibold">
+                No open roles right now.
+              </h4>
+              <p class="text-midnight-fjord/70 mx-auto mb-8 max-w-xl leading-relaxed">
+                But this could be you — we welcome unsolicited applications, and here's how to get
+                involved before the next one opens up.
+              </p>
+            </>
+          ) : (
+            <p class="datum-text-lg text-midnight-fjord mb-8 font-medium">
+              Didn't find a role? Keep in touch, get engaged across our community.
             </p>
+          )}
+
+          <div class="grid grid-cols-1 gap-4 text-left sm:grid-cols-3">
+            {communityLinks.map((link) => (
+              <a
+                href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+                class="group border-midnight-fjord/10 hover:border-canyon-clay flex flex-col gap-3 border p-6 transition-colors"
+              >
+                <div class="bg-canyon-clay/20 text-canyon-clay---links flex h-10 w-10 shrink-0 items-center justify-center rounded-[4.7px] p-2">
+                  <Icon name={link.icon} size="md" />
+                </div>
+                <h5 class="datum-text-base text-midnight-fjord group-hover:text-canyon-clay font-medium transition-colors">
+                  {link.title}
+                </h5>
+                <p class="text-midnight-fjord/70 text-sm">{link.description}</p>
+              </a>
+            ))}
           </div>
-        )}
+        </div>
       </>
     )
   }

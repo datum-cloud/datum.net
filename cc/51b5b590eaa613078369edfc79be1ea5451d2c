@@ -1,0 +1,21 @@
+package.json
+  s_adeb0bd7640946::t_cb1e2079f88257 52
+package-lock.json
+  s_adeb0bd7640946::t_77daf4495506a4 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "cc51b5b590eaa613078369edfc79be1ea5451d2c",
+  "prompts": {},
+  "sessions": {
+    "s_adeb0bd7640946": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6629e94f-8f2e-49cd-a335-9fc3c77b0a2f",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

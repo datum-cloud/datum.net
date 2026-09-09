@@ -10,8 +10,8 @@ import mermaid from 'astro-mermaid';
 import { loadEnv } from 'vite';
 import node from '@astrojs/node';
 
-import playformCompress from '@playform/compress';
 import compressor from 'astro-compressor';
+import compress from 'astro-compress';
 
 import announcement from './src/plugins/announcement.ts';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
@@ -195,16 +195,15 @@ export default defineConfig({
       autoTheme: true,
       enableLog: false,
     }),
-    playformCompress({
-      // CSS minification disabled: csso@5 (bundled by @playform/compress) drops
-      // MQ Level 4 range syntax `@media (width >= 40rem)`, used by Tailwind v4's
-      // responsive variants and by src/static/styles/variables-breakpoints.css.
-      // Tailwind v4 already minifies CSS via lightningcss, so this is redundant.
-      CSS: false,
-      HTML: true,
-      JavaScript: true,
-      Image: true,
-      SVG: true,
+    // csso (astro-compress's alternate CSS minifier) drops MQ Level 4 range
+    // syntax `@media (width >= 40rem)`, used by Tailwind v4's responsive
+    // variants and by src/static/styles/variables-breakpoints.css. Keep
+    // lightningcss, astro-compress's default CSS minifier, instead.
+    compress({
+      CSS: {
+        csso: false,
+        lightningcss: true,
+      },
     }),
     compressor({
       gzip: true,

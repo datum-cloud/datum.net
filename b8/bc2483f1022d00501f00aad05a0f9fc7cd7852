@@ -1,0 +1,24 @@
+package-lock.json
+  s_cb4e9fd38ea40a::t_d6d2290420af62 1730,1960,1974,1984,6280,6293,6634,8738,8755,8870,8910,10234,10290,10339,11793,12602,12616,13889,14449,14533,15576-15578,15582,15584,15587,15609-15624,15638-15649,15918,16006-16007
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "b8bc2483f1022d00501f00aad05a0f9fc7cd7852",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_cb4e9fd38ea40a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b9693519-480b-47c3-b94d-fde7394a78ed",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

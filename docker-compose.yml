@@ -18,7 +18,7 @@ services:
       - '4321:4321'
     volumes:
       - .:/app
-      - /app/node_modules
+      - node_modules_dev:/app/node_modules
     environment:
       - NODE_ENV=development
       - REDIS_URL=redis://redis:6379
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     networks:
       - datum-network
-    command: npm run dev --
+    command: sh -c "npm install && npm run dev --"
 
   prod:
     build:
@@ -50,3 +50,6 @@ services:
 networks:
   datum-network:
     driver: bridge
+
+volumes:
+  node_modules_dev:

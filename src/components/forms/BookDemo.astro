@@ -158,7 +158,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
           elapsedMs: Date.now() - this.loadedAt,
           recaptchaToken,
         })
-        .then((result) => {
+        .then((result: { error?: unknown }) => {
           if (result.error) {
             console.error('[BookDemo] submit failed:', result.error);
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
@@ -167,7 +167,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
             this.form.reset();
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error('[BookDemo] submit failed:', error);
           this.showStatus('Something went wrong. Please try again in a minute or two.', false);
         })

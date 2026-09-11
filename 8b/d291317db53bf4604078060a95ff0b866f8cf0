@@ -1,0 +1,18 @@
+src/components/forms/DedicatedCloudForm.astro
+  h_c7951bc64db670 201
+src/actions/demo.ts
+  h_c7951bc64db670 16,75
+src/components/forms/BookDemo.astro
+  h_c7951bc64db670 14,27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "8bd291317db53bf4604078060a95ff0b866f8cf0",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

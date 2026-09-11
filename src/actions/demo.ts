@@ -74,6 +74,7 @@ const BookDemo = defineAction({
       to: 'support@datum.net',
       subject: SUBJECTS[input.formType],
       text: lines.join('\n'),
+      replyTo: input.email,
     });
 
     return { success: true };

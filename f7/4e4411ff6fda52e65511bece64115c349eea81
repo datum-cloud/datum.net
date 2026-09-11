@@ -1,0 +1,25 @@
+src/components/forms/BookDemo.astro
+  h_c7951bc64db670 14
+  s_f633df19ac006c::t_86ccc12c1c72d2 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f74e4411ff6fda52e65511bece64115c349eea81",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f633df19ac006c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3a401dd4-5191-404e-a490-68bffc376dfb",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -3,6 +3,7 @@ interface SendMailInput {
   to: string;
   subject: string;
   text: string;
+  replyTo?: string;
 }
 
 async function sendMail(input: SendMailInput): Promise<void> {
@@ -23,6 +24,7 @@ async function sendMail(input: SendMailInput): Promise<void> {
       to: input.to,
       subject: input.subject,
       text: input.text,
+      ...(input.replyTo ? { reply_to: input.replyTo } : {}),
     }),
   });
 

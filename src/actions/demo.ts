@@ -45,6 +45,7 @@ const BookDemo = defineAction({
       (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType]));
 
     if (!isHuman) {
+      console.error(`[BookDemo] reCAPTCHA verification failed for formType "${input.formType}"`);
       throw new ActionError({ code: 'BAD_REQUEST', message: 'reCAPTCHA verification failed.' });
     }
 
@@ -69,13 +70,18 @@ const BookDemo = defineAction({
 
     lines.push(`message: ${input.message || '-'}`);
 
-    await sendMail({
-      from: FROM_ADDRESS,
-      to: 'support@datum.net',
-      subject: SUBJECTS[input.formType],
-      text: lines.join('\n'),
-      replyTo: input.email,
-    });
+    try {
+      await sendMail({
+        from: FROM_ADDRESS,
+        to: 'support@datum.net',
+        subject: SUBJECTS[input.formType],
+        text: lines.join('\n'),
+        replyTo: input.email,
+      });
+    } catch (error) {
+      console.error(`[BookDemo] sendMail failed for formType "${input.formType}":`, error);
+      throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send email.' });
+    }
 
     return { success: true };
   },

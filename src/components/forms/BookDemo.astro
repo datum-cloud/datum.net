@@ -160,13 +160,15 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         })
         .then((result) => {
           if (result.error) {
+            console.error('[BookDemo] submit failed:', result.error);
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {
             this.showStatus("Thanks — we'll be in touch shortly.", true);
             this.form.reset();
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error('[BookDemo] submit failed:', error);
           this.showStatus('Something went wrong. Please try again in a minute or two.', false);
         })
         .finally(() => {

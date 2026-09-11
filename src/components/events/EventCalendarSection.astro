@@ -39,11 +39,24 @@ const eventsData = allEvents.map((e) => {
     avatarSrc: g.avatarImage?.src ?? g.avatarUrl ?? null,
   }));
 
+  // The calendar widget buckets events by day using this field, not by parsing start_at
+  // directly — start_at is UTC, so for events whose local start time falls after UTC
+  // midnight (e.g. an evening event on the US West Coast), the UTC calendar date is a day
+  // ahead of the date attendees actually see (matches the timezone-aware formatting used
+  // for the displayed date/time below).
+  const localDate = new Intl.DateTimeFormat('en-CA', {
+    timeZone: e.timezone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(e.start_at));
+
   return {
     api_id: e.api_id,
     name: getEventDisplayName(e),
     start_at: e.start_at,
     end_at: e.end_at,
+    local_date: localDate,
     timezone: e.timezone,
     url: e.url,
     cover_url: e.cover_url ?? null,
@@ -269,9 +282,9 @@ const eventsJson = JSON.stringify(eventsData);
               role="button"
               tabindex="0"
               x-bind:aria-label="'Show full details for ' + event.name"
-              x-on:click="selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.enter.prevent="selectDay(event.start_at.slice(0, 10))"
-              x-on:keydown.space.prevent="selectDay(event.start_at.slice(0, 10))"
+              x-on:click="selectDay(event.local_date)"
+              x-on:keydown.enter.prevent="selectDay(event.local_date)"
+              x-on:keydown.space.prevent="selectDay(event.local_date)"
             >
               <div class="event-calendar-list__item-header">
                 <p class="event-calendar-list__item-name" x-text="event.name"></p>
@@ -591,9 +604,9 @@ const eventsJson = JSON.stringify(eventsData);
 
 <script is:inline>
   window.eventCalendar = function eventCalendar(events) {
-    /** @param {string} iso - Luma `start_at` (YYYY-MM-… prefix, UTC) */
-    function ymKeyFromIso(iso) {
-      var m = String(iso).match(/^(\d{4})-(\d{2})/);
+    /** @param {string} localDate - event's `local_date` (YYYY-MM-DD, already in the event's own timezone) */
+    function ymKeyFromLocalDate(localDate) {
+      var m = String(localDate).match(/^(\d{4})-(\d{2})/);
       if (!m) return null;
       return parseInt(m[1], 10) * 12 + parseInt(m[2], 10) - 1;
     }
@@ -645,7 +658,7 @@ const eventsJson = JSON.stringify(eventsData);
           var dateStr2 =
             year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d2).padStart(2, '0');
           var hasEvents = this.events.some(function (e) {
-            return e.start_at.startsWith(dateStr2);
+            return e.local_date === dateStr2;
           });
           days.push({
             date: d2,
@@ -679,12 +692,12 @@ const eventsJson = JSON.stringify(eventsData);
         var month = this.currentMonth;
         var monthPrefix = year + '-' + String(month + 1).padStart(2, '0');
         var monthEvents = this.events.filter(function (e) {
-          return e.start_at.startsWith(monthPrefix);
+          return e.local_date.startsWith(monthPrefix);
         });
         if (this.selectedDay) {
           var sel = this.selectedDay;
           monthEvents = monthEvents.filter(function (e) {
-            return e.start_at.startsWith(sel);
+            return e.local_date === sel;
           });
         }
         return monthEvents.sort(function (a, b) {
@@ -695,7 +708,7 @@ const eventsJson = JSON.stringify(eventsData);
       get canPrevMonth() {
         var cur = this.currentYear * 12 + this.currentMonth;
         return this.events.some(function (e) {
-          var k = ymKeyFromIso(e.start_at);
+          var k = ymKeyFromLocalDate(e.local_date);
           return k !== null && k < cur;
         });
       },
@@ -703,7 +716,7 @@ const eventsJson = JSON.stringify(eventsData);
       get canNextMonth() {
         var cur = this.currentYear * 12 + this.currentMonth;
         return this.events.some(function (e) {
-          var k = ymKeyFromIso(e.start_at);
+          var k = ymKeyFromLocalDate(e.local_date);
           return k !== null && k > cur;
         });
       },
@@ -713,9 +726,7 @@ const eventsJson = JSON.stringify(eventsData);
       },
 
       isEventExpanded: function (event) {
-        return (
-          this.selectedDay && event.isDatumHosted && event.start_at.startsWith(this.selectedDay)
-        );
+        return this.selectedDay && event.isDatumHosted && event.local_date === this.selectedDay;
       },
 
       prevMonth: function () {

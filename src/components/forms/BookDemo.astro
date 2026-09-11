@@ -10,7 +10,8 @@ interface Props {
 
 const { formType = 'demo' } = Astro.props as Props;
 
-const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+const recaptchaSiteKey =
+  process.env.PUBLIC_RECAPTCHA_SITE_KEY ?? import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <book-demo-form data-form-type={formType} data-recaptcha-site-key={recaptchaSiteKey}>

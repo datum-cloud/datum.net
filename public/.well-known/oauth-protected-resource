@@ -10,5 +10,8 @@
     "phone",
     "address",
     "offline_access"
+  ],
+  "bearer_methods_supported": [
+    "header"
   ]
 }

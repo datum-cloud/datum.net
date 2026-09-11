@@ -59,7 +59,10 @@ const AGENT_LINK_HEADERS = [
   '</docs/>; rel="service-doc"',
   '</openapi.json>; rel="service-desc"',
   '</.well-known/openid-configuration>; rel="openid-configuration"',
+  '</.well-known/oauth-authorization-server>; rel="oauth-authorization-server"',
   '</.well-known/mcp/server-card.json>; rel="describedby"',
+  '</.well-known/ai-catalog.json>; rel="ai-catalog"',
+  '</auth.md>; rel="auth.md"',
 ].join(', ');
 
 // Merge one or more tokens into an existing Vary header value without duplicating

@@ -13,7 +13,7 @@ const SUBJECTS = {
   'dedicated-cloud': 'Interest in Dedicated Cloud, request form',
 } as const;
 
-const TO_ADDRESS = 'support@datum.net';
+const TO_ADDRESS = 'team@mail.datum.net';
 
 const BookDemo = defineAction({
   input: z.object({
@@ -72,7 +72,7 @@ const BookDemo = defineAction({
 
     try {
       await sendMail({
-        from: input.email,
+        from: 'team@mail.datum.net',
         to: TO_ADDRESS,
         subject: SUBJECTS[input.formType],
         text: lines.join('\n'),

@@ -11,7 +11,7 @@ interface Props {
 const { formType = 'demo' } = Astro.props as Props;
 
 const recaptchaSiteKey =
-  process.env.PUBLIC_RECAPTCHA_SITE_KEY ?? import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+  process.env.PUBLIC_RECAPTCHA_SITE_KEY || import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <book-demo-form data-form-type={formType} data-recaptcha-site-key={recaptchaSiteKey}>
@@ -24,7 +24,7 @@ const recaptchaSiteKey =
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
       onsubmit="return false;"
     >
-      <label class="absolute -left-[9999px]" aria-hidden="true">
+      <label class="absolute left-[-9999px]" aria-hidden="true">
         <span>Website</span>
         <input type="text" name="website" tabindex="-1" autocomplete="off" />
       </label>

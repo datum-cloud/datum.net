@@ -15,7 +15,7 @@ const SUBJECTS = {
 
 const TO_ADDRESS = 'team@mail.datum.net';
 
-const BookDemo = defineAction({
+const EmailLeadToHubSpot = defineAction({
   input: z.object({
     name: z.string(),
     email: z.email(),
@@ -45,7 +45,9 @@ const BookDemo = defineAction({
       (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType]));
 
     if (!isHuman) {
-      console.error(`[BookDemo] reCAPTCHA verification failed for formType "${input.formType}"`);
+      console.error(
+        `[EmailLeadToHubSpot] reCAPTCHA verification failed for formType "${input.formType}"`
+      );
       throw new ActionError({ code: 'BAD_REQUEST', message: 'reCAPTCHA verification failed.' });
     }
 
@@ -79,7 +81,10 @@ const BookDemo = defineAction({
         replyTo: input.email,
       });
     } catch (error) {
-      console.error(`[BookDemo] sendMail failed for formType "${input.formType}":`, error);
+      console.error(
+        `[EmailLeadToHubSpot] sendMail failed for formType "${input.formType}":`,
+        error
+      );
       throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send email.' });
     }
 
@@ -87,4 +92,4 @@ const BookDemo = defineAction({
   },
 });
 
-export { BookDemo };
+export { EmailLeadToHubSpot };

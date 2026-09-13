@@ -1,0 +1,34 @@
+src/actions/index.ts
+  s_cdb26e6358a601::t_7a6936b33b837d 2
+  s_cdb26e6358a601::t_b0471c7330b555 6
+src/components/forms/DedicatedCloudForm.astro
+  s_cdb26e6358a601::t_1e3cccc653c15f 186
+  s_cdb26e6358a601::t_ef79411a231d88 201
+src/components/forms/BookDemo.astro
+  s_cdb26e6358a601::t_c87cf1a4b6ff09 172
+  s_cdb26e6358a601::t_2e6a493e06ccac 164
+  s_cdb26e6358a601::t_0b8e817b9bb448 151
+src/actions/emailLeadToHubSpot.ts
+  s_cdb26e6358a601::t_d8426b9f8c1460 18,48-50,84-87,95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a3d00ed995737bfa230bfdd4069477bf45e054b9",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_cdb26e6358a601": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bc0edd70-c24a-4ecb-ae95-21d813274b70",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

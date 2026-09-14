@@ -85,6 +85,36 @@ const TEAM_BG_COLORS = ['#5F735E', '#BF9595', '#D1CDC0'] as const;
 /** Background color matching the pine-forge avatar variant that /hello always displays. */
 export const PINE_FORGE_BG_COLOR = TEAM_BG_COLORS[0];
 
+/**
+ * Each team member's headshot is one of three pre-rendered variants
+ * (`<slug>-canyon-clay.png` / `-glacier-mist.png` / `-pine-forge.png`), and
+ * Strapi's upload renames the file to `<slug>_<variant>_<hash>.<ext>` — the
+ * variant name survives in the URL, so it can be read back out of it.
+ */
+const AVATAR_VARIANT_BG_COLORS: Record<string, (typeof TEAM_BG_COLORS)[number]> = {
+  pine_forge: TEAM_BG_COLORS[0],
+  canyon_clay: TEAM_BG_COLORS[1],
+  glacier_mist: TEAM_BG_COLORS[2],
+};
+
+/**
+ * Background color matching an avatar's actual baked-in variant, detected
+ * from its file name. This is the only assignment that can't drift: a
+ * photo's backdrop is fixed at upload time, independent of the person's
+ * position in the team list. Position-based cycling (`getTeamBgColor`)
+ * looks right only as long as the roster stays in the exact order it was
+ * uploaded in — adding or removing one person shifts everyone after them
+ * out of sync with their own photo.
+ */
+export function getAvatarVariantBgColor(avatarUrl: string | null | undefined): string | undefined {
+  if (!avatarUrl) return undefined;
+  const normalized = avatarUrl.toLowerCase();
+  for (const [variant, color] of Object.entries(AVATAR_VARIANT_BG_COLORS)) {
+    if (normalized.includes(variant)) return color;
+  }
+  return undefined;
+}
+
 export const AUTHORS_QUERY = `
   query GetAuthors($start: Int!, $limit: Int!) {
     authors(pagination: { start: $start, limit: $limit }) {
@@ -336,13 +366,19 @@ export async function getStrapiCardMembers(): Promise<StrapiAuthorFull[]> {
 }
 
 /**
- * Background color for an author, derived from their position in the sorted
- * team list. Falls back to a name-hash color when the author isn't on the team.
+ * Background color for an author. Prefers the color matching their avatar's
+ * actual baked-in variant; falls back to their position in the sorted team
+ * list (for team members whose avatar predates the variant-suffix naming
+ * convention), then to a name-hash color when they aren't on the team at all.
  */
 export async function getAuthorBgColorFromStrapi(authorName: string): Promise<string> {
   const teamMembers = await getStrapiTeamMembers();
   const authorIndex = teamMembers.findIndex((member) => member.name === authorName);
 
-  if (authorIndex >= 0) return getTeamBgColor(authorIndex);
+  if (authorIndex >= 0) {
+    return (
+      getAvatarVariantBgColor(teamMembers[authorIndex].avatar?.url) ?? getTeamBgColor(authorIndex)
+    );
+  }
   return getAuthorBgColorByName(authorName);
 }

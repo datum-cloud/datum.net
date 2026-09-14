@@ -1,6 +1,6 @@
 import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'zod';
-import { sendMail } from '@libs/mailer';
+import { sendToHelpScout } from '@libs/helpscout';
 import { verifyRecaptcha } from '@libs/recaptcha';
 
 const RECAPTCHA_ACTIONS = {
@@ -13,9 +13,12 @@ const SUBJECTS = {
   'dedicated-cloud': 'Interest in Dedicated Cloud, request form',
 } as const;
 
-const FROM_ADDRESS = 'team@mail.datum.net';
+const HELPSCOUT_ENV_PREFIXES = {
+  demo: 'HELPSCOUT_DEMO',
+  'dedicated-cloud': 'HELPSCOUT_DEDICATED_CLOUD',
+} as const;
 
-const BookDemo = defineAction({
+const EmailLeadToHubSpot = defineAction({
   input: z.object({
     name: z.string(),
     email: z.email(),
@@ -40,11 +43,18 @@ const BookDemo = defineAction({
       return { success: true };
     }
 
+    const mode = process.env.MODE || import.meta.env.MODE;
+    const skipRecaptcha = mode === 'local';
+
     const isHuman =
-      !!input.recaptchaToken &&
-      (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType]));
+      skipRecaptcha ||
+      (!!input.recaptchaToken &&
+        (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType])));
 
     if (!isHuman) {
+      console.error(
+        `[EmailLeadToHubSpot] reCAPTCHA verification failed for formType "${input.formType}"`
+      );
       throw new ActionError({ code: 'BAD_REQUEST', message: 'reCAPTCHA verification failed.' });
     }
 
@@ -69,15 +79,24 @@ const BookDemo = defineAction({
 
     lines.push(`message: ${input.message || '-'}`);
 
-    await sendMail({
-      from: FROM_ADDRESS,
-      to: 'support@datum.net',
-      subject: SUBJECTS[input.formType],
-      text: lines.join('\n'),
-    });
+    try {
+      await sendToHelpScout({
+        subject: SUBJECTS[input.formType],
+        name: input.name,
+        email: input.email,
+        text: lines.join('\n'),
+        envPrefix: HELPSCOUT_ENV_PREFIXES[input.formType],
+      });
+    } catch (error) {
+      console.error(
+        `[EmailLeadToHubSpot] sendToHelpScout failed for formType "${input.formType}":`,
+        error
+      );
+      throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send lead.' });
+    }
 
     return { success: true };
   },
 });
 
-export { BookDemo };
+export { EmailLeadToHubSpot };

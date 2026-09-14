@@ -1,0 +1,10 @@
+/*
+ * Canonical cascade layer order.
+ *
+ * Page stylesheets only emit `@layer components` (they pull Tailwind in via
+ * `@reference`, which produces no output). Since they load before the shared
+ * base bundle, whichever file declares a layer first fixes its position — so
+ * without this statement `components` sorts ahead of `base` and Tailwind's
+ * preflight overrides every component rule. Import this first in every entry.
+ */
+@layer properties, theme, base, components, utilities;

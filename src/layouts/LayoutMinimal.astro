@@ -1,4 +1,5 @@
 ---
+import '@styles/base.css';
 import fontsCss from '@styles/fonts.css?raw';
 import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
@@ -169,15 +170,11 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <main id="main-content">
       <slot />
     </main>
-    <script>
-      import '@/src/static/scripts/scroll-effects.js';
-    </script>
-
     <LayoutEmbedScripts isProduction={isProduction} />
 
     <script>
       (function initSectionLabels() {
-        const labels = document.querySelectorAll('.section-label, .mission-label');
+        const labels = document.querySelectorAll('.section-label');
         for (const label of Array.from(labels) as HTMLElement[]) {
           let done = false;
           const obs = new IntersectionObserver(

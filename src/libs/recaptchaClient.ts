@@ -29,7 +29,8 @@ async function getRecaptchaToken(siteKey: string, action: string): Promise<strin
         window.grecaptcha!.execute(siteKey, { action }).then(resolve, reject);
       });
     });
-  } catch {
+  } catch (error) {
+    console.error('[recaptcha] failed to get token:', error);
     return '';
   }
 }

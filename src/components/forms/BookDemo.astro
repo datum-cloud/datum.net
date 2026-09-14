@@ -10,7 +10,8 @@ interface Props {
 
 const { formType = 'demo' } = Astro.props as Props;
 
-const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+const recaptchaSiteKey =
+  process.env.PUBLIC_RECAPTCHA_SITE_KEY || import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <book-demo-form data-form-type={formType} data-recaptcha-site-key={recaptchaSiteKey}>
@@ -23,7 +24,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
       onsubmit="return false;"
     >
-      <label class="absolute -left-[9999px]" aria-hidden="true">
+      <label class="absolute left-[-9999px]" aria-hidden="true">
         <span>Website</span>
         <input type="text" name="website" tabindex="-1" autocomplete="off" />
       </label>
@@ -147,7 +148,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       );
 
       actions
-        .BookDemo({
+        .EmailLeadToHubSpot({
           name: String(data.get('name') || ''),
           email: String(data.get('email') || ''),
           company: String(data.get('company') || ''),
@@ -158,15 +159,17 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
           elapsedMs: Date.now() - this.loadedAt,
           recaptchaToken,
         })
-        .then((result) => {
+        .then((result: { error?: unknown }) => {
           if (result.error) {
+            console.error('[EmailLeadToHubSpot] submit failed:', result.error);
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {
             this.showStatus("Thanks — we'll be in touch shortly.", true);
             this.form.reset();
           }
         })
-        .catch(() => {
+        .catch((error: unknown) => {
+          console.error('[EmailLeadToHubSpot] submit failed:', error);
           this.showStatus('Something went wrong. Please try again in a minute or two.', false);
         })
         .finally(() => {

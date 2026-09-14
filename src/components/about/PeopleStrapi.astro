@@ -1,6 +1,6 @@
 ---
 // src/components/about/PeopleStrapi.astro
-import { getStrapiTeamMembers, getTeamBgColor } from '@libs/strapi';
+import { getStrapiTeamMembers, getTeamBgColor, getAvatarVariantBgColor } from '@libs/strapi';
 import { getStrapiMediaUrl } from '@/src/types/strapi';
 import type { StrapiAuthorFull } from '@libs/strapi';
 import ProfileModal from './ProfileModal.astro';
@@ -12,16 +12,26 @@ import '@styles/page-about.css';
 // This uses caching - team members are cached for 5 minutes by default
 const teamMembers: StrapiAuthorFull[] = await getStrapiTeamMembers();
 
+// Background color matching each person's actual headshot variant (detected
+// from the avatar file name), not their position in the list — the roster
+// gets reordered every time someone joins or leaves, but the photo's baked-in
+// backdrop never does. Falls back to the old index cycle only for an avatar
+// that predates the variant-suffix naming convention. Computed once here so
+// the grid card and the profile modal never disagree with each other.
+const avatarBgColors = teamMembers.map(
+  (member, index) => getAvatarVariantBgColor(member.avatar?.url) ?? getTeamBgColor(index)
+);
+
 // Prepare team member data for client-side modal (serialize data)
 const teamMembersData = teamMembers.map((member, index) => ({
   id: member.documentId,
   slug: member.slug || member.documentId,
-  index,
   data: {
     name: member.name,
     bio: member.bio,
     title: member.title,
     avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
+    avatarBgColor: avatarBgColors[index],
     tick: member.tick,
     surprising: member.surprising,
     weekends: member.weekends,
@@ -67,7 +77,7 @@ const teamMembersData = teamMembers.map((member, index) => ({
                         src={getStrapiMediaUrl(member.avatar.url)}
                         alt={member.name}
                         class="size-auto w-full bg-cover"
-                        style={`background-color: ${getTeamBgColor(index)}`}
+                        style={`background-color: ${avatarBgColors[index]}`}
                       />
                       {/* Check if member.title contains "Co-Founder" and show Founder label */}
                       {member.title && member.title.includes('Co-Founder') && (

@@ -35,4 +35,6 @@ The other component is asynchronous: capturing knowledge. Like any investigation
 
 The analysis of an incident is just as important as mitigating the customer impact. Without good post-incident hygiene, a team is doomed to (a) repeat handling the incident in perpetuity and (b) continue to design systems with yesterday's understanding instead of today's.
 
+A good model for capturing this in-repo, next to the service it's about, is `milo-os/activity`: dated write-ups under `docs/investigations/` (e.g. `YYYY-MM-DD-request-spike.md`, with Severity/Status/Author metadata, a timeline, and root cause analysis), plus alert-driven runbooks under `docs/runbooks/` that pair each alert with symptoms, impact, and concrete investigation commands. Post-mortems and runbooks are a natural byproduct of the [monitoring phase](/handbook/build/production-readiness#monitoring--observability) — an alert or dashboard anomaly is usually what kicks off the investigation in the first place.
+
 By doing incidents well, a lot of good habits will form naturally around the team, which will lead to a stronger team, working on more interesting and business-critical problems, and having a better time working together.

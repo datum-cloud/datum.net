@@ -1,6 +1,6 @@
 import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'zod';
-import { sendMail } from '@libs/mailer';
+import { sendToHelpScout } from '@libs/helpscout';
 import { verifyRecaptcha } from '@libs/recaptcha';
 
 const RECAPTCHA_ACTIONS = {
@@ -12,8 +12,6 @@ const SUBJECTS = {
   demo: 'Request to book a demo',
   'dedicated-cloud': 'Interest in Dedicated Cloud, request form',
 } as const;
-
-const TO_ADDRESS = 'team@mail.datum.net';
 
 const EmailLeadToHubSpot = defineAction({
   input: z.object({
@@ -40,9 +38,13 @@ const EmailLeadToHubSpot = defineAction({
       return { success: true };
     }
 
+    const mode = process.env.MODE || import.meta.env.MODE;
+    const skipRecaptcha = mode === 'local';
+
     const isHuman =
-      !!input.recaptchaToken &&
-      (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType]));
+      skipRecaptcha ||
+      (!!input.recaptchaToken &&
+        (await verifyRecaptcha(input.recaptchaToken, RECAPTCHA_ACTIONS[input.formType])));
 
     if (!isHuman) {
       console.error(
@@ -73,19 +75,18 @@ const EmailLeadToHubSpot = defineAction({
     lines.push(`message: ${input.message || '-'}`);
 
     try {
-      await sendMail({
-        from: 'team@mail.datum.net',
-        to: TO_ADDRESS,
+      await sendToHelpScout({
         subject: SUBJECTS[input.formType],
+        name: input.name,
+        email: input.email,
         text: lines.join('\n'),
-        replyTo: input.email,
       });
     } catch (error) {
       console.error(
-        `[EmailLeadToHubSpot] sendMail failed for formType "${input.formType}":`,
+        `[EmailLeadToHubSpot] sendToHelpScout failed for formType "${input.formType}":`,
         error
       );
-      throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send email.' });
+      throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send lead.' });
     }
 
     return { success: true };

@@ -1,10 +1,11 @@
 ---
 // src/components/events/CommunityHuddlePastModal.astro
-// Past huddle recap layout — Figma Datum Master, node 11074:47906.
-import '@styles/components-modal.css';
+import sheet from '@styles/components-community-huddle-modal.css?url';
+import DeferredStylesheet from '@components/DeferredStylesheet.astro';
 import Icon from '@components/Icon.astro';
 ---
 
+<DeferredStylesheet href={sheet} />
 <community-huddle-past-modal>
   <dialog class="community-huddle-past-modal__dialog" aria-label="Community Huddle recap">
     <div class="modal-frame community-huddle-past-modal__frame">

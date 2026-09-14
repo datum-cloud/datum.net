@@ -11,10 +11,12 @@
 //
 // Modifier-key clicks, middle-clicks, and right-clicks bypass the modal so
 // "Open in new tab", "Save link as…", and AI crawlers reach the raw URL.
-import '@styles/components-modal.css';
+import sheet from '@styles/components-markdown-lightbox.css?url';
+import DeferredStylesheet from '@components/DeferredStylesheet.astro';
 import Icon from '@components/Icon.astro';
 ---
 
+<DeferredStylesheet href={sheet} />
 <markdown-lightbox>
   <dialog aria-label="Page markdown">
     <div class="markdown-lightbox__frame">

@@ -1,62 +1,11 @@
 ---
 // src/components/forms/NewsletterModal.astro
-// Popup modal for newsletter signup — form layout from Figma (node 9185-41852).
-import '@styles/components-modal.css';
+import sheet from '@styles/components-newsletter-modal.css?url';
+import DeferredStylesheet from '@components/DeferredStylesheet.astro';
 import Icon from '@components/Icon.astro';
 ---
 
-<style>
-  .animated-check,
-  .animated-error {
-    animation: scale-in 0.3s ease-out;
-  }
-
-  .check-circle,
-  .error-circle {
-    stroke-dasharray: 138;
-    stroke-dashoffset: 138;
-    animation: draw-circle 0.6s ease-out forwards;
-  }
-
-  .check-mark {
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    animation: draw-check 0.4s ease-out 0.3s forwards;
-  }
-
-  .error-x {
-    stroke-dasharray: 40;
-    stroke-dashoffset: 40;
-    animation: draw-check 0.4s ease-out 0.3s forwards;
-  }
-
-  @keyframes scale-in {
-    0% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
-  @keyframes draw-circle {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes draw-check {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-</style>
-
+<DeferredStylesheet href={sheet} />
 <newsletter-modal>
   <dialog aria-label="Subscribe for monthly updates">
     <div class="modal-frame newsletter-modal-frame">

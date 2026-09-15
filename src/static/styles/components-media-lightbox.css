@@ -1,0 +1,63 @@
+@reference './base.css';
+@import './layers.css';
+@import './components-modal.css';
+
+@layer components {
+  .modal-embed-wrapper {
+    @apply bg-black;
+    @apply relative w-full overflow-hidden;
+    @apply aspect-16/9;
+  }
+
+  .modal-embed-wrapper iframe {
+    @apply absolute inset-0 h-full w-full border-0;
+  }
+
+  media-lightbox {
+    @apply contents;
+  }
+
+  media-lightbox dialog {
+    @apply m-0 h-full max-h-full w-full border-0 p-0;
+    @apply mx-auto my-auto h-max min-h-80 w-[90%] max-w-246.5;
+    @apply max-h-[calc(100vh-8rem)];
+    @apply bg-transparent;
+  }
+
+  media-lightbox dialog[open] {
+    @apply flex min-h-0;
+  }
+
+  media-lightbox dialog::backdrop {
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[7px];
+  }
+
+  .media-lightbox-frame {
+    @apply min-h-0 items-center justify-center overflow-hidden p-4 md:p-10;
+  }
+
+  .media-lightbox-content {
+    @apply m-0 min-h-0 w-full min-w-0 flex-1 items-center justify-center gap-3;
+  }
+
+  .media-lightbox-figure {
+    @apply m-0 flex min-h-0 w-full min-w-0 flex-1 flex-col items-center justify-center;
+  }
+
+  .media-lightbox-img {
+    @apply block h-auto w-full max-w-full rounded-md object-contain object-center;
+    max-height: calc(100vh - 16rem);
+  }
+
+  .media-lightbox-caption {
+    @apply datum-text-sm text-midnight-fjord/60 w-full shrink-0 pt-2 text-center;
+  }
+
+  .is-lightbox-trigger {
+    @apply cursor-zoom-in transition-opacity duration-200 ease-in-out hover:opacity-90;
+  }
+
+  .is-lightbox-trigger:focus-visible {
+    @apply outline-aurora-moss outline-2 outline-offset-2;
+  }
+}

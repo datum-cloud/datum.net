@@ -183,7 +183,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
       const recaptchaToken = await getRecaptchaToken(this.recaptchaSiteKey, RECAPTCHA_ACTION);
 
       actions
-        .EmailLeadToHubSpot({
+        .EmailLeadToHelpScout({
           name: String(data.get('name') || ''),
           email: String(data.get('email') || ''),
           company: String(data.get('company') || ''),
@@ -198,7 +198,7 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
           gpuCount: Number(data.get('gpuCount') || 0),
           recaptchaToken,
         })
-        .then((result: Awaited<ReturnType<typeof actions.EmailLeadToHubSpot>>) => {
+        .then((result: Awaited<ReturnType<typeof actions.EmailLeadToHelpScout>>) => {
           if (result.error) {
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {

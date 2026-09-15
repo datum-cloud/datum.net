@@ -1,0 +1,30 @@
+src/actions/index.ts
+  s_ec2eedc6dbb4af::t_a4e9dbe46ca467 2,6
+src/components/forms/BookDemo.astro
+  s_ec2eedc6dbb4af::t_a4e9dbe46ca467 151,164,172
+src/components/forms/DedicatedCloudForm.astro
+  s_ec2eedc6dbb4af::t_a4e9dbe46ca467 186,201
+src/actions/emailLeadToHelpScout.ts
+  s_ec2eedc6dbb4af::t_a4e9dbe46ca467 1-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e3d4d66ddcada43ee439fc937505c11c43afc6eb",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_ec2eedc6dbb4af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f597f518-384a-46da-b2f8-7f6adc22c7e8",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

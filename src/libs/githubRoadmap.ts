@@ -359,6 +359,19 @@ export function getRoadmapMonthKey(releaseDate: string): string {
   return releaseDate.slice(0, 7);
 }
 
+/**
+ * Extract the release codename from a milestone title, stripping the redundant
+ * month/year prefix GitHub milestones are named with (e.g. `August 2026 - "Armstrong"` → `Armstrong`).
+ * Falls back to a legacy "Name: Version" format, then the raw title.
+ */
+export function getRoadmapReleaseName(title: string): string {
+  const quotedNameMatch = title.match(/"([^"]+)"/);
+  if (quotedNameMatch?.[1]) return quotedNameMatch[1].trim();
+
+  const titleParts = title.split(':');
+  return titleParts[0]?.trim() ?? title;
+}
+
 /** URL slug for roadmap detail pages, derived from the milestone title. */
 export function getRoadmapSlug(milestone: Pick<RoadmapMilestone, 'title'>): string {
   return milestone.title

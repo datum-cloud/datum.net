@@ -22,53 +22,64 @@ export interface ChecklistItem {
   description: string;
 }
 
-export interface BuiltForYouItem extends ChecklistItem {
+export interface DedicatedServiceItem {
+  /** Tab id — also the anchor Alpine tracks and the panel's `aria-labelledby` target. */
+  id: string;
+  /** Rail label */
+  label: string;
   /** lucide icon name from src/utils/iconMap.ts */
   icon: string;
+  /** Panel heading, one array entry per designed line break */
+  titleLines: string[];
+  description: string;
+  /** Pricing-model copy behind the panel's info icon */
+  tooltip: string;
 }
 
-export const builtForYou = {
-  eyebrow: 'Built for you',
-  title: 'Like wealth managers, but for AI companies',
-  intro: [
-    'It’s no easy task to assemble all the pieces of the digital infrastructure puzzle, and each situation at scale is unique.',
-    "That's why we show up with a simple promise: put the work in, be honest and transparent, and do our best to help you win.",
-  ],
+export const dedicatedServices = {
+  eyebrow: 'Our dedicated services',
+  title: "Four solutions. What's right for you?",
   items: [
     {
-      title: 'Architecture & design',
-      description: 'Cluster topology, rack layout, and system design matched to your requirements.',
-      icon: 'waypoints',
+      id: 'connected-metal',
+      label: 'Connected Metal',
+      icon: 'hard-drive',
+      titleLines: ['GPU / CPU as a service'],
+      description:
+        'Delivered as fully operated bare metal, this is the best approach if you want Datum to carry the server, network and datacenter CAPEX.',
+      tooltip:
+        'a committed term contract with an effective hourly rate per GPU. Setup and usage fees apply (data transfer, interconnection, etc)',
     },
     {
-      title: 'Supply chain',
-      description: 'Sourcing GPUs, servers, and networking gear from vetted hardware partners.',
-      icon: 'package',
-    },
-    {
-      title: 'Data center and power',
-      description: 'Facility capacity that fits your power, cooling, and location requirements.',
+      id: 'connected-colo',
+      label: 'Connected Colo',
       icon: 'server',
+      titleLines: ['Your CAPEX', 'meets our expertise'],
+      description:
+        'We designed this solution to combine the experience of bare metal with the economics of colocation and the ability to depreciate server CAPEX.',
+      tooltip:
+        'a committed term contract for non-server costs (network, colocation, power, operations) with a lease buy out option for server CAPEX.',
     },
     {
-      title: 'Beyond bare metal',
+      id: 'ai-storage-fabric',
+      label: 'AI Storage Fabric',
+      icon: 'hard-drive-download',
+      titleLines: ['Moving your data', 'to the compute'],
       description:
-        'We deliver fully managed bare metal as well as the right connectivity and orchestration.',
-      icon: 'wallet-minimal',
+        'We help improve performance and lower costs with regional storage hubs and an optimized network backbone with smart caching. Et voila?',
+      tooltip:
+        'a committed term contract that includes managed colocation alongside network and data transfer fees.',
     },
     {
-      title: 'Cluster Networking',
+      id: 'advisory-services',
+      label: 'Advisory Services',
+      icon: 'message-square-quote',
+      titleLines: ["We'll leave the light on"],
       description:
-        'We follow best practices and can deliver either InfiniBand or Ethernet based deployments.',
-      icon: 'network',
+        'Sometimes you need a helping hand, preferable with a lot of experience and deep WhatsApp connections. Architecture, supply chain, procurement, and more.',
+      tooltip: 'flat monthly retainer or traditional agent-based commissions.',
     },
-    {
-      title: 'Operations',
-      description:
-        'Day-to-day management, monitoring, and incident response once the cluster is live.',
-      icon: 'zap',
-    },
-  ] satisfies BuiltForYouItem[],
+  ] satisfies DedicatedServiceItem[],
 };
 
 export const whyDatum = {
@@ -103,17 +114,10 @@ export interface Operator {
   name: string;
   role: string;
   bio: string;
-  /** Strapi author slug — used to look up a real headshot; falls back to an initials tile if not found. */
+  /** Strapi author slug — used to look up the pine-forge headshot; falls back to an initials tile if not found. */
   slug: string;
   /** Override when the Strapi author record doesn't have `social.linkedin` set. */
   linkedin?: string;
-  /**
-   * Override when this operator's `/about` avatar color (assigned by array index there)
-   * doesn't match the glacier-mist scheme this section standardized on. Points at the
-   * person's glacier-mist variant directly so the two pages can show different color
-   * variants of the same headshot without fighting over one shared Strapi `avatar` field.
-   */
-  avatarOverrideUrl?: string;
 }
 
 export const operators = {
@@ -124,8 +128,6 @@ export const operators = {
       role: 'Co-Founder, CEO',
       bio: 'Twenty years building bare metal and interconnected infrastructure for demanding customers.',
       slug: 'zachary-smith',
-      avatarOverrideUrl:
-        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/zachary_smith_glacier_mist_b7a391652b.png',
     },
     {
       name: 'Megan O’Connor',
@@ -147,8 +149,6 @@ export const operators = {
       bio: 'Two-plus decades building internet infrastructure, now bringing that range to compute and capacity here at Datum.',
       slug: 'nicholas-schmidt',
       linkedin: 'https://www.linkedin.com/in/nicholas-schmidt-26983b1/',
-      avatarOverrideUrl:
-        'https://grateful-excitement-dfe9d47bad.media.strapiapp.com/nicholas_schmidt_glacier_mist_af24a9e885.png',
     },
   ] satisfies Operator[],
 };

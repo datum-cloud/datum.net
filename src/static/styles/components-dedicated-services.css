@@ -1,0 +1,259 @@
+@layer components {
+  /* "Four solutions. What's right for you?" — Figma node 17188:56253.
+     One DOM tree serves both layouts: below md the rail items and their panels
+     read as a stacked accordion, from md up the rail becomes column 1 and every
+     panel is placed into column 2 so they cross-fade in a fixed-height cell. */
+
+  .ds-grid {
+    @apply border-silver-mist grid grid-cols-1 border;
+  }
+
+  /* ------------------------------------------------------------------ rail */
+
+  .ds-tab {
+    @apply bg-platinum border-silver-mist relative flex cursor-pointer items-center gap-4 border-b text-left;
+    @apply px-6 py-6 md:px-8 md:py-8 lg:px-12 lg:py-10 xl:px-16;
+    @apply transition-[background-color,opacity] duration-300;
+
+    &.is-active {
+      @apply bg-white;
+    }
+
+    &:not(.is-active) {
+      @apply opacity-60 hover:opacity-100;
+    }
+  }
+
+  .ds-tab-icon {
+    @apply text-midnight-fjord size-8 shrink-0 stroke-1;
+  }
+
+  .ds-tab-label {
+    @apply datum-text-xl text-midnight-fjord font-semibold;
+  }
+
+  /* ---------------------------------------------------------------- panels */
+
+  /* `0fr -> 1fr` animates the accordion height without measuring it in JS. */
+  .ds-panel {
+    @apply border-silver-mist grid border-b;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 400ms ease;
+  }
+
+  .ds-panel.is-active {
+    grid-template-rows: 1fr;
+  }
+
+  .ds-panel:last-of-type {
+    @apply border-b-0;
+  }
+
+  .ds-panel-clip {
+    @apply min-h-0 overflow-hidden;
+  }
+
+  .ds-panel-frame {
+    @apply bg-white p-3 md:p-5 lg:p-8 xl:p-10;
+  }
+
+  .ds-card {
+    @apply bg-aurora-moss relative flex flex-col gap-8 overflow-hidden;
+    @apply p-6 md:p-8 lg:p-12 xl:p-16;
+  }
+
+  .ds-card-copy {
+    @apply text-midnight-fjord flex flex-col gap-5;
+  }
+
+  .ds-card-title {
+    @apply datum-text-7xl;
+  }
+
+  .ds-card-description {
+    @apply datum-text-xl font-medium;
+  }
+
+  .ds-card-tooltip {
+    @apply absolute right-5 bottom-5;
+  }
+
+  /* ------------------------------------------------------------- panel art */
+
+  /* Below md the illustration sits in flow under the copy; from md up it is
+     absolutely placed over the card using the Figma offsets as percentages of
+     the card, so the composition holds at every width. */
+  .ds-art {
+    @apply relative w-full;
+  }
+
+  .ds-art-image {
+    @apply size-full object-contain mix-blend-darken;
+  }
+
+  .ds-art--connected-metal {
+    aspect-ratio: 461 / 239;
+  }
+
+  .ds-art--connected-colo {
+    aspect-ratio: 387 / 431;
+  }
+
+  .ds-art--ai-storage-fabric {
+    aspect-ratio: 358 / 264;
+  }
+
+  .ds-art--advisory {
+    aspect-ratio: 350 / 279;
+  }
+
+  .ds-art-stroke {
+    @apply absolute block;
+  }
+
+  .ds-art-stroke--outer {
+    left: 0;
+    top: 11.47%;
+    width: 100%;
+    height: 88.53%;
+  }
+
+  .ds-art-stroke--inner {
+    left: 12%;
+    top: 0;
+    width: 74.86%;
+    height: 66.31%;
+  }
+
+  .ds-art-collage {
+    @apply absolute grid grid-cols-2;
+    left: 18.57%;
+    top: 5.73%;
+    width: 61.71%;
+  }
+
+  .ds-art-tile {
+    @apply relative aspect-square;
+  }
+
+  .ds-art-tile--pine {
+    @apply bg-pine-forge-tile;
+  }
+
+  .ds-art-tile--midnight {
+    @apply bg-midnight-fjord;
+  }
+
+  .ds-art-tile-image {
+    @apply absolute inset-0 size-full object-cover;
+  }
+
+  /* ------------------------------------------------------------- md and up */
+
+  @media (width >= theme(--breakpoint-md)) {
+    /* The rows must be explicit: `grid-row: 1 / -1` on the panels resolves
+       `-1` against the explicit grid, so with implicit-only rows every panel
+       would collapse into row 1 and stretch the first rail cell. */
+    .ds-grid {
+      /* 23.25rem = 372px — designed rail cap; panel takes the remainder. */
+      grid-template-columns: minmax(0, 23.25rem) minmax(0, 1fr);
+      grid-template-rows: repeat(var(--ds-count), auto);
+    }
+
+    .ds-tab {
+      @apply border-silver-mist border-r;
+      grid-column: 1;
+      grid-row: var(--ds-row);
+    }
+
+    .ds-tab:last-of-type {
+      @apply border-b-0;
+    }
+
+    /* Bridges the active rail cell into the panel column by covering the
+       rail's right keyline, matching the white notch in the source frame. */
+    .ds-tab.is-active::after {
+      @apply absolute inset-y-0 block w-px bg-white;
+      content: '';
+      right: -1px;
+    }
+
+    .ds-panel {
+      @apply border-b-0;
+      grid-column: 2;
+      grid-row: 1 / -1;
+      grid-template-rows: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(0.5rem);
+      transition:
+        opacity 300ms ease,
+        transform 300ms ease,
+        visibility 0s linear 300ms;
+    }
+
+    .ds-panel.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition:
+        opacity 300ms ease,
+        transform 300ms ease,
+        visibility 0s;
+    }
+
+    .ds-panel-clip,
+    .ds-panel-frame,
+    .ds-card {
+      @apply h-full;
+    }
+
+    .ds-panel-clip {
+      @apply overflow-visible;
+    }
+
+    .ds-card {
+      @apply justify-center gap-0;
+    }
+
+    .ds-card-copy {
+      @apply w-1/2;
+    }
+
+    .ds-art {
+      @apply absolute;
+    }
+
+    .ds-art--connected-metal {
+      left: 54.28%;
+      top: 23.63%;
+      width: 53.36%;
+    }
+
+    .ds-art--connected-colo {
+      left: 56.48%;
+      top: 5.63%;
+      width: 44.79%;
+    }
+
+    .ds-art--ai-storage-fabric {
+      left: 58.45%;
+      top: 16.07%;
+      width: 41.44%;
+    }
+
+    .ds-art--advisory {
+      left: 57.18%;
+      top: 15.93%;
+      width: 40.51%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-tab,
+    .ds-panel,
+    .ds-panel.is-active {
+      transition-duration: 0.01ms;
+    }
+  }
+}

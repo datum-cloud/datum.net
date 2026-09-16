@@ -14,8 +14,7 @@ const whyDatumTitleRest = whyDatum.title.slice(WHY_DATUM_TITLE_HIGHLIGHT.length)
 >
   <div class="max-width-nav large-pad relative">
     <SectionEyebrow position="left-top">{whyDatum.eyebrow}</SectionEyebrow>
-    <SectionLine left top />
-    <SectionLine right top />
+    <SectionLine left top bottom />
 
     <div class="max-width-nopad flex flex-col gap-10 md:gap-16">
       <div class="spacing-pad flex flex-col gap-4">
@@ -33,7 +32,7 @@ const whyDatumTitleRest = whyDatum.title.slice(WHY_DATUM_TITLE_HIGHLIGHT.length)
         {
           whyDatum.items.map((item) => (
             <div class="bg-platinum flex flex-col items-start gap-7 p-8">
-              <div class="bg-aurora-moss flex size-10 shrink-0 items-center justify-center rounded-sm">
+              <div class="bg-aurora-moss-deep flex size-10 shrink-0 items-center justify-center rounded-sm">
                 <Icon name="check" size="sm" class="text-pine-forge---links stroke-2.5" />
               </div>
               <div class="flex flex-col gap-2.5">

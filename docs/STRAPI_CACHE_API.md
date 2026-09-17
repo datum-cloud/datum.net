@@ -176,23 +176,27 @@ For each supplied name:
 
 #### Allowed `names`
 
-| Pattern                 | Meaning                                                                                   |
-| ----------------------- | ----------------------------------------------------------------------------------------- |
-| `strapi-articles`       | Article list slice used across the site; calls `fetchStrapiArticles()`                    |
-| `strapi-authors`        | Full author list; calls `fetchStrapiAuthors()`                                            |
-| `strapi-team-members`   | Derived list (`isTeam`); calls `getStrapiTeamMembers()`                                   |
-| `strapi-card-members`   | Derived list (`isCard`); calls `getStrapiCardMembers()`                                   |
-| `strapi-article-{slug}` | Single article payload; `{slug}` is the blog slug. Calls `fetchStrapiArticleBySlug(slug)` |
-| `github-roadmaps`       | **Not Strapi data** — see "GitHub-sourced keys" below                                     |
-| `github-backlog`        | **Not Strapi data** — see "GitHub-sourced keys" below                                     |
+| Pattern                 | Meaning                                                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `strapi-articles`       | Article list slice used across the site; calls `fetchStrapiArticles()`                                                             |
+| `strapi-authors`        | Full author list; calls `fetchStrapiAuthors()`                                                                                     |
+| `strapi-team-members`   | Derived list (`isTeam`); calls `getStrapiTeamMembers()`                                                                            |
+| `strapi-card-members`   | Derived list (`isCard`); calls `getStrapiCardMembers()`                                                                            |
+| `strapi-article-*`      | **Clear only** — delete every primary key with prefix `strapi-article-` (does not touch `strapi-articles`, does not refetch posts) |
+| `strapi-article-{slug}` | Single article payload; `{slug}` is the blog slug. Calls `fetchStrapiArticleBySlug(slug)`                                          |
+| `github-roadmaps`       | **Not Strapi data** — see "GitHub-sourced keys" below                                                                              |
+| `github-backlog`        | **Not Strapi data** — see "GitHub-sourced keys" below                                                                              |
 
 The literal key `strapi-article-{slug}` is **not** a real key — substitute your post slug (for example `strapi-article-announcing-datum-platform`).
+
+**Wildcard `strapi-article-*`:** processed **before** any other names in the same request. Matching primary keys are deleted (`CacheManager.delete`; fallback files are left in place). Deleted keys are listed in `details.clearedDetails`. Combine with a specific `strapi-article-{slug}` (or a later fill-missing POST) if you want posts rewritten after the wipe.
 
 **Slug validation** (for article keys):
 
 - Prefix must be **`strapi-article-`**.
 - The slug segment must be non-empty (trimmed).
-- Must not contain `/` or `\`, and must not be `.` or `..`.
+- Must not contain `/`, `\`, or `*`, and must not be `.` or `..`.
+- The exact name **`strapi-article-*`** is the wildcard above, not a slug.
 
 #### GitHub-sourced keys (`github-roadmaps`, `github-backlog`) — not actually Strapi data
 
@@ -339,6 +343,15 @@ curl -sS -X POST "${ORIGIN}/api/cache/strapi" \
   }'
 ```
 
+**Clear every per-post cache (`strapi-article-*`):**
+
+```bash
+curl -sS -X POST "${ORIGIN}/api/cache/strapi" \
+  -H "Content-Type: application/json" \
+  -H "X-Webhook-Secret: ${STRAPI_WEBHOOK_SECRET}" \
+  -d '{"names": ["strapi-article-*"]}'
+```
+
 ---
 
 ## Programmatic reuse (same repo)
@@ -353,6 +366,7 @@ If you invoke this logic from tooling or scripts **inside this codebase**:
 | `validateStrapiForceRegenerateName`    | `@libs/strapi/regenerateCache` |
 | `STRAPI_FORCE_REGENERATE_KEYS`         | `@libs/strapi/regenerateCache` |
 | `ARTICLE_CACHE_PREFIX`                 | `@libs/strapi/regenerateCache` |
+| `ARTICLE_CACHE_WILDCARD`               | `@libs/strapi/regenerateCache` |
 
 ---
 

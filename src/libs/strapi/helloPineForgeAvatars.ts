@@ -15,7 +15,7 @@
  */
 import { cache, config } from './_runtime';
 
-const PINE_FORGE_AVATAR_MAP_CACHE_KEY = 'strapi-hello-pine-forge-avatars';
+const PINE_FORGE_AVATAR_MAP_CACHE_KEY = 'strapi-hello-pine-forge-avatars-v2';
 const PINE_FORGE_SUFFIX = '-pine-forge';
 
 interface StrapiUploadFileRow {
@@ -23,27 +23,40 @@ interface StrapiUploadFileRow {
   url: string;
 }
 
-/** `"jacob-smith-pine-forge.png"` → `"jacob-smith"`; `null` if it's not a pine-forge file. */
+/**
+ * `"jacob-smith-pine-forge.png"` or Strapi's
+ * `"jacob_smith_pine_forge_<hash>.png"` → `"jacob-smith"`.
+ */
 function slugFromFileName(fileName: string): string | null {
-  const base = fileName.replace(/\.[^./]+$/, '').toLowerCase();
+  const base = fileName
+    .replace(/\.[^./]+$/, '')
+    .toLowerCase()
+    .replace(/_/g, '-')
+    .replace(/-[a-f0-9]{8,}$/, '');
   if (!base.endsWith(PINE_FORGE_SUFFIX)) return null;
   return base.slice(0, -PINE_FORGE_SUFFIX.length);
 }
 
-/** Fetch every "-pine-forge" media file once and index by author slug. */
+/** Fetch every pine-forge media file once and index by author slug. */
 async function fetchPineForgeAvatarMap(): Promise<Record<string, string> | null> {
   if (!config.token) return null;
 
   try {
-    const response = await fetch(
-      `${config.url}/api/upload/files?filters[name][$containsi]=${PINE_FORGE_SUFFIX}&pagination[pageSize]=200`,
-      { headers: { Authorization: `Bearer ${config.token}` } }
-    );
+    const params = new URLSearchParams();
+    params.set('filters[$or][0][name][$containsi]', 'pine_forge');
+    params.set('filters[$or][1][name][$containsi]', 'pine-forge');
+    params.set('pagination[pageSize]', '200');
+
+    const response = await fetch(`${config.url}/api/upload/files?${params}`, {
+      headers: { Authorization: `Bearer ${config.token}` },
+    });
     if (!response.ok) return null;
 
-    const files: StrapiUploadFileRow[] = await response.json();
+    const files: unknown = await response.json();
+    if (!Array.isArray(files)) return null;
+
     const map: Record<string, string> = {};
-    for (const file of files) {
+    for (const file of files as StrapiUploadFileRow[]) {
       const slug = slugFromFileName(file.name);
       if (slug) map[slug] = file.url;
     }

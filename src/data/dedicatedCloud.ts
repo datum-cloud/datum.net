@@ -76,7 +76,7 @@ export const dedicatedServices = {
       icon: 'message-square-quote',
       titleLines: ["We'll leave the light on"],
       description:
-        'Sometimes you need a helping hand, preferable with a lot of experience and deep WhatsApp connections. Architecture, supply chain, procurement, and more.',
+        'Sometimes you need a helping hand, preferably with a lot of experience, including architecture, supply chain, procurement, deep WhatsApp connections and more.',
       tooltip: 'flat monthly retainer or traditional agent-based commissions.',
     },
   ] satisfies DedicatedServiceItem[],
@@ -131,7 +131,7 @@ export const operators = {
     },
     {
       name: 'Megan O’Connor',
-      role: 'Chief of Staff & Strategic Accounts',
+      role: 'Chief of Staff, Strategic Accounts',
       bio: 'Turns complex infrastructure into clear, human-led paths to what’s next for our biggest accounts.',
       slug: 'megan-oconnor',
       linkedin: 'https://www.linkedin.com/in/meganoconnorco/',

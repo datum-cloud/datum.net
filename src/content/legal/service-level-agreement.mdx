@@ -16,14 +16,14 @@ import Container from '@components/Container.astro';
 <Container tag="article" class="datum-prose-article max-w-4xl pb-1 flow-root *:first:mt-0">
 
 <p class="mb-4 font-semibold">Datum Technology, Inc.</p>
-<small class="mb-2 block italic">Version 1.0 · August 1, 2026</small>
+<small class="mb-2 block italic">Version 1.0 · September 17, 2026</small>
 <small class="mb-4 block italic">Exhibit A to Master Services Agreement</small>
 
 ## 1. Purpose and Scope
 
 This Service Level Agreement ("SLA") is Exhibit A to the Master Services Agreement between Datum Technology, Inc. ("Datum") and Customer (the "MSA"). This SLA sets out Datum's commitments regarding the availability and performance of the Datum Platform ("Services"), the methodology for measuring compliance, and the remedies available to Customer in the event those commitments are not met. Capitalized terms not defined herein have the meanings given in the MSA.
 
-This SLA applies to the production environment of the Services. It does not apply to: (a) pre-production, staging, or evaluation environments; (b) Third-Party Software components; or (c) any outage or degradation caused by Customer's own infrastructure, traffic, or configurations.
+This SLA applies to the production environment of Contracted Services provided under an executed Order Form. It does not apply to: (a) Usage Services, including free-tier and beta usage, which are provided without any uptime commitment or service-level remedy under this SLA; (b) pre-production, staging, or evaluation environments; (c) Third-Party Software components; or (d) any outage or degradation caused by Customer's own infrastructure, traffic, or configurations.
 
 ## 2. Definitions
 
@@ -37,7 +37,6 @@ This SLA applies to the production environment of the Services. It does not appl
 | **Service Credit** | A credit applied to Customer's next invoice as a percentage of the Monthly Recurring Fees paid for the affected Service region for the month in which the SLA failure occurred. |
 | **Monthly Recurring Fees** | The recurring fees paid by Customer for the Services in the affected Service region for the relevant calendar month, excluding one-time fees, professional services fees, and usage-based overages. |
 | **Incident** | A single, continuous period of Downtime, regardless of the number of support tickets filed in relation to that period. |
-| **Service Region** | A discrete geographic deployment region in which Datum provides the Services, as listed in the applicable Order Form. |
 | **Exclusion** | A period of unavailability that does not constitute Downtime, as further described in Section 5. |
 
 ## 3. Uptime Commitment
@@ -112,10 +111,10 @@ The following do not constitute Downtime and are not counted toward SLA calculat
 
 | Priority | Name | Description | Initial Response | Status Updates |
 | :---- | :---- | :---- | :---- | :---- |
-| P1 | Critical | Complete Service outage or critical security incident affecting all or substantially all Customers | 30 minutes | Every 60 minutes |
-| P2 | High | Significant degradation affecting core Services or a majority of Customer's active deployments | 2 hours | Every 4 hours |
-| P3 | Medium | Partial degradation or isolated failures not affecting core Service availability | 8 business hours | Daily |
-| P4 | Low | Minor issues, informational inquiries, feature requests | 2 business days | As needed |
+| **P1** | Critical | Complete Service outage or critical security incident affecting all or substantially all Customers | 30 minutes | Every 60 minutes |
+| **P2** | High | Significant degradation affecting core Services or a majority of Customer's active deployments | 2 hours | Every 4 hours |
+| **P3** | Medium | Partial degradation or isolated failures not affecting core Service availability | 8 business hours | Daily |
+| **P4** | Low | Minor issues, informational inquiries, feature requests | 2 business days | As needed |
 
 ### 6.2 Status Page
 

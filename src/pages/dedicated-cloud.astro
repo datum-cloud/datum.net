@@ -12,7 +12,7 @@ import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
 import FAQ from '@components/FAQ.astro';
 import DedicatedCloudForm from '@components/forms/DedicatedCloudForm.astro';
-import BuiltForYou from '@components/dedicated-cloud/BuiltForYou.astro';
+import DedicatedServices from '@components/dedicated-cloud/DedicatedServices.astro';
 import WhyDatum from '@components/dedicated-cloud/WhyDatum.astro';
 import Operators from '@components/dedicated-cloud/Operators.astro';
 import { meta, hero, contact } from '@data/dedicatedCloud';
@@ -55,7 +55,7 @@ const jsonLd = {
 
     <div class="section--block section--block--x-pad relative overflow-hidden bg-white">
       <div class="max-width-nav large-pad relative flex flex-col items-center gap-8 text-center">
-        <SectionLine left top />
+        <SectionLine left bottom top />
         <div class="absolute top-0 -left-10 hidden lg:block">
           <HeroBlocksLeft
             class="line-draw pointer-events-none"
@@ -94,7 +94,7 @@ const jsonLd = {
     </div>
   </section>
   <ModuleConnector />
-  <BuiltForYou />
+  <DedicatedServices />
   <WhyDatum />
   <Operators />
 

@@ -95,8 +95,8 @@ export {
   PINE_FORGE_BG_COLOR,
 } from './authors';
 
-// /hello-only avatar resolution, decoupled from the shared `avatar` field
-// (see helloPineForgeAvatars.ts for why).
+// Pine-forge avatar resolution, decoupled from the shared `avatar` field
+// (see helloPineForgeAvatars.ts for why). Used by /hello and /dedicated-cloud.
 export { getHelloPineForgeAvatarUrl } from './helloPineForgeAvatars';
 
 // Re-export articles module (queries and cached fetchers)

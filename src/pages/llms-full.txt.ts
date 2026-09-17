@@ -115,9 +115,9 @@ Organization (admin) → Project (admin, inherited) → Service Resources (admin
 
 ## Current Platform Features
 
-### 1. Application Load Balancer (Generally Available — Free)
+### 1. ALB — Application Load Balancer (Generally Available — Free)
 
-An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**. In the portal nav this appears as **ALB**.
+An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**. Branded as **ALB** across the platform nav and the deliver page.
 
 - **Protocols supported:** HTTP/1.1, HTTP/2, gRPC, WebSockets, HTTPS
 - **WAF:** Coraza-based Web Application Firewall covering top OWASP threats; runs in \`observe\` mode by default, can be set to \`enforced\` (Level 1 Relaxed or Level 2 Balanced)

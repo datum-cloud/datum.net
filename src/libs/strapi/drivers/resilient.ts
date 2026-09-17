@@ -70,8 +70,8 @@ export class ResilientCacheDriver implements CacheDriver {
       await this.primary.delete(key);
     } catch (err) {
       this.warn('delete', err);
-      await this.backup.delete(key);
     }
+    await this.backup.delete(key);
   }
 
   async deleteByTag(tag: string): Promise<void> {
@@ -93,10 +93,13 @@ export class ResilientCacheDriver implements CacheDriver {
   }
 
   async keys(prefix?: string): Promise<string[]> {
-    return this.withFallback(
-      'keys',
-      () => this.primary.keys(prefix),
-      () => this.backup.keys(prefix)
-    );
+    let fromPrimary: string[] = [];
+    try {
+      fromPrimary = await this.primary.keys(prefix);
+    } catch (err) {
+      this.warn('keys', err);
+    }
+    const fromBackup = await this.backup.keys(prefix);
+    return [...new Set([...fromPrimary, ...fromBackup])];
   }
 }

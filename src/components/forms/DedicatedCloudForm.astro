@@ -203,6 +203,14 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {
             if (window.rybbit) window.rybbit.event('Dedicated: Send request');
+            // Google Ads conversion — datum-cloud/datum.net#1738. This form has no
+            // separate "confirmation page" (the success state is inline), so the
+            // conversion fires here instead, right alongside the Rybbit event.
+            if (window.gtag) {
+              window.gtag('event', 'conversion', {
+                send_to: 'AW-18440820392/dLbYCMHPhPocEKitotlE',
+              });
+            }
             this.showStatus("Thanks — we'll be in touch shortly.", true);
             this.form.reset();
             this.sizingOutput.textContent = this.sizingInput.defaultValue;

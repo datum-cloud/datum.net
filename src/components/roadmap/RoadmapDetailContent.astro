@@ -31,7 +31,7 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
         href="/roadmap"
       />
 
-      <h2 class="roadmap-detail--title">{roadmap.title}</h2>
+      <h1 class="roadmap-detail--title">{roadmap.title}</h1>
       <div class="roadmap-detail--meta">
         {
           roadmap.githubUrl && (

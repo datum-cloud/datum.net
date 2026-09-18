@@ -372,6 +372,95 @@ export function getRoadmapReleaseName(title: string): string {
   return titleParts[0]?.trim() ?? title;
 }
 
+/**
+ * Browser-tab title for a roadmap detail page, e.g. `August 2026 "Armstrong" Release - Datum Roadmap`.
+ * `milestone.title` already carries the month/year (`August 2026 - "Armstrong"`), so this must not
+ * append another formatted date on top of it (see datum-cloud/datum.net#1737).
+ */
+export function getRoadmapPageTitle(
+  milestone: Pick<RoadmapMilestone, 'title' | 'releaseDate' | 'shipped'>
+): string {
+  const formattedDate = new Date(milestone.releaseDate).toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+  const releaseName = getRoadmapReleaseName(milestone.title);
+  const kind = milestone.shipped ? 'Release' : 'Milestone';
+  return `${formattedDate} "${releaseName}" ${kind} - Datum Roadmap`;
+}
+
+/**
+ * Hand-written SEO descriptions per roadmap milestone, keyed by slug (@see getRoadmapSlug).
+ * The milestone `summary` is release-note HTML (including an inline-styled issue list) meant
+ * for the page body — it must never be dumped into `<meta name="description">` verbatim (see
+ * datum-cloud/datum.net#1737). There's no formulaic way to derive good SEO copy from that HTML,
+ * so this is a manually curated override map; unlisted milestones fall back to a stripped,
+ * truncated version of the summary via `getRoadmapSeoDescription`.
+ */
+const ROADMAP_SEO_DESCRIPTIONS: Record<string, string> = {
+  'august-2026-armstrong':
+    "Datum's August 2026 Armstrong release: an Internet NAT66 gateway for Galactic VPC, billing for Datum Compute, horizontal autoscaling, and customer-facing logs.",
+  'september-2026-brother-ray':
+    "What shipped in Datum's September 2026 Brother Ray release: Datum Compute for instant secure workloads, a NAT64 gateway for Galactic VPC, and BIMI.",
+  'november-2026-lovelace':
+    "See what's planned for Datum's November 2026 Lovelace milestone, track the open issues on GitHub, and request or vote for the features you want next.",
+  'june-2026-katherine':
+    "What shipped in Datum's June 2026 Katherine release: a reworked quota page with display names and product grouping across Datum Cloud services.",
+  'january-2026-mary-elizabeth':
+    "What shipped in Datum's January 2026 Mary Elizabeth release: the Datum Desktop MVP, apex ALIAS records for DNS, and Grafana metrics export.",
+  'march-2026-dolores':
+    "What shipped in Datum's March 2026 Dolores release: service accounts, one-click WAF, fine-grained roles, and on-demand access with the waitlist retired.",
+  'december-2026-hopper':
+    "See what's planned for Datum's December 2026 Hopper milestone, the final release of the year, and vote for the features you want on the open roadmap.",
+  'july-2026-kwolek':
+    "What shipped in Datum's July 2026 Kwolek release: the Platform and Dedicated Cloud landing pages, a new onboarding flow, and billing accounts.",
+  'april-2026-thuerk':
+    "What shipped in Datum's April 2026 Thuerk release: HTTP/3 at the edge, datumctl contexts, the Iroh Gateway, and the first public Agent Skills.",
+  'october-2026-hedy':
+    "See what's planned for Datum's October 2026 Hedy milestone, follow the issues on GitHub, and vote for the features you want next on the open roadmap.",
+  'may-2026-timbl':
+    "What shipped in Datum's May 2026 TimBL release: Galactic VPC underlay design, activity timelines across the portal, and usage billing and metering.",
+  'february-2026-blankenbaker':
+    "What shipped in Datum's February 2026 Blankenbaker release: Datum Desktop, configurable WAF at the proxy and path level, and semantic activity logs.",
+};
+
+/** Strip tags and collapse whitespace, for a summary-derived meta description fallback. */
+function stripHtmlForDescription(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const MAX_SEO_DESCRIPTION_LENGTH = 160;
+
+/**
+ * SEO meta description for a roadmap detail page. Prefers the curated override above;
+ * falls back to a plain-text, length-capped version of the milestone summary rather than
+ * the raw HTML that used to leak into the meta tag.
+ */
+export function getRoadmapSeoDescription(
+  milestone: Pick<RoadmapMilestone, 'slug' | 'summary' | 'releaseDate'>
+): string {
+  const override = ROADMAP_SEO_DESCRIPTIONS[milestone.slug];
+  if (override) return override;
+
+  if (milestone.summary) {
+    const plainText = stripHtmlForDescription(milestone.summary);
+    if (plainText) {
+      return plainText.length > MAX_SEO_DESCRIPTION_LENGTH
+        ? `${plainText.slice(0, MAX_SEO_DESCRIPTION_LENGTH - 1).trimEnd()}…`
+        : plainText;
+    }
+  }
+
+  const formattedDate = new Date(milestone.releaseDate).toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+  return `Datum roadmap for ${formattedDate}.`;
+}
+
 /** URL slug for roadmap detail pages, derived from the milestone title. */
 export function getRoadmapSlug(milestone: Pick<RoadmapMilestone, 'title'>): string {
   return milestone.title

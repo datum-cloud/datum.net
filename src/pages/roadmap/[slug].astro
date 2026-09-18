@@ -8,6 +8,8 @@ import {
   getRoadmapMonthKey,
   getRoadmapSlug,
   getRoadmapCoverImage,
+  getRoadmapPageTitle,
+  getRoadmapSeoDescription,
 } from '@libs/githubRoadmap';
 
 import Layout from '@layouts/Layout.astro';
@@ -48,11 +50,8 @@ if (!getRoadmapCoverImage(roadmap.number)) {
   return Astro.redirect('/roadmap', 302);
 }
 
-const releaseDate = new Date(roadmap.releaseDate);
-const formattedDate = releaseDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-
-const pageTitle = `${roadmap.title} — ${formattedDate} Roadmap`;
-const pageDescription = roadmap.summary ?? `Datum roadmap for ${formattedDate}.`;
+const pageTitle = getRoadmapPageTitle(roadmap);
+const pageDescription = getRoadmapSeoDescription(roadmap);
 ---
 
 <Layout title={pageTitle} description={pageDescription} bodyClass="page-roadmap">

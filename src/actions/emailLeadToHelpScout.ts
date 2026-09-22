@@ -26,8 +26,6 @@ const EmailLeadToHelpScout = defineAction({
     workloadType: z.string(),
     message: z.string().optional(),
     formType: z.enum(['demo', 'dedicated-cloud']),
-    website: z.string().optional(),
-    elapsedMs: z.number(),
     // Dedicated Cloud-only fields — optional so the simpler /demo form is unaffected.
     gpuGeneration: z.string().optional(),
     networking: z.string().optional(),
@@ -39,10 +37,6 @@ const EmailLeadToHelpScout = defineAction({
     recaptchaToken: z.string().optional(),
   }),
   handler: async (input) => {
-    if (input.website || input.elapsedMs < 3000) {
-      return { success: true };
-    }
-
     const mode = process.env.MODE || import.meta.env.MODE;
     const skipRecaptcha = mode === 'local';
 

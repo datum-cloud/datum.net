@@ -25,11 +25,6 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-6 border p-6 md:p-10 lg:p-12"
       onsubmit="return false;"
     >
-      <label class="absolute -left-[9999px]" aria-hidden="true">
-        <span>Website</span>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" />
-      </label>
-
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <label class="flex flex-col gap-2">
           <span class={labelClass}>Name <span class="text-red-600">*</span></span>
@@ -150,7 +145,6 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
     sizingInput: HTMLInputElement;
     sizingOutput: HTMLOutputElement;
     isSubmitting = false;
-    loadedAt = Date.now();
     recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
 
     constructor() {
@@ -190,8 +184,6 @@ const labelClass = 'datum-text-xs text-midnight-fjord/80 font-semibold';
           workloadType: String(data.get('gpuGeneration') || ''),
           message: String(data.get('message') || ''),
           formType: 'dedicated-cloud',
-          website: String(data.get('website') || ''),
-          elapsedMs: Date.now() - this.loadedAt,
           gpuGeneration: String(data.get('gpuGeneration') || ''),
           networking: String(data.get('networking') || ''),
           cooling: String(data.get('cooling') || ''),

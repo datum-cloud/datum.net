@@ -24,11 +24,6 @@ const recaptchaSiteKey =
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
       onsubmit="return false;"
     >
-      <label class="absolute left-[-9999px]" aria-hidden="true">
-        <span>Website</span>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" />
-      </label>
-
       <label class="flex flex-col gap-2">
         <span class="datum-text-xs text-midnight-fjord/80 font-semibold">
           Name <span class="text-red-600">*</span>
@@ -119,7 +114,6 @@ const recaptchaSiteKey =
     submitBtnText: HTMLElement;
     status: HTMLElement;
     isSubmitting = false;
-    loadedAt = Date.now();
     recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
 
     constructor() {
@@ -155,8 +149,6 @@ const recaptchaSiteKey =
           workloadType: String(data.get('workloadType') || ''),
           message: String(data.get('message') || ''),
           formType,
-          website: String(data.get('website') || ''),
-          elapsedMs: Date.now() - this.loadedAt,
           recaptchaToken,
         })
         .then((result: { error?: unknown }) => {

@@ -1,0 +1,43 @@
+---
+// src/components/Tooltip.astro
+
+import Icon from '@components/Icon.astro';
+import type { TooltipProps } from '@/src/types/common';
+
+const {
+  id,
+  text,
+  label,
+  triggerLabel = 'More information',
+  class: className = '',
+} = Astro.props as TooltipProps;
+---
+
+<span
+  class:list={['tooltip', className]}
+  x-data="{ open: false }"
+  @mouseenter="open = true"
+  @mouseleave="open = false"
+  @click.outside="open = false"
+  @keydown.escape="open = false"
+>
+  <button
+    type="button"
+    class="tooltip-trigger"
+    aria-label={triggerLabel}
+    aria-describedby={id}
+    @click="open = !open"
+    @focus="open = true"
+    @blur="open = false"
+  >
+    <Icon name="info" class="tooltip-trigger-icon" />
+  </button>
+
+  <span class="tooltip-bubble" id={id} role="tooltip" x-cloak x-show="open" x-transition.opacity>
+    <span class="tooltip-text">
+      {label && <strong class="tooltip-label">{label}</strong>}
+      {text}
+    </span>
+    <span class="tooltip-arrow" aria-hidden="true"></span>
+  </span>
+</span>

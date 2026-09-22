@@ -7,6 +7,7 @@ interface Window {
   rybbit?: {
     event: (name: string) => void;
   };
+  gtag?: (...args: unknown[]) => void;
 }
 
 declare namespace App {

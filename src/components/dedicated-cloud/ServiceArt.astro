@@ -1,0 +1,67 @@
+---
+// src/components/dedicated-cloud/ServiceArt.astro
+
+import { Image } from 'astro:assets';
+import connectedMetal from '@assets/images/dedicated-connected-metal.png';
+import connectedColo from '@assets/images/dedicated-connected-colo.png';
+import aiStorageFabric from '@assets/images/dedicated-ai-storage-fabric.png';
+import advisoryZac from '@assets/images/dedicated-advisory-zac.png';
+import advisoryMegan from '@assets/images/dedicated-advisory-megan.png';
+import advisoryShelby from '@assets/images/dedicated-advisory-shelby.png';
+import advisoryNick from '@assets/images/dedicated-advisory-nick.png';
+import AdvisoryStrokeOuter from '@assets/svgs/dedicated-advisory-stroke-outer.svg';
+import AdvisoryStrokeInner from '@assets/svgs/dedicated-advisory-stroke-inner.svg';
+
+interface ServiceArtProps {
+  id: string;
+}
+
+const { id } = Astro.props as ServiceArtProps;
+
+const ADVISORY_TILES = [
+  { image: advisoryZac, tone: 'pine' },
+  { image: advisoryMegan, tone: 'midnight' },
+  { image: advisoryShelby, tone: 'midnight' },
+  { image: advisoryNick, tone: 'pine' },
+] as const;
+---
+
+{
+  id === 'connected-metal' && (
+    <div class="ds-art ds-art--connected-metal" aria-hidden="true">
+      <Image src={connectedMetal} alt="" width={922} height={478} class="ds-art-image" />
+    </div>
+  )
+}
+
+{
+  id === 'connected-colo' && (
+    <div class="ds-art ds-art--connected-colo" aria-hidden="true">
+      <Image src={connectedColo} alt="" width={774} height={862} class="ds-art-image" />
+    </div>
+  )
+}
+
+{
+  id === 'ai-storage-fabric' && (
+    <div class="ds-art ds-art--ai-storage-fabric" aria-hidden="true">
+      <Image src={aiStorageFabric} alt="" width={716} height={528} class="ds-art-image" />
+    </div>
+  )
+}
+
+{
+  id === 'advisory-services' && (
+    <div class="ds-art ds-art--advisory" aria-hidden="true">
+      <AdvisoryStrokeOuter class="ds-art-stroke ds-art-stroke--outer" />
+      <AdvisoryStrokeInner class="ds-art-stroke ds-art-stroke--inner" />
+      <div class="ds-art-collage">
+        {ADVISORY_TILES.map((tile) => (
+          <div class:list={['ds-art-tile', `ds-art-tile--${tile.tone}`]}>
+            <Image src={tile.image} alt="" width={216} height={216} class="ds-art-tile-image" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

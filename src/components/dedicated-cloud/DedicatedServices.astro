@@ -1,0 +1,42 @@
+---
+// src/components/dedicated-cloud/DedicatedServices.astro
+
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ServiceTab from '@components/dedicated-cloud/ServiceTab.astro';
+import ServicePanel from '@components/dedicated-cloud/ServicePanel.astro';
+import { dedicatedServices } from '@data/dedicatedCloud';
+
+const initialTab = dedicatedServices.items[0]!.id;
+---
+
+<section
+  class="section--block section--block--x-pad border-silver-mist bg-platinum relative overflow-hidden border-t"
+>
+  <div class="max-width-nav large-pad relative flex flex-col items-center gap-10 md:gap-16">
+    <SectionLine left top bottom />
+    <SectionLine right top />
+
+    <div class="flex flex-col items-center gap-4 text-center">
+      <SectionEyebrow variant="pine">{dedicatedServices.eyebrow}</SectionEyebrow>
+      <h2 class="datum-text-8xl text-midnight-fjord text-pretty">{dedicatedServices.title}</h2>
+    </div>
+
+    <div class="max-width-nopad spacing-pad w-full">
+      <div
+        class="ds-grid"
+        style={`--ds-count: ${dedicatedServices.items.length}`}
+        x-data={`{ active: '${initialTab}' }`}
+      >
+        {
+          dedicatedServices.items.map((item, index) => (
+            <Fragment>
+              <ServiceTab item={item} index={index} />
+              <ServicePanel item={item} index={index} />
+            </Fragment>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

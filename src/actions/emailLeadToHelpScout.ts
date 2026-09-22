@@ -18,7 +18,7 @@ const HELPSCOUT_ENV_PREFIXES = {
   'dedicated-cloud': 'HELPSCOUT_DEDICATED_CLOUD',
 } as const;
 
-const EmailLeadToHubSpot = defineAction({
+const EmailLeadToHelpScout = defineAction({
   input: z.object({
     name: z.string(),
     email: z.email(),
@@ -26,8 +26,6 @@ const EmailLeadToHubSpot = defineAction({
     workloadType: z.string(),
     message: z.string().optional(),
     formType: z.enum(['demo', 'dedicated-cloud']),
-    website: z.string().optional(),
-    elapsedMs: z.number(),
     // Dedicated Cloud-only fields — optional so the simpler /demo form is unaffected.
     gpuGeneration: z.string().optional(),
     networking: z.string().optional(),
@@ -39,10 +37,6 @@ const EmailLeadToHubSpot = defineAction({
     recaptchaToken: z.string().optional(),
   }),
   handler: async (input) => {
-    if (input.website || input.elapsedMs < 3000) {
-      return { success: true };
-    }
-
     const mode = process.env.MODE || import.meta.env.MODE;
     const skipRecaptcha = mode === 'local';
 
@@ -53,7 +47,7 @@ const EmailLeadToHubSpot = defineAction({
 
     if (!isHuman) {
       console.error(
-        `[EmailLeadToHubSpot] reCAPTCHA verification failed for formType "${input.formType}"`
+        `[EmailLeadToHelpScout] reCAPTCHA verification failed for formType "${input.formType}"`
       );
       throw new ActionError({ code: 'BAD_REQUEST', message: 'reCAPTCHA verification failed.' });
     }
@@ -89,7 +83,7 @@ const EmailLeadToHubSpot = defineAction({
       });
     } catch (error) {
       console.error(
-        `[EmailLeadToHubSpot] sendToHelpScout failed for formType "${input.formType}":`,
+        `[EmailLeadToHelpScout] sendToHelpScout failed for formType "${input.formType}":`,
         error
       );
       throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send lead.' });
@@ -99,4 +93,4 @@ const EmailLeadToHubSpot = defineAction({
   },
 });
 
-export { EmailLeadToHubSpot };
+export { EmailLeadToHelpScout };

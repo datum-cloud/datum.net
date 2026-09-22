@@ -24,11 +24,6 @@ const recaptchaSiteKey =
       class="border-silver-mist bg-glacier-mist-700 flex flex-col gap-7 border p-6 md:p-10 lg:p-20"
       onsubmit="return false;"
     >
-      <label class="absolute left-[-9999px]" aria-hidden="true">
-        <span>Website</span>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" />
-      </label>
-
       <label class="flex flex-col gap-2">
         <span class="datum-text-xs text-midnight-fjord/80 font-semibold">
           Name <span class="text-red-600">*</span>
@@ -119,7 +114,6 @@ const recaptchaSiteKey =
     submitBtnText: HTMLElement;
     status: HTMLElement;
     isSubmitting = false;
-    loadedAt = Date.now();
     recaptchaSiteKey = this.dataset.recaptchaSiteKey || '';
 
     constructor() {
@@ -148,20 +142,18 @@ const recaptchaSiteKey =
       );
 
       actions
-        .EmailLeadToHubSpot({
+        .EmailLeadToHelpScout({
           name: String(data.get('name') || ''),
           email: String(data.get('email') || ''),
           company: String(data.get('company') || ''),
           workloadType: String(data.get('workloadType') || ''),
           message: String(data.get('message') || ''),
           formType,
-          website: String(data.get('website') || ''),
-          elapsedMs: Date.now() - this.loadedAt,
           recaptchaToken,
         })
         .then((result: { error?: unknown }) => {
           if (result.error) {
-            console.error('[EmailLeadToHubSpot] submit failed:', result.error);
+            console.error('[EmailLeadToHelpScout] submit failed:', result.error);
             this.showStatus('Something went wrong. Please try again in a minute or two.', false);
           } else {
             this.showStatus("Thanks — we'll be in touch shortly.", true);
@@ -169,7 +161,7 @@ const recaptchaSiteKey =
           }
         })
         .catch((error: unknown) => {
-          console.error('[EmailLeadToHubSpot] submit failed:', error);
+          console.error('[EmailLeadToHelpScout] submit failed:', error);
           this.showStatus('Something went wrong. Please try again in a minute or two.', false);
         })
         .finally(() => {

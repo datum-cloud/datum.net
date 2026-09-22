@@ -1,6 +1,7 @@
 ---
 // src/components/MediaLightbox.astro
-import '@styles/components-modal.css';
+import sheet from '@styles/components-media-lightbox.css?url';
+import DeferredStylesheet from '@components/DeferredStylesheet.astro';
 import Icon from '@components/Icon.astro';
 
 interface MediaLightboxProps {
@@ -21,6 +22,7 @@ const {
 } = Astro.props as MediaLightboxProps;
 ---
 
+<DeferredStylesheet href={sheet} />
 <media-lightbox class={className} data-selector={selector} data-video-selector={videoSelector}>
   <dialog aria-label="Media viewer">
     <div class="modal-frame media-lightbox-frame">

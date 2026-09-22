@@ -16,9 +16,9 @@
           "title": "Deliver",
           "href": "/platform/deliver",
           "items": [
-            { "text": "DNS", "href": "/platform/deliver" },
+            { "text": "Authoritative DNS", "href": "/platform/deliver" },
             {
-              "text": "Application Load Balancer",
+              "text": "ALB",
               "href": "/platform/deliver#application-load-balancer"
             },
             {

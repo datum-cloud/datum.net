@@ -5,16 +5,12 @@ import Icon from '@components/Icon.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
 import type { NavProps } from '@/src/types/common';
-import { getSiteMode } from '@utils/navigationUtils';
 
 const { class: className = '' } = Astro.props as NavProps;
 const cloudPortalUrl =
   process.env.PUBLIC_CLOUD_PORTAL_URL ||
   import.meta.env.PUBLIC_CLOUD_PORTAL_URL ||
   'https://cloud.datum.net/';
-// Signed-in user lookup is staging-only for now. Links without
-// data-portal-user-link are skipped by loadPortalUser below.
-const showPortalUser = getSiteMode() === 'staging';
 ---
 
 <section class:list={['nav--main-container relative', className]}>
@@ -39,7 +35,7 @@ const showPortalUser = getSiteMode() === 'staging';
         href={cloudPortalUrl}
         class="nav-cta-signin"
         data-rybbit-event="Nav: Sign in"
-        data-portal-user-link={showPortalUser || undefined}
+        data-portal-user-link
       >
         <img
           alt=""
@@ -124,28 +120,43 @@ const showPortalUser = getSiteMode() === 'staging';
   initNavDropdownBackdropTop();
   document.addEventListener('alpine:initialized', syncNavDropdownBackdropTop);
 
-  interface PortalUserResponse {
-    success: boolean;
-    data?: { givenName?: string; familyName?: string; avatarUrl?: string };
-  }
+  // Shape of cloud-portal GET /api/website/session-status.
+  type SessionStatus =
+    | { signedIn: false }
+    | {
+        signedIn: true;
+        user: { displayName: string; avatarUrl?: string };
+        dashboardUrl: string;
+      };
 
   // Shows the cloud-portal user's name and avatar in place of "Sign in" on the
-  // desktop and mobile menu links. Relies on the browser sending cloud-portal's
-  // _session cookie (same-site with datum.net) and on cloud-portal allowing
-  // this origin via CORS with credentials.
+  // desktop and mobile menu links, and points them at the user's dashboard.
+  // Relies on the browser sending cloud-portal's _session cookie (same-site
+  // with datum.net) and on this origin being in cloud-portal's WEBSITE_ORIGINS.
   const loadPortalUser = async () => {
     const links = document.querySelectorAll<HTMLAnchorElement>('[data-portal-user-link]');
     if (!links.length) return;
 
     try {
-      const res = await fetch(new URL('/api/user', links[0].href), { credentials: 'include' });
-      // 401 means not signed in; keep "Sign in".
+      const portal = new URL(links[0].href);
+      const res = await fetch(new URL('/api/website/session-status', portal), {
+        credentials: 'include',
+      });
       if (!res.ok) return;
-      const { data } = (await res.json()) as PortalUserResponse;
-      const name = [data?.givenName, data?.familyName].filter(Boolean).join(' ');
-      const avatarUrl = data?.avatarUrl?.startsWith('https://') ? data.avatarUrl : null;
+      const status = (await res.json()) as SessionStatus;
+      if (!status.signedIn) return;
+
+      const name = status.user.displayName;
+      const avatarUrl = status.user.avatarUrl?.startsWith('https://')
+        ? status.user.avatarUrl
+        : null;
+      // Only follow dashboard links that stay on the portal.
+      const dashboardUrl =
+        new URL(status.dashboardUrl, portal).origin === portal.origin ? status.dashboardUrl : null;
 
       links.forEach((link) => {
+        if (dashboardUrl) link.href = dashboardUrl;
+
         const label = link.querySelector<HTMLElement>('[data-portal-user-label]');
         if (label && name) label.textContent = name;
 
@@ -158,7 +169,7 @@ const showPortalUser = getSiteMode() === 'staging';
         }
       });
     } catch {
-      // Fails until cloud-portal allows this origin via CORS; keep "Sign in".
+      // Blocked until this origin is in cloud-portal's WEBSITE_ORIGINS; keep "Sign in".
     }
   };
 

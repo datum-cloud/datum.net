@@ -6,7 +6,7 @@ import Logo from '@assets/svgs/datum-logo-h.svg';
 import DiscordIcon from '@assets/icons/discord.svg';
 import GithubIcon from '@assets/icons/github.svg';
 import navigation from '@data/navigation.json';
-import { filterNavMain, getSiteMode } from '@utils/navigationUtils';
+import { filterNavMain } from '@utils/navigationUtils';
 
 const navData = navigation as NavData;
 const mainNav = filterNavMain(navData.main);
@@ -14,8 +14,6 @@ const cloudPortalUrl =
   process.env.PUBLIC_CLOUD_PORTAL_URL ||
   import.meta.env.PUBLIC_CLOUD_PORTAL_URL ||
   'https://cloud.datum.net/';
-// Signed-in user lookup is staging-only for now; see Nav.astro.
-const showPortalUser = getSiteMode() === 'staging';
 ---
 
 <div
@@ -229,7 +227,7 @@ const showPortalUser = getSiteMode() === 'staging';
           href={cloudPortalUrl}
           class="mobile-cta-secondary"
           x-on:click="closeMenu()"
-          data-portal-user-link={showPortalUser || undefined}
+          data-portal-user-link
         >
           <img
             alt=""

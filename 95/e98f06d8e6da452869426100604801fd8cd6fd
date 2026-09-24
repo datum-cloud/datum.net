@@ -1,0 +1,27 @@
+src/components/MobileMenu.astro
+  s_b7070249299780::t_c4fa4235cae4ec 9,230
+src/components/Nav.astro
+  s_b7070249299780::t_99b47cee003714 123-130,133-135,141-144,146-155,158-159,172
+  s_b7070249299780::t_c4fa4235cae4ec 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "95e98f06d8e6da452869426100604801fd8cd6fd",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b7070249299780": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cae53245-116a-449d-b57a-efa1a7763e6b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}

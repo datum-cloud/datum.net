@@ -32,6 +32,6 @@ export const rehypeExternalLinks = () => (tree: Root) => {
     rel.add('noreferrer');
 
     element.properties.target = '_blank';
-    element.properties.rel = [...rel].join(' ');
+    element.properties.rel = [...rel];
   });
 };

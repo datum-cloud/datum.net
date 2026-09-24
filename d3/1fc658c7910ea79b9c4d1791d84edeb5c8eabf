@@ -1,0 +1,40 @@
+src/components/MobileMenu.astro
+  s_b7070249299780::t_dd1c19c6838562 228-231,233-243
+  s_b7070249299780::t_df5be3addd971e 9,13-18
+  s_b7070249299780::t_501caf2431e20c 232
+src/components/Nav.astro
+  s_b7070249299780::t_557f9a0966ccc6 8,11-17
+  s_b7070249299780::t_8970bb09049efb 44-51
+  s_b7070249299780::t_3b0b732b233b78 127-134,137-139,145-148,150-151,153-160,162-163,176
+  s_b7070249299780::t_da2170ee787cbd 126,135,140,143-144,149,177-180
+  s_b7070249299780::t_7ddf82f8561f66 136,141-142,161,164-175
+  s_b7070249299780::t_02c01d943ffa8c 53-57
+  s_b7070249299780::t_cbf2cbc597b865 42
+  s_b7070249299780::t_62ee3fb1aa7a12 152
+  s_b7070249299780::t_1669e5265291db 38-41,43,52
+.env.example
+  s_b7070249299780::t_bed59743e6f2e5 50-52
+src/types/navigation.ts
+  s_b7070249299780::t_2209f7a3f598ed 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d31fc658c7910ea79b9c4d1791d84edeb5c8eabf",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b7070249299780": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cae53245-116a-449d-b57a-efa1a7763e6b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}

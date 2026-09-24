@@ -5,8 +5,16 @@ import Icon from '@components/Icon.astro';
 import LogoDropdown from '@components/LogoDropdown.astro';
 import NavMenu from '@components/NavMenu.astro';
 import type { NavProps } from '@/src/types/common';
+import { getSiteMode } from '@utils/navigationUtils';
 
 const { class: className = '' } = Astro.props as NavProps;
+const cloudPortalUrl =
+  process.env.PUBLIC_CLOUD_PORTAL_URL ||
+  import.meta.env.PUBLIC_CLOUD_PORTAL_URL ||
+  'https://cloud.datum.net/';
+// Signed-in user lookup is staging-only for now. Links without
+// data-portal-user-link are skipped by loadPortalUser below.
+const showPortalUser = getSiteMode() === 'staging';
 ---
 
 <section class:list={['nav--main-container relative', className]}>
@@ -27,9 +35,26 @@ const { class: className = '' } = Astro.props as NavProps;
 
     {/* Desktop Actions */}
     <div class="nav-actions">
-      <a href="https://cloud.datum.net/" class="nav-cta-signin" data-rybbit-event="Nav: Sign in">
-        Sign in
-        <Icon name="log-in" size="md" class="text-canyon-clay hidden lg:inline-flex" />
+      <a
+        href={cloudPortalUrl}
+        class="nav-cta-signin"
+        data-rybbit-event="Nav: Sign in"
+        data-portal-user-link={showPortalUser || undefined}
+      >
+        <img
+          alt=""
+          width="24"
+          height="24"
+          class="hidden size-6 rounded-full object-cover"
+          referrerpolicy="no-referrer"
+          data-portal-user-avatar
+        />
+        <span data-portal-user-label>Sign in</span>
+        <Icon
+          name="log-in"
+          size="md"
+          class="nav-signin-icon text-canyon-clay hidden lg:inline-flex"
+        />
       </a>
 
       <a
@@ -98,4 +123,44 @@ const { class: className = '' } = Astro.props as NavProps;
 
   initNavDropdownBackdropTop();
   document.addEventListener('alpine:initialized', syncNavDropdownBackdropTop);
+
+  interface PortalUserResponse {
+    success: boolean;
+    data?: { givenName?: string; familyName?: string; avatarUrl?: string };
+  }
+
+  // Shows the cloud-portal user's name and avatar in place of "Sign in" on the
+  // desktop and mobile menu links. Relies on the browser sending cloud-portal's
+  // _session cookie (same-site with datum.net) and on cloud-portal allowing
+  // this origin via CORS with credentials.
+  const loadPortalUser = async () => {
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-portal-user-link]');
+    if (!links.length) return;
+
+    try {
+      const res = await fetch(new URL('/api/user', links[0].href), { credentials: 'include' });
+      // 401 means not signed in; keep "Sign in".
+      if (!res.ok) return;
+      const { data } = (await res.json()) as PortalUserResponse;
+      const name = [data?.givenName, data?.familyName].filter(Boolean).join(' ');
+      const avatarUrl = data?.avatarUrl?.startsWith('https://') ? data.avatarUrl : null;
+
+      links.forEach((link) => {
+        const label = link.querySelector<HTMLElement>('[data-portal-user-label]');
+        if (label && name) label.textContent = name;
+
+        const avatar = link.querySelector<HTMLImageElement>('[data-portal-user-avatar]');
+        if (avatar && avatarUrl) {
+          avatar.src = avatarUrl;
+          avatar.alt = name;
+          avatar.classList.remove('hidden');
+          link.querySelector('.nav-signin-icon')?.remove();
+        }
+      });
+    } catch {
+      // Fails until cloud-portal allows this origin via CORS; keep "Sign in".
+    }
+  };
+
+  loadPortalUser();
 </script>

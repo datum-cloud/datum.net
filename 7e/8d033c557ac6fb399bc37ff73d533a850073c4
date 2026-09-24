@@ -1,0 +1,24 @@
+src/components/Nav.astro
+  s_b7070249299780::t_99b47cee003714 127-134,137-139,145-148,150-159,162-163,176
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7e8d033c557ac6fb399bc37ff73d533a850073c4",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b7070249299780": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cae53245-116a-449d-b57a-efa1a7763e6b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

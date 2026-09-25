@@ -2,4 +2,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - http-route.yaml
+  - backend-traffic-policy.yaml
   - redis.yaml

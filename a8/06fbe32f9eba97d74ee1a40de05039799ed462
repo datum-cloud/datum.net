@@ -1,0 +1,43 @@
+src/components/Nav.astro
+  s_d7c235834bef7e::t_34ea91dd2bcbc1 271
+  s_d7c235834bef7e::t_9faca4e9c21790 74,194
+  s_d7c235834bef7e::t_e6846e56d14afe 269-270
+  s_d7c235834bef7e::t_06fadb98f58275 185-192,197
+  s_d7c235834bef7e::t_9c1a27fe61bd3f 82
+  s_d7c235834bef7e::t_daa71beb0ad749 193
+  s_d7c235834bef7e::t_d8659ee3ac9c37 98,268
+  s_d7c235834bef7e::t_a443b319dcb491 212
+  s_d7c235834bef7e::t_98a99b7343108f 41-42,45-46,48,239-240,276-280
+  s_d7c235834bef7e::t_83ba8a4920d257 47
+  s_d7c235834bef7e::t_042d5c53846c62 34-40,43,49-73,75-81,83-91
+  s_d7c235834bef7e::t_d6db2ffbf971be 44,225-226
+  s_d7c235834bef7e::t_38297b862c12d6 166-167,171-184,195-196,198-211,213-223
+  s_d7c235834bef7e::t_de34879ee25c17 272-273
+  s_d7c235834bef7e::t_807e5bb28b45a2 224
+src/components/MobileMenu.astro
+  s_d7c235834bef7e::t_34ea91dd2bcbc1 248
+src/static/styles/components-nav.css
+  s_d7c235834bef7e::t_3d2c3cae2bedc9 124-153
+  s_d7c235834bef7e::t_98a99b7343108f 111-123
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a806fbe32f9eba97d74ee1a40de05039799ed462",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_d7c235834bef7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "522b7e4d-1704-4aec-8d57-2fb119263736",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

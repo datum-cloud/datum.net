@@ -1,7 +1,7 @@
 // Dynamic markdown export of /platform/connect. Reads the same sources the
 // rendered page consumes (src/pages/platform/connect.astro):
 //   - src/content/pages/features/connect/index.mdx (hub title + description)
-//   - .../galactic-vpc.mdx, connectors.mdx, interconnect.mdx
+//   - .../galactic-vpc.mdx, connectors.mdx, interconnects.mdx
 //     (one FeatureSection each, in render order)
 export const prerender = false;
 
@@ -16,17 +16,17 @@ function stripHtml(input: string): string {
 
 export const GET: APIRoute = async () => {
   try {
-    const [index, galacticVpc, connectors, interconnect] = await Promise.all([
+    const [index, galacticVpc, connectors, interconnects] = await Promise.all([
       getEntry('pages', 'features/connect/index'),
       getEntry('pages', 'features/connect/galactic-vpc'),
       getEntry('pages', 'features/connect/connectors'),
-      getEntry('pages', 'features/connect/interconnect'),
+      getEntry('pages', 'features/connect/interconnects'),
     ]);
 
     const sections: string[] = [`# ${stripHtml(index?.data.title ?? 'Connect')}`, ''];
     if (index?.data.description) sections.push(index.data.description, '');
 
-    for (const entry of [galacticVpc, connectors, interconnect]) {
+    for (const entry of [galacticVpc, connectors, interconnects]) {
       if (!entry) continue;
       sections.push(`## ${entry.data.title}`, '');
       const { badge, linkHref, linkText } = extractFeatureBodyParts(entry.body);

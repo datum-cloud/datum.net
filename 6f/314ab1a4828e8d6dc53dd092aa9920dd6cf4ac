@@ -1,0 +1,25 @@
+src/components/Nav.astro
+  s_522abac467df44::t_6e94514869b825 235-240
+  s_522abac467df44::t_aa4ca95a251494 252,255-257
+  s_522abac467df44::t_fb93fac8712f01 253-254
+  s_522abac467df44::t_64a9be44b9a77b 80-84
+  s_522abac467df44::t_9feaf0365d39c6 90-94
+  s_522abac467df44::t_ca586df2e78ed2 251
+  s_522abac467df44::t_fa296582fd16aa 241
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6f314ab1a4828e8d6dc53dd092aa9920dd6cf4ac",
+  "prompts": {},
+  "sessions": {
+    "s_522abac467df44": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f8f8f965-5229-4690-9a58-eedcb9b59a7f",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

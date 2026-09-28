@@ -1,0 +1,26 @@
+src/pages/platform/connect.md.ts
+  h_c7951bc64db670 4,19,23,29
+src/pages/llms.txt.ts
+  h_c7951bc64db670 28
+src/content/pages/locations.mdx
+  h_c7951bc64db670 5-6
+src/content/pages/features/connect/index.mdx
+  h_c7951bc64db670 6,9
+src/content/pages/features/connect/interconnects.mdx
+  h_c7951bc64db670 1-23
+src/data/navigation.json
+  h_c7951bc64db670 46
+src/pages/platform/connect.astro
+  h_c7951bc64db670 17,21,96-99,101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b8c5345df00e5068441c85e0f7c1613cd63a8670",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

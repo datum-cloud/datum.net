@@ -77,13 +77,21 @@ const cloudPortalUrl =
               <Icon name="folder" size="sm" />
               Projects
             </a>
-            <a class="nav-user-menu-item" href={new URL('/account/general', cloudPortalUrl).href}>
+            <a
+              class="nav-user-menu-item"
+              href={new URL('/account/general', cloudPortalUrl).href}
+              data-portal-path="/account/general"
+            >
               <Icon name="user" size="sm" />
               Account Settings
             </a>
           </div>
           <div class="nav-user-menu-group">
-            <a class="nav-user-menu-item" href={new URL('/logout', cloudPortalUrl).href}>
+            <a
+              class="nav-user-menu-item"
+              href={new URL('/logout', cloudPortalUrl).href}
+              data-portal-path="/logout"
+            >
               Sign out
             </a>
           </div>
@@ -224,6 +232,13 @@ const cloudPortalUrl =
 
   const SESSION_STATUS_TIMEOUT_MS = 5000;
 
+  // The page is prerendered once and the same image runs in every environment,
+  // so the build-time PUBLIC_CLOUD_PORTAL_URL can't tell staging from prod.
+  // Hosts not listed here keep the build-time URL.
+  const PORTAL_URL_BY_HOST = new Map([
+    ['website.staging.env.datum.net', 'https://cloud.staging.env.datum.net/'],
+  ]);
+
   // Shows the cloud-portal user's name and avatar in place of "Sign in" on the
   // desktop and mobile menu links, and points them at the user's dashboard.
   // Relies on the browser sending cloud-portal's _session cookie (same-site
@@ -233,7 +248,13 @@ const cloudPortalUrl =
     if (!links.length) return;
 
     try {
-      const portal = new URL(links[0].href);
+      const portal = new URL(PORTAL_URL_BY_HOST.get(location.hostname) ?? links[0].href);
+      links.forEach((link) => (link.href = portal.href));
+      const pathLinks = document.querySelectorAll<HTMLAnchorElement>('[data-portal-path]');
+      pathLinks.forEach((link) => {
+        link.href = new URL(link.dataset.portalPath!, portal).href;
+      });
+
       const res = await fetch(new URL('/api/website/session-status', portal), {
         credentials: 'include',
         // Bounds how long the loader can show if the portal hangs.

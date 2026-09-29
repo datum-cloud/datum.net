@@ -232,7 +232,8 @@ const cloudPortalUrl =
 
   // Fills empty name/email fields in forms marked data-portal-prefill, matched
   // by their autocomplete token. given/family names are split from displayName
-  // on the first space.
+  // on the first space. Sets defaultValue too so form.reset() (NewsletterModal
+  // resets on every open) restores the prefill instead of clearing it.
   const prefillForms = (user: { name: string; email?: string }) => {
     const [givenName, ...rest] = user.name.split(' ');
     const values: Record<string, string | undefined> = {
@@ -246,7 +247,10 @@ const cloudPortalUrl =
     );
     inputs.forEach((input) => {
       const value = values[input.autocomplete];
-      if (value && !input.value) input.value = value;
+      if (value && !input.value) {
+        input.defaultValue = value;
+        input.value = value;
+      }
     });
   };
 

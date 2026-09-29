@@ -1,0 +1,19 @@
+src/data/navigation.json
+  s_a747f21fb74b0f::t_37a7216aac9976 96,117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e82201437777007d33d3009b3b7626f9ca37941e",
+  "prompts": {},
+  "sessions": {
+    "s_a747f21fb74b0f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1efc070e-9ef6-438e-b259-32748a6f11f9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

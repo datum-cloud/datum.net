@@ -1,0 +1,31 @@
+src/components/forms/DedicatedCloudForm.astro
+  s_dac2c2aae8727f::t_34b063b8313603 27
+src/components/Nav.astro
+  s_dac2c2aae8727f::t_784a3a358f8bda 244-250
+  s_dac2c2aae8727f::t_041dd58d11a789 314-316,318
+  s_dac2c2aae8727f::t_34b063b8313603 233-243,251-252,317
+src/components/forms/BookDemo.astro
+  s_dac2c2aae8727f::t_34b063b8313603 26
+src/env.d.ts
+  s_dac2c2aae8727f::t_041dd58d11a789 11-12
+src/components/forms/NewsletterModal.astro
+  s_dac2c2aae8727f::t_34b063b8313603 79
+src/components/LayoutEmbedScripts.astro
+  s_dac2c2aae8727f::t_041dd58d11a789 76-88,109-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "659cd2e4e454891ea51bdf3f893f3331855a4947",
+  "prompts": {},
+  "sessions": {
+    "s_dac2c2aae8727f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef215b19-2ff2-480c-9a8c-7d0ae8fb5a64",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

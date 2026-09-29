@@ -8,6 +8,8 @@ interface Window {
     event: (name: string) => void;
   };
   gtag?: (...args: unknown[]) => void;
+  // Signed-in cloud-portal user, set by Nav.astro for the HelpScout Beacon prefill.
+  __portalUser?: { name: string; email?: string };
 }
 
 declare namespace App {

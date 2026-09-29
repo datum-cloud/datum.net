@@ -153,6 +153,9 @@ export default defineConfig({
   output: 'static',
   redirects: {
     '/brand/imagery': '/brand/graphics',
+    // Also in server.mjs's redirect table (production server) — duplicated here so
+    // `astro dev` behaves the same way, since the dev server never runs server.mjs.
+    '/platform': '/platform/deliver',
   },
   security: {
     checkOrigin: false,

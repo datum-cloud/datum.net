@@ -25,7 +25,7 @@ const PLATFORM_HUB_URL_OVERRIDES: Record<string, string> = {
   'features/connect/index': '/platform/connect',
   'features/connect/galactic-vpc': '/platform/connect#galactic-vpc',
   'features/connect/connectors': '/platform/connect#connectors',
-  'features/connect/interconnect': '/platform/connect#interconnect',
+  'features/connect/interconnects': '/platform/connect#interconnects',
 };
 
 export const GET: APIRoute = async () => {

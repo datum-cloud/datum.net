@@ -73,6 +73,19 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
     var isProduction = document.currentScript.getAttribute('data-production') === 'true';
     if (!isProduction) return;
 
+    var beaconReady = false;
+
+    // Prefills the contact form with the signed-in portal user (set by Nav.astro).
+    // The session check and Beacon load race, so run on whichever finishes last.
+    function prefillBeacon() {
+      var user = window.__portalUser;
+      if (!beaconReady || !user) return;
+      var data = { name: user.name };
+      if (user.email) data.email = user.email;
+      window.Beacon('prefill', data);
+    }
+    window.addEventListener('portal-user:signed-in', prefillBeacon);
+
     function loadHelpScout() {
       if (window.__helpScoutLoaded) return;
       window.__helpScoutLoaded = true;
@@ -93,6 +106,8 @@ const { isProduction } = Astro.props as LayoutEmbedScriptsProps;
       script.src = 'https://beacon-v2.helpscout.net';
       script.onload = function () {
         window.Beacon('init', '57a7245e-772c-4d51-bdb1-6b898f34f2cb');
+        beaconReady = true;
+        prefillBeacon();
       };
       document.body.appendChild(script);
     }

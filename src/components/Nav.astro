@@ -230,6 +230,26 @@ const cloudPortalUrl =
     });
   };
 
+  // Fills empty name/email fields in forms marked data-portal-prefill, matched
+  // by their autocomplete token. given/family names are split from displayName
+  // on the first space.
+  const prefillForms = (user: { name: string; email?: string }) => {
+    const [givenName, ...rest] = user.name.split(' ');
+    const values: Record<string, string | undefined> = {
+      name: user.name,
+      'given-name': givenName,
+      'family-name': rest.join(' '),
+      email: user.email,
+    };
+    const inputs = document.querySelectorAll<HTMLInputElement>(
+      'form[data-portal-prefill] input[autocomplete]'
+    );
+    inputs.forEach((input) => {
+      const value = values[input.autocomplete];
+      if (value && !input.value) input.value = value;
+    });
+  };
+
   const SESSION_STATUS_TIMEOUT_MS = 5000;
 
   // The page is prerendered once and the same image runs in every environment,
@@ -290,6 +310,11 @@ const cloudPortalUrl =
       // Signed-in users already have an account; drop the signup CTAs (nav and
       // mobile menu).
       document.querySelectorAll('[data-portal-signup-cta]').forEach((cta) => cta.remove());
+
+      // Lets the HelpScout Beacon prefill its contact form (LayoutEmbedScripts.astro).
+      window.__portalUser = { name, email: status.user.email };
+      window.dispatchEvent(new Event('portal-user:signed-in'));
+      prefillForms(window.__portalUser);
 
       initUserMenu(status, portal, dashboardUrl);
     } catch {

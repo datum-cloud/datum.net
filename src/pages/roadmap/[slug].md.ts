@@ -4,7 +4,12 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { fetchGitHubRoadmaps, getRoadmapMonthKey, getRoadmapSlug } from '@libs/githubRoadmap';
+import {
+  fetchGitHubRoadmaps,
+  getRoadmapMonthKey,
+  getRoadmapSlug,
+  getRoadmapReleaseName,
+} from '@libs/githubRoadmap';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
@@ -41,10 +46,10 @@ export const GET: APIRoute = async ({ params }) => {
     const releaseDate = new Date(roadmap.releaseDate);
     const formattedDate = releaseDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
-    const titleParts = roadmap.title.split(':');
-    const releaseName = titleParts[0]?.trim() ?? roadmap.title;
+    const releaseName = getRoadmapReleaseName(roadmap.title);
+    const kind = roadmap.shipped ? 'Release' : 'Milestone';
 
-    const sections: string[] = [`# ${releaseName} - ${formattedDate} Roadmap`, ''];
+    const sections: string[] = [`# ${formattedDate} "${releaseName}" ${kind}`, ''];
 
     if (roadmap.summary) {
       sections.push(roadmap.summary, '');

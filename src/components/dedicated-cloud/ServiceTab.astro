@@ -1,0 +1,27 @@
+---
+// src/components/dedicated-cloud/ServiceTab.astro
+
+import Icon from '@components/Icon.astro';
+import type { DedicatedServiceItem } from '@data/dedicatedCloud';
+
+interface ServiceTabProps {
+  item: DedicatedServiceItem;
+  index: number;
+}
+
+const { item, index } = Astro.props as ServiceTabProps;
+---
+
+<button
+  type="button"
+  id={`ds-tab-${item.id}`}
+  class:list={['ds-tab', index === 0 && 'is-active']}
+  style={`--ds-row: ${index + 1}`}
+  aria-controls={`ds-panel-${item.id}`}
+  @click={`active = '${item.id}'`}
+  :aria-expanded={`active === '${item.id}'`}
+  :class={`{ 'is-active': active === '${item.id}' }`}
+>
+  <Icon name={item.icon} size="xl" class="ds-tab-icon" />
+  <span class="ds-tab-label">{item.label}</span>
+</button>

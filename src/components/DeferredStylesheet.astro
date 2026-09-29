@@ -1,0 +1,14 @@
+---
+// src/components/DeferredStylesheet.astro
+
+interface DeferredStylesheetProps {
+  href: string;
+}
+
+const { href } = Astro.props as DeferredStylesheetProps;
+---
+
+<link rel="stylesheet" href={href} media="print" onload="this.setAttribute('media','all')" />
+<noscript>
+  <link rel="stylesheet" href={href} />
+</noscript>

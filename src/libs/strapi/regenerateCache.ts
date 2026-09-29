@@ -6,14 +6,15 @@
  *   - `regenerateStrapiCacheIfMissing()` — fills only the entries whose primary
  *     cache file is absent (or expired). Used as the safe default.
  *   - `forceRegenerateStrapiCache(names)` — explicitly clears the listed entries
- *     and refetches every one, regardless of current state.
+ *     and refetches every one, regardless of current state. `strapi-article-*`
+ *     is a prefix wipe of per-post keys (no refetch).
  *
  * Cache reads/writes go through the shared `cache` manager from `_runtime.ts`
  * so tag membership and the fallback mirror stay consistent with the rest of
  * the Strapi module.
  */
 
-import { cache } from './_runtime';
+import { cache, deletePrimaryCacheByPrefix } from './_runtime';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from './articles';
 import {
   fetchStrapiAuthors,
@@ -37,6 +38,8 @@ import type { StrapiArticle } from '../../types/strapi';
 
 const ARTICLES_CACHE_KEY = 'strapi-articles';
 export const ARTICLE_CACHE_PREFIX = 'strapi-article-';
+/** Force-regen wildcard: delete every primary key with prefix `strapi-article-`. */
+export const ARTICLE_CACHE_WILDCARD = `${ARTICLE_CACHE_PREFIX}*` as const;
 const AUTHORS_CACHE_KEY = 'strapi-authors';
 const AUTHOR_SLUG_CACHE_PREFIX = 'strapi-author-slug-';
 const TEAM_MEMBERS_CACHE_KEY = 'strapi-team-members';
@@ -54,7 +57,7 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
 const FIXED_FORCE_KEYS = new Set<string>(STRAPI_FORCE_REGENERATE_KEYS);
 
 function isSafeSlugSegment(slug: string): boolean {
-  if (!slug || slug.includes('/') || slug.includes('\\')) return false;
+  if (!slug || slug.includes('/') || slug.includes('\\') || slug.includes('*')) return false;
   if (slug === '.' || slug === '..') return false;
   return true;
 }
@@ -82,11 +85,12 @@ export function validateStrapiForceRegenerateName(name: string): string | null {
   const trimmed = name.trim();
   if (!trimmed) return 'Empty cache name';
   if (FIXED_FORCE_KEYS.has(trimmed)) return null;
+  if (trimmed === ARTICLE_CACHE_WILDCARD) return null;
   if (isArticleCacheKey(trimmed)) return null;
   if (isAuthorSlugCacheKey(trimmed)) return null;
   return `Unknown cache name "${trimmed}". Expected one of ${[...FIXED_FORCE_KEYS].join(
     ', '
-  )}, ${ARTICLE_CACHE_PREFIX}{slug}, or ${AUTHOR_SLUG_CACHE_PREFIX}{slug}`;
+  )}, ${ARTICLE_CACHE_WILDCARD}, ${ARTICLE_CACHE_PREFIX}{slug}, or ${AUTHOR_SLUG_CACHE_PREFIX}{slug}`;
 }
 
 /**
@@ -109,7 +113,7 @@ export interface RegenerateResult {
   regenerated: string[];
   skipped: string[];
   errors: string[];
-  /** Reserved for per-slug detail caches cleared during a list force-regen. */
+  /** Per-article keys deleted by `strapi-article-*` (primary cache only). */
   clearedDetails: string[];
 }
 
@@ -127,8 +131,18 @@ export async function forceRegenerateStrapiCache(
   const clearedDetails: string[] = [];
 
   const unique = [...new Set(names.map((n) => n.trim()).filter((n) => n.length > 0))];
+  const namesToProcess = unique.filter((name) => name !== ARTICLE_CACHE_WILDCARD);
 
-  for (const name of unique) {
+  if (unique.includes(ARTICLE_CACHE_WILDCARD)) {
+    try {
+      const deleted = await deletePrimaryCacheByPrefix(ARTICLE_CACHE_PREFIX);
+      clearedDetails.push(...deleted);
+    } catch (err) {
+      errors.push(`${ARTICLE_CACHE_WILDCARD}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
+  for (const name of namesToProcess) {
     if (name !== GITHUB_ROADMAPS_CACHE_KEY && name !== GITHUB_BACKLOG_CACHE_KEY) {
       await cache.delete(name);
     }

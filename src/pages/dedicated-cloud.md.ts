@@ -3,7 +3,7 @@
 // dedicated-cloud.astro so the two can't drift out of sync.
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { hero, builtForYou, whyDatum, operators, contact } from '@data/dedicatedCloud';
+import { hero, dedicatedServices, whyDatum, operators, contact } from '@data/dedicatedCloud';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
@@ -15,9 +15,11 @@ export const GET: APIRoute = async () => {
 
     const sections: string[] = [`# ${hero.title}`, '', hero.description, ''];
 
-    sections.push(`## ${builtForYou.title}`, '', ...builtForYou.intro, '');
-    for (const item of builtForYou.items) {
-      sections.push(`- **${item.title}** - ${item.description}`);
+    sections.push(`## ${dedicatedServices.title}`, '');
+    for (const item of dedicatedServices.items) {
+      sections.push(
+        `- **${item.label}** - ${item.titleLines.join(' ')}. ${item.description} Pricing model: ${item.tooltip}`
+      );
     }
     sections.push('');
 

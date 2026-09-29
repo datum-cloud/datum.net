@@ -5,22 +5,12 @@ import { marked } from 'marked';
 import type { RoadmapMilestone } from '@libs/githubRoadmap';
 import { getRoadmapCoverImage } from '@libs/githubRoadmap';
 import Button from '@components/Button.astro';
-import { formatDate } from '@utils/dateUtils';
 
 interface Props {
   roadmap: RoadmapMilestone;
 }
 
 const { roadmap } = Astro.props as Props;
-
-const formattedDate = formatDate(roadmap.releaseDate, 'en-US', {
-  month: 'long',
-  year: 'numeric',
-});
-
-// Parse title: "Name: Version" or just "Name"
-const titleParts = roadmap.title.split(':');
-const releaseName = titleParts[0]?.trim() ?? roadmap.title;
 
 const coverImage = getRoadmapCoverImage(roadmap.number);
 const coverAlt = roadmap.title;
@@ -41,10 +31,37 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
         href="/roadmap"
       />
 
-      <h2 class="roadmap-detail--title">{releaseName}</h2>
-      <p class="roadmap-detail--meta">
-        <time datetime={roadmap.releaseDate}>{formattedDate}</time>
-      </p>
+      <h1 class="roadmap-detail--title">{roadmap.title}</h1>
+      <div class="roadmap-detail--meta">
+        {
+          roadmap.githubUrl && (
+            <a
+              href={roadmap.githubUrl}
+              class="roadmap-detail--github-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          )
+        }
+      </div>
     </header>
 
     {
@@ -65,35 +82,6 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
         <div class="roadmap-detail--sidebar-image">
           <Image src={coverImage} alt={coverAlt} loading="eager" decoding="async" />
         </div>
-      )
-    }
-
-    {
-      roadmap.githubUrl && (
-        <a
-          href={roadmap.githubUrl}
-          class="roadmap-detail--github-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on GitHub
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            <polyline points="15 3 21 3 21 9" />
-            <line x1="10" y1="14" x2="21" y2="3" />
-          </svg>
-        </a>
       )
     }
   </aside>

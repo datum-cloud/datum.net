@@ -1,4 +1,5 @@
 ---
+import '@styles/base.css';
 import fontsCss from '@styles/fonts.css?raw';
 import { SEO } from 'astro-seo';
 import config from '@data/siteConfig.json';
@@ -61,9 +62,6 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <link rel="dns-prefetch" href="https://api.github.com" />
     <link rel="dns-prefetch" href="https://beacon-v2.helpscout.net" />
     <link rel="dns-prefetch" href="https://device.maxmind.com" />
-
-    <!-- Preconnect to critical external domains (loads within ~5s) -->
-    <link rel="preconnect" href="https://app.rybbit.io" crossorigin />
 
     <!-- Preload critical fonts (used above the fold) -->
     <link
@@ -174,11 +172,6 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <main id="main-content">
       <slot />
     </main>
-
-    <script>
-      import '@/src/static/scripts/scroll-effects.js';
-      import '@/src/static/scripts/module-animate.js';
-    </script>
 
     <LayoutEmbedScripts isProduction={isProduction} />
   </body>

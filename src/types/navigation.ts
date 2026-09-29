@@ -5,7 +5,7 @@
 import type { SecondaryTabNavItem } from '@/src/types/common';
 
 /** Matches `process.env.MODE`. Omit to show the item in every environment. */
-export type NavMode = 'development' | 'production' | 'local';
+export type NavMode = 'development' | 'staging' | 'production' | 'local';
 
 export interface NavItem {
   text: string;

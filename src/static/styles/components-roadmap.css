@@ -72,7 +72,7 @@
   }
 
   .roadmap-detail--meta {
-    @apply datum-text-base text-midnight-fjord opacity-80;
+    @apply datum-text-base text-midnight-fjord flex flex-wrap items-center gap-4;
   }
 
   .roadmap-detail--sections {

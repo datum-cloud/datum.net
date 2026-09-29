@@ -1,4 +1,5 @@
-@import './base.css';
+@reference './base.css';
+@import './layers.css';
 
 @layer components {
   /* People Card Styles */

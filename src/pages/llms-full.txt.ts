@@ -39,7 +39,7 @@ Key facts for agent understanding:
 - **Fully programmatic, agent-first interfaces** — every resource is accessible via API, CLI (\`datumctl\`), or MCP server
 - **Kubernetes-native control plane** — all resources are Kubernetes Custom Resource Definitions (CRDs); if you know \`kubectl\`, you know Datum
 - **Open source** — core platform licensed under AGPLv3; you can audit, fork, or self-host
-- **Forever free tier** — the Builder plan is $0/month with no time limit
+- **Free during public beta** — the entire platform is $0 to use right now; we commit to advance notice and a grace period before any billing begins
 - **Founded late 2024** by infrastructure veterans from Packet, Voxel, SoftLayer, StackPath, Highwinds, Zscaler; backed by Amplify Partners, CRV, Cervin Ventures, and others
 
 ---
@@ -115,9 +115,9 @@ Organization (admin) → Project (admin, inherited) → Service Resources (admin
 
 ## Current Platform Features
 
-### 1. Application Load Balancer (Generally Available — Free)
+### 1. ALB — Application Load Balancer (Generally Available — Free)
 
-An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**. In the portal nav this appears as **ALB**.
+An intelligent HTTP proxy and edge layer built on **Envoy Proxy** and powered by **Tetrate**. Branded as **ALB** across the platform nav and the deliver page.
 
 - **Protocols supported:** HTTP/1.1, HTTP/2, gRPC, WebSockets, HTTPS
 - **WAF:** Coraza-based Web Application Firewall covering top OWASP threats; runs in \`observe\` mode by default, can be set to \`enforced\` (Level 1 Relaxed or Level 2 Balanced)
@@ -170,14 +170,14 @@ Secure tunnels built on the **Iroh protocol** (Rust-based, QUIC-based P2P networ
 
 ---
 
-### 5. Galactic VPC (Coming in 2026 — Scaler Tier)
+### 5. Galactic VPC (Coming in 2026)
 
 A global virtual private backbone service built using **Segment Routing over IPv6 (SRv6)** — RFC 8986.
 
 - Policy-based segment routing (each instruction is an IPv6 Segment Identifier / SID)
 - Programs traffic paths using the native IPv6 data plane — no MPLS required
 - Skip the public internet; opt for private paths that are fast, predictable, and secure
-- Cloud onramps (AWS, GCP, etc.) included in Scaler plan
+- Cloud onramps (AWS, GCP, etc.) included
 
 ---
 
@@ -220,25 +220,15 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 ## Pricing
 
-| Plan         | Price              | Who It's For                                                     |
-|--------------|--------------------|------------------------------------------------------------------|
-| **Builder**  | **$0/month**       | Personal projects, development, experimentation                  |
-| **Scaler**   | $20/month + usage  | Production apps (launching H1 2026); includes $10 usage credits  |
-| **Provider** | Custom             | Alt cloud providers; become a design partner                     |
+Datum is free to use, full stop, during public beta — no feature gates, no seat limits, no hidden fees, no tiers. Everything in "Current Platform Features" above is included at no cost:
 
-**Builder tier includes (forever free):**
 - Application Load Balancer (Envoy Proxy + Coraza WAF)
 - Connectors (QUIC Tunnels)
 - DNS and Domains
 - OTel Metrics Export
 - Secrets, Teams, RBAC, Service accounts
 
-**Scaler tier adds (coming H1 2026):**
-- Galactic VPC
-- Cloud Onramps (AWS, GCP)
-- Uptime SLAs
-- 24/7 email support
-- Certificate management and Domain Connect
+A credit card is required at sign-up (fraud prevention), but you are not charged. We commit to advance notice and a grace period to review rates before any billing begins — no surprise bill.
 
 ---
 

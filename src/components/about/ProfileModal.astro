@@ -29,13 +29,13 @@ const { class: className } = Astro.props as { class?: string };
   const PROFILE_MODAL_CLOSE_EVENT = 'profile-modal-close';
 
   interface MemberData {
-    index?: number;
     slug?: string;
     data: {
       name: string;
       bio?: string;
       title?: string;
       avatar?: { src: string };
+      avatarBgColor?: string;
       tick?: string;
       surprising?: string;
       weekends?: string;
@@ -153,10 +153,12 @@ const { class: className } = Astro.props as { class?: string };
     populateContent(member: MemberData) {
       const { data } = member;
 
-      // Color palette that cycles through (matches @utils/authorUtils.ts)
-      const bgColors = ['#5F735E', '#BF9595', '#D1CDC0'];
-      const getBgColor = (index: number): string => bgColors[index % bgColors.length];
-      const bgColor = member.index !== undefined ? getBgColor(member.index) : bgColors[0];
+      // Background color matching this person's actual headshot variant —
+      // computed server-side in PeopleStrapi.astro (from the avatar file
+      // name, not from list position) so the card and this modal never
+      // disagree. '#5F735E' (pine-forge) is only a safety-net default for
+      // the pathological case of a member without an avatar at all.
+      const bgColor = data.avatarBgColor ?? '#5F735E';
 
       this.contentContainer.textContent = '';
 

@@ -10,6 +10,10 @@ import { filterNavMain } from '@utils/navigationUtils';
 
 const navData = navigation as NavData;
 const mainNav = filterNavMain(navData.main);
+const cloudPortalUrl =
+  process.env.PUBLIC_CLOUD_PORTAL_URL ||
+  import.meta.env.PUBLIC_CLOUD_PORTAL_URL ||
+  'https://cloud.datum.net/';
 ---
 
 <div
@@ -219,15 +223,29 @@ const mainNav = filterNavMain(navData.main);
     <!-- Footer: CTAs + Social -->
     <div class="mobile-menu-footer">
       <div class="mobile-menu-ctas">
-        <a href="https://cloud.datum.net/" class="mobile-cta-secondary" x-on:click="closeMenu()">
-          Sign in
-          <Icon name="log-in" size="sm" />
+        <a
+          href={cloudPortalUrl}
+          class="mobile-cta-secondary"
+          x-on:click="closeMenu()"
+          data-portal-user-link
+        >
+          <img
+            alt=""
+            width="20"
+            height="20"
+            class="hidden size-5 rounded-full object-cover"
+            referrerpolicy="no-referrer"
+            data-portal-user-avatar
+          />
+          <span data-portal-user-label>Sign in</span>
+          <Icon name="log-in" size="sm" class="nav-signin-icon" />
         </a>
         <a
           href="https://auth.datum.net/id/signup"
           class="mobile-cta-primary"
           target="_blank"
           data-rybbit-event="Nav: Start for free"
+          data-portal-signup-cta
           x-on:click="closeMenu()"
         >
           Start for free

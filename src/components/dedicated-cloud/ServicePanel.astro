@@ -1,0 +1,52 @@
+---
+// src/components/dedicated-cloud/ServicePanel.astro
+
+import Tooltip from '@components/Tooltip.astro';
+import ServiceArt from '@components/dedicated-cloud/ServiceArt.astro';
+import type { DedicatedServiceItem } from '@data/dedicatedCloud';
+
+interface ServicePanelProps {
+  item: DedicatedServiceItem;
+  index: number;
+}
+
+const { item, index } = Astro.props as ServicePanelProps;
+---
+
+<div
+  id={`ds-panel-${item.id}`}
+  class:list={['ds-panel', index === 0 && 'is-active']}
+  role="region"
+  aria-labelledby={`ds-tab-${item.id}`}
+  :class={`{ 'is-active': active === '${item.id}' }`}
+>
+  <div class="ds-panel-clip">
+    <div class="ds-panel-frame">
+      <div class="ds-card">
+        <div class="ds-card-copy">
+          <h3 class="ds-card-title">
+            {
+              item.titleLines.map((line, lineIndex) => (
+                <Fragment>
+                  {lineIndex > 0 && <br />}
+                  {line}
+                </Fragment>
+              ))
+            }
+          </h3>
+          <p class="ds-card-description">{item.description}</p>
+        </div>
+
+        <ServiceArt id={item.id} />
+
+        <Tooltip
+          id={`ds-tooltip-${item.id}`}
+          class="ds-card-tooltip"
+          label="Pricing model:"
+          text={item.tooltip}
+          triggerLabel={`${item.label} pricing model`}
+        />
+      </div>
+    </div>
+  </div>
+</div>

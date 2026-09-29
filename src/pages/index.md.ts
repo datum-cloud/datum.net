@@ -64,7 +64,7 @@ export const GET: APIRoute = async () => {
       '',
       '- [Features](/features/) - AI Edge, Connectors, Galactic VPC, Datum Compute, foundations',
       '- [Essentials](/essentials/) - Enterprise-grade primitives included free',
-      '- [Pricing](/pricing/) - Builder ($0), Scaler ($20/mo + usage), Provider (custom)',
+      '- [Pricing](/pricing/) - Free during public beta, usage-based rates after',
       '- [Locations](/locations/) - 17+ global regions across NA, LATAM, EU, MEA, APAC',
       "- [Roadmap](/roadmap/) - What we're shipping next",
       '- [About](/about/) - Mission, team, and investors',

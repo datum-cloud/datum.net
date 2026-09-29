@@ -1,7 +1,7 @@
 import { NewsletterSignup } from './newsletter';
-import { BookDemo } from './demo';
+import { EmailLeadToHelpScout } from './emailLeadToHelpScout';
 
 export const server = {
   NewsletterSignup,
-  BookDemo,
+  EmailLeadToHelpScout,
 };

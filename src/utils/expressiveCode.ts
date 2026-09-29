@@ -8,6 +8,7 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeExpressiveCode from 'rehype-expressive-code';
 import { expressiveCodeRehypeOptions } from '@utils/expressiveCodeOptions';
 import { transformMarkdownFigures } from '@utils/markdownFigure';
+import { rehypeExternalLinks } from '@plugins/rehypeExternalLinks';
 
 export const renderMarkdownWithExpressiveCode = async (markdown: string): Promise<string> => {
   const withFigures = transformMarkdownFigures(markdown);
@@ -16,6 +17,7 @@ export const renderMarkdownWithExpressiveCode = async (markdown: string): Promis
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeExternalLinks)
     // @ts-expect-error rehypeExpressiveCode types are not fully inferred by unified
     .use(rehypeExpressiveCode, expressiveCodeRehypeOptions)
     .use(rehypeStringify)

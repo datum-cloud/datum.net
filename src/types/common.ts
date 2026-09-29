@@ -256,6 +256,18 @@ export interface SectionEyebrowProps {
   position?: 'left-top' | 'left-top-keyline';
 }
 
+export interface TooltipProps {
+  /** Stable DOM id — wired to the trigger's `aria-describedby`. */
+  id: string;
+  /** Tooltip body copy. */
+  text: string;
+  /** Bolded lead-in rendered on its own line above `text`. */
+  label?: string;
+  /** Accessible name for the trigger button. */
+  triggerLabel?: string;
+  class?: string;
+}
+
 export interface SectionLineProps {
   left?: boolean;
   right?: boolean;

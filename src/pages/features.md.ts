@@ -65,7 +65,7 @@ export const GET: APIRoute = async () => {
       '',
       '## Get started',
       '',
-      '- [Pricing](/pricing/) - Forever-free Builder tier, Scaler from $20/month, custom Provider',
+      '- [Pricing](/pricing/) - Free during public beta, usage-based rates after',
       '- [Download datumctl](/download/datumctl/) - CLI for managing your network cloud',
       '- [Download Datum MCP](/download/datum-mcp/) - MCP server for AI tools',
       ''

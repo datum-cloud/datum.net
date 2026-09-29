@@ -34,7 +34,7 @@ function touchRootMargin() {
 }
 
 function initSectionLabels() {
-  const labels = document.querySelectorAll('.section-label, .mission-label, .text-highlight');
+  const labels = document.querySelectorAll('.section-label, .text-highlight');
   for (const label of Array.from(labels)) {
     // Opt-in via [data-highlight-delay="<ms>"] — e.g. a hero title highlight
     // that should animate in a beat after load rather than the instant the

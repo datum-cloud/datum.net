@@ -1,0 +1,34 @@
+@layer components {
+  .tooltip {
+    @apply relative inline-flex;
+  }
+
+  .tooltip-trigger {
+    @apply text-midnight-fjord flex cursor-help items-center justify-center rounded-full;
+    @apply opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100;
+  }
+
+  .tooltip-trigger-icon {
+    @apply size-7;
+  }
+
+  /* Anchored above the trigger and flush to its right edge, matching the
+     Figma frame where the bubble overhangs the panel's inner padding. */
+  .tooltip-bubble {
+    @apply bg-midnight-fjord absolute right-0 bottom-full z-10 mb-2 block w-64 rounded-lg p-5;
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.05)) drop-shadow(1px 8px 4px rgb(0 0 0 / 0.02));
+  }
+
+  .tooltip-text {
+    @apply datum-text-xs block text-white;
+  }
+
+  .tooltip-label {
+    @apply block font-semibold;
+  }
+
+  .tooltip-arrow {
+    @apply bg-midnight-fjord absolute right-2.5 block size-[0.9375rem] rotate-45 rounded-[0.125rem];
+    bottom: -0.46875rem;
+  }
+}

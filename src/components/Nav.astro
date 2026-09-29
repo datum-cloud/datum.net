@@ -7,6 +7,10 @@ import NavMenu from '@components/NavMenu.astro';
 import type { NavProps } from '@/src/types/common';
 
 const { class: className = '' } = Astro.props as NavProps;
+const cloudPortalUrl =
+  process.env.PUBLIC_CLOUD_PORTAL_URL ||
+  import.meta.env.PUBLIC_CLOUD_PORTAL_URL ||
+  'https://cloud.datum.net/';
 ---
 
 <section class:list={['nav--main-container relative', className]}>
@@ -27,16 +31,79 @@ const { class: className = '' } = Astro.props as NavProps;
 
     {/* Desktop Actions */}
     <div class="nav-actions">
-      <a href="https://cloud.datum.net/" class="nav-cta-signin" data-rybbit-event="Nav: Sign in">
-        Sign in
-        <Icon name="log-in" size="md" class="text-canyon-clay hidden lg:inline-flex" />
-      </a>
+      <div class="nav-user">
+        <a
+          href={cloudPortalUrl}
+          class="nav-cta-signin"
+          data-rybbit-event="Nav: Sign in"
+          data-portal-user-link
+          data-portal-user-menu-trigger
+          data-loading
+          aria-busy="true"
+        >
+          {/* Loader until session-status settles, so "Sign in" doesn't flash first. */}
+          <span class="nav-signin-skeleton" aria-hidden="true">
+            <span class="size-6 animate-pulse rounded-full bg-gray-300"></span>
+            <span class="h-4 w-16 animate-pulse rounded bg-gray-300"></span>
+          </span>
+          <img
+            alt=""
+            width="24"
+            height="24"
+            class="hidden size-6 rounded-full object-cover"
+            referrerpolicy="no-referrer"
+            data-portal-user-avatar
+          />
+          <span data-portal-user-label>Sign in</span>
+          <Icon
+            name="log-in"
+            size="md"
+            class="nav-signin-icon text-canyon-clay hidden lg:inline-flex"
+          />
+        </a>
+
+        {/* Filled in and enabled by loadPortalUser once the visitor is signed in. */}
+        <div id="nav-user-menu" class="nav-user-menu" hidden data-portal-user-menu>
+          <div class="nav-user-menu-header">
+            <span class="nav-user-menu-name" data-portal-user-menu-name></span>
+            <span class="nav-user-menu-email" data-portal-user-menu-email></span>
+          </div>
+          <div class="nav-user-menu-group">
+            <a class="nav-user-menu-item" data-portal-user-menu-dashboard>
+              <Icon name="layout-grid" size="sm" />
+              Get started
+            </a>
+            <a class="nav-user-menu-item" data-portal-user-menu-projects>
+              <Icon name="folder" size="sm" />
+              Projects
+            </a>
+            <a
+              class="nav-user-menu-item"
+              href={new URL('/account/general', cloudPortalUrl).href}
+              data-portal-path="/account/general"
+            >
+              <Icon name="user" size="sm" />
+              Account Settings
+            </a>
+          </div>
+          <div class="nav-user-menu-group">
+            <a
+              class="nav-user-menu-item"
+              href={new URL('/logout', cloudPortalUrl).href}
+              data-portal-path="/logout"
+            >
+              Sign out
+            </a>
+          </div>
+        </div>
+      </div>
 
       <a
         href="https://auth.datum.net/id/signup"
         class="nav-cta-demo"
         target="_blank"
         data-rybbit-event="Nav: Start for free"
+        data-portal-signup-cta
       >
         {/* Mobile shows "Start"; sr-only keeps full text for SEO/a11y (Lighthouse). */}
         <span class="inline-flex lg:hidden">Start<span class="sr-only"> for free</span></span>
@@ -63,13 +130,20 @@ const { class: className = '' } = Astro.props as NavProps;
 </section>
 
 <script>
+  let navBackdropRaf = 0;
+  let lastNavBackdropTop = '';
+
   const syncNavDropdownBackdropTop = () => {
-    const container = document.querySelector('.nav--main-container');
-    if (!container) return;
-    document.documentElement.style.setProperty(
-      '--nav-dropdown-backdrop-top',
-      `${container.getBoundingClientRect().bottom}px`
-    );
+    if (navBackdropRaf) return;
+    navBackdropRaf = requestAnimationFrame(() => {
+      navBackdropRaf = 0;
+      const container = document.querySelector('.nav--main-container');
+      if (!container) return;
+      const next = `${container.getBoundingClientRect().bottom}px`;
+      if (next === lastNavBackdropTop) return;
+      lastNavBackdropTop = next;
+      document.documentElement.style.setProperty('--nav-dropdown-backdrop-top', next);
+    });
   };
 
   const initNavDropdownBackdropTop = () => {
@@ -78,9 +152,9 @@ const { class: className = '' } = Astro.props as NavProps;
 
     syncNavDropdownBackdropTop();
 
+    // ResizeObserver + window resize cover nav/announcement height changes.
+    // Scroll is omitted: sticky nav bottom edge does not move with scrollY.
     window.addEventListener('resize', syncNavDropdownBackdropTop, { passive: true });
-    window.addEventListener('scroll', syncNavDropdownBackdropTop, { passive: true });
-
     new ResizeObserver(syncNavDropdownBackdropTop).observe(container);
 
     const announcement = document.getElementById('announcement');
@@ -91,4 +165,142 @@ const { class: className = '' } = Astro.props as NavProps;
 
   initNavDropdownBackdropTop();
   document.addEventListener('alpine:initialized', syncNavDropdownBackdropTop);
+
+  // Shape of cloud-portal GET /api/website/session-status.
+  type SessionStatus =
+    | { signedIn: false }
+    | {
+        signedIn: true;
+        user: { displayName: string; email?: string; avatarUrl?: string };
+        org?: { name: string; displayName: string };
+        dashboardUrl: string;
+      };
+
+  // Turns the desktop Sign in link into a toggle for the user menu. The mobile
+  // menu link keeps plain navigation to the dashboard.
+  const initUserMenu = (
+    status: Extract<SessionStatus, { signedIn: true }>,
+    portal: URL,
+    dashboardUrl: string | null
+  ) => {
+    const trigger = document.querySelector<HTMLAnchorElement>('[data-portal-user-menu-trigger]');
+    const menu = document.querySelector<HTMLElement>('[data-portal-user-menu]');
+    if (!trigger || !menu) return;
+
+    menu.querySelector('[data-portal-user-menu-name]')!.textContent = status.user.displayName;
+    menu.querySelector('[data-portal-user-menu-email]')!.textContent = status.user.email ?? '';
+
+    const projectsUrl = status.org
+      ? new URL(`/org/${encodeURIComponent(status.org.name)}/projects`, portal).href
+      : null;
+    const projects = menu.querySelector<HTMLAnchorElement>('[data-portal-user-menu-projects]');
+    if (projects) {
+      if (projectsUrl) projects.href = projectsUrl;
+      else projects.remove();
+    }
+    // Active users' dashboard is their projects page; only keep this item when
+    // it leads somewhere else, i.e. onboarding for new users ("Get started").
+    const dashboard = menu.querySelector<HTMLAnchorElement>('[data-portal-user-menu-dashboard]');
+    if (dashboard) {
+      if (dashboardUrl && dashboardUrl !== projectsUrl) dashboard.href = dashboardUrl;
+      else dashboard.remove();
+    }
+
+    trigger.setAttribute('aria-haspopup', 'menu');
+    trigger.setAttribute('aria-controls', menu.id);
+    trigger.setAttribute('aria-expanded', 'false');
+
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(menu.hidden === true);
+    });
+    document.addEventListener('click', (e) => {
+      if (!menu.hidden && !trigger.parentElement!.contains(e.target as Node)) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+  };
+
+  const SESSION_STATUS_TIMEOUT_MS = 5000;
+
+  // The page is prerendered once and the same image runs in every environment,
+  // so the build-time PUBLIC_CLOUD_PORTAL_URL can't tell staging from prod.
+  // Hosts not listed here keep the build-time URL.
+  const PORTAL_URL_BY_HOST = new Map([
+    ['website.staging.env.datum.net', 'https://cloud.staging.env.datum.net/'],
+  ]);
+
+  // Shows the cloud-portal user's name and avatar in place of "Sign in" on the
+  // desktop and mobile menu links, and points them at the user's dashboard.
+  // Relies on the browser sending cloud-portal's _session cookie (same-site
+  // with datum.net) and on this origin being in cloud-portal's WEBSITE_ORIGINS.
+  const loadPortalUser = async () => {
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-portal-user-link]');
+    if (!links.length) return;
+
+    try {
+      const portal = new URL(PORTAL_URL_BY_HOST.get(location.hostname) ?? links[0].href);
+      links.forEach((link) => (link.href = portal.href));
+      const pathLinks = document.querySelectorAll<HTMLAnchorElement>('[data-portal-path]');
+      pathLinks.forEach((link) => {
+        link.href = new URL(link.dataset.portalPath!, portal).href;
+      });
+
+      const res = await fetch(new URL('/api/website/session-status', portal), {
+        credentials: 'include',
+        // Bounds how long the loader can show if the portal hangs.
+        signal: AbortSignal.timeout(SESSION_STATUS_TIMEOUT_MS),
+      });
+      if (!res.ok) return;
+      const status = (await res.json()) as SessionStatus;
+      if (!status.signedIn) return;
+
+      const name = status.user.displayName;
+      const avatarUrl = status.user.avatarUrl?.startsWith('https://')
+        ? status.user.avatarUrl
+        : null;
+      // Only follow dashboard links that stay on the portal.
+      const dashboardUrl =
+        new URL(status.dashboardUrl, portal).origin === portal.origin ? status.dashboardUrl : null;
+
+      links.forEach((link) => {
+        if (dashboardUrl) link.href = dashboardUrl;
+
+        const label = link.querySelector<HTMLElement>('[data-portal-user-label]');
+        if (label && name) label.textContent = name;
+
+        const avatar = link.querySelector<HTMLImageElement>('[data-portal-user-avatar]');
+        if (avatar && avatarUrl) {
+          avatar.src = avatarUrl;
+          avatar.alt = name;
+          avatar.classList.remove('hidden');
+          link.querySelector('.nav-signin-icon')?.remove();
+        }
+      });
+
+      // Signed-in users already have an account; drop the signup CTAs (nav and
+      // mobile menu).
+      document.querySelectorAll('[data-portal-signup-cta]').forEach((cta) => cta.remove());
+
+      initUserMenu(status, portal, dashboardUrl);
+    } catch {
+      // Blocked until this origin is in cloud-portal's WEBSITE_ORIGINS; keep "Sign in".
+    } finally {
+      links.forEach((link) => {
+        link.removeAttribute('data-loading');
+        link.removeAttribute('aria-busy');
+      });
+    }
+  };
+
+  loadPortalUser();
 </script>

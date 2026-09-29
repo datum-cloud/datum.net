@@ -62,10 +62,13 @@ import { Tabs, TabItem, Aside } from '@components/content';
 </Aside>
   </TabItem>
 
-  <TabItem label="nix">
+  <TabItem label="Nix">
   datumctl ships with a flake.nix so you don’t have to install anything:
 
   ```
+  # Add datumctl to your profile
+  nix profile install github:datum-cloud/datumctl
+
   # Pick latest from git
   nix run github:datum-cloud/datumctl
 
@@ -168,4 +171,3 @@ import { Tabs, TabItem, Aside } from '@components/content';
   This should output the installed version of datumctl.
   </TabItem>
 </Tabs>
-

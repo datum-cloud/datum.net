@@ -7,6 +7,7 @@ import {
   getDaysUntilRelease,
   getMonthAbbreviation,
   getRoadmapCoverImage,
+  getRoadmapReleaseName,
   isRoadmapShipped,
 } from '@libs/githubRoadmap';
 import { formatDate } from '@utils/dateUtils';
@@ -34,9 +35,7 @@ const detailLabel = roadmap?.title
   ? `View ${roadmap.title} roadmap release`
   : `View ${monthAbbr} roadmap release`;
 
-// Parse "Name: Version" from title (e.g. "Mary Elizabeth: 1.1")
-const titleParts = roadmap?.title?.split(':') ?? [];
-const releaseName = titleParts[0]?.trim() ?? roadmap?.title ?? '';
+const releaseName = roadmap ? getRoadmapReleaseName(roadmap.title) : '';
 const releaseMonthYear = roadmap
   ? formatDate(roadmap.releaseDate, 'en-US', { month: 'long', year: 'numeric' })
   : '';

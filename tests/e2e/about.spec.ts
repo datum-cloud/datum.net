@@ -1,0 +1,190 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('About page', () => {
+  test('renders every section', async ({ page }) => {
+    await page.goto('/about');
+
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('kind of cloud');
+    await expect(page.locator('.about-companies-item')).toHaveCount(6);
+    await expect(page.locator('[data-collage]')).toBeAttached();
+    await expect(page.locator('.about-investors-cell')).toHaveCount(7);
+    await expect(page.locator('[data-explore-card]')).toHaveCount(3);
+    await expect(page.getByRole('link', { name: 'Explore team' })).toHaveAttribute(
+      'href',
+      '/about/team'
+    );
+  });
+
+  test('explore tab bar is sticky and its active tab follows the card in view', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    const bar = page.locator('[data-explore-tabs]');
+    const tab = (id: string) => page.locator(`[data-explore-tab="${id}"]`);
+    const background = (id: string) =>
+      tab(id).evaluate((el) => getComputedStyle(el).backgroundColor);
+    const scrollToCard = (id: string) =>
+      page.evaluate((cardId) => {
+        const card = document.getElementById(`explore-${cardId}`);
+        if (card) window.scrollTo(0, card.getBoundingClientRect().top + window.scrollY - 300);
+      }, id);
+
+    await expect(tab('team')).toHaveClass(/is-active/);
+
+    await scrollToCard('work');
+    await expect(tab('work')).toHaveClass(/is-active/);
+    await expect(tab('team')).not.toHaveClass(/is-active/);
+    // Pine Forge (#4d6356)
+    await expect.poll(() => background('work')).toBe('rgb(77, 99, 86)');
+    // Still pinned near the top of the viewport while the cards scroll under it.
+    expect((await bar.boundingBox())?.y).toBeCloseTo(16, 0);
+
+    await scrollToCard('wild');
+    await expect(tab('wild')).toHaveClass(/is-active/);
+    // Canyon Clay Links (#9c7979)
+    await expect.poll(() => background('wild')).toBe('rgb(156, 121, 121)');
+    expect((await bar.boundingBox())?.y).toBeCloseTo(16, 0);
+  });
+
+  test('clicking a tab scrolls to its card', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    await page.locator('[data-explore-tab="wild"]').click();
+    await expect(page.locator('[data-explore-tab="wild"]')).toHaveClass(/is-active/);
+    await expect
+      .poll(async () => (await page.locator('#explore-wild').boundingBox())?.y ?? 9999)
+      .toBeLessThan(400);
+  });
+
+  test('draws the corner marks at the tab bar corner on wide screens', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    const marks = await page.locator('.about-explore-marks').boundingBox();
+    const bar = await page.locator('[data-explore-tabs]').boundingBox();
+    expect(marks && bar).toBeTruthy();
+    // The marks' bottom-right corner sits on the bar's top-left corner.
+    expect(marks!.x + marks!.width).toBeCloseTo(bar!.x + 1, 0);
+    expect(marks!.y + marks!.height).toBeCloseTo(bar!.y + 1, 0);
+  });
+
+  test('Twins in the Loop cards show author and ordinal date, and link to the blog', async ({
+    page,
+  }) => {
+    await page.goto('/about');
+
+    const section = page.locator('.about-twins');
+    // Strapi-backed: hidden entirely when there are no posts.
+    test.skip((await section.count()) === 0, 'No twins posts published in Strapi');
+
+    await expect(section.getByRole('link', { name: /View all articles/ })).toHaveAttribute(
+      'href',
+      'https://twins-in-the-loop.com'
+    );
+    const meta = section.locator('.about-twins-card-meta').first();
+    await expect(meta.locator('.about-twins-card-author')).toHaveText(/\S/);
+    await expect(meta.locator('time')).toHaveText(
+      /^(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}(st|nd|rd|th), \d{4}$/
+    );
+  });
+
+  test('no longer lists the team on the page itself', async ({ page }) => {
+    await page.goto('/about');
+    await expect(page.getByText('Meet the people behind Datum')).toHaveCount(0);
+  });
+
+  test('collage progress follows the scroll position', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    const section = page.locator('[data-collage]');
+    const progress = async () =>
+      Number(await section.evaluate((el) => el.style.getPropertyValue('--p') || '0'));
+
+    // Scroll offsets at which the section's top edge sits where progress is 0
+    // (photo row entering) and 1 (section centred).
+    const { start, end } = await section.evaluate((el) => {
+      const height = el.offsetHeight;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const viewport = window.innerHeight;
+      return {
+        start: top - (viewport - height * 0.67),
+        end: top - (viewport - height) / 2,
+      };
+    });
+
+    await page.evaluate((y) => window.scrollTo(0, y), start);
+    await expect.poll(progress).toBeLessThan(0.05);
+
+    await page.evaluate((y) => window.scrollTo(0, y), (start + end) / 2);
+    await expect.poll(progress).toBeGreaterThan(0.4);
+    await expect.poll(progress).toBeLessThan(0.6);
+
+    await page.evaluate((y) => window.scrollTo(0, y), end);
+    await expect.poll(progress).toBeGreaterThan(0.95);
+  });
+
+  test('collage section matches the design canvas instead of the viewport height', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1680, height: 1400 });
+    await page.goto('/about');
+
+    const height = await page.locator('[data-collage]').evaluate((el) => el.offsetHeight);
+    expect(height).toBeGreaterThan(880);
+    expect(height).toBeLessThan(900);
+  });
+
+  test('collage starts from its first state on very tall screens', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 2000 });
+    await page.goto('/about');
+
+    // The section is already on screen at scroll 0 here, but must not begin half-spread.
+    await expect
+      .poll(() =>
+        page
+          .locator('[data-collage]')
+          .evaluate((el) => Number(el.style.getPropertyValue('--p') || '0'))
+      )
+      .toBeLessThan(0.05);
+  });
+
+  test('stacks the collage without horizontal overflow on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/about');
+
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+    await expect(page.locator('.about-collage-photo')).toHaveCount(5);
+  });
+
+  test('serves markdown exports for both pages', async ({ request }) => {
+    for (const path of ['/about.md', '/about/team.md']) {
+      const response = await request.get(path);
+      expect(response.status(), path).toBe(200);
+      expect(response.headers()['content-type']).toContain('text/markdown');
+    }
+  });
+});
+
+test.describe('Team page', () => {
+  test('renders the header and either the roster or the empty state', async ({ page }) => {
+    await page.goto('/about/team');
+
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Meet the people behind Datum'
+    );
+    // The grid is a server island, so wait for it to replace the skeleton.
+    await expect(page.locator('.team-grid:not([aria-hidden]), .team-empty')).toBeVisible();
+  });
+
+  test('is listed in the sitemap', async ({ request }) => {
+    const response = await request.get('/sitemap.xml');
+    expect(await response.text()).toContain('/about/team');
+  });
+});

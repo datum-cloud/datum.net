@@ -74,12 +74,13 @@ Reusable UI components organized by feature:
 
 **About** (`about/`)
 
-- `Companies.astro` - Companies/investors component
-- `Investors.astro` - Investors component
-- `OurMission.astro` - Our mission component
-- `People.astro` / `PeopleStrapi.astro` / `PeopleStrapiSkeleton.astro` - People listing (Strapi-backed) with loading skeleton
+- `AboutHero.astro` - "Why Datum?" hero with the companies logo bar
+- `FoundingInsight.astro` - Scroll-driven photo collage + founding insight copy (`module-collage.js`)
+- `Investors.astro` - Investors logo grid
+- `ExploreCards.astro` - Team / Work with us / In the wild cards with tab strip
+- `TwinsInTheLoop.astro` - Latest "Twins in the Loop" posts (Strapi `twins-post`)
+- `TeamGrid.astro` / `TeamGridSkeleton.astro` - /about/team department tabs + grid (Strapi-backed) with loading skeleton
 - `ProfileModal.astro` - Profile modal component
-- `Team.astro` - Team component
 
 **Blog** (`blog/`)
 

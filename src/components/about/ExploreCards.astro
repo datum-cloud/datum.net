@@ -1,0 +1,128 @@
+---
+// src/components/about/ExploreCards.astro
+// Tab strip + three text/artwork cards: Meet the team, Work with us, In the wild.
+// The tabs are in-page anchors that follow the card in view.
+// Figma node 17489:71534.
+import { Image } from 'astro:assets';
+import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import { explore } from '@data/about';
+import cornerMarks from '@assets/svgs/about-corner-marks.svg';
+import teamArt from '@assets/images/about/explore-team.png';
+import workArt from '@assets/images/about/explore-work.png';
+import wildArt from '@assets/images/about/explore-wild.png';
+
+const art = { team: teamArt, work: workArt, wild: wildArt } as const;
+const eyebrowVariant = { slate: 'connect', pine: 'pine', canyon: undefined } as const;
+---
+
+<div class="relative">
+  <section class="section--block section--block--x-pad about-explore">
+    <div class="max-width-nav section-pad relative">
+      <SectionLine left top />
+      <div class="about-explore-inner">
+        {/* Figma node 17489:71542 — two 40px lines crossing at the tab strip's top-left corner. */}
+        <Image src={cornerMarks} alt="" class="about-explore-marks" />
+        <ul class="about-explore-tabs" data-explore-tabs>
+          {
+            explore.map((card, index) => (
+              <li>
+                <a
+                  href={`#explore-${card.id}`}
+                  class:list={[
+                    'about-explore-tab',
+                    `about-explore-tab--${card.tone}`,
+                    index === 0 && 'is-active',
+                  ]}
+                  data-explore-tab={card.id}
+                  aria-current={index === 0 ? 'true' : undefined}
+                >
+                  <Icon name={card.tabIcon} size="md" />
+                  <span class="about-explore-tab-label">{card.tabLabel}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="about-explore-cards">
+          {
+            explore.map((card) => (
+              <article id={`explore-${card.id}`} class="about-explore-card" data-explore-card>
+                <div class="about-explore-card-copy">
+                  <div class="about-explore-card-text">
+                    <SectionEyebrow variant={eyebrowVariant[card.tone]}>
+                      {card.eyebrow}
+                    </SectionEyebrow>
+                    <h2 class="about-explore-card-title">{card.title}</h2>
+                    <p class="about-explore-card-description">{card.description}</p>
+                  </div>
+                  <a href={card.cta.href} class="btn btn--alpha btn--sm">
+                    {card.cta.text}
+                    <Icon name="arrow-right" size="sm" />
+                  </a>
+                </div>
+                <div class="about-explore-card-art">
+                  <Image
+                    src={art[card.id as keyof typeof art]}
+                    alt=""
+                    widths={[656, 1313]}
+                    sizes="(min-width: 1024px) 656px, 100vw"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+  <ModuleConnector />
+</div>
+
+<script>
+  // Highlight the tab of whichever card is centred in the viewport.
+  const tabs = new Map();
+  document.querySelectorAll('[data-explore-tab]').forEach((tab) => {
+    tabs.set(tab.getAttribute('data-explore-tab') ?? '', tab);
+  });
+
+  const setActive = (id: string) => {
+    tabs.forEach((tab, key) => {
+      const active = key === id;
+      tab.classList.toggle('is-active', active);
+      if (active) tab.setAttribute('aria-current', 'true');
+      else tab.removeAttribute('aria-current');
+    });
+  };
+
+  // Tabs are in-page anchors (they work without JS); with JS, scroll smoothly
+  // unless the visitor prefers reduced motion. `scroll-margin-top` on the cards
+  // keeps the target clear of the sticky tab bar.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  tabs.forEach((tab, id) => {
+    tab.addEventListener('click', (event: Event) => {
+      const card = document.getElementById(`explore-${id}`);
+      if (!card) return;
+      event.preventDefault();
+      card.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', `#explore-${id}`);
+      setActive(id);
+    });
+  });
+
+  if (tabs.size && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActive(visible.target.id.replace('explore-', ''));
+      },
+      // A thin band across the middle of the viewport picks the "current" card.
+      { rootMargin: '-45% 0px -45% 0px' }
+    );
+    document.querySelectorAll('[data-explore-card]').forEach((card) => observer.observe(card));
+  }
+</script>

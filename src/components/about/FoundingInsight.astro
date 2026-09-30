@@ -1,0 +1,55 @@
+---
+// src/components/about/FoundingInsight.astro
+// Photo collage that drifts apart on scroll to reveal the founding insight.
+// Figma section 17534:89125 (start / mid / end states); the design frames are
+// 17519:73425 (start) and 17519:73406 / 17489:72465 (mid / end).
+//
+// Progress is driven by module-collage.js, which writes --p, --p1 and --p2 on
+// the [data-collage] section; every position lives in components-about.css.
+import { Image } from 'astro:assets';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import { foundingInsight } from '@data/about';
+import rooftop from '@assets/images/about/collage-rooftop.png';
+import grill from '@assets/images/about/collage-grill.png';
+import podcast from '@assets/images/about/collage-podcast.png';
+import dinner from '@assets/images/about/collage-dinner.png';
+import selfie from '@assets/images/about/collage-selfie.png';
+
+// Left-to-right order of the starting row; z-order comes from the CSS.
+const photos = [
+  { id: 'rooftop', src: rooftop, alt: 'Datum teammates chatting on a rooftop at dusk' },
+  { id: 'grill', src: grill, alt: 'Hot dog buns toasting on a grill' },
+  { id: 'podcast', src: podcast, alt: 'A teammate recording a podcast in a studio' },
+  { id: 'dinner', src: dinner, alt: 'Teammates sharing dinner at a restaurant' },
+  { id: 'selfie', src: selfie, alt: 'Three teammates taking a selfie outside' },
+];
+---
+
+<section class="about-collage" data-collage aria-label="The founding insight">
+  <div class="about-collage-canvas">
+    <div class="about-collage-copy">
+      <SectionEyebrow>{foundingInsight.eyebrow}</SectionEyebrow>
+      {foundingInsight.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <ul class="about-collage-photos">
+      {
+        photos.map((photo) => (
+          <li class:list={['about-collage-photo', `about-collage-photo--${photo.id}`]}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={[400, 800]}
+              sizes="(min-width: 1024px) 24vw, 50vw"
+              loading="lazy"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import '@/src/static/scripts/module-collage.js';
+</script>

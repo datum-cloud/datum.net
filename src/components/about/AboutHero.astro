@@ -1,0 +1,79 @@
+---
+// src/components/about/AboutHero.astro
+// "Why Datum?" hero with the "Companies we've helped to build" logo bar.
+// Figma node 17489:71439.
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import { hero } from '@data/about';
+import corner from '@assets/svgs/about-hero-corner.svg';
+
+const { companies: content } = Astro.props as { companies: CollectionEntry<'about'> };
+const companies = content.data.companies ?? [];
+
+// `{{word}}` marks a bold word inside a lead line.
+const leadLines = hero.lead.map((line) =>
+  line.split(/(\{\{[^}]+\}\})/).map((part) => {
+    const bold = part.match(/^\{\{(.+)\}\}$/);
+    return { text: bold ? bold[1] : part, bold: Boolean(bold) };
+  })
+);
+---
+
+<div class="relative">
+  <section class="section--block section--block--x-pad about-hero relative overflow-clip">
+    <Image src={corner} alt="" class="about-hero-corner" />
+    <div class="max-width-nav large-pad relative">
+      <SectionLine left top />
+      <div class="about-hero-inner">
+        <div class="about-hero-header">
+          <SectionEyebrow>{hero.eyebrow}</SectionEyebrow>
+          <h1 class="about-hero-title">
+            {hero.title.before}<span class="about-hero-highlight">{hero.title.highlight}</span>{
+              hero.title.after
+            }
+          </h1>
+        </div>
+
+        <p class="about-hero-lead">
+          {
+            leadLines.map((line, index) => (
+              <>
+                {index > 0 && <br class="hidden md:inline" />}
+                {index > 0 && ' '}
+                {line.map((part) => (part.bold ? <strong>{part.text}</strong> : part.text))}
+              </>
+            ))
+          }
+        </p>
+
+        {
+          companies.length > 0 && (
+            <div class="about-companies">
+              <p class="about-companies-label">{content.data.title}</p>
+              <ul class="about-companies-list">
+                {companies.map(
+                  (company) =>
+                    company.img && (
+                      <li class="about-companies-item">
+                        <Image
+                          src={company.img}
+                          alt={company.alt ?? ''}
+                          class="about-companies-logo"
+                          widths={[120, 240]}
+                          sizes="120px"
+                        />
+                      </li>
+                    )
+                )}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+  <ModuleConnector />
+</div>

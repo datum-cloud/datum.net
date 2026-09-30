@@ -1,0 +1,69 @@
+---
+// src/pages/about/team.astro
+// Team page — "Meet the people behind Datum". Figma node 17529:74750.
+export const prerender = false;
+
+import '@styles/page-about.css';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import TeamGrid from '@components/about/TeamGrid.astro';
+import TeamGridSkeleton from '@components/about/TeamGridSkeleton.astro';
+import { team } from '@data/about';
+
+const title = 'Meet the Team - The People Behind Datum';
+const description =
+  'Meet the infrastructure, open source software, and design nerds building Datum, the open network cloud for AI and alternative cloud providers.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://www.datum.net/about/team#webpage',
+  url: 'https://www.datum.net/about/team/',
+  name: title,
+  description,
+  isPartOf: { '@id': 'https://www.datum.net/about#webpage' },
+  about: { '@id': 'https://www.datum.net#organization' },
+  inLanguage: 'en-US',
+};
+---
+
+<Layout title={title} description={description} bodyClass="page-about" jsonLd={jsonLd}>
+  <section class="datum-container">
+    <Hero class="light bg-white" hideHero />
+
+    <div class="relative">
+      <section class="section--block section--block--x-pad team-page">
+        <div class="max-width-nav section-pad relative flex flex-col items-center gap-12 md:gap-16">
+          <SectionLine left top />
+
+          <header class="team-header">
+            <SectionEyebrow>{team.eyebrow}</SectionEyebrow>
+            <h1 class="team-header-title">{team.title}</h1>
+            <p class="team-header-description">
+              {
+                team.descriptionLines.map((line, index) => (
+                  <>
+                    {index > 0 && <br class="hidden md:inline" />}
+                    {index > 0 && ' '}
+                    {line}
+                  </>
+                ))
+              }
+            </p>
+          </header>
+
+          <TeamGrid server:defer>
+            <TeamGridSkeleton slot="fallback" />
+          </TeamGrid>
+        </div>
+      </section>
+      <ModuleConnector />
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

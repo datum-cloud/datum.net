@@ -26,6 +26,7 @@ export interface MarkdownSource {
 const DEDICATED_ENDPOINTS = new Set<string>([
   '/',
   '/about',
+  '/about/team',
   '/blog',
   '/changelog',
   '/contact',

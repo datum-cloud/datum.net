@@ -41,6 +41,13 @@ export interface StrapiSocial {
 
 export type CardCategory = 'partnerships' | 'support' | 'pr_events' | 'fundraising';
 
+/**
+ * Strapi `team` enum on an author. `founders` is the only value with special
+ * behaviour (sorted first, "Founder" badge); the rest are the department tabs
+ * on /about/team, and `team` is the generic, unassigned bucket.
+ */
+export type StrapiAuthorTeam = 'founders' | 'team' | 'engineering' | 'marketing' | 'operations';
+
 export interface StrapiAuthorFull {
   documentId: string;
   slug?: string;
@@ -50,7 +57,7 @@ export interface StrapiAuthorFull {
   /** Short intro for the /hello profile modal only (About page still uses bio). */
   helloBio?: string;
   isTeam?: boolean;
-  team?: 'founders' | 'team';
+  team?: StrapiAuthorTeam;
   tick?: string;
   surprising?: string;
   weekends?: string;
@@ -105,6 +112,25 @@ export interface StrapiArticle {
 
 export interface StrapiArticlesResponse {
   articles: StrapiArticle[];
+}
+
+/** Entry of the Strapi `twins-post` collection ("Twins in the Loop" blog). */
+export interface StrapiTwinsPost {
+  documentId: string;
+  title: string;
+  slug: string;
+  description?: string;
+  author?: string;
+  type?: string;
+  /** ISO date (YYYY-MM-DD). */
+  published: string;
+  canonical?: string | null;
+  embedUrl?: string | null;
+  cover?: StrapiImage;
+}
+
+export interface StrapiTwinsPostsResponse {
+  twinsPosts: StrapiTwinsPost[];
 }
 
 export interface StrapiArticleResponse {

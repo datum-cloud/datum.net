@@ -1,0 +1,70 @@
+---
+// src/components/about/TwinsInTheLoop.astro
+// Latest "Twins in the Loop" posts from Strapi (`twins-post`). Renders only
+// what exists (Figma annotation: latest 3, but only 2 published so far) and
+// hides itself when Strapi has none. Figma node 17489:72310.
+import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import { fetchStrapiTwinsPosts } from '@libs/strapi/twinsPosts';
+import { getStrapiMediaUrl } from '@/src/types/strapi';
+import { TWINS_BASE_URL, twinsAuthorName, twinsInTheLoop } from '@data/about';
+import { formatOrdinalDate } from '@utils/dateUtils';
+
+const posts = await fetchStrapiTwinsPosts();
+
+const postUrl = (post: (typeof posts)[number]): string =>
+  post.canonical || post.embedUrl || `${TWINS_BASE_URL}/${post.slug}`;
+---
+
+{
+  posts.length > 0 && (
+    <section class="section--block section--block--x-pad about-twins">
+      <div class="max-width-nav section-pad relative">
+        <SectionLine left top />
+        <div class="about-twins-inner">
+          <div class="about-twins-header">
+            <SectionEyebrow>{twinsInTheLoop.eyebrow}</SectionEyebrow>
+            <h2 class="about-twins-title">{twinsInTheLoop.title}</h2>
+            <p class="about-twins-description">{twinsInTheLoop.description}</p>
+          </div>
+
+          <ul class="about-twins-list">
+            {posts.map((post) => (
+              <li>
+                <a href={postUrl(post)} class="about-twins-card" target="_blank" rel="noreferrer">
+                  <div class="about-twins-card-media">
+                    {post.cover?.url && (
+                      <img
+                        src={getStrapiMediaUrl(post.cover.url)}
+                        alt={post.cover.alternativeText ?? ''}
+                        width={post.cover.width}
+                        height={post.cover.height}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                  </div>
+                  <div class="about-twins-card-body">
+                    <h3 class="about-twins-card-title">{post.title}</h3>
+                    <p class="about-twins-card-meta">
+                      {twinsAuthorName(post.author) && (
+                        <span class="about-twins-card-author">{twinsAuthorName(post.author)}</span>
+                      )}
+                      <time datetime={post.published}>{formatOrdinalDate(post.published)}</time>
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <a href={TWINS_BASE_URL} class="btn btn--alpha btn--sm" target="_blank" rel="noreferrer">
+            {twinsInTheLoop.cta.text}
+            <Icon name="external-link" size="sm" />
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}

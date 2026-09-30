@@ -1,0 +1,20 @@
+src/pages/llms-full.txt.ts
+  s_d3c3d02cf55e1d::t_a83b9ef4486918 270
+  s_d3c3d02cf55e1d::t_7a0111ec75025c 223,225,227-269
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b24e2621a3218588e493668203c844a335a53ebe",
+  "prompts": {},
+  "sessions": {
+    "s_d3c3d02cf55e1d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "96c19f31-40e3-40f4-b2cc-271a8fa723bd",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

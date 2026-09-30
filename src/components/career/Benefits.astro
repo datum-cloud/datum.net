@@ -1,6 +1,8 @@
 ---
 // src/components/career/Benefits.astro
+// "Open by design" — what to expect working at Datum. Figma node 17529:87537.
 import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 
@@ -44,30 +46,31 @@ const benefits = [
 ---
 
 <div class="relative">
-  <section id="benefits" class="section--block section--block--x-pad bg-glacier-mist-700">
-    <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
-      <SectionLine left right top bottom />
-      <div class="max-width-nopad">
-        <h2 class="datum-text-8xl mb-10 text-center font-medium">Open by design</h2>
-        <p class="datum-text-lg mb-10 text-center text-pretty md:mb-18">
-          What to expect working here
-        </p>
-        <div class="border-midnight-fjord border bg-white p-7 md:p-16">
-          <div class="flex flex-wrap gap-x-13 gap-y-8">
+  <section id="benefits" class="career-benefits section--block section--block--x-pad">
+    <div class="max-width-nav career-section-pad relative">
+      <SectionLine left right top />
+      <div class="spacing-pad">
+        <div class="career-benefits-inner">
+          <header class="career-section-header">
+            <SectionEyebrow>Open by design</SectionEyebrow>
+            <h2 class="career-section-title">What to expect working here</h2>
+          </header>
+
+          <ul class="career-benefits-card">
             {
               benefits.map((benefit) => (
-                <div class="flex w-full items-start gap-6 md:w-[calc(33.333%-35px)]">
-                  <div class="bg-canyon-clay/20 text-canyon-clay---links flex h-10 w-10 shrink-0 items-center justify-center rounded-[4.7px] p-2">
+                <li class="career-benefit">
+                  <span class="career-benefit-icon">
                     <Icon name={benefit.icon} size="md" />
+                  </span>
+                  <div class="career-benefit-text">
+                    <h3 class="career-benefit-title">{benefit.title}</h3>
+                    <p class="career-benefit-description">{benefit.description}</p>
                   </div>
-                  <div class="text-midnight-fjord flex min-w-0 flex-1 flex-col gap-2.5">
-                    <h3 class="datum-text-lg font-medium">{benefit.title}</h3>
-                    <p class="datum-text-base opacity-80">{benefit.description}</p>
-                  </div>
-                </div>
+                </li>
               ))
             }
-          </div>
+          </ul>
         </div>
       </div>
     </div>

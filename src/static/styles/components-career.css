@@ -1,0 +1,199 @@
+@layer components {
+  /* ---------------------------------------------------------------- mission */
+  /* Careers hero — Figma node 17529:82312 */
+
+  .career-mission {
+    @apply border-app---dark---utility-5 overflow-clip border-b bg-white;
+  }
+
+  /* Two 572px columns, 80px apart, 1224px wide. */
+  .career-mission-content {
+    @apply mx-auto grid w-full max-w-306 grid-cols-1 items-start gap-10 md:gap-12 lg:grid-cols-2 lg:gap-20;
+  }
+
+  /* The illustration is cropped to the design's 572 x 336 frame. */
+  .career-mission-media {
+    @apply aspect-572/336 overflow-clip rounded-lg;
+  }
+
+  .career-mission-media img {
+    @apply size-full object-cover;
+  }
+
+  .career-mission-copy {
+    @apply flex flex-col items-start justify-center gap-7;
+  }
+
+  .career-mission-text {
+    @apply text-midnight-fjord flex flex-col gap-5;
+  }
+
+  /* Figma's "text-10xl canela" is 60/70 while the responsive scale in
+     variables-breakpoints.css tops out at 70/70 from `xl`; the design's size
+     is used here without touching the shared token (home, pricing and hello
+     rely on it). */
+  .career-mission-title {
+    @apply datum-text-10xl m-0;
+  }
+
+  @media (min-width: 80rem) {
+    .career-mission-title {
+      font-size: var(--60px);
+      line-height: var(--70px);
+    }
+  }
+
+  /* Design button: 20px x 12px padding (btn--sm grows to 24px x 14px at lg). */
+  .career-mission-copy .career-mission-cta.btn {
+    @apply px-5 py-3;
+  }
+
+  .career-mission-lead {
+    @apply datum-text-xl opacity-80;
+  }
+
+  .career-mission-lead p {
+    @apply m-0 text-pretty;
+  }
+
+  /* ---------------------------------------------------------------- culture */
+  /* Figma node 17529:87512 */
+
+  .career-culture {
+    @apply bg-platinum border-app---dark---utility-5 overflow-clip border-b;
+  }
+
+  /* Two equal columns, 80px apart, 1224px wide. */
+  .career-culture-content {
+    @apply mx-auto grid w-full max-w-306 grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-20;
+  }
+
+  .career-culture-intro {
+    @apply flex flex-col items-start gap-7;
+  }
+
+  .career-culture-heading {
+    @apply text-midnight-fjord flex flex-col gap-5;
+  }
+
+  .career-culture-title {
+    @apply datum-text-9xl m-0;
+  }
+
+  .career-culture-lead {
+    @apply datum-text-lg m-0 max-w-110.5 text-pretty opacity-80;
+  }
+
+  /* White card with a midnight keyline; the grid texture bleeds off its top-left. */
+  .career-culture-card {
+    @apply border-midnight-fjord text-midnight-fjord relative flex flex-col gap-7 overflow-clip border bg-white p-6 md:p-10 lg:p-16;
+  }
+
+  .career-culture-card-grid {
+    @apply pointer-events-none absolute -top-28.5 -left-46.75 size-196 max-w-none select-none;
+  }
+
+  .career-culture-group {
+    @apply relative flex flex-col gap-3;
+  }
+
+  .career-culture-group-title {
+    @apply datum-text-lg m-0 font-medium;
+  }
+
+  .career-culture-list {
+    @apply datum-text-base m-0 flex list-disc flex-col gap-1.5 ps-6 opacity-80;
+    text-wrap: wrap;
+  }
+
+  .career-culture-more {
+    @apply datum-text-sm relative m-0 opacity-80;
+  }
+
+  .career-culture-link {
+    @apply text-canyon-clay---links hover:text-canyon-clay---links/80 underline underline-offset-2 transition-colors;
+  }
+
+  /* ------------------------------------------------------- shared headers */
+  /* Eyebrow + Canela 54/64 title, centred, used by Benefits and Roles. */
+
+  .career-section-pad {
+    @apply py-16 md:py-20 lg:py-24 xl:py-28;
+  }
+
+  .career-section-header {
+    @apply flex flex-col items-center gap-2.5 text-center;
+  }
+
+  .career-section-title {
+    @apply datum-text-9xl text-midnight-fjord m-0 text-pretty;
+  }
+
+  /* --------------------------------------------------------------- benefits */
+  /* "Open by design" — Figma node 17529:87537 */
+
+  .career-benefits {
+    @apply border-app---dark---utility-5 border-b bg-white;
+  }
+
+  .career-benefits-inner {
+    @apply flex flex-col items-center gap-12 md:gap-18;
+  }
+
+  /* 3 columns of 330px with 53px gutters inside a 64px-padded card. */
+  .career-benefits-card {
+    @apply border-midnight-fjord m-0 grid w-full max-w-306 list-none grid-cols-1 gap-8 border bg-white p-6 md:grid-cols-2 md:p-10 lg:grid-cols-3 lg:gap-x-13.25 lg:p-16;
+  }
+
+  .career-benefit {
+    @apply flex items-start gap-6 pb-1.25;
+  }
+
+  .career-benefit-icon {
+    @apply bg-canyon-clay/20 text-app---dark---utility-3 flex size-10 shrink-0 items-center justify-center rounded-sm p-2;
+  }
+
+  .career-benefit-text {
+    @apply text-midnight-fjord flex min-w-0 flex-1 flex-col gap-2.5;
+  }
+
+  .career-benefit-title {
+    @apply datum-text-lg m-0 font-medium;
+  }
+
+  .career-benefit-description {
+    @apply datum-text-base m-0 opacity-80;
+  }
+
+  /* ------------------------------------------------------------------ roles */
+  /* "Ready to join the team?" — Figma node 17529:87594 */
+
+  .career-roles-inner {
+    @apply flex flex-col items-center gap-16 lg:gap-24;
+  }
+
+  .career-roles-inner > div {
+    @apply w-full;
+  }
+
+  /* Ruled list, 800px wide: midnight rule on top and under every row. */
+  .career-roles-list {
+    @apply border-midnight-fjord m-0 mx-auto w-full max-w-200 list-none border-t p-0;
+  }
+
+  .career-roles-list li {
+    @apply border-midnight-fjord border-b;
+  }
+
+  .career-roles-row {
+    @apply text-midnight-fjord flex flex-wrap items-center justify-between gap-x-11 gap-y-2 py-8 no-underline;
+  }
+
+  .career-roles-title {
+    @apply datum-text-xl group-hover:text-canyon-clay---links font-medium transition-colors;
+  }
+
+  .career-roles-team {
+    @apply datum-text-sm font-medium whitespace-nowrap opacity-40;
+  }
+}

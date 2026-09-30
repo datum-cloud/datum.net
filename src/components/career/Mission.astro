@@ -1,9 +1,13 @@
 ---
 // src/components/career/Mission.astro
+// Careers hero: illustration on the left, eyebrow / title / lead / CTA on the
+// right. Title and lead come from src/content/pages/career.mdx.
+// Figma node 17529:82312.
 import illustration from '@content/careers/images/careers.png';
 import { Image } from 'astro:assets';
 import { render, type CollectionEntry } from 'astro:content';
 import Button from '@components/Button.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 
@@ -12,33 +16,37 @@ const { Content } = await render(content);
 ---
 
 <div class="relative">
-  <section id="mission" class="section--block section--block--x-pad overflow-clip bg-white">
-    <div class="max-width-nav relative pt-8 pb-14 md:pt-10 md:pb-16 xl:pt-16 xl:pb-24">
+  <section id="mission" class="career-mission section--block section--block--x-pad">
+    <div class="max-width-nav large-pad relative">
       <SectionLine left right top bottom />
-      <div
-        class="max-width-nopad flex flex-col items-center justify-center gap-8 md:flex-row md:gap-12 lg:gap-16 xl:gap-31"
-      >
-        <div class="grow">
-          <Image
-            src={illustration}
-            alt="About"
-            class="size-auto w-full md:w-auto md:max-w-92 lg:max-w-128.5"
-          />
-        </div>
-        <div class="grow">
-          <h1 class="datum-text-8xl mb-8.75">
-            {content.data.title}
-          </h1>
-          <div class="datum-text-xl">
-            <Content />
-
-            <div class="mt-8 flex">
-              <Button href="#roles" class="btn btn--alpha" text="View open roles" />
+      <div class="spacing-pad">
+        <div class="career-mission-content">
+          <div class="career-mission-media">
+            <Image
+              src={illustration}
+              alt="Illustrated portraits of the Datum team"
+              widths={[572, 1144]}
+              sizes="(min-width: 1024px) 572px, 100vw"
+              loading="eager"
+            />
+          </div>
+          <div class="career-mission-copy">
+            <SectionEyebrow>Work with us</SectionEyebrow>
+            <div class="career-mission-text">
+              <h1 class="career-mission-title">{content.data.title}</h1>
+              <div class="career-mission-lead">
+                <Content />
+              </div>
             </div>
+            <Button
+              href="#roles"
+              class="btn btn--alpha btn--sm career-mission-cta"
+              text="View open roles"
+            />
           </div>
         </div>
       </div>
     </div>
   </section>
-  <ModuleConnector />
 </div>
+<ModuleConnector />

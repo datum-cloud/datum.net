@@ -220,15 +220,54 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 ## Pricing
 
-Datum is free to use, full stop, during public beta — no feature gates, no seat limits, no hidden fees, no tiers. Everything in "Current Platform Features" above is included at no cost:
+Usage-based and transparent — no feature gates, no seat limits, no hidden fees. Every rate is published per unit at https://www.datum.net/pricing (markdown: https://www.datum.net/pricing.md), across Deliver, Build, Connect, and Data transfer. Billing is per-second, so you pay only while something is running.
 
-- Application Load Balancer (Envoy Proxy + Coraza WAF)
-- Connectors (QUIC Tunnels)
-- DNS and Domains
-- OTel Metrics Export
-- Secrets, Teams, RBAC, Service accounts
+**Datum is free during public beta.** A credit card is required at sign-up (fraud prevention), but you are not charged. We commit to advance notice and a grace period to review rates before any billing begins — no surprise bill.
 
-A credit card is required at sign-up (fraud prevention), but you are not charged. We commit to advance notice and a grace period to review rates before any billing begins — no surprise bill.
+### Deliver
+
+| Feature           | Unit of measure | Price per unit                          |
+|-------------------|-----------------|-----------------------------------------|
+| DNS (Coming soon) | Requests        | $0.60 per million after the first 500K  |
+| ALB               | Requests        | $1.00 per million                       |
+| GSLB              | Requests        | $0.60 per million                       |
+
+### Build
+
+| Feature        | Unit of measure  | Price per unit                          |
+|----------------|------------------|-----------------------------------------|
+| Compute        | vCPU             | $0.00001400 per second; $0.0504 per hour |
+| Compute        | GiB of Memory    | $0.00000450 per second; $0.0162 per hour |
+| Object Storage | Standard tier    | $0.0085 per GB per month                |
+| Object Storage | Performance tier | $0.024 per GB per month                 |
+
+### Connect
+
+| Feature                   | Unit of measure | Price per unit  |
+|---------------------------|-----------------|-----------------|
+| Gateways (Coming Q3 2026) | —               | $0.045 per hour |
+| Tunnels                   | Endpoint        | $0.01 per hour  |
+| Public IPv4               | —               | $0.005/IP-hr    |
+
+### Data transfer
+
+Ingress to Datum's network is always free.
+
+| Feature                                   | Unit of measure | Price per unit |
+|-------------------------------------------|-----------------|----------------|
+| Egress (traffic to the public internet)   | 0 – 200 GB      | FREE           |
+| Egress                                    | 200 GB – 10 TB  | $0.05 per GB   |
+| Egress                                    | 10 – 150 TB     | $0.04 per GB   |
+| Egress                                    | 150 – 500 TB    | $0.03 per GB   |
+| Egress                                    | 500 TB+         | Contact sales (https://www.datum.net/dedicated-cloud#contact) |
+| Internal (between Datum regions/services) | Same region     | FREE           |
+| Internal                                  | Cross-region    | $0.03 per GB   |
+
+### What is not charged
+
+- No snapshot fees — no snapshot storage, read, or write charges on compute
+- No per-request storage charges — Object Storage operations aren't metered
+- No per-seat or per-user licensing — pricing is usage-based only, so invite your whole team
 
 ---
 

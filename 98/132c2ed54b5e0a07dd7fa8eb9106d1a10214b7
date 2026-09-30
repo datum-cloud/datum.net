@@ -1,0 +1,14 @@
+public/robots.txt
+  h_c7951bc64db670 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "98132c2ed54b5e0a07dd7fa8eb9106d1a10214b7",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

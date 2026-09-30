@@ -5,6 +5,6 @@ Disallow: /api
 Disallow: /docs/_next/
 Disallow: /mintlify-assets/_next/
 Crawl-delay: 10
-Content-Signal: ai-train=no, search=yes, ai-input=no
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 Sitemap: https://www.datum.net/sitemap.xml

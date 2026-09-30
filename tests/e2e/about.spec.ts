@@ -25,15 +25,25 @@ test.describe('About page', () => {
     const tab = (id: string) => page.locator(`[data-explore-tab="${id}"]`);
     const background = (id: string) =>
       tab(id).evaluate((el) => getComputedStyle(el).backgroundColor);
-    const scrollToCard = (id: string) =>
-      page.evaluate((cardId) => {
-        const card = document.getElementById(`explore-${cardId}`);
-        if (card) window.scrollTo(0, card.getBoundingClientRect().top + window.scrollY - 300);
-      }, id);
+    // Scrolls so the card's top edge sits `top` px below the viewport's top.
+    const scrollCardTo = (id: string, top: number) =>
+      page.evaluate(
+        ([cardId, offset]) => {
+          const card = document.getElementById(`explore-${cardId}`);
+          if (card) window.scrollTo(0, card.getBoundingClientRect().top + window.scrollY - offset);
+        },
+        [id, top] as const
+      );
 
     await expect(tab('team')).toHaveClass(/is-active/);
 
-    await scrollToCard('work');
+    // The next card is only halfway up the screen: its tab must not take over yet.
+    await scrollCardTo('work', 500);
+    await expect(tab('team')).toHaveClass(/is-active/);
+    await expect(tab('work')).not.toHaveClass(/is-active/);
+
+    // Once it reaches the sticky bar it does.
+    await scrollCardTo('work', 150);
     await expect(tab('work')).toHaveClass(/is-active/);
     await expect(tab('team')).not.toHaveClass(/is-active/);
     // Pine Forge (#4d6356)
@@ -41,7 +51,11 @@ test.describe('About page', () => {
     // Still pinned near the top of the viewport while the cards scroll under it.
     expect((await bar.boundingBox())?.y).toBeCloseTo(16, 0);
 
-    await scrollToCard('wild');
+    await scrollCardTo('wild', 500);
+    await expect(tab('work')).toHaveClass(/is-active/);
+    await expect(tab('wild')).not.toHaveClass(/is-active/);
+
+    await scrollCardTo('wild', 150);
     await expect(tab('wild')).toHaveClass(/is-active/);
     // Canyon Clay Links (#9c7979)
     await expect.poll(() => background('wild')).toBe('rgb(156, 121, 121)');
@@ -57,6 +71,36 @@ test.describe('About page', () => {
     await expect
       .poll(async () => (await page.locator('#explore-wild').boundingBox())?.y ?? 9999)
       .toBeLessThan(400);
+  });
+
+  test('a clicked tab stays active while the page scrolls past other cards', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    // Record every tab that is ever active from the click until the scroll settles.
+    await page.evaluate(() => {
+      const seen = new Set<string>();
+      (window as unknown as { __seen: Set<string> }).__seen = seen;
+      const record = () =>
+        document
+          .querySelectorAll('[data-explore-tab].is-active')
+          .forEach((el) => seen.add(el.getAttribute('data-explore-tab') ?? ''));
+      new MutationObserver(record).observe(document.querySelector('[data-explore-tabs]')!, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['class'],
+      });
+    });
+
+    await page.locator('[data-explore-tab="wild"]').click();
+    await expect(page.locator('#explore-wild')).toBeInViewport();
+    await page.waitForTimeout(1200);
+
+    const seen = await page.evaluate(() =>
+      [...(window as unknown as { __seen: Set<string> }).__seen].filter((id) => id !== 'team')
+    );
+    // "team" was active before the click; "work" must never light up on the way.
+    expect(seen).toEqual(['wild']);
   });
 
   test('draws the corner marks at the tab bar corner on wide screens', async ({ page }) => {
@@ -76,7 +120,7 @@ test.describe('About page', () => {
   }) => {
     await page.goto('/about');
 
-    const section = page.locator('.about-twins');
+    const section = page.locator('.about-twins-inner').locator('xpath=ancestor::section[1]');
     // Strapi-backed: hidden entirely when there are no posts.
     test.skip((await section.count()) === 0, 'No twins posts published in Strapi');
 
@@ -89,6 +133,26 @@ test.describe('About page', () => {
     await expect(meta.locator('time')).toHaveText(
       /^(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}(st|nd|rd|th), \d{4}$/
     );
+  });
+
+  test('Twins in the Loop has a module connector that spans its section', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about');
+
+    const section = page.locator('.about-twins-inner').locator('xpath=ancestor::section[1]');
+    // Strapi-backed: hidden entirely when there are no posts.
+    test.skip((await section.count()) === 0, 'No twins posts published in Strapi');
+
+    const wrapper = section.locator('xpath=..');
+    const connector = wrapper.locator(':scope > .module-connector');
+    await expect(connector).toHaveCount(1);
+    // The connector is positioned against the wrapper, so it is exactly as tall as the section.
+    await expect(wrapper).toHaveCSS('position', 'relative');
+    const [connectorBox, sectionBox] = await Promise.all([
+      connector.boundingBox(),
+      section.boundingBox(),
+    ]);
+    expect(connectorBox!.height).toBeCloseTo(sectionBox!.height, 0);
   });
 
   test('no longer lists the team on the page itself', async ({ page }) => {

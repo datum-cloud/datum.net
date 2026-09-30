@@ -2,10 +2,6 @@
   /* ------------------------------------------------------------------- hero */
   /* Figma node 17489:71439 */
 
-  .about-hero {
-    @apply bg-white;
-  }
-
   .about-hero-corner {
     @apply pointer-events-none absolute top-0 right-0 hidden w-63.75 select-none lg:block;
   }
@@ -209,10 +205,6 @@
   /* -------------------------------------------------------------- investors */
   /* Figma node 17529:73434 */
 
-  .about-investors {
-    @apply bg-white;
-  }
-
   .about-investors-inner {
     @apply relative flex flex-col items-center gap-12 md:gap-16;
   }
@@ -240,10 +232,6 @@
 
   /* ---------------------------------------------------------------- explore */
   /* Figma node 17489:71534 — tab strip + three text/artwork cards. */
-
-  .about-explore {
-    @apply bg-platinum border-silver-mist border-b;
-  }
 
   /* 1316px column, as in Figma (frame x=182 of 1680). */
   .about-explore-inner {
@@ -345,10 +333,6 @@
   /* ------------------------------------------------------- twins in the loop */
   /* Figma node 17489:72310 */
 
-  .about-twins {
-    @apply bg-white;
-  }
-
   .about-twins-inner {
     @apply relative flex flex-col items-center gap-12 md:gap-16;
   }
@@ -409,10 +393,6 @@
 
   /* -------------------------------------------------------------- team page */
   /* Figma node 17529:74750 */
-
-  .team-page {
-    @apply bg-white;
-  }
 
   .team-header {
     @apply mx-auto flex max-w-329 flex-col items-center gap-7 text-center;

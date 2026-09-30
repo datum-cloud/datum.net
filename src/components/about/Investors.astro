@@ -12,18 +12,28 @@ const investors = (content.data.investors || []).filter((investor) => investor.i
 ---
 
 <div class="relative">
-  <section id="investors" class="section--block section--block--x-pad about-investors">
+  <section id="investors" class="section--block section--block--x-pad bg-white">
     <div class="max-width-nav section-pad relative">
-      <SectionLine left top />
-      <div class="about-investors-inner">
-        <h2 class="about-investors-title">{content.data.title}</h2>
+      <SectionLine left top bottom />
+      <div class="spacing-pad">
+        <div class="about-investors-inner">
+          <h2 class="about-investors-title">{content.data.title}</h2>
 
-        <ul class="about-investors-list">
-          {
-            investors.map((investor) => (
-              <li class="about-investors-cell">
-                {investor.url ? (
-                  <a href={investor.url} target="_blank" rel="noreferrer">
+          <ul class="about-investors-list">
+            {
+              investors.map((investor) => (
+                <li class="about-investors-cell">
+                  {investor.url ? (
+                    <a href={investor.url} target="_blank" rel="noreferrer">
+                      <Image
+                        src={investor.img!}
+                        alt={investor.alt ?? ''}
+                        class="about-investors-logo"
+                        widths={[152, 304]}
+                        sizes="152px"
+                      />
+                    </a>
+                  ) : (
                     <Image
                       src={investor.img!}
                       alt={investor.alt ?? ''}
@@ -31,20 +41,12 @@ const investors = (content.data.investors || []).filter((investor) => investor.i
                       widths={[152, 304]}
                       sizes="152px"
                     />
-                  </a>
-                ) : (
-                  <Image
-                    src={investor.img!}
-                    alt={investor.alt ?? ''}
-                    class="about-investors-logo"
-                    widths={[152, 304]}
-                    sizes="152px"
-                  />
-                )}
-              </li>
-            ))
-          }
-        </ul>
+                  )}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </section>

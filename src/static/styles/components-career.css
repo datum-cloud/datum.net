@@ -2,10 +2,6 @@
   /* ---------------------------------------------------------------- mission */
   /* Careers hero — Figma node 17529:82312 */
 
-  .career-mission {
-    @apply border-app---dark---utility-5 overflow-clip border-b bg-white;
-  }
-
   /* Two 572px columns, 80px apart, 1224px wide. */
   .career-mission-content {
     @apply mx-auto grid w-full max-w-306 grid-cols-1 items-start gap-10 md:gap-12 lg:grid-cols-2 lg:gap-20;
@@ -58,10 +54,6 @@
 
   /* ---------------------------------------------------------------- culture */
   /* Figma node 17529:87512 */
-
-  .career-culture {
-    @apply bg-platinum border-app---dark---utility-5 overflow-clip border-b;
-  }
 
   /* Two equal columns, 80px apart, 1224px wide. */
   .career-culture-content {
@@ -131,10 +123,6 @@
 
   /* --------------------------------------------------------------- benefits */
   /* "Open by design" — Figma node 17529:87537 */
-
-  .career-benefits {
-    @apply border-app---dark---utility-5 border-b bg-white;
-  }
 
   .career-benefits-inner {
     @apply flex flex-col items-center gap-12 md:gap-18;

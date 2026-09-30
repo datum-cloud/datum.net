@@ -16,14 +16,14 @@ import Container from '@components/Container.astro';
 <Container tag="article" class="datum-prose-article max-w-4xl pb-1 flow-root *:first:mt-0">
 
 <p class="mb-4 font-semibold">Datum Technology, Inc.</p>
-<small class="mb-2 block italic">Version 1.0 · September 17, 2026</small>
+<small class="mb-2 block italic">Version 1.2 · September 30, 2026</small>
 <small class="mb-4 block italic">Exhibit A to Master Services Agreement</small>
 
 ## 1. Purpose and Scope
 
 This Service Level Agreement ("SLA") is Exhibit A to the Master Services Agreement between Datum Technology, Inc. ("Datum") and Customer (the "MSA"). This SLA sets out Datum's commitments regarding the availability and performance of the Datum Platform ("Services"), the methodology for measuring compliance, and the remedies available to Customer in the event those commitments are not met. Capitalized terms not defined herein have the meanings given in the MSA.
 
-This SLA applies to the production environment of Contracted Services provided under an executed Order Form. It does not apply to: (a) Usage Services, including free-tier and beta usage, which are provided without any uptime commitment or service-level remedy under this SLA; (b) pre-production, staging, or evaluation environments; (c) Third-Party Software components; or (d) any outage or degradation caused by Customer's own infrastructure, traffic, or configurations.
+This SLA applies to the production environment of Contracted Services provided under an executed Order Form. It does not apply to: (a) Usage Services, including free-tier and beta usage, which are provided without any uptime commitment or service-level remedy under this SLA; (b) pre-production, staging, or evaluation environments; (c) Third-Party Software components; (d) any outage or degradation caused by Customer's own infrastructure, traffic, or configurations; or (e) Dedicated Compute Services, which are governed by Section 6.
 
 ## 2. Definitions
 
@@ -37,6 +37,9 @@ This SLA applies to the production environment of Contracted Services provided u
 | **Service Credit** | A credit applied to Customer's next invoice as a percentage of the Monthly Recurring Fees paid for the affected Service region for the month in which the SLA failure occurred. |
 | **Monthly Recurring Fees** | The recurring fees paid by Customer for the Services in the affected Service region for the relevant calendar month, excluding one-time fees, professional services fees, and usage-based overages. |
 | **Incident** | A single, continuous period of Downtime, regardless of the number of support tickets filed in relation to that period. |
+| **Service Region** | A discrete geographic deployment region in which Datum provides the Services, as listed in the applicable Order Form. |
+| **Dedicated Compute Services** | Contracted Services under which Datum provides Customer with dedicated physical server hardware (each, a "Node"), including bare metal GPU Nodes, as identified in the applicable Order Form. |
+| **Spare Node** | A Node reserved exclusively for Customer as a standby replacement, as purchased under an Order Form. |
 | **Exclusion** | A period of unavailability that does not constitute Downtime, as further described in Section 5. |
 
 ## 3. Uptime Commitment
@@ -105,9 +108,31 @@ The following do not constitute Downtime and are not counted toward SLA calculat
 
 * Brief interruptions of less than one (1) minute duration that do not materially affect Customer's ability to use the Services.
 
-## 6. Incident Response and Communication
+## 6. Dedicated Compute Services
 
-### 6.1 Priority Levels
+### 6.1 Applicability
+
+Sections 3, 4, and 5 of this SLA do not apply to Dedicated Compute Services. This Section 6 sets out Datum's sole commitments regarding the availability of Nodes. Sections 7 and 8 also apply to Dedicated Compute Services.
+
+### 6.2 Unavailable Nodes
+
+A Node is "Unavailable" when it, or any GPU within it, cannot be used by Customer due to hardware failure or a failure of power, cooling, or network services within Datum's control, excluding Scheduled Maintenance, Force Majeure Events, failures caused by Customer, and any additional exclusions specified in the applicable Order Form.
+
+### 6.3 Restoration Without Spare Nodes
+
+Unless the applicable Order Form includes Spare Nodes, Datum does not maintain dedicated spare Nodes for Customer, and the following applies. Node hardware is covered by the manufacturer's next-business-day (NBD) parts warranty. Upon Customer's report of an Unavailable Node, Datum will acknowledge within two (2) hours, begin diagnosis promptly, and submit a warranty claim to the manufacturer within ten (10) business hours where required. Datum will use commercially reasonable efforts to restore the Node within ten (10) hours of receipt of replacement parts. Restoration timelines are dependent on the manufacturer's warranty process and parts availability. Where available, Datum may, at its discretion, provide a substitute Node. An Unavailable Node will be treated as a P2 Incident under Section 7.1, except that while Datum is awaiting replacement parts, status updates will be provided daily.
+
+### 6.4 Restoration With Spare Nodes
+
+Where the applicable Order Form includes Spare Nodes, Datum will place a Spare Node into service for Customer within eight (8) hours of acknowledging an Unavailable Node. Datum will then restore the Unavailable Node in accordance with Section 6.3 and return it to service as a Spare Node.
+
+### 6.5 Exclusive Remedy
+
+Datum's obligations under this Section 6 are Customer's sole and exclusive remedy for Node unavailability. No Service Credits apply to Dedicated Compute Services.
+
+## 7. Incident Response and Communication
+
+### 7.1 Priority Levels
 
 | Priority | Name | Description | Initial Response | Status Updates |
 | :---- | :---- | :---- | :---- | :---- |
@@ -116,25 +141,25 @@ The following do not constitute Downtime and are not counted toward SLA calculat
 | **P3** | Medium | Partial degradation or isolated failures not affecting core Service availability | 8 business hours | Daily |
 | **P4** | Low | Minor issues, informational inquiries, feature requests | 2 business days | As needed |
 
-### 6.2 Status Page
+### 7.2 Status Page
 
 Datum will maintain a publicly accessible status page at status.datum.net (or equivalent) that displays real-time and historical availability for each Service Region. Customers may subscribe to status notifications. The status page is informational only and does not modify the SLA credit calculation process.
 
-### 6.3 Post-Incident Reports
+### 7.3 Post-Incident Reports
 
 For P1 Incidents, Datum will provide Customer with a written post-incident report within five (5) business days of resolution. The report will include: (a) a timeline of the Incident; (b) root cause analysis; (c) actions taken to restore service; and (d) remediation steps to prevent recurrence.
 
-## 7. Maintenance Windows
+## 8. Maintenance Windows
 
-### 7.1 Scheduled Maintenance
+### 8.1 Scheduled Maintenance
 
 Datum will perform Scheduled Maintenance during the following preferred windows (Customer's local time): Sunday 02:00–06:00. Datum will provide at least 48 hours' prior written notice via email and the status page. Datum will use commercially reasonable efforts to minimize the duration of Scheduled Maintenance and to complete maintenance within the notified window.
 
-### 7.2 Emergency Maintenance
+### 8.2 Emergency Maintenance
 
 Datum may perform Emergency Maintenance at any time without advance notice when required to address critical security vulnerabilities, data integrity risks, or imminent infrastructure failures. Datum will: (a) notify Customer via the status page and email as promptly as practicable; (b) use commercially reasonable efforts to minimize the duration of Emergency Maintenance; and (c) provide a post-incident summary within two (2) business days.
 
-## 8. Modifications to this SLA
+## 9. Modifications to this SLA
 
 Datum may update this SLA from time to time. Datum will provide at least thirty (30) days' prior written notice of any material reduction in the Uptime Commitment or Service Credit percentages. If a material reduction would adversely affect Customer's rights, Customer may terminate the affected Services upon written notice within the notice period, with a pro-rata refund of prepaid, unused fees. Non-material updates (e.g., clarifications, addition of new Service Regions, improvements to credit percentages) take effect upon posting.
 

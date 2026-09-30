@@ -6,18 +6,20 @@ import '@styles/page-about.css';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import OurMission from '@components/about/OurMission.astro';
-import Companies from '@components/about/Companies.astro';
+import AboutHero from '@components/about/AboutHero.astro';
+import FoundingInsight from '@components/about/FoundingInsight.astro';
 import Investors from '@components/about/Investors.astro';
-import PeopleStrapi from '@components/about/PeopleStrapi.astro';
-import PeopleStrapiSkeleton from '@components/about/PeopleStrapiSkeleton.astro';
+import ExploreCards from '@components/about/ExploreCards.astro';
+import TwinsInTheLoop from '@components/about/TwinsInTheLoop.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { getEntries } from 'astro:content';
 
 const page = await getCollectionEntry('about', 'index');
 const fm = page.data;
-const contents = fm.contents;
-const contentData = await getEntries(contents);
+const [companies, investors] = await Promise.all([
+  getCollectionEntry('about', 'companies'),
+  getCollectionEntry('about', 'investors'),
+]);
 
 // SEO
 const meta = fm.meta || {};
@@ -108,16 +110,20 @@ const jsonLd = {
   <section class="datum-container">
     <Hero class="light bg-white" hideHero />
 
-    <OurMission content={contentData[0]} />
+    <div class="relative">
+      <AboutHero companies={companies} />
 
-    <Companies content={contentData[1]} />
+      <FoundingInsight />
 
-    <PeopleStrapi server:defer>
-      <PeopleStrapiSkeleton slot="fallback" />
-    </PeopleStrapi>
+      <ModuleConnector />
+    </div>
 
-    <Investors content={contentData[2]} />
+    <Investors content={investors} />
 
-    <Footer />
+    <ExploreCards />
+
+    <TwinsInTheLoop />
+
+    <Footer showCTA={false} illustrationBgClass="bg-white" />
   </section>
 </Layout>

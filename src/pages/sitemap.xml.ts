@@ -12,6 +12,8 @@ const MINTLIFY_TARGET = 'https://datum-4926dda5.mintlify.dev';
 const STATIC_ROUTES = [
   '/',
   '/about',
+  '/about/team',
+  '/about/in-the-wild',
   '/authors',
   '/blog',
   '/brand',

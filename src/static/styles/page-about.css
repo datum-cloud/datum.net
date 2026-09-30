@@ -1,5 +1,6 @@
 @reference './base.css';
 @import './layers.css';
+@import './components-about.css';
 
 @layer components {
   /* People Card Styles */
@@ -17,7 +18,7 @@
   }
 
   .people--card-avatar {
-    @apply relative mb-4 aspect-square w-full transition-shadow duration-100 ease-in-out;
+    @apply relative mb-6 aspect-square w-full transition-shadow duration-100 ease-in-out;
   }
 
   .people--card:hover .people--card-avatar {
@@ -29,15 +30,11 @@
   }
 
   .people--card-name {
-    @apply datum-text-base mb-1 block text-left font-semibold;
+    @apply datum-text-base block text-left font-semibold;
   }
 
   .people--card-title {
-    @apply datum-text-base text-left;
-  }
-
-  .people--card-title p {
-    @apply m-0;
+    @apply datum-text-base block text-left;
   }
 
   /* Profile Modal Styles */

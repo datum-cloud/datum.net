@@ -154,7 +154,7 @@ const { class: className } = Astro.props as { class?: string };
       const { data } = member;
 
       // Background color matching this person's actual headshot variant —
-      // computed server-side in PeopleStrapi.astro (from the avatar file
+      // computed server-side in TeamGrid.astro (from the avatar file
       // name, not from list position) so the card and this modal never
       // disagree. '#5F735E' (pine-forge) is only a safety-net default for
       // the pathological case of a member without an avatar at all.

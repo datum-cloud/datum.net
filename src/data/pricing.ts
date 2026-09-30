@@ -76,7 +76,6 @@ export const rates = {
       features: [
         {
           name: 'DNS',
-          badge: 'Coming soon',
           rows: [
             {
               unit: 'Requests',
@@ -140,7 +139,6 @@ export const rates = {
       features: [
         {
           name: 'Gateways',
-          badge: 'Coming Q3 2026',
           rows: [{ unit: '—', lines: [{ amount: '0.045', suffix: ' per hour' }] }],
         },
         {

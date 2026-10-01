@@ -254,6 +254,27 @@ test.describe('In the wild page', () => {
     const response = await request.get('/sitemap.xml');
     expect(await response.text()).toContain('/about/in-the-wild');
   });
+
+  test('pixelates a photo as it leaves the top of the screen', async ({ page }) => {
+    await page.setViewportSize({ width: 1680, height: 1000 });
+    await page.goto('/about/in-the-wild');
+
+    const media = page.locator('[data-wild-pixel]').first();
+    await media.scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      document.documentElement.style.scrollBehavior = 'auto';
+      const el = document.querySelector('[data-wild-pixel]');
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, top + 40);
+    });
+
+    const strip = page.locator('.wild-pixel-strip.is-on').first();
+    await expect(strip).toBeVisible();
+    const box = await strip.boundingBox();
+    expect(box?.height ?? 0).toBeGreaterThan(0);
+    expect(box?.height ?? 0).toBeLessThanOrEqual(80);
+  });
 });
 
 test.describe('Team page', () => {

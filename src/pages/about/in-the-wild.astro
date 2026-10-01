@@ -106,6 +106,7 @@ const jsonLd = {
                           ? 'wild-card-media--tall'
                           : 'wild-card-media--short',
                       ]}
+                      data-wild-pixel
                     >
                       <Image src={images[story.id]} alt="" />
                       <span class="wild-card-wash" aria-hidden="true" />
@@ -127,3 +128,7 @@ const jsonLd = {
     <Footer showCTA={false} illustrationBgClass="bg-white" />
   </section>
 </Layout>
+
+<script>
+  import '@/src/static/scripts/module-wild-pixel.js';
+</script>

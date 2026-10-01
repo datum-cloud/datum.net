@@ -11,32 +11,30 @@ import Footer from '@components/Footer.astro';
 import Icon from '@components/Icon.astro';
 import { inTheWild } from '@data/about';
 import wordmark from '@assets/images/about/wild/wordmark.png';
-import matchDay from '@assets/images/about/wild/match-day.jpg';
-import monaco from '@assets/images/about/wild/monaco.jpg';
-import landmark from '@assets/images/about/wild/landmark.jpg';
-import halloween from '@assets/images/about/wild/halloween.jpg';
-import meetMe from '@assets/images/about/wild/meet-me.jpg';
-import auzzie from '@assets/images/about/wild/auzzie.jpg';
-import sundayRun from '@assets/images/about/wild/sunday-run.jpg';
-import soundCheck from '@assets/images/about/wild/sound-check.jpg';
-import training from '@assets/images/about/wild/training.jpg';
-import lab from '@assets/images/about/wild/lab.jpg';
-import coffee from '@assets/images/about/wild/coffee.jpg';
+import abFans from '@assets/images/about/wild/ab-fans.jpg';
+import balticNog from '@assets/images/about/wild/baltic-nog.jpg';
+import abGame from '@assets/images/about/wild/ab-game.jpg';
+import nerdsUnited from '@assets/images/about/wild/nerds-united.jpg';
+import traveling from '@assets/images/about/wild/traveling.jpg';
+import twins from '@assets/images/about/wild/twins.jpg';
+import viktor from '@assets/images/about/wild/viktor.jpg';
+import worksOnArm from '@assets/images/about/wild/works-on-arm.jpg';
+import focus from '@assets/images/about/wild/focus.jpg';
+import runChicago from '@assets/images/about/wild/run-chicago.jpg';
 
 type WildId = (typeof inTheWild.columns)[number][number]['id'];
 
 const images: Record<WildId, ImageMetadata> = {
-  'match-day': matchDay,
-  monaco,
-  landmark,
-  halloween,
-  'meet-me': meetMe,
-  auzzie,
-  'sunday-run': sundayRun,
-  'sound-check': soundCheck,
-  training,
-  lab,
-  coffee,
+  'ab-fans': abFans,
+  'baltic-nog': balticNog,
+  'ab-game': abGame,
+  'nerds-united': nerdsUnited,
+  traveling,
+  twins,
+  viktor,
+  'works-on-arm': worksOnArm,
+  focus,
+  'run-chicago': runChicago,
 };
 
 const title = 'In the Wild';

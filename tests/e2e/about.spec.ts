@@ -241,12 +241,12 @@ test.describe('About page', () => {
 });
 
 test.describe('In the wild page', () => {
-  test('renders the wordmark, intro, and eleven stories', async ({ page }) => {
+  test('renders the wordmark, intro, and ten stories', async ({ page }) => {
     await page.goto('/about/in-the-wild');
 
     await expect(page.getByRole('heading', { level: 1, name: 'in the wild' })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2 })).toContainText('show up differently');
-    await expect(page.locator('.wild-card')).toHaveCount(11);
+    await expect(page.locator('.wild-card')).toHaveCount(10);
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('In the Wild');
   });
 

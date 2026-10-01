@@ -93,7 +93,8 @@ export interface WildStory {
 
 /**
  * Photo grid for /about/in-the-wild. Column-major, matching Figma 17529:87624.
- * Captions are the frame copy, including ones that do not describe the photo.
+ * Headlines and descriptions are the "Datum in the wild" sheet, in sheet order.
+ * Focus and Run Chicago are in the photo set but have no sheet row.
  */
 export const inTheWild = {
   title: 'in the wild',
@@ -103,84 +104,73 @@ export const inTheWild = {
   columns: [
     [
       {
-        id: 'match-day',
-        title: 'Match day',
+        id: 'ab-fans',
+        title: 'The Akademisk Boldklub Hustle',
         description:
-          'Green flags filled the stands as supporters gathered before the afternoon kickoff.',
-        aspect: 'tall',
-      },
-      {
-        id: 'monaco',
-        title: 'Morning in Monaco',
-        description:
-          'A quiet view across Port Hercules before the harbor filled with boats and visitors.',
+          'There’s nothing quite like showing up and cheering for our favorite 1st division Danish Club in Copenhagen.',
         aspect: 'short',
       },
       {
-        id: 'landmark',
-        title: 'A landmark in progress',
+        id: 'baltic-nog',
+        title: 'Private by Default',
         description:
-          'The original entrance marker, photographed during the building’s final phase of construction.',
+          'Our fearless leader Zac speaking at BalticNog on reimagining the internet for AI',
         aspect: 'short',
       },
       {
-        id: 'halloween',
-        title: 'Halloween parade',
+        id: 'ab-game',
+        title: 'Congratulations AB',
         description:
-          'Hand-painted masks and bright costumes lined the street during the annual neighborhood celebration.',
-        aspect: 'tall',
-      },
-    ],
-    [
-      {
-        id: 'meet-me',
-        title: 'Meet-me room tour',
-        description:
-          'A quick photo with the operations team after a walkthrough of the new network facility.',
+          'Our favorite team AB just got promoted to 1st division; what an accomplishment!',
         aspect: 'short',
       },
       {
-        id: 'auzzie',
-        title: 'Auzzie burgers',
-        description:
-          'Dozens of balloons lifted over the valley just after sunrise on a clear autumn morning.',
-        aspect: 'tall',
-      },
-      {
-        id: 'sunday-run',
-        title: 'Sunday run',
-        description:
-          'Fresh pastries and coffee from a small bakery we found around the corner from the hotel.',
-        aspect: 'short',
-      },
-      {
-        id: 'sound-check',
-        title: 'Sound check',
-        description: 'The stage crew tested the bass rig before doors opened for the evening show.',
+        id: 'nerds-united',
+        title: 'Nerds Unite!',
+        description: 'Showing up to the annual Nerds United BBQ is the best kind of networking.',
         aspect: 'short',
       },
     ],
     [
       {
-        id: 'training',
-        title: 'Training on the ice',
-        description:
-          'A Danish speed skater takes a final practice lap ahead of the national championships.',
+        id: 'traveling',
+        title: 'Work with a view',
+        description: 'Nothing like rolling with the DatumVibes',
         aspect: 'tall',
       },
       {
-        id: 'lab',
-        title: 'From the lab',
-        description:
-          'A close look at the latest Arm-based processor board during an early hardware evaluation.',
-        aspect: 'tall',
-      },
-      {
-        id: 'coffee',
-        title: 'First coffee of the day',
-        description:
-          'A strong morning brew, served in the studio kitchen before the team’s weekly planning session.',
+        id: 'twins',
+        title: 'Datum Team Spirit',
+        description: 'Come meet us in the Meet Me Room?',
         aspect: 'short',
+      },
+      {
+        id: 'viktor',
+        title: 'Go for the gold!',
+        description:
+          'We’re supporting Viktor as he speeds towards the podium at the 2030 Olympic Games.',
+        aspect: 'tall',
+      },
+    ],
+    [
+      {
+        id: 'works-on-arm',
+        title: 'Small chips, big energy.',
+        description:
+          'Fresh from our CEO’s visit with the arm team. The future of AI looks good in red.',
+        aspect: 'tall',
+      },
+      {
+        id: 'focus',
+        title: 'On the ball',
+        description: 'AB on the attack, with Datum across the chest.',
+        aspect: 'short',
+      },
+      {
+        id: 'run-chicago',
+        title: 'Chicago',
+        description: 'Medals on after the Life Time Chicago half marathon.',
+        aspect: 'tall',
       },
     ],
   ],

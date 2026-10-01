@@ -446,4 +446,106 @@
   .team-empty {
     @apply text-app---dark---utility-3 py-12 text-center;
   }
+
+  /* --------------------------------------------------------- in the wild */
+  /* Figma node 17529:87624 */
+
+  .wild-page {
+    @apply flex flex-col items-center pt-5 pb-16 lg:pb-20;
+  }
+
+  .wild-crumbs {
+    @apply datum-text-xs text-midnight-fjord flex w-full items-center gap-2;
+
+    a {
+      @apply text-midnight-fjord/60 hover:text-midnight-fjord no-underline transition-colors;
+    }
+
+    [aria-current='page'] {
+      @apply text-midnight-fjord font-medium;
+    }
+
+    span[aria-hidden='true'] {
+      @apply text-midnight-fjord/20;
+    }
+  }
+
+  .wild-wordmark {
+    @apply mt-16 w-full max-w-149 lg:mt-24;
+
+    img {
+      @apply h-auto w-full;
+    }
+  }
+
+  .wild-intro {
+    @apply flex w-full flex-col items-center gap-10 pt-12 lg:gap-20 lg:pt-20;
+  }
+
+  .wild-rule {
+    @apply border-midnight-fjord m-0 w-full border-0 border-t;
+  }
+
+  .wild-intro-copy {
+    @apply flex w-full max-w-200 flex-col items-center gap-6 text-center;
+  }
+
+  .wild-intro-title {
+    @apply datum-text-3xl text-app---dark---utility-2 m-0 font-semibold;
+  }
+
+  .wild-intro-body {
+    @apply datum-text-longform-intro text-app---dark---utility-2 m-0;
+  }
+
+  .wild-grid {
+    @apply grid w-full grid-cols-1 gap-10 pt-10 lg:grid-cols-3 lg:gap-20 lg:pt-20;
+  }
+
+  .wild-column {
+    @apply flex flex-col gap-10 lg:gap-20;
+  }
+
+  .wild-card {
+    @apply border-app---dark---utility-2 flex flex-col gap-5 border-b pb-8;
+  }
+
+  .wild-card-media {
+    @apply relative overflow-hidden rounded-md;
+
+    img {
+      @apply block size-full object-cover;
+    }
+  }
+
+  .wild-card-media--tall {
+    @apply aspect-2/3;
+  }
+
+  .wild-card-media--short {
+    @apply aspect-3/2;
+  }
+
+  /* Green radial wash from the frame: 40% stops, layer at 50%, plus-lighter. */
+  .wild-card-wash {
+    @apply pointer-events-none absolute inset-0 opacity-50 mix-blend-plus-lighter;
+    background-image: radial-gradient(
+      ellipse at 36% 50%,
+      rgb(178 226 172 / 0.4),
+      rgb(128 163 133 / 0.4) 50%,
+      rgb(77 99 93 / 0.4)
+    );
+  }
+
+  .wild-card-mark {
+    @apply pointer-events-none absolute right-2 bottom-2 text-white opacity-90;
+  }
+
+  .wild-card-title {
+    @apply datum-text-2xl text-app---dark---utility-2 m-0 font-semibold;
+  }
+
+  .wild-card-description {
+    @apply datum-text-base text-app---dark---utility-2 m-0;
+  }
 }

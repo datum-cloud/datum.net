@@ -27,6 +27,7 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/',
   '/about',
   '/about/team',
+  '/about/in-the-wild',
   '/blog',
   '/changelog',
   '/contact',

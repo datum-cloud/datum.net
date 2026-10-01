@@ -1,11 +1,10 @@
 // src/data/about.ts
-// Section copy for /about and /about/team — imported by the page components
-// (src/pages/about/index.astro, src/pages/about/team.astro) and the markdown
-// exports (src/pages/about.md.ts, src/pages/about/team.md.ts) so they can't
-// drift apart. Page-level SEO metadata and the logo lists stay in
-// src/content/about/*.mdx.
+// Section copy for /about, /about/team, and /about/in-the-wild — imported by
+// the page components and the markdown exports so they can't drift apart.
+// Page-level SEO metadata and the logo lists stay in src/content/about/*.mdx.
 //
 // Figma: node 17489:71378 (/about), node 17529:74750 (/about/team),
+// node 17529:87624 (/about/in-the-wild),
 // section 17534:89125 (collage scroll transition).
 
 import type { IconName } from '@utils/iconMap';
@@ -43,6 +42,12 @@ export interface ExploreCard {
   tone: 'slate' | 'pine' | 'canyon';
 }
 
+/** Two lines on the in-the-wild page; joined for the About explore card. */
+const wildIntroTitle = ['We don’t just build differently,', 'we show up differently.'] as const;
+
+const wildIntro =
+  'Networking is in our DNA. But beyond the racks, switches and pipes, there’s a whole lot more to building a network than just the plumbing. We believe real connectivity happens outside of the hardware. This is the team behind your infrastructure.';
+
 export const explore: ExploreCard[] = [
   {
     id: 'team',
@@ -71,13 +76,121 @@ export const explore: ExploreCard[] = [
     tabLabel: 'In the wild',
     tabIcon: 'globe',
     eyebrow: 'In the wild',
-    title: 'We don’t just build differently, we show up differently.',
-    description:
-      'Networking is in our DNA. But beyond the racks, switches and pipes, there’s a whole lot more to building a network than just the plumbing. We believe real connectivity happens outside of the hardware. This is the team behind your infrastructure.',
-    cta: { text: 'Go wild', href: '/events' },
+    title: wildIntroTitle.join(' '),
+    description: wildIntro,
+    cta: { text: 'Go wild', href: '/about/in-the-wild' },
     tone: 'canyon',
   },
 ];
+
+export interface WildStory {
+  id: string;
+  title: string;
+  description: string;
+  /** Portrait 2:3 or landscape 3:2. */
+  aspect: 'tall' | 'short';
+}
+
+/**
+ * Photo grid for /about/in-the-wild. Column-major, matching Figma 17529:87624.
+ * Captions are the frame copy, including ones that do not describe the photo.
+ */
+export const inTheWild = {
+  title: 'in the wild',
+  crumb: 'In the Wild',
+  introTitle: wildIntroTitle,
+  intro: wildIntro,
+  columns: [
+    [
+      {
+        id: 'match-day',
+        title: 'Match day',
+        description:
+          'Green flags filled the stands as supporters gathered before the afternoon kickoff.',
+        aspect: 'tall',
+      },
+      {
+        id: 'monaco',
+        title: 'Morning in Monaco',
+        description:
+          'A quiet view across Port Hercules before the harbor filled with boats and visitors.',
+        aspect: 'short',
+      },
+      {
+        id: 'landmark',
+        title: 'A landmark in progress',
+        description:
+          'The original entrance marker, photographed during the building’s final phase of construction.',
+        aspect: 'short',
+      },
+      {
+        id: 'halloween',
+        title: 'Halloween parade',
+        description:
+          'Hand-painted masks and bright costumes lined the street during the annual neighborhood celebration.',
+        aspect: 'tall',
+      },
+    ],
+    [
+      {
+        id: 'meet-me',
+        title: 'Meet-me room tour',
+        description:
+          'A quick photo with the operations team after a walkthrough of the new network facility.',
+        aspect: 'short',
+      },
+      {
+        id: 'auzzie',
+        title: 'Auzzie burgers',
+        description:
+          'Dozens of balloons lifted over the valley just after sunrise on a clear autumn morning.',
+        aspect: 'tall',
+      },
+      {
+        id: 'sunday-run',
+        title: 'Sunday run',
+        description:
+          'Fresh pastries and coffee from a small bakery we found around the corner from the hotel.',
+        aspect: 'short',
+      },
+      {
+        id: 'sound-check',
+        title: 'Sound check',
+        description: 'The stage crew tested the bass rig before doors opened for the evening show.',
+        aspect: 'short',
+      },
+    ],
+    [
+      {
+        id: 'training',
+        title: 'Training on the ice',
+        description:
+          'A Danish speed skater takes a final practice lap ahead of the national championships.',
+        aspect: 'tall',
+      },
+      {
+        id: 'lab',
+        title: 'From the lab',
+        description:
+          'A close look at the latest Arm-based processor board during an early hardware evaluation.',
+        aspect: 'tall',
+      },
+      {
+        id: 'coffee',
+        title: 'First coffee of the day',
+        description:
+          'A strong morning brew, served in the studio kitchen before the team’s weekly planning session.',
+        aspect: 'short',
+      },
+    ],
+  ],
+} as const satisfies {
+  title: string;
+  crumb: string;
+  introTitle: readonly string[];
+  intro: string;
+  columns: WildStory[][];
+};
 
 export const twinsInTheLoop = {
   eyebrow: 'Twins in the loop',

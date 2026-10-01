@@ -1,0 +1,129 @@
+---
+// src/pages/about/in-the-wild.astro
+// In the wild — Figma node 17529:87624.
+
+import '@styles/page-about.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import Icon from '@components/Icon.astro';
+import { inTheWild } from '@data/about';
+import wordmark from '@assets/images/about/wild/wordmark.png';
+import matchDay from '@assets/images/about/wild/match-day.jpg';
+import monaco from '@assets/images/about/wild/monaco.jpg';
+import landmark from '@assets/images/about/wild/landmark.jpg';
+import halloween from '@assets/images/about/wild/halloween.jpg';
+import meetMe from '@assets/images/about/wild/meet-me.jpg';
+import auzzie from '@assets/images/about/wild/auzzie.jpg';
+import sundayRun from '@assets/images/about/wild/sunday-run.jpg';
+import soundCheck from '@assets/images/about/wild/sound-check.jpg';
+import training from '@assets/images/about/wild/training.jpg';
+import lab from '@assets/images/about/wild/lab.jpg';
+import coffee from '@assets/images/about/wild/coffee.jpg';
+
+type WildId = (typeof inTheWild.columns)[number][number]['id'];
+
+const images: Record<WildId, ImageMetadata> = {
+  'match-day': matchDay,
+  monaco,
+  landmark,
+  halloween,
+  'meet-me': meetMe,
+  auzzie,
+  'sunday-run': sundayRun,
+  'sound-check': soundCheck,
+  training,
+  lab,
+  coffee,
+};
+
+const title = 'In the Wild';
+const description = inTheWild.intro;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://www.datum.net/about/in-the-wild#webpage',
+  url: 'https://www.datum.net/about/in-the-wild/',
+  name: title,
+  description,
+  isPartOf: { '@id': 'https://www.datum.net/about#webpage' },
+  about: { '@id': 'https://www.datum.net#organization' },
+  inLanguage: 'en-US',
+};
+---
+
+<Layout title={title} description={description} bodyClass="page-about" jsonLd={jsonLd}>
+  <section class="datum-container">
+    <Hero class="light bg-white" hideHero />
+
+    <section class="section--block section--block--x-pad bg-white">
+      <div class="max-width-nav wild-page">
+        <nav class="wild-crumbs" aria-label="Breadcrumb">
+          <a href="/" aria-label="Home">
+            <Icon name="house" size="sm" />
+          </a>
+          <span aria-hidden="true">/</span>
+          <a href="/about">About</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{inTheWild.crumb}</span>
+        </nav>
+
+        <h1 class="wild-wordmark">
+          <Image
+            src={wordmark}
+            alt={inTheWild.title}
+            widths={[298, 596]}
+            sizes="(min-width: 1024px) 572px, 90vw"
+          />
+        </h1>
+
+        <div class="wild-intro">
+          <hr class="wild-rule" />
+          <div class="wild-intro-copy">
+            <h2 class="wild-intro-title">
+              {inTheWild.introTitle[0]}
+              <br />
+              {inTheWild.introTitle[1]}
+            </h2>
+            <p class="wild-intro-body">{inTheWild.intro}</p>
+          </div>
+          <hr class="wild-rule" />
+        </div>
+
+        <div class="wild-grid">
+          {
+            inTheWild.columns.map((column) => (
+              <div class="wild-column">
+                {column.map((story) => (
+                  <article class="wild-card">
+                    <div
+                      class:list={[
+                        'wild-card-media',
+                        story.aspect === 'tall'
+                          ? 'wild-card-media--tall'
+                          : 'wild-card-media--short',
+                      ]}
+                    >
+                      <Image src={images[story.id]} alt="" />
+                      <span class="wild-card-wash" aria-hidden="true" />
+                      <span class="wild-card-mark" aria-hidden="true">
+                        <Icon name="datum-logo" size="sm" />
+                      </span>
+                    </div>
+                    <h3 class="wild-card-title">{story.title}</h3>
+                    <p class="wild-card-description">{story.description}</p>
+                  </article>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <Footer showCTA={false} illustrationBgClass="bg-white" />
+  </section>
+</Layout>

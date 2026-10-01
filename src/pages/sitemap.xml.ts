@@ -13,6 +13,7 @@ const STATIC_ROUTES = [
   '/',
   '/about',
   '/about/team',
+  '/about/in-the-wild',
   '/authors',
   '/blog',
   '/brand',

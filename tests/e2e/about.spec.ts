@@ -13,6 +13,10 @@ test.describe('About page', () => {
       'href',
       '/about/team'
     );
+    await expect(page.getByRole('link', { name: 'Go wild' })).toHaveAttribute(
+      'href',
+      '/about/in-the-wild'
+    );
   });
 
   test('explore tab bar is sticky and its active tab follows the card in view', async ({
@@ -228,11 +232,27 @@ test.describe('About page', () => {
   });
 
   test('serves markdown exports for both pages', async ({ request }) => {
-    for (const path of ['/about.md', '/about/team.md']) {
+    for (const path of ['/about.md', '/about/team.md', '/about/in-the-wild.md']) {
       const response = await request.get(path);
       expect(response.status(), path).toBe(200);
       expect(response.headers()['content-type']).toContain('text/markdown');
     }
+  });
+});
+
+test.describe('In the wild page', () => {
+  test('renders the wordmark, intro, and eleven stories', async ({ page }) => {
+    await page.goto('/about/in-the-wild');
+
+    await expect(page.getByRole('heading', { level: 1, name: 'in the wild' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2 })).toContainText('show up differently');
+    await expect(page.locator('.wild-card')).toHaveCount(11);
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('In the Wild');
+  });
+
+  test('is listed in the sitemap', async ({ request }) => {
+    const response = await request.get('/sitemap.xml');
+    expect(await response.text()).toContain('/about/in-the-wild');
   });
 });
 

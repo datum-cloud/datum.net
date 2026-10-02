@@ -1,0 +1,61 @@
+name: DNS Records
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - dns/**
+      - .github/workflows/dns-apply.yml
+  push:
+    branches:
+      - main
+    paths:
+      - dns/**
+      - .github/workflows/dns-apply.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: dns-${{ github.event_name == 'pull_request' && 'diff' || 'apply' }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  diff:
+    name: Diff
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup datumctl
+        uses: datum-cloud/setup-datumctl-action@v1
+        with:
+          version: v0.15.2
+          auth-hostname: auth.datum.net
+          credentials: ${{ secrets.DATUM_API_CI_DEPLOY_SA_PROD }}
+
+      - name: Diff DNS records
+        run: datumctl diff --project datum-cloud -f dns/dnsrecordsets.yaml
+
+  apply:
+    name: Apply
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup datumctl
+        uses: datum-cloud/setup-datumctl-action@v1
+        with:
+          version: v0.15.2
+          auth-hostname: auth.datum.net
+          credentials: ${{ secrets.DATUM_API_CI_DEPLOY_SA_PROD }}
+
+      - name: Apply DNS records
+        run: datumctl apply --project datum-cloud -f dns/dnsrecordsets.yaml

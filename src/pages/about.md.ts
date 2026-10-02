@@ -1,73 +1,77 @@
 // Dynamic markdown export of /about. Reads the same sources the rendered
 // page consumes, in the same order the page renders them:
-//   - src/content/about/our-mission.mdx  (OurMission — hero title + body)
-//   - src/content/about/companies.mdx    (Companies — title + logo list)
-//   - Strapi team members                (PeopleStrapi — same source as the component)
+//   - src/data/about.ts                  (AboutHero, FoundingInsight, ExploreCards copy)
+//   - src/content/about/companies.mdx    (AboutHero — title + logo list)
 //   - src/content/about/investors.mdx    (Investors — title + logo list)
-// Any edit to those files, or a team-member change in Strapi, updates this
-// endpoint on next request.
+//   - Strapi twins posts                 (TwinsInTheLoop — same source as the component)
+// The team roster moved to /about/team (see about/team.md.ts). Any edit to
+// those sources updates this endpoint on next request.
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
-import { getStrapiTeamMembers } from '@libs/strapi';
+import { fetchStrapiTwinsPosts } from '@libs/strapi/twinsPosts';
+import { explore, foundingInsight, hero, twinsInTheLoop } from '@data/about';
+import { formatOrdinalDate } from '@utils/dateUtils';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
-function stripHtml(input: string): string {
-  return input.replace(/<\/?[^>]+>/g, '').trim();
-}
+const listNames = (items: Array<{ alt?: string }> | undefined): string =>
+  (items ?? [])
+    .map((item) => item.alt)
+    .filter(Boolean)
+    .join(', ');
 
 export const GET: APIRoute = async () => {
   try {
-    const [indexEntry, mission, companies, investors] = await Promise.all([
-      getEntry('about', 'index'),
-      getEntry('about', 'our-mission'),
+    const [companies, investors] = await Promise.all([
       getEntry('about', 'companies'),
       getEntry('about', 'investors'),
     ]);
 
     const sections: string[] = [
-      `# ${indexEntry?.data.title ?? mission?.data.title ?? 'About Datum'}`,
+      `# ${hero.title.before}${hero.title.highlight}${hero.title.after}`.trim(),
+      '',
+      hero.lead.join(' ').replace(/\{\{|\}\}/g, ''),
       '',
     ];
 
-    if (mission?.body) sections.push(stripHtml(mission.body).trim(), '');
-
     if (companies) {
-      const names = (companies.data.companies ?? []) as Array<{ alt?: string }>;
       sections.push(`## ${companies.data.title}`, '');
-      if (names.length)
-        sections.push(
-          names
-            .map((c) => c.alt)
-            .filter(Boolean)
-            .join(', '),
-          ''
-        );
+      const names = listNames(companies.data.companies);
+      if (names) sections.push(names, '');
     }
 
-    const teamMembers = await getStrapiTeamMembers();
-    if (teamMembers.length) {
-      sections.push('## Meet the people behind Datum', '');
-      for (const member of teamMembers) {
-        const title = member.title ? ` - ${member.title}` : '';
-        sections.push(`- ${member.name}${title}`);
-      }
-      sections.push('');
-    }
+    sections.push(
+      `## ${foundingInsight.eyebrow}`,
+      '',
+      ...foundingInsight.paragraphs.map((p) => `${p}\n`)
+    );
 
     if (investors) {
-      const names = (investors.data.investors ?? []) as Array<{ alt?: string }>;
       sections.push(`## ${investors.data.title}`, '');
-      if (names.length)
-        sections.push(
-          names
-            .map((i) => i.alt)
-            .filter(Boolean)
-            .join(', '),
-          ''
-        );
+      const names = listNames(investors.data.investors);
+      if (names) sections.push(names, '');
+    }
+
+    for (const card of explore) {
+      sections.push(
+        `## ${card.title}`,
+        '',
+        card.description,
+        '',
+        `[${card.cta.text}](https://www.datum.net${card.cta.href})`,
+        ''
+      );
+    }
+
+    const posts = await fetchStrapiTwinsPosts();
+    if (posts.length) {
+      sections.push(`## ${twinsInTheLoop.title}`, '', twinsInTheLoop.description, '');
+      for (const post of posts) {
+        sections.push(`- ${post.title} (${formatOrdinalDate(post.published)})`);
+      }
+      sections.push('');
     }
 
     const canonicalUrl = 'https://www.datum.net/about';

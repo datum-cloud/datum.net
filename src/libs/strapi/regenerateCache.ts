@@ -22,6 +22,7 @@ import {
   getStrapiTeamMembers,
   getStrapiCardMembers,
 } from './authors';
+import { fetchStrapiTwinsPosts, TWINS_POSTS_CACHE_KEY } from './twinsPosts';
 import {
   GITHUB_BACKLOG_CACHE_KEY,
   forceRegenerateGitHubBacklog,
@@ -50,6 +51,7 @@ export const STRAPI_FORCE_REGENERATE_KEYS = [
   AUTHORS_CACHE_KEY,
   TEAM_MEMBERS_CACHE_KEY,
   CARD_MEMBERS_CACHE_KEY,
+  TWINS_POSTS_CACHE_KEY,
   GITHUB_ROADMAPS_CACHE_KEY,
   GITHUB_BACKLOG_CACHE_KEY,
 ] as const;
@@ -165,6 +167,10 @@ export async function forceRegenerateStrapiCache(
           await getStrapiCardMembers();
           regenerated.push(name);
           break;
+        case TWINS_POSTS_CACHE_KEY:
+          await fetchStrapiTwinsPosts();
+          regenerated.push(name);
+          break;
         case GITHUB_ROADMAPS_CACHE_KEY:
           await forceRegenerateGitHubRoadmaps();
           regenerated.push(name);
@@ -230,6 +236,7 @@ export async function regenerateStrapiCacheIfMissing(): Promise<RegenerateResult
   await tryWarm(AUTHORS_CACHE_KEY, fetchStrapiAuthors);
   await tryWarm(TEAM_MEMBERS_CACHE_KEY, getStrapiTeamMembers);
   await tryWarm(CARD_MEMBERS_CACHE_KEY, getStrapiCardMembers);
+  await tryWarm(TWINS_POSTS_CACHE_KEY, fetchStrapiTwinsPosts);
 
   if (await isGitHubBacklogCached()) {
     skipped.push(GITHUB_BACKLOG_CACHE_KEY);

@@ -138,7 +138,7 @@ Not “unused” — inventory of client/inline JS surfaces.
 
 | File                                                   | `<script>` tags | Review |
 | ------------------------------------------------------ | --------------: | ------ |
-| `src/components/about/PeopleStrapi.astro`              |               1 | [ ]    |
+| `src/components/about/TeamGrid.astro`                  |               1 | [ ]    |
 | `src/components/about/ProfileModal.astro`              |               1 | [ ]    |
 | `src/components/content/Tabs.astro`                    |               1 | [ ]    |
 | `src/components/events/CommunityHuddlePastModal.astro` |               1 | [ ]    |

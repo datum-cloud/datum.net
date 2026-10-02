@@ -9,6 +9,7 @@ import Culture from '@components/career/Culture.astro';
 import Benefits from '@components/career/Benefits.astro';
 import JobList from '@components/career/JobList.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
 import SectionLine from '@components/SectionLine.astro';
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -44,30 +45,35 @@ const description = fm.description || '';
     </div>
 
     <div class="relative">
-      <section id="roles" class="section--block section--block--x-pad bg-white">
-        <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
-          <SectionLine left right top bottom />
-          <div class="max-width-nopad">
-            <h2 class="datum-text-8xl mb-12 text-center font-medium">Ready to join the team?</h2>
+      <section id="roles" class="section--block section--block--x-pad bg-platinum">
+        <div class="max-width-nav career-section-pad relative">
+          <SectionLine left right top />
+          <div class="spacing-pad">
+            <div class="career-roles-inner">
+              <header class="career-section-header">
+                <SectionEyebrow>Roles</SectionEyebrow>
+                <h2 class="career-section-title">Ready to join the team?</h2>
+              </header>
 
-            <!-- Job List (shown when no ashby_jid) -->
-            <div x-show="!hasAshbyJobId" x-cloak>
-              <JobList server:defer>
-                <div slot="fallback" class="mx-auto max-w-4xl py-12 text-center">
-                  <div
-                    class="border-glacier-mist-800 border-t-canyon-clay mx-auto mb-4 size-8 animate-spin rounded-full border-3"
-                  >
+              <!-- Job List (shown when no ashby_jid) -->
+              <div x-show="!hasAshbyJobId" x-cloak>
+                <JobList server:defer>
+                  <div slot="fallback" class="mx-auto max-w-4xl py-12 text-center">
+                    <div
+                      class="border-glacier-mist-800 border-t-canyon-clay mx-auto mb-4 size-8 animate-spin rounded-full border-3"
+                    >
+                    </div>
+                    <p class="text-midnight-fjord/60 text-sm">Loading open positions...</p>
                   </div>
-                  <p class="text-midnight-fjord/60 text-sm">Loading open positions...</p>
-                </div>
-              </JobList>
-            </div>
+                </JobList>
+              </div>
 
-            <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
-            <div x-show="hasAshbyJobId" x-cloak>
-              <div id="ashby_embed"></div>
-              <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
-                <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+              <!-- Ashby Embed for Job Detail (shown when ashby_jid is present) -->
+              <div x-show="hasAshbyJobId" x-cloak>
+                <div id="ashby_embed"></div>
+                <div id="ashby_embed_fallback" class="py-12 text-center" style="display:none">
+                  <p class="text-midnight-fjord/70">Ashby will be right back...</p>
+                </div>
               </div>
             </div>
           </div>
@@ -103,6 +109,6 @@ const description = fm.description || '';
       })();
     </script>
 
-    <Footer />
+    <Footer showCTA={false} illustrationBgClass="bg-platinum" />
   </section>
 </Layout>

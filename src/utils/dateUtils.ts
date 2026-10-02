@@ -59,6 +59,27 @@ export const formatLongDate = (date: Date | string, locale: string = 'en-US'): s
 };
 
 /**
+ * Formats a date with an ordinal day (e.g., "September 28th, 2026"). Calendar
+ * parts are read in UTC so a date-only ISO string ("2026-09-28") never shifts a
+ * day with the reader's timezone.
+ * @param date - The date to format (Date object or ISO string)
+ * @param locale - The locale used for the month name (defaults to 'en-US')
+ * @returns Formatted date string, or '' when the date is invalid
+ */
+export const formatOrdinalDate = (date: Date | string, locale: string = 'en-US'): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (Number.isNaN(dateObj.getTime())) return '';
+
+  const day = dateObj.getUTCDate();
+  const suffixes: Record<number, string> = { 1: 'st', 2: 'nd', 3: 'rd' };
+  const isTeen = day % 100 >= 11 && day % 100 <= 13;
+  const suffix = isTeen ? 'th' : (suffixes[day % 10] ?? 'th');
+  const month = dateObj.toLocaleDateString(locale, { month: 'long', timeZone: 'UTC' });
+
+  return `${month} ${day}${suffix}, ${dateObj.getUTCFullYear()}`;
+};
+
+/**
  * Formats time only
  * @param date - The date to format (Date object or ISO string)
  * @param locale - The locale to use for formatting (defaults to 'en-US')

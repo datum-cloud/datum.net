@@ -1,0 +1,23 @@
+---
+// src/components/career/JobRows.astro
+// Open roles as ruled rows: title on the left, team on the right. Shown by
+// JobList when Ashby has postings. Figma node 17529:87594.
+import type { AshbyJob } from '@libs/ashby';
+
+const { jobs } = Astro.props as { jobs: AshbyJob[] };
+---
+
+<ul class="career-roles-list">
+  {
+    jobs.map((job) => (
+      <li>
+        <a href={`/careers?ashby_jid=${job.id}`} class="career-roles-row" target="_blank">
+          <span class="career-roles-title">{job.title.trim()}</span>
+          {(job.team || job.department) && (
+            <span class="career-roles-team">{job.team || job.department}</span>
+          )}
+        </a>
+      </li>
+    ))
+  }
+</ul>

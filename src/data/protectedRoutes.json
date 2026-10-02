@@ -1,4 +1,4 @@
 {
   "prefix": ["/dev"],
-  "pages": ["/platform/dns", "/platform/compute"]
+  "pages": ["/platform/compute"]
 }

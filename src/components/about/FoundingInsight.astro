@@ -1,0 +1,64 @@
+---
+// src/components/about/FoundingInsight.astro
+// Photo collage that drifts apart on scroll to reveal the founding insight.
+// Figma section 17534:89125 (start / mid / end states); the design frames are
+// 17519:73425 (start) and 17519:73406 / 17489:72465 (mid / end).
+//
+// On desktop the stage pins to the viewport for the length of the section;
+// progress is driven by module-collage.js, which writes --p, --p1 and --p2 on
+// the [data-collage] section; every position lives in components-about.css.
+import { Image } from 'astro:assets';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import { foundingInsight } from '@data/about';
+import rooftop from '@assets/images/about/collage-rooftop.png';
+import run from '@assets/images/about/collage-run.png';
+import podcast from '@assets/images/about/collage-podcast.png';
+import dinner from '@assets/images/about/collage-dinner.png';
+import selfie from '@assets/images/about/collage-selfie.png';
+
+// Left-to-right order of the starting row; z-order comes from the CSS.
+const photos = [
+  { id: 'rooftop', src: rooftop, alt: 'Datum teammates together on a rooftop' },
+  { id: 'podcast', src: podcast, alt: 'A teammate recording a podcast in a studio' },
+  { id: 'run', src: run, alt: 'Teammates out for a run' },
+  { id: 'dinner', src: dinner, alt: 'Teammates sharing dinner at a restaurant' },
+  { id: 'selfie', src: selfie, alt: 'Teammates taking a selfie outside a cafe' },
+];
+---
+
+<section class="about-collage" data-collage aria-label="The founding insight">
+  <div class="pointer-events-none absolute inset-0 z-10 px-4 sm:px-7">
+    <div class="max-width-nav relative h-full">
+      <SectionLine left right top bottom />
+    </div>
+  </div>
+  <div class="about-collage-stage">
+    <div class="about-collage-canvas">
+      <div class="about-collage-copy">
+        <SectionEyebrow>{foundingInsight.eyebrow}</SectionEyebrow>
+        {foundingInsight.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      <ul class="about-collage-photos">
+        {
+          photos.map((photo) => (
+            <li class:list={['about-collage-photo', `about-collage-photo--${photo.id}`]}>
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 24vw, 50vw"
+                loading="lazy"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '@/src/static/scripts/module-collage.js';
+</script>

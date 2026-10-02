@@ -62,6 +62,15 @@
     url('/fonts/datum/canelatextlcweb-regular-webfont.woff') format('woff');
 }
 
+/* Instrument Sans — in-the-wild intro title only. OFL, see public/fonts/instrument-sans/OFL.txt */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/instrument-sans/InstrumentSans-SemiBold.woff2') format('woff2');
+}
+
 /* Frontliner Font Family */
 @font-face {
   font-family: 'Frontliner';

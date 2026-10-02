@@ -1,0 +1,168 @@
+---
+// src/components/about/TeamGrid.astro
+// Department tabs + team member grid for /about/team, rendered as a server
+// island (Strapi can be slow). Cards open the shared ProfileModal. Figma node
+// 17529:80554 (grid) and 17579:53349 (tabs).
+import { Image } from 'astro:assets';
+import { getStrapiTeamMembers, getTeamBgColor, getAvatarVariantBgColor } from '@libs/strapi';
+import { getStrapiMediaUrl } from '@/src/types/strapi';
+import type { StrapiAuthorFull } from '@libs/strapi';
+import { team, teamFilters } from '@data/about';
+import ProfileModal from './ProfileModal.astro';
+import stamp from '@assets/svgs/about-milo-stamp.svg';
+import '@styles/page-about.css';
+
+// Authors with `isTeam === true`, founders first (cached; see authors.ts).
+const teamMembers: StrapiAuthorFull[] = await getStrapiTeamMembers();
+
+// Background colour of each person's actual headshot variant (detected from the
+// avatar file name), not their position in the list — the roster is reordered
+// every time someone joins or leaves, but the photo's baked-in backdrop never
+// is. Falls back to the old index cycle for avatars that predate the
+// variant-suffix naming. Computed once so the card and the modal agree.
+const avatarBgColors = teamMembers.map(
+  (member, index) => getAvatarVariantBgColor(member.avatar?.url) ?? getTeamBgColor(index)
+);
+
+// Serialised for the client-side modal.
+const teamMembersData = teamMembers.map((member, index) => ({
+  id: member.documentId,
+  slug: member.slug || member.documentId,
+  data: {
+    name: member.name,
+    bio: member.bio,
+    title: member.title,
+    avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
+    avatarBgColor: avatarBgColors[index],
+    tick: member.tick,
+    surprising: member.surprising,
+    weekends: member.weekends,
+  },
+}));
+
+// Only offer a department tab when someone is actually in it, so the tabs
+// never lead to an empty grid (e.g. before departments are filled in Strapi).
+const activeFilters = teamFilters.filter(
+  (filter) => filter.id === 'all' || teamMembers.some((member) => member.team === filter.id)
+);
+const showTabs = activeFilters.length > 1;
+
+const isFounder = (member: StrapiAuthorFull) =>
+  member.team === 'founders' || Boolean(member.title?.includes('Co-Founder'));
+---
+
+<div class="flex w-full flex-col items-center gap-12 md:gap-14 xl:gap-20">
+  {
+    showTabs && (
+      <div class="team-tabs" role="tablist" aria-label="Filter team by department" data-team-tabs>
+        {activeFilters.map((filter, index) => (
+          <button
+            type="button"
+            role="tab"
+            class="team-tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+            data-team-filter={filter.id}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    teamMembers.length === 0 ? (
+      <p class="team-empty">No team members found.</p>
+    ) : (
+      <ul class="team-grid" data-team-grid>
+        {teamMembers.map((member, index) => (
+          <li data-team={member.team ?? 'team'}>
+            <button
+              class="people--card"
+              data-member-trigger
+              data-member-index={index}
+              type="button"
+              aria-label={`View ${member.name}'s profile`}
+            >
+              {member.avatar && (
+                <div class="people--card-avatar">
+                  <img
+                    src={getStrapiMediaUrl(member.avatar.url)}
+                    alt={member.name}
+                    class="size-auto w-full bg-cover"
+                    style={`background-color: ${avatarBgColors[index]}`}
+                    loading={index < 5 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  {isFounder(member) && <span class="people--card-founder-label">Founder</span>}
+                </div>
+              )}
+
+              <span class="people--card-name">{member.name}</span>
+              <span class="people--card-title">{member.title}</span>
+            </button>
+          </li>
+        ))}
+
+        <li>
+          <a href={team.cta.button.href} class="team-cta">
+            <Image src={stamp} alt="" class="team-cta-stamp" />
+            <p class="team-cta-text">{team.cta.text}</p>
+            <span class="team-cta-button">{team.cta.button.text}</span>
+          </a>
+        </li>
+      </ul>
+    )
+  }
+</div>
+
+<ProfileModal />
+
+<script is:inline define:vars={{ teamMembersData }}>
+  const teamData = teamMembersData;
+
+  function dispatchOpen(member) {
+    document.dispatchEvent(
+      new CustomEvent(window.PROFILE_MODAL_OPEN_EVENT, { detail: { member } })
+    );
+  }
+
+  function openBySlug(slug) {
+    if (!slug || !window.PROFILE_MODAL_OPEN_EVENT) return;
+    const member = teamData.find((m) => m.slug === slug);
+    if (member) dispatchOpen(member);
+  }
+
+  // Runs immediately: server island content is already in the DOM.
+  (function init() {
+    document.querySelectorAll('[data-member-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const index = parseInt(e.currentTarget.getAttribute('data-member-index') || '0', 10);
+        const member = teamData[index];
+        if (member && window.PROFILE_MODAL_OPEN_EVENT) dispatchOpen(member);
+      });
+    });
+
+    // Department tabs. Founders carry `data-team="founders"`, so they only show
+    // under "Everyone"; the CTA tile has no data-team and always shows.
+    const tabs = document.querySelectorAll('[data-team-filter]');
+    const cards = document.querySelectorAll('[data-team]');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-team-filter');
+        tabs.forEach((t) => t.setAttribute('aria-selected', t === tab ? 'true' : 'false'));
+        cards.forEach((card) => {
+          card.hidden = filter !== 'all' && card.getAttribute('data-team') !== filter;
+        });
+      });
+    });
+
+    // Deep-link: the server island runs before ProfileModal's bundled module
+    // script, so wait for the custom element (which also sets
+    // PROFILE_MODAL_OPEN_EVENT) to be defined.
+    customElements.whenDefined('profile-modal').then(() => {
+      const hash = window.location.hash.slice(1);
+      if (hash) openBySlug(hash);
+    });
+  })();
+</script>

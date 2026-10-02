@@ -15,7 +15,6 @@ src/content/
 │   ├── companies.mdx
 │   ├── index.mdx (main page)
 │   ├── investors.mdx
-│   ├── our-mission.mdx
 │   ├── our-purpose.mdx
 │   ├── team.mdx
 │   └── we-value.mdx

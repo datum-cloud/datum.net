@@ -1,0 +1,631 @@
+@layer components {
+  /* ------------------------------------------------------------------- hero */
+  /* Figma node 17489:71439 */
+
+  /* Line at x=215 meets the nav keyline. The 1px stroke paints outside that edge, so nudge left. */
+  .about-hero-corner {
+    @apply pointer-events-none absolute top-0 -right-10 hidden h-70.25 w-63.75 -translate-x-px select-none lg:block;
+  }
+
+  .about-hero-inner {
+    @apply relative flex flex-col items-center gap-12 md:gap-16;
+  }
+
+  .about-hero-header {
+    @apply flex flex-col items-center gap-4 text-center;
+  }
+
+  .about-hero-title {
+    @apply datum-text-10xl text-midnight-fjord;
+  }
+
+  /* Figma text-10xl canela is 60/70; the shared token is 70/70 from xl. */
+  @media (min-width: 80rem) {
+    .about-hero-title {
+      font-size: var(--60px);
+      line-height: var(--70px);
+    }
+  }
+
+  /* Soft blush bar behind the accented word, sitting on its x-height. */
+  .about-hero-highlight {
+    @apply text-canyon-clay---links relative inline-block;
+  }
+
+  .about-hero-highlight::before {
+    @apply bg-blush-quartz absolute -right-1 -left-1 -z-10 opacity-50;
+    content: '';
+    bottom: 0.14em;
+    height: 0.56em;
+  }
+
+  .about-hero-lead {
+    @apply datum-text-3xl text-midnight-fjord mx-auto w-full max-w-212.5 text-center;
+    text-wrap: wrap;
+  }
+
+  .about-hero-lead strong {
+    @apply font-semibold;
+  }
+
+  /* "Companies we've helped to build" — bordered bar with a label that
+     interrupts the top border. */
+  .about-companies {
+    @apply border-silver-mist relative mx-auto mt-4 w-full max-w-306 border;
+  }
+
+  .about-companies-label {
+    @apply datum-docs-sidebar-headings text-midnight-fjord/60 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-6 py-2.5 text-center whitespace-nowrap;
+  }
+
+  .about-companies-list {
+    @apply m-0 grid list-none grid-cols-3 items-center gap-x-6 gap-y-8 p-0 px-6 py-10 md:grid-cols-6 md:px-10 lg:px-20;
+  }
+
+  .about-companies-item {
+    @apply flex items-center justify-center;
+  }
+
+  .about-companies-logo {
+    @apply h-auto max-h-8 w-full max-w-30 object-contain;
+  }
+
+  /* --------------------------------------------------- founding insight -- */
+  /* Figma section 17534:89125. Five photos overlap in a row, then drift apart
+     as the section scrolls to reveal the copy underneath.
+
+     Design px (1680 x 890 canvas) live in the per-photo custom properties:
+       --x0/--y0  start (row)     --x1/--y1  mid    --x2/--y2  end (edges)
+     `--p1` (start -> mid) and `--p2` (mid -> end) are 0..1 and written by
+     module-collage.js from the section's scroll progress. */
+
+  .about-collage {
+    @apply bg-platinum border-silver-mist relative border-b;
+    --p: 0;
+    --p1: 0;
+    --p2: 0;
+  }
+
+  .about-collage {
+    @apply overflow-clip;
+  }
+
+  .about-collage-canvas {
+    @apply relative mx-auto flex w-full max-w-420 flex-col items-center gap-10 px-4 py-16 sm:px-7 md:py-20;
+  }
+
+  .about-collage-copy {
+    @apply order-first flex w-full max-w-170.25 flex-col items-center gap-7 text-center;
+  }
+
+  .about-collage-copy p {
+    @apply datum-text-2xl text-midnight-fjord m-0 text-pretty;
+  }
+
+  .about-collage-photos {
+    @apply m-0 grid w-full list-none grid-cols-2 gap-3 p-0 md:grid-cols-3;
+  }
+
+  .about-collage-photo {
+    @apply aspect-4/3 overflow-clip rounded-[9px];
+  }
+
+  .about-collage-photo img {
+    @apply size-full object-cover;
+  }
+
+  /* One custom-property set per photo: [x, y] in design px at start, mid, end. */
+  .about-collage-photo--rooftop {
+    --x0: 228;
+    --y0: 295;
+    --x1: 177;
+    --y1: 185;
+    --x2: -80;
+    --y2: -80;
+    --z: 1;
+  }
+
+  .about-collage-photo--run {
+    --x0: 640;
+    --y0: 295;
+    --x1: 650;
+    --y1: 111;
+    --x2: 640;
+    --y2: -130;
+    --z: 3;
+  }
+
+  .about-collage-photo--podcast {
+    --x0: 434;
+    --y0: 295;
+    --x1: 408;
+    --y1: 524;
+    --x2: -80;
+    --y2: 600;
+    --z: 2;
+  }
+
+  .about-collage-photo--dinner {
+    --x0: 846;
+    --y0: 295;
+    --x1: 1113;
+    --y1: 185;
+    --x2: 1360;
+    --y2: -80;
+    --z: 4;
+  }
+
+  .about-collage-photo--selfie {
+    --x0: 1052;
+    --y0: 295;
+    --x1: 897;
+    --y1: 524;
+    --x2: 1360;
+    --y2: 600;
+    --z: 5;
+  }
+
+  /* Animated layout. The canvas is the design frame (1680 x 890). The stage
+     pins to the viewport and fills it, so the photos stay together until the
+     section covers the whole screen; module-collage.js then scrubs --p1/--p2
+     over --collage-run of extra scroll, which is what slows the photos down.
+     Below `lg` the copy and photos simply stack, so nothing is hidden behind
+     motion the visitor can't run. */
+  @media (min-width: 64rem) {
+    .about-collage-stage {
+      @apply grid place-items-center;
+    }
+
+    .about-collage-canvas {
+      @apply block p-0;
+      aspect-ratio: 1680 / 890;
+    }
+
+    .about-collage-copy {
+      @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+      width: calc(681 / 1680 * 100%);
+      max-width: none;
+      opacity: calc(0.15 + 0.85 * var(--p));
+    }
+
+    .about-collage-photos {
+      @apply contents;
+    }
+
+    .about-collage-photo {
+      @apply absolute;
+      width: calc(400 / 1680 * 100%);
+      z-index: var(--z);
+      left: calc(
+        (var(--x0) + (var(--x1) - var(--x0)) * var(--p1) + (var(--x2) - var(--x1)) * var(--p2)) /
+          1680 * 100%
+      );
+      top: calc(
+        (var(--y0) + (var(--y1) - var(--y0)) * var(--p1) + (var(--y2) - var(--y1)) * var(--p2)) /
+          890 * 100%
+      );
+      will-change: left, top;
+    }
+  }
+
+  /* Pin + scroll run, only where the animation runs. When the canvas is taller
+     than the viewport the stage pins once its bottom edge is on screen. */
+  @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    .about-collage {
+      --collage-run: 100svh;
+      --collage-canvas-height: calc(min(100vw, 105rem) * 890 / 1680);
+    }
+
+    .about-collage-stage {
+      @apply sticky;
+      min-height: 100svh;
+      top: min(0px, calc(100svh - var(--collage-canvas-height)));
+    }
+
+    .about-collage::after {
+      @apply block;
+      content: '';
+      height: var(--collage-run);
+    }
+  }
+
+  /* Reduced motion keeps the same layout, parked on the end state. */
+  @media (min-width: 64rem) and (prefers-reduced-motion: reduce) {
+    .about-collage {
+      --p: 1;
+      --p1: 1;
+      --p2: 1;
+    }
+  }
+
+  /* -------------------------------------------------------------- investors */
+  /* Figma node 17529:73434 */
+
+  .about-investors-inner {
+    @apply relative flex flex-col items-center gap-12 md:gap-16 xl:gap-21;
+  }
+
+  .about-investors-title {
+    @apply datum-text-9xl text-midnight-fjord text-center;
+  }
+
+  /* 4 + 3 centred cells: 279px wide, 36px gutters. */
+  .about-investors-list {
+    @apply m-0 flex w-full max-w-306 list-none flex-wrap justify-center gap-4 p-0 md:gap-9;
+  }
+
+  .about-investors-cell {
+    @apply border-app---dark---utility-5 flex h-24 w-[calc(50%-0.5rem)] items-center justify-center border bg-white px-6 md:h-33 md:w-69.75;
+  }
+
+  .about-investors-cell a {
+    @apply flex h-full w-full items-center justify-center;
+  }
+
+  .about-investors-logo {
+    @apply h-auto max-h-14 w-auto max-w-32 object-contain md:max-h-19 md:max-w-38;
+  }
+
+  /* ---------------------------------------------------------------- explore */
+  /* Figma node 17489:71534 — tab strip + three text/artwork cards. */
+
+  /* 1316px column, as in Figma (frame x=182 of 1680). */
+  .about-explore-inner {
+    @apply relative mx-auto flex w-full max-w-329 flex-col gap-8 md:gap-16;
+  }
+
+  /* Figma node 17489:71545. Sticky: the bar stays pinned while the cards scroll
+     beneath it, and module script `ExploreCards.astro` moves the active tab to
+     the card in view. */
+  .about-explore-tabs {
+    @apply border-silver-mist sticky top-0 z-20 m-0 grid list-none grid-cols-3 gap-px border bg-white px-1.75 py-1.5;
+  }
+
+  /* Two lines crossing the strip's top-left corner (rotated 180deg so the
+     asset's "corner" points into the page's margin). */
+  .about-explore-marks {
+    @apply pointer-events-none absolute hidden size-10 rotate-180 select-none 2xl:block;
+    right: calc(100% - 1px);
+    bottom: calc(100% - 1px);
+  }
+
+  .about-explore-tab {
+    @apply datum-text-lg text-midnight-fjord flex items-center justify-center gap-2 rounded-md px-3 py-4 text-center font-semibold no-underline transition-colors duration-200 md:gap-4 md:px-10 md:py-7;
+  }
+
+  .about-explore-tab svg {
+    @apply size-5.5 shrink-0;
+  }
+
+  .about-explore-tab--slate svg {
+    @apply text-connect-slate;
+  }
+
+  .about-explore-tab--pine svg {
+    @apply text-pine-forge---links;
+  }
+
+  .about-explore-tab--canyon svg {
+    @apply text-canyon-clay;
+  }
+
+  /* Active state: each tab takes its own card's colour. */
+  .about-explore-tab.is-active {
+    @apply text-white;
+  }
+
+  .about-explore-tab--slate.is-active {
+    @apply bg-connect-slate;
+  }
+
+  .about-explore-tab--pine.is-active {
+    @apply bg-pine-forge;
+  }
+
+  .about-explore-tab--canyon.is-active {
+    @apply bg-canyon-clay---links;
+  }
+
+  .about-explore-tab.is-active svg {
+    @apply text-white;
+  }
+
+  .about-explore-tab-label {
+    @apply hidden sm:inline;
+  }
+
+  .about-explore-cards {
+    @apply flex flex-col gap-8 md:gap-16;
+  }
+
+  .about-explore-card {
+    @apply border-silver-mist scroll-mt-32 overflow-clip border bg-white md:scroll-mt-40 lg:grid lg:grid-cols-2;
+  }
+
+  .about-explore-card-copy {
+    @apply flex flex-col items-start gap-10 p-6 md:p-10 lg:p-20;
+  }
+
+  .about-explore-card-text {
+    @apply flex flex-col gap-5;
+  }
+
+  .about-explore-card-title {
+    @apply datum-text-7xl text-midnight-fjord text-pretty;
+  }
+
+  .about-explore-card-description {
+    @apply datum-text-lg text-midnight-fjord/80 m-0 text-pretty;
+  }
+
+  .about-explore-card-art {
+    @apply border-silver-mist relative border-t-0;
+  }
+
+  .about-explore-card-art img {
+    @apply block size-full object-cover;
+  }
+
+  /* ------------------------------------------------------- twins in the loop */
+  /* Figma node 17489:72310 */
+
+  /* Figma twins frame: 160px top, 80px bottom. section-pad stops at 112/128. */
+  .about-twins-pad {
+    @apply py-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24 xl:pt-40 xl:pb-20;
+  }
+
+  .about-twins-inner {
+    @apply relative flex flex-col items-center gap-12 md:gap-16;
+  }
+
+  .about-twins-inner .about-twins-cta.btn {
+    @apply px-5 py-3.5;
+  }
+
+  .about-twins-header {
+    @apply flex max-w-147 flex-col items-center gap-5 text-center;
+  }
+
+  .about-twins-title {
+    @apply datum-text-8xl text-midnight-fjord text-pretty;
+  }
+
+  .about-twins-description {
+    @apply datum-text-lg text-midnight-fjord/80 m-0 text-pretty;
+  }
+
+  .about-twins-list {
+    @apply m-0 flex w-full max-w-329 list-none flex-wrap justify-center gap-10 p-0;
+  }
+
+  .about-twins-list > li {
+    @apply w-full md:w-[calc(50%-1.25rem)] lg:w-[calc(33.333%-1.667rem)];
+  }
+
+  .about-twins-card {
+    @apply text-midnight-fjord flex flex-col gap-7 no-underline;
+  }
+
+  .about-twins-card-media {
+    @apply bg-midnight-fjord relative aspect-614/360 overflow-clip rounded-md;
+  }
+
+  .about-twins-card-media img {
+    @apply absolute inset-0 size-full object-cover transition-transform duration-500 ease-out;
+  }
+
+  .about-twins-card:hover .about-twins-card-media img {
+    @apply scale-103;
+  }
+
+  .about-twins-card-body {
+    @apply flex flex-col gap-2;
+  }
+
+  .about-twins-card-title {
+    @apply datum-text-xl m-0 font-semibold text-pretty;
+  }
+
+  .about-twins-card-meta {
+    @apply datum-text-base m-0 flex flex-wrap items-center gap-x-2 opacity-60;
+  }
+
+  /* -------------------------------------------------------------- team page */
+  /* Figma node 17529:74750 */
+
+  /* Figma team frame: 160px top, 80px bottom, 80px between header and tabs. */
+  .team-section {
+    @apply py-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24 xl:pt-40 xl:pb-20;
+  }
+
+  .team-header {
+    @apply mx-auto flex max-w-329 flex-col items-center gap-7 text-center;
+  }
+
+  .team-header-intro {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .team-header-title {
+    @apply datum-text-10xl text-midnight-fjord text-pretty;
+  }
+
+  @media (min-width: 80rem) {
+    .team-header-title {
+      font-size: var(--60px);
+      line-height: var(--70px);
+    }
+  }
+
+  .team-header-description {
+    @apply datum-text-xl text-app---dark---utility-3 m-0 max-w-115 text-pretty;
+  }
+
+  .team-tabs {
+    @apply border-glacier-mist-900 flex w-full max-w-306 flex-wrap border-b;
+  }
+
+  .team-tab {
+    @apply datum-text-base text-app---dark---utility-4 hover:text-midnight-fjord -mb-px cursor-pointer border-0 border-b border-transparent bg-transparent px-3.5 py-3 transition-colors duration-150;
+  }
+
+  .team-tab[aria-selected='true'] {
+    @apply text-midnight-fjord border-midnight-fjord;
+  }
+
+  .team-tab:focus-visible {
+    @apply ring-midnight-fjord/40 ring-1 outline-none;
+  }
+
+  .team-grid {
+    @apply m-0 grid w-full max-w-306 list-none grid-cols-2 gap-x-6 gap-y-12 p-0 md:grid-cols-4 xl:grid-cols-5;
+  }
+
+  .team-cta {
+    @apply border-app---dark---utility-5 text-midnight-fjord relative flex aspect-square flex-col items-center justify-center gap-3.5 rounded-md border bg-white px-6 py-7 text-center no-underline transition-all duration-200 ease-in-out;
+    box-shadow: 1px 8px 8px rgb(0 0 0 / 0.02);
+  }
+
+  .team-cta:hover {
+    @apply border-app---dark---utility-4 -translate-y-0.5 shadow-sm;
+  }
+
+  .team-cta:focus-visible {
+    @apply ring-midnight-fjord/40 -translate-y-0.5 ring-1 outline-none;
+  }
+
+  .team-cta:hover .team-cta-button,
+  .team-cta:focus-visible .team-cta-button {
+    @apply bg-app---dark---utility-1 border-app---dark---utility-1;
+  }
+
+  .team-cta-text {
+    @apply text-midnight-fjord text-13 m-0 leading-4.5;
+  }
+
+  .team-cta-button {
+    @apply bg-app---dark---utility-2 border-app---dark---utility-2 text-glacier-mist-700 hover:bg-app---dark---utility-1 inline-flex items-center justify-center rounded-md border px-2.5 py-1.5 text-xs leading-4 font-semibold no-underline transition-colors duration-150;
+  }
+
+  .team-cta-stamp {
+    @apply pointer-events-none absolute -top-3 right-3 w-7.5 select-none;
+  }
+
+  .team-empty {
+    @apply text-app---dark---utility-3 py-12 text-center;
+  }
+
+  /* --------------------------------------------------------- in the wild */
+  /* Figma node 17529:87624 */
+
+  .wild-page {
+    @apply flex flex-col items-center pt-5 pb-16 lg:pb-20;
+  }
+
+  .wild-crumbs {
+    @apply datum-text-xs text-midnight-fjord flex w-full items-center gap-2;
+
+    a {
+      @apply text-midnight-fjord/60 hover:text-midnight-fjord no-underline transition-colors;
+    }
+
+    [aria-current='page'] {
+      @apply text-midnight-fjord font-medium;
+    }
+
+    span[aria-hidden='true'] {
+      @apply text-midnight-fjord/20;
+    }
+  }
+
+  .wild-wordmark {
+    @apply mt-16 w-full max-w-149 lg:mt-30;
+
+    img {
+      @apply h-auto w-full;
+    }
+  }
+
+  .wild-intro {
+    @apply flex w-full flex-col items-center gap-10 pt-12 lg:gap-20 lg:pt-20;
+  }
+
+  .wild-rule {
+    @apply border-midnight-fjord m-0 w-full border-0 border-t;
+  }
+
+  .wild-intro-copy {
+    @apply flex w-full max-w-200 flex-col items-center gap-6 text-center;
+  }
+
+  .wild-intro-title {
+    @apply font-instrument text-app---dark---utility-2 m-0 font-semibold;
+    font-size: var(--32px);
+    line-height: var(--40px);
+  }
+
+  .wild-intro-body {
+    @apply datum-text-longform-intro text-app---dark---utility-2 m-0;
+  }
+
+  .wild-grid {
+    @apply grid w-full grid-cols-1 gap-10 pt-10 lg:grid-cols-3 lg:gap-20 lg:pt-20;
+  }
+
+  .wild-column {
+    @apply flex flex-col gap-10 lg:gap-20;
+  }
+
+  .wild-card {
+    @apply border-app---dark---utility-2 flex flex-col gap-5 border-b pb-7.5;
+  }
+
+  .wild-card-media {
+    @apply relative overflow-hidden rounded-md;
+
+    img {
+      @apply block size-full object-cover;
+    }
+  }
+
+  .wild-card-media--tall {
+    @apply aspect-2/3;
+  }
+
+  .wild-card-media--short {
+    @apply aspect-3/2;
+  }
+
+  /* Green radial wash from the frame: 40% stops, layer at 50%, plus-lighter. */
+  .wild-card-wash {
+    @apply pointer-events-none absolute inset-0 opacity-50 mix-blend-plus-lighter;
+    background-image: radial-gradient(
+      ellipse at 36% 50%,
+      rgb(178 226 172 / 0.4),
+      rgb(128 163 133 / 0.4) 50%,
+      rgb(77 99 93 / 0.4)
+    );
+  }
+
+  .wild-card-mark {
+    @apply pointer-events-none absolute right-2 bottom-2 text-white opacity-90;
+  }
+
+  .wild-card-title {
+    @apply datum-text-2xl text-app---dark---utility-2 m-0 font-semibold;
+  }
+
+  .wild-card-description {
+    @apply datum-text-base text-app---dark---utility-2 m-0;
+  }
+
+  /* Under the header (z-11). Shown only while a photo is leaving the top. */
+  .wild-pixel-strip {
+    @apply pointer-events-none fixed z-10 hidden;
+    image-rendering: pixelated;
+
+    &.is-on {
+      @apply block;
+    }
+  }
+}

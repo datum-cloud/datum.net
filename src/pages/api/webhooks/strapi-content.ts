@@ -19,6 +19,7 @@ import { createWebhookHandler } from '@datum-cloud/strapi-revalidate';
 import type { WebhookEvent } from '@datum-cloud/strapi-revalidate';
 import { cache, config, deleteFallbackCache } from '@libs/strapi/_runtime';
 import { fetchStrapiArticles, fetchStrapiArticleBySlug } from '@libs/strapi/articles';
+import { fetchStrapiTwinsPosts, TWINS_POSTS_CACHE_KEY } from '@libs/strapi/twinsPosts';
 import {
   fetchStrapiAuthors,
   getStrapiTeamMembers,
@@ -144,6 +145,11 @@ async function warmAfterRevalidate(event: WebhookEvent): Promise<void> {
         // Same authoritative-deletion reasoning as the article case above.
         await deleteFallbackCache(`${AUTHOR_SLUG_CACHE_PREFIX}${event.slug}`);
       }
+      break;
+    }
+    case 'twins-post': {
+      await fetchStrapiTwinsPosts();
+      await assertPrimaryCache(TWINS_POSTS_CACHE_KEY, 'twins posts list');
       break;
     }
     default:

@@ -1,0 +1,63 @@
+---
+// src/components/about/TeamGridSkeleton.astro
+// Loading state for the Strapi-powered TeamGrid server island.
+import '@styles/page-about.css';
+---
+
+<ul class="team-grid" aria-hidden="true">
+  {
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+      <li class="people--card people--card-skeleton" data-index={i}>
+        <div class="people--card-avatar">
+          <div class="skeleton-box skeleton-avatar" />
+        </div>
+        <div class="skeleton-box skeleton-name" />
+        <div class="skeleton-box skeleton-title" />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .people--card-skeleton {
+    pointer-events: none;
+  }
+
+  .skeleton-box {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.08) 25%,
+      rgba(0, 0, 0, 0.12) 50%,
+      rgba(0, 0, 0, 0.08) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  .skeleton-avatar {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+  }
+
+  .skeleton-name {
+    height: 1.25rem;
+    width: 80%;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .skeleton-title {
+    height: 0.875rem;
+    width: 60%;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+</style>

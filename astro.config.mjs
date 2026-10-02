@@ -202,7 +202,9 @@ export default defineConfig({
     compress({
       CSS: {
         csso: false,
-        lightningcss: true,
+        // An object is required: `true` is forwarded as the transform options.
+        // errorRecovery skips the IE star-hack in the font specimen stylesheet.
+        lightningcss: { minify: true, errorRecovery: true },
       },
     }),
     compressor({

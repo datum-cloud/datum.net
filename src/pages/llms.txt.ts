@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 import { meta as dedicatedCloudMeta } from '@data/dedicatedCloud';
+import { inTheWild } from '@data/about';
 
 // Note: handbook entries intentionally excluded — internal company ops content
 // is not relevant to AI agents consuming platform documentation.
@@ -71,6 +72,13 @@ export const GET: APIRoute = async () => {
     // /dedicated-cloud is data-driven (src/data/dedicatedCloud.ts), not a `pages`
     // collection entry, so the loop above never sees it — add it explicitly.
     llmsContent += `- [${dedicatedCloudMeta.title}](${(site || '').replace(/\/+$/, '')}/dedicated-cloud) - ${dedicatedCloudMeta.description}\n`;
+
+    // /about, /about/team and /about/in-the-wild are data-driven (src/data/about.ts),
+    // not `pages` collection entries — list them explicitly.
+    const baseUrl = (site || '').replace(/\/+$/, '');
+    llmsContent += `- [About Datum](${baseUrl}/about) - Why Datum exists: the founding insight, investors, and the companies building on it.\n`;
+    llmsContent += `- [Meet the Team](${baseUrl}/about/team) - The infrastructure, open source software, and design people building Datum.\n`;
+    llmsContent += `- [${inTheWild.crumb}](${baseUrl}/about/in-the-wild) - ${inTheWild.intro}\n`;
 
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;

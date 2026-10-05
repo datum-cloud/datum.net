@@ -17,6 +17,7 @@ const compat = new FlatCompat({
 export default defineConfig([
   globalIgnores([
     'dist/**/*',
+    'vendor/**/*',
     'node_modules/**/*',
     '**/dist/',
     '**/.astro/',

@@ -107,14 +107,15 @@ export interface MeterBar {
 
 export const performance = {
   eyebrow: 'Performance',
-  title: 'Fast-booting VMs for any code',
-  description: 'Datum Compute unlocks intelligence at the edge.',
+  title: 'Isolated. Fast. Private.',
+  description: 'Datum Compute securely unlocks intelligence at the edge.',
   points: [
-    'Lightweight VMs that start and stop in milliseconds',
-    'Deploy any containerized application',
+    'microVMs that start and stop in milliseconds',
+    'Supports any containerized application',
     'Private networking that spans clouds',
     'Autoscaling and pay-as-you-go pricing',
-    'Automatic health checks and monitoring',
+    'Pull images from private registries',
+    'Mount configs & secrets to the filesystem or env variables',
   ],
   cta: { text: 'Try Datum Compute', href: SIGNUP_URL },
   chart: {
@@ -157,8 +158,7 @@ export const useCases = {
         'Strong VM isolation per tenant',
         'Launch a sandbox in <10ms',
         'Fork sub-agents in milliseconds',
-        'Checkpoint and restore on demand',
-        '100K+ scale-to-zero instances per server',
+        'Private by default networking with Galactic VPC',
       ],
       cta: { text: 'View docs', href: DOCS_URL },
       terminal: {
@@ -205,10 +205,9 @@ export const useCases = {
       icon: 'bot',
       title: 'AI agents',
       description:
-        'Give each agent run its own disposable machine with GPU attachment available when inference or training needs it.',
+        'Give each agent run its own disposable machine, isolated and ready in milliseconds.',
       points: [
         'A private machine per agent run',
-        'Attach GPUs only for the steps that need them',
         'Snapshot mid-run and resume later',
         'Private egress through Galactic VPC',
       ],
@@ -219,8 +218,8 @@ export const useCases = {
         blocks: [
           [
             '$ datum workload create agent-run',
-            '  --gpu l40s:1 --metro DFW',
-            '✔ agent-run booted · gpu attached',
+            '  --metro DFW',
+            '✔ agent-run booted',
             '✔ checkpoint saved (9ms)',
           ],
         ],

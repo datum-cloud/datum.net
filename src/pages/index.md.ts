@@ -41,7 +41,7 @@ export const GET: APIRoute = async () => {
       '',
       'A modern edge cloud, backed by open source. Why use picks and shovels when you need bulldozers and backhoes?',
       '',
-      '**Private, protected, performant.** Our platform helps developers run workloads at the network edge and securely connect everything from doorbells to databases. Isolated agentic sandboxes? Global load balancing? Cloud interconnects to AWS or GCP? Datum offers a consistent runtime that is lovingly designed for Kubernetes platform engineers and AI builders.',
+      '**Private, protected, performant.** Our platform helps developers run workloads at the edge and securely connect everything from doorbells to databases. Isolated agentic sandboxes? Global load balancing? Cloud interconnects to AWS or GCP? Datum offers a consistent runtime that is lovingly designed for Kubernetes platform engineers and AI builders.',
       '',
       '- **Deliver** - Bring traffic into your world and meet the internet with confidence using our Layer7 load balancers and global DNS.',
       '- **Build** - Push intelligence to the edge with microVM compute, object storage, and a marketplace of partner solutions.',

@@ -99,6 +99,13 @@ export {
 // (see helloPineForgeAvatars.ts for why). Used by /hello and /dedicated-cloud.
 export { getHelloPineForgeAvatarUrl } from './helloPineForgeAvatars';
 
+// Per-position avatar variant resolution for the /about/team grid backdrop rhythm.
+export {
+  getTeamAvatarVariantMap,
+  TEAM_AVATAR_VARIANTS,
+  TEAM_AVATAR_VARIANT_BG,
+} from './teamAvatarVariants';
+
 // Re-export articles module (queries and cached fetchers)
 export {
   ARTICLES_QUERY,

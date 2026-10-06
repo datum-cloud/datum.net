@@ -4,7 +4,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { hero, performance, useCases, features } from '@data/compute';
+import { hero, performance, useCases } from '@data/compute';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
@@ -34,17 +34,8 @@ export const GET: APIRoute = async () => {
       sections.push('');
     }
 
-    sections.push(`## ${features.title}`, '');
-    for (const item of features.items) {
-      sections.push(`### ${item.title}`, '', item.description, '');
-      item.steps.forEach((step, index) => {
-        sections.push(`${index + 1}. ${step}`);
-      });
-      sections.push('');
-      if (item.note) {
-        sections.push(item.note, '');
-      }
-    }
+    // The features tabs section is hidden on the page (see platform/compute.astro),
+    // so it is left out of the markdown export too.
 
     const canonicalUrl = 'https://www.datum.net/platform/compute';
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');

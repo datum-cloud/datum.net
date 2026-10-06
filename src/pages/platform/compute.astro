@@ -13,7 +13,8 @@ import ModuleConnector from '@components/home/ModuleConnector.astro';
 import Hero from '@components/compute/Hero.astro';
 import Performance from '@components/compute/Performance.astro';
 import UseCases from '@components/compute/UseCases.astro';
-import Features from '@components/compute/Features.astro';
+// The "Features you'll love" tabs (components/compute/Features.astro) are hidden until
+// more than one tab has real content; re-add <Features /> after <UseCases /> to restore.
 import { getCollectionEntry } from '@utils/collectionUtils';
 
 const page = await getCollectionEntry('pages', 'platform/compute');
@@ -55,7 +56,6 @@ const jsonLd = {
       <Hero />
       <Performance />
       <UseCases />
-      <Features />
 
       <ModuleConnector />
     </div>

@@ -1,0 +1,17 @@
+{
+  "hosts": [],
+  "guests": [
+    {
+      "name": "Jack O'Brien",
+      "title": "CEO and co-founder at Subconscious",
+      "talk": "Inference in Marathon Mode",
+      "avatarUrl": "jack-obrien.jpg"
+    },
+    {
+      "name": "Sebastian Bryers",
+      "title": "Lead Solutions Engineer at Shopify",
+      "talk": "Lessons from Shopify's Agentic Coding Setup",
+      "avatarUrl": "sebastian-bryers.jpg"
+    }
+  ]
+}

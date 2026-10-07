@@ -42,7 +42,7 @@ const titleLead = 'Build';
 const titlePhrases = [
   'ephemeral databases',
   'AI agent sandboxes',
-  'build & test runners',
+  'test runners',
   'game servers',
   'headless browsers',
 ] as const;

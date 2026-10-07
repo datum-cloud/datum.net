@@ -78,12 +78,14 @@
     line-height: clamp(var(--38px), 11.5cqi, var(--text-9xl-canela-line-height));
   }
 
-  /* First headline row — "Build" plus the cycling phrase. */
+  /* First headline row — "Build" plus the cycling phrase. Wraps below `sm`, where
+     even the 32px floor can't fit "Build {longest phrase}" in the copy column. */
   .compute-headline-lead {
-    @apply block whitespace-nowrap;
+    @apply block whitespace-normal sm:whitespace-nowrap;
   }
 
-  /* Grid stack reserves the widest phrase width so cycling never shifts line two. */
+  /* Grid stack reserves the widest phrase width (and, when it wraps on mobile, its
+     height) so cycling never shifts the lines below. */
   .compute-headline-phrase-slot {
     @apply inline-grid align-bottom;
   }
@@ -99,7 +101,7 @@
   /* Cycling fragment of the hero headline — Figma annotation on node 15991:8580.
      Only this span animates. */
   .compute-headline-phrase {
-    @apply text-canyon-clay---links inline-block whitespace-nowrap;
+    @apply text-canyon-clay---links inline-block whitespace-normal sm:whitespace-nowrap;
     @apply transition-[opacity,transform] duration-300 ease-out;
 
     &.is-out {

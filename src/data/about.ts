@@ -118,6 +118,12 @@ export const inTheWild = {
         aspect: 'short',
       },
       {
+        id: 'nerding-out',
+        title: 'Nerding out',
+        description: 'Operators Unite at BalticNOG',
+        aspect: 'short',
+      },
+      {
         id: 'ab-game',
         title: 'Congratulations AB',
         description:

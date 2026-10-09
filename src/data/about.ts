@@ -120,7 +120,7 @@ export const inTheWild = {
       {
         id: 'nerding-out',
         title: 'Nerding out',
-        description: 'Operators Unite at BalticNOG',
+        description: 'Operators unite at BalticNOG',
         aspect: 'short',
       },
       {

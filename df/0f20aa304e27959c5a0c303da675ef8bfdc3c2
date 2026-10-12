@@ -1,0 +1,21 @@
+tests/e2e/nav-user-menu.spec.ts
+  s_b1b0933b685289::t_63895b71463662 1-46
+src/components/Nav.astro
+  s_b1b0933b685289::t_eeafed96c40344 175,196-197,200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "df0f20aa304e27959c5a0c303da675ef8bfdc3c2",
+  "prompts": {},
+  "sessions": {
+    "s_b1b0933b685289": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb07f6c8-1a49-4e93-9989-1a099ca42918",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

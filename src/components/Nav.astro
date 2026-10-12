@@ -172,7 +172,7 @@ const cloudPortalUrl =
     | {
         signedIn: true;
         user: { displayName: string; email?: string; avatarUrl?: string };
-        org?: { name: string; displayName: string };
+        org?: { name: string; displayName: string; hasProjects?: boolean };
         dashboardUrl: string;
       };
 
@@ -193,9 +193,11 @@ const cloudPortalUrl =
     const projectsUrl = status.org
       ? new URL(`/org/${encodeURIComponent(status.org.name)}/projects`, portal).href
       : null;
+    // hasProjects is omitted when the portal's lookup fails; only an explicit
+    // false hides Projects.
     const projects = menu.querySelector<HTMLAnchorElement>('[data-portal-user-menu-projects]');
     if (projects) {
-      if (projectsUrl) projects.href = projectsUrl;
+      if (projectsUrl && status.org?.hasProjects !== false) projects.href = projectsUrl;
       else projects.remove();
     }
     // Active users' dashboard is their projects page; only keep this item when

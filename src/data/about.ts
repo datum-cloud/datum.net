@@ -104,6 +104,12 @@ export const inTheWild = {
   columns: [
     [
       {
+        id: 'nyse-interview',
+        title: 'Zac’s interview with the NYSE',
+        description: 'Discussing the network and the AI infrastructure buildout',
+        aspect: 'tall',
+      },
+      {
         id: 'ab-fans',
         title: 'The Akademisk Boldklub Hustle',
         description:

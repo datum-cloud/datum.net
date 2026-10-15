@@ -1,0 +1,26 @@
+.github/copilot-instructions.md
+  s_8002bc0ae79376::t_6a4bf8f8577e97 71,184,186
+README.md
+  s_8002bc0ae79376::t_1921deeb548902 147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d13824f567256af2dff7143edcdffc4dea044850",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8002bc0ae79376": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f588049-8ab9-4203-921e-91e9ebde4037",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

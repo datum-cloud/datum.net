@@ -1,0 +1,196 @@
+name: Deploy Datum Compute
+
+# Rolls an image that publish.yml already pushed out to Datum Compute on the
+# general-purpose runtime. Manual only for now: production still ships from the
+# Kubernetes setup in config/. See docs/datum-compute-walkthrough.md.
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: Datum project ID (falls back to the DATUM_PROJECT repo variable)
+        default: project-9htv9
+      location:
+        description: Datum Compute location
+        default: us-central-1
+      image_tag:
+        description: Tag of ghcr.io/datum-cloud/datum-net to deploy (empty = v0.0.0-<short sha> of the selected commit)
+        default: ''
+      force_rollout:
+        description: Replace the instance even if the image is unchanged (use after changing the Secret)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: datum-compute
+  cancel-in-progress: false
+
+env:
+  IMAGE_REPO: ghcr.io/datum-cloud/datum-net
+  WORKLOAD: datum-net-gp
+  SECRET_NAME: datum-net-secrets
+  DATUMCTL_VERSION: 0.21.0
+  COMPUTE_PLUGIN_VERSION: v0.12.4
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: datum-compute
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'project-9htv9' }}
+    steps:
+      - id: ref
+        name: Name the image
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+        run: |
+          # publish.yml tags every main build v0.0.0-<short sha> and every
+          # release with its version. Redeploying the same tag does not replace
+          # the running instance, so use a new tag or set force_rollout.
+          tag="${IMAGE_TAG:-v0.0.0-${GITHUB_SHA::7}}"
+          echo "image=${IMAGE_REPO}:${tag}" >> "$GITHUB_OUTPUT"
+
+      # Fail early with a clear message when publish.yml has not pushed the tag
+      # yet. The package is public, so no registry login is needed.
+      - name: Check the image exists
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+        run: |
+          docker buildx imagetools inspect "$IMAGE" >/dev/null || {
+            echo "::error::$IMAGE was not found. Wait for the Publish Website run to finish, or pass image_tag."
+            exit 1
+          }
+
+      - name: Install datumctl
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/datumctl.deb" \
+            "https://github.com/datum-cloud/datumctl/releases/download/v${DATUMCTL_VERSION}/datumctl_${DATUMCTL_VERSION}_linux_amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/datumctl.deb"
+          # The 72 MB plugin download has a fixed 60 s client timeout.
+          for attempt in 1 2 3; do
+            datumctl plugin install "compute@${COMPUTE_PLUGIN_VERSION}" && break
+            [ "$attempt" = 3 ] && { echo "::error::could not install the compute plugin"; exit 1; }
+            sleep 10
+          done
+
+      - name: Log in to Datum Cloud
+        env:
+          DATUM_SA_CREDENTIALS: ${{ secrets.DATUM_SA_CREDENTIALS }}
+        run: |
+          umask 077
+          printf '%s' "$DATUM_SA_CREDENTIALS" > "$RUNNER_TEMP/datum-sa.json"
+          datumctl login --credentials "$RUNNER_TEMP/datum-sa.json"
+          rm -f "$RUNNER_TEMP/datum-sa.json"
+
+      # A Secret value that is not plain text makes the instance fail with
+      # ConfigurationError and block the rollout, so check before deploying.
+      # Never decode with errors="ignore": it hides the bad bytes. Only
+      # APP_PRIVATE_KEY (a PEM) may contain newlines. Values are never printed.
+      - name: Check the Secret
+        run: |
+          datumctl get secret "$SECRET_NAME" -n default --project "$DATUM_PROJECT" -o json |
+            python3 -I -c '
+          import base64, json, sys
+          required = ["API_URL", "APP_ID", "APP_INSTALLATION_ID", "APP_PRIVATE_KEY",
+                      "STRAPI_URL", "STRAPI_TOKEN", "STRAPI_WEBHOOK_SECRET"]
+          multiline = {"APP_PRIVATE_KEY"}
+          data = json.load(sys.stdin).get("data") or {}
+          problems = [f"{k}: missing" for k in required if k not in data]
+          for key, value in data.items():
+              raw = base64.b64decode(value)
+              try:
+                  text = raw.decode("ascii")
+              except UnicodeDecodeError:
+                  problems.append(f"{key}: not ASCII text")
+                  continue
+              allowed = "\n" if key in multiline else ""
+              if not text:
+                  problems.append(f"{key}: empty")
+              elif not all(c.isprintable() or c in allowed for c in text):
+                  problems.append(f"{key}: contains control characters")
+          for p in problems:
+              print(f"::error::Secret has a bad value - {p}")
+          sys.exit(1 if problems else 0)'
+
+      - name: Deploy
+        id: deploy
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+          LOCATION: ${{ inputs.location || 'us-central-1' }}
+          FORCE_ROLLOUT: ${{ inputs.force_rollout }}
+        run: |
+          args=()
+          # Instances read the Secret only at start. A changed env value makes
+          # a new template, which rolls the instance.
+          if [ "$FORCE_ROLLOUT" = true ]; then
+            args+=(--env "DEPLOY_REV=${GITHUB_RUN_ID}")
+          fi
+          datumctl compute deploy "$WORKLOAD" \
+            --project "$DATUM_PROJECT" \
+            --image "$IMAGE" \
+            --location "$LOCATION" \
+            --http-port 4321 \
+            --instance-type datumcloud/d1-standard-2 \
+            --runtime-class general-purpose \
+            --env "HOST=::" \
+            --env-from-secret "$SECRET_NAME" \
+            "${args[@]}" \
+            --yes | tee "$RUNNER_TEMP/deploy.log"
+          url="$(grep -oE 'https://[a-z0-9.-]+\.datumproxy\.net' "$RUNNER_TEMP/deploy.log" | tail -n 1)"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
+      # The public URL may sit behind Basic Authentication (a 401 is expected),
+      # so judge the deploy by the platform status instead of requesting pages.
+      - name: Check the rollout status
+        run: |
+          log="$RUNNER_TEMP/deploy.log"
+          for expected in 'Rollout complete' 'Backends .*healthy' 'Edge .*programmed' 'Certificate .*issued'; do
+            grep -qE "$expected" "$log" || { echo "::error::deploy output has no '$expected'"; exit 1; }
+          done
+          datumctl get workload "$WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
+            jq -e '.status.conditions[] | select(.type == "Available") | .status == "True"' >/dev/null || {
+              echo "::error::workload $WORKLOAD is not Available"
+              exit 1
+            }
+
+      # Optional: set the DATUM_BASIC_AUTH environment secret (user:password) to
+      # also request the site through Basic Authentication.
+      - name: Smoke test
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          BASIC_AUTH: ${{ secrets.DATUM_BASIC_AUTH }}
+        run: |
+          if [ -z "$BASIC_AUTH" ]; then
+            echo "DATUM_BASIC_AUTH is not set; skipping the page check."
+            exit 0
+          fi
+          [ -n "$URL" ] || { echo "::error::deploy printed no URL"; exit 1; }
+          # The URL's DNS can lag the rollout, and the edge may answer 503 for a
+          # few minutes after an instance is replaced, so retry before failing.
+          for i in $(seq 1 20); do
+            code="$(curl -s -o /dev/null -m 15 -u "$BASIC_AUTH" -w '%{http_code}' "$URL/" || true)"
+            echo "attempt $i: GET / -> ${code:-000}"
+            [ "$code" = 200 ] && exit 0
+            sleep 15
+          done
+          echo "::error::$URL did not return 200 within 5 minutes"
+          exit 1
+
+      - name: Summary
+        if: always()
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          {
+            echo "### Datum Compute"
+            echo "- Project: \`$DATUM_PROJECT\`"
+            echo "- Workload: \`$WORKLOAD\`"
+            echo "- Image: \`${IMAGE:-none}\`"
+            echo "- URL: ${URL:-none}"
+          } >> "$GITHUB_STEP_SUMMARY"

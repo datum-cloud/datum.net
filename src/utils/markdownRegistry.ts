@@ -45,6 +45,8 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/platform/deliver',
   '/platform/build',
   '/platform/connect',
+  '/platform/compute',
+  '/platform/dns',
 ]);
 
 /**

@@ -1,9 +1,13 @@
 name: Deploy Datum Compute
 
-# Rolls an image that publish.yml already pushed out to Datum Compute on the
-# general-purpose runtime. Manual only for now: production still ships from the
-# Kubernetes setup in config/. See docs/datum-compute-walkthrough.md.
+# Rolls an image that publish.yml pushed out to Datum Compute on the
+# general-purpose runtime. Runs manually, and automatically when a release is
+# published (publish.yml starts on the same event, so this run waits for its
+# image). Production still ships from the Kubernetes setup in config/.
+# See docs/datum-compute-walkthrough.md.
 on:
+  release:
+    types: ['published']
   workflow_dispatch:
     inputs:
       project:
@@ -35,9 +39,40 @@ env:
   COMPUTE_PLUGIN_VERSION: v0.12.4
 
 jobs:
-  deploy:
+  # Runs when this run reaches the front of the concurrency queue, so "latest"
+  # is judged at deploy time. An older or pre-release tag never replaces a newer
+  # release that already deployed (or is about to).
+  guard:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
+    outputs:
+      proceed: ${{ steps.latest.outputs.proceed }}
+    steps:
+      - id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if [ "$EVENT" != release ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # The latest release API skips pre-releases and drafts.
+          latest="$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq .tag_name)"
+          if [ "$latest" = "$RELEASE_TAG" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Skipping $RELEASE_TAG: the latest release is $latest."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy:
+    needs: guard
+    if: needs.guard.outputs.proceed == 'true'
+    runs-on: ubuntu-latest
+    # Up to 20 minutes waiting for the image, then the rollout and smoke test.
+    timeout-minutes: 45
     environment:
       name: datum-compute
       url: ${{ steps.deploy.outputs.url }}
@@ -48,23 +83,42 @@ jobs:
         name: Name the image
         env:
           IMAGE_TAG: ${{ inputs.image_tag }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RUN_EVENT: ${{ github.event_name }}
         run: |
           # publish.yml tags every main build v0.0.0-<short sha> and every
           # release with its version. Redeploying the same tag does not replace
           # the running instance, so use a new tag or set force_rollout.
-          tag="${IMAGE_TAG:-v0.0.0-${GITHUB_SHA::7}}"
+          if [ "$RUN_EVENT" = "release" ]; then
+            # publish-docker tags releases as v{{version}}, so a tag without
+            # the leading v still maps to the v-prefixed image.
+            tag="v${RELEASE_TAG#v}"
+          else
+            tag="${IMAGE_TAG:-v0.0.0-${GITHUB_SHA::7}}"
+          fi
           echo "image=${IMAGE_REPO}:${tag}" >> "$GITHUB_OUTPUT"
 
-      # Fail early with a clear message when publish.yml has not pushed the tag
-      # yet. The package is public, so no registry login is needed.
-      - name: Check the image exists
+      # A release starts publish.yml on the same event, so its image shows up a
+      # few minutes after this run starts: wait up to 20 minutes. A manual run
+      # only checks once and fails with a clear message. If publish.yml fails,
+      # the tag never appears and this step fails. The package is public, so no
+      # registry login is needed.
+      - name: Wait for the image
         env:
           IMAGE: ${{ steps.ref.outputs.image }}
+          RUN_EVENT: ${{ github.event_name }}
         run: |
-          docker buildx imagetools inspect "$IMAGE" >/dev/null || {
-            echo "::error::$IMAGE was not found. Wait for the Publish Website run to finish, or pass image_tag."
-            exit 1
-          }
+          attempts=1
+          [ "$RUN_EVENT" = release ] && attempts=40
+          for i in $(seq 1 "$attempts"); do
+            docker buildx imagetools inspect "$IMAGE" >/dev/null 2>&1 && exit 0
+            if [ "$i" -lt "$attempts" ]; then
+              echo "attempt $i: $IMAGE is not published yet"
+              sleep 30
+            fi
+          done
+          echo "::error::$IMAGE was not found. Wait for the Publish Website run to finish, or pass image_tag."
+          exit 1
 
       - name: Install datumctl
         run: |
@@ -147,8 +201,16 @@ jobs:
       # The public URL may sit behind Basic Authentication (a 401 is expected),
       # so judge the deploy by the platform status instead of requesting pages.
       - name: Check the rollout status
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
         run: |
           log="$RUNNER_TEMP/deploy.log"
+          # The workload must now run exactly the image this run meant to deploy.
+          datumctl get workload "$WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
+            jq -e --arg image "$IMAGE" '.spec.template.spec.runtime.sandbox.containers[0].image == $image' >/dev/null || {
+              echo "::error::workload $WORKLOAD is not running $IMAGE"
+              exit 1
+            }
           for expected in 'Rollout complete' 'Backends .*healthy' 'Edge .*programmed' 'Certificate .*issued'; do
             grep -qE "$expected" "$log" || { echo "::error::deploy output has no '$expected'"; exit 1; }
           done

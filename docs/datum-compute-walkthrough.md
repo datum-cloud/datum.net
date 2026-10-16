@@ -2,8 +2,8 @@
 
 This guide records the manual test deploy of `datum.net` to Datum Cloud Compute
 on the **general-purpose** runtime. It covers the steps, the problems we hit, and
-how we fixed them. The manual-only CI deploy is described in
-[Deploy from GitHub Actions](#deploy-from-github-actions).
+how we fixed them. The CI deploy (manual, and automatic on release) is
+described in [Deploy from GitHub Actions](#deploy-from-github-actions).
 
 **Audience:** engineers new to Datum Compute.
 **Status:** manual test only. Production still runs on the Kubernetes setup in
@@ -241,9 +241,22 @@ creates an Envoy `SecurityPolicy` named after the workload, targeting the
 
 `.github/workflows/deploy-datum.yml` (Actions → Deploy Datum Compute → Run
 workflow) rolls an image to the `datum-net-gp` workload. It follows the
-`twins-in-the-loop` workflow and is **manual only**: it is not called from
-`publish.yml`, and production still ships from the Kubernetes setup in
-`config/`.
+`twins-in-the-loop` workflow. It runs manually, and it also runs on its own when
+a **release** is published (the same `release: published` event as
+`publish.yml`; pushes to `main` do not deploy). Production still ships from the
+Kubernetes setup in `config/`.
+
+On a release run:
+
+- The image is the release tag with a leading `v` (`publish-docker` tags
+  releases as `v{{version}}`), and the inputs below use their defaults.
+- The run waits up to 20 minutes for `publish.yml` to push that image. If
+  `publish.yml` fails, the tag never appears and the deploy fails.
+- A `guard` job deploys only when the tag is the repo's latest release
+  (GitHub's "latest" skips pre-releases). An older tag or a pre-release is
+  skipped, so it cannot replace a newer deploy.
+- After the deploy, the workload must report the same image the run meant to
+  deploy.
 
 It does **not** build an image. It deploys the one `publish.yml` already pushed
 to `ghcr.io/datum-cloud/datum-net`.
@@ -262,8 +275,9 @@ start, and a deploy of the same image otherwise does nothing.
 
 What the job does, in order:
 
-1. Names the image and checks that the tag exists. If `publish.yml` has not
-   finished for the commit, it stops with a clear message.
+1. Names the image and waits for the tag to exist (up to 20 minutes on a
+   release run; a manual run checks once). If `publish.yml` has not pushed it,
+   it stops with a clear message.
 2. Installs `datumctl` 0.21.0 and the `compute` plugin v0.12.4, then logs in as a
    service account.
 3. **Checks the Secret strictly** before deploying: the required keys exist
@@ -283,6 +297,34 @@ page, add the environment secret `DATUM_BASIC_AUTH` (`user:password`).
 
 The deploy keeps the existing workload, so the URL and basic authentication are
 not affected. It never runs `destroy`.
+
+### Roll back
+
+Run the workflow manually and set `image_tag` to the last good release, for
+example `v2.21.4`. That image is already in GHCR, so nothing is rebuilt and the
+rollback takes minutes. A manual run skips the `guard` job, and the final check
+still confirms the workload runs that tag. Leave `force_rollout` off: the tag
+differs, so the instance is replaced anyway.
+
+Do not re-tag or cherry-pick to roll back:
+
+- Datum does not replace an instance when the image tag is unchanged, so a moved
+  or reused tag silently does nothing. Treat release tags as immutable.
+- A new release cut from an old commit becomes the "latest" release and starts
+  an automatic deploy again.
+
+To fix the bug for good, `git revert` the bad change and publish a new, higher
+version (for example `v2.21.6`).
+
+Things to know:
+
+- This only rolls back Datum Compute. Production on Kubernetes (`config/`) has
+  its own rollback and is not touched.
+- The next release deploys forward again on its own. Fix the cause first.
+- Every version shares one Secret. If the bad version added a key or changed a
+  format, check that the older image still works with the current Secret.
+- If a release run is still queued, it can replace your rollback when it gets its
+  turn. Wait for it or cancel it first.
 
 One-time setup:
 

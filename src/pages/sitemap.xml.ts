@@ -29,6 +29,8 @@ const STATIC_ROUTES = [
   '/platform/deliver',
   '/platform/build',
   '/platform/connect',
+  '/platform/compute',
+  '/platform/dns',
   '/handbook',
   '/locations',
   '/pricing',

@@ -16,7 +16,7 @@
           "title": "Deliver",
           "href": "/platform/deliver",
           "items": [
-            { "text": "Authoritative DNS", "href": "/platform/deliver" },
+            { "text": "Authoritative DNS", "href": "/platform/dns" },
             {
               "text": "ALB",
               "href": "/platform/deliver#application-load-balancer"
@@ -32,7 +32,7 @@
           "title": "Build",
           "href": "/platform/build",
           "items": [
-            { "text": "Compute", "href": "/platform/build" },
+            { "text": "Compute", "href": "/platform/compute" },
             { "text": "Object Storage", "href": "/platform/build#object-storage", "label": "Soon" },
             { "text": "Edge Apps", "href": "/platform/build#edge-apps", "label": "Soon" }
           ]

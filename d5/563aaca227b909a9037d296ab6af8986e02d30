@@ -1,0 +1,19 @@
+src/pages/changelog.astro
+  s_20866b2160b5f8::t_f02f9e791481ed 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d5563aaca227b909a9037d296ab6af8986e02d30",
+  "prompts": {},
+  "sessions": {
+    "s_20866b2160b5f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "648c9c36-9025-4a99-8c7e-9f00118143ee",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

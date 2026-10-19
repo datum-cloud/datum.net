@@ -12,7 +12,7 @@ on:
     inputs:
       project:
         description: Datum project ID (falls back to the DATUM_PROJECT repo variable)
-        default: project-9htv9
+        default: datum-cloud
       location:
         description: Datum Compute location
         default: us-central-1
@@ -77,7 +77,7 @@ jobs:
       name: datum-compute
       url: ${{ steps.deploy.outputs.url }}
     env:
-      DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'project-9htv9' }}
+      DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'datum-cloud' }}
     steps:
       - id: ref
         name: Name the image

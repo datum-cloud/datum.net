@@ -142,7 +142,7 @@ Previews should also be kept out of search engines; see [Security](#security).
 
 ### Secrets
 
-Secrets are per project, so previews running in `project-9htv9` could import
+Secrets are per project, so previews running in `datum-cloud` could import
 `datum-net-secrets`, the Secret used by `datum-net-gp`. Do not do that.
 
 Create a second Secret, `datum-net-preview-secrets`, and deploy previews with
@@ -298,7 +298,7 @@ helper are part of the first version for that reason.
 ## Verification plan
 
 Run these before writing the workflows. Use a temporary workload with a
-throwaway name in `project-9htv9`, and do not touch `datum-net-gp`.
+throwaway name in `datum-cloud`, and do not touch `datum-net-gp`.
 
 1. **Basic auth from the CLI.**
    Deploy a temporary workload. Create the `.htpasswd` Secret and the

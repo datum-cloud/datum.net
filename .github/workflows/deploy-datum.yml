@@ -1,15 +1,32 @@
 name: Deploy Datum Compute
 
 # Rolls an image that publish.yml pushed out to Datum Compute on the
-# general-purpose runtime. Runs manually, and automatically when a release is
-# published (publish.yml starts on the same event, so this run waits for its
-# image). Production still ships from the Kubernetes setup in config/.
+# general-purpose runtime. Every push to main deploys to staging, and a published
+# release deploys to production (publish.yml starts on the same events, so this
+# run waits for its image). A manual run picks the target. The production
+# website still ships from the Kubernetes setup in config/.
 # See docs/datum-compute-walkthrough.md.
 on:
+  push:
+    branches:
+      - main
+    # Same filter as publish.yml: no image is built for these, so there would
+    # be nothing to deploy.
+    paths-ignore:
+      - 'README.md'
+      - 'env.example'
+      - '.vscode/**'
   release:
     types: ['published']
   workflow_dispatch:
     inputs:
+      target:
+        description: Where to deploy (staging = datum-net-gp-staging, production = datum-net-gp)
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
       project:
         description: Datum project ID (falls back to the DATUM_PROJECT repo variable)
         default: datum-cloud
@@ -27,14 +44,15 @@ on:
 permissions:
   contents: read
 
+# One queue per target, so a push to main never replaces a queued release deploy.
+# A newer push replaces an older queued one, which is what staging wants.
+# Keep this expression in line with the "Pick the target" step.
 concurrency:
-  group: datum-compute
+  group: datum-compute-${{ (github.event_name == 'release' || inputs.target == 'production') && 'production' || 'staging' }}
   cancel-in-progress: false
 
 env:
   IMAGE_REPO: ghcr.io/datum-cloud/datum-net
-  WORKLOAD: datum-net-gp
-  SECRET_NAME: datum-net-secrets
   DATUMCTL_VERSION: 0.21.0
   COMPUTE_PLUGIN_VERSION: v0.12.4
 
@@ -47,7 +65,31 @@ jobs:
     timeout-minutes: 5
     outputs:
       proceed: ${{ steps.latest.outputs.proceed }}
+      target: ${{ steps.target.outputs.target }}
+      workload: ${{ steps.target.outputs.workload }}
+      secret_name: ${{ steps.target.outputs.secret_name }}
     steps:
+      # A release and a manual production run go to production. A push to main
+      # and a manual staging run go to staging.
+      - id: target
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_TARGET: ${{ inputs.target }}
+        run: |
+          if [ "$EVENT" = release ] || [ "$INPUT_TARGET" = production ]; then
+            {
+              echo "target=production"
+              echo "workload=datum-net-gp"
+              echo "secret_name=datum-net-secrets"
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo "target=staging"
+              echo "workload=datum-net-gp-staging"
+              echo "secret_name=datum-net-staging-secrets"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
       - id: latest
         env:
           GH_TOKEN: ${{ github.token }}
@@ -74,10 +116,12 @@ jobs:
     # Up to 20 minutes waiting for the image, then the rollout and smoke test.
     timeout-minutes: 45
     environment:
-      name: datum-compute
+      name: ${{ needs.guard.outputs.target == 'production' && 'datum-compute' || 'datum-compute-staging' }}
       url: ${{ steps.deploy.outputs.url }}
     env:
       DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'datum-cloud' }}
+      WORKLOAD: ${{ needs.guard.outputs.workload }}
+      SECRET_NAME: ${{ needs.guard.outputs.secret_name }}
     steps:
       - id: ref
         name: Name the image
@@ -87,8 +131,9 @@ jobs:
           RUN_EVENT: ${{ github.event_name }}
         run: |
           # publish.yml tags every main build v0.0.0-<short sha> and every
-          # release with its version. Redeploying the same tag does not replace
-          # the running instance, so use a new tag or set force_rollout.
+          # release with its version. A push to main deploys the build of that
+          # commit. Redeploying the same tag does not replace the running
+          # instance, so use a new tag or set force_rollout.
           if [ "$RUN_EVENT" = "release" ]; then
             # publish-docker tags releases as v{{version}}, so a tag without
             # the leading v still maps to the v-prefixed image.
@@ -98,18 +143,18 @@ jobs:
           fi
           echo "image=${IMAGE_REPO}:${tag}" >> "$GITHUB_OUTPUT"
 
-      # A release starts publish.yml on the same event, so its image shows up a
-      # few minutes after this run starts: wait up to 20 minutes. A manual run
-      # only checks once and fails with a clear message. If publish.yml fails,
-      # the tag never appears and this step fails. The package is public, so no
-      # registry login is needed.
+      # A release or a push to main starts publish.yml on the same event, so its
+      # image shows up a few minutes after this run starts: wait up to 20
+      # minutes. A manual run only checks once and fails with a clear message.
+      # If publish.yml fails, the tag never appears and this step fails. The
+      # package is public, so no registry login is needed.
       - name: Wait for the image
         env:
           IMAGE: ${{ steps.ref.outputs.image }}
           RUN_EVENT: ${{ github.event_name }}
         run: |
           attempts=1
-          [ "$RUN_EVENT" = release ] && attempts=40
+          [ "$RUN_EVENT" != workflow_dispatch ] && attempts=40
           for i in $(seq 1 "$attempts"); do
             docker buildx imagetools inspect "$IMAGE" >/dev/null 2>&1 && exit 0
             if [ "$i" -lt "$attempts" ]; then
@@ -246,11 +291,13 @@ jobs:
       - name: Summary
         if: always()
         env:
+          TARGET: ${{ needs.guard.outputs.target }}
           IMAGE: ${{ steps.ref.outputs.image }}
           URL: ${{ steps.deploy.outputs.url }}
         run: |
           {
             echo "### Datum Compute"
+            echo "- Target: \`${TARGET}\`"
             echo "- Project: \`$DATUM_PROJECT\`"
             echo "- Workload: \`$WORKLOAD\`"
             echo "- Image: \`${IMAGE:-none}\`"

@@ -2,7 +2,7 @@
 
 This guide records the manual test deploy of `datum.net` to Datum Cloud Compute
 on the **general-purpose** runtime. It covers the steps, the problems we hit, and
-how we fixed them. The CI deploy (manual, and automatic on release) is
+how we fixed them. The CI deploy (staging on every push to `main`, production on release, or manual) is
 described in [Deploy from GitHub Actions](#deploy-from-github-actions).
 
 **Audience:** engineers new to Datum Compute.
@@ -244,21 +244,33 @@ creates an Envoy `SecurityPolicy` named after the workload, targeting the
 ## Deploy from GitHub Actions
 
 `.github/workflows/deploy-datum.yml` (Actions → Deploy Datum Compute → Run
-workflow) rolls an image to the `datum-net-gp` workload. It follows the
-`twins-in-the-loop` workflow. It runs manually, and it also runs on its own when
-a **release** is published (the same `release: published` event as
-`publish.yml`; pushes to `main` do not deploy). Production still ships from the
-Kubernetes setup in `config/`.
+workflow) rolls an image to a Datum Compute workload. It follows the
+`twins-in-the-loop` workflow. It runs on its own on the same events as
+`publish.yml`, and you can also run it manually:
 
-On a release run:
+| Trigger               | Target                                | Image                            |
+| --------------------- | ------------------------------------- | -------------------------------- |
+| Push to `main`        | staging (`datum-net-gp-staging`)      | `v0.0.0-<short sha>` of the push |
+| Release published     | production (`datum-net-gp`)           | the release tag                  |
+| Manual run (`target`) | the `target` input, `staging` default | `image_tag`, or the run's commit |
+
+The production website still ships from the Kubernetes setup in `config/`.
+Each target has its own GitHub environment, workload and Secret, and its own
+concurrency queue, so a push to `main` never replaces a queued release deploy.
+A newer push replaces an older queued one.
+
+On a push or release run:
 
 - The image is the release tag with a leading `v` (`publish-docker` tags
-  releases as `v{{version}}`), and the inputs below use their defaults.
+  releases as `v{{version}}`), or `v0.0.0-<short sha>` for a push to `main`.
+  The inputs below use their defaults.
 - The run waits up to 20 minutes for `publish.yml` to push that image. If
-  `publish.yml` fails, the tag never appears and the deploy fails.
-- A `guard` job deploys only when the tag is the repo's latest release
-  (GitHub's "latest" skips pre-releases). An older tag or a pre-release is
-  skipped, so it cannot replace a newer deploy.
+  `publish.yml` fails, the tag never appears and the deploy fails. A push that
+  only touches `README.md`, `env.example` or `.vscode/` builds no image, so it
+  does not start a deploy either.
+- On a release run, a `guard` job deploys only when the tag is the repo's latest
+  release (GitHub's "latest" skips pre-releases). An older tag or a pre-release
+  is skipped, so it cannot replace a newer deploy.
 - After the deploy, the workload must report the same image the run meant to
   deploy.
 
@@ -269,6 +281,7 @@ Inputs:
 
 | Input           | Default              | Meaning                                                                             |
 | --------------- | -------------------- | ----------------------------------------------------------------------------------- |
+| `target`        | `staging`            | `staging` (`datum-net-gp-staging`) or `production` (`datum-net-gp`)                 |
 | `project`       | `datum-cloud`        | Datum project; falls back to the `DATUM_PROJECT` repo variable                      |
 | `location`      | `us-central-1`       | Compute location                                                                    |
 | `image_tag`     | `v0.0.0-<short sha>` | Tag to deploy. The default is the build of the commit you run the workflow on       |
@@ -279,8 +292,8 @@ start, and a deploy of the same image otherwise does nothing.
 
 What the job does, in order:
 
-1. Names the image and waits for the tag to exist (up to 20 minutes on a
-   release run; a manual run checks once). If `publish.yml` has not pushed it,
+1. Names the image and waits for the tag to exist (up to 20 minutes on a push
+   or release run; a manual run checks once). If `publish.yml` has not pushed it,
    it stops with a clear message.
 2. Installs `datumctl` 0.21.0 and the `compute` plugin v0.12.4, then logs in as a
    service account.
@@ -289,7 +302,8 @@ What the job does, in order:
    `STRAPI_TOKEN`, `STRAPI_WEBHOOK_SECRET`), and every value is non-empty ASCII
    text. Only `APP_PRIVATE_KEY` may contain newlines. It prints key names only,
    never values. This catches the corrupt values that cause `ConfigurationError`.
-4. Deploys with `HOST=::` and `--env-from-secret datum-net-secrets`.
+4. Deploys with `HOST=::` and `--env-from-secret` set to the target's Secret
+   (`datum-net-secrets` or `datum-net-staging-secrets`).
 5. Checks the rollout status from the deploy output (rollout complete, backend
    healthy, edge programmed, certificate issued) and that the workload is
    `Available`.
@@ -304,8 +318,8 @@ not affected. It never runs `destroy`.
 
 ### Roll back
 
-Run the workflow manually and set `image_tag` to the last good release, for
-example `v2.21.4`. That image is already in GHCR, so nothing is rebuilt and the
+Run the workflow manually, set `target` to the workload you are rolling back and
+set `image_tag` to the last good release, for example `v2.21.4`. That image is already in GHCR, so nothing is rebuilt and the
 rollback takes minutes. A manual run skips the `guard` job, and the final check
 still confirms the workload runs that tag. Leave `force_rollout` off: the tag
 differs, so the instance is replaced anyway.
@@ -324,20 +338,22 @@ Things to know:
 
 - This only rolls back Datum Compute. Production on Kubernetes (`config/`) has
   its own rollback and is not touched.
-- The next release deploys forward again on its own. Fix the cause first.
+- The next release (production) or the next push to `main` (staging) deploys
+  forward again on its own. Fix the cause first.
 - Every version shares one Secret. If the bad version added a key or changed a
   format, check that the older image still works with the current Secret.
-- If a release run is still queued, it can replace your rollback when it gets its
-  turn. Wait for it or cancel it first.
+- If a run for the same target is still queued, it can replace your rollback when
+  it gets its turn. Wait for it or cancel it first.
 
 One-time setup:
 
-1. Create a GitHub environment named `datum-compute`.
+1. Create the GitHub environments `datum-compute` (production) and
+   `datum-compute-staging` (staging).
 2. Create a Datum service account with edit access to the project and save its
-   credentials JSON as the environment secret `DATUM_SA_CREDENTIALS`. Do not
-   commit the file.
-3. Make sure the Secret `datum-net-secrets` exists in the project and passes the
-   check in Step 2.
+   credentials JSON as the environment secret `DATUM_SA_CREDENTIALS` in each
+   environment. Do not commit the file.
+3. Make sure the Secrets `datum-net-secrets` and `datum-net-staging-secrets`
+   exist in the project and pass the check in Step 2.
 4. Optional: set the `DATUM_PROJECT` repo variable and the `DATUM_BASIC_AUTH`
    environment secret.
 
@@ -353,8 +369,10 @@ service account is still to be confirmed.
 
 A second workload, `datum-net-gp-staging`, runs in the `datum-cloud` project next
 to `datum-net-gp`. It uses the same image repository, runtime and settings as
-production. The deploy workflow in this repo does not deploy it yet, so roll it
-by hand.
+production. The deploy workflow rolls it on every push to `main` (see
+[Deploy from GitHub Actions](#deploy-from-github-actions)). To roll it by hand,
+for example to try another tag, run the workflow with `target` set to `staging`
+or use the command below.
 
 | Item       | Value                                            |
 | ---------- | ------------------------------------------------ |

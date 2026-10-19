@@ -8,12 +8,16 @@ described in [Deploy from GitHub Actions](#deploy-from-github-actions).
 **Audience:** engineers new to Datum Compute.
 **Status:** manual test only. Production still runs on the Kubernetes setup in
 `config/` (see `publish.yml`).
+**Project:** the workload moved from the shared test project `project-9htv9` to
+`datum-cloud`. The Secret, the Basic Authentication policy and the CI service
+account were recreated there. DNS was not changed, and the public URL changed
+with the move.
 
 ## What was deployed
 
 | Item          | Value                                                            |
 | ------------- | ---------------------------------------------------------------- |
-| Project       | `datum/project-9htv9`                                            |
+| Project       | `datum-cloud`                                                    |
 | Workload      | `datum-net-gp` (namespace `default`)                             |
 | Runtime       | `general-purpose`, instance type `datumcloud/d1-standard-2`      |
 | Location      | `us-central-1`, 1 replica                                        |
@@ -47,8 +51,8 @@ project (11 of 20 requests answered, against 20 of 20 on `general-purpose`).
 A new project has Compute off.
 
 ```bash
-datumctl compute access --project project-9htv9      # Status: Not requested
-datumctl services enable compute.datumapis.com --project project-9htv9
+datumctl compute access --project datum-cloud      # Status: Not requested
+datumctl services enable compute.datumapis.com --project datum-cloud
 ```
 
 Compute turns on at once, but the project's **locations** appear a few minutes
@@ -56,7 +60,7 @@ later. Until then a deploy fails with
 `Unsupported value: "us-central-1"`. Wait until this lists locations:
 
 ```bash
-datumctl get locations --project project-9htv9
+datumctl get locations --project datum-cloud
 ```
 
 ## Step 2: Create the Secret
@@ -87,11 +91,11 @@ Create or fix the Secret from the CLI. Read values from a local file outside the
 repo, and never print them or paste them in chat:
 
 ```bash
-datumctl get secret datum-net-secrets -n default --project project-9htv9 -o json \
+datumctl get secret datum-net-secrets -n default --project datum-cloud -o json \
   | python3 -I -c '<set data[KEY] = base64(value) from your env file>' \
   > secret.json
-datumctl apply -f secret.json --project project-9htv9 --dry-run=server
-datumctl apply -f secret.json --project project-9htv9
+datumctl apply -f secret.json --project datum-cloud --dry-run=server
+datumctl apply -f secret.json --project datum-cloud
 rm secret.json
 ```
 
@@ -105,7 +109,7 @@ drops the bad bytes, so a corrupt value looks clean. We hid the
 `APP_INSTALLATION_ID` problem that way at first.
 
 ```bash
-datumctl get secret datum-net-secrets -n default --project project-9htv9 -o json \
+datumctl get secret datum-net-secrets -n default --project datum-cloud -o json \
   | python3 -I -c '
 import sys, json, base64
 bad = []
@@ -128,7 +132,7 @@ into the current folder, and it must not be committed.
 
 ```bash
 datumctl compute deploy datum-net-gp \
-  --project project-9htv9 \
+  --project datum-cloud \
   --image=ghcr.io/datum-cloud/datum-net:v2.21.5 \
   --location=us-central-1 \
   --http-port=4321 \
@@ -148,8 +152,8 @@ datumctl compute deploy datum-net-gp \
 ## Step 4: Verify
 
 ```bash
-datumctl get workload datum-net-gp -n default --project project-9htv9   # AVAILABLE True
-datumctl compute logs datum-net-gp --project project-9htv9
+datumctl get workload datum-net-gp -n default --project datum-cloud   # AVAILABLE True
+datumctl compute logs datum-net-gp --project datum-cloud
 ```
 
 Then request the site. With a new hostname your local resolver may not know the
@@ -193,7 +197,7 @@ creates an Envoy `SecurityPolicy` named after the workload, targeting the
   time:
 
   ```bash
-  datumctl compute deploy datum-net-gp --project project-9htv9 \
+  datumctl compute deploy datum-net-gp --project datum-cloud \
     --image=ghcr.io/datum-cloud/datum-net:v2.21.5 \
     --location=us-central-1 --env="SECRETS_REV=<next number>" --yes
   ```
@@ -265,7 +269,7 @@ Inputs:
 
 | Input           | Default              | Meaning                                                                             |
 | --------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| `project`       | `project-9htv9`      | Datum project; falls back to the `DATUM_PROJECT` repo variable                      |
+| `project`       | `datum-cloud`        | Datum project; falls back to the `DATUM_PROJECT` repo variable                      |
 | `location`      | `us-central-1`       | Compute location                                                                    |
 | `image_tag`     | `v0.0.0-<short sha>` | Tag to deploy. The default is the build of the commit you run the workflow on       |
 | `force_rollout` | off                  | Adds `DEPLOY_REV=<run id>` so the instance is replaced even if nothing else changed |
@@ -341,12 +345,12 @@ The image package is public, so the job needs no registry login and no
 `packages` permission. The workflow only has `contents: read`.
 
 The tag check, the strict Secret check and the status check were tested against
-`project-9htv9`. The full workflow has not run on GitHub yet, because the
+`datum-cloud`. The full workflow has not run on GitHub yet, because the
 service account does not exist.
 
 ## Cleanup
 
 ```bash
-datumctl compute destroy datum-net-gp --project project-9htv9 --yes   # instances and URL; the Secret stays
+datumctl compute destroy datum-net-gp --project datum-cloud --yes   # instances and URL; the Secret stays
 rm workload.yaml                                                       # generated file, never commit it
 ```

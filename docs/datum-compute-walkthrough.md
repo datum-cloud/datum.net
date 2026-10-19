@@ -21,11 +21,11 @@ with the move.
 | Workload      | `datum-net-gp` (namespace `default`)                             |
 | Runtime       | `general-purpose`, instance type `datumcloud/d1-standard-2`      |
 | Location      | `us-central-1`, 1 replica                                        |
-| Image         | `ghcr.io/datum-cloud/datum-net:v2.21.5` (public, from CI)        |
+| Image         | `ghcr.io/datum-cloud/datum-net:v2.21.7` (public, from CI)        |
 | Port          | `4321` (HTTP; the edge terminates TLS)                           |
 | Secret        | `datum-net-secrets`, imported with `--env-from-secret`           |
 | Access        | Basic authentication on the whole ALB (set in the console)       |
-| URL (current) | `https://haze-niche-fkn7r.datumproxy.net` (changes on `destroy`) |
+| URL (current) | `https://thaw-usage-g523m.datumproxy.net` (changes on `destroy`) |
 
 The test used the image that `publish.yml` already pushes, so nothing was built
 locally.
@@ -345,8 +345,60 @@ The image package is public, so the job needs no registry login and no
 `packages` permission. The workflow only has `contents: read`.
 
 The tag check, the strict Secret check and the status check were tested against
-`datum-cloud`. The full workflow has not run on GitHub yet, because the
-service account does not exist.
+`datum-cloud`. The full workflow ran on GitHub for release `v2.21.7`, but
+against the previous project and service account. A run with the `datum-cloud`
+service account is still to be confirmed.
+
+## Staging
+
+A second workload, `datum-net-gp-staging`, runs in the `datum-cloud` project next
+to `datum-net-gp`. It uses the same image repository, runtime and settings as
+production. The deploy workflow in this repo does not deploy it yet, so roll it
+by hand.
+
+| Item       | Value                                            |
+| ---------- | ------------------------------------------------ |
+| Workload   | `datum-net-gp-staging` (namespace `default`)     |
+| Secret     | `datum-net-staging-secrets`                      |
+| GitHub env | `datum-compute-staging` (`DATUM_SA_CREDENTIALS`) |
+| Hostname   | `website.staging.env.datum.net`                  |
+
+```bash
+datumctl compute deploy datum-net-gp-staging \
+  --project datum-cloud \
+  --image=ghcr.io/datum-cloud/datum-net:<tag> \
+  --location=us-central-1 \
+  --http-port=4321 \
+  --instance-type=datumcloud/d1-standard-2 \
+  --runtime-class=general-purpose \
+  --env="HOST=::" \
+  --env-from-secret=datum-net-staging-secrets \
+  --yes
+```
+
+- **Names.** A workload cannot be renamed. To change a name, `destroy` the
+  workload and deploy it again under the new name. The Secret stays when you
+  destroy.
+- **Secret values are the same as production for now.** `datum-net-staging-secrets`
+  was copied from `datum-net-secrets`. Replace the values with staging ones,
+  and use a separate service account for `datum-compute-staging`, before
+  relying on staging being isolated.
+- **Custom hostname.** Add it to the workload's HTTPProxy:
+
+  ```bash
+  datumctl patch httpproxy datum-net-gp-staging -n default --project datum-cloud \
+    --type merge -p '{"spec":{"hostnames":["website.staging.env.datum.net"]}}'
+  ```
+
+  **This changes DNS.** The platform creates a managed `ALIAS` record
+  (`website.staging.env`, pointing at the workload's `*.datumproxy.net` URL) in
+  the `datum.net` zone as soon as the hostname is attached, and removes it when
+  the hostname or the workload is removed. Check what the name points to before
+  you attach it, because the new record takes over the name.
+
+- **No Basic Authentication yet.** Set it up (see
+  [Basic authentication](#basic-authentication)) before the hostname gets
+  traffic, since the Secret holds production values.
 
 ## Cleanup
 

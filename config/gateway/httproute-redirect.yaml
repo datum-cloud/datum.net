@@ -52,7 +52,7 @@ spec:
         path:
           type: ReplaceFullPath
           replaceFullPath: /docs
-  # All other docs.datum.net paths redirect to www.datum.net preserving path
+  # All other docs.datum.net paths redirect to www.datum.net/docs preserving path
   - matches:
     - path:
         type: PathPrefix
@@ -66,6 +66,9 @@ spec:
         hostname: www.datum.net
         scheme: https
         statusCode: 301
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /docs
   # Exact match for brand.datum.net/ redirects to www.datum.net/brand
   - matches:
     - path:

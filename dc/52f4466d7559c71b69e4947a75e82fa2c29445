@@ -1,0 +1,19 @@
+package.json
+  s_7d41622534c2a8::t_8521a108458dcd 114-115
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "dc52f4466d7559c71b69e4947a75e82fa2c29445",
+  "prompts": {},
+  "sessions": {
+    "s_7d41622534c2a8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "17098fbc-96dc-4e5a-91ed-e1778f56a3a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -111,7 +111,8 @@
     "deepmerge-ts": "^8.0.2",
     "http-cache-semantics": "^4.3.0",
     "markdownlint-cli": {
-      "js-yaml": "^5.4.1"
+      "js-yaml": "^5.4.1",
+      "smol-toml": "^1.9.0"
     },
     "sharp": "^0.35.4",
     "svgo": "^4.1.0"

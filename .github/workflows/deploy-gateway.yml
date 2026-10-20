@@ -1,0 +1,141 @@
+name: Deploy Gateway
+
+# Applies config/gateway to Datum Cloud: the Gateway and HTTPRoutes that put
+# www.datum.net on Datum's edge and redirect datum.net, docs.datum.net and
+# brand.datum.net to it. These used to be applied by hand, so a change merged
+# here could sit unapplied for months.
+#
+# A push to main that changes config/gateway shows the diff and applies it. A
+# manual run shows the diff, and applies only when apply is ticked. Changing
+# this workflow on its own applies nothing.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'config/gateway/**'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Apply the changes (unticked = only show the diff)
+        type: boolean
+        default: false
+      project:
+        description: Datum project ID
+        default: datum-cloud
+
+permissions:
+  contents: read
+
+# Never run two applies at once, and never drop a queued one: each push's
+# config has to land, in order.
+concurrency:
+  group: datum-gateway
+  cancel-in-progress: false
+
+env:
+  DATUMCTL_VERSION: 0.21.0
+  NAMESPACE: datum-net
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # The production service account deploy-datum.yml uses. It needs to write
+    # Gateways, HTTPRoutes and EndpointSlices in the datum-net namespace.
+    environment: datum-compute
+    env:
+      DATUM_PROJECT: ${{ inputs.project || 'datum-cloud' }}
+      APPLY: ${{ github.event_name == 'push' || inputs.apply }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install datumctl
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/datumctl.deb" \
+            "https://github.com/datum-cloud/datumctl/releases/download/v${DATUMCTL_VERSION}/datumctl_${DATUMCTL_VERSION}_linux_amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/datumctl.deb"
+
+      - name: Log in to Datum Cloud
+        env:
+          DATUM_SA_CREDENTIALS: ${{ secrets.DATUM_SA_CREDENTIALS }}
+        run: |
+          umask 077
+          printf '%s' "$DATUM_SA_CREDENTIALS" > "$RUNNER_TEMP/datum-sa.json"
+          datumctl login --credentials "$RUNNER_TEMP/datum-sa.json"
+          rm -f "$RUNNER_TEMP/datum-sa.json"
+
+      # datumctl diff exits 0 for no changes, 1 for changes and >1 on error.
+      - name: Diff
+        id: diff
+        run: |
+          set +e
+          datumctl diff -k config/gateway -n "$NAMESPACE" --project "$DATUM_PROJECT" > "$RUNNER_TEMP/gateway.diff"
+          code=$?
+          set -e
+          cat "$RUNNER_TEMP/gateway.diff"
+          case "$code" in
+            0) echo "changed=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "changed=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::datumctl diff failed (exit $code)"; exit "$code" ;;
+          esac
+
+      - name: Apply
+        if: steps.diff.outputs.changed == 'true' && env.APPLY == 'true'
+        run: datumctl apply -k config/gateway -n "$NAMESPACE" --project "$DATUM_PROJECT"
+
+      # The edge reports each object's generation once it has taken it in, so
+      # wait for the Gateway and every listener to be Programmed, and every
+      # route to be Accepted, at the generation just applied. A listener whose
+      # certificate can't be issued (e.g. a hostname with no DNS) fails here.
+      - name: Check the Gateway and routes
+        if: steps.diff.outputs.changed == 'true' && env.APPLY == 'true'
+        run: |
+          get() { datumctl get "$@" -n "$NAMESPACE" --project "$DATUM_PROJECT" -o json; }
+          routes="$(get httproute | jq -r '.items[].metadata.name')"
+          for i in $(seq 1 40); do
+            ok=true
+            get gateway datum-net-gateway | jq -e '
+              .metadata.generation as $g
+              | ([.status.conditions[]? | select(.type == "Programmed" and .status == "True" and .observedGeneration == $g)] | length == 1)
+                and ([.status.listeners[]?] | length > 0)
+                and ([.status.listeners[]?.conditions[] | select(.type == "Programmed" and .status != "True")] | length == 0)
+            ' >/dev/null || ok=false
+            for r in $routes; do
+              get httproute "$r" | jq -e '
+                .metadata.generation as $g
+                | [.status.parents[]?.conditions[] | select(.type == "Accepted")] as $c
+                | ($c | length > 0) and all($c[]; .status == "True" and .observedGeneration == $g)
+              ' >/dev/null || ok=false
+            done
+            [ "$ok" = true ] && exit 0
+            echo "attempt $i: not programmed yet"
+            sleep 15
+          done
+          echo "::error::the Gateway or a route was not programmed within 10 minutes"
+          get gateway datum-net-gateway | jq '.status'
+          for r in $routes; do get httproute "$r" | jq --arg r "$r" '{route: $r, parents: .status.parents}'; done
+          exit 1
+
+      - name: Summary
+        if: always()
+        env:
+          CHANGED: ${{ steps.diff.outputs.changed }}
+        run: |
+          {
+            echo "### Datum Gateway"
+            echo "- Project: \`$DATUM_PROJECT\`, namespace \`$NAMESPACE\`"
+            if [ "$CHANGED" = false ]; then
+              echo "- No changes: production matches config/gateway."
+            elif [ "$CHANGED" = true ] && [ "$APPLY" = true ]; then
+              echo "- Applied the diff below."
+            elif [ "$CHANGED" = true ]; then
+              echo "- Diff only: rerun with apply ticked to apply it."
+            fi
+            if [ -s "$RUNNER_TEMP/gateway.diff" ]; then
+              echo
+              echo '```diff'
+              cat "$RUNNER_TEMP/gateway.diff"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

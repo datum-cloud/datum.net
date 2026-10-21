@@ -32,7 +32,7 @@
             { "text": "datumctl (CLI)", "href": "/docs/datumctl/overview" },
             { "text": "Skills", "href": "/docs/agents/skills" },
             { "text": "MCP", "href": "/docs/datum-mcp" },
-            { "text": "Recipes", "href": "/docs/recipes" },
+            { "text": "Recipes", "href": "https://agents.datum.net/recipes" },
             { "text": "llms.txt", "href": "/llms.txt" }
           ]
         }

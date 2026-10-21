@@ -27,6 +27,7 @@ CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.d
 
 FROM node:24.16.0-alpine3.22 AS production
 WORKDIR /app
+RUN apk upgrade --no-cache ca-certificates-bundle
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs

@@ -1,14 +1,21 @@
 @layer components {
   .essentials-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-    @apply border-silver-mist border;
-    @apply bg-silver-mist gap-px;
   }
 
+  /* Each cell draws its own collapsed 1px keyline so an incomplete last row
+     leaves its empty slots unframed instead of filled. */
   .essentials-item {
     @apply bg-platinum;
     @apply flex flex-col items-start gap-7;
     @apply p-8 lg:p-11;
+
+    box-shadow:
+      1px 0 0 0 var(--color-silver-mist),
+      0 1px 0 0 var(--color-silver-mist),
+      1px 1px 0 0 var(--color-silver-mist),
+      inset 1px 0 0 0 var(--color-silver-mist),
+      inset 0 1px 0 0 var(--color-silver-mist);
   }
 
   .essentials-item-icon {
@@ -17,8 +24,8 @@
     @apply size-10;
 
     background-image: linear-gradient(
-      var(--color-iris-highlight-accent),
-      var(--color-iris-highlight-accent)
+      var(--essentials-highlight, var(--color-iris-highlight-accent)),
+      var(--essentials-highlight, var(--color-iris-highlight-accent))
     );
     background-size: 0% 100%;
     background-repeat: no-repeat;
@@ -34,6 +41,22 @@
 
     img {
       @apply size-5;
+    }
+  }
+
+  .essentials-grid--pine {
+    --essentials-highlight: var(--color-aurora-mist);
+
+    .essentials-item {
+      @apply lg:p-10;
+    }
+
+    .essentials-item-description {
+      @apply text-pretty;
+    }
+
+    .essentials-item-icon svg {
+      @apply text-pine-forge---links;
     }
   }
 

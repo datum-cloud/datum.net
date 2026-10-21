@@ -183,8 +183,12 @@ export interface FooterProps {
   illustrationBgClass?: string;
   /** Prefooter copy overrides. Omit for the site-wide default. */
   ctaTitle?: string;
+  /** Untinted words placed before `ctaTitleAccent`. */
+  ctaTitleLead?: string;
   /** Leading fragment of the prefooter headline, tinted pine-forge. */
   ctaTitleAccent?: string;
+  /** Words moved onto their own line after `ctaTitle` from md up. */
+  ctaTitleTail?: string;
   ctaDescription?: string;
   ctaButtons?: FooterCtaButton[];
 }

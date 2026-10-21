@@ -1,0 +1,75 @@
+---
+// src/components/platform/Galactic.astro
+
+import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import DocsArrow from '@assets/svgs/platform-docs-arrow.svg';
+import { galactic } from '@data/platform';
+---
+
+<section
+  id="galactic"
+  class="section--block section--block--x-pad border-silver-mist overflow-hidden border-b bg-white"
+  aria-labelledby="galactic-title"
+>
+  <div class="max-width-nav large-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left right top />
+    <SectionLine left bottom />
+
+    <div class="platform-section-header spacing-pad">
+      <SectionEyebrow variant="pine">{galactic.eyebrow}</SectionEyebrow>
+      <h2 id="galactic-title" class="section--title text-midnight-fjord">
+        {galactic.titleLead}{' '}
+        <span class="platform-accent text-highlight">{galactic.titleAccent}</span>
+      </h2>
+      <p class="platform-section-description">
+        {galactic.description[0]}
+        <br class="hidden lg:block" />
+        {galactic.description[1]}
+      </p>
+    </div>
+
+    <div class="spacing-pad w-full">
+      <div class="platform-resources">
+        <SectionLine left top extended />
+        <SectionLine right top extended />
+        {
+          galactic.lists.map((list) => (
+            <div class="platform-resource-list">
+              <h3 class="platform-resource-heading">{list.title}</h3>
+              <ul class="flex flex-col gap-px">
+                {list.items.map((item) => (
+                  <li class="platform-resource-item">
+                    <span class="platform-resource-icon">
+                      <Icon name={item.icon} class="stroke-1.75" />
+                    </span>
+                    <span class="platform-resource-content">
+                      <span class="platform-resource-title">{item.title}</span>
+                      {item.description && (
+                        <span class="platform-resource-description">{item.description}</span>
+                      )}
+                    </span>
+                    {item.soon && <span class="platform-resource-badge">Soon</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="platform-docs">
+      <DocsArrow class="platform-docs-arrow" aria-hidden="true" />
+      <p class="platform-section-description">{galactic.docs.text}</p>
+      <Button
+        class="btn btn--alpha"
+        text={galactic.docs.cta.text}
+        href={galactic.docs.cta.href}
+        data-rybbit-event="Platform: View docs"
+      />
+    </div>
+  </div>
+</section>

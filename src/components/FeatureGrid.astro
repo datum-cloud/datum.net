@@ -1,0 +1,79 @@
+---
+// src/components/FeatureGrid.astro
+
+import Icon from '@components/Icon.astro';
+
+export interface FeatureGridItem {
+  /** Icon name understood by Icon.astro (lucide map plus custom brand icons). */
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface FeatureGridProps {
+  items: FeatureGridItem[];
+  /** Icon tint and the highlight that fills the icon tile on scroll. */
+  variant?: 'iris' | 'pine';
+  class?: string;
+}
+
+const { items, variant = 'iris', class: className = '' } = Astro.props as FeatureGridProps;
+---
+
+<div class:list={['essentials-grid', `essentials-grid--${variant}`, className]} data-feature-grid>
+  {
+    items.map((item) => (
+      <div class="essentials-item">
+        <div class="essentials-item-icon">
+          <Icon name={item.icon} class="stroke-1.75" />
+        </div>
+        <div class="essentials-item-content">
+          <p class="essentials-item-title">{item.title}</p>
+          <p class="essentials-item-description">{item.description}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  function makeHighlighter(container: Element, selector: string, threshold = 0.4) {
+    let isHighlighted = false;
+
+    function highlight() {
+      if (isHighlighted) return;
+      isHighlighted = true;
+      Array.from(container.querySelectorAll<HTMLElement>(selector)).forEach((el, i) =>
+        setTimeout(() => el.classList.add('highlight-animate'), i * 80)
+      );
+    }
+
+    const rect = container.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      highlight();
+    }
+
+    // Stacked single-column grids can be several viewports tall, so a fixed
+    // threshold may never be reachable.
+    const maxVisible = window.innerHeight / rect.height;
+    const effectiveThreshold = Math.min(threshold, maxVisible * 0.9);
+
+    new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) highlight();
+      },
+      { threshold: effectiveThreshold }
+    ).observe(container);
+
+    new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) isHighlighted = false;
+      },
+      { threshold: 0 }
+    ).observe(container);
+  }
+
+  document
+    .querySelectorAll('[data-feature-grid]')
+    .forEach((grid) => makeHighlighter(grid, '.essentials-item-icon'));
+</script>

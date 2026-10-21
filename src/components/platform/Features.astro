@@ -1,0 +1,28 @@
+---
+// src/components/platform/Features.astro
+
+import FeatureGrid from '@components/FeatureGrid.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import { features } from '@data/platform';
+---
+
+<section
+  id="features"
+  class="section--block section--block--x-pad border-silver-mist bg-platinum overflow-hidden border-b"
+  aria-labelledby="features-title"
+>
+  <div class="max-width-nav large-pad relative flex flex-col items-center gap-12 md:gap-16">
+    <SectionLine left top />
+
+    <div class="platform-section-header spacing-pad">
+      <SectionEyebrow variant="pine">{features.eyebrow}</SectionEyebrow>
+      <h2 id="features-title" class="section--title text-midnight-fjord">{features.title}</h2>
+      <p class="platform-section-description">{features.description}</p>
+    </div>
+
+    <div class="spacing-pad w-full">
+      <FeatureGrid items={features.items} variant="pine" class="max-width-nopad" />
+    </div>
+  </div>
+</section>

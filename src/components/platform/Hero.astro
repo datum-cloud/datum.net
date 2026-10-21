@@ -1,0 +1,43 @@
+---
+// src/components/platform/Hero.astro
+
+import Button from '@components/Button.astro';
+import SectionLine from '@components/SectionLine.astro';
+import BackboneIllustration from '@components/platform/BackboneIllustration.astro';
+import { hero } from '@data/platform';
+---
+
+<section
+  class="platform-hero section--block section--block--x-pad border-silver-mist border-b"
+  aria-labelledby="platform-hero-title"
+>
+  <div class="platform-hero-grid" aria-hidden="true"></div>
+
+  <div class="platform-hero-inner">
+    <SectionLine left right bottom />
+
+    <div class="platform-hero-copy">
+      <h1 id="platform-hero-title" class="platform-hero-title">
+        {hero.titleLines[0]}
+        <br class="hidden md:block" />
+        {hero.titleLines[1]}{' '}
+        <span class="platform-accent text-highlight">{hero.titleAccent}</span>
+      </h1>
+
+      <div class="platform-hero-actions">
+        <p class="platform-hero-description">{hero.description}</p>
+        <Button
+          class="btn btn--midnight-fjord"
+          text={hero.cta.text}
+          href={hero.cta.href}
+          icon={{ name: 'arrow-right', size: 'md' }}
+          target="_blank"
+          data-rybbit-event="Platform: Start for free"
+        />
+        <p class="platform-hero-footnote">{hero.footnote}</p>
+      </div>
+    </div>
+
+    <BackboneIllustration />
+  </div>
+</section>

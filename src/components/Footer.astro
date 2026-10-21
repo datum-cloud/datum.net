@@ -22,7 +22,9 @@ const {
   showSignup = true,
   plainIllustration = false,
   illustrationBgClass = 'bg-glacier-mist-700',
+  ctaTitleLead = '',
   ctaTitle = 'go anywhere',
+  ctaTitleTail = '',
   ctaTitleAccent = 'Start here,',
   ctaDescription = 'Own more of your stack, reduce latency across regions, and connect privately with customers.',
   ctaButtons = [
@@ -72,7 +74,10 @@ const [platformSection, resourcesSection, companySection] = filterNavFooterSecti
           </div>
           <div class="max-width-nopad flex flex-col items-center gap-5.5 pt-14 text-center md:gap-10 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40">
             <h2 class="section--title">
+              {ctaTitleLead}
               <span class="text-pine-forge---links">{ctaTitleAccent}</span> {ctaTitle}
+              {ctaTitleTail && <br class="hidden md:block" />}
+              {ctaTitleTail}
             </h2>
             <p class="datum-text-xl max-w-5xl text-pretty opacity-80">{ctaDescription}</p>
             <div class="flex items-center justify-center gap-4">

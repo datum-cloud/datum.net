@@ -178,8 +178,6 @@ const REDIRECTS = {
   '/products/': { destination: '/platform/deliver', status: 301 },
   '/product/vpc': { destination: '/platform/deliver', status: 301 },
   '/features.md': { destination: '/platform/deliver.md', status: 301 },
-  '/platform': { destination: '/platform/deliver', status: 301 },
-  '/platform/': { destination: '/platform/deliver', status: 301 },
   '/features': { destination: '/platform/deliver', status: 301 },
   '/features/': { destination: '/platform/deliver', status: 301 },
   '/features/deliver': { destination: '/platform/deliver', status: 301 },

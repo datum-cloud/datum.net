@@ -1,0 +1,372 @@
+---
+// src/components/platform/BackboneIllustration.astro
+
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+import DatumStamp from '@assets/svgs/platform-datum-stamp.svg';
+import logoGke from '@assets/images/platform/logo-gke.png';
+import logoTailscale from '@assets/images/platform/logo-tailscale.png';
+import logoAws from '@assets/images/platform/logo-aws.png';
+import logoEquinix from '@assets/images/platform/logo-equinix.png';
+import logoApple from '@assets/images/platform/logo-apple.png';
+import { backboneStops, type BackboneStopId } from '@data/platform';
+
+interface Box {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+type Logo =
+  { kind: 'image'; src: ImageMetadata; box: Box; clip?: Box } | { kind: 'datum'; box: Box };
+
+interface StopLayout {
+  card: Box;
+  logo: Logo;
+  /** Card-relative origin of the first text line's box. */
+  text: { x: number; y: number };
+  node: { x: number; y: number };
+  /** Drawn from the node out to the card. */
+  connector: string;
+  /** Where the node sits along the backbone, 0 (left) to 1 (right). */
+  progress: number;
+}
+
+// Coordinates are Figma node 18302:67791 (1680px frame) units.
+const layout: Record<BackboneStopId, StopLayout> = {
+  gke: {
+    card: { x: 363, y: 15.88, w: 135, h: 55 },
+    logo: { kind: 'image', src: logoGke, box: { x: -10, y: 5, w: 86, h: 45 } },
+    text: { x: 65, y: 13 },
+    node: { x: 480, y: 129.88 },
+    connector: 'M480 129.88V52.38a3 3 0 0 0-3-3H442.5',
+    progress: 0.26,
+  },
+  mac: {
+    card: { x: 372, y: 265.88, w: 133, h: 56 },
+    logo: { kind: 'image', src: logoApple, box: { x: 10, y: 9, w: 34, h: 34 } },
+    text: { x: 53, y: 14 },
+    node: { x: 561, y: 250.22 },
+    connector: 'M561 250.22V287.38a3 3 0 0 1-3 3H492.5',
+    progress: 0.36,
+  },
+  tailscale: {
+    card: { x: 610, y: 64.88, w: 139, h: 56 },
+    logo: {
+      kind: 'image',
+      src: logoTailscale,
+      box: { x: -3.8, y: -1.65, w: 184.86, h: 59.3 },
+      clip: { x: 4, y: 4, w: 49, h: 48 },
+    },
+    text: { x: 57, y: 14 },
+    node: { x: 680.5, y: 250.22 },
+    connector: 'M680.5 250.22V112.38',
+    progress: 0.42,
+  },
+  datum: {
+    card: { x: 819, y: 18.88, w: 150, h: 56 },
+    logo: { kind: 'datum', box: { x: 13, y: 14, w: 28, h: 28 } },
+    text: { x: 55, y: 14 },
+    node: { x: 920.5, y: 169.88 },
+    connector: 'M920.5 169.88V52.88a3 3 0 0 0-3-3H899',
+    progress: 0.58,
+  },
+  s3: {
+    card: { x: 1099, y: 225.88, w: 169, h: 56 },
+    logo: { kind: 'image', src: logoAws, box: { x: 14, y: 10, w: 39, h: 39 } },
+    text: { x: 70, y: 14 },
+    node: { x: 1081.5, y: 129.88 },
+    connector: 'M1081.5 129.88V247.38a3 3 0 0 0 3 3H1116',
+    progress: 0.68,
+  },
+  enterprise: {
+    card: { x: 1107, y: 23.88, w: 145, h: 56 },
+    logo: { kind: 'image', src: logoEquinix, box: { x: 16, y: 16, w: 35, h: 23 } },
+    text: { x: 68, y: 13 },
+    node: { x: 1280, y: 129.88 },
+    connector: 'M1280 131.38V52.88a3 3 0 0 0-3-3H1231.5',
+    progress: 0.78,
+  },
+};
+
+const BACKBONE =
+  'M0 169.88H317.5a3 3 0 0 0 3-3V132.88a3 3 0 0 1 3-3H517a3 3 0 0 1 3 3V247.22a3 3 0 0 0 3 3H718a3 3 0 0 0 3-3V172.88a3 3 0 0 1 3-3H1038a3 3 0 0 0 3-3V132.88a3 3 0 0 1 3-3H1277.09a3 3 0 0 1 3 3V166.88a3 3 0 0 0 3 3H1680';
+
+/** Seconds — keep in sync with the backbone draw in components-platform.css. */
+const LINE_DELAY = 0.3;
+const LINE_DURATION = 2.2;
+const LOOP_START = LINE_DELAY + LINE_DURATION;
+
+const resolveLogoHref = async (logo: Logo): Promise<string | null> => {
+  switch (logo.kind) {
+    case 'image': {
+      const image = await getImage({
+        src: logo.src,
+        width: Math.round(logo.box.w * 3),
+        format: 'webp',
+      });
+      return image.src;
+    }
+    case 'datum':
+      return null;
+    default: {
+      const exhaustive: never = logo;
+      return exhaustive;
+    }
+  }
+};
+
+const stops = await Promise.all(
+  backboneStops.map(async (stop) => {
+    const stopLayout = layout[stop.id];
+    return {
+      ...stop,
+      ...stopLayout,
+      logoHref: await resolveLogoHref(stopLayout.logo),
+      delay: LINE_DELAY + stopLayout.progress * LINE_DURATION,
+    };
+  })
+);
+
+const label = `Galactic VPC backbone linking ${backboneStops
+  .map((stop) => stop.lines.join(' '))
+  .join(', ')}.`;
+---
+
+<div class="backbone" data-backbone>
+  <svg
+    class="backbone-svg"
+    viewBox="355 0 970 340"
+    role="img"
+    aria-label={label}
+    overflow="visible"
+    style={`--backbone-delay: ${LINE_DELAY}s; --backbone-duration: ${LINE_DURATION}s;`}
+  >
+    <defs>
+      <linearGradient
+        id="backbone-stroke"
+        x1="0"
+        y1="0"
+        x2="1680"
+        y2="0"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="#0c1d31" stop-opacity="0"></stop>
+        <stop offset="0.19" stop-color="#0c1d31"></stop>
+        <stop offset="0.81" stop-color="#0c1d31"></stop>
+        <stop offset="1" stop-color="#0c1d31" stop-opacity="0"></stop>
+      </linearGradient>
+
+      <filter
+        id="backbone-glow"
+        x="-20"
+        y="100"
+        width="1720"
+        height="180"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feOffset in="SourceAlpha" dy="2" result="drop-offset"></feOffset>
+        <feGaussianBlur in="drop-offset" stdDeviation="2" result="drop-blur"></feGaussianBlur>
+        <feFlood flood-color="#b3d56f" result="glow-color"></feFlood>
+        <feComposite in="glow-color" in2="drop-blur" operator="in" result="drop"></feComposite>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="7.5" result="halo-blur"></feGaussianBlur>
+        <feComposite in="halo-blur" in2="SourceAlpha" operator="out" result="halo-alpha"
+        ></feComposite>
+        <feComposite in="glow-color" in2="halo-alpha" operator="in" result="halo"></feComposite>
+        <feMerge>
+          <feMergeNode in="drop"></feMergeNode>
+          <feMergeNode in="halo"></feMergeNode>
+          <feMergeNode in="SourceGraphic"></feMergeNode>
+        </feMerge>
+      </filter>
+
+      <filter id="backbone-card-shadow" x="-30%" y="-40%" width="160%" height="200%">
+        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0c1d31" flood-opacity="0.03"
+        ></feDropShadow>
+        <feDropShadow dx="0" dy="4" stdDeviation="7.5" flood-color="#0c1d31" flood-opacity="0.1"
+        ></feDropShadow>
+      </filter>
+
+      <radialGradient id="backbone-packet-glow">
+        <stop offset="0" stop-color="#e6f59f" stop-opacity="0.95"></stop>
+        <stop offset="1" stop-color="#b3d56f" stop-opacity="0"></stop>
+      </radialGradient>
+
+      {
+        stops.map((stop) => (
+          <clipPath id={`backbone-clip-${stop.id}`}>
+            <rect width={stop.card.w} height={stop.card.h} rx="3" />
+          </clipPath>
+        ))
+      }
+      {
+        stops.map(
+          (stop) =>
+            stop.logo.kind === 'image' &&
+            stop.logo.clip && (
+              <clipPath id={`backbone-logo-clip-${stop.id}`}>
+                <rect
+                  x={stop.logo.clip.x}
+                  y={stop.logo.clip.y}
+                  width={stop.logo.clip.w}
+                  height={stop.logo.clip.h}
+                />
+              </clipPath>
+            )
+        )
+      }
+    </defs>
+
+    <g class="backbone-connectors" fill="none" stroke="#0c1d31" stroke-opacity="0.8">
+      {
+        stops.map((stop) => (
+          <path
+            id={`backbone-connector-${stop.id}`}
+            class="backbone-connector"
+            d={stop.connector}
+            pathLength="1"
+            style={`--d: ${stop.delay}s`}
+          />
+        ))
+      }
+    </g>
+
+    <path
+      id="backbone-path"
+      class="backbone-line"
+      d={BACKBONE}
+      pathLength="1"
+      fill="none"
+      stroke="url(#backbone-stroke)"
+      stroke-width="3"
+      filter="url(#backbone-glow)"></path>
+
+    <g class="backbone-packets" aria-hidden="true">
+      {
+        [
+          { dur: 7, begin: LOOP_START, reverse: false },
+          { dur: 7, begin: LOOP_START + 3.5, reverse: false },
+          { dur: 9, begin: LOOP_START + 1.6, reverse: true },
+        ].map((packet) => (
+          <g opacity="0">
+            <circle r="9" fill="url(#backbone-packet-glow)" />
+            <circle r="3" fill="#e6f59f" stroke="#417958" stroke-width="1" />
+            <animateMotion
+              dur={`${packet.dur}s`}
+              begin={`${packet.begin}s`}
+              repeatCount="indefinite"
+              keyPoints={packet.reverse ? '1;0' : '0;1'}
+              keyTimes="0;1"
+              calcMode="linear"
+            >
+              <mpath href="#backbone-path" />
+            </animateMotion>
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0"
+              keyTimes="0;0.18;0.82;1"
+              dur={`${packet.dur}s`}
+              begin={`${packet.begin}s`}
+              repeatCount="indefinite"
+            />
+          </g>
+        ))
+      }
+      {
+        stops.map((stop, index) => (
+          <circle r="2.5" fill="#b3d56f" opacity="0">
+            <animateMotion
+              dur="6s"
+              begin={`${LOOP_START + 0.6 + index * 0.9}s`}
+              repeatCount="indefinite"
+              keyPoints="0;1;1"
+              keyTimes="0;0.25;1"
+              calcMode="linear"
+            >
+              <mpath href={`#backbone-connector-${stop.id}`} />
+            </animateMotion>
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0;0"
+              keyTimes="0;0.03;0.22;0.25;1"
+              dur="6s"
+              begin={`${LOOP_START + 0.6 + index * 0.9}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+        ))
+      }
+    </g>
+
+    <g class="backbone-nodes">
+      {
+        stops.map((stop, index) => (
+          <g
+            class="backbone-node"
+            transform={`translate(${stop.node.x} ${stop.node.y})`}
+            style={`--d: ${stop.delay}s; --pulse-d: ${LOOP_START + index * 0.45}s`}
+          >
+            <circle class="backbone-node-pulse" r="14" fill="none" stroke="#b3d56f" />
+            <g class="backbone-node-dot">
+              <circle r="14" fill="#b3d56f" />
+              <circle r="6" fill="#0c1d31" />
+            </g>
+          </g>
+        ))
+      }
+    </g>
+
+    <g class="backbone-cards">
+      {
+        stops.map((stop) => (
+          <g
+            class="backbone-card"
+            transform={`translate(${stop.card.x} ${stop.card.y})`}
+            style={`--d: ${stop.delay}s`}
+          >
+            <g class="backbone-card-body">
+              <rect
+                width={stop.card.w}
+                height={stop.card.h}
+                rx="3"
+                fill="#fff"
+                filter="url(#backbone-card-shadow)"
+              />
+              <g clip-path={`url(#backbone-clip-${stop.id})`}>
+                {stop.logo.kind === 'datum' ? (
+                  <DatumStamp
+                    x={stop.logo.box.x}
+                    y={stop.logo.box.y}
+                    width={stop.logo.box.w}
+                    height={stop.logo.box.h}
+                  />
+                ) : (
+                  <g clip-path={stop.logo.clip ? `url(#backbone-logo-clip-${stop.id})` : undefined}>
+                    <image
+                      href={stop.logoHref}
+                      x={stop.logo.box.x}
+                      y={stop.logo.box.y}
+                      width={stop.logo.box.w}
+                      height={stop.logo.box.h}
+                      preserveAspectRatio={stop.logo.clip ? 'none' : 'xMidYMid slice'}
+                    />
+                  </g>
+                )}
+                <text class="backbone-card-text" x={stop.text.x} y={stop.text.y}>
+                  {stop.lines.map((line, lineIndex) => (
+                    <tspan x={stop.text.x} dy={lineIndex === 0 ? 10.5 : 14}>
+                      {line}
+                    </tspan>
+                  ))}
+                </text>
+              </g>
+            </g>
+          </g>
+        ))
+      }
+    </g>
+  </svg>
+</div>

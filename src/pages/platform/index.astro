@@ -1,0 +1,68 @@
+---
+// src/pages/platform/index.astro
+import '@styles/page-platform.css';
+
+import Layout from '@layouts/Layout.astro';
+import Announcement from '@components/Announcement.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import Hero from '@components/platform/Hero.astro';
+import Galactic from '@components/platform/Galactic.astro';
+import Features from '@components/platform/Features.astro';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { prefooter } from '@data/platform';
+
+const page = await getCollectionEntry('pages', 'platform');
+const fm = page.data;
+const meta = fm.meta || {};
+const title = fm.title;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/platform',
+      url: 'https://www.datum.net/platform',
+      name: meta.title ?? title,
+      description: fm.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-10-21',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-platform"
+  title={title}
+  description={fm.description}
+  meta={meta}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <header class="page-header">
+      <Announcement />
+      <Nav />
+    </header>
+
+    <div class="relative">
+      <Hero />
+      <Galactic />
+      <Features />
+
+      <ModuleConnector />
+    </div>
+
+    <Footer
+      ctaTitleLead={prefooter.titleLead}
+      ctaTitleAccent={prefooter.titleAccent}
+      ctaTitle={prefooter.title}
+      ctaTitleTail={prefooter.titleTail}
+      ctaDescription={prefooter.description}
+      ctaButtons={prefooter.buttons}
+    />
+  </section>
+</Layout>

@@ -236,7 +236,9 @@ Known limits of Basic Authentication here, from the manual test:
 A preview must not stay reachable without authentication. The deploy job:
 
 1. Applies basic auth in the deploy step.
-2. Requests `/` without credentials and expects `401`. A `200` fails at once.
+2. Requests `/` without credentials and expects `401`, retrying for 2 minutes.
+   A new policy can take a few seconds to reach the edge: one run got `200`
+   one second after the apply. Each `200` is logged as a warning.
 3. Requests `/` with the credentials and expects `200`, retrying for 5 minutes,
    because DNS and the edge can lag a new or replaced instance.
 4. If the deploy, the image check, or either request fails, or the run is
@@ -246,8 +248,8 @@ A preview must not stay reachable without authentication. The deploy job:
 This also applies to a re-run: a re-run that cannot confirm auth removes the
 preview it was updating. Run the workflow again to bring it back.
 
-A first deploy is public while `compute deploy` waits for the rollout and until
-the policy is applied. That window cannot be closed with `datumctl` 0.21,
+A first deploy is public while `compute deploy` waits for the rollout, until
+the policy is applied, and until the edge enforces it. That window cannot be closed with `datumctl` 0.21,
 because the Gateway does not exist before the deploy.
 
 ### Cleanup

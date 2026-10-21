@@ -8,7 +8,10 @@ its branch is deleted. A throwaway workload, `datum-net-pvprobe`, was used on
 results are in [Verification results](#verification-results). The first real
 preview, of `feat/1806-web-updates`, built and deployed but answered `503`
 because its 38 character workload name was too long. Names are now capped at
-32 characters.
+32 characters, and a later run of that branch served behind basic auth.
+
+To use a preview, read [branch-previews.md](./branch-previews.md). This
+document is the design.
 
 This document describes how each feature branch gets its own preview URL by
 running a manual workflow that builds the branch and deploys it as a separate
@@ -74,9 +77,12 @@ These facts come from the manual test on `datum/project-9htv9` and the probe in
 | One workload on `d1-standard-2` uses 1 instance, 1 vCPU, 2048 MiB                                  | `datumctl compute quota`               |
 | `compute destroy` leaves the basic-auth Secret and the `SecurityPolicy`                            | probe                                  |
 | A workload cannot scale to zero (`min replicas must be at least 1`)                                | probe                                  |
+| Project quota: 25 HTTPProxies; every workload uses one (20 used before previews)                   | console, 2026-10-21                    |
 
-Quota is not a constraint. Running previews costs money for as long as they run,
-so cleanup matters for cost, not for quota.
+The compute quota is not a constraint, but the HTTPProxy quota is. Every
+preview takes one of the 25 HTTPProxies that the project shares with staging,
+production and every other workload, so cleanup matters for quota as well as
+cost.
 
 ## Design
 
@@ -347,9 +353,15 @@ with write access can run it, and the deploy credentials live in an environment.
 ## Cost and quota
 
 Each preview runs one `d1-standard-2` instance (1 vCPU, 2048 MiB) until it is
-removed. The project allows far more (1000 workloads, 100 instances), so quota is
-not a limit, but unused previews are a cost. Run `preview-cleanup.yml` with
-`list` to find them.
+removed. The compute quota allows far more (1000 workloads, 100 instances).
+
+The limit is the HTTPProxy quota: 25 per project, 20 of them in use before the
+first preview. With 5 previews running, any new workload in `datum-cloud` is
+refused, with `You've reached your quota for this resource type`. Redeploys of
+existing workloads keep their HTTPProxy and are not affected. Run
+`preview-cleanup.yml` with `list` to find unused previews. If previews are
+used more widely, raise the quota, cap the number of previews in the workflow,
+or move previews to their own project.
 
 ## Verification results
 

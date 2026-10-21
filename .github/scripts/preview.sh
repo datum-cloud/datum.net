@@ -240,21 +240,24 @@ sys.stdout.write(json.dumps(secret) + "\n---\n" + json.dumps(policy) + "\n")
 }
 
 # No credentials must give 401, the credentials must give 200. DNS and the edge
-# can lag a new or replaced instance, so both checks retry.
+# can lag a new or replaced instance, and a new SecurityPolicy can take a few
+# seconds to reach the edge (a first request answered 200 one second after the
+# apply), so both checks retry. If the preview still answers without
+# credentials after 2 minutes, the job fails and the preview is destroyed.
 cmd_verify() {
   local url="${PREVIEW_URL:-}" creds code="000" i
   [ -n "$url" ] || die "PREVIEW_URL is empty"
   creds="$(credentials)"
-  for i in $(seq 1 12); do
+  for i in $(seq 1 24); do
     code="$(curl -s -o /dev/null -m 15 -w '%{http_code}' "${url}/" || true)"
     log "attempt ${i}: GET / without credentials -> ${code:-000}"
     [ "$code" = 401 ] && break
     if [ "$code" = 200 ]; then
-      die "${url} answered 200 without credentials"
+      log "::warning::${url} answered 200 without credentials; waiting for the auth policy"
     fi
-    sleep 10
+    sleep 5
   done
-  [ "$code" = 401 ] || die "expected 401 without credentials, got ${code:-000}"
+  [ "$code" = 401 ] || die "expected 401 without credentials within 2 minutes, got ${code:-000}"
   for i in $(seq 1 20); do
     code="$(curl -s -o /dev/null -m 15 -u "$creds" -w '%{http_code}' "${url}/" || true)"
     log "attempt ${i}: GET / with credentials -> ${code:-000}"

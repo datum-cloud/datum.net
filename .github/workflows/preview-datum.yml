@@ -1,0 +1,201 @@
+name: Preview Datum Compute
+
+# Manual only. Builds the selected branch and deploys it as its own workload,
+# datum-net-<slug>, behind Basic Authentication. Re-running for the same branch
+# updates that workload and keeps its URL. If auth cannot be confirmed, the
+# workload is destroyed. Remove a preview with preview-cleanup.yml.
+# See docs/datum-compute-previews.md.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch to preview (empty = the branch this run was started from)
+        type: string
+        default: ''
+      project:
+        description: Datum project ID (empty = the DATUM_PROJECT repo variable, then datum-cloud)
+        type: string
+        default: ''
+      location:
+        description: Datum Compute location
+        type: string
+        default: us-central-1
+
+permissions:
+  contents: read
+
+# One queue per branch, so two runs for a branch never race and different
+# branches never wait for each other. Keep in line with preview-cleanup.yml.
+concurrency:
+  group: datum-compute-preview-${{ inputs.branch || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_REPO: ghcr.io/datum-cloud/datum-net
+  PREVIEW_BRANCH: ${{ inputs.branch || github.ref_name }}
+  # Keep in line with deploy-datum.yml.
+  DATUMCTL_VERSION: 0.21.0
+  COMPUTE_PLUGIN_VERSION: v0.12.4
+
+jobs:
+  build:
+    # Only in the origin repository, never in a fork.
+    if: github.repository == 'datum-cloud/datum.net'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      workload: ${{ steps.names.outputs.workload }}
+      image: ${{ steps.names.outputs.image }}
+    steps:
+      # The script comes from the ref the run was started on, not from the
+      # branch being previewed.
+      - name: Checkout the workflow
+        uses: actions/checkout@v7
+
+      - name: Check preview names
+        run: |
+          bash .github/scripts/preview.sh self-test
+          cp .github/scripts/preview.sh "$RUNNER_TEMP/preview.sh"
+
+      - name: Checkout the preview branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.PREVIEW_BRANCH }}
+          persist-credentials: false
+
+      - id: names
+        name: Name the preview
+        env:
+          LOCATION: ${{ inputs.location || 'us-central-1' }}
+        run: bash "$RUNNER_TEMP/preview.sh" names >> "$GITHUB_OUTPUT"
+
+      # A tag per commit: deploying the same tag again does not replace the
+      # instance. The preview- prefix keeps these apart from publish.yml tags.
+      # The package is public, so anyone can pull a preview image.
+      - name: Build and push the preview image
+        env:
+          IMAGE: ${{ steps.names.outputs.image }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          docker build --platform linux/amd64 --target production --tag "$IMAGE" .
+          docker push "$IMAGE"
+          docker logout ghcr.io
+
+  deploy:
+    needs: build
+    if: github.repository == 'datum-cloud/datum.net'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment:
+      name: datum-compute-preview
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'datum-cloud' }}
+      LOCATION: ${{ inputs.location || 'us-central-1' }}
+      PREVIEW_WORKLOAD: ${{ needs.build.outputs.workload }}
+      PREVIEW_SECRET_NAME: datum-net-preview-secrets
+    steps:
+      - name: Checkout the workflow
+        uses: actions/checkout@v7
+
+      # Fails before anything is deployed if the credential is missing.
+      - name: Check inputs
+        env:
+          PREVIEW_BASIC_AUTH: ${{ secrets.PREVIEW_BASIC_AUTH }}
+        run: |
+          bash .github/scripts/preview.sh self-test
+          bash .github/scripts/preview.sh credentials-check
+
+      - name: Install datumctl
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/datumctl.deb" \
+            "https://github.com/datum-cloud/datumctl/releases/download/v${DATUMCTL_VERSION}/datumctl_${DATUMCTL_VERSION}_linux_amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/datumctl.deb"
+          # The 72 MB plugin download has a fixed 60 s client timeout.
+          for attempt in 1 2 3; do
+            datumctl plugin install "compute@${COMPUTE_PLUGIN_VERSION}" && break
+            [ "$attempt" = 3 ] && { echo "::error::could not install the compute plugin"; exit 1; }
+            sleep 10
+          done
+
+      - name: Log in to Datum Cloud
+        env:
+          DATUM_SA_CREDENTIALS: ${{ secrets.DATUM_SA_CREDENTIALS }}
+        run: |
+          umask 077
+          printf '%s' "$DATUM_SA_CREDENTIALS" > "$RUNNER_TEMP/datum-sa.json"
+          datumctl login --credentials "$RUNNER_TEMP/datum-sa.json"
+          rm -f "$RUNNER_TEMP/datum-sa.json"
+
+      - name: Check the preview Secret
+        run: bash .github/scripts/preview.sh check-secret
+
+      # Auth is applied in the same step as the deploy, so the window in which a
+      # new workload is public is as short as possible.
+      - id: deploy
+        name: Deploy and protect
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+          PREVIEW_BASIC_AUTH: ${{ secrets.PREVIEW_BASIC_AUTH }}
+        run: |
+          # Without this, a failed deploy is hidden by tee.
+          set -o pipefail
+          datumctl compute deploy "$PREVIEW_WORKLOAD" \
+            --project "$DATUM_PROJECT" \
+            --image "$IMAGE" \
+            --location "$LOCATION" \
+            --http-port 4321 \
+            --instance-type datumcloud/d1-standard-2 \
+            --runtime-class general-purpose \
+            --env "HOST=::" \
+            --env-from-secret "$PREVIEW_SECRET_NAME" \
+            --yes | tee "$RUNNER_TEMP/deploy.log"
+          bash .github/scripts/preview.sh auth
+          url="$(grep -oE 'https://[a-z0-9.-]+\.datumproxy\.net' "$RUNNER_TEMP/deploy.log" | tail -n 1 || true)"
+          [ -n "$url" ] || { echo "::error::deploy printed no URL"; exit 1; }
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
+      - name: Check the rollout
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+        run: |
+          datumctl get workload "$PREVIEW_WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
+            jq -e --arg image "$IMAGE" '.spec.template.spec.runtime.sandbox.containers[0].image == $image' >/dev/null || {
+              echo "::error::workload $PREVIEW_WORKLOAD is not running $IMAGE"
+              exit 1
+            }
+
+      - name: Confirm basic auth
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+          PREVIEW_BASIC_AUTH: ${{ secrets.PREVIEW_BASIC_AUTH }}
+        run: bash .github/scripts/preview.sh verify
+
+      # Fail closed: a preview whose auth was not confirmed must not stay up.
+      - name: Destroy the preview
+        if: (failure() || cancelled()) && steps.deploy.outcome != 'skipped'
+        run: bash .github/scripts/preview.sh cleanup
+
+      - name: Summary
+        if: always()
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+          URL: ${{ steps.deploy.outputs.url }}
+          OUTCOME: ${{ job.status }}
+        run: |
+          {
+            echo "### Datum Compute preview"
+            echo "- Branch: \`${PREVIEW_BRANCH}\`"
+            echo "- Project: \`${DATUM_PROJECT}\`"
+            echo "- Workload: \`${PREVIEW_WORKLOAD:-none}\`"
+            echo "- Image: \`${IMAGE:-none}\`"
+            if [ "$OUTCOME" = success ]; then
+              echo "- URL: ${URL:-none} (Basic Authentication)"
+            else
+              echo "- URL: none, the preview was removed (${OUTCOME})"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -22,8 +22,16 @@ die() {
 
 # Instance names are <workload>-default-<location>-0 and must fit a 63
 # character DNS label, so the workload name has to leave room for the suffix.
+# Below that, a workload of 38 characters deployed and ran, but its
+# NetworkService matched no interface and the edge answered 503. Names of 17
+# to 32 characters served (probed on 2026-10-21), so stop at 32.
 max_workload() {
-  printf '%s\n' "$((63 - ${#LOCATION} - 11))"
+  local by_instance="$((63 - ${#LOCATION} - 11))"
+  if [ "$by_instance" -lt 32 ]; then
+    printf '%s\n' "$by_instance"
+  else
+    printf '%s\n' 32
+  fi
 }
 
 slug_for() {

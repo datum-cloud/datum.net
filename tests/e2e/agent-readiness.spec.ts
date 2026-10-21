@@ -55,7 +55,7 @@ test.describe('Heading structure (Content without JavaScript)', () => {
     // regressing back to a paragraph.
     const headings = page.locator('#datum-platform h3');
     await expect(headings).toHaveText([
-      'Private, protected, performant.',
+      'A virtual backbone that goes everywhere. Yes, please!',
       'Deliver',
       'Build',
       'Connect',

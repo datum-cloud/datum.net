@@ -5,9 +5,10 @@
 Deploying a preview is manual only; removing one is manual, or automatic when
 its branch is deleted. A throwaway workload, `datum-net-pvprobe`, was used on
 2026-10-21 to check basic auth, cleanup, name limits and scale-to-zero. The
-results are in [Verification results](#verification-results). A real branch has
-not gone through the workflow yet; do the [one-time setup](#one-time-setup)
-first.
+results are in [Verification results](#verification-results). The first real
+preview, of `feat/1806-web-updates`, built and deployed but answered `503`
+because its 38 character workload name was too long. Names are now capped at
+32 characters.
 
 This document describes how each feature branch gets its own preview URL by
 running a manual workflow that builds the branch and deploys it as a separate
@@ -123,10 +124,17 @@ Preview Datum Compute autoclean (branch deleted)
    characters of the SHA-256 of the full branch name, so two long branches that
    share a prefix do not collide.
 
-Instance names are `<workload>-default-<location>-0` and must fit a 63 character
-DNS label, so the workload may be at most `63 - 11 - len(location)` characters:
-40 for `us-central-1`. The API itself accepted 80 in a dry run, so the instance
-name is the real limit.
+The workload name is capped at 32 characters, which leaves 15 for the readable
+part of the slug. Two limits apply:
+
+- Instance names are `<workload>-default-<location>-0` and must fit a 63
+  character DNS label, so the workload may be at most `63 - 11 - len(location)`
+  characters: 40 for `us-central-1`. A 41 character workload fails with
+  `ConfigurationError`.
+- A workload of 38 characters deploys and runs, but its NetworkService reports
+  `NoMatchingInterfaces`, so the edge has no backend and answers `503`.
+  Workloads of 17 to 32 characters serve. The exact limit lies between 33 and
+  37 and was not narrowed further.
 
 The concurrency group uses the branch name because a workflow expression cannot
 compute the slug. The slug is a pure function of the branch, so it is the same
@@ -351,11 +359,15 @@ image `ghcr.io/datum-labs/compute-hello:datum`. `datum-net-gp` was not changed.
 | Basic auth via `datumctl apply`        | Enforced on the first request: `401` without credentials, `200` with them                                               |
 | Wrong password                         | Replacing the hash made all requests `401` within 3 seconds. A malformed hash returned `500`. Neither response was open |
 | `compute destroy`                      | Deletes the workload, HTTPProxy and managed DNS. Leaves the basic-auth Secret and the `SecurityPolicy`                  |
-| Name length                            | A dry run accepted 80 characters. Workload names are capped at 40 so the instance name stays within 63 characters       |
+| Name length                            | 17 to 32 characters serve. 38 runs but answers `503` (`NoMatchingInterfaces`). 41 fails with `ConfigurationError`       |
 | Scale to zero                          | Refused: `min replicas must be at least 1`                                                                              |
 | Restart after a Secret change          | Not run                                                                                                                 |
-| Reduced Secret                         | Not run. `datum-net-preview-secrets` does not exist yet                                                                 |
-| Image build and GHCR push from Actions | Not run                                                                                                                 |
+| Preview Secret                         | A copy of `datum-net-staging-secrets` without `GITHUB_PAT` boots the site                                               |
+| Image build and GHCR push from Actions | Work with the job token                                                                                                 |
+
+The name length rows come from probes on 2026-10-21 that used the preview image
+and Secret with names of 17, 21, 25, 29, 32, 38 and 41 characters. Six probes at
+once hit the project's HTTPProxy quota, so run such probes one or two at a time.
 
 ## Rollout
 

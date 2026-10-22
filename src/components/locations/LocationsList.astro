@@ -48,7 +48,10 @@ const grouped = groupOrder.map((key) => ({
           <div class="locations-list--items-row">
             <ul class="locations-list--items">
               {group.items.map((loc) => (
-                <li class="locations-list--item">{loc.metro}</li>
+                <li class="locations-list--item">
+                  <span class="locations-list--metro">{loc.metro}</span>
+                  <span class="locations-list--code">{loc.regionCode}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -74,12 +77,10 @@ const grouped = groupOrder.map((key) => ({
     function scrambleEl(el: HTMLElement) {
       const target = el.textContent ?? '';
 
-      // Prevent layout jank from variable-width scrambled chars
-      const rect = el.getBoundingClientRect();
-      el.style.display = 'inline-block';
-      el.style.width = `${rect.width}px`;
-      el.style.minHeight = `${rect.height}px`;
-      el.style.whiteSpace = 'nowrap';
+      // Lock the settled height so variable-width scrambled chars can re-wrap
+      // (e.g. "San Jose, California" on two lines) without shifting the layout.
+      // The element is a block, so wrapping and the region code below stay intact.
+      el.style.height = `${el.getBoundingClientRect().height}px`;
       el.style.overflow = 'hidden';
 
       const start = performance.now();
@@ -91,7 +92,8 @@ const grouped = groupOrder.map((key) => ({
 
         for (let i = 0; i < target.length; i++) {
           const ch = target[i];
-          if (ch === ' ' || ch === ',') {
+          // Keep spaces, commas, hyphens and digits fixed (region codes like "us-east-1").
+          if (!/\p{L}/u.test(ch)) {
             result += ch;
             continue;
           }
@@ -106,10 +108,7 @@ const grouped = groupOrder.map((key) => ({
         el.textContent = result;
         if (allDone) {
           el.textContent = target;
-          el.style.display = '';
-          el.style.width = '';
-          el.style.minHeight = '';
-          el.style.whiteSpace = '';
+          el.style.height = '';
           el.style.overflow = '';
           return;
         }
@@ -122,7 +121,12 @@ const grouped = groupOrder.map((key) => ({
     function triggerGroup(group: Element) {
       const items = Array.from(group.querySelectorAll<HTMLElement>('.locations-list--item'));
       items.forEach((item, i) => {
-        setTimeout(() => scrambleEl(item), i * 80);
+        const parts = item.querySelectorAll<HTMLElement>(
+          '.locations-list--metro, .locations-list--code'
+        );
+        parts.forEach((part) => {
+          setTimeout(() => scrambleEl(part), i * 80);
+        });
       });
     }
 

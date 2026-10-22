@@ -6,7 +6,7 @@
   }
 
   .platform-section-description {
-    @apply datum-text-xl text-app---dark---utility-3 text-pretty;
+    @apply datum-text-xl text-app---dark---utility-3;
   }
 
   /* Marker band behind the accent words — revealed by module-animate.js. */
@@ -131,11 +131,11 @@
   /* --------------------------------------------------------------- galactic */
 
   .platform-resources {
-    @apply max-width-section-nopad relative grid grid-cols-1 items-start gap-10 md:grid-cols-2 lg:gap-16;
+    @apply max-width-section-nopad relative grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:items-stretch lg:gap-x-16;
   }
 
   .platform-resource-list {
-    @apply border-silver-keyline bg-silver-keyline flex flex-col gap-px border p-px;
+    @apply border-silver-keyline bg-silver-keyline flex flex-col gap-px border md:row-span-7 md:grid md:grid-rows-subgrid;
   }
 
   .platform-resource-heading {
@@ -143,7 +143,7 @@
   }
 
   .platform-resource-item {
-    @apply flex items-start gap-5 bg-white p-5 lg:gap-7 lg:p-7;
+    @apply flex items-center gap-5 bg-white p-5 lg:gap-7 lg:p-7;
   }
 
   .platform-resource-icon {

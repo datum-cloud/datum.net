@@ -102,10 +102,21 @@ function navDropdownParentClass(text: string): string {
                                 'nav-dropdown-title-link',
                                 isActivePath(section.href, currentPath) && 'link--active',
                               ]}
-                              data-astro-prefetch="hover"
+                              target={section.isExternal ? '_blank' : undefined}
+                              rel={section.isExternal ? 'noopener noreferrer' : undefined}
+                              data-astro-prefetch={section.isExternal ? undefined : 'hover'}
                               tabindex="0"
                             >
-                              <span>{section.title}</span>
+                              <span class="inline-flex items-center gap-1.5">
+                                {section.title}
+                                {section.isExternal && (
+                                  <Icon
+                                    name="external-link"
+                                    size="sm"
+                                    class="nav-dropdown-external-icon"
+                                  />
+                                )}
+                              </span>
                             </a>
                           ) : (
                             <span>{section.title}</span>

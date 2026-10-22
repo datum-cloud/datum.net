@@ -165,9 +165,20 @@ const cloudPortalUrl =
                             <a
                               href={section.href}
                               class="mobile-dropdown-title-link"
+                              target={section.isExternal ? '_blank' : undefined}
+                              rel={section.isExternal ? 'noopener noreferrer' : undefined}
                               x-on:click="closeMenu()"
                             >
-                              {section.title}
+                              <span class="inline-flex items-center gap-1.5">
+                                {section.title}
+                                {section.isExternal && (
+                                  <Icon
+                                    name="external-link"
+                                    size="sm"
+                                    class="nav-dropdown-external-icon"
+                                  />
+                                )}
+                              </span>
                             </a>
                           ) : (
                             section.title

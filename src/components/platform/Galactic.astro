@@ -39,7 +39,7 @@ import { galactic } from '@data/platform';
           galactic.lists.map((list) => (
             <div class="platform-resource-list">
               <h3 class="platform-resource-heading">{list.title}</h3>
-              <ul class="flex flex-col gap-px">
+              <ul class="flex flex-col gap-px md:contents" role="list">
                 {list.items.map((item) => (
                   <li class="platform-resource-item">
                     <span class="platform-resource-icon">

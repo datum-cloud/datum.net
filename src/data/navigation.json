@@ -18,8 +18,7 @@
         {
           "title": "For humans",
           "items": [
-            { "text": "Docs", "href": "/docs" },
-            { "text": "Guides", "href": "/docs/guides" },
+            { "text": "Docs", "href": "/docs", "isExternal": true },
             { "text": "Roadmap", "href": "/roadmap" },
             { "text": "Events", "href": "/events" },
             { "text": "About us", "href": "/about" }
@@ -28,12 +27,13 @@
         {
           "title": "For agents",
           "href": "/docs/agents/overview",
+          "isExternal": true,
           "items": [
-            { "text": "datumctl (CLI)", "href": "/docs/datumctl/overview" },
-            { "text": "Skills", "href": "/docs/agents/skills" },
-            { "text": "MCP", "href": "/docs/datum-mcp" },
-            { "text": "Recipes", "href": "https://agents.datum.net/recipes" },
-            { "text": "llms.txt", "href": "/llms.txt" }
+            { "text": "datumctl (CLI)", "href": "/docs/datumctl/overview", "isExternal": true },
+            { "text": "Skills", "href": "/docs/agents/skills", "isExternal": true },
+            { "text": "MCP", "href": "/docs/datum-mcp", "isExternal": true },
+            { "text": "Recipes", "href": "https://agents.datum.net/recipes", "isExternal": true },
+            { "text": "llms.txt", "href": "/llms.txt", "isExternal": true }
           ]
         }
       ]

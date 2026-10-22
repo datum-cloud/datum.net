@@ -108,6 +108,17 @@
     animation: backbone-card-in 0.5s ease-out calc(var(--d) + 0.55s) forwards;
   }
 
+  /* Card text is too small to read on mobile, so cards show only the centered logo. */
+  @media (width < 48rem) {
+    .backbone-card-text {
+      display: none;
+    }
+
+    .backbone-card-logo {
+      transform: translateX(var(--logo-shift));
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .backbone-line,
     .backbone-connector {
@@ -173,7 +184,7 @@
 
   /* Hand-drawn arrow pointing from the docs prompt back up at the resource list. */
   .platform-docs-arrow {
-    @apply pointer-events-none absolute -top-12.5 -left-27 hidden h-9 w-25.5 -rotate-[128.69deg] md:block;
+    @apply pointer-events-none absolute -top-9.5 -left-27 hidden h-9 w-25.5 -rotate-[128.69deg] md:block;
   }
 
   @keyframes backbone-draw {

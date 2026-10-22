@@ -121,10 +121,15 @@ const resolveLogoHref = async (logo: Logo): Promise<string | null> => {
 const stops = await Promise.all(
   backboneStops.map(async (stop) => {
     const stopLayout = layout[stop.id];
+    const visible =
+      stopLayout.logo.kind === 'image' && stopLayout.logo.clip
+        ? stopLayout.logo.clip
+        : stopLayout.logo.box;
     return {
       ...stop,
       ...stopLayout,
       logoHref: await resolveLogoHref(stopLayout.logo),
+      logoShift: stopLayout.card.w / 2 - (visible.x + visible.w / 2),
       delay: LINE_DELAY + stopLayout.progress * LINE_DURATION,
     };
   })
@@ -336,25 +341,29 @@ const label = `Galactic VPC backbone linking ${backboneStops
                 filter="url(#backbone-card-shadow)"
               />
               <g clip-path={`url(#backbone-clip-${stop.id})`}>
-                {stop.logo.kind === 'datum' ? (
-                  <DatumStamp
-                    x={stop.logo.box.x}
-                    y={stop.logo.box.y}
-                    width={stop.logo.box.w}
-                    height={stop.logo.box.h}
-                  />
-                ) : (
-                  <g clip-path={stop.logo.clip ? `url(#backbone-logo-clip-${stop.id})` : undefined}>
-                    <image
-                      href={stop.logoHref}
+                <g class="backbone-card-logo" style={`--logo-shift: ${stop.logoShift}px`}>
+                  {stop.logo.kind === 'datum' ? (
+                    <DatumStamp
                       x={stop.logo.box.x}
                       y={stop.logo.box.y}
                       width={stop.logo.box.w}
                       height={stop.logo.box.h}
-                      preserveAspectRatio={stop.logo.clip ? 'none' : 'xMidYMid slice'}
                     />
-                  </g>
-                )}
+                  ) : (
+                    <g
+                      clip-path={stop.logo.clip ? `url(#backbone-logo-clip-${stop.id})` : undefined}
+                    >
+                      <image
+                        href={stop.logoHref}
+                        x={stop.logo.box.x}
+                        y={stop.logo.box.y}
+                        width={stop.logo.box.w}
+                        height={stop.logo.box.h}
+                        preserveAspectRatio={stop.logo.clip ? 'none' : 'xMidYMid slice'}
+                      />
+                    </g>
+                  )}
+                </g>
                 <text class="backbone-card-text" x={stop.text.x} y={stop.text.y}>
                   {stop.lines.map((line, lineIndex) => (
                     <tspan x={stop.text.x} dy={lineIndex === 0 ? 10.5 : 14}>

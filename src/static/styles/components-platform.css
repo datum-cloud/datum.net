@@ -184,7 +184,7 @@
 
   /* Hand-drawn arrow pointing from the docs prompt back up at the resource list. */
   .platform-docs-arrow {
-    @apply pointer-events-none absolute -top-9.5 -left-27 hidden h-9 w-25.5 -rotate-[128.69deg] md:block;
+    @apply pointer-events-none absolute -top-9.5 -left-27 hidden! h-9 w-25.5 -rotate-[128.69deg] md:block!;
   }
 
   @keyframes backbone-draw {

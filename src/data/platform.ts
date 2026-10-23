@@ -54,7 +54,7 @@ export const galactic = {
   titleAccent: 'but everywhere.',
   description: [
     'Attach resources from your desktop to your database to start unlocking better visibility, control and performance.',
-    'Spin up one, dozens or thousands. As we like to say: agents needs VPCs, too!',
+    'Spin up one, dozens or thousands. As we like to say: agents need VPCs, too!',
   ],
   lists: [
     {
@@ -68,7 +68,7 @@ export const galactic = {
         {
           icon: 'globe-lock',
           title: 'Zero Trust Tunnels',
-          description: 'Flexible and private. We {heart} QUIC + MASQUE!',
+          description: 'Flexible and private. We ♥ QUIC + MASQUE!',
         },
         {
           icon: 'shield-ban',

@@ -1,0 +1,223 @@
+@layer components {
+  /* ------------------------------------------------------------------ shared */
+
+  .platform-section-header {
+    @apply max-width-nopad flex flex-col items-center gap-7 text-center;
+  }
+
+  .platform-section-description {
+    @apply datum-text-xl text-app---dark---utility-3;
+  }
+
+  /* Marker band behind the accent words — revealed by module-animate.js. */
+  .platform-accent {
+    @apply text-pine-forge---links box-decoration-clone px-1;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 42%,
+      var(--color-aurora-moss) 42%,
+      var(--color-aurora-moss) 92%,
+      transparent 92%
+    );
+  }
+
+  /* ------------------------------------------------------------------- hero */
+
+  .platform-hero {
+    @apply relative overflow-hidden bg-white;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 48%,
+      color-mix(in srgb, var(--color-aurora-moss) 30%, transparent) 98%
+    );
+  }
+
+  /* Blueprint grid behind the backbone, fading out towards the copy. */
+  .platform-hero-grid {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-160;
+    @apply bg-[url('../assets/svgs/platform-hero-grid.svg')] bg-size-[2000px_auto] bg-top bg-repeat-x;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 45%);
+  }
+
+  .platform-hero-inner {
+    @apply max-width-nav relative z-10 flex flex-col items-center;
+    @apply pt-16 pb-10 md:pt-20 md:pb-14 lg:pt-28 lg:pb-17;
+  }
+
+  .platform-hero-copy {
+    @apply spacing-pad flex w-full max-w-177.5 flex-col items-center gap-8 text-center md:gap-10;
+  }
+
+  .platform-hero-title {
+    @apply datum-text-9xl text-midnight-fjord xl:text-60 xl:leading-17.5;
+  }
+
+  .platform-hero-actions {
+    @apply flex flex-col items-center gap-5;
+  }
+
+  .platform-hero-description {
+    @apply datum-text-xl text-midnight-fjord/80 pb-2 text-pretty;
+  }
+
+  .platform-hero-footnote {
+    @apply datum-text-sm text-midnight-fjord/80;
+  }
+
+  /* --------------------------------------------------------------- backbone */
+
+  .backbone {
+    @apply mt-12 w-full lg:mt-16;
+  }
+
+  .backbone-svg {
+    @apply mx-auto block h-auto w-full max-w-242.5 overflow-visible;
+  }
+
+  .backbone-card-text {
+    @apply font-alliance fill-midnight-fjord/80;
+    font-size: 10px;
+  }
+
+  .backbone-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: backbone-draw var(--backbone-duration) linear var(--backbone-delay) forwards;
+  }
+
+  .backbone-connector {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: backbone-draw 0.5s ease-out calc(var(--d) + 0.25s) forwards;
+  }
+
+  .backbone-node-dot {
+    transform: scale(0);
+    animation: backbone-node-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d) forwards;
+  }
+
+  .backbone-node-pulse {
+    opacity: 0;
+    stroke-width: 2;
+    animation: backbone-node-pulse 2.8s ease-out var(--pulse-d) infinite;
+  }
+
+  .backbone-card-body {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: backbone-card-in 0.5s ease-out calc(var(--d) + 0.55s) forwards;
+  }
+
+  /* Card text is too small to read on mobile, so cards show only the centered logo. */
+  @media (width < 48rem) {
+    .backbone-card-text {
+      display: none;
+    }
+
+    .backbone-card-logo {
+      transform: translateX(var(--logo-shift));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .backbone-line,
+    .backbone-connector {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+
+    .backbone-node-dot,
+    .backbone-card-body {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .backbone-node-pulse,
+    .backbone-packets {
+      display: none;
+    }
+  }
+
+  /* --------------------------------------------------------------- galactic */
+
+  .platform-resources {
+    @apply max-width-section-nopad relative grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:items-stretch lg:gap-x-16;
+  }
+
+  .platform-resource-list {
+    @apply border-silver-keyline bg-silver-keyline flex flex-col gap-px border md:row-span-7 md:grid md:grid-rows-subgrid;
+  }
+
+  .platform-resource-heading {
+    @apply datum-text-base text-midnight-fjord bg-white p-5 font-semibold lg:p-7;
+  }
+
+  .platform-resource-item {
+    @apply flex items-center gap-5 bg-white p-5 lg:gap-7 lg:p-7;
+  }
+
+  .platform-resource-icon {
+    @apply bg-aurora-mist text-pine-forge---links flex size-10 shrink-0 items-center justify-center rounded-sm;
+  }
+
+  .platform-resource-content {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+
+  .platform-resource-title {
+    @apply datum-text-lg text-midnight-fjord font-semibold;
+  }
+
+  .platform-resource-description {
+    @apply datum-text-base text-midnight-fjord/80;
+  }
+
+  .platform-resource-badge {
+    @apply datum-docs-sidebar-headings text-9 tracking-badge shrink-0 rounded-sm border px-1.25 pt-px;
+    @apply border-harbor-blue/70 bg-harbor-blue/20 text-harbor-blue;
+  }
+
+  .platform-docs {
+    @apply relative flex flex-col items-center gap-5 text-center;
+  }
+
+  /* Hand-drawn arrow pointing from the docs prompt back up at the resource list. */
+  .platform-docs-arrow {
+    @apply pointer-events-none absolute -top-9.5 -left-27 hidden! h-9 w-25.5 -rotate-[128.69deg] md:block!;
+  }
+
+  @keyframes backbone-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes backbone-node-pop {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes backbone-node-pulse {
+    0% {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(1.9);
+    }
+  }
+
+  @keyframes backbone-card-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

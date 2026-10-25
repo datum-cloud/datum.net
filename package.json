@@ -116,7 +116,13 @@
     },
     "postcss-selector-parser": "^7.1.6",
     "sharp": "^0.35.4",
-    "svgo": "^4.1.0"
+    "svgo": "^4.1.0",
+    "mermaid": {
+      "katex": "0.18.10"
+    },
+    "micromark-extension-math": {
+      "katex": "0.18.10"
+    }
   },
   "lint-staged": {
     "*": [

@@ -110,6 +110,10 @@
     @apply sm:col-span-3 sm:items-start sm:px-6 sm:py-7.5;
   }
 
+  .pricing-card-feature:not(.pricing-card-feature--stacked) {
+    @apply sm:items-center;
+  }
+
   .pricing-card-feature--stacked {
     @apply sm:flex-col sm:items-start sm:gap-2;
   }
@@ -126,11 +130,14 @@
     }
 
     .tooltip-bubble {
-      @apply right-auto left-0 w-56 sm:w-64;
+      @apply right-auto -left-4 w-56 sm:w-64;
     }
 
     .tooltip-arrow {
-      @apply right-auto left-1;
+      @apply right-auto;
+      /* 15px diamond, rotated about its center: its tip sits 7.5px right of
+         `left`. The 20px icon is centered 26px from the bubble, so 18.5px. */
+      left: calc(var(--spacing) * 4.625);
     }
   }
 

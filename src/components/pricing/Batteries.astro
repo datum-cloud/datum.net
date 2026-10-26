@@ -1,0 +1,29 @@
+---
+// src/components/pricing/Batteries.astro
+// "Batteries included" card — the always-free capabilities, listed in columns.
+// Figma node 18493:88731.
+
+import { batteries } from '@data/pricing';
+---
+
+<section class="pricing-card pricing-card--wide" aria-labelledby="pricing-batteries-title">
+  <header class="pricing-card-head pricing-card-head--split">
+    <div class="pricing-card-head-copy">
+      <h2 id="pricing-batteries-title" class="pricing-card-title">{batteries.title}</h2>
+      <p class="pricing-card-description">{batteries.description}</p>
+    </div>
+    <span class="pricing-rate-free">{batteries.label}</span>
+  </header>
+
+  <div class="pricing-card-body pricing-batteries">
+    {
+      batteries.columns.map((items) => (
+        <ul class="pricing-batteries-list">
+          {items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</section>

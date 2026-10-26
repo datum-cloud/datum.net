@@ -1,7 +1,7 @@
 // Dynamic markdown export of /pricing. Reads the same sources the rendered
 // page consumes:
 //   - src/content/pages/pricing.mdx          (title + intro)
-//   - src/data/pricing.ts                    (rate card)
+//   - src/data/pricing.ts                    (hero, banner, rate cards, batteries)
 //   - src/content/faq/*.mdx category=pricing (FAQ section)
 // Any edit to those files updates this endpoint on next request.
 export const prerender = false;
@@ -11,11 +11,20 @@ import { getCollection, getEntry } from 'astro:content';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 import { faqToMarkdown } from '@utils/faqText';
-import { callout, faqTitle, rates, type RateGroup, type RateRow } from '@data/pricing';
+import {
+  banner,
+  batteries,
+  faqTitle,
+  hero,
+  rates,
+  type RateCard,
+  type RateCardDescription,
+  type RateRow,
+} from '@data/pricing';
 
 /** Flattens a price cell to the same string the table renders. */
 function renderPrice(row: RateRow): string {
-  if (row.free) return 'FREE';
+  if (row.free) return row.free.toUpperCase();
   if (row.link) return row.link.text;
 
   return (row.lines ?? [])
@@ -23,17 +32,27 @@ function renderPrice(row: RateRow): string {
     .join('; ');
 }
 
-function renderGroup(group: RateGroup): string[] {
-  const lines: string[] = [`### ${group.name}`, ''];
+/** Flattens a card description, keeping inline links as markdown links. */
+function renderDescription(description: RateCardDescription): string {
+  return description
+    .map((part) => (typeof part === 'string' ? part : `[${part.text}](${part.href})`))
+    .join('');
+}
 
-  if (group.note) lines.push(`_${group.note.text}_`, '');
+function renderCard(card: RateCard): string[] {
+  const lines: string[] = [
+    `### ${card.title}`,
+    '',
+    renderDescription(card.description),
+    '',
+    `| ${rates.columns.join(' | ')} |`,
+    '| --- | --- | --- |',
+  ];
 
-  lines.push('| Feature | Unit of measure | Price per unit |', '| --- | --- | --- |');
-
-  for (const feature of group.features) {
+  for (const feature of card.features) {
     const label = feature.badge ? `${feature.name} (${feature.badge})` : feature.name;
     for (const row of feature.rows) {
-      lines.push(`| ${label} | ${row.unit} | ${renderPrice(row)} |`);
+      lines.push(`| ${label} | ${row.unit || '—'} | ${renderPrice(row)} |`);
     }
   }
 
@@ -50,19 +69,22 @@ export const GET: APIRoute = async () => {
 
     const sections: string[] = [`# ${page?.data.title ?? 'Datum Pricing'}`, ''];
 
-    if (page?.data.description) {
-      sections.push(page.data.description, '');
-    }
-
-    sections.push(`## ${callout.title}`, '', callout.description, '');
-    for (const item of callout.items) {
+    sections.push(hero.description, '');
+    for (const item of hero.highlights) {
       sections.push(`- ${item}`);
+    }
+    sections.push('', `**${banner.emphasis}** ${banner.text}`, '');
+
+    sections.push('## Rates');
+    for (const card of rates.cards) {
+      sections.push('', ...renderCard(card));
     }
     sections.push('');
 
-    sections.push('## Rates');
-    for (const group of rates.groups) {
-      sections.push('', ...renderGroup(group));
+    sections.push(`## ${batteries.title}`, '', batteries.description, '');
+    sections.push(`_${batteries.label}_`, '');
+    for (const item of batteries.columns.flat()) {
+      sections.push(`- ${item}`);
     }
     sections.push('');
 

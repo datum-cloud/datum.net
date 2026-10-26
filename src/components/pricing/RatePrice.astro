@@ -4,7 +4,7 @@
 // figure and the suffix must sit flush against each other — "$0.005/IP-hr" has
 // no space anywhere — so the line is assembled as a string and injected with
 // set:html rather than as adjacent elements a formatter could reflow into
-// whitespace. Figma node 16187:93176.
+// whitespace. Figma node 18493:88568.
 
 import type { PriceLine, RateRow } from '@data/pricing';
 
@@ -18,7 +18,7 @@ const lineHtml = (line: PriceLine): string =>
   `<span>$</span><strong>${escapeHtml(line.amount)}</strong>${escapeHtml(line.suffix ?? '')}`;
 ---
 
-{row.free && <span class="pricing-rate-free">Free</span>}
+{row.free && <span class="pricing-rate-free">{row.free}</span>}
 {
   row.link && (
     <a class="pricing-rate-link" href={row.link.href}>

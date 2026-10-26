@@ -10,6 +10,10 @@
     { "text": "Platform", "href": "/platform" },
     { "text": "Dedicated", "href": "/dedicated-cloud" },
     {
+      "text": "Use cases",
+      "href": "/use-cases"
+    },
+    {
       "text": "Resources",
       "href": "#",
       "isMegaDropdown": true,

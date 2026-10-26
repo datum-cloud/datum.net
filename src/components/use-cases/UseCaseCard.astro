@@ -1,0 +1,25 @@
+---
+// src/components/use-cases/UseCaseCard.astro
+// One cell of the bordered card grids on /use-cases — Figma nodes 18442:84074
+// (icon only) and 18442:84135 (icon + uppercase label).
+
+import Icon from '@components/Icon.astro';
+import type { UseCaseCard } from '@data/useCases';
+
+export interface UseCaseCardProps {
+  item: UseCaseCard;
+}
+
+const { item } = Astro.props as UseCaseCardProps;
+---
+
+<div class="use-cases-card">
+  <div class="use-cases-card-head">
+    <Icon name={item.icon} class="use-cases-card-icon" />
+    {item.label && <span class="use-cases-card-label">{item.label}</span>}
+  </div>
+  <div class="use-cases-card-body">
+    <h3 class="use-cases-card-title">{item.title}</h3>
+    <p class="use-cases-card-description">{item.description}</p>
+  </div>
+</div>

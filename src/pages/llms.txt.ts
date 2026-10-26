@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 import { meta as dedicatedCloudMeta } from '@data/dedicatedCloud';
+import { meta as useCasesMeta } from '@data/useCases';
 import { inTheWild } from '@data/about';
 
 // Note: handbook entries intentionally excluded — internal company ops content
@@ -62,6 +63,8 @@ export const GET: APIRoute = async () => {
     // /dedicated-cloud is data-driven (src/data/dedicatedCloud.ts), not a `pages`
     // collection entry, so the loop above never sees it — add it explicitly.
     llmsContent += `- [${dedicatedCloudMeta.title}](${(site || '').replace(/\/+$/, '')}/dedicated-cloud) - ${dedicatedCloudMeta.description}\n`;
+    // /use-cases is data-driven too (src/data/useCases.ts).
+    llmsContent += `- [${useCasesMeta.title}](${(site || '').replace(/\/+$/, '')}/use-cases) - ${useCasesMeta.description}\n`;
 
     // /about, /about/team and /about/in-the-wild are data-driven (src/data/about.ts),
     // not `pages` collection entries — list them explicitly.

@@ -21,14 +21,13 @@ export const hero = {
 
 export const banner = {
   icon: 'party-popper' as IconName,
-  emphasis: 'Everything is free during beta.',
-  text: 'Rates below apply once billing begins. We’ll notify you before any charges.',
+  emphasis: 'Free to use until billing begins on February 1st, 2027.',
+  text: 'We’ll notify you before any charges!',
 };
 
 /** One monospace price line. Rendered as a regular `$`, a bold `amount`, then
- *  `suffix` appended verbatim — so a suffix that reads as a separate word
- *  carries its own leading space ('` per million`'), while a unit that fuses to
- *  the figure does not ('`/IP-hr`'). `note` renders on a second line. */
+ *  `suffix` appended verbatim — a separate word carries its own leading space
+ *  ('` per million`'). `note` renders on a second line. */
 export interface PriceLine {
   amount: string;
   suffix?: string;
@@ -163,10 +162,6 @@ export const rates = {
           name: 'Tunnels',
           rows: [{ unit: 'Endpoint', lines: [{ amount: '0.01', suffix: ' per hour' }] }],
         },
-        {
-          name: 'Public IPv4',
-          rows: [{ unit: '', lines: [{ amount: '0.005', suffix: '/IP-hr' }] }],
-        },
       ],
     },
   ] satisfies RateCard[],
@@ -191,7 +186,8 @@ export const faqTitle = 'Commonly Asked Questions';
 export const prefooter = {
   titleAccent: 'Free',
   title: 'during public beta.',
-  description: 'Datum Cloud is ready for prime time, but free to use for now. Feedback welcome!',
+  description:
+    'Datum Cloud is currently free. Billable usage starts February 1st, 2027. Feedback welcome!',
   buttons: [
     {
       text: 'Start for free',

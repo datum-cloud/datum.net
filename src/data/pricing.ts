@@ -167,17 +167,84 @@ export const rates = {
   ] satisfies RateCard[],
 };
 
+export interface BatteryItem {
+  name: string;
+  /** Docs page the item links out to. */
+  href: string;
+  /** Short explainer shown in the info tooltip. */
+  info: string;
+}
+
 export const batteries = {
   title: 'Batteries included!',
   description:
     "Unlike many platforms, we don't charge for teammates, robust logs, or appropriate access controls. Use 'em!",
   label: 'Always Free',
   columns: [
-    ['datumctl (CLI)', 'Coarse-Grained Permissions', 'Secrets'],
-    ['Metrics Export,', 'Audit & Activity Logs', 'SSO'],
-    ['Service Accounts', 'Datum MCP', 'AI Assistant'],
-    ['Domains', 'Desktop Apps'],
-  ],
+    [
+      {
+        name: 'datumctl (CLI)',
+        href: '/docs/datumctl/overview',
+        info: 'One command-line tool for every Datum Cloud resource, built for people, scripts, CI, and AI agents.',
+      },
+      {
+        name: 'Coarse-Grained Permissions',
+        href: '/docs/organizations/team-management',
+        info: 'Invite teammates to your organization and assign them roles, with no seat fees.',
+      },
+      {
+        name: 'Secrets',
+        href: '/docs/operations/secrets',
+        info: 'Create and manage secret resources in a project, from the Cloud Portal or datumctl.',
+      },
+    ],
+    [
+      {
+        name: 'Metrics Export',
+        href: '/docs/operations/metrics-export',
+        info: 'Export the metrics Datum publishes for your project to Grafana Cloud or any Prometheus remote-write endpoint.',
+      },
+      {
+        name: 'Audit & Activity Logs',
+        href: '/docs/operations/activity-logs',
+        info: 'Query and filter audit logs to track changes across your organizations and projects.',
+      },
+      {
+        name: 'SSO',
+        href: '/docs/account/sign-in',
+        info: 'Sign in with a passkey, or with your Google or GitHub account.',
+      },
+    ],
+    [
+      {
+        name: 'Service Accounts',
+        href: '/docs/projects/service-accounts',
+        info: 'Non-human identities for applications, CI/CD pipelines, and services to authenticate with Datum APIs.',
+      },
+      {
+        name: 'Datum MCP',
+        href: '/docs/agents/datum-mcp',
+        info: 'Connect Claude, Cursor, and other AI tools to your projects with Datum’s official MCP server.',
+      },
+      {
+        name: 'AI Assistant',
+        href: '/docs/operations/datum-assistant',
+        info: 'Ask Patch, the Datum Cloud assistant, about your resources in natural language and let it diagnose problems.',
+      },
+    ],
+    [
+      {
+        name: 'Domains',
+        href: '/docs/domain-dns/domains',
+        info: 'Track and verify your domains in one place, wherever they are registered.',
+      },
+      {
+        name: 'Desktop Apps',
+        href: '/docs/desktop-apps',
+        info: 'Native apps for macOS, Linux, and Windows that expose local environments to the internet through a secure tunnel.',
+      },
+    ],
+  ] satisfies BatteryItem[][],
 };
 
 export const faqTitle = 'Commonly Asked Questions';

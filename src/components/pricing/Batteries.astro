@@ -3,6 +3,7 @@
 // "Batteries included" card — the always-free capabilities, listed in columns.
 // Figma node 18493:88731.
 
+import Tooltip from '@components/Tooltip.astro';
 import { batteries } from '@data/pricing';
 ---
 
@@ -20,7 +21,17 @@ import { batteries } from '@data/pricing';
       batteries.columns.map((items) => (
         <ul class="pricing-batteries-list">
           {items.map((item) => (
-            <li>{item}</li>
+            <li>
+              <a href={item.href} class="pricing-batteries-link">
+                {item.name}
+              </a>
+              <Tooltip
+                id={`battery-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-info`}
+                class="pricing-batteries-info"
+                text={item.info}
+                triggerLabel={`About ${item.name}`}
+              />
+            </li>
           ))}
         </ul>
       ))

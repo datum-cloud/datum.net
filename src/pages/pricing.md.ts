@@ -71,7 +71,7 @@ export const GET: APIRoute = async () => {
 
     sections.push(hero.description, '');
     for (const item of hero.highlights) {
-      sections.push(`- ${item}`);
+      sections.push(`- [${item.name}](${item.href}): ${item.info}`);
     }
     sections.push('', `**${banner.emphasis}** ${banner.text}`, '');
 
@@ -84,7 +84,7 @@ export const GET: APIRoute = async () => {
     sections.push(`## ${batteries.title}`, '', batteries.description, '');
     sections.push(`_${batteries.label}_`, '');
     for (const item of batteries.columns.flat()) {
-      sections.push(`- ${item}`);
+      sections.push(`- [${item.name}](${item.href}): ${item.info}`);
     }
     sections.push('');
 

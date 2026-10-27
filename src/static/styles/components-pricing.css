@@ -206,6 +206,27 @@
     @apply datum-text-base text-midnight-fjord m-0 flex list-disc flex-col gap-2.5 pl-6;
   }
 
+  .pricing-batteries-link {
+    @apply hover:text-harbor-blue underline-offset-4 hover:underline;
+  }
+
+  .pricing-batteries-info {
+    @apply relative -top-px ml-0.5 inline-flex align-middle leading-none;
+
+    .tooltip-trigger-icon {
+      @apply size-4!;
+    }
+
+    .tooltip-bubble {
+      @apply right-auto -left-4 w-56 sm:w-64;
+    }
+
+    .tooltip-arrow {
+      @apply right-auto;
+      left: calc(var(--spacing) * 4.125);
+    }
+  }
+
   /* ---------------------------------------------------------------------
      FAQ — Figma node 18493:88896
      Layout only; the items come from the shared FAQ component.

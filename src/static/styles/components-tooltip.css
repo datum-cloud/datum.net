@@ -4,8 +4,10 @@
   }
 
   .tooltip-trigger {
-    @apply text-midnight-fjord flex cursor-help items-center justify-center rounded-full;
-    @apply opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100;
+    @apply text-midnight-fjord relative flex cursor-help touch-manipulation items-center justify-center rounded-full;
+    /* :hover on a coarse pointer is applied on the first tap and can swallow the click. */
+    @apply opacity-60 transition-opacity focus-visible:opacity-100 pointer-fine:hover:opacity-100;
+    @apply pointer-coarse:before:absolute pointer-coarse:before:-inset-y-2.5 pointer-coarse:before:-right-2.5 pointer-coarse:before:-left-1 pointer-coarse:before:content-[''];
   }
 
   .tooltip-trigger-icon {

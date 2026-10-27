@@ -20,6 +20,7 @@ const STATIC_ROUTES = [
   '/careers',
   '/changelog',
   '/contact',
+  '/dedicated-cloud',
   '/developers',
   '/download',
   '/events',

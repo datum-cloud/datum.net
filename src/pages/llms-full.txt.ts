@@ -218,6 +218,25 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 ---
 
+## Use Cases
+
+Datum is solving problems for the next 1k clouds. Full page: https://www.datum.net/use-cases (markdown: https://www.datum.net/use-cases.md)
+
+- **Add hyperscale style networking to your platform:** give agents, devs, and enterprises the observability, connectivity, and network controls they enjoy at big public clouds.
+- **Go "private by default":** reduce attack surface areas and accelerate performance by taking agentic workloads off the public internet.
+- **Push workloads to the edge of a network you control:** from inference and sandboxes to routers and gateways, push key workloads to sit in between all of the clouds.
+- **Unblock growth with GPU or CPU capacity:** Datum's experience, industry relationships, platform, and operational muscle can deliver capacity in the way you need it.
+
+### Who it is for
+
+- **Inference clouds:** put GPU and CPU capacity closer to users, cloud on ramps, and enterprise networks, or wire existing gear into a global backbone you control.
+- **Sandboxes:** public cloud control anywhere with stable IPs, a virtual backbone across all of your infrastructure, and connectors for zero-trust customer access.
+- **Frontier labs:** datacenter forward engineering, site selection, procurement, and a flexible platform backed by open source.
+
+To talk to a founder: https://www.datum.net/contact. To start building for free: https://auth.datum.net/id/signup
+
+---
+
 ## Pricing
 
 Start with Galactic VPC, add resources, pay for what you use. No feature gates, no seat limits, no hidden fees. Every rate is published per unit at https://www.datum.net/pricing (markdown: https://www.datum.net/pricing.md).
@@ -258,17 +277,17 @@ Datum Cloud provides a growing list of infrastructure primitives on-demand. Full
 
 No charge for teammates, logs, or access controls:
 
-- datumctl (CLI)
-- Coarse-Grained Permissions (no per-seat or per-user licensing)
-- Secrets
-- Metrics Export
-- Audit & Activity Logs
-- SSO
-- Service Accounts
-- Datum MCP
-- AI Assistant
-- Domains
-- Desktop Apps
+- [datumctl (CLI)](https://www.datum.net/docs/datumctl/overview): one command-line tool for every Datum Cloud resource
+- [Coarse-Grained Permissions](https://www.datum.net/docs/organizations/team-management): roles for teammates, no per-seat or per-user licensing
+- [Secrets](https://www.datum.net/docs/operations/secrets): secret resources from the Cloud Portal or datumctl
+- [Metrics Export](https://www.datum.net/docs/operations/metrics-export): export to Grafana Cloud or any Prometheus remote-write endpoint
+- [Audit & Activity Logs](https://www.datum.net/docs/operations/activity-logs): query and filter audit logs across organizations and projects
+- [SSO](https://www.datum.net/docs/account/sign-in): sign in with a passkey, Google, or GitHub
+- [Service Accounts](https://www.datum.net/docs/projects/service-accounts): non-human identities for apps, CI/CD, and services
+- [Datum MCP](https://www.datum.net/docs/agents/datum-mcp): official MCP server for Claude, Cursor, and other AI tools
+- [AI Assistant](https://www.datum.net/docs/operations/datum-assistant): ask Patch about your resources in natural language
+- [Domains](https://www.datum.net/docs/domain-dns/domains): track and verify domains wherever they are registered
+- [Desktop Apps](https://www.datum.net/docs/desktop-apps): macOS, Linux, and Windows apps that expose local environments through a secure tunnel
 
 ---
 

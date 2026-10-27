@@ -28,8 +28,8 @@ The “Vision / Traction Organizer” captures the core DNA of our business: our
 
 - We find creative answers to hard problems
 - We prioritize outcomes for users, customers, and partners
-- We write our own words
-
+- We write our own words (when those words are meant for humans)
+- We value collaboration over coordination
 
 ## Core Focus (Hedgehog Concept)
 

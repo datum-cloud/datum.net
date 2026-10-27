@@ -2,4 +2,6 @@
 @import './layers.css';
 @import './components-buttons.css';
 @import './fonts-dejavu.css';
+@import './components-faq.css';
+@import './components-tooltip.css';
 @import './components-pricing.css';

@@ -1,7 +1,7 @@
 {
   "show": true,
-  "label": "Try for free",
-  "text": "Datum is currently free under public beta, sign up",
+  "label": "Build for free",
+  "text": "Datum Cloud is free until February 1st, 2027.",
   "href": "https://auth.datum.net/id/signup",
   "icon": {
     "name": "arrow-right",

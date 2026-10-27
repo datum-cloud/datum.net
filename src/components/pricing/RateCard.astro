@@ -1,0 +1,75 @@
+---
+// src/components/pricing/RateCard.astro
+// One rate card: a tinted header over feature groups. Each group pairs a
+// feature name with one or more unit/price rows, so a feature's divider closes
+// where the feature ends. Figma nodes 18493:88306 / 18493:88512.
+
+import Tooltip from '@components/Tooltip.astro';
+import RatePrice from '@components/pricing/RatePrice.astro';
+import type { RateCard as RateCardData } from '@data/pricing';
+
+export interface RateCardProps {
+  card: RateCardData;
+}
+
+const { card } = Astro.props as RateCardProps;
+const titleId = `pricing-card-${card.id}-title`;
+---
+
+<article class="pricing-card" aria-labelledby={titleId}>
+  <header class="pricing-card-head">
+    <h2 id={titleId} class="pricing-card-title">{card.title}</h2>
+    <p class="pricing-card-description">
+      {
+        card.description.map((part) =>
+          typeof part === 'string' ? (
+            part
+          ) : (
+            <a class="pricing-card-link" href={part.href}>
+              {part.text}
+            </a>
+          )
+        )
+      }
+    </p>
+  </header>
+
+  <div class="pricing-card-body">
+    {
+      card.features.map((feature) => (
+        <div class="pricing-card-group">
+          <h3
+            class:list={[
+              'pricing-card-feature',
+              feature.badge && feature.rows.length > 1 && 'pricing-card-feature--stacked',
+            ]}
+          >
+            <span class="pricing-card-feature-label">
+              {feature.name}
+              {feature.info && (
+                <Tooltip
+                  id={`${card.id}-${feature.name.toLowerCase().replace(/\s+/g, '-')}-info`}
+                  class="pricing-card-info"
+                  text={feature.info}
+                  triggerLabel={`About ${feature.name}`}
+                />
+              )}
+            </span>
+            {feature.badge && <span class="pricing-rate-badge">{feature.badge}</span>}
+          </h3>
+
+          <ul class="pricing-card-rows">
+            {feature.rows.map((row) => (
+              <li class="pricing-card-row">
+                <span class="pricing-card-unit">{row.unit}</span>
+                <span class="pricing-card-price">
+                  <RatePrice row={row} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</article>

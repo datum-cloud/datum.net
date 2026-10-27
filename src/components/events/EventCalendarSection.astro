@@ -36,6 +36,7 @@ const eventsData = allEvents.map((e) => {
   const guestsData = guests.map((g) => ({
     name: g.name,
     title: g.title ?? null,
+    talk: g.talk ?? null,
     avatarSrc: g.avatarImage?.src ?? g.avatarUrl ?? null,
   }));
 
@@ -455,6 +456,13 @@ const eventsJson = JSON.stringify(eventsData);
                               <p class="event-series-card__speaker-name" x-text="guest.name"></p>
                               <template x-if="guest.title">
                                 <p class="event-series-card__speaker-title" x-text="guest.title">
+                                </p>
+                              </template>
+                              <template x-if="guest.talk">
+                                <p
+                                  class="event-series-card__speaker-talk"
+                                  x-text="'“' + guest.talk + '”'"
+                                >
                                 </p>
                               </template>
                             </div>

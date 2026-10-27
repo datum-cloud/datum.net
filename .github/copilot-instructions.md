@@ -31,7 +31,7 @@ Always use path aliases for imports:
 - `@components/*` - UI components
 - `@layouts/*` - Page layouts
 - `@utils/*` - Utility functions
-- `@libs/*` - Library code (datum, github, postgres, oidc)
+- `@libs/*` - Library code (datum, github, postgres)
 - `@content/*` - Content files
 - `@data/*` - JSON data files
 - `@styles/*`, `@assets/*` - Legacy styles/assets (`src/static/`)
@@ -68,7 +68,7 @@ export const vote = defineAction({
 });
 ```
 
-Used for roadmap voting, OIDC authentication, etc.
+Used for roadmap voting, etc.
 
 ### Database Integration
 
@@ -85,12 +85,6 @@ Used for roadmap voting, OIDC authentication, etc.
 - Roadmap issues from `datum-cloud/enhancements` repo
 - Changelogs from GitHub Discussions
 - Uses `octokit` library with GraphQL queries
-
-**OIDC Authentication:** `src/libs/oidc.ts`
-
-- OpenID Connect client for Datum platform integration
-- PKCE flow for authorization
-- Environment vars: `AUTH_OIDC_ISSUER`, `AUTH_OIDC_CLIENT_ID`, etc.
 
 ### Caching Strategy
 
@@ -187,9 +181,9 @@ Kubernetes configs in `config/` (base, dev, gateway)
 - `src/pages/` - File-based routing
 - `src/components/` - Organized by feature (blog/, handbook/, etc.)
 - `src/content/` - MDX content collections
-- `src/libs/` - Reusable libraries (github, postgres, oidc, cache)
+- `src/libs/` - Reusable libraries (github, postgres, cache)
 - `src/utils/` - Helper functions (dateUtils, imageUtils, collectionUtils)
-- `src/actions/` - Server actions (vote, auth)
+- `src/actions/` - Server actions (vote)
 - `public/` - Static assets (fonts, images, scripts)
 
 ## Testing

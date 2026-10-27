@@ -1,0 +1,17 @@
+{
+  "hosts": [],
+  "guests": [
+    {
+      "name": "David Gilford",
+      "title": "Founder at Policy Alpha",
+      "talk": "Power, Place, Permission: Trust and Social License to Scale AI",
+      "avatarUrl": "david-gilford.jpg"
+    },
+    {
+      "name": "Drew Raines",
+      "title": "Head of Engineering at Datum",
+      "talk": "Look Ma, No IPs! Private by Default in Era of Rogue Agents",
+      "avatarUrl": "drew-raines.jpg"
+    }
+  ]
+}

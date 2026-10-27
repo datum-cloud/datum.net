@@ -1,0 +1,16 @@
+---
+// src/components/pricing/BetaBanner.astro
+// Full-width notice that rates are informational while the beta is free.
+// Figma node 18493:88299.
+
+import Icon from '@components/Icon.astro';
+import { banner } from '@data/pricing';
+---
+
+<p class="pricing-banner">
+  <Icon name={banner.icon} class="pricing-banner-icon" />
+  <span>
+    <strong>{banner.emphasis}</strong>
+    {banner.text}
+  </span>
+</p>

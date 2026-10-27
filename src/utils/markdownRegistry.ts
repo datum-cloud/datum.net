@@ -42,9 +42,12 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/brand',
   '/pricing',
   '/locations',
+  '/platform',
   '/platform/deliver',
   '/platform/build',
   '/platform/connect',
+  '/platform/compute',
+  '/platform/dns',
 ]);
 
 /**
@@ -72,6 +75,7 @@ const PAGES_SKIP = new Set<string>([
   'about', // dedicated (mission/companies/investors/team + Strapi people)
   'blog', // dedicated (Strapi listing)
   'docs', // no /docs route
+  'platform', // dedicated (src/data/platform.ts)
   'pricing', // dedicated (JSON tiers)
   'locations', // dedicated (JSON regions)
   'roadmap', // dedicated (GitHub milestones)

@@ -4,7 +4,7 @@
 // drift out of sync. Page-level SEO/OG metadata lives in
 // src/content/pages/pricing.mdx, and the FAQ copy in src/content/faq/*.mdx
 // (category: "pricing"), matching the split every other content-collection-backed
-// page uses. Figma node 16187:92970.
+// page uses. Figma node 18493:88208.
 
 import type { IconName } from '@utils/iconMap';
 
@@ -14,23 +14,20 @@ const TALK_TO_US_HREF = '/dedicated-cloud#contact';
 
 export const hero = {
   title: 'Pricing',
-  description: 'Usage-based and transparent, the way pricing should be.',
-  primaryCta: { text: 'Start for free', href: 'https://auth.datum.net/id/signup' },
+  description: 'Start with Galactic VPC, add resources, pay for what you use',
+  highlights: ['No feature gates', 'No seat limits', 'No hidden fees'],
+  primaryCta: { text: 'Start building', href: 'https://auth.datum.net/id/signup' },
 };
 
-export const callout = {
-  title: 'Why is pricing so complicated?',
-  description: "Here's how we make it simple",
-  items: ['No feature gates', 'No seat limits', 'No hidden fees'],
-  // Points at the blog index until the pricing-rationale post publishes, then
-  // should be swapped for that post's permalink.
-  cta: { text: 'Learn more', href: '/blog' },
+export const banner = {
+  icon: 'party-popper' as IconName,
+  emphasis: 'Free to use until billing begins on February 1st, 2027.',
+  text: 'We’ll notify you before any charges!',
 };
 
 /** One monospace price line. Rendered as a regular `$`, a bold `amount`, then
- *  `suffix` appended verbatim — so a suffix that reads as a separate word
- *  carries its own leading space ('` per million`'), while a unit that fuses to
- *  the figure does not ('`/IP-hr`'). `note` renders on a second line. */
+ *  `suffix` appended verbatim — a separate word carries its own leading space
+ *  ('` per million`'). `note` renders on a second line. */
 export interface PriceLine {
   amount: string;
   suffix?: string;
@@ -38,11 +35,11 @@ export interface PriceLine {
 }
 
 export interface RateRow {
-  /** Value in the "Unit of measure" column; an em dash where the design shows one. */
+  /** Value in the "Unit of measure" column; empty where the design leaves it blank. */
   unit: string;
   lines?: PriceLine[];
-  /** Renders the bold monospace FREE treatment instead of a figure. */
-  free?: boolean;
+  /** Renders the bold monospace label (e.g. "Free", "Always Free") instead of a figure. */
+  free?: string;
   /** Renders an underlined link instead of a figure (the 500 TB+ tier). */
   link?: { text: string; href: string };
 }
@@ -56,23 +53,59 @@ export interface RateFeature {
   rows: RateRow[];
 }
 
-export interface RateGroup {
-  /** Drives the `pricing-rate-category--{id}` tint modifier. */
-  id: 'deliver' | 'build' | 'connect' | 'transfer';
-  name: string;
-  icon: IconName;
-  /** Optional callout pinned under the category label (data transfer only). */
-  note?: { text: string; icon: IconName };
+/** A card description is plain text with optional inline links. */
+export type RateCardDescription = Array<string | { text: string; href: string }>;
+
+export interface RateCard {
+  id: string;
+  title: string;
+  description: RateCardDescription;
   features: RateFeature[];
 }
 
 export const rates = {
-  columns: ['Category', 'Feature', 'Unit of measure', 'Price per unit'],
-  groups: [
+  columns: ['Feature', 'Unit of measure', 'Price per unit'],
+  cards: [
     {
-      id: 'deliver',
-      name: 'Deliver',
-      icon: 'send',
+      id: 'galactic-vpc',
+      title: 'Galactic VPC',
+      description: [
+        'gVPC is a virtual backbone that spans providers. Create as many as you want. Pay only for data transfer fees.',
+      ],
+      features: [
+        {
+          name: 'Egress data',
+          info: 'This is all traffic that egresses our network to the public internet.',
+          rows: [
+            { unit: '0 – 200 GB', free: 'Free' },
+            { unit: '200 GB – 10 TB', lines: [{ amount: '0.05', suffix: ' per GB' }] },
+            { unit: '10 – 150 TB', lines: [{ amount: '0.04', suffix: ' per GB' }] },
+            { unit: '150 – 500 TB', lines: [{ amount: '0.03', suffix: ' per GB' }] },
+            { unit: '500 TB+', link: { text: 'Contact us', href: TALK_TO_US_HREF } },
+          ],
+        },
+        {
+          name: 'Internal data',
+          info: 'Traffic within the Datum network',
+          rows: [
+            { unit: 'Same region', free: 'Free' },
+            { unit: 'Cross-region', lines: [{ amount: '0.03', suffix: ' per GB' }] },
+          ],
+        },
+        {
+          name: 'Ingress data',
+          rows: [{ unit: '', free: 'Always Free' }],
+        },
+      ],
+    },
+    {
+      id: 'hosted-resources',
+      title: 'Hosted Resources',
+      description: [
+        'Datum Cloud provides a growing list of infrastructure primitives on-demand. For our full roadmap, ',
+        { text: 'click here', href: '/roadmap' },
+        '.',
+      ],
       features: [
         {
           name: 'DNS',
@@ -89,15 +122,9 @@ export const rates = {
         },
         {
           name: 'GSLB',
+          badge: 'Soon',
           rows: [{ unit: 'Requests', lines: [{ amount: '0.60', suffix: ' per million' }] }],
         },
-      ],
-    },
-    {
-      id: 'build',
-      name: 'Build',
-      icon: 'construction',
-      features: [
         {
           name: 'Compute',
           rows: [
@@ -119,6 +146,7 @@ export const rates = {
         },
         {
           name: 'Object Storage',
+          badge: 'Soon',
           rows: [
             {
               unit: 'Standard tier',
@@ -130,65 +158,103 @@ export const rates = {
             },
           ],
         },
-      ],
-    },
-    {
-      id: 'connect',
-      name: 'Connect',
-      icon: 'network',
-      features: [
-        {
-          name: 'Gateways',
-          rows: [{ unit: '—', lines: [{ amount: '0.045', suffix: ' per hour' }] }],
-        },
         {
           name: 'Tunnels',
           rows: [{ unit: 'Endpoint', lines: [{ amount: '0.01', suffix: ' per hour' }] }],
         },
-        {
-          name: 'Public IPv4',
-          rows: [{ unit: '—', lines: [{ amount: '0.005', suffix: '/IP-hr' }] }],
-        },
       ],
     },
-    {
-      id: 'transfer',
-      name: 'Data transfer',
-      icon: 'arrow-left-right',
-      note: { text: 'Ingress to our network is always free', icon: 'party-popper' },
-      features: [
-        {
-          name: 'Egress',
-          info: "Traffic leaving Datum's network for the public internet.",
-          rows: [
-            { unit: '0 – 200 GB', free: true },
-            { unit: '200 GB – 10 TB', lines: [{ amount: '0.05', suffix: ' per GB' }] },
-            { unit: '10 – 150 TB', lines: [{ amount: '0.04', suffix: ' per GB' }] },
-            { unit: '150 – 500 TB', lines: [{ amount: '0.03', suffix: ' per GB' }] },
-            { unit: '500 TB+', link: { text: 'Contact sales', href: TALK_TO_US_HREF } },
-          ],
-        },
-        {
-          name: 'Internal',
-          info: 'Traffic between Datum regions and services.',
-          rows: [
-            { unit: 'Same region', free: true },
-            { unit: 'Cross-region', lines: [{ amount: '0.03', suffix: ' per GB' }] },
-          ],
-        },
-      ],
-    },
-  ] satisfies RateGroup[],
+  ] satisfies RateCard[],
 };
 
-export const faqTitle = 'Frequently Asked Questions';
+export interface BatteryItem {
+  name: string;
+  /** Docs page the item links out to. */
+  href: string;
+  /** Short explainer shown in the info tooltip. */
+  info: string;
+}
 
-/** Prefooter copy override for this page — Figma node 16187:93826. */
-export const prefooter = {
-  titleAccent: 'Build now.',
-  title: 'Pay nothing.',
+export const batteries = {
+  title: 'Batteries included!',
   description:
-    "The complete networking cloud, free while we're in public beta — with advance notice before anything changes.",
+    "Unlike many platforms, we don't charge for teammates, robust logs, or appropriate access controls. Use 'em!",
+  label: 'Always Free',
+  columns: [
+    [
+      {
+        name: 'datumctl (CLI)',
+        href: '/docs/datumctl/overview',
+        info: 'One command-line tool for every Datum Cloud resource, built for people, scripts, CI, and AI agents.',
+      },
+      {
+        name: 'Coarse-Grained Permissions',
+        href: '/docs/organizations/team-management',
+        info: 'Invite teammates to your organization and assign them roles, with no seat fees.',
+      },
+      {
+        name: 'Secrets',
+        href: '/docs/operations/secrets',
+        info: 'Create and manage secret resources in a project, from the Cloud Portal or datumctl.',
+      },
+    ],
+    [
+      {
+        name: 'Metrics Export',
+        href: '/docs/operations/metrics-export',
+        info: 'Export the metrics Datum publishes for your project to Grafana Cloud or any Prometheus remote-write endpoint.',
+      },
+      {
+        name: 'Audit & Activity Logs',
+        href: '/docs/operations/activity-logs',
+        info: 'Query and filter audit logs to track changes across your organizations and projects.',
+      },
+      {
+        name: 'SSO',
+        href: '/docs/account/sign-in',
+        info: 'Sign in with a passkey, or with your Google or GitHub account.',
+      },
+    ],
+    [
+      {
+        name: 'Service Accounts',
+        href: '/docs/projects/service-accounts',
+        info: 'Non-human identities for applications, CI/CD pipelines, and services to authenticate with Datum APIs.',
+      },
+      {
+        name: 'Datum MCP',
+        href: '/docs/agents/datum-mcp',
+        info: 'Connect Claude, Cursor, and other AI tools to your projects with Datum’s official MCP server.',
+      },
+      {
+        name: 'AI Assistant',
+        href: '/docs/operations/datum-assistant',
+        info: 'Ask Patch, the Datum Cloud assistant, about your resources in natural language and let it diagnose problems.',
+      },
+    ],
+    [
+      {
+        name: 'Domains',
+        href: '/docs/domain-dns/domains',
+        info: 'Track and verify your domains in one place, wherever they are registered.',
+      },
+      {
+        name: 'Desktop Apps',
+        href: '/docs/desktop-apps',
+        info: 'Native apps for macOS, Linux, and Windows that expose local environments to the internet through a secure tunnel.',
+      },
+    ],
+  ] satisfies BatteryItem[][],
+};
+
+export const faqTitle = 'Commonly Asked Questions';
+
+/** Prefooter copy override for this page — Figma node 18493:88927. */
+export const prefooter = {
+  titleAccent: 'Free',
+  title: 'during public beta.',
+  description:
+    'Datum Cloud is currently free. Billable usage starts February 1st, 2027. Feedback welcome!',
   buttons: [
     {
       text: 'Start for free',

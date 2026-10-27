@@ -1,0 +1,50 @@
+---
+// src/pages/use-cases.astro
+// Use cases — Figma node 18434:82823.
+export const prerender = false;
+
+import '@styles/page-use-cases.css';
+
+import Layout from '@layouts/Layout.astro';
+import Announcement from '@components/Announcement.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import Hero from '@components/use-cases/Hero.astro';
+import Obstacles from '@components/use-cases/Obstacles.astro';
+import { meta } from '@data/useCases';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://www.datum.net/use-cases/#webpage',
+      url: 'https://www.datum.net/use-cases/',
+      name: meta.title,
+      description: meta.description,
+      isPartOf: { '@id': 'https://www.datum.net/#organization' },
+      inLanguage: 'en-US',
+      dateModified: '2026-10-26',
+    },
+  ],
+};
+---
+
+<Layout
+  bodyClass="page-use-cases"
+  title={meta.title}
+  description={meta.description}
+  jsonLd={jsonLd}
+>
+  <section class="datum-container">
+    <header class="page-header">
+      <Announcement />
+      <Nav />
+    </header>
+
+    <Hero />
+    <Obstacles />
+
+    <Footer showCTA={false} illustrationBgClass="bg-platinum" />
+  </section>
+</Layout>

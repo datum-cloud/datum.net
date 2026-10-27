@@ -1,0 +1,23 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1410121997">
+<g id="Rectangle 2362" filter="url(#filter0_d_0_8)">
+<rect x="8" width="80" height="80" rx="6" fill="#67717C"/>
+<rect x="8.5" y="0.5" width="79" height="79" rx="5.5" stroke="#384555"/>
+</g>
+<rect id="Rectangle 2363" x="16" y="8" width="64" height="64" fill="#384555"/>
+<path id="Polygon 1" d="M60 40L39 52.1244L39 27.8756L60 40Z" fill="white"/>
+</g>
+<defs>
+<filter id="filter0_d_0_8" x="0" y="0" width="96" height="96" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="12" operator="erode" in="SourceAlpha" result="effect1_dropShadow_0_8"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="10"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0470588 0 0 0 0 0.113725 0 0 0 0 0.192157 0 0 0 0.4 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_8"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_8" result="shape"/>
+</filter>
+</defs>
+</svg>

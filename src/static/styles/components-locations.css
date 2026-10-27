@@ -153,6 +153,14 @@
     @apply datum-text-base text-midnight-fjord list-disc pl-6;
   }
 
+  .locations-list--metro {
+    @apply block;
+  }
+
+  .locations-list--code {
+    @apply text-app---dark---utility-4 block font-mono text-sm leading-5;
+  }
+
   .locations-list--item {
     @apply leading-6;
 

@@ -1,4 +1,4 @@
-FROM node:24.16.0-alpine3.22 AS base
+FROM node:24.22.1-alpine3.24 AS base
 WORKDIR /app
 ENV ASTRO_TELEMETRY_DISABLED=true
 RUN apk update && \
@@ -25,8 +25,11 @@ COPY . .
 RUN chmod -R 755 src/pages
 CMD ["npm", "run", "dev", "--", "--host", "--allowed-hosts=website.staging.env.datum.net"]
 
-FROM node:24.16.0-alpine3.22 AS production
+FROM node:24.22.1-alpine3.24 AS production
 WORKDIR /app
+RUN apk add --no-cache --upgrade 'ca-certificates>=20261020-r0'
+RUN ! grep -q MIICTjCCAdOgAwIBAgIKPPYHqWhwDtqLhDAKBggqhkjOPQQDAzBrMQswCQYDVQQG /etc/ssl/certs/ca-certificates.crt
+ENV NODE_OPTIONS=--use-openssl-ca
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs

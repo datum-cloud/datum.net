@@ -1,11 +1,11 @@
 <svg preserveAspectRatio="none" overflow="visible" width="255" height="281" viewBox="0 0 255 281" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect data-line-draw x="135" y="81" width="80" height="80" fill="#F9F9F8" />
-  <rect data-line-draw x="16" y="121" width="40" height="40" fill="#F9F9F8" />
-  <rect data-line-draw x="136" y="241" width="40" height="40" fill="#F9F9F8" />
-  <path data-line-draw pathLength="1" d="M215 0L215 120" stroke="#C3C6C9" shape-rendering="crispEdges" />
-  <path data-line-draw pathLength="1" d="M136 41L136 280" stroke="#C3C6C9" shape-rendering="crispEdges" />
-  <path data-line-draw pathLength="1" d="M56 121L56 160" stroke="#C3C6C9" shape-rendering="crispEdges" />
-  <path data-line-draw pathLength="1" d="M96 240H176" stroke="#C3C6C9" shape-rendering="crispEdges" />
-  <path data-line-draw pathLength="1" d="M0 160L176 160" stroke="#C3C6C9" shape-rendering="crispEdges" />
-  <path data-line-draw pathLength="1" d="M96 80L255 80" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <rect data-line-draw="" x="135" y="81" width="80" height="80" fill="#F9F9F8" />
+  <rect data-line-draw="" x="16" y="121" width="40" height="40" fill="#F9F9F8" />
+  <rect data-line-draw="" x="136" y="241" width="40" height="40" fill="#F9F9F8" />
+  <path data-line-draw="" pathLength="1" d="M215 0L215 120" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <path data-line-draw="" pathLength="1" d="M136 41L136 280" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <path data-line-draw="" pathLength="1" d="M56 121L56 160" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <path data-line-draw="" pathLength="1" d="M96 240H176" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <path data-line-draw="" pathLength="1" d="M0 160L176 160" stroke="#C3C6C9" shape-rendering="crispEdges" />
+  <path data-line-draw="" pathLength="1" d="M96 80L255 80" stroke="#C3C6C9" shape-rendering="crispEdges" />
 </svg>

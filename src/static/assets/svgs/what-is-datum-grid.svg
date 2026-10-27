@@ -1,8 +1,8 @@
 <svg width="201" height="600" viewBox="0 0 201 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect data-line-draw opacity="0.6" x="120" y="160" width="80" height="80" fill="#EFEFED" />
-  <rect data-line-draw opacity="0.6" x="80" y="80" width="40" height="40" fill="#EFEFED" />
+  <rect data-line-draw="" opacity="0.6" x="120" y="160" width="80" height="80" fill="#EFEFED" />
+  <rect data-line-draw="" opacity="0.6" x="80" y="80" width="40" height="40" fill="#EFEFED" />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M40.5 0L40.5 160"
     stroke="#C3C6C9"
@@ -10,7 +10,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M120.5 80L120.5 200"
     stroke="#C3C6C9"
@@ -18,7 +18,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M0 80.5H160"
     stroke="#C3C6C9"
@@ -26,7 +26,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M200.5 446L200.5 120"
     stroke="#C3C6C9"
@@ -34,16 +34,16 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M120 160.5H200"
     stroke="#C3C6C9"
     shape-rendering="crispEdges"
     vector-effect="non-scaling-stroke"
   />
-  <rect data-line-draw opacity="0.6" x="159" y="400" width="40" height="40" fill="#EFEFED" />
+  <rect data-line-draw="" opacity="0.6" x="159" y="400" width="40" height="40" fill="#EFEFED" />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M120.5 440L120.5 560"
     stroke="#C3C6C9"
@@ -51,7 +51,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M200.5 480L200.5 440"
     stroke="#C3C6C9"
@@ -59,7 +59,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M40 520.5H120"
     stroke="#C3C6C9"
@@ -67,7 +67,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M80 440.5H200"
     stroke="#C3C6C9"
@@ -75,7 +75,7 @@
     vector-effect="non-scaling-stroke"
   />
   <path
-    data-line-draw
+    data-line-draw=""
     pathLength="1"
     d="M40.5 520L40.5 600"
     stroke="#C3C6C9"

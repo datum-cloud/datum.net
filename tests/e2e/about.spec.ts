@@ -263,7 +263,7 @@ test.describe('In the wild page', () => {
 
     await expect(page.getByRole('heading', { level: 1, name: 'in the wild' })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2 })).toContainText('show up differently');
-    await expect(page.locator('.wild-card')).toHaveCount(10);
+    await expect(page.locator('.wild-card')).toHaveCount(11);
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText('In the Wild');
   });
 

@@ -1,0 +1,94 @@
+---
+// src/components/use-cases/Hero.astro
+// Headline, four-up card grid, agent-first video teaser and the people
+// illustration standing on the section's bottom rule. Figma node 18434:82888.
+
+import { Image } from 'astro:assets';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import MediaLightbox from '@components/MediaLightbox.astro';
+import UseCaseCard from '@components/use-cases/UseCaseCard.astro';
+import ButtonPlay from '@assets/svgs/button-play-dark.svg';
+import consoleImage from '@assets/images/use-cases/console.png';
+import glowImage from '@assets/images/use-cases/glow.png';
+import person1 from '@assets/images/use-cases/person-1.png';
+import person2 from '@assets/images/use-cases/person-2.png';
+import person3 from '@assets/images/use-cases/person-3.png';
+import person4 from '@assets/images/use-cases/person-4.png';
+import person5 from '@assets/images/use-cases/person-5.png';
+import { hero, agents } from '@data/useCases';
+
+/** Left-to-right, as the design groups them (2 · 1 · 2). */
+const people = [
+  { src: person1, modifier: 'one' },
+  { src: person2, modifier: 'two' },
+  { src: person3, modifier: 'three' },
+  { src: person4, modifier: 'four' },
+  { src: person5, modifier: 'five' },
+];
+---
+
+<section
+  class="section--block section--block--x-pad border-app---dark---utility-4/50 relative overflow-hidden border-b bg-white"
+  aria-labelledby="use-cases-title"
+>
+  <div class="max-width-nav spacing-pad relative pt-16 md:pt-24 lg:pt-32 xl:pt-40">
+    <SectionLine left right top bottom />
+
+    <div class="use-cases-hero">
+      <div class="use-cases-heading">
+        <SectionEyebrow>{hero.eyebrow}</SectionEyebrow>
+        <h1 id="use-cases-title" class="use-cases-hero-title">
+          {hero.title}{' '}
+          <span class="use-cases-hero-highlight">{hero.titleHighlight}</span>
+        </h1>
+      </div>
+
+      <div class="use-cases-grid-wrap">
+        <div class="use-cases-grid use-cases-grid--four">
+          {hero.items.map((item) => <UseCaseCard item={item} />)}
+        </div>
+        <span class="use-cases-grid-tick" aria-hidden="true"></span>
+      </div>
+
+      <div class="use-cases-agents">
+        <button
+          type="button"
+          class="use-cases-video"
+          data-video-trigger
+          data-embed-url={agents.videoEmbedUrl}
+          aria-label={agents.videoLabel}
+        >
+          <span class="use-cases-video-frame" aria-hidden="true">
+            <Image src={consoleImage} alt="" class="use-cases-video-image" loading="lazy" />
+            <span class="use-cases-video-zoom">
+              <Image src={consoleImage} alt="" class="use-cases-video-zoom-image" loading="lazy" />
+            </span>
+            <span class="use-cases-video-mask use-cases-video-mask--top"></span>
+            <span class="use-cases-video-mask use-cases-video-mask--bottom"></span>
+          </span>
+          <ButtonPlay class="use-cases-video-play" aria-hidden="true" />
+        </button>
+        <p class="use-cases-agents-caption">{agents.caption}</p>
+      </div>
+
+      <div class="use-cases-people" aria-hidden="true">
+        <Image src={glowImage} alt="" class="use-cases-people-glow" loading="lazy" />
+        <div class="use-cases-people-group">
+          {
+            people.map((person) => (
+              <Image
+                src={person.src}
+                alt=""
+                class={`use-cases-person use-cases-person--${person.modifier}`}
+                loading="lazy"
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<MediaLightbox selector="" />

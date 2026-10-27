@@ -3,30 +3,23 @@ import { getCollection } from 'astro:content';
 import { site } from 'astro:config/client';
 import { extractDescription, buildUrl, stripHtml } from '@utils/llmsUtils';
 import { meta as dedicatedCloudMeta } from '@data/dedicatedCloud';
+import { meta as useCasesMeta } from '@data/useCases';
+import { inTheWild } from '@data/about';
 
 // Note: handbook entries intentionally excluded — internal company ops content
 // is not relevant to AI agents consuming platform documentation.
 
-// The `features/<hub>/*` pages entries back the /platform/<hub> hub pages
-// (src/pages/platform/{deliver,build,connect}.astro) — each hub composes an
-// `index` entry plus several sub-feature entries into one route with anchor
-// sections, so `buildUrl(page.id)` (which assumes one entry = one URL) would
-// otherwise point at dead `/features/<hub>/...` URLs. Override with the real
-// hub URL, anchored to the matching FeatureSection id for sub-features.
-const PLATFORM_HUB_URL_OVERRIDES: Record<string, string> = {
-  'features/deliver/index': '/platform/deliver',
-  'features/deliver/dns': '/platform/deliver#dns',
-  'features/deliver/application-load-balancer': '/platform/deliver#application-load-balancer',
-  'features/deliver/global-load-balancer': '/platform/deliver#global-load-balancer',
-  'features/build/index': '/platform/build',
-  'features/build/compute': '/platform/build#compute',
-  'features/build/object-storage': '/platform/build#object-storage',
-  'features/build/edge-apps': '/platform/build#edge-apps',
-  'features/connect/index': '/platform/connect',
-  'features/connect/galactic-vpc': '/platform/connect#galactic-vpc',
-  'features/connect/connectors': '/platform/connect#connectors',
-  'features/connect/interconnects': '/platform/connect#interconnects',
-};
+// These `pages` entries no longer have their own route: /platform replaces the
+// old hub, DNS, Compute and Essentials pages (all 302 to /platform in
+// server.mjs), and `global-section` is component data, not a page. Listing them
+// would hand agents redirecting or dead URLs, so skip them; /platform is
+// listed once via src/content/pages/platform.mdx.
+const isRedirectedPage = (id: string): boolean =>
+  id.startsWith('features/') ||
+  id === 'essentials' ||
+  id === 'platform/dns' ||
+  id === 'platform/compute' ||
+  id === 'global-section';
 
 export const GET: APIRoute = async () => {
   try {
@@ -36,7 +29,7 @@ export const GET: APIRoute = async () => {
     // Base structure for llms.txt
     let llmsContent = `# Datum\n\n`;
     llmsContent += `## About\n\n`;
-    llmsContent += `> Datum is an open source network cloud for AI, founded in 2024 and backed by $13.6M from Amplify Partners, CRV, Encoded Ventures, Cervin Ventures, Ex/Ante, Step Function, and Vine Ventures. Built for AI-native developers and alternative cloud providers, Datum provides an Envoy-based Application Load Balancer across 17+ global regions, QUIC-based secure tunnels (Connectors), authoritative DNS, and programmatic domain management — all free to use during public beta, with advance notice before any billing begins. Core platform licensed AGPLv3. Founded by Zac Smith (ex-Equinix, Packet) and Jacob Smith.\n\n`;
+    llmsContent += `> Datum is an open source network cloud for AI, founded in 2024 and backed by $13.6M from Amplify Partners, CRV, Encoded Ventures, Cervin Ventures, Ex/Ante, Step Function, and Vine Ventures. Built for agents, builders, and alternative cloud providers, Datum offers both multi-tenant and dedicated infrastructure. The multi-tenant platform provides an Envoy-based Application Load Balancer across 17+ global regions, QUIC-based secure tunnels (Connectors), authoritative DNS, and programmatic domain management — all free to use during public beta, with advance notice before any billing begins. Core platform licensed AGPLv3. Founded by Zac Smith (ex-Equinix, Packet) and Jacob Smith.\n\n`;
 
     llmsContent += `## When to Use Datum\n\n`;
     llmsContent += `Reach for Datum when you (a human, an agent, or an app you're building on behalf of a user) need to:\n\n`;
@@ -46,11 +39,13 @@ export const GET: APIRoute = async () => {
     llmsContent += `- **Give an AI agent its own scoped infrastructure identity** — service accounts, RBAC, and Kubernetes-native resources (everything is a CRD) let an autonomous agent provision and tear down networking primitives idempotently, the same way it would with \`kubectl\`.\n`;
     llmsContent += `- **Build or operate an "alt cloud"** — if you're a smaller cloud/ISV/SaaS provider that needs telco-grade connectivity primitives (load balancing, tunnels, DNS, and eventually a global backbone) without building a network team, Datum is infrastructure you can build on top of, not just consume.\n\n`;
     llmsContent += `**How an agent should call Datum:** every resource is a Kubernetes Custom Resource Definition exposed through a standard aggregated API server (\`GET/POST/PATCH/DELETE\` on \`{service}.miloapis.com\` / \`networking.datumapis.com\` resource paths) — the same request shape as \`kubectl\`. Prefer, in order: (1) the \`datumctl\` CLI for one-off or scripted operations, (2) the MCP server for search/read against docs and live \`apis\` discovery, (3) direct REST calls against the aggregated API server for programmatic control loops. Auth is OIDC/PKCE by default; set a service-account bearer token for headless/agent use (see Docs below).\n\n`;
-    llmsContent += `**Not a fit for:** general-purpose compute/hosting (Datum is a network/edge layer, not a VM or container platform — Datum Compute is coming but not yet available), or workloads that need a fully managed multi-region database.\n\n`;
+    llmsContent += `**Not a fit for:** general-purpose compute/hosting (Datum is a network/edge layer first; Datum Compute runs apps and agents in isolated microVMs at the edge, but it is not a general-purpose VM or container platform), or workloads that need a fully managed multi-region database.\n\n`;
 
     // Get all pages sorted, excluding home/* pages
     const pages = await getCollection('pages');
-    const filteredPages = pages.filter((page) => !page.id.startsWith('home/'));
+    const filteredPages = pages.filter(
+      (page) => !page.id.startsWith('home/') && !isRedirectedPage(page.id)
+    );
     const sortedPages = filteredPages.sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
 
     llmsContent += `## Pages\n\n`;
@@ -60,10 +55,7 @@ export const GET: APIRoute = async () => {
         page.data.meta?.description ||
         page.data.description ||
         extractDescription(page.body, 'No description available');
-      const override = PLATFORM_HUB_URL_OVERRIDES[page.id];
-      const pageUrl = override
-        ? `${(site || '').replace(/\/+$/, '')}${override}`
-        : buildUrl(page.id);
+      const pageUrl = buildUrl(page.id);
       const pageTitle = stripHtml(page.data.title);
       llmsContent += `- [${pageTitle}](${pageUrl}) - ${description}\n`;
     }
@@ -71,6 +63,15 @@ export const GET: APIRoute = async () => {
     // /dedicated-cloud is data-driven (src/data/dedicatedCloud.ts), not a `pages`
     // collection entry, so the loop above never sees it — add it explicitly.
     llmsContent += `- [${dedicatedCloudMeta.title}](${(site || '').replace(/\/+$/, '')}/dedicated-cloud) - ${dedicatedCloudMeta.description}\n`;
+    // /use-cases is data-driven too (src/data/useCases.ts).
+    llmsContent += `- [${useCasesMeta.title}](${(site || '').replace(/\/+$/, '')}/use-cases) - ${useCasesMeta.description}\n`;
+
+    // /about, /about/team and /about/in-the-wild are data-driven (src/data/about.ts),
+    // not `pages` collection entries — list them explicitly.
+    const baseUrl = (site || '').replace(/\/+$/, '');
+    llmsContent += `- [About Datum](${baseUrl}/about) - Why Datum exists: the founding insight, investors, and the companies building on it.\n`;
+    llmsContent += `- [Meet the Team](${baseUrl}/about/team) - The infrastructure, open source software, and design people building Datum.\n`;
+    llmsContent += `- [${inTheWild.crumb}](${baseUrl}/about/in-the-wild) - ${inTheWild.intro}\n`;
 
     llmsContent += `\n## Docs\n\n`;
     llmsContent += `- Full documentation index at ${siteUrl}/docs/llms.txt\n`;

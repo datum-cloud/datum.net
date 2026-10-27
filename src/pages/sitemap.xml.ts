@@ -22,17 +22,15 @@ const STATIC_ROUTES = [
   '/contact',
   '/developers',
   '/download',
-  '/essentials',
   '/events',
   '/events/alt-cloud-meetups',
   '/events/community-huddles',
-  '/platform/deliver',
-  '/platform/build',
-  '/platform/connect',
   '/handbook',
   '/locations',
+  '/platform',
   '/pricing',
   '/roadmap',
+  '/use-cases',
 ];
 
 // ---------------------------------------------------------------------------

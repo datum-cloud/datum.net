@@ -1,0 +1,10 @@
+{
+  "name": "braces",
+  "version": "3.0.4",
+  "description": "braces 3.0.3 with a nesting-depth cap (GHSA-vfj7-8cjw-p6xm). Drop this override when upstream publishes a fix.",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "fill-range": "^7.1.1"
+  }
+}

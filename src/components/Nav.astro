@@ -106,8 +106,10 @@ const cloudPortalUrl =
         data-portal-signup-cta
       >
         {/* Mobile shows "Start"; sr-only keeps full text for SEO/a11y (Lighthouse). */}
-        <span class="inline-flex lg:hidden">Start<span class="sr-only"> for free</span></span>
-        <span class="hidden lg:inline-flex">Start for free</span>
+        <span class="inline-flex lg:hidden"
+          >Start<span class="sr-only"> free during beta</span></span
+        >
+        <span class="hidden lg:inline-flex">Free during Beta</span>
         <Icon name="arrow-right" size="md" class="hidden lg:inline-flex" />
       </a>
     </div>
@@ -172,7 +174,7 @@ const cloudPortalUrl =
     | {
         signedIn: true;
         user: { displayName: string; email?: string; avatarUrl?: string };
-        org?: { name: string; displayName: string };
+        org?: { name: string; displayName: string; hasProjects?: boolean };
         dashboardUrl: string;
       };
 
@@ -193,9 +195,11 @@ const cloudPortalUrl =
     const projectsUrl = status.org
       ? new URL(`/org/${encodeURIComponent(status.org.name)}/projects`, portal).href
       : null;
+    // hasProjects is omitted when the portal's lookup fails; only an explicit
+    // false hides Projects.
     const projects = menu.querySelector<HTMLAnchorElement>('[data-portal-user-menu-projects]');
     if (projects) {
-      if (projectsUrl) projects.href = projectsUrl;
+      if (projectsUrl && status.org?.hasProjects !== false) projects.href = projectsUrl;
       else projects.remove();
     }
     // Active users' dashboard is their projects page; only keep this item when

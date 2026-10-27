@@ -4,6 +4,7 @@ dist/
 
 # Dependencies
 node_modules/
+vendor/
 
 # Temporary files
 .tmp/

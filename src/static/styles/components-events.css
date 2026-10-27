@@ -516,6 +516,10 @@
     @apply text-midnight-fjord datum-text-sm opacity-60;
   }
 
+  .event-series-card__speaker-talk {
+    @apply text-midnight-fjord datum-text-sm mt-1 italic;
+  }
+
   .event-series-card__sidebar {
     @apply flex shrink-0 flex-col gap-5;
   }

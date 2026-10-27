@@ -20,6 +20,8 @@ export interface EventHost {
 export interface EventGuest {
   name: string;
   title?: string;
+  /** Talk title shown under the speaker's name and title. */
+  talk?: string;
   /**
    * After `getEventHostsGuests()`: resolved Astro asset for `<Image>`. Raw JSON uses a **basename**
    * only (e.g. `tony-perez.jpg`) matching a file in `src/content/events/images/guests` (`@guests/*`).
@@ -100,10 +102,11 @@ for (const [modPath, meta] of Object.entries(guestAvatarModules)) {
 function normalizeGuestFromJson(g: {
   name: string;
   title?: string;
+  talk?: string;
   avatarUrl?: string;
 }): EventGuest {
   const ref = g.avatarUrl?.trim();
-  const baseEntry = { name: g.name, title: g.title };
+  const baseEntry = { name: g.name, title: g.title, talk: g.talk };
   if (!ref) return baseEntry;
   if (/^https?:\/\//i.test(ref)) return { ...baseEntry, avatarUrl: ref };
   const basename = ref.startsWith('/') ? ref.replace(/^.*\//, '') : (ref.split('/').pop() ?? ref);

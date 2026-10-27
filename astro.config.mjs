@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, svgoOptimizer } from 'astro/config';
 import { createReadStream, existsSync } from 'fs';
 import { join } from 'path';
 import tailwindcss from '@tailwindcss/vite';
@@ -224,6 +224,32 @@ export default defineConfig({
       allowedHosts: ['datumproxy.net', '.datumproxy.net'],
     },
   },
-  experimental: {},
+  experimental: {
+    // Optimizes SVGs imported as components (inlined into the HTML). Overrides keep
+    // what the line-draw animation and inline rendering rely on:
+    // - cleanupIds: minified ids (a, b, …) collide across SVGs inlined on one page
+    // - convertShapeToPath: `rect[data-line-draw]` is selected by tag name
+    // - mergePaths: each `path[data-line-draw]` animates on its own
+    // - collapseGroups: keeps `[data-line-draw-panel]` on its group
+    // - removeEmptyAttrs: would drop `data-line-draw=""` markers
+    // - inlineStyles: keeps class hooks inside SVGs that carry a <style> block
+    svgOptimizer: svgoOptimizer({
+      plugins: [
+        {
+          name: 'preset-default',
+          params: {
+            overrides: {
+              cleanupIds: false,
+              convertShapeToPath: false,
+              mergePaths: false,
+              collapseGroups: false,
+              removeEmptyAttrs: false,
+              inlineStyles: false,
+            },
+          },
+        },
+      ],
+    }),
+  },
   prefetch: true,
 });

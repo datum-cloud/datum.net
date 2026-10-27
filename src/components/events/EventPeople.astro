@@ -25,6 +25,7 @@ const { people, sectionLabel, headingLevel = 'h4' } = Astro.props as EventPeople
       <div class="event-series-card__speakers">
         {people.map((person) => {
           const subtitle = 'title' in person ? person.title?.trim() : '';
+          const talk = 'talk' in person ? person.talk?.trim() : '';
           return (
             <div class="event-series-card__speaker">
               {person.avatarImage ? (
@@ -49,6 +50,7 @@ const { people, sectionLabel, headingLevel = 'h4' } = Astro.props as EventPeople
               <div>
                 <p class="event-series-card__speaker-name">{person.name}</p>
                 {subtitle ? <p class="event-series-card__speaker-title">{subtitle}</p> : null}
+                {talk ? <p class="event-series-card__speaker-talk">“{talk}”</p> : null}
               </div>
             </div>
           );

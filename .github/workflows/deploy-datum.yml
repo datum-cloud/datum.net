@@ -1,0 +1,305 @@
+name: Deploy Datum Compute
+
+# Rolls an image that publish.yml pushed out to Datum Compute on the
+# general-purpose runtime. Every push to main deploys to staging, and a published
+# release deploys to production (publish.yml starts on the same events, so this
+# run waits for its image). A manual run picks the target. The production
+# website still ships from the Kubernetes setup in config/.
+# See docs/datum-compute-walkthrough.md.
+on:
+  push:
+    branches:
+      - main
+    # Same filter as publish.yml: no image is built for these, so there would
+    # be nothing to deploy.
+    paths-ignore:
+      - 'README.md'
+      - 'env.example'
+      - '.vscode/**'
+  release:
+    types: ['published']
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy (staging = datum-net-gp-staging, production = datum-net-gp)
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
+      project:
+        description: Datum project ID (falls back to the DATUM_PROJECT repo variable)
+        default: datum-cloud
+      location:
+        description: Datum Compute location
+        default: us-central-1
+      image_tag:
+        description: Tag of ghcr.io/datum-cloud/datum-net to deploy (empty = v0.0.0-<short sha> of the selected commit)
+        default: ''
+      force_rollout:
+        description: Replace the instance even if the image is unchanged (use after changing the Secret)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One queue per target, so a push to main never replaces a queued release deploy.
+# A newer push replaces an older queued one, which is what staging wants.
+# Keep this expression in line with the "Pick the target" step.
+concurrency:
+  group: datum-compute-${{ (github.event_name == 'release' || inputs.target == 'production') && 'production' || 'staging' }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_REPO: ghcr.io/datum-cloud/datum-net
+  DATUMCTL_VERSION: 0.21.0
+  COMPUTE_PLUGIN_VERSION: v0.12.4
+
+jobs:
+  # Runs when this run reaches the front of the concurrency queue, so "latest"
+  # is judged at deploy time. An older or pre-release tag never replaces a newer
+  # release that already deployed (or is about to).
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      proceed: ${{ steps.latest.outputs.proceed }}
+      target: ${{ steps.target.outputs.target }}
+      workload: ${{ steps.target.outputs.workload }}
+      secret_name: ${{ steps.target.outputs.secret_name }}
+    steps:
+      # A release and a manual production run go to production. A push to main
+      # and a manual staging run go to staging.
+      - id: target
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_TARGET: ${{ inputs.target }}
+        run: |
+          if [ "$EVENT" = release ] || [ "$INPUT_TARGET" = production ]; then
+            {
+              echo "target=production"
+              echo "workload=datum-net-gp"
+              echo "secret_name=datum-net-secrets"
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo "target=staging"
+              echo "workload=datum-net-gp-staging"
+              echo "secret_name=datum-net-staging-secrets"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if [ "$EVENT" != release ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # The latest release API skips pre-releases and drafts.
+          latest="$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq .tag_name)"
+          if [ "$latest" = "$RELEASE_TAG" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Skipping $RELEASE_TAG: the latest release is $latest."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy:
+    needs: guard
+    if: needs.guard.outputs.proceed == 'true'
+    runs-on: ubuntu-latest
+    # Up to 20 minutes waiting for the image, then the rollout and smoke test.
+    timeout-minutes: 45
+    environment:
+      name: ${{ needs.guard.outputs.target == 'production' && 'datum-compute' || 'datum-compute-staging' }}
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      DATUM_PROJECT: ${{ inputs.project || vars.DATUM_PROJECT || 'datum-cloud' }}
+      WORKLOAD: ${{ needs.guard.outputs.workload }}
+      SECRET_NAME: ${{ needs.guard.outputs.secret_name }}
+    steps:
+      - id: ref
+        name: Name the image
+        env:
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RUN_EVENT: ${{ github.event_name }}
+        run: |
+          # publish.yml tags every main build v0.0.0-<short sha> and every
+          # release with its version. A push to main deploys the build of that
+          # commit. Redeploying the same tag does not replace the running
+          # instance, so use a new tag or set force_rollout.
+          if [ "$RUN_EVENT" = "release" ]; then
+            # publish-docker tags releases as v{{version}}, so a tag without
+            # the leading v still maps to the v-prefixed image.
+            tag="v${RELEASE_TAG#v}"
+          else
+            tag="${IMAGE_TAG:-v0.0.0-${GITHUB_SHA::7}}"
+          fi
+          echo "image=${IMAGE_REPO}:${tag}" >> "$GITHUB_OUTPUT"
+
+      # A release or a push to main starts publish.yml on the same event, so its
+      # image shows up a few minutes after this run starts: wait up to 20
+      # minutes. A manual run only checks once and fails with a clear message.
+      # If publish.yml fails, the tag never appears and this step fails. The
+      # package is public, so no registry login is needed.
+      - name: Wait for the image
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+          RUN_EVENT: ${{ github.event_name }}
+        run: |
+          attempts=1
+          [ "$RUN_EVENT" != workflow_dispatch ] && attempts=40
+          for i in $(seq 1 "$attempts"); do
+            docker buildx imagetools inspect "$IMAGE" >/dev/null 2>&1 && exit 0
+            if [ "$i" -lt "$attempts" ]; then
+              echo "attempt $i: $IMAGE is not published yet"
+              sleep 30
+            fi
+          done
+          echo "::error::$IMAGE was not found. Wait for the Publish Website run to finish, or pass image_tag."
+          exit 1
+
+      - name: Install datumctl
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/datumctl.deb" \
+            "https://github.com/datum-cloud/datumctl/releases/download/v${DATUMCTL_VERSION}/datumctl_${DATUMCTL_VERSION}_linux_amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/datumctl.deb"
+          # The 72 MB plugin download has a fixed 60 s client timeout.
+          for attempt in 1 2 3; do
+            datumctl plugin install "compute@${COMPUTE_PLUGIN_VERSION}" && break
+            [ "$attempt" = 3 ] && { echo "::error::could not install the compute plugin"; exit 1; }
+            sleep 10
+          done
+
+      - name: Log in to Datum Cloud
+        env:
+          DATUM_SA_CREDENTIALS: ${{ secrets.DATUM_SA_CREDENTIALS }}
+        run: |
+          umask 077
+          printf '%s' "$DATUM_SA_CREDENTIALS" > "$RUNNER_TEMP/datum-sa.json"
+          datumctl login --credentials "$RUNNER_TEMP/datum-sa.json"
+          rm -f "$RUNNER_TEMP/datum-sa.json"
+
+      # A Secret value that is not plain text makes the instance fail with
+      # ConfigurationError and block the rollout, so check before deploying.
+      # Never decode with errors="ignore": it hides the bad bytes. Only
+      # APP_PRIVATE_KEY (a PEM) may contain newlines. Values are never printed.
+      - name: Check the Secret
+        run: |
+          datumctl get secret "$SECRET_NAME" -n default --project "$DATUM_PROJECT" -o json |
+            python3 -I -c '
+          import base64, json, sys
+          required = ["API_URL", "APP_ID", "APP_INSTALLATION_ID", "APP_PRIVATE_KEY",
+                      "STRAPI_URL", "STRAPI_TOKEN", "STRAPI_WEBHOOK_SECRET"]
+          multiline = {"APP_PRIVATE_KEY"}
+          data = json.load(sys.stdin).get("data") or {}
+          problems = [f"{k}: missing" for k in required if k not in data]
+          for key, value in data.items():
+              raw = base64.b64decode(value)
+              try:
+                  text = raw.decode("ascii")
+              except UnicodeDecodeError:
+                  problems.append(f"{key}: not ASCII text")
+                  continue
+              allowed = "\n" if key in multiline else ""
+              if not text:
+                  problems.append(f"{key}: empty")
+              elif not all(c.isprintable() or c in allowed for c in text):
+                  problems.append(f"{key}: contains control characters")
+          for p in problems:
+              print(f"::error::Secret has a bad value - {p}")
+          sys.exit(1 if problems else 0)'
+
+      - name: Deploy
+        id: deploy
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+          LOCATION: ${{ inputs.location || 'us-central-1' }}
+          FORCE_ROLLOUT: ${{ inputs.force_rollout }}
+        run: |
+          args=()
+          # Instances read the Secret only at start. A changed env value makes
+          # a new template, which rolls the instance.
+          if [ "$FORCE_ROLLOUT" = true ]; then
+            args+=(--env "DEPLOY_REV=${GITHUB_RUN_ID}")
+          fi
+          datumctl compute deploy "$WORKLOAD" \
+            --project "$DATUM_PROJECT" \
+            --image "$IMAGE" \
+            --location "$LOCATION" \
+            --http-port 4321 \
+            --instance-type datumcloud/d1-standard-2 \
+            --runtime-class general-purpose \
+            --env "HOST=::" \
+            --env-from-secret "$SECRET_NAME" \
+            "${args[@]}" \
+            --yes | tee "$RUNNER_TEMP/deploy.log"
+          url="$(grep -oE 'https://[a-z0-9.-]+\.datumproxy\.net' "$RUNNER_TEMP/deploy.log" | tail -n 1)"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
+      # The public URL may sit behind Basic Authentication (a 401 is expected),
+      # so judge the deploy by the platform status instead of requesting pages.
+      - name: Check the rollout status
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+        run: |
+          log="$RUNNER_TEMP/deploy.log"
+          # The workload must now run exactly the image this run meant to deploy.
+          datumctl get workload "$WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
+            jq -e --arg image "$IMAGE" '.spec.template.spec.runtime.sandbox.containers[0].image == $image' >/dev/null || {
+              echo "::error::workload $WORKLOAD is not running $IMAGE"
+              exit 1
+            }
+          for expected in 'Rollout complete' 'Backends .*healthy' 'Edge .*programmed' 'Certificate .*issued'; do
+            grep -qE "$expected" "$log" || { echo "::error::deploy output has no '$expected'"; exit 1; }
+          done
+          datumctl get workload "$WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
+            jq -e '.status.conditions[] | select(.type == "Available") | .status == "True"' >/dev/null || {
+              echo "::error::workload $WORKLOAD is not Available"
+              exit 1
+            }
+
+      # Optional: set the DATUM_BASIC_AUTH environment secret (user:password) to
+      # also request the site through Basic Authentication.
+      - name: Smoke test
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+          BASIC_AUTH: ${{ secrets.DATUM_BASIC_AUTH }}
+        run: |
+          if [ -z "$BASIC_AUTH" ]; then
+            echo "DATUM_BASIC_AUTH is not set; skipping the page check."
+            exit 0
+          fi
+          [ -n "$URL" ] || { echo "::error::deploy printed no URL"; exit 1; }
+          # The URL's DNS can lag the rollout, and the edge may answer 503 for a
+          # few minutes after an instance is replaced, so retry before failing.
+          for i in $(seq 1 20); do
+            code="$(curl -s -o /dev/null -m 15 -u "$BASIC_AUTH" -w '%{http_code}' "$URL/" || true)"
+            echo "attempt $i: GET / -> ${code:-000}"
+            [ "$code" = 200 ] && exit 0
+            sleep 15
+          done
+          echo "::error::$URL did not return 200 within 5 minutes"
+          exit 1
+
+      - name: Summary
+        if: always()
+        env:
+          TARGET: ${{ needs.guard.outputs.target }}
+          IMAGE: ${{ steps.ref.outputs.image }}
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          {
+            echo "### Datum Compute"
+            echo "- Target: \`${TARGET}\`"
+            echo "- Project: \`$DATUM_PROJECT\`"
+            echo "- Workload: \`$WORKLOAD\`"
+            echo "- Image: \`${IMAGE:-none}\`"
+            echo "- URL: ${URL:-none}"
+          } >> "$GITHUB_STEP_SUMMARY"

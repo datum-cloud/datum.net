@@ -144,7 +144,7 @@ minikube start
 
 2. Create a `secret.yaml` with the data keys required by the deployment.
    See [`.env.example`](./.env.example) for the full list of environment
-   variables the app expects (OIDC, Strapi, GitHub App credentials, etc.).
+   variables the app expects (Strapi, GitHub App credentials, etc.).
    Minimum baseline shown below — extend with whatever your local
    deployment needs:
 

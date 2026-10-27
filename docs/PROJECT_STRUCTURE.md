@@ -222,7 +222,6 @@ Libraries (`src/libs/`)
 Reusable utility libraries:
 
 - `ashby.ts` - Ashby (careers) API client
-- `auth.ts` - Authentication utilities
 - `cache.ts` - Caching utilities
 - `cacheApiAuth.ts` - Auth guard for cache API routes
 - `cacheViewer.ts` - Cache inspection utilities
@@ -233,7 +232,6 @@ Reusable utility libraries:
 - `githubRoadmap.ts` - GitHub milestones-backed roadmap content (replaces the old Strapi-sourced roadmap; see `docs/STRAPI_CACHE_API.md` for caching)
 - `k8s-client.ts` - Kubernetes client
 - `mailer.ts` - Email sending (used by `actions/demo.ts`)
-- `oidc.ts` - OIDC authentication flow
 - `postgres.ts` - Postgres client
 - `safeRedirect.ts` - Restricts redirect targets to same-origin paths
 - `string.ts` - String helpers
@@ -254,11 +252,8 @@ Reusable utility libraries:
 File-based routes. Notable routes beyond the obvious top-level pages:
 
 - `api/` - API routes
-  - `api/auth/login.ts` - Login API endpoint
-  - `api/user.ts` - User API endpoint
   - `api/cache/index.ts` / `api/cache/[name].ts` / `api/cache/strapi.ts` - Cache inventory (**GET**), single-key JSON (**GET** `/api/cache/:name`), Strapi regenerate (**POST**); see [STRAPI_CACHE_API.md](./STRAPI_CACHE_API.md)
   - `api/webhooks/strapi-content.ts` - Strapi content-change webhook
-- `auth/` - `callback.astro`, `login.astro`, `logout.astro` - OIDC auth pages
 - `blog/`, `authors/`, `roadmap/`, `download/` - Dynamic listing/detail pages, each with a matching `*.md.ts` markdown-export route
 - `dev/` - `build.astro`, `info.astro` - Build status/info pages
 - `demo.astro` - Book-a-demo page (renders `components/forms/BookDemo.astro`)

@@ -1,0 +1,248 @@
+@layer components {
+  /* ---------------------------------------------------------------------
+     Shared — centred eyebrow + heading, and the bordered card grids
+     (Figma nodes 18442:84073 / 18442:84134). The grid background shows
+     through the 1px gaps as the dividers.
+     --------------------------------------------------------------------- */
+  .use-cases-heading {
+    @apply flex flex-col items-center gap-5 text-center md:gap-7;
+  }
+
+  .use-cases-grid {
+    @apply border-silver-mist bg-silver-mist grid w-full grid-cols-1 gap-px border;
+  }
+
+  .use-cases-grid--four {
+    @apply sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  .use-cases-grid--three {
+    @apply md:grid-cols-3;
+  }
+
+  .use-cases-card {
+    @apply flex flex-col items-start gap-7 bg-white p-8 lg:p-10;
+  }
+
+  .bg-platinum .use-cases-card {
+    @apply bg-platinum;
+  }
+
+  .use-cases-card-head {
+    @apply flex items-center gap-3;
+  }
+
+  .use-cases-card-icon {
+    @apply text-canyon-clay size-5.5 shrink-0 stroke-[1.75];
+  }
+
+  .use-cases-card-label {
+    @apply font-dejavu datum-text-sm text-pine-forge---links uppercase;
+  }
+
+  .use-cases-card-head:has(.use-cases-card-label) .use-cases-card-icon {
+    @apply text-pine-forge---links;
+  }
+
+  .use-cases-card-body {
+    @apply flex flex-col gap-4;
+  }
+
+  .use-cases-card-title {
+    @apply datum-text-lg text-midnight-fjord m-0 font-semibold text-pretty;
+  }
+
+  .use-cases-card-description {
+    @apply datum-text-base text-midnight-fjord/80 m-0 text-pretty;
+  }
+
+  /* ---------------------------------------------------------------------
+     Hero — Figma node 18434:82888
+     --------------------------------------------------------------------- */
+  .use-cases-hero {
+    @apply max-width-nopad flex flex-col items-center gap-12 md:gap-16;
+  }
+
+  .use-cases-hero-title {
+    @apply datum-text-9xl text-midnight-fjord m-0;
+  }
+
+  /* Blush bar behind the lower part of "1k clouds" — Figma node 18434:82911 */
+  .use-cases-hero-highlight {
+    @apply text-canyon-clay---links box-decoration-clone;
+    background: linear-gradient(
+      to bottom,
+      transparent 31%,
+      color-mix(in srgb, var(--color-blush-quartz) 50%, transparent) 31%,
+      color-mix(in srgb, var(--color-blush-quartz) 50%, transparent) 79%,
+      transparent 79%
+    );
+  }
+
+  .use-cases-grid-wrap {
+    @apply relative w-full;
+  }
+
+  /* Keyline corner hanging off the grid's bottom-right — Figma 18434:82889/90 */
+  .use-cases-grid-tick {
+    @apply pointer-events-none absolute top-full right-0 hidden h-10 w-10 xl:block;
+
+    &::before,
+    &::after {
+      @apply bg-silver-mist absolute content-[''];
+    }
+
+    &::before {
+      @apply top-0 left-full h-px w-10;
+      transform: translateY(-1px);
+    }
+
+    &::after {
+      @apply top-0 right-0 h-10 w-px;
+    }
+  }
+
+  .use-cases-agents {
+    @apply flex flex-col items-center gap-10;
+  }
+
+  .use-cases-video {
+    @apply relative block w-full max-w-110 cursor-pointer border-0 bg-transparent p-0;
+    @apply aspect-[440/305] overflow-clip rounded-md;
+  }
+
+  /* The console capture is blurred and its account rows masked, so it reads as
+     texture rather than legible UI — Figma node 18451:84227. The 454x347 layer
+     overhangs the 440x305 card; every child below is a percentage of that
+     layer so the composite scales with the card. */
+  .use-cases-video-frame {
+    @apply bg-midnight-fjord absolute overflow-clip blur-[3px];
+    @apply top-[-0.37%] left-[-0.68%] h-[113.77%] w-[103.18%];
+  }
+
+  .use-cases-video-image {
+    @apply absolute top-0 left-0 h-[100.07%] w-[105.73%] max-w-none rounded-[9px] object-cover;
+    @apply border-[6.75px] border-[#061d34];
+  }
+
+  .use-cases-video-zoom {
+    @apply absolute top-[27.67%] left-[31.28%] h-[35.16%] w-[74.45%] overflow-hidden;
+  }
+
+  .use-cases-video-zoom-image {
+    @apply absolute top-[-153.28%] left-[-42.01%] h-[284.63%] w-[142.01%] max-w-none;
+  }
+
+  .use-cases-video-mask {
+    @apply absolute bg-[#061e33];
+  }
+
+  .use-cases-video-mask--top {
+    @apply top-[20.75%] left-[37.67%] h-[6.92%] w-[45.15%];
+  }
+
+  .use-cases-video-mask--bottom {
+    @apply top-[45.24%] left-[44.71%] h-[4.32%] w-[26.65%];
+  }
+
+  .use-cases-video-play {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform;
+  }
+
+  .use-cases-video:hover .use-cases-video-play,
+  .use-cases-video:focus-visible .use-cases-video-play {
+    @apply scale-105;
+  }
+
+  .use-cases-agents-caption {
+    @apply datum-text-xl text-app---dark---utility-3 m-0 text-center text-pretty;
+  }
+
+  /* People group standing on the section's bottom rule, lit by the lime glow
+     centred 59px below it — Figma nodes 18436:83646 / 18436:83649. The glow is
+     a portrait asset turned on its side, as in the design, and the section's
+     overflow-hidden trims it at the rule. The figures are taller than the 96px
+     strip; the group clips them so they stand on the line. */
+  .use-cases-people {
+    @apply relative h-24 w-full max-w-139 shrink-0;
+  }
+
+  .use-cases-people-glow {
+    @apply pointer-events-none absolute left-1/2 h-auto w-[278px] max-w-none -rotate-90;
+    top: calc(100% + 59px);
+    translate: -50% -50%;
+  }
+
+  .use-cases-people-group {
+    @apply absolute inset-0 overflow-clip;
+  }
+
+  .use-cases-person {
+    @apply absolute h-auto max-w-none;
+  }
+
+  .use-cases-person--one {
+    @apply left-[19.84%] w-[33.1px];
+    top: 21.67px;
+  }
+
+  .use-cases-person--two {
+    @apply left-[27.45%] w-[53.5px];
+    top: 12.62px;
+  }
+
+  .use-cases-person--three {
+    @apply left-[35.43%] w-[57px];
+    top: 1px;
+  }
+
+  .use-cases-person--four {
+    @apply left-[55.09%] w-[38.2px];
+    top: 10.61px;
+  }
+
+  .use-cases-person--five {
+    @apply left-[63.06%] w-[55.2px];
+    top: 10.61px;
+  }
+
+  /* ---------------------------------------------------------------------
+     Obstacles + help banner — Figma node 18434:83456
+     --------------------------------------------------------------------- */
+  .use-cases-obstacles {
+    @apply max-width-nopad flex flex-col gap-12 md:gap-16;
+  }
+
+  .use-cases-obstacles-title {
+    @apply datum-text-8xl text-midnight-fjord m-0;
+  }
+
+  .use-cases-help {
+    @apply bg-aurora-moss/50 relative flex flex-col gap-8 overflow-clip p-8 md:p-12;
+    @apply lg:flex-row lg:items-end lg:justify-end lg:gap-16;
+  }
+
+  .use-cases-help-starfield-wrap {
+    @apply pointer-events-none absolute inset-0 overflow-clip;
+  }
+
+  .use-cases-help-starfield {
+    @apply absolute top-[-62%] left-[11.5%] h-auto w-[161%] max-w-none rotate-[16.49deg];
+  }
+
+  .use-cases-help-copy {
+    @apply text-midnight-fjord relative flex flex-1 flex-col gap-4;
+  }
+
+  .use-cases-help-title {
+    @apply datum-text-7xl m-0;
+  }
+
+  .use-cases-help-description {
+    @apply datum-text-lg m-0 max-w-[760px] text-pretty opacity-87;
+  }
+
+  .use-cases-help-actions {
+    @apply relative flex shrink-0 flex-wrap gap-2;
+  }
+}

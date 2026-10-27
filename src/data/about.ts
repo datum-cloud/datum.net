@@ -104,6 +104,12 @@ export const inTheWild = {
   columns: [
     [
       {
+        id: 'nyse-interview',
+        title: 'Zac’s interview with the NYSE',
+        description: 'Discussing the network and the AI infrastructure buildout',
+        aspect: 'tall',
+      },
+      {
         id: 'ab-fans',
         title: 'The Akademisk Boldklub Hustle',
         description:
@@ -115,6 +121,12 @@ export const inTheWild = {
         title: 'Private by Default',
         description:
           'Our fearless leader Zac speaking at BalticNog on reimagining the internet for AI',
+        aspect: 'short',
+      },
+      {
+        id: 'nerding-out',
+        title: 'Nerding out',
+        description: 'Operators unite at BalticNOG',
         aspect: 'short',
       },
       {

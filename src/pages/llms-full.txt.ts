@@ -189,7 +189,7 @@ Edge compute layer built in partnership with **Unikraft**.
 - Millisecond cold starts (<10ms)
 - True scale-to-zero snapshotting
 - Stateless or stateful workloads
-- Optimized for agentic and network edge use cases
+- Optimized for agentic and edge use cases
 
 ---
 

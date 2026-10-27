@@ -4,7 +4,14 @@
 // island (Strapi can be slow). Cards open the shared ProfileModal. Figma node
 // 17529:80554 (grid) and 17579:53349 (tabs).
 import { Image } from 'astro:assets';
-import { getStrapiTeamMembers, getTeamBgColor, getAvatarVariantBgColor } from '@libs/strapi';
+import {
+  getStrapiTeamMembers,
+  getTeamBgColor,
+  getAvatarVariantBgColor,
+  getTeamAvatarVariantMap,
+  TEAM_AVATAR_VARIANTS,
+  TEAM_AVATAR_VARIANT_BG,
+} from '@libs/strapi';
 import { getStrapiMediaUrl } from '@/src/types/strapi';
 import type { StrapiAuthorFull } from '@libs/strapi';
 import { team, teamFilters } from '@data/about';
@@ -15,14 +22,23 @@ import '@styles/page-about.css';
 // Authors with `isTeam === true`, founders first (cached; see authors.ts).
 const teamMembers: StrapiAuthorFull[] = await getStrapiTeamMembers();
 
-// Background colour of each person's actual headshot variant (detected from the
-// avatar file name), not their position in the list — the roster is reordered
-// every time someone joins or leaves, but the photo's baked-in backdrop never
-// is. Falls back to the old index cycle for avatars that predate the
-// variant-suffix naming. Computed once so the card and the modal agree.
-const avatarBgColors = teamMembers.map(
-  (member, index) => getAvatarVariantBgColor(member.avatar?.url) ?? getTeamBgColor(index)
-);
+// Backdrops rotate glacier → canyon → pine by card position, and each card
+// shows the headshot variant tuned to its backdrop (hair/beard tones differ per
+// variant). Resolving the variant by position — instead of pinning one per
+// person in Strapi — keeps the rhythm intact when the roster changes. Falls
+// back to the author's own avatar (and its detected backdrop) when a variant
+// hasn't been uploaded. Computed once so the card and the modal agree.
+const variantMap = await getTeamAvatarVariantMap();
+const avatars = teamMembers.map((member, index) => {
+  const variant = TEAM_AVATAR_VARIANTS[index % TEAM_AVATAR_VARIANTS.length];
+  const variantUrl = member.slug ? variantMap[member.slug.toLowerCase()]?.[variant] : undefined;
+  if (variantUrl) return { url: variantUrl, bgColor: TEAM_AVATAR_VARIANT_BG[variant] };
+  const ownUrl = member.avatar?.url;
+  return {
+    url: ownUrl,
+    bgColor: getAvatarVariantBgColor(ownUrl) ?? getTeamBgColor(index),
+  };
+});
 
 // Serialised for the client-side modal.
 const teamMembersData = teamMembers.map((member, index) => ({
@@ -32,8 +48,8 @@ const teamMembersData = teamMembers.map((member, index) => ({
     name: member.name,
     bio: member.bio,
     title: member.title,
-    avatar: member.avatar ? { src: getStrapiMediaUrl(member.avatar.url) } : undefined,
-    avatarBgColor: avatarBgColors[index],
+    avatar: avatars[index].url ? { src: getStrapiMediaUrl(avatars[index].url) } : undefined,
+    avatarBgColor: avatars[index].bgColor,
     tick: member.tick,
     surprising: member.surprising,
     weekends: member.weekends,
@@ -84,13 +100,13 @@ const isFounder = (member: StrapiAuthorFull) =>
               type="button"
               aria-label={`View ${member.name}'s profile`}
             >
-              {member.avatar && (
+              {avatars[index].url && (
                 <div class="people--card-avatar">
                   <img
-                    src={getStrapiMediaUrl(member.avatar.url)}
+                    src={getStrapiMediaUrl(avatars[index].url)}
                     alt={member.name}
                     class="size-auto w-full bg-cover"
-                    style={`background-color: ${avatarBgColors[index]}`}
+                    style={`background-color: ${avatars[index].bgColor}`}
                     loading={index < 5 ? 'eager' : 'lazy'}
                     decoding="async"
                   />

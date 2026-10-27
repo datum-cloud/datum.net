@@ -1,0 +1,19 @@
+src/data/useCases.ts
+  s_28581579f8fa1e::t_e755fface8a9f4 60-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a459f160217900a5186d1283d74f92935ec8a2b1",
+  "prompts": {},
+  "sessions": {
+    "s_28581579f8fa1e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6365e385-1b62-436b-9f6c-21d13304cc39",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

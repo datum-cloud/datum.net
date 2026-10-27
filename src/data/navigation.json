@@ -42,6 +42,7 @@
         }
       ]
     },
+    { "text": "Pricing", "href": "/pricing" },
     { "text": "Blog", "href": "/blog" }
   ],
   "right": [
@@ -57,6 +58,12 @@
       "description": "For scaling providers and enterprises who benefit from full control, custom locations, and ideal economics.",
       "href": "/dedicated-cloud",
       "icon": "diamond-plus"
+    },
+    {
+      "title": "Pricing",
+      "description": "Simple, transparent pricing with everything you need to get started.",
+      "href": "/pricing",
+      "icon": "dollar-sign"
     },
     {
       "title": "Legal",

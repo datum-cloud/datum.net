@@ -71,7 +71,7 @@ export const GET: APIRoute = async () => {
 
     sections.push(hero.description, '');
     for (const item of hero.highlights) {
-      sections.push(`- [${item.name}](${item.href}): ${item.info}`);
+      sections.push(`- ${item}`);
     }
     sections.push('', `**${banner.emphasis}** ${banner.text}`, '');
 

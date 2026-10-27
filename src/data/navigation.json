@@ -74,6 +74,7 @@
       "title": "Platform",
       "items": [
         { "text": "Platform", "href": "/platform" },
+        { "text": "Use Cases", "href": "/use-cases" },
         { "text": "Locations", "href": "/locations" }
       ]
     },

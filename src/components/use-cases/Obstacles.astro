@@ -1,0 +1,64 @@
+---
+// src/components/use-cases/Obstacles.astro
+// "What's holding you back?" — three audience cards and the lime help banner.
+// Figma node 18434:83456.
+
+import { Image } from 'astro:assets';
+import Button from '@components/Button.astro';
+import SectionEyebrow from '@components/SectionEyebrow.astro';
+import SectionLine from '@components/SectionLine.astro';
+import UseCaseCard from '@components/use-cases/UseCaseCard.astro';
+import starfieldImage from '@assets/images/use-cases/starfield.png';
+import { obstacles, help } from '@data/useCases';
+---
+
+<section
+  class="section--block section--block--x-pad bg-platinum relative"
+  aria-labelledby="use-cases-obstacles-title"
+>
+  <div class="max-width-nav spacing-pad relative pt-16 pb-10 md:pt-20 lg:pt-28 lg:pb-16">
+    <SectionLine left right top />
+
+    <div class="use-cases-obstacles">
+      <div class="use-cases-heading">
+        <SectionEyebrow variant="pine">{obstacles.eyebrow}</SectionEyebrow>
+        <h2 id="use-cases-obstacles-title" class="use-cases-obstacles-title">
+          {obstacles.title}
+        </h2>
+      </div>
+
+      <div class="use-cases-grid use-cases-grid--three">
+        {obstacles.items.map((item) => <UseCaseCard item={item} />)}
+      </div>
+
+      <div class="use-cases-help">
+        <div class="use-cases-help-starfield-wrap" aria-hidden="true">
+          <Image src={starfieldImage} alt="" class="use-cases-help-starfield" loading="lazy" />
+        </div>
+
+        <div class="use-cases-help-copy">
+          <h2 class="use-cases-help-title">{help.title}</h2>
+          <p class="use-cases-help-description">{help.description}</p>
+        </div>
+
+        <div class="use-cases-help-actions">
+          <Button
+            class="btn btn--midnight-fjord"
+            text={help.primaryCta.text}
+            href={help.primaryCta.href}
+            icon={{ name: help.primaryCta.icon, size: 'md' }}
+            iconPosition="left"
+            data-rybbit-event="Use cases: Chat with a founder"
+          />
+          <Button
+            class="btn btn--alpha"
+            text={help.secondaryCta.text}
+            href={help.secondaryCta.href}
+            target="_blank"
+            data-rybbit-event="Use cases: Start building for free"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

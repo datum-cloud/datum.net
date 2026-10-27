@@ -4,7 +4,6 @@
 // drift out of sync. Figma node 18434:82823.
 
 import type { IconName } from '@utils/iconMap';
-import { HOMEPAGE_FEATURE_VIDEO_EMBED_URL } from '@utils/youtube';
 
 export const meta = {
   title: 'Use Cases - Datum',
@@ -58,9 +57,9 @@ export const hero = {
 export const agents = {
   caption:
     "Humans are great, but we've optimized our platform for agents first and developers next.",
-  // Placeholder until the agent-first walkthrough is published — swap for its
-  // embed URL.
-  videoEmbedUrl: HOMEPAGE_FEATURE_VIDEO_EMBED_URL,
+  // https://www.youtube.com/watch?v=FWE1LNmE3Fo — same autoplay/mute params as
+  // HOMEPAGE_FEATURE_VIDEO_EMBED_URL.
+  videoEmbedUrl: 'https://www.youtube.com/embed/FWE1LNmE3Fo?autoplay=1&mute=1',
   videoLabel: 'Play agent-first platform video',
 };
 

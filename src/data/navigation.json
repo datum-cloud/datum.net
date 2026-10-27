@@ -9,10 +9,7 @@
   "main": [
     { "text": "Platform", "href": "/platform" },
     { "text": "Dedicated", "href": "/dedicated-cloud" },
-    {
-      "text": "Use cases",
-      "href": "/use-cases"
-    },
+    { "text": "Use Cases", "href": "/use-cases" },
     {
       "text": "Resources",
       "href": "#",
@@ -24,6 +21,7 @@
           "items": [
             { "text": "Docs", "href": "/docs", "isExternal": true },
             { "text": "Roadmap", "href": "/roadmap" },
+            { "text": "Blog", "href": "/blog" },
             { "text": "Events", "href": "/events" },
             { "text": "About us", "href": "/about" }
           ]
@@ -42,8 +40,7 @@
         }
       ]
     },
-    { "text": "Pricing", "href": "/pricing" },
-    { "text": "Blog", "href": "/blog" }
+    { "text": "Pricing", "href": "/pricing" }
   ],
   "right": [
     {
@@ -77,6 +74,7 @@
       "title": "Platform",
       "items": [
         { "text": "Platform", "href": "/platform" },
+        { "text": "Use Cases", "href": "/use-cases" },
         { "text": "Locations", "href": "/locations" }
       ]
     },

@@ -39,7 +39,7 @@ Key facts for agent understanding:
 - **Fully programmatic, agent-first interfaces** — every resource is accessible via API, CLI (\`datumctl\`), or MCP server
 - **Kubernetes-native control plane** — all resources are Kubernetes Custom Resource Definitions (CRDs); if you know \`kubectl\`, you know Datum
 - **Open source** — core platform licensed under AGPLv3; you can audit, fork, or self-host
-- **Free during public beta** — the entire platform is $0 to use right now; we commit to advance notice and a grace period before any billing begins
+- **Free during public beta** — the entire platform is $0 to use until billing begins on February 1st, 2027; we will notify you before any charges
 - **Founded late 2024** by infrastructure veterans from Packet, Voxel, SoftLayer, StackPath, Highwinds, Zscaler; backed by Amplify Partners, CRV, Cervin Ventures, and others
 
 ---
@@ -220,54 +220,55 @@ Datum operates at major internet peering points (IXPs) globally. Region naming f
 
 ## Pricing
 
-Usage-based and transparent — no feature gates, no seat limits, no hidden fees. Every rate is published per unit at https://www.datum.net/pricing (markdown: https://www.datum.net/pricing.md), across Deliver, Build, Connect, and Data transfer. Billing is per-second, so you pay only while something is running.
+Start with Galactic VPC, add resources, pay for what you use. No feature gates, no seat limits, no hidden fees. Every rate is published per unit at https://www.datum.net/pricing (markdown: https://www.datum.net/pricing.md).
 
-**Datum is free during public beta.** A credit card is required at sign-up (fraud prevention), but you are not charged. We commit to advance notice and a grace period to review rates before any billing begins — no surprise bill.
+**Datum is free to use until billing begins on February 1st, 2027.** A credit card is required at sign-up (fraud prevention), but you are not charged. We will notify you before any charges, with a grace period to review rates — no surprise bill.
 
-### Deliver
+### Galactic VPC
 
-| Feature           | Unit of measure | Price per unit                          |
-|-------------------|-----------------|-----------------------------------------|
-| DNS (Coming soon) | Requests        | $0.60 per million after the first 500K  |
-| ALB               | Requests        | $1.00 per million                       |
-| GSLB              | Requests        | $0.60 per million                       |
+gVPC is a virtual backbone that spans providers. Create as many as you want. Pay only for data transfer fees.
 
-### Build
+| Feature                                      | Unit of measure | Price per unit                                             |
+|----------------------------------------------|-----------------|------------------------------------------------------------|
+| Egress data (traffic to the public internet) | 0 – 200 GB      | FREE                                                       |
+| Egress data                                  | 200 GB – 10 TB  | $0.05 per GB                                               |
+| Egress data                                  | 10 – 150 TB     | $0.04 per GB                                               |
+| Egress data                                  | 150 – 500 TB    | $0.03 per GB                                               |
+| Egress data                                  | 500 TB+         | Contact us (https://www.datum.net/dedicated-cloud#contact) |
+| Internal data (within the Datum network)     | Same region     | FREE                                                       |
+| Internal data                                | Cross-region    | $0.03 per GB                                               |
+| Ingress data                                 | —               | ALWAYS FREE                                                |
 
-| Feature        | Unit of measure  | Price per unit                          |
-|----------------|------------------|-----------------------------------------|
-| Compute        | vCPU             | $0.00001400 per second; $0.0504 per hour |
-| Compute        | GiB of Memory    | $0.00000450 per second; $0.0162 per hour |
-| Object Storage | Standard tier    | $0.0085 per GB per month                |
-| Object Storage | Performance tier | $0.024 per GB per month                 |
+### Hosted Resources
 
-### Connect
+Datum Cloud provides a growing list of infrastructure primitives on-demand. Full roadmap: https://www.datum.net/roadmap
 
-| Feature                   | Unit of measure | Price per unit  |
-|---------------------------|-----------------|-----------------|
-| Gateways (Coming Q3 2026) | —               | $0.045 per hour |
-| Tunnels                   | Endpoint        | $0.01 per hour  |
-| Public IPv4               | —               | $0.005/IP-hr    |
+| Feature               | Unit of measure  | Price per unit                           |
+|-----------------------|------------------|------------------------------------------|
+| DNS                   | Requests         | $0.60 per million after the first 500K   |
+| ALB                   | Requests         | $1.00 per million                        |
+| GSLB (Soon)           | Requests         | $0.60 per million                        |
+| Compute               | vCPU             | $0.00001400 per second; $0.0504 per hour |
+| Compute               | GiB of Memory    | $0.00000450 per second; $0.0162 per hour |
+| Object Storage (Soon) | Standard tier    | $0.0085 per GB per month                 |
+| Object Storage (Soon) | Performance tier | $0.024 per GB per month                  |
+| Tunnels               | Endpoint         | $0.01 per hour                           |
 
-### Data transfer
+### Batteries included (always free)
 
-Ingress to Datum's network is always free.
+No charge for teammates, logs, or access controls:
 
-| Feature                                   | Unit of measure | Price per unit |
-|-------------------------------------------|-----------------|----------------|
-| Egress (traffic to the public internet)   | 0 – 200 GB      | FREE           |
-| Egress                                    | 200 GB – 10 TB  | $0.05 per GB   |
-| Egress                                    | 10 – 150 TB     | $0.04 per GB   |
-| Egress                                    | 150 – 500 TB    | $0.03 per GB   |
-| Egress                                    | 500 TB+         | Contact sales (https://www.datum.net/dedicated-cloud#contact) |
-| Internal (between Datum regions/services) | Same region     | FREE           |
-| Internal                                  | Cross-region    | $0.03 per GB   |
-
-### What is not charged
-
-- No snapshot fees — no snapshot storage, read, or write charges on compute
-- No per-request storage charges — Object Storage operations aren't metered
-- No per-seat or per-user licensing — pricing is usage-based only, so invite your whole team
+- datumctl (CLI)
+- Coarse-Grained Permissions (no per-seat or per-user licensing)
+- Secrets
+- Metrics Export
+- Audit & Activity Logs
+- SSO
+- Service Accounts
+- Datum MCP
+- AI Assistant
+- Domains
+- Desktop Apps
 
 ---
 

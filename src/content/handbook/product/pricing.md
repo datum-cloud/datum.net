@@ -3,31 +3,34 @@ title: "Pricing"
 sidebar:
   label: Pricing
   order: 4
-updatedDate: Nov 13, 2025
+updatedDate: Oct 30, 2026
 authors: jacob
 meta:
-  title: "Pricing Tiers & Models - Datum Product Strategy"
-  description: "A guide to Datum's pricing tiers — from the free Builder plan to Enterprise interconnection — and the logic behind our rate limits."
+  title: "Pricing Model - Datum Product Strategy"
+  description: "How Datum prices its cloud: pay for the data you move and the resources you run, with every platform feature included for free."
   og:
-    title: "Datum Pricing Tiers & Models"
+    title: "Datum Pricing Model"
 ---
 
-We currently have outlined three tiers of service. Only time in the market will tell us if we’re correct, and where we need to evolve. Since this entry is likely to get out of date from time to time, please check our [pricing page](/pricing) for the latest official details. 
+Our pricing is still evolving, and only time in the market will tell us where we need to adapt. Since this entry is likely to get out of date from time to time, please check our [pricing page](/pricing) for the latest official rates.
 
-## Datum for Builders (Forever free)
-Our initial focus is to help a new class of builders get access to the core ‘internet superpowers’ for learning, integration, testing, and exploring new use cases. We also want to make their lives easier when it comes to troublesome bits like domains, certificates, and DNS. 
-* $0/mo
-* Generous quotas
-* No paid option
+## How we price
 
-## Datum for Production (Production grade self-service)
-We hope that many builders and platform engineers will want to consume our value in production use cases. To do that, they’ll want an SLA and we’ll need to charge money, especially for sending traffic across our backbone and brokering connections with clouds, etc. 
-* $20/mo + usage
-* Expanded features
-* 24/7 email support 
+Instead of tiers, we publish simple rate cards. You start with Galactic VPC, add resources, and pay for what you use.
 
-## Datum for Providers (High touch, curated offering)
-This is where our heart and focus lies. Our business strategy is centered around helping modern SaaS and cloud providers thrive, from accelerating revenue and mitigating security risks to improve performance and lowering costs. This is our jam.  
-* $2,500/mo + usage
-* Curated features, dedicated infrastructure
-* White glove, proactive support
+* **No feature gates, no seat limits, no hidden fees.** Teammates, roles, logs, and access controls are never a reason to upgrade.
+* **Galactic VPC** is free to create, as many as you want. You pay only for data transfer: egress beyond the first 200 GB, and cross-region traffic. Ingress and same-region traffic are free.
+* **Hosted resources** are billed on usage: DNS and ALB per request, Compute per vCPU and memory second, and Tunnels per endpoint hour. Object Storage and GSLB will follow when they launch.
+* **Large volumes** (500 TB+ of egress) are a conversation, so we point people to [Dedicated Cloud](/dedicated-cloud).
+
+## Always free
+
+Everything that helps teams adopt best practices is free for every account: datumctl, coarse-grained permissions, secrets, metrics export, audit and activity logs, SSO, service accounts, Datum MCP, the AI assistant, domains, and the desktop apps. This follows our product value of no weird sales gates.
+
+## Where we are today
+
+Datum Cloud is in public beta and free to use until billing begins on February 1st, 2027. We will notify users before any charges.
+
+## Providers and dedicated infrastructure
+
+For modern SaaS and cloud providers, where our business strategy is centered, we offer a high-touch, curated path with dedicated infrastructure and proactive support. This is handled directly through [Dedicated Cloud](/dedicated-cloud) rather than self-service pricing.

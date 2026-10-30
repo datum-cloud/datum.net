@@ -5,6 +5,7 @@ import type { FooterCtaButton } from '@/src/types/common';
 
 const SIGNUP_URL = 'https://auth.datum.net/id/signup';
 const DOCS_URL = 'https://www.datum.net/docs';
+const docs = (path: string) => `/docs/${path}`;
 const DISCORD_URL = 'https://link.datum.net/discord';
 
 export const hero = {
@@ -40,6 +41,8 @@ export interface ResourceItem {
   icon: IconName;
   title: string;
   description?: string;
+  /** Docs entry for this resource; omit when none exists yet. */
+  href?: string;
   soon?: boolean;
 }
 
@@ -63,21 +66,25 @@ export const galactic = {
         {
           icon: 'server',
           title: 'Compute',
+          href: docs('compute/overview'),
           description: 'Secure microVMs that boot in milliseconds',
         },
         {
           icon: 'globe-lock',
           title: 'Zero Trust Tunnels',
+          href: docs('connectors/tunnels'),
           description: 'Flexible and private. We ♥ QUIC + MASQUE!',
         },
         {
           icon: 'shield-ban',
           title: 'Protection',
+          href: docs('alb/configuration/waf'),
           description: 'A WAF to defend against common attacks',
         },
         {
           icon: 'workflow',
           title: 'ALB / GSLB',
+          href: docs('alb/overview'),
           description: 'Proxy and route traffic. Powered by Envoy',
         },
         {
@@ -116,6 +123,7 @@ export interface PlatformFeature {
   icon: IconName;
   title: string;
   description: string;
+  href: string;
 }
 
 export const features = {
@@ -123,48 +131,71 @@ export const features = {
   title: 'A modern experience for agents and developers',
   description: 'We built our platform for Claude and Codex, then removed all the sales gates.',
   items: [
-    { icon: 'terminal', title: 'datumctl', description: 'K8s-style CLI: get, apply, delete.' },
+    {
+      icon: 'terminal',
+      title: 'datumctl',
+      description: 'K8s-style CLI: get, apply, delete.',
+      href: '/download/datumctl',
+    },
     {
       icon: 'shield-check',
       title: 'Fine-Grained Permissions',
       description: 'Groups and fine-grained IAM role assignments.',
+      href: docs('organizations/team-management'),
     },
-    { icon: 'key', title: 'Secrets', description: 'Protect sensitive data in one place.' },
+    {
+      icon: 'key',
+      title: 'Secrets',
+      description: 'Protect sensitive data in one place.',
+      href: docs('operations/secrets'),
+    },
     {
       icon: 'activity',
       title: 'Metrics Export',
       description: 'Full OTel metrics to Grafana Cloud, with prebuilt dashboards.',
+      href: docs('operations/metrics-export'),
     },
     {
       icon: 'scroll-text',
       title: 'Audit & Activity Logs',
       description: 'Built-in audit and activity logging.',
+      href: docs('operations/activity-logs'),
     },
-    { icon: 'log-in', title: 'SSO', description: 'Enterprise-grade authentication.' },
+    {
+      icon: 'log-in',
+      title: 'SSO',
+      description: 'Enterprise-grade authentication.',
+      href: docs('account/sign-in'),
+    },
     {
       icon: 'bot',
       title: 'Service Accounts',
       description: 'Give agents and apps their own identity. Let the machines do the rest.',
+      href: docs('projects/service-accounts'),
     },
     {
       icon: 'plug',
       title: 'Datum MCP',
       description: 'Official self-hosted MCP server, tightly integrated with Cursor.',
+      href: '/download/datum-mcp',
     },
     {
       icon: 'sparkles',
       title: 'AI Assistant',
       description: 'Ask datumctl about your resources in plain English.',
+      href: docs('operations/datum-assistant'),
     },
     {
       icon: 'at-sign',
       title: 'Domains',
       description: 'Manage domains programmatically across providers.',
+      href: docs('domain-dns/domains'),
     },
     {
       icon: 'laptop',
       title: 'Desktop Apps',
       description: 'macOS, Windows, and Linux apps for exposing localhost to the internet.',
+      href: docs('desktop-apps'),
     },
   ] satisfies PlatformFeature[],
 };

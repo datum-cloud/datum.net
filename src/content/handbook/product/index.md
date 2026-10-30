@@ -3,7 +3,7 @@ title: "Product vision, values, and rituals"
 sidebar:
   label: Overview
   order: 0
-updatedDate: Feb 15, 2026
+updatedDate: Oct 30, 2026
 authors: jacob
 meta:
   title: "Datum Product Strategy – Vision & Values - Datum Handbook"
@@ -23,16 +23,17 @@ No network team required.  :-)
 ## Core product strategy
 In addition to building our underlying platform and network, we're focused on releasing a self-service cloud product (e.g. Datum Cloud) that is more opinionated than we ultimately believe customers will require. These "house brand" services are designed to deliver real, low-friction value to users while building our operational muscle. Datum Cloud is backed by an AGPLv3 license and we try hard to avoid weird sales gates or marketing fluff.
 
-* AI Edge – Protect apps, endpoints, and API’s with an intelligent global proxy and built in WAF (powered by Envoy)
-* Connectors – Orchestrate a diverse portfolio of connections, starting with QUIC tunnels (powered by Iroh)
 * Galactic VPC - Virtual private backbones for improving performance, security, and reliability with an internet fast lane
+* Compute - Secure microVMs that boot in milliseconds
+* Application Load Balancer (ALB) - Protect apps, endpoints, and API’s with a global proxy and built in WAF (powered by Envoy). A global server load balancer (GSLB) is coming soon
+* Connectors - Orchestrate a diverse portfolio of connections, starting with zero trust QUIC tunnels (powered by Iroh)
 
-Some other core capabilities on our roadmap include a virtual "meet me room" and edge runtime.
+Object storage and cloud interconnects are coming soon, and a virtual "meet me room" remains on our roadmap. You can see what is live and what is next on our [platform page](https://www.datum.net/platform) and [roadmap](https://www.datum.net/roadmap).
 
 ## Ways to interact
 Just as important as these features are the ways to interact with them. We're focused on:
 
-* AX - Datum MCP 
+* AX - Datum MCP, agent skills, and Patch, our built-in AI assistant
 * DX - datumctl and SDK's 
 * UX - Customer portal and desktop apps
 

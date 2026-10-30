@@ -28,7 +28,8 @@ export const GET: APIRoute = async () => {
       for (const item of list.items) {
         const soon = item.soon ? ' (soon)' : '';
         const description = item.description ? ` - ${item.description}` : '';
-        sections.push(`- **${item.title}**${soon}${description}`);
+        const title = item.href ? `[${item.title}](${item.href})` : item.title;
+        sections.push(`- **${title}**${soon}${description}`);
       }
       sections.push('');
     }
@@ -39,7 +40,7 @@ export const GET: APIRoute = async () => {
 
     sections.push(`## ${features.title}`, '', features.description, '');
     for (const item of features.items) {
-      sections.push(`- **${item.title}** - ${item.description}`);
+      sections.push(`- **[${item.title}](${item.href})** - ${item.description}`);
     }
     sections.push('');
 

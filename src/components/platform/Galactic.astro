@@ -46,7 +46,15 @@ import { galactic } from '@data/platform';
                       <Icon name={item.icon} class="stroke-1.75" />
                     </span>
                     <span class="platform-resource-content">
-                      <span class="platform-resource-title">{item.title}</span>
+                      <span class="platform-resource-title">
+                        {item.href ? (
+                          <a href={item.href} class="platform-resource-link">
+                            {item.title}
+                          </a>
+                        ) : (
+                          item.title
+                        )}
+                      </span>
                       {item.description && (
                         <span class="platform-resource-description">{item.description}</span>
                       )}

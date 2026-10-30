@@ -3,11 +3,11 @@ title: "Roadmap"
 sidebar:
   label: Roadmap
   order: 3
-updatedDate: Nov 13, 2025
+updatedDate: Oct 30, 2026
 authors: jacob
 meta:
   title: "Datum Product Roadmap - Future Releases & Strategy"
-  description: "What's next for Datum? Read our roadmap to see planned updates for the AI Gateway, Adaptive Proxy, and global interconnection services."
+  description: "What's next for Datum? Read our roadmap to see what is live and what is coming next across Compute, load balancing, object storage, and cloud interconnects."
   og:
     title: "Datum Product Roadmap"
 ---

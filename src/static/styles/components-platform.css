@@ -154,7 +154,20 @@
   }
 
   .platform-resource-item {
-    @apply flex items-center gap-5 bg-white p-5 lg:gap-7 lg:p-7;
+    @apply relative flex items-center gap-5 bg-white p-5 lg:gap-7 lg:p-7;
+  }
+
+  .platform-resource-item:has(.platform-resource-link) {
+    @apply hover:bg-platinum transition-colors;
+  }
+
+  /* Stretched link: the title is the anchor, its ::after covers the whole row. */
+  .platform-resource-link {
+    @apply after:absolute after:inset-0 hover:underline focus-visible:outline-none;
+  }
+
+  .platform-resource-link:focus-visible::after {
+    @apply outline-pine-forge---links outline-2 -outline-offset-2;
   }
 
   .platform-resource-icon {

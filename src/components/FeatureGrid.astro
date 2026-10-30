@@ -8,6 +8,8 @@ export interface FeatureGridItem {
   icon: string;
   title: string;
   description: string;
+  /** Makes the whole tile a link to this URL. */
+  href?: string;
 }
 
 interface FeatureGridProps {
@@ -28,7 +30,15 @@ const { items, variant = 'iris', class: className = '' } = Astro.props as Featur
           <Icon name={item.icon} class="stroke-1.75" />
         </div>
         <div class="essentials-item-content">
-          <p class="essentials-item-title">{item.title}</p>
+          <p class="essentials-item-title">
+            {item.href ? (
+              <a href={item.href} class="essentials-item-link">
+                {item.title}
+              </a>
+            ) : (
+              item.title
+            )}
+          </p>
           <p class="essentials-item-description">{item.description}</p>
         </div>
       </div>

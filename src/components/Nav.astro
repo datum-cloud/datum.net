@@ -173,7 +173,7 @@ const cloudPortalUrl =
     | { signedIn: false }
     | {
         signedIn: true;
-        user: { displayName: string; email?: string; avatarUrl?: string };
+        user: { id: string; displayName: string; email?: string; avatarUrl?: string };
         org?: { name: string; displayName: string; hasProjects?: boolean };
         dashboardUrl: string;
       };
@@ -259,6 +259,29 @@ const cloudPortalUrl =
   };
 
   const SESSION_STATUS_TIMEOUT_MS = 5000;
+  const RYBBIT_READY_TIMEOUT_MS = 5000;
+  const RYBBIT_POLL_MS = 100;
+
+  // Ties this visitor to their cloud-portal profile in Rybbit. user.id is the
+  // OIDC `sub` the portal passes to identify(), so both sites share one profile.
+  // The Rybbit script is deferred, so wait for it instead of assuming it loaded.
+  const syncRybbitIdentity = (user: { id: string; displayName: string; email?: string } | null) => {
+    const startedAt = Date.now();
+    const apply = () => {
+      if (window.rybbit?.identify) {
+        if (!user) {
+          window.rybbit.clearUserId();
+          return;
+        }
+        const traits: Record<string, unknown> = { name: user.displayName };
+        if (user.email) traits.email = user.email;
+        window.rybbit.identify(user.id, traits);
+        return;
+      }
+      if (Date.now() - startedAt < RYBBIT_READY_TIMEOUT_MS) setTimeout(apply, RYBBIT_POLL_MS);
+    };
+    apply();
+  };
 
   // The page is prerendered once and the same image runs in every environment,
   // so the build-time PUBLIC_CLOUD_PORTAL_URL can't tell staging from prod.
@@ -290,7 +313,11 @@ const cloudPortalUrl =
       });
       if (!res.ok) return;
       const status = (await res.json()) as SessionStatus;
-      if (!status.signedIn) return;
+      if (!status.signedIn) {
+        syncRybbitIdentity(null);
+        return;
+      }
+      syncRybbitIdentity(status.user);
 
       const name = status.user.displayName;
       const avatarUrl = status.user.avatarUrl?.startsWith('https://')

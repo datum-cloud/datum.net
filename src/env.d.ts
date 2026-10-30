@@ -6,6 +6,8 @@ interface Window {
   Alpine: import('alpinejs').Alpine;
   rybbit?: {
     event: (name: string) => void;
+    identify: (userId: string, traits?: Record<string, unknown>) => void;
+    clearUserId: () => void;
   };
   gtag?: (...args: unknown[]) => void;
   // Signed-in cloud-portal user, set by Nav.astro for the HelpScout Beacon prefill.

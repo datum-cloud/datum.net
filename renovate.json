@@ -8,8 +8,7 @@
   "packageRules": [
     {
       "matchManagers": ["npm"],
-      "rangeStrategy": "bump",
-      "updateLockFiles": true
+      "rangeStrategy": "bump"
     },
     {
       "matchManagers": ["npm"],

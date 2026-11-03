@@ -1,0 +1,19 @@
+.github/workflows/publish.yml
+  s_f739b0c375cda4::t_b0fa9300ec29ac 28,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "78b1a286efb2643f05ee45695385c6d135d0f2f0",
+  "prompts": {},
+  "sessions": {
+    "s_f739b0c375cda4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "15cc7eee-6efb-4bbe-8f74-0256f0f874ee",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

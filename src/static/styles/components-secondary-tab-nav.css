@@ -22,7 +22,11 @@
   }
 
   .secondary-tab-nav-mobile-selected {
-    @apply datum-text-sm text-midnight-fjord shrink-0 font-semibold;
+    @apply datum-text-base text-midnight-fjord shrink-0 font-semibold;
+  }
+
+  .secondary-tab-nav-mobile-selected--solo {
+    @apply flex-1 shrink;
   }
 
   .secondary-tab-nav-mobile-chevron {
@@ -71,6 +75,28 @@
 
     .secondary-tab-nav__tab-icon {
       @apply inline-flex;
+    }
+  }
+
+  .secondary-tab-nav--release {
+    /* Hero pads its content 32px per side on mobile; main content (cards) sits at 28px. */
+    .secondary-tab-nav-mobile {
+      @apply -mx-1 w-[calc(100%+0.5rem)] max-w-none;
+    }
+
+    .secondary-tab-nav__list {
+      @apply bg-platinum;
+    }
+
+    /* Figma "Tab - Standard": 4px padding around a 25px content row = 33px tall. */
+    .secondary-tab-nav__tab {
+      @apply datum-text-sm h-[33px] min-w-0;
+    }
+
+    .secondary-tab-nav__tab--active,
+    .secondary-tab-nav-mobile-link--active {
+      @apply bg-canyon-clay---links font-semibold text-white;
+      @apply hover:bg-canyon-clay---links hover:text-white;
     }
   }
 

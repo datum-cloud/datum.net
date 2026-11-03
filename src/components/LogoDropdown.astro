@@ -125,9 +125,10 @@ const { id = 'logo-dropdown', class: className = '', triggerElementId = 'logo-li
       }
     });
 
-    // Hide dropdown on escape key
+    // Hide dropdown on escape key. Only act when it is actually open: otherwise every Escape
+    // press anywhere on the page (e.g. in a search field) would steal focus to the logo.
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && logoDropdown.classList.contains('logo-dropdown--visible')) {
         logoDropdown.classList.remove('logo-dropdown--visible');
         triggerElement.focus();
       }

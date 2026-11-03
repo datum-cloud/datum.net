@@ -1,29 +1,137 @@
 @layer components {
+  body.page-changelog .hero--main.content-alt .hero--main-content-title {
+    @apply datum-text-8xl xl:text-(length:--60px) xl:leading-(--70px);
+  }
+
+  body.page-changelog .hero--main.light {
+    @apply bg-white;
+  }
+
   .changelog-container {
     @apply max-width max-w-320;
+  }
+
+  .changelog-toolbar {
+    @apply border-silver-mist mb-10 flex items-center justify-end gap-10 border-b pb-7 md:mb-16;
+  }
+
+  .changelog-toolbar-sort,
+  .changelog-toolbar-search-field {
+    @apply datum-text-sm text-app---dark---utility-4 flex items-center gap-2 font-medium;
+  }
+
+  .changelog-toolbar-sort {
+    @apply cursor-pointer;
+
+    span span {
+      @apply text-midnight-fjord;
+    }
+  }
+
+  .changelog-toolbar-search {
+    @apply relative;
+  }
+
+  .changelog-toolbar-search-field {
+    @apply cursor-text;
+
+    input {
+      /* w-12 (48px) hugs the 47px "Search" placeholder so its right edge meets the end of the
+         toolbar line; the field grows (to the left) to 128px on focus. */
+      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-12 bg-transparent font-medium outline-none focus:w-32;
+      @apply transition-[width] duration-200;
+
+      /* Chrome/Safari reserve room for the native clear button, which clips a placeholder this
+         tight. Esc still clears the field. */
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration {
+        @apply hidden appearance-none;
+      }
+    }
+  }
+
+  /* Search results dropdown (ARIA combobox listbox) */
+  .changelog-search-results {
+    @apply border-glacier-mist-900 shadow-modal absolute top-full right-0 z-30 m-0 mt-3 max-h-80 list-none overflow-y-auto overscroll-contain border bg-white p-0;
+    width: min(26rem, calc(100vw - 3.5rem));
+  }
+
+  .changelog-search-results[hidden] {
+    @apply hidden;
+  }
+
+  .changelog-search-option {
+    @apply border-glacier-mist-900 flex cursor-pointer flex-col gap-1 border-b px-4 py-3 last:border-b-0;
+
+    &[aria-selected='true'] {
+      @apply bg-platinum;
+    }
+  }
+
+  .changelog-search-option-title {
+    @apply datum-text-sm text-midnight-fjord font-semibold;
+  }
+
+  .changelog-search-option-date {
+    @apply datum-text-smallcaps text-app---dark---utility-3;
+  }
+
+  .changelog-search-option-snippet {
+    @apply datum-text-sm text-midnight-fjord/60;
+  }
+
+  .changelog-search-results mark {
+    @apply bg-aurora-moss text-inherit;
+  }
+
+  .changelog-search-empty {
+    @apply datum-text-sm text-app---dark---utility-4 px-4 py-3;
   }
 
   .changelog-list {
     @apply flex flex-col;
   }
 
+  /* scroll-mt keeps a jumped-to entry clear of the top edge (matches the sticky sidebar's top-6). */
   .changelog-entry {
-    @apply relative mb-14 flex flex-col gap-0 md:mb-20 md:flex-row md:gap-12 lg:mb-24 xl:mb-28 xl:gap-16;
+    @apply relative mb-14 flex scroll-mt-6 flex-col gap-0 md:mb-20 md:flex-row md:gap-12 lg:mb-24 xl:mb-28 xl:gap-16;
+  }
+
+  .changelog-entry--flash .changelog-entry-card {
+    animation: changelog-entry-flash 1.6s ease-out;
+  }
+
+  @keyframes changelog-entry-flash {
+    0%,
+    35% {
+      box-shadow: 0 0 0 2px var(--color-canyon-clay---links);
+    }
+    100% {
+      box-shadow: 0 0 0 2px transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .changelog-entry--flash .changelog-entry-card {
+      animation-duration: 0.01ms;
+    }
   }
 
   .changelog-entry-sidebar {
-    @apply mb-6 flex w-full shrink-0 flex-row items-start gap-3 md:sticky md:top-6 md:mb-0 md:w-50 md:self-start lg:w-60 xl:w-80;
+    @apply mb-6 flex w-full shrink-0 flex-row items-start gap-4 md:sticky md:top-6 md:mb-0 md:w-50 md:self-start lg:w-60 xl:w-85;
   }
 
   .changelog-entry-dot {
-    @apply bg-midnight-fjord text-aurora-moss relative z-10 self-start rounded-full p-1;
+    @apply relative z-10 mt-2 size-6 shrink-0;
+
+    svg {
+      @apply size-full;
+    }
   }
 
   .changelog-entry-line {
-    /* Absolutely positioned within .changelog-entry (position: relative) */
-    /* left: 1rem = center of dot (dot = p-1 4px + icon-lg 24px + p-1 4px = 32px, center = 16px = 1rem) */
-    /* top: 2rem = bottom edge of dot (32px) */
-    @apply bg-midnight-fjord absolute top-8 bottom-0 left-4 hidden w-px md:block;
+    /* left: 0.75rem = center of the 24px dot; top: 2rem = dot offset (8px) plus dot height (24px) */
+    @apply bg-midnight-fjord absolute top-8 bottom-0 left-3 hidden w-px md:block;
   }
 
   .changelog-entry--last {
@@ -37,7 +145,7 @@
   }
 
   .changelog-entry-nav-title {
-    @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
+    @apply text-midnight-fjord m-0 font-semibold xl:text-(length:--30px) xl:leading-(--42px);
   }
 
   .changelog-entry-nav-date-row {
@@ -49,21 +157,15 @@
   }
 
   .changelog-entry-card {
-    @apply flex min-w-0 flex-1 flex-col gap-5 bg-white p-6 md:p-12 lg:p-16;
-  }
-
-  .changelog-entry--last {
-    .changelog-entry-card {
-      @apply mb-0;
-    }
+    @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-12 lg:px-16 lg:pt-16 lg:pb-28;
   }
 
   .changelog-entry-card-header {
-    @apply flex flex-wrap items-center justify-between gap-5;
+    @apply flex justify-end;
   }
 
   .changelog-entry-card-link {
-    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 no-underline hover:underline;
+    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 underline hover:no-underline;
   }
 
   .changelog-entry-card-body {
@@ -149,5 +251,26 @@
 
   .changelog-entry-card-tag-description {
     @apply datum-text-longform-body text-midnight-fjord min-w-0 flex-1 opacity-80;
+  }
+
+  /* Floating scroll-to-top button; shown after the reader scrolls past the first screen.
+     Stacked above the HelpScout Beacon launcher (60px, 40px from the right and bottom) and
+     centred on it with a 16px gap, so the two never overlap. */
+  .changelog-scroll-top {
+    @apply bg-pine-forge shadow-modal fixed right-12 bottom-29 z-30 flex size-11 cursor-pointer items-center justify-center rounded-full border-0 text-white;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    /* Hidden state: faded out, nudged down and out of the tab order (the button is also inert). */
+    @apply invisible translate-y-3 opacity-0;
+    @apply transition-[opacity,translate,visibility] duration-300 ease-out motion-reduce:transition-none;
+
+    /* Revealed: fades in while rising into place. */
+    &[data-visible] {
+      @apply visible translate-y-0 opacity-100;
+    }
+
+    &[data-visible]:hover {
+      @apply opacity-80;
+    }
   }
 }

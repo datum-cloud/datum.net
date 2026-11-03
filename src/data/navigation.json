@@ -20,7 +20,7 @@
           "title": "For humans",
           "items": [
             { "text": "Docs", "href": "/docs" },
-            { "text": "Roadmap", "href": "/roadmap" },
+            { "text": "Releases", "href": "/release" },
             { "text": "Blog", "href": "/blog" },
             { "text": "Events", "href": "/events" },
             { "text": "About us", "href": "/about" }
@@ -81,6 +81,7 @@
       "title": "Resources",
       "items": [
         { "text": "Docs", "href": "/docs" },
+        { "text": "Releases", "href": "/release" },
         { "text": "Roadmap", "href": "/roadmap" },
         { "text": "Changelog", "href": "/changelog" },
         { "text": "Download", "href": "/download" },
@@ -132,6 +133,7 @@
     {
       "title": "Resources",
       "items": [
+        { "text": "Releases", "href": "/release" },
         { "text": "Changelog", "href": "/changelog" },
         { "text": "Roadmap", "href": "/roadmap" },
         { "text": "Get In Touch", "href": "/contact" },

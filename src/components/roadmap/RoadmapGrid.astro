@@ -1,62 +1,87 @@
 ---
 // src/components/roadmap/RoadmapGrid.astro
 import type { RoadmapMilestone } from '@libs/githubRoadmap';
-import { getRoadmapMonthKey, isRoadmapShipped } from '@libs/githubRoadmap';
+import { getRoadmapCoverImage, groupRoadmapsByDate } from '@libs/githubRoadmap';
+import Icon from '@components/Icon.astro';
 import RoadmapCard from './RoadmapCard.astro';
 
 interface Props {
   roadmaps: RoadmapMilestone[];
-  /** Year to display (defaults to current year). */
-  year?: number;
 }
 
-const { roadmaps, year = new Date().getFullYear() } = Astro.props as Props;
+const { roadmaps } = Astro.props as Props;
 
-// Build a lookup: "YYYY-MM" → RoadmapMilestone (grid slot by release month)
-const roadmapByMonth = new Map<string, RoadmapMilestone>();
-for (const r of roadmaps) {
-  roadmapByMonth.set(getRoadmapMonthKey(r.releaseDate), r);
-}
+const UPCOMING_LIMIT = 3;
 
-// Generate all 12 month slots for the given year
-const months = Array.from({ length: 12 }, (_, i) => {
-  const monthNum = i + 1;
-  const monthKey = `${year}-${String(monthNum).padStart(2, '0')}`;
-  const isoDate = `${monthKey}-01`;
-  const roadmap = roadmapByMonth.get(monthKey);
-  return {
-    monthKey,
-    isoDate,
-    // Upcoming view skips shipped milestones entirely (same as the old client-side filter).
-    roadmap: roadmap && !isRoadmapShipped(roadmap) ? roadmap : undefined,
-    skip: Boolean(roadmap && isRoadmapShipped(roadmap)),
-  };
-});
-
-const shippedRoadmaps = roadmaps
-  .filter(
-    (roadmap) =>
-      isRoadmapShipped(roadmap) && getRoadmapMonthKey(roadmap.releaseDate).startsWith(String(year))
-  )
-  .sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime());
+const { upcoming: allUpcoming, previous: allPrevious } = groupRoadmapsByDate(roadmaps);
+const previous = allPrevious.filter((roadmap) => getRoadmapCoverImage(roadmap.number));
+const upcoming = allUpcoming.slice(0, UPCOMING_LIMIT);
 ---
 
-<section aria-label="Upcoming roadmap releases" data-roadmap-view="upcoming">
-  <ul class="roadmap-grid">
-    {
-      months.map((month) =>
-        month.skip ? null : <RoadmapCard monthDate={month.isoDate} roadmap={month.roadmap} />
-      )
-    }
-  </ul>
-</section>
+{
+  upcoming.length > 0 && (
+    <section class="release-group" aria-labelledby="roadmap-upcoming-heading">
+      <div class="release-group--header">
+        <h2 id="roadmap-upcoming-heading" class="release-group--title">
+          Upcoming releases
+        </h2>
+      </div>
+      <ul class="roadmap-grid">
+        {upcoming.map((roadmap) => (
+          <RoadmapCard roadmap={roadmap} />
+        ))}
+      </ul>
+    </section>
+  )
+}
 
-<section aria-label="Shipped roadmap releases" data-roadmap-view="shipped" hidden>
-  <ul class="roadmap-grid">
-    {
-      shippedRoadmaps.map((roadmap) => (
-        <RoadmapCard monthDate={roadmap.releaseDate} roadmap={roadmap} />
-      ))
-    }
-  </ul>
-</section>
+{
+  previous.length > 0 && (
+    <section class="release-group" aria-labelledby="roadmap-past-heading" data-roadmap-past>
+      <div class="release-group--header">
+        <h2 id="roadmap-past-heading" class="release-group--title">
+          Past releases
+        </h2>
+        <button type="button" class="release-sort" data-release-sort data-order="recent">
+          <Icon name="list-filter" size="sm" class="size-4.5!" />
+          <span>
+            Sort by: <span data-release-sort-label>Recent</span>
+          </span>
+        </button>
+      </div>
+      <ul class="roadmap-grid" data-roadmap-past-list>
+        {previous.map((roadmap) => (
+          <RoadmapCard roadmap={roadmap} />
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+{
+  upcoming.length === 0 && previous.length === 0 && (
+    <p class="release-empty">No releases available yet.</p>
+  )
+}
+
+<script>
+  const SORT_LABELS = { recent: 'Recent', oldest: 'Oldest' } as const;
+
+  function initRoadmapSort() {
+    const button = document.querySelector<HTMLButtonElement>('[data-release-sort]');
+    const list = document.querySelector<HTMLUListElement>('[data-roadmap-past-list]');
+    const label = button?.querySelector<HTMLElement>('[data-release-sort-label]');
+    if (!button || !list || !label || button.dataset.bound === 'true') return;
+    button.dataset.bound = 'true';
+
+    button.addEventListener('click', () => {
+      const next = button.dataset.order === 'recent' ? 'oldest' : 'recent';
+      button.dataset.order = next;
+      label.textContent = SORT_LABELS[next];
+      list.append(...Array.from(list.children).reverse());
+    });
+  }
+
+  initRoadmapSort();
+  document.addEventListener('astro:page-load', initRoadmapSort);
+</script>

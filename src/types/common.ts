@@ -246,10 +246,11 @@ export interface SecondaryTabNavItem {
 export interface SecondaryTabNavProps {
   items: SecondaryTabNavItem[];
   ariaLabel: string;
-  mobileLabel: string;
+  /** Optional static prefix shown left of the selected tab in the mobile dropdown trigger. */
+  mobileLabel?: string;
   idPrefix?: string;
   /** Active tab color theme. Defaults to pine (Deliver). */
-  variant?: 'pine' | 'canyon' | 'connect' | 'essentials' | 'locations';
+  variant?: 'pine' | 'canyon' | 'connect' | 'essentials' | 'locations' | 'release';
 }
 
 export interface SectionEyebrowProps {

@@ -2,7 +2,7 @@
 /**
  * GitHub Projects backlog fetcher.
  *
- * Fetches issues in the "In progress", "Planned", and "Backlog" status
+ * Fetches issues in the "Planning", "On Deck", and "In progress" status
  * columns from the datum-cloud GitHub Projects board (project #22, org
  * `datum-cloud`) via the GraphQL Projects v2 API.
  *
@@ -37,13 +37,32 @@ import { FileCacheDriver } from '@datum-cloud/strapi-revalidate';
 import { graph } from './github';
 import { isRedisReady, redisClient, redisKeyPrefix } from './strapi/_runtime';
 
-export type GitHubBacklogStatus = 'Backlog' | 'Planned' | 'In progress';
+/**
+ * Project "Status" options shown on the roadmap — the same names as the board's
+ * columns. The project's other statuses (e.g. Backlog, Done) are not shown.
+ */
+export type GitHubBacklogStatus = 'Planning' | 'On Deck' | 'In progress';
 
+/** Roadmap ordering (most advanced first) — used for the flat markdown export. */
 export const INCLUDED_BACKLOG_STATUSES: GitHubBacklogStatus[] = [
   'In progress',
-  'Planned',
-  'Backlog',
+  'On Deck',
+  'Planning',
 ];
+
+/** Case/whitespace-insensitive lookup so "On deck" or " Planning " still match. */
+const STATUS_BY_NORMALIZED_NAME = new Map<string, GitHubBacklogStatus>(
+  INCLUDED_BACKLOG_STATUSES.map((status) => [normalizeStatusName(status), status])
+);
+
+function normalizeStatusName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/** Map a raw GitHub Project status name to a roadmap status, or null if it isn't shown. */
+export function toBacklogStatus(name: string | null | undefined): GitHubBacklogStatus | null {
+  return name ? (STATUS_BY_NORMALIZED_NAME.get(normalizeStatusName(name)) ?? null) : null;
+}
 
 export interface GitHubBacklogItem {
   number: number;
@@ -51,9 +70,39 @@ export interface GitHubBacklogItem {
   url: string;
   labels: string[];
   status: GitHubBacklogStatus;
+  /** Raw markdown body of the issue (rendered on demand by the detail endpoint). */
+  body: string;
+  /** Plain-text, single-paragraph summary of `body` for list rows. */
+  excerpt: string;
 }
 
+/** Roadmap page columns, in display order. */
+export type RoadmapColumnKey = 'planning' | 'onDeck' | 'inProgress';
+
+export interface RoadmapColumn {
+  key: RoadmapColumnKey;
+  title: string;
+  items: GitHubBacklogItem[];
+}
+
+/** GitHub Project status → roadmap column. */
+const STATUS_COLUMN: Record<GitHubBacklogStatus, RoadmapColumnKey> = {
+  Planning: 'planning',
+  'On Deck': 'onDeck',
+  'In progress': 'inProgress',
+};
+
+export const GITHUB_BACKLOG_PROJECT_URL = 'https://github.com/orgs/datum-cloud/projects/22';
+
+/**
+ * Bump when the cached item shape changes. Older entries are rejected so the
+ * "board unchanged" shortcut in `triggerBackgroundRefresh` can't keep serving
+ * items that lack the new fields.
+ */
+const CACHE_SCHEMA_VERSION = 3;
+
 interface CachedBacklog {
+  schemaVersion: number;
   items: GitHubBacklogItem[];
   updatedAt: number;
   /** GitHub's own `ProjectV2.updatedAt` as of this fetch — lets a background
@@ -92,13 +141,14 @@ const BACKLOG_QUERY = `
     organization(login: $org) {
       projectV2(number: $projectNumber) {
         updatedAt
-        items(first: 100, after: $cursor) {
+        items(first: 50, after: $cursor) {
           nodes {
             content {
               ... on Issue {
                 number
                 title
                 url
+                body
                 labels(first: 5) {
                   nodes {
                     name
@@ -130,6 +180,7 @@ interface GitHubIssueContent {
   number?: number;
   title?: string;
   url?: string;
+  body?: string;
   labels?: { nodes: GitHubLabel[] };
 }
 
@@ -172,6 +223,8 @@ function isValidCachedBacklogItem(item: unknown): item is GitHubBacklogItem {
     typeof record.title === 'string' &&
     typeof record.url === 'string' &&
     Array.isArray(record.labels) &&
+    typeof record.body === 'string' &&
+    typeof record.excerpt === 'string' &&
     isGitHubBacklogStatus(record.status as string | undefined)
   );
 }
@@ -184,10 +237,63 @@ function isValidCachedEntry(value: unknown): value is CachedBacklog {
   if (!value || typeof value !== 'object') return false;
   const record = value as Record<string, unknown>;
   return (
+    record.schemaVersion === CACHE_SCHEMA_VERSION &&
     typeof record.updatedAt === 'number' &&
     typeof record.projectUpdatedAt === 'string' &&
     isValidCachedBacklog(record.items)
   );
+}
+
+/**
+ * Reduce an issue's markdown body to a short plain-text summary: the first
+ * paragraph of prose, with headings, code, images, HTML and inline markdown
+ * syntax removed.
+ */
+export function makeExcerpt(body: string, maxLength = 160): string {
+  const cleaned = body
+    .replace(/\r\n?/g, '\n')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+
+  for (const block of cleaned.split(/\n{2,}/)) {
+    const text = block
+      .split('\n')
+      .filter((line) => !/^\s{0,3}#{1,6}\s/.test(line))
+      .join(' ')
+      .replace(/^[\s>*+-]+/, '')
+      .replace(/^\d+\.\s+/, '')
+      .replace(/[*_`~]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!text) continue;
+    return text.length > maxLength ? `${text.slice(0, maxLength - 1).trimEnd()}…` : text;
+  }
+  return '';
+}
+
+/** Split backlog items into the three roadmap columns (display order). */
+export function groupBacklogByColumn(items: GitHubBacklogItem[]): RoadmapColumn[] {
+  const buckets: Record<RoadmapColumnKey, GitHubBacklogItem[]> = {
+    planning: [],
+    onDeck: [],
+    inProgress: [],
+  };
+  for (const item of items) buckets[STATUS_COLUMN[item.status]].push(item);
+
+  const column = (key: RoadmapColumnKey, title: string): RoadmapColumn => ({
+    key,
+    title,
+    items: buckets[key],
+  });
+
+  return [
+    column('planning', 'Planning'),
+    column('onDeck', 'On Deck'),
+    column('inProgress', 'In progress'),
+  ];
 }
 
 function isStale(updatedAt: number): boolean {
@@ -282,6 +388,7 @@ function triggerBackgroundRefresh(cachedProjectUpdatedAt: string): void {
 
       const { items, projectUpdatedAt } = await fetchFromGitHub();
       await writeCache({
+        schemaVersion: CACHE_SCHEMA_VERSION,
         items,
         updatedAt: Date.now(),
         projectUpdatedAt: projectUpdatedAt ?? cachedProjectUpdatedAt,
@@ -306,7 +413,12 @@ function triggerBackgroundPopulate(): void {
   refreshInFlight = (async () => {
     try {
       const { items, projectUpdatedAt } = await fetchFromGitHub();
-      await writeCache({ items, updatedAt: Date.now(), projectUpdatedAt: projectUpdatedAt ?? '' });
+      await writeCache({
+        schemaVersion: CACHE_SCHEMA_VERSION,
+        items,
+        updatedAt: Date.now(),
+        projectUpdatedAt: projectUpdatedAt ?? '',
+      });
     } catch (err) {
       console.error('[githubBacklog] Background populate failed:', err);
     } finally {
@@ -350,10 +462,11 @@ async function fetchFromGitHub(): Promise<{
     if (project.updatedAt) projectUpdatedAt = project.updatedAt;
 
     for (const node of page.nodes) {
-      const status = node.fieldValueByName?.name;
+      const status = toBacklogStatus(node.fieldValueByName?.name);
       const content = node.content;
 
-      if (!isGitHubBacklogStatus(status) || !content || typeof content.number !== 'number') {
+      // Draft items and PRs have no issue number, so they are skipped.
+      if (!status || !content || typeof content.number !== 'number') {
         continue;
       }
 
@@ -363,6 +476,8 @@ async function fetchFromGitHub(): Promise<{
         url: content.url ?? `https://github.com/${GITHUB_ORG}`,
         labels: (content.labels?.nodes ?? []).map((l) => l.name),
         status,
+        body: content.body ?? '',
+        excerpt: makeExcerpt(content.body ?? ''),
       });
     }
 
@@ -402,12 +517,17 @@ export async function clearGitHubBacklogCache(): Promise<void> {
  */
 export async function forceRegenerateGitHubBacklog(): Promise<GitHubBacklogItem[]> {
   const { items, projectUpdatedAt } = await fetchFromGitHub();
-  await writeCache({ items, updatedAt: Date.now(), projectUpdatedAt: projectUpdatedAt ?? '' });
+  await writeCache({
+    schemaVersion: CACHE_SCHEMA_VERSION,
+    items,
+    updatedAt: Date.now(),
+    projectUpdatedAt: projectUpdatedAt ?? '',
+  });
   return items;
 }
 
 /**
- * Fetch In progress, Planned, and Backlog items from the datum-cloud GitHub Projects board.
+ * Fetch Planning, On Deck, and In progress items from the datum-cloud GitHub Projects board.
  *
  * Stale-while-revalidate: a request never blocks on GitHub, ever. A stale cache
  * returns the last-known-good items immediately and fires a de-duplicated
@@ -430,6 +550,12 @@ export async function fetchGitHubBacklog(): Promise<GitHubBacklogItem[]> {
 
   triggerBackgroundPopulate();
   return [];
+}
+
+/** Look up a single backlog item by issue number from the cached backlog. Never calls GitHub. */
+export async function getGitHubBacklogItem(number: number): Promise<GitHubBacklogItem | null> {
+  const cached = await readCache();
+  return cached?.items.find((item) => item.number === number) ?? null;
 }
 
 /**

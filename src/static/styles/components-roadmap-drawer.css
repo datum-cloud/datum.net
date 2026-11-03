@@ -1,0 +1,238 @@
+@layer components {
+  /* Item detail drawer — right-hand panel opened from a roadmap item */
+  roadmap-drawer {
+    @apply contents;
+  }
+
+  roadmap-drawer dialog {
+    @apply fixed top-0 right-0 bottom-0 left-auto m-0 border-0 bg-transparent p-0;
+    @apply h-dvh max-h-dvh w-full max-w-[840px];
+    @apply text-midnight-fjord;
+  }
+
+  /* Slide in from the right; the backdrop fades. Closing is driven by JS (data-closing)
+     so the exit animation can finish before the <dialog> is actually closed. */
+  roadmap-drawer dialog[open] {
+    @apply flex;
+    animation: roadmap-drawer-in 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  roadmap-drawer dialog[open][data-closing] {
+    animation: roadmap-drawer-out 240ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  roadmap-drawer dialog::backdrop {
+    @apply bg-app---dark---utility-4/50 backdrop-blur-[4.5px];
+  }
+
+  roadmap-drawer dialog[open]::backdrop {
+    animation: roadmap-drawer-fade-in 320ms ease-out;
+  }
+
+  roadmap-drawer dialog[open][data-closing]::backdrop {
+    animation: roadmap-drawer-fade-out 240ms ease-in forwards;
+  }
+
+  .roadmap-drawer--panel {
+    @apply border-app---dark---utility-5 shadow-modal relative flex h-full w-full flex-col overflow-hidden border bg-white sm:rounded-l-[16px];
+  }
+
+  /* 47px corner button; the close glyph is the same 17px asset as in Figma (20% opacity). */
+  .roadmap-drawer--close {
+    @apply text-midnight-fjord absolute top-0 right-0 z-10 flex size-[47px] cursor-pointer items-center justify-center border-0 bg-transparent p-0 opacity-20 outline-0;
+    @apply transition-opacity duration-200 ease-in-out;
+    @apply focus-visible:outline-canyon-clay---links hover:opacity-50 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:-outline-offset-4;
+  }
+
+  .roadmap-drawer--close-icon {
+    @apply size-[17px]!;
+  }
+
+  .roadmap-drawer--scroll {
+    @apply flex flex-1 flex-col gap-7 overflow-y-auto overscroll-contain p-6 sm:p-10 lg:p-16;
+  }
+
+  .roadmap-drawer--header {
+    @apply border-glacier-mist-900 flex flex-col items-start gap-4 border-b pb-7;
+  }
+
+  /* Figma sits the tag row 1px closer to the title than a plain 16px gap. */
+  .roadmap-drawer--header .roadmap-item--tags {
+    @apply -mt-px;
+  }
+
+  .roadmap-drawer--title {
+    @apply font-alliance text-midnight-fjord m-0 text-xl leading-7 font-semibold text-pretty sm:text-2xl sm:leading-[30px];
+  }
+
+  .roadmap-drawer--link {
+    @apply font-alliance text-canyon-clay---links inline-flex items-center gap-2 text-xs leading-4 underline underline-offset-2;
+    @apply hover:opacity-80;
+
+    svg {
+      @apply size-3.5;
+    }
+  }
+
+  .roadmap-drawer--actions {
+    @apply flex gap-2;
+  }
+
+  .btn.btn--sm.roadmap-drawer--button {
+    @apply h-[49px] max-h-none px-5 py-3.5 text-sm leading-[21px] font-semibold;
+  }
+
+  .roadmap-drawer--message {
+    @apply datum-text-base m-0 opacity-80;
+  }
+
+  .roadmap-drawer--skeleton {
+    @apply bg-midnight-fjord/10 mb-3 block h-5 rounded;
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Rendered issue markdown */
+  .roadmap-drawer--body {
+    @apply font-alliance text-midnight-fjord text-base leading-6 opacity-80;
+    overflow-wrap: anywhere;
+
+    > :first-child {
+      @apply mt-0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      @apply mt-8.5 mb-2.25 text-xl leading-7 font-semibold text-wrap;
+    }
+
+    h4,
+    h5,
+    h6 {
+      @apply mt-4 mb-2 font-semibold;
+    }
+
+    p {
+      @apply mb-2.5;
+    }
+
+    ul,
+    ol {
+      @apply mb-2.5 ps-6;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    li {
+      @apply mb-2.5 last:mb-0;
+    }
+
+    li > p {
+      @apply mb-0;
+    }
+
+    a {
+      @apply text-canyon-clay---links underline underline-offset-2 hover:opacity-80;
+    }
+
+    strong {
+      @apply font-semibold;
+    }
+
+    code {
+      @apply bg-glacier-mist-800 rounded-sm px-1 py-0.5 font-mono text-[0.9em];
+    }
+
+    pre {
+      @apply bg-glacier-mist-800 mb-2.5 overflow-x-auto rounded-md p-4;
+
+      code {
+        @apply bg-transparent p-0;
+      }
+    }
+
+    blockquote {
+      @apply border-silver-mist mb-2.5 border-l-2 ps-4 opacity-80;
+    }
+
+    hr {
+      @apply border-glacier-mist-900 my-6;
+    }
+
+    img {
+      @apply my-2.5 h-auto max-w-full rounded-md;
+    }
+
+    table {
+      @apply mb-2.5 block w-full overflow-x-auto text-sm;
+    }
+
+    th,
+    td {
+      @apply border-glacier-mist-900 border px-3 py-2 text-left;
+    }
+
+    input[type='checkbox'] {
+      @apply me-2;
+    }
+  }
+
+  /* Lock page scroll while the drawer is open so only the drawer scrolls. Must target <html>:
+     base.css sets overflow-x on it, so overflow on <body> is not propagated to the viewport.
+     The stable gutter keeps the layout from shifting when the page scrollbar disappears. */
+  html:has(body[data-roadmap-drawer-open]) {
+    @apply overflow-hidden;
+    scrollbar-gutter: stable;
+  }
+
+  @keyframes roadmap-drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes roadmap-drawer-out {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes roadmap-drawer-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes roadmap-drawer-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    roadmap-drawer dialog[open],
+    roadmap-drawer dialog[open][data-closing],
+    roadmap-drawer dialog[open]::backdrop,
+    roadmap-drawer dialog[open][data-closing]::backdrop {
+      animation: none;
+    }
+  }
+}

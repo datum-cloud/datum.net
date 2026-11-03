@@ -52,12 +52,10 @@ export async function resolveMarkdownUrl(pathname: string): Promise<string | nul
     return `${path}.md`;
   }
 
-  // GitHub-backed roadmap detail pages: /roadmap/<slug>.
-  // /roadmap itself is a dedicated endpoint handled below by hasMarkdownForPath.
-  // /roadmap/backlog is in DEDICATED_ENDPOINTS so hasMarkdownForPath catches it too,
-  // but all sub-paths — dedicated or dynamic — resolve to the same .md URL.
-  if (path.startsWith('/roadmap/')) {
-    const subpath = path.slice('/roadmap/'.length);
+  // GitHub-backed release detail pages: /release/<slug>.
+  // /release itself is a dedicated endpoint handled below by hasMarkdownForPath.
+  if (path.startsWith('/release/')) {
+    const subpath = path.slice('/release/'.length);
     if (!subpath) return null;
     return `${path}.md`;
   }

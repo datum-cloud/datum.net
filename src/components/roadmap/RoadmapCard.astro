@@ -4,85 +4,54 @@ import { Image } from 'astro:assets';
 import type { RoadmapMilestone } from '@libs/githubRoadmap';
 import {
   getRoadmapSlug,
-  getDaysUntilRelease,
   getMonthAbbreviation,
   getRoadmapCoverImage,
   getRoadmapReleaseName,
-  isRoadmapShipped,
 } from '@libs/githubRoadmap';
 import { formatDate } from '@utils/dateUtils';
 
 interface Props {
-  roadmap?: RoadmapMilestone;
-  /** ISO date string for this card's month slot (e.g. "2026-07-01"). */
-  monthDate: string;
+  roadmap: RoadmapMilestone;
 }
 
-const { roadmap, monthDate } = Astro.props as Props;
+const { roadmap } = Astro.props as Props;
 
-const monthAbbr = getMonthAbbreviation(monthDate);
-const slug = roadmap ? getRoadmapSlug(roadmap) : null;
-const hasRoadmap = Boolean(roadmap && slug);
-const coverImage = roadmap ? getRoadmapCoverImage(roadmap.number) : undefined;
-const hasCover = Boolean(coverImage);
-const detailHref = slug ? `/roadmap/${slug}` : undefined;
-const showDetailLink = hasRoadmap && hasCover && detailHref;
-const showCoverCard = showDetailLink;
-const daysUntil = roadmap ? getDaysUntilRelease(roadmap.releaseDate) : null;
-
-const coverAlt = roadmap?.title || `${monthAbbr} roadmap release`;
-const detailLabel = roadmap?.title
-  ? `View ${roadmap.title} roadmap release`
-  : `View ${monthAbbr} roadmap release`;
-
-const releaseName = roadmap ? getRoadmapReleaseName(roadmap.title) : '';
-const releaseMonthYear = roadmap
-  ? formatDate(roadmap.releaseDate, 'en-US', { month: 'long', year: 'numeric' })
-  : '';
+const coverImage = getRoadmapCoverImage(roadmap.number);
+const detailHref = coverImage ? `/release/${getRoadmapSlug(roadmap)}` : undefined;
+const releaseName = getRoadmapReleaseName(roadmap.title);
+const releaseDate = formatDate(roadmap.releaseDate, 'en-US', { month: 'short', year: 'numeric' });
+const monthAbbr = getMonthAbbreviation(roadmap.releaseDate);
+const detailLabel = `View ${roadmap.title} release`;
 ---
 
-<li
-  class="roadmap-card"
-  data-roadmap-shipped={roadmap != null ? String(isRoadmapShipped(roadmap)) : undefined}
->
+<li class="roadmap-card">
   {
-    showCoverCard ? (
-      <>
-        <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
-          <Image
-            src={coverImage!}
-            alt={coverAlt}
-            class="roadmap-card--image"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-        <div class="roadmap-card--label">
-          <time datetime={roadmap!.releaseDate} class="roadmap-card--label-date">
-            {releaseMonthYear}
-          </time>
-          <a href={detailHref} class="roadmap-card--label-name">
-            <strong>"{releaseName}"</strong>
-          </a>
-        </div>
-      </>
+    detailHref && coverImage ? (
+      <a href={detailHref} class="roadmap-card--image-wrap" aria-label={detailLabel}>
+        <Image
+          src={coverImage}
+          alt={roadmap.title}
+          class="roadmap-card--image"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
     ) : (
-      <>
-        <div class="roadmap-card--placeholder" aria-hidden="true">
-          <time datetime={monthDate} class="roadmap-card--placeholder-month">
-            {monthAbbr}
-          </time>
-        </div>
-        {daysUntil !== null && daysUntil > 0 ? (
-          <p class="roadmap-card--countdown">
-            Released in <strong>{daysUntil}</strong> days
-          </p>
-        ) : (
-          <p class="roadmap-card--countdown">
-            <time datetime={monthDate}>{monthAbbr}</time>
-          </p>
-        )}
-      </>
+      <div class="roadmap-card--placeholder" aria-hidden="true">
+        <span class="roadmap-card--placeholder-month">{monthAbbr}</span>
+      </div>
     )
   }
+  <p class="roadmap-card--label">
+    <time datetime={roadmap.releaseDate} class="roadmap-card--label-date">{releaseDate}</time>
+    {
+      detailHref ? (
+        <a href={detailHref} class="roadmap-card--label-name">
+          {releaseName}
+        </a>
+      ) : (
+        <span class="roadmap-card--label-name">{releaseName}</span>
+      )
+    }
+  </p>
 </li>

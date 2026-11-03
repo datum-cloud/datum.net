@@ -18,7 +18,8 @@
 // Keep this in sync with the routes it documents:
 //   - src/pages/api/v1/roadmap/backlog-meta.ts (canonical)
 //   - src/pages/api/roadmap/backlog-meta.ts (deprecated compatibility alias)
-//   - src/libs/roadmapBacklogRoute.ts (shared handler behind both)
+//   - src/pages/api/v1/roadmap/backlog-item/[number].ts (roadmap item detail)
+//   - src/libs/roadmapBacklogRoute.ts (shared handler behind the above)
 
 const SITE_URL = 'https://www.datum.net';
 
@@ -184,6 +185,64 @@ export const openApiSpec = {
             description: 'Current backlog cache status.',
             headers: rateLimitHeaders,
             content: backlogMetaContent,
+          },
+          '429': tooManyRequestsResponse,
+          '500': internalErrorResponse,
+        },
+      },
+    },
+    '/api/v1/roadmap/backlog-item/{number}': {
+      get: {
+        operationId: 'getRoadmapBacklogItem',
+        summary: 'Roadmap item detail',
+        description:
+          'Detail for one item on the public roadmap (a datum-cloud GitHub issue): its title, labels, GitHub URL, and the issue body rendered to sanitized HTML. Read-only, no authentication required. Served from the roadmap backlog cache — it never calls GitHub per request. Rate-limited; see the `RateLimit-*` response headers.',
+        tags: ['Roadmap'],
+        parameters: [
+          {
+            name: 'number',
+            in: 'path',
+            required: true,
+            description: 'GitHub issue number of the roadmap item.',
+            schema: { type: 'integer', minimum: 1 },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'The roadmap item.',
+            headers: rateLimitHeaders,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['number', 'title', 'url', 'labels', 'html'],
+                  properties: {
+                    number: { type: 'integer', example: 123 },
+                    title: { type: 'string' },
+                    url: { type: 'string', format: 'uri' },
+                    labels: { type: 'array', items: { type: 'string' } },
+                    html: {
+                      type: 'string',
+                      description: 'Issue body rendered to sanitized HTML (may be empty).',
+                    },
+                  },
+                },
+              },
+            },
+          },
+          '400': {
+            description: 'The issue number is not a positive integer.',
+            headers: rateLimitHeaders,
+            content: {
+              'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } },
+            },
+          },
+          '404': {
+            description: 'No roadmap item with that issue number.',
+            headers: rateLimitHeaders,
+            content: {
+              'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } },
+            },
           },
           '429': tooManyRequestsResponse,
           '500': internalErrorResponse,

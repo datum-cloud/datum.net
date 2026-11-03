@@ -1,80 +1,56 @@
-// Dynamic markdown export of /roadmap. Pulls from the same GitHub milestones
-// source that RoadmapGrid.astro renders from, so this stays in sync with each
-// monthly release cycle without manual edits. SSR so cache invalidations
-// propagate immediately.
+// Dynamic markdown export of /roadmap. Pulls from the same GitHub
+// Projects source that RoadmapBacklog.astro renders from, so the list stays
+// current without manual edits. SSR so cache invalidations propagate.
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import {
-  fetchGitHubRoadmaps,
-  groupRoadmapsByDate,
-  getMonthAbbreviation,
-  getRoadmapSlug,
-} from '@libs/githubRoadmap';
-import type { RoadmapMilestone } from '@libs/githubRoadmap';
-import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { fetchGitHubBacklog } from '@libs/githubBacklog';
+import type { GitHubBacklogItem } from '@libs/githubBacklog';
 import { toAsciiMarkdown } from '@utils/markdownExport';
 import { markdownSeoHeaders } from '@utils/pageMarkdown';
 
-function renderMilestone(roadmap: RoadmapMilestone, includeDetail: boolean): string {
-  const month = getMonthAbbreviation(roadmap.releaseDate);
-  const lines: string[] = [`### ${month} - ${roadmap.title}`];
-  if (includeDetail && roadmap.summary) {
-    lines.push('', roadmap.summary);
-  }
-  if (roadmap.githubUrl) {
-    lines.push('', `[GitHub](${roadmap.githubUrl})`);
-  }
-  if (includeDetail) {
-    const slug = getRoadmapSlug(roadmap);
-    lines.push('', `[Full details](/roadmap/${slug}.md)`);
-  }
-  return lines.join('\n');
+function renderItem(item: GitHubBacklogItem): string {
+  const labels = item.labels.length > 0 ? ` _(${item.labels.join(', ')})_` : '';
+  return `- **[${item.status}]** [#${item.number} ${item.title}](${item.url})${labels}`;
 }
 
 export const GET: APIRoute = async () => {
   try {
-    const roadmaps = await fetchGitHubRoadmaps();
-    const { upcoming, previous } = groupRoadmapsByDate(roadmaps);
+    const page = await getCollectionEntry('pages', 'roadmap');
+
+    const title = page?.data.title ?? 'Product roadmap';
+    const description =
+      page?.data.meta?.description ??
+      page?.data.description ??
+      'Planned improvements and features not yet scheduled into a release cycle.';
+
+    const items = await fetchGitHubBacklog();
 
     const sections: string[] = [
-      '# Roadmap',
+      `# ${title}`,
       '',
-      "We plan and ship in monthly cycles. Each cycle is named for a cultural, literary or scientific pioneer whose story connects to the work we're doing.",
+      description,
       '',
-      "Here's a view of the road ahead. Vote for your favorites, or [request a new feature on GitHub](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests).",
-      '',
-      'See also: [Product Backlog](/roadmap/backlog.md) - features planned but not yet assigned to a release.',
+      `_${items.length} item${items.length === 1 ? '' : 's'} in progress, on deck, or planning._`,
     ];
 
-    if (upcoming.length > 0) {
-      sections.push('', '## Upcoming');
-      for (const r of upcoming) {
-        sections.push('', renderMilestone(r, true));
+    if (items.length === 0) {
+      sections.push('', 'No items available at this time.');
+    } else {
+      // Flat list matching the order the page renders — no grouping.
+      sections.push('');
+      for (const item of items) {
+        sections.push(renderItem(item));
       }
-    }
-
-    if (previous.length > 0) {
-      sections.push('', '## Previous milestones');
-      for (const r of previous) {
-        sections.push('', renderMilestone(r, false));
-      }
-    }
-
-    if (upcoming.length === 0 && previous.length === 0) {
-      sections.push('', 'No roadmap milestones available yet.');
     }
 
     const canonicalUrl = 'https://www.datum.net/roadmap';
     sections.push(
       '',
-      '## How we plan',
-      '',
-      '- **Monthly release cycles** - One named cycle per month, scoped tight and shipped end-to-end.',
-      '- **Public discussion** - Roadmap items live on GitHub Discussions where the community can vote, comment, and propose alternatives.',
-      '- **Open development** - The platform is AGPLv3. Code, issues, and design docs are all in the open at [github.com/datum-cloud](https://github.com/datum-cloud).',
-      '',
       '---',
+      '',
+      'Want to propose a new feature? [Start a discussion on GitHub](https://github.com/orgs/datum-cloud/discussions/categories/feature-requests).',
       '',
       `Source: <${canonicalUrl}>`,
       ''
@@ -84,7 +60,8 @@ export const GET: APIRoute = async () => {
     return new Response(body, {
       headers: {
         'Content-Type': 'text/markdown; charset=utf-8',
-        'Cache-Control': STRAPI_SSR_CACHE_CONTROL,
+        // Backlog is cached for 24 h on GitHub's side; match that TTL.
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
         ...markdownSeoHeaders(canonicalUrl),
       },
     });

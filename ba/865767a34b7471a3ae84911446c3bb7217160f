@@ -1,0 +1,23 @@
+src/pages/developers.astro
+  s_b18cf0405471f5::t_98e1cf1e224073 68
+src/pages/llms-full.txt.ts
+  s_b18cf0405471f5::t_8df3049b97c620 14,18-20,22,25,173,175,177-181,185,187,189-193,324,326-329,332-333,363-365,369-371,386,391
+src/pages/llms.txt.ts
+  s_b18cf0405471f5::t_3cae12e5db649a 24-28,37-41,51,56,92-93,96,101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ba865767a34b7471a3ae84911446c3bb7217160f",
+  "prompts": {},
+  "sessions": {
+    "s_b18cf0405471f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "795300a0-6eb8-4a78-8b03-c089bd3febd9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

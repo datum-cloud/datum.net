@@ -11,18 +11,18 @@ const STATIC_CONTENT = `# Datum — Everything an Agent Needs to Know
 > **Intended audience:** AI agents, LLMs, autonomous systems interacting with or building on the Datum Cloud platform
 
 > **Agent quick-start:** Fetch https://www.datum.net/docs/llms.txt for the complete documentation index.
-> Every doc page is available as clean markdown by appending \`.md\` to its URL (e.g., \`https://www.datum.net/docs/overview.md\`).
+> Every doc page is available as clean markdown by appending \`.md\` to its URL (e.g., \`https://www.datum.net/docs/index.md\`).
 
 <AgentInstructions>
 ## How to consume Datum documentation
-1. Fetch https://datum.net/docs/llms.txt — this is the canonical index of all docs
-2. Fetch individual pages as .md (e.g., datum.net/docs/overview.md) for clean text
-3. Use the Datum Docs MCP server at https://www.datum.net/docs/mcp (JSON-RPC 2.0 over SSE)
+1. Fetch https://www.datum.net/docs/llms.txt — this is the canonical index of all docs
+2. Fetch individual pages as .md (e.g., https://www.datum.net/docs/getting-started/account-setup.md) for clean text
+3. Use the Datum Docs MCP server at https://www.datum.net/docs/mcp (hosted, read-only, streamable HTTP, no sign-in)
    - Tool: \`search_datum_cloud_docs\` — semantic search across all docs
-   - Tool: \`query_docs_filesystem_datum_cloud_docs\` — read/grep doc files by path (e.g., \`head -80 /quickstart.mdx\`)
+   - Tool: \`query_docs_filesystem_datum_cloud_docs\` — read/grep doc files by path (e.g., \`head -80 /getting-started/account-setup.mdx\`)
 4. For live platform state, use \`datumctl api-resources\` or the MCP \`apis\` tool
 5. Submit feedback on incorrect docs via POST to:
-   https://datum.net/docs/_mintlify/feedback/datum-4926dda5/agent-feedback
+   https://www.datum.net/docs/_mintlify/feedback/datum-4926dda5/agent-feedback
    Body: { "path": "/page-path", "feedback": "description of issue" }
 </AgentInstructions>
 
@@ -170,26 +170,27 @@ Secure tunnels built on the **Iroh protocol** (Rust-based, QUIC-based P2P networ
 
 ---
 
-### 5. Galactic VPC (Coming in 2026)
+### 5. Galactic VPC (gVPC) (Preview)
 
-A global virtual private backbone service built using **Segment Routing over IPv6 (SRv6)** — RFC 8986.
+Private IPv6 networks for your workloads, built on Datum's global backbone using **Segment Routing over IPv6 (SRv6)** — RFC 8986.
 
-- Policy-based segment routing (each instruction is an IPv6 Segment Identifier / SID)
-- Programs traffic paths using the native IPv6 data plane — no MPLS required
-- Skip the public internet; opt for private paths that are fast, predictable, and secure
-- Cloud onramps (AWS, GCP, etc.) included
+- Create a *network* in a project; one network spans every Datum location your workloads run in, so there is no per-region network to manage
+- Compute Instances attach today and each receives a private IPv6 address on the network; tunnels from your laptop and physical connections are on the roadmap
+- Resource kinds: \`Network\`, \`NetworkService\`, \`NetworkInterface\`; manage with \`datumctl network\` or Datum MCP's \`network\` and \`vpc\` toolsets
+- API: \`networking.datumapis.com/v1alpha\` — in preview, and the API can change
+- **Docs:** https://www.datum.net/docs/galactic-vpc/overview (how SRv6 is used: https://www.datum.net/docs/platform/segment-routing)
 
 ---
 
-### 6. Datum Compute (Coming Soon)
+### 6. Datum Compute (Preview)
 
-Edge compute layer built in partnership with **Unikraft**.
+Runs your apps as isolated Instances in the Datum locations you choose, from a standard container image or a fast-starting unikernel.
 
-- 100% workload isolation
-- Millisecond cold starts (<10ms)
-- True scale-to-zero snapshotting
-- Stateless or stateful workloads
-- Optimized for agentic and edge use cases
+- **Access is gated:** a project needs approved access before it can deploy; request it with \`datumctl compute access request\` (Datum reviews requests manually)
+- Instances attach to gVPC networks and can be served publicly through the ALB
+- Current limits an agent should know: workloads don't autoscale and can't scale to zero; Instances can't be suspended, resumed, or snapshotted; there are no persistent disks
+- API: \`v1alpha\` — in preview, and the API can change
+- **Docs:** https://www.datum.net/docs/compute/overview (limits: https://www.datum.net/docs/compute/limitations-and-roadmap)
 
 ---
 
@@ -320,10 +321,15 @@ No charge for teammates, logs, or access controls:
 **Install:**
 \`\`\`bash
 # macOS via Homebrew
-brew install --cask datum-cloud/tap/desktop
+brew install datum-cloud/tap/datumctl
 
-# Or download from: https://www.datum.net/download
+# Nix
+nix profile install github:datum-cloud/datumctl
+
+# Or download a pre-built binary: https://github.com/datum-cloud/datumctl/releases/latest
 \`\`\`
+
+Every install option, including Windows and building from source: https://www.datum.net/docs/datumctl/install. (\`brew install --cask datum-cloud/tap/desktop\` installs the Desktop App for tunnels, not datumctl.)
 
 **Auth:**
 \`\`\`bash
@@ -354,13 +360,15 @@ datumctl delete httpproxy <name>
 
 ## Agent Skills
 
-Datum maintains a [skills repository](https://github.com/datum-cloud/skills) — self-contained instruction sets that teach coding agents (Claude Code, Codex, Cursor, and others) how to interact with Datum Cloud APIs and infrastructure primitives.
+Datum publishes agent skills — self-contained instruction sets that teach coding agents (Claude Code, Codex, Cursor, and others) how to interact with Datum Cloud APIs and infrastructure primitives.
+
+Current list and install steps: https://www.datum.net/docs/agents/skills
 
 ### Installation
 
-**Claude Code (plugin marketplace):**
-\`\`\`
-/plugin marketplace add datum-cloud/skills
+**Claude Code (plugin marketplace):** the product skills ship as plugins in the \`datum-cloud/claude-code-plugins\` marketplace. The \`datum-cloud\` plugin also starts Datum MCP and the Docs MCP server (install the \`datum-mcp\` binary first: \`brew install datum-cloud/tap/datum-mcp\`).
+\`\`\`bash
+claude plugin marketplace add datum-cloud/claude-code-plugins && for p in datum-cloud datum-networking datum-dns datum-compute milo-observe; do claude plugin install "$p@datum-claude-code-plugins" || break; done
 \`\`\`
 
 **npx skills CLI:**
@@ -375,11 +383,12 @@ npx skills add https://github.com/datum-cloud/skills
 | Skill | Purpose |
 |-------|---------|
 | \`alb\` | Application Load Balancer: manage WAF, authentication, authorization, rate limiting, and traffic policies (TrafficProtectionPolicy, SecurityPolicy, BackendTrafficPolicy) attached to Gateways and HTTPRoutes |
-| \`client-traffic\` | Configure how edge gateways accept client connections — TLS termination, mTLS, HTTP/2, HTTP/3, timeouts, connection limits, real IP detection |
+| \`client-traffic\` | **Not available yet** — \`ClientTrafficPolicy\` is not available to tenants. Will configure how edge gateways accept client connections — TLS termination, mTLS, HTTP/2, HTTP/3, timeouts, connection limits, real IP detection |
 | \`dns\` | Manage DNS zones and record sets (A, AAAA, CNAME, MX, TXT, ALIAS, CAA, SRV, SVCB, HTTPS, TLSA, etc.) |
 | \`domains\` | Attach and verify domain resources within a project |
 | \`httproute\` | Define HTTP routing rules — path/header/method matching, traffic splitting (canary/A/B/blue-green), redirects, URL rewrites, header manipulation, traffic mirroring |
 | \`metrics-export\` | Configure metrics export pipelines to Grafana Cloud and other observability platforms via Prometheus remote write |
+| \`networks\` | gVPC networks, network services, and network interfaces (Network, NetworkService, NetworkInterface) |
 
 Each skill follows a consistent pattern: list/describe existing resources, create from YAML, apply idempotently, preview before applying, delete safely, and check permissions before acting.
 

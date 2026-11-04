@@ -10,6 +10,6 @@ ports:
     port: 443
 endpoints:
   - addresses:
-      - "website.prod.env.datum.net"
+      - "thaw-usage-g523m.datumproxy.net"
     conditions:
       ready: true

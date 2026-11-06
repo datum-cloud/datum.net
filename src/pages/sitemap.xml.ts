@@ -30,6 +30,7 @@ const STATIC_ROUTES = [
   '/locations',
   '/platform',
   '/pricing',
+  '/release',
   '/roadmap',
   '/use-cases',
 ];

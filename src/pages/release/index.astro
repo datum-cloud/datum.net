@@ -1,0 +1,49 @@
+---
+// src/pages/release/index.astro
+export const prerender = false;
+
+import '@styles/page-roadmap.css';
+import { getCollectionEntry } from '@utils/collectionUtils';
+import { fetchGitHubRoadmaps } from '@libs/githubRoadmap';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import ReleaseTabs from '@components/roadmap/ReleaseTabs.astro';
+import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
+import SectionLine from '@components/SectionLine.astro';
+
+const page = await getCollectionEntry('pages', 'release');
+const fm = page.data;
+const meta = fm.meta || {};
+
+const roadmaps = await fetchGitHubRoadmaps();
+---
+
+<Layout title={fm.title} description={fm.description} bodyClass="page-roadmap" meta={meta}>
+  <section class="datum-container">
+    <div class="relative">
+      <Hero
+        class="light content-alt"
+        title={fm.title}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      >
+        <ReleaseTabs slot="before-content" />
+      </Hero>
+
+      <div class="section--block bg-white pt-0">
+        <div class="max-width-nav bottom-pad relative">
+          <SectionLine left right bottom />
+          <div class="max-width">
+            <RoadmapGrid roadmaps={roadmaps} />
+          </div>
+        </div>
+      </div>
+      <ModuleConnector />
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

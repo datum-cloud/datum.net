@@ -1,0 +1,53 @@
+---
+// src/components/changelog/ScrollToTop.astro
+import Icon from '@components/Icon.astro';
+---
+
+<button
+  type="button"
+  class="changelog-scroll-top"
+  data-changelog-scroll-top
+  aria-label="Scroll to top"
+  inert
+>
+  <Icon name="arrow-up" size="sm" />
+</button>
+
+<script>
+  const SHOW_AFTER = 600;
+
+  function init() {
+    const button = document.querySelector<HTMLButtonElement>('[data-changelog-scroll-top]');
+    if (!button || button.dataset.bound) return;
+    button.dataset.bound = 'true';
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const visible = window.scrollY > SHOW_AFTER;
+      button.toggleAttribute('data-visible', visible);
+      // inert keeps the faded-out button unfocusable and out of the accessibility tree.
+      button.inert = !visible;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
+
+    button.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      // Drop a "#changelog-…" hash left by a search jump so a reload doesn't scroll back down.
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    });
+    update();
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

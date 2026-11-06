@@ -5,8 +5,11 @@ import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import Card from '@components/changelog/Card.astro';
-import OpenNetwork from '@components/GlobalSection.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
 import Skeleton from '@components/changelog/Skeleton.astro';
+import ScrollToTop from '@components/changelog/ScrollToTop.astro';
+import ReleaseTabs from '@components/roadmap/ReleaseTabs.astro';
 
 import { getCollectionEntry } from '@utils/collectionUtils';
 
@@ -24,18 +27,30 @@ const description = fm.description ? fm.description : '';
 
 <Layout title={title} description={description} bodyClass="page-changelog" meta={meta}>
   <section class="datum-container">
-    <Hero class="light" title={title} />
+    <div class="relative">
+      <Hero
+        class="light content-alt"
+        title={title}
+        showSectionLines
+        sectionLines={{ left: true, right: true, top: true }}
+      >
+        <ReleaseTabs slot="before-content" />
+      </Hero>
 
-    <div class="section--block section--block--pad bg-platinum light overflow-clip pt-0">
-      <div class="changelog-container">
-        <Card server:defer>
-          <Skeleton slot="fallback" />
-        </Card>
+      <div class="section--block light bg-white pt-0">
+        <div class="max-width-nav bottom-pad relative">
+          <SectionLine left right bottom />
+          <div class="changelog-container">
+            <Card server:defer>
+              <Skeleton slot="fallback" />
+            </Card>
+          </div>
+        </div>
       </div>
+      <ModuleConnector />
     </div>
-
-    <OpenNetwork />
 
     <Footer />
   </section>
+  <ScrollToTop />
 </Layout>

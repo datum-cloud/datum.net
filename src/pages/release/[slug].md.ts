@@ -1,4 +1,4 @@
-// Dynamic markdown export of /roadmap/<slug> detail pages. Pulls from the
+// Dynamic markdown export of /release/<slug> detail pages. Pulls from the
 // same GitHub milestones source that RoadmapDetailContent.astro renders from.
 // SSR so cache invalidations propagate immediately.
 export const prerender = false;
@@ -32,7 +32,7 @@ export const GET: APIRoute = async ({ params }) => {
         if (canonical !== slug) {
           return new Response(null, {
             status: 301,
-            headers: { Location: `/roadmap/${canonical}.md` },
+            headers: { Location: `/release/${canonical}.md` },
           });
         }
         roadmap = match;
@@ -61,7 +61,7 @@ export const GET: APIRoute = async ({ params }) => {
       sections.push(`[View on GitHub](${roadmap.githubUrl})`, '');
     }
 
-    const canonicalUrl = `https://www.datum.net/roadmap/${slug}`;
+    const canonicalUrl = `https://www.datum.net/release/${slug}`;
     sections.push('---', '', `Source: <${canonicalUrl}>`, '');
 
     const body = toAsciiMarkdown(sections.join('\n'));
@@ -73,7 +73,7 @@ export const GET: APIRoute = async ({ params }) => {
       },
     });
   } catch (error) {
-    console.error(`Failed to serve /roadmap/${slug}.md:`, error);
+    console.error(`Failed to serve /release/${slug}.md:`, error);
     return new Response('Error generating markdown', { status: 500 });
   }
 };

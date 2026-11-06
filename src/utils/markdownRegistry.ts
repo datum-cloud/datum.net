@@ -34,8 +34,8 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/dedicated-cloud',
   '/download',
   '/essentials',
+  '/release',
   '/roadmap',
-  '/roadmap/backlog',
   '/events',
   '/features',
   '/handbook',
@@ -79,7 +79,8 @@ const PAGES_SKIP = new Set<string>([
   'platform', // dedicated (src/data/platform.ts)
   'pricing', // dedicated (JSON tiers)
   'locations', // dedicated (JSON regions)
-  'roadmap', // dedicated (GitHub milestones)
+  'release', // dedicated (GitHub milestones)
+  'roadmap', // dedicated (GitHub backlog)
   'brand', // dedicated (sections list)
   'events', // dedicated (events listing)
   'global-section', // component data, not a page

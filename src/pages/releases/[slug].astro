@@ -1,0 +1,75 @@
+---
+// src/pages/releases/[slug].astro
+export const prerender = false;
+
+import '@styles/page-roadmap.css';
+import {
+  fetchGitHubRoadmaps,
+  getRoadmapMonthKey,
+  getRoadmapSlug,
+  getRoadmapCoverImage,
+  getRoadmapPageTitle,
+  getRoadmapSeoDescription,
+} from '@libs/githubRoadmap';
+
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero.astro';
+import Footer from '@components/Footer.astro';
+import ModuleConnector from '@components/home/ModuleConnector.astro';
+import SectionLine from '@components/SectionLine.astro';
+import RoadmapDetailContent from '@components/roadmap/RoadmapDetailContent.astro';
+
+const { slug } = Astro.params as { slug: string };
+
+const roadmaps = await fetchGitHubRoadmaps();
+
+let roadmap = roadmaps.find((entry) => entry.slug === slug);
+
+// Legacy URLs used YYYY-MM; redirect to the canonical slug when possible.
+if (!roadmap && /^\d{4}-\d{2}$/.test(slug)) {
+  const legacyMatch = roadmaps.find((entry) => getRoadmapMonthKey(entry.releaseDate) === slug);
+
+  if (legacyMatch) {
+    if (!getRoadmapCoverImage(legacyMatch.number)) {
+      return Astro.redirect('/releases', 302);
+    }
+
+    const canonicalSlug = getRoadmapSlug(legacyMatch);
+    if (canonicalSlug !== slug) {
+      return Astro.redirect(`/releases/${canonicalSlug}`, 301);
+    }
+    roadmap = legacyMatch;
+  }
+}
+
+if (!roadmap) {
+  return Astro.redirect('/releases', 302);
+}
+
+if (!getRoadmapCoverImage(roadmap.number)) {
+  return Astro.redirect('/releases', 302);
+}
+
+const pageTitle = getRoadmapPageTitle(roadmap);
+const pageDescription = getRoadmapSeoDescription(roadmap);
+---
+
+<Layout title={pageTitle} description={pageDescription} bodyClass="page-roadmap">
+  <section class="datum-container">
+    <Hero class="light" hideContent={true} hideHero />
+
+    <div class="relative">
+      <section class="section--block section--block--x-pad bg-platinum">
+        <div class="max-width-nav relative py-10 md:py-16 lg:py-20 xl:py-28">
+          <SectionLine left right top bottom />
+          <div class="max-width-nopad">
+            <RoadmapDetailContent roadmap={roadmap} />
+          </div>
+        </div>
+      </section>
+      <ModuleConnector />
+    </div>
+
+    <Footer />
+  </section>
+</Layout>

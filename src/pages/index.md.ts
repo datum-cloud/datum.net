@@ -65,7 +65,7 @@ export const GET: APIRoute = async () => {
       '- [Platform](/platform/) - Galactic VPC, Datum Compute, DNS, connectors, and essentials',
       '- [Pricing](/pricing/) - Free during public beta, usage-based rates after',
       '- [Locations](/locations/) - 17+ global regions across NA, LATAM, EU, MEA, APAC',
-      '- [Releases](/release/) - Monthly milestones, upcoming and past',
+      '- [Releases](/releases/) - Monthly milestones, upcoming and past',
       "- [Roadmap](/roadmap/) - What we're building next",
       '- [About](/about/) - Mission, team, and investors',
       '- [Blog](/blog/) - Product updates and engineering deep-dives',

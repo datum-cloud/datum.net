@@ -34,7 +34,7 @@ const DEDICATED_ENDPOINTS = new Set<string>([
   '/dedicated-cloud',
   '/download',
   '/essentials',
-  '/release',
+  '/releases',
   '/roadmap',
   '/events',
   '/features',

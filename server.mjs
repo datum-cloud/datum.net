@@ -162,6 +162,9 @@ const REDIRECTS = {
   '/downloads/linux/': { destination: '/download/linux', status: 301 },
   '/downloads/datumctl/': { destination: '/download/datumctl', status: 301 },
   '/downloads/datum-mcp/': { destination: '/download/datum-mcp', status: 301 },
+  '/release': { destination: '/releases', status: 301 },
+  '/release/': { destination: '/releases', status: 301 },
+  '/release.md': { destination: '/releases.md', status: 301 },
   '/resources/changelog/': { destination: '/changelog', status: 301 },
   '/resources/roadmap/': { destination: '/roadmap', status: 301 },
   '/resources/open-source/': { destination: '/open-source', status: 301 },
@@ -253,6 +256,8 @@ const PROXY_ROUTES = [
 const PREFIX_REDIRECTS = [
   { from: '/handbook/technical/', to: '/handbook/build/', status: 301 },
   { from: '/handbook/culture/', to: '/handbook/operate/', status: 301 },
+  // Trailing slash keeps /releases from matching this prefix.
+  { from: '/release/', to: '/releases/', status: 301 },
 ];
 
 // File extensions that should trigger download instead of display

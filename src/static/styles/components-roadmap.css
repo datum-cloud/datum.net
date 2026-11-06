@@ -3,9 +3,62 @@
    * Roadmap v2 — advent-calendar grid layout
    * ───────────────────────────────────────────────────────────────────────── */
 
+  /* Sections */
+  body.page-roadmap,
+  body.page-backlog {
+    .hero--main.content-alt.light {
+      @apply bg-white;
+    }
+
+    .hero--main.content-alt .hero--main-content-title {
+      @apply datum-text-8xl xl:text-(length:--60px) xl:leading-(--70px);
+    }
+
+    /* Figma: 60px between the tabs and the headline. */
+    .hero--content-container {
+      @apply lg:gap-15;
+    }
+
+    .hero--main-content-inner {
+      @apply xl:gap-6;
+    }
+
+    .hero--main.content-alt .hero--main-content-description {
+      @apply datum-text-xl max-w-4xl opacity-80;
+
+      a {
+        @apply border-b-0 underline;
+      }
+    }
+  }
+
+  .release-group {
+    @apply mb-13 flex flex-col gap-10 last:mb-0 md:mb-20;
+  }
+
+  .release-group--header {
+    @apply border-silver-mist flex items-end justify-between gap-4 border-b pb-7;
+  }
+
+  .release-group--title {
+    @apply datum-text-7xl text-midnight-fjord;
+  }
+
+  .release-sort {
+    @apply datum-text-sm text-app---dark---utility-4 flex cursor-pointer items-center gap-2 font-medium transition-colors duration-150;
+
+    span span {
+      @apply text-midnight-fjord;
+    }
+  }
+
+  .release-empty {
+    @apply datum-text-base text-midnight-fjord text-center;
+  }
+
   /* Grid */
   .roadmap-grid {
-    @apply grid grid-cols-1 gap-x-13 gap-y-13 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid grid-cols-1 gap-x-16 gap-y-16 sm:grid-cols-2 lg:grid-cols-3;
   }
 
   /* Card */
@@ -14,8 +67,7 @@
   }
 
   .roadmap-card--image-wrap {
-    @apply relative block w-full cursor-pointer overflow-clip transition-opacity duration-150 hover:opacity-90;
-    aspect-ratio: 1 / 1;
+    @apply relative block aspect-square w-full cursor-pointer overflow-clip transition-opacity duration-150 hover:opacity-90;
   }
 
   .roadmap-card--image {
@@ -39,19 +91,7 @@
   }
 
   .roadmap-card--label-name {
-    @apply truncate;
-
-    strong {
-      @apply font-semibold;
-    }
-  }
-
-  .roadmap-card--countdown {
-    @apply datum-text-base text-midnight-fjord;
-
-    strong {
-      @apply font-semibold;
-    }
+    @apply truncate font-semibold;
   }
 
   /* Detail page */
@@ -125,106 +165,149 @@
     @apply text-canyon-clay---links datum-text-sm flex items-center gap-2.5 transition-colors duration-150 hover:underline hover:underline-offset-4;
   }
 
-  /* Backlog list */
-  .roadmap-backlog-list {
-    @apply flex flex-col;
+  /* Backlog board — three columns (Planning / On Deck / In progress) */
+  /* Content column: full 1316px container width at wide viewports (Figma), gutters below. */
+  .roadmap-board-wrap {
+    @apply max-width-nopad px-7 min-[1372px]:px-0;
   }
 
-  .roadmap-backlog-row {
-    @apply border-app---dark---utility-1 flex cursor-pointer flex-col items-start gap-4 border-t py-8 no-underline md:gap-8 lg:flex-row lg:items-center lg:gap-10;
+  .roadmap-board {
+    @apply grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-3 lg:items-start;
   }
 
-  .roadmap-backlog-number {
-    @apply text-app---dark---utility-4 datum-text-base w-12 shrink-0 font-mono leading-6 tabular-nums transition-opacity duration-150;
+  .roadmap-column {
+    @apply flex min-w-0 flex-col;
   }
 
-  .roadmap-backlog-title {
-    @apply datum-text-xl text-midnight-fjord min-w-0 flex-1 font-semibold transition-opacity duration-150;
+  .roadmap-column--heading {
+    @apply datum-text-xl text-midnight-fjord flex items-center gap-4 pt-3 pb-5 font-semibold;
   }
 
-  .roadmap-backlog-labels {
-    @apply flex shrink-0 flex-wrap gap-2;
+  .roadmap-column--dot {
+    @apply size-3.5 shrink-0 rounded-[1px];
   }
 
-  .roadmap-backlog-badge {
-    @apply text-app---dark---utility-4 datum-app-body rounded-lg border border-current/30 px-1.5 py-0.5 transition-opacity duration-150;
+  .roadmap-column--dot-planning {
+    @apply bg-roadmap-planning;
   }
 
-  .roadmap-backlog-status {
-    @apply text-app---dark---utility-4 datum-app-body shrink-0 rounded-lg border border-current/30 px-1.5 py-0.5 transition-opacity duration-150;
+  .roadmap-column--dot-onDeck {
+    @apply bg-roadmap-on-deck/80;
   }
 
-  .roadmap-backlog-status--in-progress {
-    @apply border-canyon-clay---links/40 text-canyon-clay---links;
+  .roadmap-column--dot-inProgress {
+    @apply bg-roadmap-in-progress/80;
   }
 
-  .roadmap-backlog-status--planned {
-    @apply border-midnight-fjord/30 text-midnight-fjord;
+  .roadmap-column--list {
+    @apply border-silver-mist flex flex-col border-t;
+
+    /* Inset shadows draw the 1px lines inside each box (like Figma's inside strokes), so
+       they don't add height and neighbouring items share a single line. */
+    > li {
+      box-shadow: inset 0 -1px 0 0 var(--color-silver-mist);
+    }
   }
 
-  .roadmap-backlog-status--backlog {
-    @apply border-app---dark---utility-4/30 text-app---dark---utility-4;
+  .roadmap-column--empty {
+    @apply datum-text-sm text-midnight-fjord/60;
   }
 
-  .roadmap-backlog-link {
-    @apply text-canyon-clay---links datum-text-sm flex shrink-0 items-center gap-2.5 whitespace-nowrap transition-opacity duration-150;
+  /* Item */
+  .roadmap-item {
+    @apply relative flex flex-col gap-2 py-5;
   }
 
-  .roadmap-backlog-row:hover .roadmap-backlog-number,
-  .roadmap-backlog-row:hover .roadmap-backlog-title,
-  .roadmap-backlog-row:hover .roadmap-backlog-badge,
-  .roadmap-backlog-row:hover .roadmap-backlog-status,
-  .roadmap-backlog-row:hover .roadmap-backlog-link {
-    @apply opacity-80;
+  .roadmap-item:has(.roadmap-item--trigger:focus-visible) {
+    @apply outline-canyon-clay---links outline-2 outline-offset-2;
   }
 
-  .roadmap-backlog-skeleton__row {
-    @apply border-app---dark---utility-1 flex flex-col items-start gap-4 border-t py-8 md:gap-8 lg:flex-row lg:items-center lg:gap-10;
+  .roadmap-item--top {
+    @apply flex items-start gap-3;
   }
 
-  .roadmap-backlog-skeleton .skeleton-box {
+  .roadmap-item--text {
+    @apply flex min-w-0 flex-1 flex-col gap-1;
+  }
+
+  .roadmap-item--title {
+    @apply datum-text-base text-midnight-fjord m-0 font-semibold text-pretty;
+  }
+
+  .roadmap-item--trigger {
+    @apply cursor-pointer border-0 bg-transparent p-0 text-left font-[inherit] text-[length:inherit] leading-[inherit] text-inherit outline-0;
+
+    /* Stretch the hit area over the whole item; the external link sits above it. */
+    &::after {
+      content: '';
+      @apply absolute inset-0;
+    }
+  }
+
+  .roadmap-item--excerpt {
+    @apply datum-text-sm text-midnight-fjord m-0 h-5 truncate pr-7 leading-5 opacity-60;
+  }
+
+  .roadmap-item--external {
+    @apply text-canyon-clay---links relative z-10 mt-1 shrink-0 transition-opacity duration-150 hover:opacity-70 focus-visible:opacity-70;
+  }
+
+  .roadmap-item--tags {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+
+  .roadmap-item--tag {
+    @apply font-alliance text-midnight-fjord border-glacier-mist-900 inline-flex h-6 items-center justify-center rounded-[20px] border bg-white px-2 text-xs leading-4 whitespace-nowrap opacity-60;
+  }
+
+  /* Skeleton */
+  .roadmap-skeleton__heading {
+    @apply flex items-center gap-4 pt-3 pb-5;
+  }
+
+  .roadmap-skeleton__dot {
+    @apply size-3.5 shrink-0 rounded-[1px];
+  }
+
+  .roadmap-skeleton__heading-text {
+    @apply h-[30px] w-32;
+  }
+
+  .roadmap-skeleton__item {
+    @apply flex flex-col gap-3 py-5;
+  }
+
+  .roadmap-skeleton__title {
+    @apply h-6 w-4/5;
+  }
+
+  .roadmap-skeleton__excerpt {
+    @apply h-5 w-full;
+  }
+
+  .roadmap-skeleton__tag {
+    @apply h-6 w-16 rounded-[20px];
+  }
+
+  .roadmap-skeleton .skeleton-box {
     @apply bg-midnight-fjord/10 rounded;
     animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  .roadmap-backlog-skeleton__number {
-    @apply h-6 w-12 shrink-0;
-  }
-
-  .roadmap-backlog-skeleton__title {
-    @apply h-6 min-w-0 flex-1;
-  }
-
-  .roadmap-backlog-skeleton__status {
-    @apply h-7 w-24 shrink-0;
-  }
-
-  .roadmap-backlog-skeleton__link {
-    @apply h-5 w-20 shrink-0;
-  }
-
-  .roadmap-backlog-skeleton .skeleton-item {
+  .roadmap-skeleton .skeleton-item {
     animation-delay: calc(var(--index, 0) * 100ms);
   }
 
-  .roadmap-backlog-skeleton .skeleton-item[data-index='1'] {
+  .roadmap-skeleton .skeleton-item[data-index='1'] {
     --index: 0;
   }
 
-  .roadmap-backlog-skeleton .skeleton-item[data-index='2'] {
+  .roadmap-skeleton .skeleton-item[data-index='2'] {
     --index: 1;
   }
 
-  .roadmap-backlog-skeleton .skeleton-item[data-index='3'] {
+  .roadmap-skeleton .skeleton-item[data-index='3'] {
     --index: 2;
-  }
-
-  .roadmap-backlog-skeleton .skeleton-item[data-index='4'] {
-    --index: 3;
-  }
-
-  .roadmap-backlog-skeleton .skeleton-item[data-index='5'] {
-    --index: 4;
   }
 
   .roadmap-backlog-live {

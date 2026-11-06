@@ -16,7 +16,7 @@ import Container from '@components/Container.astro';
 <Container tag="article" class="datum-prose-article max-w-4xl pb-1 flow-root *:first:mt-0">
 
 <p class="mb-4 font-semibold">Datum Technology, Inc.</p>
-<small class="mb-2 block italic">Version 1.1 · September 30, 2026</small>
+<small class="mb-2 block italic">Version 1.1 · November 4, 2026</small>
 <small class="mb-4 block italic">Exhibit A to Master Services Agreement</small>
 
 ## 1. Purpose and Scope
@@ -100,7 +100,9 @@ The following do not constitute Downtime and are not counted toward SLA calculat
 
 * Unavailability of Third-Party Software components and the applicable upstream SLAs, if any.
 
-* Unavailability resulting from Force Majeure Events as defined in the MSA, including internet backbone disruptions, DNS failures outside Datum's control, or power utility failures.
+* Unavailability resulting from Force Majeure Events as defined in the MSA, including internet backbone disruptions, DNS failures outside Datum's control that exceed Datum's designed redundancy, or power utility failures.
+
+* Unavailability caused by distributed denial-of-service (DDoS) attacks or other malicious traffic directed at Customer's workloads, or that exceeds the mitigation capacity Datum maintains for the Services, provided Datum uses commercially reasonable efforts to detect and mitigate the attack.
 
 * Periods during which Customer has not paid undisputed invoices and Datum has suspended Services in accordance with the MSA.
 

@@ -4,65 +4,62 @@ export const prerender = false;
 
 import '@styles/page-roadmap.css';
 import { getCollectionEntry } from '@utils/collectionUtils';
-import { fetchGitHubRoadmaps, isRoadmapShipped } from '@libs/githubRoadmap';
+import {
+  fetchGitHubBacklog,
+  getGitHubBacklogMeta,
+  GITHUB_BACKLOG_PROJECT_URL,
+} from '@libs/githubBacklog';
 
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
-import SecondaryTabNav from '@components/SecondaryTabNav.astro';
-import RoadmapGrid from '@components/roadmap/RoadmapGrid.astro';
-import RoadmapViewFilter from '@components/roadmap/RoadmapViewFilter.astro';
+import ReleaseTabs from '@components/roadmap/ReleaseTabs.astro';
+import RoadmapBacklog from '@components/roadmap/RoadmapBacklog.astro';
+import BacklogLiveUpdate from '@components/roadmap/BacklogLiveUpdate.astro';
+import RoadmapItemDrawer from '@components/roadmap/RoadmapItemDrawer.astro';
 import SectionLine from '@components/SectionLine.astro';
 
 if (Astro.url.searchParams.get('tab') === 'backlog') {
-  return Astro.redirect('/roadmap/backlog', 301);
+  return Astro.redirect('/roadmap', 301);
 }
 
 const page = await getCollectionEntry('pages', 'roadmap');
 const fm = page.data;
 const meta = fm.meta || {};
-const description = fm.description;
-const heroYear = new Date().getFullYear();
-const heroTitle = `${heroYear} Roadmap`;
 
-const roadmaps = await fetchGitHubRoadmaps();
-const hasUpcoming = roadmaps.some((roadmap) => !isRoadmapShipped(roadmap));
+const heroTitle = 'What’s coming next?';
+const heroDescription = `We also have lots of ideas in our backlog. [Take a look](${GITHUB_BACKLOG_PROJECT_URL}) and let us know what’s missing!`;
 
-const tabItems = [
-  ...(hasUpcoming ? [{ label: 'Upcoming', href: '/roadmap', exact: true as const }] : []),
-  { label: 'Shipped', href: '/roadmap#shipped' },
-  { label: 'Backlog', href: '/roadmap/backlog' },
-];
+const backlogItems = await fetchGitHubBacklog();
+const { updatedAt: backlogUpdatedAt, isRefreshing: backlogIsRefreshing } =
+  await getGitHubBacklogMeta();
 ---
 
-<Layout title={heroTitle} description={description} bodyClass="page-roadmap" meta={meta}>
+<Layout title={fm.title} description={fm.description} bodyClass="page-backlog" meta={meta}>
   <section class="datum-container">
     <div class="relative">
       <Hero
         class="light content-alt"
         title={heroTitle}
-        description={description}
+        description={heroDescription}
         showSectionLines
         sectionLines={{ left: true, right: true, top: true }}
-      />
+      >
+        <ReleaseTabs slot="before-content" />
+      </Hero>
 
-      <div class="section--block bg-platinum pt-0">
+      <div class="section--block relative bg-white pt-0">
         <div class="max-width-nav bottom-pad relative">
           <SectionLine left right bottom />
-          <div class="max-width">
-            <div class="mb-8 md:mb-13 lg:mb-18">
-              <SecondaryTabNav
-                ariaLabel="Roadmap sections"
-                mobileLabel="Roadmap section"
-                items={tabItems}
-              />
-            </div>
-            <RoadmapGrid roadmaps={roadmaps} />
-            <RoadmapViewFilter />
+          <div class="roadmap-board-wrap">
+            <BacklogLiveUpdate updatedAt={backlogUpdatedAt} isRefreshing={backlogIsRefreshing}>
+              <RoadmapBacklog items={backlogItems} updatedAt={backlogUpdatedAt} />
+            </BacklogLiveUpdate>
           </div>
         </div>
       </div>
+      <RoadmapItemDrawer />
       <ModuleConnector />
     </div>
 

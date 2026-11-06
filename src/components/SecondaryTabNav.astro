@@ -80,6 +80,7 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
     variant === 'connect' && 'secondary-tab-nav--connect',
     variant === 'essentials' && 'secondary-tab-nav--essentials',
     variant === 'locations' && 'secondary-tab-nav--locations',
+    variant === 'release' && 'secondary-tab-nav--release',
   ]}
   aria-label={ariaLabel}
   data-hash-tabs={hasHashTabs || undefined}
@@ -94,9 +95,13 @@ const hasHashTabs = items.some((item) => parseTabHref(item.href).hash !== '');
       aria-haspopup="listbox"
       aria-controls={mobileMenuId}
     >
-      <span class="secondary-tab-nav-mobile-label">{mobileLabel}</span>
-      <span class="secondary-tab-nav-mobile-selected" data-secondary-tab-mobile-selected
-        >{activeLabel}</span
+      {mobileLabel && <span class="secondary-tab-nav-mobile-label">{mobileLabel}</span>}
+      <span
+        class:list={[
+          'secondary-tab-nav-mobile-selected',
+          !mobileLabel && 'secondary-tab-nav-mobile-selected--solo',
+        ]}
+        data-secondary-tab-mobile-selected>{activeLabel}</span
       >
       <span
         class="secondary-tab-nav-mobile-chevron"

@@ -1,38 +1,47 @@
 ---
 // src/components/roadmap/RoadmapBacklogRow.astro
 import Icon from '@components/Icon.astro';
-import type { GitHubBacklogItem, GitHubBacklogStatus } from '@libs/githubBacklog';
+import type { GitHubBacklogItem } from '@libs/githubBacklog';
 
 interface Props {
   item: GitHubBacklogItem;
 }
 
 const { item } = Astro.props as Props;
-
-const statusClassMap: Record<GitHubBacklogStatus, string> = {
-  'In progress': 'roadmap-backlog-status--in-progress',
-  Planned: 'roadmap-backlog-status--planned',
-  Backlog: 'roadmap-backlog-status--backlog',
-};
 ---
 
-<a
-  href={item.url}
-  class="roadmap-backlog-row"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label={`View issue #${item.number}: ${item.title} on GitHub`}
->
-  <span class="roadmap-backlog-number">#{item.number}</span>
-
-  <h3 class="roadmap-backlog-title">{item.title}</h3>
-
-  <span class:list={['roadmap-backlog-status', statusClassMap[item.status]]}>
-    {item.status}
-  </span>
-
-  <span class="roadmap-backlog-link">
-    GitHub
-    <Icon name="external-link" size="sm" />
-  </span>
-</a>
+<article class="roadmap-item">
+  <div class="roadmap-item--top">
+    <div class="roadmap-item--text">
+      <h3 class="roadmap-item--title">
+        <button
+          type="button"
+          class="roadmap-item--trigger"
+          data-roadmap-item={item.number}
+          aria-haspopup="dialog"
+        >
+          {item.title}
+        </button>
+      </h3>
+      {item.excerpt && <p class="roadmap-item--excerpt">{item.excerpt}</p>}
+    </div>
+    <a
+      class="roadmap-item--external"
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open #${item.number} on GitHub`}
+    >
+      <Icon name="external-link" size="sm" />
+    </a>
+  </div>
+  {
+    item.labels.length > 0 && (
+      <ul class="roadmap-item--tags" data-roadmap-tags>
+        {item.labels.map((label) => (
+          <li class="roadmap-item--tag">{label}</li>
+        ))}
+      </ul>
+    )
+  }
+</article>

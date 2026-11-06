@@ -1,0 +1,277 @@
+---
+// src/components/roadmap/RoadmapItemDrawer.astro
+import Button from '@components/Button.astro';
+import Icon from '@components/Icon.astro';
+import { GITHUB_BACKLOG_PROJECT_URL } from '@libs/githubBacklog';
+---
+
+<roadmap-drawer data-project-url={GITHUB_BACKLOG_PROJECT_URL}>
+  <dialog aria-labelledby="roadmap-drawer-title">
+    <div class="roadmap-drawer--panel">
+      <button type="button" class="roadmap-drawer--close" data-close aria-label="Close details">
+        <Icon name="close" class="roadmap-drawer--close-icon" />
+      </button>
+
+      <div class="roadmap-drawer--scroll" data-scroll>
+        <header class="roadmap-drawer--header">
+          <h2 id="roadmap-drawer-title" class="roadmap-drawer--title" data-title></h2>
+          <ul class="roadmap-item--tags" data-tags></ul>
+          <a
+            class="roadmap-drawer--link"
+            data-link
+            href={GITHUB_BACKLOG_PROJECT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on GitHub
+            <Icon name="external-link" size="sm" />
+          </a>
+        </header>
+
+        <div class="roadmap-drawer--body" data-body aria-live="polite" aria-busy="false"></div>
+
+        <div class="roadmap-drawer--actions">
+          <Button
+            text="View on GitHub"
+            href={GITHUB_BACKLOG_PROJECT_URL}
+            target="_blank"
+            class="btn btn--sm btn--alpha roadmap-drawer--button"
+            icon={{ name: 'external-link', size: 'sm' }}
+            data-link
+          />
+        </div>
+      </div>
+    </div>
+  </dialog>
+</roadmap-drawer>
+
+<script>
+  interface ItemDetail {
+    number: number;
+    title: string;
+    url: string;
+    labels: string[];
+    html: string;
+  }
+
+  const OPEN_ATTR = 'data-roadmap-drawer-open';
+  const HASH_PREFIX = '#issue-';
+
+  class RoadmapDrawer extends HTMLElement {
+    private dialog!: HTMLDialogElement;
+    private scrollEl!: HTMLElement;
+    private titleEl!: HTMLElement;
+    private tagsEl!: HTMLElement;
+    private bodyEl!: HTMLElement;
+    private links!: HTMLAnchorElement[];
+    private projectUrl = '';
+    private controller: AbortController | null = null;
+    private trigger: HTMLElement | null = null;
+    private abortClose: (() => void) | null = null;
+
+    connectedCallback() {
+      this.dialog = this.querySelector('dialog')!;
+      this.scrollEl = this.querySelector<HTMLElement>('[data-scroll]')!;
+      this.titleEl = this.querySelector<HTMLElement>('[data-title]')!;
+      this.tagsEl = this.querySelector<HTMLElement>('[data-tags]')!;
+      this.bodyEl = this.querySelector<HTMLElement>('[data-body]')!;
+      this.links = Array.from(this.querySelectorAll<HTMLAnchorElement>('a[data-link]'));
+      this.projectUrl = this.dataset.projectUrl ?? '';
+
+      // The list HTML is swapped by BacklogLiveUpdate, so listen on the document.
+      document.addEventListener('click', this.onDocumentClick);
+      window.addEventListener('hashchange', this.onHashChange);
+      this.dialog.addEventListener('click', this.onDialogClick);
+      this.dialog.addEventListener('close', this.onClose);
+      // Esc: run our slide-out instead of the browser's instant close.
+      this.dialog.addEventListener('cancel', this.onCancel);
+      this.querySelector('[data-close]')?.addEventListener('click', this.close);
+
+      this.openFromHash();
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('click', this.onDocumentClick);
+      window.removeEventListener('hashchange', this.onHashChange);
+      this.controller?.abort();
+      document.body.removeAttribute(OPEN_ATTR);
+    }
+
+    private onDocumentClick = (event: MouseEvent) => {
+      const target = (event.target as Element | null)?.closest<HTMLElement>('[data-roadmap-item]');
+      if (!target) return;
+      event.preventDefault();
+      const number = Number(target.dataset.roadmapItem);
+      if (!Number.isSafeInteger(number)) return;
+      this.open(number, target);
+    };
+
+    // A click on ::backdrop is dispatched with the <dialog> itself as target;
+    // clicks inside the panel always target a descendant.
+    private onDialogClick = (event: MouseEvent) => {
+      if (event.target === this.dialog) this.close();
+    };
+
+    private onClose = () => {
+      this.controller?.abort();
+      document.body.removeAttribute(OPEN_ATTR);
+      if (location.hash.startsWith(HASH_PREFIX)) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+      this.trigger?.focus?.({ preventScroll: true });
+      this.trigger = null;
+    };
+
+    private onCancel = (event: Event) => {
+      event.preventDefault();
+      this.close();
+    };
+
+    // Plays the slide-out, then closes the <dialog>. Falls back to an instant close
+    // for reduced motion, and a timeout guards against a missing animationend.
+    private close = () => {
+      if (!this.dialog.open || this.abortClose) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        this.dialog.close();
+        return;
+      }
+
+      const dialog = this.dialog;
+      const onEnd = (event: AnimationEvent) => {
+        if (event.target === dialog) finish();
+      };
+      const cleanup = () => {
+        window.clearTimeout(timer);
+        dialog.removeEventListener('animationend', onEnd);
+        dialog.removeAttribute('data-closing');
+        this.abortClose = null;
+      };
+      const finish = () => {
+        cleanup();
+        if (dialog.open) dialog.close();
+      };
+      const timer = window.setTimeout(finish, 400);
+
+      this.abortClose = cleanup;
+      dialog.addEventListener('animationend', onEnd);
+      dialog.setAttribute('data-closing', '');
+    };
+
+    // Back/forward and manual hash edits. Our own replaceState calls don't fire this.
+    private onHashChange = () => {
+      if (location.hash.startsWith(HASH_PREFIX)) this.openFromHash();
+      else this.close();
+    };
+
+    private openFromHash() {
+      if (!location.hash.startsWith(HASH_PREFIX)) return;
+      const number = Number(location.hash.slice(HASH_PREFIX.length));
+      if (Number.isSafeInteger(number) && number > 0) this.open(number, null);
+    }
+
+    private setLinks(url: string) {
+      for (const link of this.links) link.href = url;
+    }
+
+    private setTags(labels: string[]) {
+      this.tagsEl.textContent = '';
+      for (const label of labels) {
+        const li = document.createElement('li');
+        li.className = 'roadmap-item--tag';
+        li.textContent = label;
+        this.tagsEl.appendChild(li);
+      }
+      this.tagsEl.hidden = labels.length === 0;
+    }
+
+    private setMessage(text: string) {
+      this.bodyEl.textContent = '';
+      const p = document.createElement('p');
+      p.className = 'roadmap-drawer--message';
+      p.textContent = text;
+      this.bodyEl.appendChild(p);
+    }
+
+    private setLoading(loading: boolean) {
+      this.bodyEl.setAttribute('aria-busy', String(loading));
+      this.bodyEl.toggleAttribute('data-loading', loading);
+      if (loading) {
+        this.bodyEl.textContent = '';
+        for (const width of ['w-full', 'w-11/12', 'w-4/5']) {
+          const line = document.createElement('span');
+          line.className = `roadmap-drawer--skeleton ${width}`;
+          this.bodyEl.appendChild(line);
+        }
+      }
+    }
+
+    private async open(number: number, trigger: HTMLElement | null) {
+      // Re-opened (e.g. another item clicked) while sliding out: cancel the pending close.
+      this.abortClose?.();
+      this.controller?.abort();
+      const controller = new AbortController();
+      this.controller = controller;
+      this.trigger = trigger ?? this.trigger;
+
+      // Prefill from the list item so the panel isn't empty while loading.
+      const article = trigger?.closest('article');
+      this.titleEl.textContent = trigger?.textContent?.trim() ?? '';
+      this.setTags(
+        Array.from(article?.querySelectorAll('[data-roadmap-tags] li') ?? []).map(
+          (li) => li.textContent?.trim() ?? ''
+        )
+      );
+      const externalHref = article?.querySelector<HTMLAnchorElement>(
+        'a.roadmap-item--external'
+      )?.href;
+      this.setLinks(externalHref ?? this.projectUrl);
+      this.setLoading(true);
+      this.scrollEl.scrollTop = 0;
+
+      if (!this.dialog.open) {
+        this.dialog.showModal();
+        document.body.setAttribute(OPEN_ATTR, '');
+      }
+      history.replaceState(
+        null,
+        '',
+        `${location.pathname}${location.search}${HASH_PREFIX}${number}`
+      );
+
+      try {
+        const res = await fetch(`/api/v1/roadmap/backlog-item/${number}`, {
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (res.status === 404) {
+          this.setLoading(false);
+          this.titleEl.textContent = this.titleEl.textContent || 'Item not found';
+          this.setMessage('This item is no longer on the roadmap.');
+          return;
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const detail = (await res.json()) as ItemDetail;
+        if (controller.signal.aborted) return;
+
+        this.titleEl.textContent = detail.title;
+        this.setTags(detail.labels);
+        this.setLinks(detail.url);
+        this.setLoading(false);
+        if (detail.html) {
+          // Server-rendered and sanitized (rehype-sanitize) in githubMarkdown.ts.
+          this.bodyEl.innerHTML = detail.html;
+        } else {
+          this.setMessage('No description provided yet.');
+        }
+      } catch (err) {
+        if ((err as Error)?.name === 'AbortError') return;
+        this.setLoading(false);
+        this.setMessage("We couldn't load the details. You can still read them on GitHub.");
+      }
+    }
+  }
+
+  if (!customElements.get('roadmap-drawer')) {
+    customElements.define('roadmap-drawer', RoadmapDrawer);
+  }
+</script>

@@ -24,11 +24,11 @@ const summaryHtml = roadmap.summary ? await marked.parse(roadmap.summary) : unde
     <header class="roadmap-detail--header">
       <Button
         class="btn btn--alpha mb-11 max-w-fit"
-        text="Back to Roadmap"
+        text="Back to Releases"
         icon={{ name: 'arrow-left', size: 'md' }}
         iconPosition="left"
         iconClass="stroke-1.5"
-        href="/roadmap"
+        href="/release"
       />
 
       <h1 class="roadmap-detail--title">{roadmap.title}</h1>

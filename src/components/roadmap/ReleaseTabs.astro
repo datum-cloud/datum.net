@@ -1,0 +1,14 @@
+---
+// src/components/roadmap/ReleaseTabs.astro
+import SecondaryTabNav from '@components/SecondaryTabNav.astro';
+
+import type { SecondaryTabNavItem } from '@/src/types/common';
+
+const items: SecondaryTabNavItem[] = [
+  { label: 'Releases', href: '/release', icon: { name: 'package' } },
+  { label: 'Roadmap', href: '/roadmap', exact: true, icon: { name: 'map' } },
+  { label: 'Changelog', href: '/changelog', exact: true, icon: { name: 'repeat-2' } },
+];
+---
+
+<SecondaryTabNav ariaLabel="Releases" items={items} variant="release" />

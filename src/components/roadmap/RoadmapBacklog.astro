@@ -1,6 +1,6 @@
 ---
 // src/components/roadmap/RoadmapBacklog.astro
-import type { GitHubBacklogItem } from '@libs/githubBacklog';
+import { groupBacklogByColumn, type GitHubBacklogItem } from '@libs/githubBacklog';
 import RoadmapBacklogRow from './RoadmapBacklogRow.astro';
 import RoadmapBacklogSkeleton from './RoadmapBacklogSkeleton.astro';
 
@@ -12,26 +12,42 @@ interface Props {
 
 const { items, updatedAt = null } = Astro.props as Props;
 const isLoading = items.length === 0 && updatedAt === null;
+const columns = groupBacklogByColumn(items);
 ---
 
 {
   isLoading ? (
     <RoadmapBacklogSkeleton />
   ) : items.length === 0 ? (
-    <section aria-label="Roadmap backlog">
+    <section aria-label="Product roadmap">
       <p class="datum-text-base text-midnight-fjord/60 py-8 text-center">
         No items available at this time.
       </p>
     </section>
   ) : (
-    <section aria-label="Roadmap backlog">
-      <ul class="roadmap-backlog-list">
-        {items.map((item) => (
-          <li>
-            <RoadmapBacklogRow item={item} />
-          </li>
-        ))}
-      </ul>
+    <section aria-label="Product roadmap" class="roadmap-board">
+      {columns.map((column) => (
+        <div class="roadmap-column" data-column={column.key}>
+          <h2 class="roadmap-column--heading">
+            <span
+              class={`roadmap-column--dot roadmap-column--dot-${column.key}`}
+              aria-hidden="true"
+            />
+            {column.title}
+          </h2>
+          {column.items.length === 0 ? (
+            <p class="roadmap-column--empty">Nothing here right now.</p>
+          ) : (
+            <ul class="roadmap-column--list">
+              {column.items.map((item) => (
+                <li>
+                  <RoadmapBacklogRow item={item} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </section>
   )
 }

@@ -6,5 +6,5 @@ const { slug } = Astro.params as { slug: string };
 const suffix = slug.endsWith('.md') ? '.md' : '';
 const base = suffix ? slug.slice(0, -suffix.length) : slug;
 
-return Astro.redirect(base === 'backlog' ? `/roadmap${suffix}` : `/release/${base}${suffix}`, 301);
+return Astro.redirect(base === 'backlog' ? `/roadmap${suffix}` : `/releases/${base}${suffix}`, 301);
 ---

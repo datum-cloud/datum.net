@@ -1,7 +1,11 @@
 ---
 // src/components/roadmap/RoadmapGrid.astro
 import type { RoadmapMilestone } from '@libs/githubRoadmap';
-import { getRoadmapCoverImage, groupRoadmapsByDate } from '@libs/githubRoadmap';
+import {
+  getRoadmapCoverImage,
+  groupRoadmapsByDate,
+  isReleaseInCurrentYear,
+} from '@libs/githubRoadmap';
 import Icon from '@components/Icon.astro';
 import RoadmapCard from './RoadmapCard.astro';
 
@@ -15,7 +19,9 @@ const UPCOMING_LIMIT = 3;
 
 const { upcoming: allUpcoming, previous: allPrevious } = groupRoadmapsByDate(roadmaps);
 const previous = allPrevious.filter((roadmap) => getRoadmapCoverImage(roadmap.number));
-const upcoming = allUpcoming.slice(0, UPCOMING_LIMIT);
+const upcoming = allUpcoming
+  .filter((roadmap) => isReleaseInCurrentYear(roadmap.releaseDate))
+  .slice(0, UPCOMING_LIMIT);
 ---
 
 {

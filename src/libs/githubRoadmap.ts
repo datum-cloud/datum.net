@@ -326,6 +326,12 @@ export function isRoadmapShipped(milestone: Pick<RoadmapMilestone, 'shipped'>): 
   return milestone.shipped === true;
 }
 
+/** Due dates are calendar dates (`YYYY-MM-DD`), so the year is the first four characters. */
+export function isReleaseInCurrentYear(releaseDate: string, now = new Date()): boolean {
+  const year = Number(releaseDate.slice(0, 4));
+  return Number.isInteger(year) && year === now.getUTCFullYear();
+}
+
 /**
  * Group roadmaps into upcoming and previous based on shipped status.
  * releaseDate is a due date (target completion), not a ship date, so a

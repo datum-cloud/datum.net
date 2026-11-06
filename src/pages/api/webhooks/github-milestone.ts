@@ -4,7 +4,7 @@
  *
  * Listens for `milestone` events on datum-cloud/enhancements (configured as a
  * repo webhook there) and force-regenerates the roadmap cache so status
- * changes (e.g. closing a milestone) show up on /release and /release.md
+ * changes (e.g. closing a milestone) show up on /releases and /releases.md
  * without waiting for the 30-min TTL.
  */
 

@@ -52,10 +52,10 @@ export async function resolveMarkdownUrl(pathname: string): Promise<string | nul
     return `${path}.md`;
   }
 
-  // GitHub-backed release detail pages: /release/<slug>.
-  // /release itself is a dedicated endpoint handled below by hasMarkdownForPath.
-  if (path.startsWith('/release/')) {
-    const subpath = path.slice('/release/'.length);
+  // GitHub-backed release detail pages: /releases/<slug>.
+  // /releases itself is a dedicated endpoint handled below by hasMarkdownForPath.
+  if (path.startsWith('/releases/')) {
+    const subpath = path.slice('/releases/'.length);
     if (!subpath) return null;
     return `${path}.md`;
   }

@@ -17,7 +17,7 @@ interface Props {
 const { roadmap } = Astro.props as Props;
 
 const coverImage = getRoadmapCoverImage(roadmap.number);
-const detailHref = coverImage ? `/release/${getRoadmapSlug(roadmap)}` : undefined;
+const detailHref = coverImage ? `/releases/${getRoadmapSlug(roadmap)}` : undefined;
 const releaseName = getRoadmapReleaseName(roadmap.title);
 const releaseDate = formatDate(roadmap.releaseDate, 'en-US', { month: 'short', year: 'numeric' });
 const monthAbbr = getMonthAbbreviation(roadmap.releaseDate);

@@ -12,18 +12,29 @@ interface MediaLightboxProps {
    * `data-embed-url` attribute holding a YouTube embed URL.
    */
   videoSelector?: string;
+  /**
+   * CSS selector for rendered diagrams (e.g. `pre.mermaid`). Diagrams render
+   * client-side, so each match opens in the lightbox once it contains an `<svg>`.
+   */
+  diagramSelector?: string;
   class?: string;
 }
 
 const {
   selector = '.blog-article-content img',
   videoSelector = '[data-video-trigger], [data-video-recording-trigger]',
+  diagramSelector = '',
   class: className,
 } = Astro.props as MediaLightboxProps;
 ---
 
 <DeferredStylesheet href={sheet} />
-<media-lightbox class={className} data-selector={selector} data-video-selector={videoSelector}>
+<media-lightbox
+  class={className}
+  data-selector={selector}
+  data-video-selector={videoSelector}
+  data-diagram-selector={diagramSelector}
+>
   <dialog aria-label="Media viewer">
     <div class="modal-frame media-lightbox-frame">
       <button data-close-modal class="modal-close" aria-label="Close" type="button">
@@ -34,6 +45,7 @@ const {
           <img class="media-lightbox-img" src="" alt="" />
           <figcaption class="media-lightbox-caption" hidden></figcaption>
         </figure>
+        <div class="media-lightbox-diagram" data-lightbox-diagram hidden></div>
         <div class="modal-embed-wrapper media-lightbox-embed" data-lightbox-video hidden></div>
       </div>
     </div>
@@ -51,6 +63,7 @@ const {
     image: HTMLImageElement;
     caption: HTMLElement;
     embed: HTMLElement;
+    diagram: HTMLElement;
     dialogOpenedAt = 0;
 
     constructor() {
@@ -62,11 +75,13 @@ const {
       this.image = this.querySelector<HTMLImageElement>('.media-lightbox-img')!;
       this.caption = this.querySelector<HTMLElement>('.media-lightbox-caption')!;
       this.embed = this.querySelector<HTMLElement>('[data-lightbox-video]')!;
+      this.diagram = this.querySelector<HTMLElement>('[data-lightbox-diagram]')!;
     }
 
     connectedCallback() {
       this.bindImageTriggers();
       this.bindVideoTriggers();
+      this.bindDiagramTriggers();
       this.setupEventListeners();
     }
 
@@ -91,6 +106,42 @@ const {
             this.openImage(img.currentSrc || img.src, img.alt);
           }
         });
+      });
+    }
+
+    bindDiagramTriggers() {
+      const sel = this.dataset.diagramSelector;
+      if (!sel) return;
+      const diagrams = document.querySelectorAll<HTMLElement>(sel);
+      diagrams.forEach((el) => {
+        if (el.closest('media-lightbox')) return;
+        if (el.querySelector('svg')) {
+          this.bindDiagram(el);
+          return;
+        }
+        // Client-side renderers fill the element after load; bind once the <svg> lands.
+        const observer = new MutationObserver(() => {
+          if (!el.querySelector('svg')) return;
+          observer.disconnect();
+          this.bindDiagram(el);
+        });
+        observer.observe(el, { childList: true });
+      });
+    }
+
+    bindDiagram(el: HTMLElement) {
+      if (el.dataset.lightboxBound === 'true') return;
+      el.dataset.lightboxBound = 'true';
+      el.classList.add('is-lightbox-trigger');
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', 'Open diagram larger');
+      el.addEventListener('click', () => this.openDiagram(el));
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.openDiagram(el);
+        }
       });
     }
 
@@ -130,6 +181,8 @@ const {
         window.removeEventListener('click', this.onClick);
         this.embed.innerHTML = '';
         this.embed.hidden = true;
+        this.diagram.replaceChildren();
+        this.diagram.hidden = true;
         this.figure.hidden = true;
         this.image.src = '';
       });
@@ -151,10 +204,27 @@ const {
       if (isBackdropClick && !isTooSoon) this.closeModal();
     };
 
+    openDiagram(source: HTMLElement) {
+      const svg = source.querySelector('svg');
+      if (!svg) return;
+      const copy = svg.cloneNode(true) as SVGElement;
+      // Mermaid caps the inline width at the diagram's natural size; let it fill the dialog.
+      copy.style.maxWidth = 'none';
+      this.embed.hidden = true;
+      this.embed.innerHTML = '';
+      this.figure.hidden = true;
+      this.image.src = '';
+      this.diagram.replaceChildren(copy);
+      this.diagram.hidden = false;
+      this.show();
+    }
+
     openImage(src: string, alt: string) {
       if (!src) return;
       this.embed.hidden = true;
       this.embed.innerHTML = '';
+      this.diagram.replaceChildren();
+      this.diagram.hidden = true;
       this.figure.hidden = false;
       this.image.src = src;
       this.image.alt = alt || '';
@@ -173,6 +243,8 @@ const {
       if (!safe) return;
       this.figure.hidden = true;
       this.image.src = '';
+      this.diagram.replaceChildren();
+      this.diagram.hidden = true;
       this.embed.hidden = false;
       this.embed.innerHTML = `
         <iframe

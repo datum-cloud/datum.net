@@ -191,9 +191,37 @@ export default defineConfig({
     }),
     alpinejs({ entrypoint: '/src/entrypoint' }),
     mermaid({
-      theme: 'forest',
-      autoTheme: true,
+      // Brand palette (src/static/styles/variables.css): midnight-fjord, app---dark---utility-2,
+      // aurora-moss, blush-quartz, glacier-mist-700. The `base` theme is the only one that
+      // honours themeVariables, and the site is light-only, so no theme switching.
+      theme: 'base',
+      autoTheme: false,
       enableLog: false,
+      mermaidConfig: {
+        themeVariables: {
+          fontFamily: "'Alliance No.1', ui-sans-serif, system-ui, sans-serif",
+          background: '#f6f6f5',
+          primaryColor: '#ffffff',
+          primaryTextColor: '#0c1d31',
+          primaryBorderColor: '#384555',
+          secondaryColor: '#e6f59f',
+          tertiaryColor: '#f6f6f5',
+          lineColor: '#384555',
+          textColor: '#0c1d31',
+          edgeLabelBackground: '#f6f6f5',
+          clusterBkg: '#faf9f6',
+          clusterBorder: '#0c1d31',
+          noteBkgColor: '#e6f59f',
+          noteTextColor: '#0c1d31',
+          noteBorderColor: '#adbab0',
+          actorBkg: '#0c1d31',
+          actorTextColor: '#ffffff',
+          actorBorder: '#0c1d31',
+          actorLineColor: '#0c1d31',
+          signalColor: '#384555',
+          signalTextColor: '#0c1d31',
+        },
+      },
     }),
     // csso (astro-compress's alternate CSS minifier) drops MQ Level 4 range
     // syntax `@media (width >= 40rem)`, used by Tailwind v4's responsive

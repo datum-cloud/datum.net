@@ -49,6 +49,16 @@
     max-height: calc(100vh - 16rem);
   }
 
+  .media-lightbox-diagram {
+    @apply bg-glacier-mist-700 flex w-full min-w-0 overflow-auto rounded-md p-4;
+    max-height: calc(100vh - 16rem);
+  }
+
+  /* `m-auto` centers a short diagram but, unlike `items-center`, never pushes the top of a tall one out of reach. */
+  .media-lightbox-diagram svg {
+    @apply m-auto block h-auto w-full shrink-0;
+  }
+
   .media-lightbox-caption {
     @apply datum-text-sm text-midnight-fjord/60 w-full shrink-0 pt-2 text-center;
   }

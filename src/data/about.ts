@@ -145,6 +145,12 @@ export const inTheWild = {
     ],
     [
       {
+        id: 'kubecon-rack',
+        title: 'Hands on at KubeCon',
+        description: 'Racked and Stacked!',
+        aspect: 'tall',
+      },
+      {
         id: 'traveling',
         title: 'Work with a view',
         description: 'Nothing like rolling with the DatumVibes',

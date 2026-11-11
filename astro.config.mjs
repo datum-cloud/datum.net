@@ -14,6 +14,7 @@ import compressor from 'astro-compressor';
 import compress from 'astro-compress';
 
 import announcement from './src/plugins/announcement.ts';
+import { mermaidBrandConfig } from './src/plugins/mermaidBrandTheme.mjs';
 import { remarkModifiedTime } from './src/plugins/remarkModifiedTime.mjs';
 import rehypeExpressiveCode from 'rehype-expressive-code';
 import { expressiveCodeRehypeOptions } from './src/utils/expressiveCodeOptions.ts';
@@ -191,9 +192,12 @@ export default defineConfig({
     }),
     alpinejs({ entrypoint: '/src/entrypoint' }),
     mermaid({
-      theme: 'forest',
-      autoTheme: true,
+      // `base` is the only theme that honours themeVariables, and the site is light-only,
+      // so no theme switching. See src/plugins/mermaidBrandTheme.mjs.
+      theme: 'base',
+      autoTheme: false,
       enableLog: false,
+      mermaidConfig: mermaidBrandConfig,
     }),
     // csso (astro-compress's alternate CSS minifier) drops MQ Level 4 range
     // syntax `@media (width >= 40rem)`, used by Tailwind v4's responsive

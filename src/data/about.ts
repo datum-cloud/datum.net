@@ -163,6 +163,12 @@ export const inTheWild = {
           'We’re supporting Viktor as he speeds towards the podium at the 2030 Olympic Games.',
         aspect: 'tall',
       },
+      {
+        id: 'fall-founders-trip',
+        title: 'Fall Founders Trip',
+        description: 'The team hitting the streets in Silicon Valley and SF',
+        aspect: 'tall',
+      },
     ],
     [
       {

@@ -1,0 +1,17 @@
+flowchart LR
+    classDef dot fill:#4d6356,stroke:#4d6356
+    cfg["configs from<br/>other platforms"]:::ext
+    cfg -.-> a1["listen 8080; · 0.0.0.0"]:::ext -.-> b1["healthy-looking, 503"]:::bad
+    cfg -.-> a2["8.8.8.8 · 1.1.1.1"]:::ext -.-> b2["no route to a literal"]:::bad
+    cfg -.-> a3["preferIPv4Stack · tcp4"]:::ext -.-> b3["no IPv4 stack to use"]:::bad
+    cfg -.-> a4["your own DNS resolver"]:::ext -.-> b4["loses DNS64"]:::bad
+    cfg -.-> a5["169.254.169.254"]:::ext -.-> b5["no route to a literal"]:::bad
+    j(( )):::dot
+    b1 -.- j
+    b2 -.- j
+    b3 -.- j
+    b4 -.- j
+    b5 -.- j
+    j -.-> fix["grep · ss -tln · dig AAAA ipv4only.arpa<br/>before you move"]:::ok
+    linkStyle 0,2,4,6,8 stroke:#223143
+    linkStyle 1,3,5,7,9 stroke:#bf9595

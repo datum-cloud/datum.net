@@ -1,0 +1,16 @@
+flowchart LR
+    net["network blog-net<br/>fd20:0:53::/48"]:::datum
+    west["us-west-1<br/>fd20:0:53:0::/64"]:::ext
+    central["us-central-1<br/>fd20:0:53:2::/64"]:::ext
+    east["us-east-1<br/>fd20:0:53:1::/64"]:::ext
+    w1["fd20:0:53::1:0:0/96"]:::datum
+    w2["fd20:0:53::2:0:0/96"]:::datum
+    c1["fd20:0:53:2:0:1::/96"]:::datum
+    e1["fd20:0:53:1:0:1::/96"]:::datum
+    net -.-> west
+    net -.-> central
+    net -.-> east
+    west -.-> w1
+    west -.-> w2
+    central -.-> c1
+    east -.-> e1

@@ -1,0 +1,22 @@
+flowchart TB
+    subgraph datum["Datum: one network, every metro, no setup"]
+        direction LR
+        w["us-west-1"]:::datum <-.-> c["us-central-1"]:::datum <-.-> e["us-east-1"]:::datum
+        w <-.->|"1 hop · MTU 1440"| e
+    end
+    subgraph fly["Fly.io and Railway: WireGuard mesh"]
+        direction LR
+        lax["lax"]:::bad <-.->|"3 hops · MTU 1370 / 1316"| iad["iad"]:::bad
+    end
+    subgraph gcp["Google Cloud: global VPC, you plan it"]
+        direction LR
+        uw["us-west1<br/>10.10.1.0/24 ✍️"]:::ext <-.->|"firewall rules first"| ue["us-east4<br/>10.10.2.0/24 ✍️"]:::ext
+    end
+    subgraph vultr["Vultr: a VPC per region, IPv4-only"]
+        direction LR
+        ewr["ewr VPC"]:::ext <-.->|"public internet · 14 hops"| lax2["lax VPC"]:::ext
+    end
+    datum ~~~ fly ~~~ gcp ~~~ vultr
+    linkStyle 3,5 stroke:#bf9595
+    linkStyle 4 stroke:#223143
+    linkStyle 6,7,8 stroke:none

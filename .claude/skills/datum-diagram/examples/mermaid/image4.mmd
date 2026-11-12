@@ -1,0 +1,15 @@
+flowchart TB
+    client["IPv4-only client"]:::ext
+    alb["Datum ALB<br/>Envoy at the nearest edge"]:::datum
+    subgraph inside["IPv6 inside"]
+        app["your app · fd20:0:53::1:0:0<br/>IPv6 only"]:::datum
+    end
+    nat["DNS64 + NAT64<br/>per-location egress"]:::datum
+    internet["IPv4-only internet"]:::ext
+    client -.->|"HTTPS, anycast<br/>A + AAAA records"| alb
+    alb -.->|"new connection from fd42:…<br/>X-Forwarded-For: client IPv4"| app
+    app -.->|"IPv4-only name →<br/>64:ff9b::… address"| nat
+    nat -.->|"leaves from a shared<br/>IPv4 per location"| internet
+    app -.->|"a literal like 1.1.1.1 ✖<br/>nothing to translate"| internet
+    linkStyle 0,2,3 stroke:#223143
+    linkStyle 4 stroke:#bf9595

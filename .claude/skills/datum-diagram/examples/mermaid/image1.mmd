@@ -1,0 +1,25 @@
+flowchart TB
+    classDef dot fill:#4d6356,stroke:#4d6356
+    subgraph dual["Everywhere else: dual stack"]
+        direction LR
+        c1["client"]:::ext
+        n1["nginx<br/>listen 8080;"]:::ext
+        ok["200 OK<br/>nobody notices"]:::ok
+        c1 -.->|"1 · try IPv6"| n1
+        n1 -.->|"refused"| c1
+        c1 -.->|"2 · quietly retry IPv4"| n1
+        n1 -.-> ok
+    end
+    subgraph native["Datum Compute: IPv6-native"]
+        direction LR
+        alb["Datum ALB"]:::datum
+        n2["nginx<br/>listen 8080;"]:::ext
+        err["503<br/>the config's IPv4 assumption, surfaced"]:::bad
+        alb -.->|"IPv6 only"| n2
+        n2 -.->|"refused"| alb
+        alb -.-> err
+    end
+    dual ~~~ native
+    linkStyle 0,4 stroke:#223143
+    linkStyle 1,5,6 stroke:#bf9595
+    linkStyle 7 stroke:none

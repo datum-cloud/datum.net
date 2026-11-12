@@ -1,0 +1,20 @@
+src/components/changelog/Card.astro
+  s_16d78b007880a2::t_c3d0be21551abe 22-29
+  s_16d78b007880a2::t_c58c37d7ac0f05 89,91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "68c4dcd8c3c32d0d924168dac7834cb6f8d0966b",
+  "prompts": {},
+  "sessions": {
+    "s_16d78b007880a2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b54d5c3d-6d22-4cf2-ac30-4e130dde8ce4",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

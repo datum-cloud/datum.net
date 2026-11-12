@@ -42,6 +42,12 @@ const themeCSS = `
   .flowchart-link { stroke-width: 1px; }
   .edge-pattern-dotted, .edge-pattern-dashed { stroke: ${PINE_FORGE}; stroke-width: 1px; stroke-dasharray: 4 3; }
   .arrowMarkerPath { stroke-dasharray: none !important; }
+  /* Sequence diagrams: thin grey lifelines, mono labels, no repeated actors at the bottom. */
+  .actor { fill: #ffffff; stroke: ${SHARK_GRAY}; stroke-width: 1px; }
+  .actor-line { stroke: ${SILVER_KEYLINE}; stroke-width: 1px; stroke-dasharray: 3 4; }
+  .messageLine0, .messageLine1 { stroke-width: 1px; }
+  .messageText { font-family: ${MONO}; font-size: 12.5px; fill: ${UTILITY_SLATE}; stroke: none; }
+  .actor, text.actor > tspan { font-family: ${MONO}; font-size: 13px; }
 `;
 
 export const mermaidBrandConfig = {
@@ -50,6 +56,14 @@ export const mermaidBrandConfig = {
     padding: 14,
     wrappingWidth: 360,
     subGraphTitleMargin: { top: 4, bottom: 12 },
+  },
+  sequence: {
+    mirrorActors: false,
+    actorMargin: 90,
+    width: 150,
+    messageMargin: 44,
+    wrap: true,
+    useMaxWidth: true,
   },
   themeCSS,
   themeVariables: {

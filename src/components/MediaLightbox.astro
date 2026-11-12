@@ -101,13 +101,14 @@ const {
         }
         // Diagrams are read, not looked at: fill the dialog's width and scroll, don't shrink to fit.
         const scrollable = () => img.closest('.diagram-tabs') !== null;
+        const inlineWidth = () => img.getBoundingClientRect().width;
         img.addEventListener('click', () =>
-          this.openImage(img.currentSrc || img.src, img.alt, scrollable())
+          this.openImage(img.currentSrc || img.src, img.alt, scrollable(), inlineWidth())
         );
         img.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            this.openImage(img.currentSrc || img.src, img.alt, scrollable());
+            this.openImage(img.currentSrc || img.src, img.alt, scrollable(), inlineWidth());
           }
         });
       });
@@ -223,7 +224,19 @@ const {
       this.show();
     }
 
-    openImage(src: string, alt: string, scrollable = false) {
+    /**
+     * Fit-to-screen would show a tall photo narrower than it already is in the article.
+     * When that happens, fill the dialog's width and scroll instead.
+     */
+    fitsSmallerThanInline(inlineWidth: number): boolean {
+      const { naturalWidth, naturalHeight } = this.image;
+      if (!inlineWidth || !naturalWidth || !naturalHeight) return false;
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      const fitWidth = (window.innerHeight - 16 * rem) * (naturalWidth / naturalHeight);
+      return fitWidth < inlineWidth;
+    }
+
+    openImage(src: string, alt: string, scrollable = false, inlineWidth = 0) {
       if (!src) return;
       this.embed.hidden = true;
       this.embed.innerHTML = '';
@@ -232,7 +245,15 @@ const {
       this.figure.hidden = false;
       this.figure.classList.toggle('is-scrollable', scrollable);
       this.figure.scrollTop = 0;
-      this.image.src = src;
+      // `#left` / `#right` / `#center` is an in-article layout hint that global CSS keys on; keep it out of the viewer.
+      this.image.src = src.split('#')[0];
+      const applyMode = () =>
+        this.figure.classList.toggle(
+          'is-scrollable',
+          scrollable || this.fitsSmallerThanInline(inlineWidth)
+        );
+      if (this.image.complete) applyMode();
+      else this.image.addEventListener('load', applyMode, { once: true });
       this.image.alt = alt || '';
       if (alt) {
         this.caption.textContent = alt;

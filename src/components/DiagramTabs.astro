@@ -1,0 +1,44 @@
+---
+// src/components/DiagramTabs.astro
+// Styles and behaviour for the "Illustrated | Mermaid" tabs that rehypeMermaid wraps
+// around a diagram image followed by its Mermaid fence.
+import sheet from '@styles/components-diagram-tabs.css?url';
+import DeferredStylesheet from '@components/DeferredStylesheet.astro';
+---
+
+<DeferredStylesheet href={sheet} />
+
+<script>
+  const COPIED_LABEL_MS = 1800;
+
+  const select = (root: HTMLElement, id: string): void => {
+    root.dataset.active = id;
+    for (const tab of root.querySelectorAll<HTMLElement>('[data-tab]')) {
+      tab.setAttribute('aria-selected', String(tab.dataset.tab === id));
+    }
+    for (const panel of root.querySelectorAll<HTMLElement>('[data-panel]')) {
+      panel.classList.toggle('is-inactive', panel.dataset.panel !== id);
+    }
+  };
+
+  const copy = async (root: HTMLElement, button: HTMLElement): Promise<void> => {
+    const label = button.textContent;
+    try {
+      await navigator.clipboard.writeText(root.dataset.source ?? '');
+      button.textContent = 'Copied';
+    } catch {
+      button.textContent = 'Copy failed';
+    }
+    window.setTimeout(() => {
+      button.textContent = label;
+    }, COPIED_LABEL_MS);
+  };
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-diagram-tabs]')) {
+    for (const tab of root.querySelectorAll<HTMLElement>('[data-tab]')) {
+      tab.addEventListener('click', () => select(root, tab.dataset.tab ?? 'image'));
+    }
+    const button = root.querySelector<HTMLElement>('[data-copy]');
+    button?.addEventListener('click', () => void copy(root, button));
+  }
+</script>

@@ -1,0 +1,51 @@
+@reference './base.css';
+@import './layers.css';
+
+@layer components {
+  /* "Illustrated | Mermaid" tabs wrapped around a blog diagram by rehypeMermaid. */
+  .diagram-tabs {
+    @apply relative my-8;
+  }
+
+  .diagram-tabs-bar {
+    @apply mb-3 flex items-center justify-between gap-3;
+  }
+
+  .diagram-tabs-list {
+    @apply bg-glacier-mist-700 inline-flex gap-1 rounded-md p-1;
+  }
+
+  .diagram-tab {
+    @apply datum-text-sm text-midnight-fjord/60 cursor-pointer rounded-sm px-3 py-1.5 font-medium transition-colors;
+    @apply hover:text-midnight-fjord;
+    @apply focus-visible:outline-aurora-moss focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
+  .diagram-tab[aria-selected='true'] {
+    @apply text-midnight-fjord bg-white shadow-sm;
+  }
+
+  .diagram-tabs-copy {
+    @apply datum-text-sm text-midnight-fjord/60 hidden cursor-pointer items-center rounded-sm px-2 py-1;
+    @apply hover:text-midnight-fjord;
+    @apply focus-visible:outline-aurora-moss focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
+  .diagram-tabs[data-active='mermaid'] .diagram-tabs-copy {
+    @apply inline-flex;
+  }
+
+  /* The inactive panel stays laid out (Mermaid cannot size itself inside display:none)
+     but takes no space and cannot be seen or reached. */
+  .diagram-tabs-panel.is-inactive {
+    @apply pointer-events-none invisible absolute top-0 left-0 h-0 w-full overflow-hidden;
+  }
+
+  .diagram-tabs-caption {
+    @apply datum-text-sm text-midnight-fjord/60 mt-3 text-center;
+  }
+
+  .diagram-tabs-panel p {
+    @apply m-0;
+  }
+}

@@ -148,12 +148,9 @@
     @apply text-midnight-fjord m-0 font-semibold xl:text-(length:--30px) xl:leading-(--42px);
   }
 
-  .changelog-entry-nav-date-row {
-    @apply flex flex-col gap-2;
-  }
-
+  /* Date as the kicker above the title; -mb-2 tightens the nav-content gap to pair it with the title */
   .changelog-entry-nav-date {
-    @apply datum-text-smallcaps text-app---dark---utility-3 uppercase;
+    @apply datum-text-smallcaps text-canyon-clay -mb-2 uppercase;
   }
 
   .changelog-entry-card {

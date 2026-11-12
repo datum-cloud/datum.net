@@ -1,0 +1,42 @@
+src/pages/changelog.md.ts
+  s_cd8535e6200dc8::t_facf5c6dc24a0d 1-4,6-9,14,18-22
+src/components/changelog/Card.astro
+  s_cd8535e6200dc8::t_f380d3bc761bdf 72
+  s_cd8535e6200dc8::t_86621e36edd81c 82-99
+src/libs/changelogMdx.ts
+  s_cd8535e6200dc8::t_f8243dc222b555 37-40
+  s_cd8535e6200dc8::t_f4c423006b18a4 78
+  s_cd8535e6200dc8::t_fd4611d8e6bf40 1-36,41-77,79-94
+tests/e2e/changelog-search.spec.ts
+  s_cd8535e6200dc8::t_c223f99aa72e9c 3-4
+tests/changelogMdx.test.ts
+  s_cd8535e6200dc8::t_f8243dc222b555 7
+  s_cd8535e6200dc8::t_d2549bfa76ba63 1-6,8-70,80-93
+  s_cd8535e6200dc8::t_3351388cd7ec11 71-79
+src/libs/datum.ts
+  s_cd8535e6200dc8::t_a03d552a2b4147 24
+  s_cd8535e6200dc8::t_d50f6ff24b2982 3,151-153,159-164,166,168-171
+  s_cd8535e6200dc8::t_e2ab7d617fd6a2 167
+src/static/styles/components-changelog.css
+  s_cd8535e6200dc8::t_4662bafa88b493 241,243
+  s_cd8535e6200dc8::t_86621e36edd81c 234
+  s_cd8535e6200dc8::t_2bf1c7a5a4826c 147-151
+package.json
+  s_cd8535e6200dc8::t_963378b9fb4fb9 29-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3971c07b1abb9e39fc5987bf16658b44d304e13a",
+  "prompts": {},
+  "sessions": {
+    "s_cd8535e6200dc8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "da1a79ed-777c-4b74-9501-f29ceecba642",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

@@ -1,70 +1,68 @@
 // src/plugins/mermaidBrandTheme.mjs
-// Mermaid config that follows the Datum diagram guidelines: a geometric, step-routed
-// look, thin consistent lines, bright brand colors for Datum components and grayscale
-// for everything outside Datum. Colors come from src/static/styles/variables.css.
+// Mermaid config for the "text diagram" version of a blog diagram: the plain, copyable,
+// monospace take that engineers like. It is deliberately simpler than the designed images
+// (see .claude/skills/datum-diagram), but it follows the same colour rule: grey outer panels,
+// bright moss only on Datum content, grayscale for outside systems, clay for failures.
+// Colors come from src/static/styles/variables.css.
 //
-// Authors opt in per node: `node:::datum` (Datum component) or `node:::ext` (outside
-// system). Dashed links (`-.->`) take the brand green; override one with `linkStyle`.
+// Authors tag nodes:
+//   node:::datum  a Datum component (moss fill)
+//   node:::ext    an outside system (white, grey line)
+//   node:::ok     a good outcome (pale moss, pine line)
+//   node:::bad    an error or failure (pale clay)
+// Dashed links (`-.->`) are the default arrow; use `linkStyle` for clay (errors) or navy (neutral).
 
 const MIDNIGHT_FJORD = '#0c1d31';
 const UTILITY_SLATE = '#384555';
 const AURORA_MOSS = '#e6f59f';
+const AURORA_MOSS_PALE = '#f3f8dd';
 const PINE_FORGE = '#4d6356';
-const SILVER_MIST = '#c3c6c9';
 const SILVER_KEYLINE = '#c4c6c9';
 const SHARK_GRAY = '#6a7282';
-const GLACIER_MIST = '#f6f6f5';
+const BLUSH = '#bf9595';
+const BLUSH_PALE = '#f5e8e8';
+const CLAY_DEEP = '#815e5e';
 
+const MONO = "'DejaVu Sans Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const SHAPES = 'rect, polygon, circle, ellipse, path';
 
 const themeCSS = `
-  /* 12px stroke clipped to the shape's own box leaves a 6px border drawn inside it,
-     so the border never covers the arrowheads that end on the node's edge. */
-  .node.datum :is(${SHAPES}) { fill: #ffffff; stroke: ${AURORA_MOSS}; stroke-width: 12px; clip-path: inset(0); }
-  .node.ext :is(${SHAPES}) { fill: #ffffff; stroke: ${SILVER_MIST}; stroke-width: 1px; }
-  .node.ext .nodeLabel, .node.ext .label, .node.ext span { color: ${SHARK_GRAY}; fill: ${SHARK_GRAY}; }
-  /* Datum frame: the moss border above plus a hairline just inside it. */
-  .node.datum :is(rect, polygon) { outline: 1px solid ${SILVER_KEYLINE}; outline-offset: -7px; }
-  /* In the structured style (nodes tagged :::datum / :::ext), connector labels become small
-     dark mono tags, like the guide's "Cloud CNI" / "IPsec Tunnel". Other diagrams keep plain labels. */
-  .root:has(.node.datum, .node.ext) .edgeLabel .labelBkg { background-color: ${MIDNIGHT_FJORD}; padding: 2px 6px; }
-  .root:has(.node.datum, .node.ext) .edgeLabel p, .root:has(.node.datum, .node.ext) .edgeLabel span { margin: 0; color: #ffffff; font-family: 'DejaVu Sans Mono', ui-monospace, Menlo, monospace; font-size: 11px; }
+  .node :is(${SHAPES}) { fill: #ffffff; stroke: ${SHARK_GRAY}; stroke-width: 1px; }
+  .node.datum :is(${SHAPES}) { fill: ${AURORA_MOSS}; stroke: ${PINE_FORGE}; }
+  .node.ok :is(${SHAPES}) { fill: ${AURORA_MOSS_PALE}; stroke: ${PINE_FORGE}; }
+  .node.bad :is(${SHAPES}) { fill: ${BLUSH_PALE}; stroke: ${BLUSH}; }
+  .node.ext .nodeLabel, .node.ext .label, .node.ext span { color: ${UTILITY_SLATE}; fill: ${UTILITY_SLATE}; }
+  .node.bad .nodeLabel, .node.bad .label, .node.bad span { color: ${CLAY_DEEP}; fill: ${CLAY_DEEP}; }
+  .nodeLabel, .edgeLabel, .edgeLabel p, .edgeLabel span, .cluster-label span { font-family: ${MONO}; font-size: 13px; }
+  .edgeLabel p, .edgeLabel span { margin: 0; color: ${UTILITY_SLATE}; background-color: #ffffff; }
+  .edgeLabel .labelBkg { background-color: #ffffff; }
   .edgeLabel .labelBkg:has(> span:empty), .edgeLabel .labelBkg:has(p:empty) { display: none !important; }
-  .cluster rect { fill: #ffffff; stroke: ${SILVER_KEYLINE}; stroke-width: 1px; }
+  .cluster rect { fill: none; stroke: ${SILVER_KEYLINE}; stroke-width: 1px; stroke-dasharray: 4 3; }
+  .cluster-label span { color: ${SHARK_GRAY}; font-size: 12px; letter-spacing: 0.02em; }
   .flowchart-link { stroke-width: 1px; }
-  /* Mermaid's arrow markers put the tip a few px past the edge's end, i.e. inside the
-     node, where the thick border would cover it. Slide the head back so it lands on the edge. */
-  marker { overflow: visible; }
+  .edge-pattern-dotted, .edge-pattern-dashed { stroke: ${PINE_FORGE}; stroke-width: 1px; stroke-dasharray: 4 3; }
   .arrowMarkerPath { stroke-dasharray: none !important; }
-  marker[id$='-pointEnd'] path { transform: translateX(-5px); }
-  marker[id$='-pointStart'] path { transform: translateX(4.5px); }
-  .edge-pattern-dashed { stroke: ${PINE_FORGE}; stroke-width: 1px; stroke-dasharray: 4 3; }
 `;
 
 export const mermaidBrandConfig = {
-  flowchart: { curve: 'step' },
+  flowchart: {
+    curve: 'linear',
+    padding: 14,
+    wrappingWidth: 360,
+    subGraphTitleMargin: { top: 4, bottom: 12 },
+  },
   themeCSS,
   themeVariables: {
-    fontFamily: "'Alliance No.1', ui-sans-serif, system-ui, sans-serif",
-    background: GLACIER_MIST,
+    fontFamily: MONO,
+    fontSize: '13px',
+    background: '#ffffff',
     primaryColor: '#ffffff',
     primaryTextColor: MIDNIGHT_FJORD,
-    primaryBorderColor: UTILITY_SLATE,
-    secondaryColor: AURORA_MOSS,
-    tertiaryColor: GLACIER_MIST,
-    lineColor: UTILITY_SLATE,
+    primaryBorderColor: SHARK_GRAY,
+    lineColor: MIDNIGHT_FJORD,
     textColor: MIDNIGHT_FJORD,
-    edgeLabelBackground: GLACIER_MIST,
-    clusterBkg: '#ffffff',
+    edgeLabelBackground: '#ffffff',
+    clusterBkg: 'transparent',
     clusterBorder: SILVER_KEYLINE,
-    noteBkgColor: AURORA_MOSS,
-    noteTextColor: MIDNIGHT_FJORD,
-    noteBorderColor: '#adbab0',
-    actorBkg: MIDNIGHT_FJORD,
-    actorTextColor: '#ffffff',
-    actorBorder: MIDNIGHT_FJORD,
-    actorLineColor: MIDNIGHT_FJORD,
-    signalColor: UTILITY_SLATE,
-    signalTextColor: MIDNIGHT_FJORD,
   },
 };

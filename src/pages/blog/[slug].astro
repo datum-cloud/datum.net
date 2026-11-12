@@ -11,6 +11,7 @@ import Button from '@components/Button.astro';
 import Icon from '@components/Icon.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
+import DiagramTabs from '@components/DiagramTabs.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionLine from '@components/SectionLine.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
@@ -579,6 +580,7 @@ const processedBlocks: ProcessedBlock[] =
                 </article>
               </div>
 
+              <DiagramTabs />
               <MediaLightbox
                 selector=".blog-article-content img, .blog-article-image img"
                 videoSelector=""

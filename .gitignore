@@ -58,7 +58,8 @@ docs/PROJECT_RECOMMENDATIONS.md
 
 # locally-installed Claude Code skills (reconstructable via skill installer)
 .agents/
-.claude/skills/
+.claude/skills/*
+!.claude/skills/datum-diagram/
 skills-lock.json
 
 # datumctl compute deploy writes this into the working directory

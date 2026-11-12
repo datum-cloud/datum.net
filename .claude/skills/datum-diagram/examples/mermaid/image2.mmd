@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph lan["Home LAN or Podman: a shared link"]
+        direction TB
+        link["one shared link"]:::ext
+        router["router"]:::ext
+        a["a"]:::ext
+        b["b"]:::ext
+        link --- router
+        link --- a
+        link --- b
+        a <-.->|"direct · NDP finds b's MAC"| b
+    end
+    subgraph datum["Datum: one link per instance"]
+        direction TB
+        i1["instance<br/>fd20:0:53::1:0:0"]:::datum
+        i2["instance<br/>fd20:0:53::2:0:0"]:::datum
+        r["router<br/>fd20:0:53::1"]:::datum
+        i1 --- r
+        i2 --- r
+        i1 <-.->|"link-local ✖ · ff02::1 ✖"| i2
+    end
+    lan ~~~ datum
+    linkStyle 0,1,2,4,5 stroke:#c4c6c9
+    linkStyle 6 stroke:#bf9595
+    linkStyle 7 stroke:none

@@ -163,13 +163,6 @@ export const inTheWild = {
         aspect: 'short',
       },
       {
-        id: 'viktor',
-        title: 'Go for the gold!',
-        description:
-          'We’re supporting Viktor as he speeds towards the podium at the 2030 Olympic Games.',
-        aspect: 'tall',
-      },
-      {
         id: 'fall-founders-trip',
         title: 'Fall Founders Trip',
         description: 'The team hitting the streets in Silicon Valley and SF',
@@ -194,6 +187,13 @@ export const inTheWild = {
         id: 'run-chicago',
         title: 'Chicago',
         description: 'Medals on after the Life Time Chicago half marathon.',
+        aspect: 'tall',
+      },
+      {
+        id: 'viktor',
+        title: 'Go for the gold!',
+        description:
+          'We’re supporting Viktor as he speeds towards the podium at the 2030 Olympic Games.',
         aspect: 'tall',
       },
     ],

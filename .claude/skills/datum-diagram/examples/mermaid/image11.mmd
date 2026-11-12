@@ -1,10 +1,10 @@
-flowchart LR
+flowchart TB
     subgraph near["next door: same node"]
-        direction LR
+        direction TB
         wi1["west instance"]:::datum -.->|"packet · hop limit 64"| wn1["west node (kernel + eBPF)<br/>kernel routes it inside the VRF"]:::datum -.->|"packet · hop limit 63"| nd["next-door instance"]:::datum
     end
     subgraph far["across the country: wrapped in SRv6"]
-        direction LR
+        direction TB
         wi2["west instance"]:::datum -.->|"packet · hop limit 64"| wn2["west node (kernel + eBPF)<br/>eBPF wraps it: outer IPv6 header<br/>to “east node, blog-net”"]:::datum -.->|"✉️ outer | packet"| bb["backbone<br/>routers read only the outer header"]:::ext -.->|"✉️ outer | packet"| en["east node<br/>unwrap, redirect into the instance"]:::datum -.->|"packet · hop limit 64"| ei["east instance"]:::datum
     end
     near ~~~ far

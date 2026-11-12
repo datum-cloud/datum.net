@@ -1,5 +1,6 @@
 import { graph } from '@libs/github';
 import { Cache } from '@libs/cache';
+import { DOCS_CHANGELOG_SOURCE_URL, parseDocsChangelog } from '@libs/changelogMdx';
 
 const cache = new Cache('.cache');
 const owner = 'datum-cloud';
@@ -20,6 +21,7 @@ type ChangelogProps = {
   body: string;
   url: string;
   createdAt: Date;
+  product?: string;
   labels?: { nodes: Array<{ name: string; color: string; description?: string }> };
 };
 
@@ -146,104 +148,28 @@ async function roadmaps(): Promise<RoadmapProps[]> {
   return roadmaps;
 }
 
+// Source of truth is the Mintlify changelog (/docs/changelog), so the
+// marketing page always matches the docs. Errors are logged and not cached,
+// so the next request retries.
 async function changelogs(): Promise<ChangelogProps[]> {
-  type ResponseProps = {
-    repository: {
-      discussions: {
-        nodes: [
-          {
-            id: string;
-            title: string;
-            body: string;
-            url: string;
-            labels: {
-              nodes: Array<{
-                name: string;
-                color: string;
-                description?: string;
-              }>;
-            };
-          },
-        ];
-      };
-    };
-  };
-
-  const name = 'datum';
-  let changelogs: ChangelogProps[] = [];
-  const categoryVariables = {
-    owner,
-    name,
-    slug: 'changelog',
-  };
-
   if (await cache.has('changelogs')) {
     return (await cache.get<ChangelogProps[]>('changelogs')) ?? [];
   }
-  {
-    try {
-      const categoryQuery = `
-        query ($owner:String!, $name:String!, $slug:String!) {
-          repository(owner: $owner, name: $name) {
-            discussionCategory(slug: $slug){
-              id,
-            }
-          }
-        }`;
 
-      const categoryResponse = (await graph(categoryQuery, categoryVariables)) as {
-        repository: { discussionCategory: { id: string } };
-      };
-
-      if (
-        !categoryResponse ||
-        !categoryResponse.repository ||
-        !categoryResponse.repository.discussionCategory
-      ) {
-        return changelogs;
-      }
-
-      const categoryId = categoryResponse.repository.discussionCategory.id as string;
-      const query = `
-        query ($owner:String!, $name:String!, $categoryId:ID!) {
-          repository(owner: $owner, name: $name) {
-            discussions(first: 30, after: null, categoryId: $categoryId) {
-              nodes {
-                id,
-                title,
-                body,
-                url,
-                createdAt,
-                labels (first: 5, last: null) {
-                  nodes {
-                    name,
-                    color,
-                    description,
-                  }
-                },
-              }
-            }
-          }
-        }
-      `;
-
-      const variables = {
-        owner,
-        name,
-        categoryId,
-      };
-
-      const response = (await graph(query, variables)) as ResponseProps;
-      changelogs = Object(response.repository.discussions.nodes).map((log: ChangelogProps) => ({
-        ...log,
-      }));
-      await cache.set('changelogs', changelogs, 1000 * 60 * 10); // cache for 10 minutes
-    } catch {
-      changelogs = [];
+  try {
+    const response = await fetch(DOCS_CHANGELOG_SOURCE_URL, {
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} fetching ${DOCS_CHANGELOG_SOURCE_URL}`);
     }
+    const entries = parseDocsChangelog(await response.text());
+    await cache.set('changelogs', entries, 1000 * 60 * 20); // cache for 20 minutes
+    return entries;
+  } catch (error) {
+    console.error('Failed to load changelog from docs:', error);
+    return [];
   }
-
-  return changelogs;
 }
 
 export { stargazerCount, roadmaps, changelogs, type RoadmapProps, type ChangelogProps };

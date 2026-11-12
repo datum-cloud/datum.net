@@ -144,6 +144,11 @@
     @apply flex min-w-0 flex-col gap-4;
   }
 
+  /* Product eyebrow above the title; -mb-2 tightens the nav-content gap to pair it with the title */
+  .changelog-entry-nav-product {
+    @apply datum-text-smallcaps text-canyon-clay -mb-2 uppercase;
+  }
+
   .changelog-entry-nav-title {
     @apply text-midnight-fjord m-0 font-semibold xl:text-(length:--30px) xl:leading-(--42px);
   }
@@ -226,27 +231,16 @@
   }
 
   .changelog-entry-card-tags {
-    @apply flex flex-col gap-4;
+    @apply flex flex-wrap gap-2;
   }
 
   .changelog-entry-card-tag-row {
     @apply flex items-center gap-6;
   }
 
+  /* Matches .roadmap-backlog-badge (components-roadmap.css) */
   .changelog-entry-card-tag {
-    @apply datum-text-sm text-midnight-fjord w-23 shrink-0 rounded-sm border-l-3 px-3.5 py-2 text-center font-semibold;
-  }
-
-  .changelog-entry-card-tag--changed {
-    @apply border-canyon-clay bg-blush-quartz;
-  }
-
-  .changelog-entry-card-tag--new {
-    @apply border-potted-olive bg-potted-olive/60;
-  }
-
-  .changelog-entry-card-tag--fixed {
-    @apply border-pine-forge/20 bg-aurora-moss;
+    @apply text-app---dark---utility-4 datum-app-body shrink-0 rounded-lg border border-current/30 px-1.5 py-0.5;
   }
 
   .changelog-entry-card-tag-description {

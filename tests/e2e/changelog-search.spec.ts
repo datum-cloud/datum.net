@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// The changelog comes from GitHub Discussions; without credentials the page has no entries,
-// so these tests skip instead of failing.
+// The changelog comes from the docs repo (changelog.mdx); if it cannot be fetched the page has
+// no entries, so these tests skip instead of failing.
 test.describe('Changelog search', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/changelog');

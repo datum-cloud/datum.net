@@ -1,40 +1,25 @@
+// Dynamic markdown export of /changelog. Pulls from the same Mintlify
+// changelog (/docs/changelog) that Card.astro renders from. SSR so new docs
+// entries show up without a site rebuild.
+export const prerender = false;
+
 import type { APIRoute } from 'astro';
-import { getCollection, getEntry } from 'astro:content';
-import { markdownSeoHeaders, renderEntryMarkdown, stripMdxToMarkdown } from '@utils/pageMarkdown';
-
-interface ChangelogEntry {
-  data: { title?: string; description?: string; date?: string | Date };
-  body?: string;
-  id: string;
-}
-
-function formatDate(d?: string | Date): string {
-  if (!d) return '';
-  const dt = typeof d === 'string' ? new Date(d) : d;
-  if (isNaN(dt.getTime())) return typeof d === 'string' ? d : '';
-  return dt.toISOString().slice(0, 10);
-}
+import { getEntry } from 'astro:content';
+import { changelogs } from '@libs/datum';
+import { markdownSeoHeaders, renderEntryMarkdown } from '@utils/pageMarkdown';
 
 export const GET: APIRoute = async () => {
   try {
     const index = await getEntry('changelog', 'index');
-    const allEntries = (await getCollection('changelog')) as unknown as ChangelogEntry[];
-    const entries = allEntries
-      .filter((e) => e.id !== 'index')
-      .sort((a, b) => {
-        const da = a.data.date ? new Date(a.data.date).getTime() : 0;
-        const db = b.data.date ? new Date(b.data.date).getTime() : 0;
-        return db - da;
-      });
+    const entries = await changelogs();
 
     const sections: string[] = [];
     for (const entry of entries) {
-      const date = formatDate(entry.data.date);
-      const heading = date ? `## ${entry.data.title} - ${date}` : `## ${entry.data.title}`;
-      sections.push(heading);
-      if (entry.data.description) sections.push('', `_${entry.data.description}_`);
-      const body = stripMdxToMarkdown(entry.body ?? '');
-      if (body) sections.push('', body);
+      const date = new Date(entry.createdAt).toISOString().slice(0, 10);
+      sections.push(`## ${entry.title} - ${date}`);
+      const tags = entry.labels?.nodes.map((l) => l.name) ?? [];
+      if (tags.length) sections.push('', `_${tags.join(', ')}_`);
+      if (entry.body) sections.push('', entry.body);
       sections.push('');
     }
 

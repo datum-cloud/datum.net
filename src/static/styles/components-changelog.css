@@ -144,11 +144,6 @@
     @apply flex min-w-0 flex-col gap-4;
   }
 
-  /* Product eyebrow above the title; -mb-2 tightens the nav-content gap to pair it with the title */
-  .changelog-entry-nav-product {
-    @apply datum-text-smallcaps text-canyon-clay -mb-2 uppercase;
-  }
-
   .changelog-entry-nav-title {
     @apply text-midnight-fjord m-0 font-semibold xl:text-(length:--30px) xl:leading-(--42px);
   }

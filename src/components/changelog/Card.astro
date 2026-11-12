@@ -19,6 +19,14 @@ function embedGithubVideos(html: string): string {
       `<video class="changelog-entry-card-video" controls preload="metadata" playsinline src="${url}"></video>`
   );
 }
+
+type EntryTag = { name: string; description?: string };
+
+// The <Update> description (product name) leads the tag list, ahead of the type tags.
+function entryTags(entry: ChangelogProps): EntryTag[] {
+  const labels = entry.labels?.nodes ?? [];
+  return entry.product ? [{ name: entry.product }, ...labels] : labels;
+}
 ---
 
 <div class="changelog-toolbar">
@@ -69,7 +77,6 @@ function embedGithubVideos(html: string): string {
             <ChangelogDot aria-hidden="true" />
           </div>
           <div class="changelog-entry-nav-content">
-            {entry.product && <span class="changelog-entry-nav-product">{entry.product}</span>}
             <h3 class="changelog-entry-nav-title">{entry.title}</h3>
             <div class="changelog-entry-nav-date-row">
               <time class="changelog-entry-nav-date">
@@ -79,9 +86,9 @@ function embedGithubVideos(html: string): string {
                   year: 'numeric',
                 })}
               </time>
-              {entry.labels && entry.labels.nodes.length > 0 && (
+              {entryTags(entry).length > 0 && (
                 <div class="changelog-entry-card-tags">
-                  {entry.labels.nodes.map((label) => (
+                  {entryTags(entry).map((label) => (
                     <div class="changelog-entry-card-tag-row">
                       <span
                         class={`changelog-entry-card-tag changelog-entry-card-tag--${label.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}

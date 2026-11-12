@@ -1,0 +1,24 @@
+flowchart LR
+    subgraph arrive["however the connection arrives"]
+        a1["MASQUE tunnel"]:::ext
+        a2["WireGuard peer"]:::ext
+        a3["plain old VPN"]:::ext
+        a4["Layer 2 VLAN"]:::ext
+        a5["Layer 3 BGP session"]:::ext
+        a6["NNI to a carrier"]:::ext
+    end
+    gvpc["Galactic VPC<br/>a virtual meet-me room<br/>and a virtual backbone<br/>built on SRv6"]:::datum
+    subgraph prov["interchangeable providers"]
+        p1["bare metal,<br/>one provider"]:::ext
+        p2["VMs,<br/>another provider"]:::ext
+        p3["GPUs,<br/>a third provider"]:::ext
+    end
+    a1 -.-> gvpc
+    a2 -.-> gvpc
+    a3 -.-> gvpc
+    a4 -.-> gvpc
+    a5 -.-> gvpc
+    a6 -.-> gvpc
+    gvpc -.-> p1
+    gvpc -.-> p2
+    gvpc -.-> p3

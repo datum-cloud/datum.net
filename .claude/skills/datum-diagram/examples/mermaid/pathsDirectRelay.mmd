@@ -1,0 +1,10 @@
+flowchart LR
+    subgraph both["both paths tried in parallel · fastest wins, automatic failover"]
+        direction LR
+        gw["Gateway endpoint"]:::datum
+        relay["Home relay"]:::datum
+        dn["Desktop node"]:::datum
+        gw <-.->|"encrypted"| relay
+        relay <-.->|"encrypted"| dn
+        gw <-.->|"direct UDP<br/>hole-punched"| dn
+    end

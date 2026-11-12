@@ -1,0 +1,7 @@
+flowchart TB
+    compute["Datum Compute<br/>microVMs that start in milliseconds"]:::datum
+    gvpc["Galactic VPC<br/>private backbone built on SRv6"]:::datum
+    pay["lower egress costs · reduced latency<br/>a smaller security blast radius"]:::ok
+    compute -.->|"every workload comes up attached"| gvpc
+    gvpc -.->|"real workloads show its value"| compute
+    gvpc -.-> pay

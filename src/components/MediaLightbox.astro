@@ -99,11 +99,15 @@ const {
         if (!img.getAttribute('aria-label')) {
           img.setAttribute('aria-label', `Open image${img.alt ? `: ${img.alt}` : ''}`);
         }
-        img.addEventListener('click', () => this.openImage(img.currentSrc || img.src, img.alt));
+        // Diagrams are read, not looked at: fill the dialog's width and scroll, don't shrink to fit.
+        const scrollable = () => img.closest('.diagram-tabs') !== null;
+        img.addEventListener('click', () =>
+          this.openImage(img.currentSrc || img.src, img.alt, scrollable())
+        );
         img.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            this.openImage(img.currentSrc || img.src, img.alt);
+            this.openImage(img.currentSrc || img.src, img.alt, scrollable());
           }
         });
       });
@@ -219,13 +223,15 @@ const {
       this.show();
     }
 
-    openImage(src: string, alt: string) {
+    openImage(src: string, alt: string, scrollable = false) {
       if (!src) return;
       this.embed.hidden = true;
       this.embed.innerHTML = '';
       this.diagram.replaceChildren();
       this.diagram.hidden = true;
       this.figure.hidden = false;
+      this.figure.classList.toggle('is-scrollable', scrollable);
+      this.figure.scrollTop = 0;
       this.image.src = src;
       this.image.alt = alt || '';
       if (alt) {

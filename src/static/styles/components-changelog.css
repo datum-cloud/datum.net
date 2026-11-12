@@ -176,12 +176,12 @@
   .changelog-entry-card-body {
     @apply datum-prose-longform text-midnight-fjord min-w-0;
 
+    & > :first-child {
+      @apply mt-0;
+    }
+
     h2 {
       @apply datum-text-2xl mt-8 mb-5 font-semibold;
-
-      &:first-child {
-        @apply mt-0;
-      }
     }
 
     h3 {

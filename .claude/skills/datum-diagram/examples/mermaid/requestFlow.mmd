@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant E as Envoy
+    participant G as iroh-gateway
+    participant D as Desktop node
+    E->>G: 1 · HTTP request<br/>(via Unix socket)
+    G->>D: 2 · resolve endpoint ID<br/>from request metadata
+    G->>D: 3 · open QUIC stream<br/>(reuse connection or establish new one)
+    G->>D: 4 · forward request<br/>over QUIC stream
+    D-->>G: 5 · HTTP response
+    G-->>E: 6 · HTTP response

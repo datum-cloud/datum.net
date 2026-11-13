@@ -49,16 +49,30 @@ Exported from the Figma "Components - Diagram" file (PNG inside SVG). Complex se
 In the Strapi body, write the designed image, then the Mermaid fence directly after it:
 
 ````
-![Caption shared by both versions](https://…/diagram_designed.png)
+![Caption shared by both versions](https://.../diagram_designed.png)
 
 ```mermaid
 flowchart TB
-  …
+  a["first"]:::datum -.-> b["second"]:::ext
+```
 ````
 
-```
+`src/plugins/rehypeMermaid.ts` turns that pair into an "Illustrated | Mermaid" tab set (`src/components/DiagramTabs.astro`, `components-diagram-tabs.css`). Illustrated shows on landing; the Mermaid panel renders off-screen and appears when its tab is chosen, with a "Copy Mermaid" button. The caption sits under both. A mermaid fence with no image right before it renders alone, as before.
 
-`src/plugins/rehypeMermaid.ts` turns that pair into an "Illustrated | Mermaid" tab set (`src/components/DiagramTabs.astro`, `components-diagram-tabs.css`). Illustrated shows on landing; the Mermaid panel renders off-screen and appears when its tab is chosen, with a "Copy Mermaid" button. The caption sits under both. A mermaid fence with no image right before it renders alone, as before. Stack panels vertically in Mermaid (root `flowchart TB` plus an invisible `a ~~~ b` link); side by side makes everything small.
+## Mermaid layout rules
+
+- Aim for a natural width under about 650px (it scales to the article column; narrower reads better on a phone). Stack panels and steps top to bottom.
+- Stack panels with a root `flowchart TB` plus invisible `a ~~~ b` links.
+- A subgraph's own `direction` is ignored as soon as an edge crosses its boundary. To get a tall column of nodes that all link to one hub, use a root `flowchart LR` and link each node individually (see `examples/mermaid/landAnything.mmd`). Do not link the subgraph itself.
+- Request flows read best as a real `sequenceDiagram` (see `examples/mermaid/requestFlow.mmd`); the theme styles them.
+- Do not put a diagram's grey outer panel in Mermaid as a coloured node: panels are subgraphs (dashed grey), moss is for Datum nodes only.
+
+## Examples
+
+- `examples/diagrams.mjs`: the seven IPv6 article diagrams (designed).
+- `examples/desktop-article.mjs`: the two Datum Desktop article diagrams (direct vs relay, request flow).
+- `examples/five-articles.mjs`: four-flavors, Galactic VPC (land anything, private by default), every-agent-needs-an-edge, network-vs-compute.
+- `examples/mermaid/`: the matching Mermaid versions.
 
 ## Gotchas learned
 
@@ -67,8 +81,9 @@ flowchart TB
 - Mermaid `look: handDrawn` does not apply to sequence diagrams and was dropped.
 - Zero-length path segments (identical consecutive points) draw nothing: `line()` de-duplicates them.
 - Strapi bodies: publishing is outward-facing. Draft first, ask before publishing.
+- After publishing, check the live page on the plain URL several times. Right after a deploy the site can serve the build-time article cache; re-saving the published article in Strapi (or re-publishing in the admin) re-fires the revalidation webhook.
+- The Mermaid theme is read when the Astro server starts; restart the dev server to see theme changes.
 
 ## Facts to check before drawing
 
 See `reference/datum-glossary.md`. It is a starting point, not a source of truth: confirm against https://www.datum.net/docs before stating a technical fact in a diagram.
-```

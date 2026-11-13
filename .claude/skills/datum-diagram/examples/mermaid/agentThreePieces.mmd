@@ -1,0 +1,11 @@
+flowchart TB
+    agent["Your agent<br/>and its workloads"]:::datum
+    edge["1 · Edge<br/>Envoy proxy<br/>bot, threat and<br/>DDoS protection"]:::datum
+    tun["2 · Tunnels<br/>peer-to-peer QUIC<br/>(Iroh)"]:::datum
+    bb["3 · Backbone<br/>SRv6 fast lanes<br/>VPC-style control"]:::datum
+    net["public internet"]:::ext
+    apps["your apps<br/>and endpoints"]:::ext
+    prov["clouds, partners,<br/>providers"]:::ext
+    agent -.-> edge -.-> net
+    agent -.-> tun -.-> apps
+    agent -.-> bb -.-> prov

@@ -1,0 +1,6 @@
+flowchart TB
+    pub["Public Cloud · for sale<br/>Datum runs it all: infrastructure,<br/>hardware, locations, network paths"]:::datum
+    ded["Dedicated Cloud · for sale<br/>fully managed by Datum,<br/>dedicated to you"]:::datum
+    byoc["Bring Your Own Cloud · for sale<br/>Datum runs the control plane,<br/>you bring the infrastructure"]:::datum
+    oss["Open Source · AGPLv3 · not for sale<br/>you run it yourself"]:::ext
+    pub ~~~ ded ~~~ byoc ~~~ oss

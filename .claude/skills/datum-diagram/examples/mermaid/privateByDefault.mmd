@@ -1,0 +1,11 @@
+flowchart TB
+    c["Docker container<br/>or desktop application"]:::ext
+    subgraph priv["no exposed ports · no overlay to babysit"]
+        direction TB
+        t["Datum Tunnel<br/>QUIC · iroh · routes by key"]:::datum
+        g["Galactic VPC<br/>private backbone"]:::datum
+    end
+    a["AWS"]:::ext
+    c -.->|"lands"| t
+    t -.->|"lands"| g
+    g -.->|"routes out"| a

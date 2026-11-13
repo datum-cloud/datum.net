@@ -1,0 +1,22 @@
+tests/server.test.mjs
+  s_16d78b007880a2::t_a18c23b327877d 115-132
+server.mjs
+  s_16d78b007880a2::t_a4f9aca22c882a 285
+  s_16d78b007880a2::t_cb721f8df5fc9c 282-284
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1a9d23ec6fc18eb9f417339b7b284923bdf9047f",
+  "prompts": {},
+  "sessions": {
+    "s_16d78b007880a2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b54d5c3d-6d22-4cf2-ac30-4e130dde8ce4",
+        "model": "unknown"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

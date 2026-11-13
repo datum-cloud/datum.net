@@ -256,9 +256,26 @@ jobs:
               echo "::error::workload $WORKLOAD is not running $IMAGE"
               exit 1
             }
-          for expected in 'Rollout complete' 'Backends .*healthy' 'Edge .*programmed' 'Certificate .*issued'; do
+          # These three lines appear in every successful deploy: the rollout
+          # finished, the edge is programmed, and the certificate is issued.
+          for expected in 'Rollout complete' 'Edge .*programmed' 'Certificate .*issued'; do
             grep -qE "$expected" "$log" || { echo "::error::deploy output has no '$expected'"; exit 1; }
           done
+          # The command reports the URL as live as soon as the edge is programmed
+          # and the certificate is issued, so its "Backends N healthy" progress
+          # row appears only when a backend was healthy at that instant. Read the
+          # live status instead and wait for a backend to report healthy.
+          health=""
+          for i in $(seq 1 20); do
+            health="$(datumctl compute workloads describe "$WORKLOAD" --project "$DATUM_PROJECT" 2>/dev/null || true)"
+            printf '%s' "$health" | grep -qE '[1-9][0-9]* of [0-9]+ backends healthy' && break
+            echo "attempt $i: no healthy backend yet"
+            sleep 15
+          done
+          printf '%s' "$health" | grep -qE '[1-9][0-9]* of [0-9]+ backends healthy' || {
+            echo "::error::workload $WORKLOAD has no healthy backend"
+            exit 1
+          }
           datumctl get workload "$WORKLOAD" -n default --project "$DATUM_PROJECT" -o json |
             jq -e '.status.conditions[] | select(.type == "Available") | .status == "True"' >/dev/null || {
               echo "::error::workload $WORKLOAD is not Available"

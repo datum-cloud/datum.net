@@ -20,46 +20,95 @@ function embedGithubVideos(html: string): string {
   );
 }
 
-type EntryTag = { name: string; description?: string };
+type EntryTag = { name: string; description?: string; kind: 'product' | 'tag' };
 
 // The <Update> description (product name) leads the tag list, ahead of the type tags.
 function entryTags(entry: ChangelogProps): EntryTag[] {
-  const labels = entry.labels?.nodes ?? [];
-  return entry.product ? [{ name: entry.product }, ...labels] : labels;
+  const labels = (entry.labels?.nodes ?? []).map((label) => ({ ...label, kind: 'tag' as const }));
+  return entry.product ? [{ name: entry.product, kind: 'product' as const }, ...labels] : labels;
 }
+
+function countBy(values: string[]): Array<{ name: string; count: number }> {
+  const counts = new Map<string, number>();
+  for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1);
+  return [...counts].map(([name, count]) => ({ name, count }));
+}
+
+// Type tags lead with the most used so the common filters sit first; products read A–Z.
+const tagFacets = countBy(
+  entries.flatMap((entry) => entry.labels?.nodes.map((l) => l.name) ?? [])
+).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const productFacets = countBy(
+  entries.flatMap((entry) => (entry.product ? [entry.product] : []))
+).sort((a, b) => a.name.localeCompare(b.name));
+const tagSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 ---
 
 <div class="changelog-toolbar">
-  <button type="button" class="changelog-toolbar-sort" data-changelog-sort data-order="recent">
-    <Icon name="list-filter" size="sm" class="size-4.5!" />
-    <span>Sort by: <span data-changelog-sort-label>Recent</span></span>
-  </button>
-  <div class="changelog-toolbar-search" data-changelog-search-root>
-    <label class="changelog-toolbar-search-field">
-      <Icon name="search" size="sm" class="size-4.5!" />
-      <span class="sr-only">Search changelog</span>
-      <input
-        type="search"
-        placeholder="Search"
-        data-changelog-search
-        autocomplete="off"
-        role="combobox"
-        aria-autocomplete="list"
-        aria-haspopup="listbox"
-        aria-expanded="false"
-        aria-controls="changelog-search-results"
-      />
+  <div class="changelog-toolbar-filters">
+    <label class="changelog-select">
+      <span class="sr-only">Filter by product</span>
+      <select data-changelog-product>
+        <option value="">All products</option>
+        {
+          productFacets.map((product) => (
+            <option value={product.name}>
+              {product.name} ({product.count})
+            </option>
+          ))
+        }
+      </select>
     </label>
-    <ul
-      id="changelog-search-results"
-      class="changelog-search-results"
-      role="listbox"
-      aria-label="Changelog results"
-      data-changelog-results
-      hidden
-    >
-    </ul>
-    <p class="sr-only" role="status" data-changelog-status></p>
+    <label class="changelog-select">
+      <span class="sr-only">Filter by type</span>
+      <select data-changelog-tag>
+        <option value="">All types</option>
+        {
+          tagFacets.map((tag) => (
+            <option value={tag.name}>
+              {tag.name} ({tag.count})
+            </option>
+          ))
+        }
+      </select>
+    </label>
+    <div class="changelog-summary" data-changelog-summary tabindex="-1" role="status">
+      <span data-changelog-summary-text>{`${entries.length} updates`}</span>
+      <button type="button" class="changelog-clear" data-changelog-clear hidden>Clear</button>
+    </div>
+  </div>
+  <div class="changelog-toolbar-actions">
+    <button type="button" class="changelog-toolbar-sort" data-changelog-sort data-order="recent">
+      <Icon name="list-filter" size="sm" class="size-4.5!" />
+      <span>Sort by: <span data-changelog-sort-label>Recent</span></span>
+    </button>
+    <div class="changelog-toolbar-search" data-changelog-search-root>
+      <label class="changelog-toolbar-search-field">
+        <Icon name="search" size="sm" class="size-4.5!" />
+        <span class="sr-only">Search changelog</span>
+        <input
+          type="search"
+          placeholder="Search"
+          data-changelog-search
+          autocomplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="changelog-search-results"
+        />
+      </label>
+      <ul
+        id="changelog-search-results"
+        class="changelog-search-results"
+        role="listbox"
+        aria-label="Changelog results"
+        data-changelog-results
+        hidden
+      >
+      </ul>
+      <p class="sr-only" role="status" data-changelog-status></p>
+    </div>
   </div>
 </div>
 
@@ -68,6 +117,8 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
     entries.map((entry: ChangelogProps, index: number) => (
       <div
         id={`changelog-${entry.id}`}
+        data-product={entry.product ?? ''}
+        data-tags={JSON.stringify(entry.labels?.nodes.map((label) => label.name) ?? [])}
         class:list={['changelog-entry', { 'changelog-entry--last': index === entries.length - 1 }]}
       >
         <div class="changelog-entry-line" />
@@ -89,11 +140,15 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
               <div class="changelog-entry-card-tags">
                 {entryTags(entry).map((label) => (
                   <div class="changelog-entry-card-tag-row">
-                    <span
-                      class={`changelog-entry-card-tag changelog-entry-card-tag--${label.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                    <button
+                      type="button"
+                      data-changelog-filter={label.kind}
+                      data-value={label.name}
+                      title={`Show only ${label.name}`}
+                      class={`changelog-entry-card-tag changelog-entry-card-tag--${tagSlug(label.name)}`}
                     >
                       {label.name}
-                    </span>
+                    </button>
                     {label.description && (
                       <span class="changelog-entry-card-tag-description">{label.description}</span>
                     )}
@@ -126,7 +181,16 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
   }
 </div>
 
+<p class="changelog-empty" data-changelog-empty hidden>
+  Nothing matches those filters yet.
+  <button type="button" class="changelog-clear" data-changelog-clear>Clear filters</button>
+</p>
+
+<nav class="changelog-pager" aria-label="Changelog pages" data-changelog-pager hidden></nav>
+
 <script>
+  import { initChangelogView, revealEntry } from './view';
+
   // The list arrives after page load through server:defer, so everything is delegated from
   // document (and derived from the DOM) instead of bound to elements that do not exist yet.
   const OPTION_ID_PREFIX = 'changelog-option-';
@@ -154,12 +218,6 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
     const listbox = root?.querySelector<HTMLElement>('[data-changelog-results]');
     const status = root?.querySelector<HTMLElement>('[data-changelog-status]');
     return root && input && listbox && status ? { root, input, listbox, status } : null;
-  }
-
-  function markLastEntry(list: HTMLElement) {
-    const entries = Array.from(list.querySelectorAll<HTMLElement>('.changelog-entry'));
-    for (const entry of entries) entry.classList.remove('changelog-entry--last');
-    entries.at(-1)?.classList.add('changelog-entry--last');
   }
 
   // ---- search ------------------------------------------------------------------------------
@@ -311,6 +369,7 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
   }
 
   function goToEntry(entry: HTMLElement, updateHash = true) {
+    revealEntry(entry);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     entry.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     if (updateHash) history.replaceState(null, '', `#${entry.id}`);
@@ -334,16 +393,16 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
     return id.startsWith(ENTRY_ID_PREFIX) ? document.getElementById(id) : null;
   }
 
-  // A deep link (#changelog-…) can't be scrolled to natively because the entries arrive after
-  // load, so wait for them and then scroll.
-  function scrollToHashWhenReady() {
+  // The entries arrive after load, so a deep link (#changelog-…) can't be scrolled to natively:
+  // once the list is in the DOM, set up the filters/paging from the URL, then scroll to the hash.
+  function whenListReady() {
     const attempt = () => {
-      if (!changelogList()) return false;
+      if (!initChangelogView()) return false;
       const entry = entryFromHash();
       if (entry) goToEntry(entry, false);
       return true;
     };
-    if (!location.hash.startsWith(`#${ENTRY_ID_PREFIX}`) || attempt()) return;
+    if (attempt()) return;
     const observer = new MutationObserver(() => {
       if (attempt()) observer.disconnect();
     });
@@ -363,17 +422,6 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
       return;
     }
     if (!target.closest('[data-changelog-search-root]')) closeResults();
-
-    const sort = target.closest<HTMLButtonElement>('[data-changelog-sort]');
-    const list = changelogList();
-    if (!sort || !list) return;
-
-    const next = sort.dataset.order === 'recent' ? 'oldest' : 'recent';
-    sort.dataset.order = next;
-    const label = sort.querySelector<HTMLElement>('[data-changelog-sort-label]');
-    if (label) label.textContent = next === 'recent' ? 'Recent' : 'Oldest';
-    list.append(...Array.from(list.children).reverse());
-    markLastEntry(list);
   }
 
   function onInput(event: Event) {
@@ -455,8 +503,11 @@ function entryTags(entry: ChangelogProps): EntryTag[] {
     document.addEventListener('keydown', onKeyDown);
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('hashchange', scrollToHashWhenReady);
-    document.addEventListener('astro:page-load', scrollToHashWhenReady);
+    window.addEventListener('hashchange', () => {
+      const entry = entryFromHash();
+      if (entry) goToEntry(entry, false);
+    });
+    document.addEventListener('astro:page-load', whenListReady);
   }
-  scrollToHashWhenReady();
+  whenListReady();
 </script>

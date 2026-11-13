@@ -279,7 +279,10 @@ const staticServer = sirv(CLIENT_DIR, {
     // never fires and pages fall through to the immutable 1-year default
     // meant for hashed /_astro/ assets. Treat any extensionless path as a
     // page instead.
-    const isPage = pathname.match(/\.(html)$/) || !/\.[^/]+$/.test(pathname);
+    // .txt files (llms.txt, llms-full.txt, robots.txt) keep a stable URL and
+    // change per release, so they revalidate like pages — matching what the
+    // pre-compressed .br/.gz handler above already sends for them.
+    const isPage = pathname.match(/\.(html|txt)$/) || !/\.[^/]+$/.test(pathname);
     if (pathname.includes('/_astro/')) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     } else if (isPage) {

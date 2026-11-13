@@ -112,6 +112,24 @@ test('llms.txt has an explicit when-to-use section', async () => {
   assert.match(body, /## When to Use Datum/);
 });
 
+// .txt files (llms.txt, llms-full.txt, robots.txt) keep their URL across
+// releases, so an immutable 1-year cache would pin agents and CDNs to a stale
+// copy long after a deploy changes them. Both serving paths must revalidate:
+// sirv (identity / no Accept-Encoding) and the pre-compressed .br/.gz handler.
+for (const encoding of ['identity', 'br', 'gzip']) {
+  test(`.txt files revalidate instead of caching immutably (Accept-Encoding: ${encoding})`, async () => {
+    for (const path of ['/llms.txt', '/llms-full.txt', '/robots.txt']) {
+      const res = await fetch(`${BASE_URL}${path}`, {
+        headers: { 'Accept-Encoding': encoding },
+      });
+      assert.equal(res.status, 200, path);
+      const cacheControl = res.headers.get('cache-control') ?? '';
+      assert.doesNotMatch(cacheControl, /immutable/, `${path}: ${cacheControl}`);
+      assert.match(cacheControl, /must-revalidate/, `${path}: ${cacheControl}`);
+    }
+  });
+}
+
 test('HTML responses advertise the OpenAPI spec via a service-desc Link header', async () => {
   const res = await fetch(`${BASE_URL}/`);
   assert.match(res.headers.get('link') ?? '', /openapi\.json.*rel="service-desc"/);

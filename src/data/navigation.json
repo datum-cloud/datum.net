@@ -22,7 +22,7 @@
             { "text": "Docs", "href": "/docs" },
             { "text": "Releases", "href": "/releases" },
             { "text": "Blog", "href": "/blog" },
-            { "text": "Events", "href": "/events" },
+            { "text": "Changelog", "href": "/changelog" },
             { "text": "About us", "href": "/about" }
           ]
         },

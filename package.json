@@ -27,7 +27,7 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
     "test:server": "node --test tests/server.test.mjs",
-    "test:changelog": "node --test tests/changelogMdx.test.ts"
+    "test:changelog": "node --test tests/changelogMdx.test.ts tests/changelogView.test.ts"
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.17.1",

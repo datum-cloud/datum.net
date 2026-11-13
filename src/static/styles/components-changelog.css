@@ -11,8 +11,89 @@
     @apply max-width max-w-320;
   }
 
+  /* One calm row: filters + count on the left, sort + search on the right. */
   .changelog-toolbar {
-    @apply border-silver-mist mb-10 flex items-center justify-end gap-10 border-b pb-7 md:mb-16;
+    @apply border-silver-mist mb-10 flex flex-col gap-x-10 gap-y-5 border-b pb-6 md:mb-16 lg:flex-row lg:items-center lg:justify-between;
+  }
+
+  .changelog-toolbar-filters {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-3;
+  }
+
+  .changelog-toolbar-actions {
+    @apply flex items-center gap-8 md:gap-10;
+  }
+
+  /* Native <select> (best mobile + a11y) dressed as a pill with a custom chevron. */
+  .changelog-select {
+    @apply min-w-0 flex-1 lg:flex-none;
+  }
+
+  .changelog-select select {
+    @apply datum-text-sm text-midnight-fjord border-silver-mist hover:border-midnight-fjord w-full min-w-36 cursor-pointer appearance-none rounded-lg border bg-white py-2 pr-9 pl-3.5 font-medium transition-colors duration-150;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230c1d31' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+
+    /* A narrowed filter reads as "on" without shouting. */
+    &[data-active='true'] {
+      @apply border-midnight-fjord bg-platinum;
+    }
+  }
+
+  .changelog-summary {
+    @apply datum-text-sm text-app---dark---utility-4 flex w-full items-center gap-3 outline-none lg:ml-1 lg:w-auto;
+  }
+
+  .changelog-clear {
+    @apply text-canyon-clay---links cursor-pointer bg-transparent p-0 underline hover:no-underline;
+
+    &[hidden] {
+      @apply hidden;
+    }
+  }
+
+  .changelog-empty {
+    @apply datum-text-longform-body text-midnight-fjord mb-20 text-center;
+
+    &[hidden] {
+      @apply hidden;
+    }
+  }
+
+  /* Pagination: numbered links (real hrefs, so they work as plain links too) */
+  .changelog-pager {
+    @apply border-silver-mist flex flex-wrap items-center justify-between gap-4 border-t pt-8;
+
+    &[hidden] {
+      @apply hidden;
+    }
+  }
+
+  .changelog-pager-pages {
+    @apply order-3 flex w-full items-center justify-center gap-1 sm:order-none sm:w-auto;
+  }
+
+  .changelog-pager-link {
+    @apply datum-text-sm text-midnight-fjord border-silver-mist min-w-10 rounded-lg border px-3 py-2 text-center font-medium no-underline transition-colors duration-150;
+    @apply hover:border-midnight-fjord focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    &[aria-current='page'] {
+      @apply bg-midnight-fjord border-midnight-fjord text-white;
+    }
+
+    &[aria-disabled='true'] {
+      @apply text-app---dark---utility-4 cursor-default opacity-50 hover:border-transparent;
+    }
+  }
+
+  .changelog-pager-step {
+    @apply border-transparent;
+  }
+
+  .changelog-pager-gap {
+    @apply text-app---dark---utility-4 px-1;
   }
 
   .changelog-toolbar-sort,
@@ -95,6 +176,10 @@
   /* scroll-mt keeps a jumped-to entry clear of the top edge (matches the sticky sidebar's top-6). */
   .changelog-entry {
     @apply relative mb-14 flex scroll-mt-6 flex-col gap-0 md:mb-20 md:flex-row md:gap-12 lg:mb-24 xl:mb-28 xl:gap-16;
+  }
+
+  .changelog-entry[hidden] {
+    @apply hidden;
   }
 
   .changelog-entry--flash .changelog-entry-card {
@@ -233,7 +318,8 @@
 
   /* Matches .roadmap-backlog-badge (components-roadmap.css) */
   .changelog-entry-card-tag {
-    @apply text-app---dark---utility-4 datum-app-body shrink-0 rounded-lg border border-current/30 px-1.5 py-0.5;
+    @apply text-app---dark---utility-4 datum-app-body shrink-0 cursor-pointer rounded-lg border border-current/30 bg-transparent px-1.5 py-0.5 transition-colors duration-150;
+    @apply hover:text-midnight-fjord hover:border-midnight-fjord focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 
   .changelog-entry-card-tag-description {

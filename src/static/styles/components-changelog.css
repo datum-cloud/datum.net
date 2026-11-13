@@ -145,7 +145,8 @@
   }
 
   .changelog-entry-nav-title {
-    @apply text-midnight-fjord m-0 font-semibold xl:text-(length:--30px) xl:leading-(--42px);
+    /* datum-text-3xl steps 18 → 20 (md) → 24 (lg) → 30/42 (xl). xl matches the Figma title. */
+    @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
   /* Date as the kicker above the title; -mb-2 tightens the nav-content gap to pair it with the title */

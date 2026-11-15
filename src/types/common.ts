@@ -13,6 +13,8 @@ export interface LayoutProps {
   dataTheme: string;
   bodyClass?: string;
   jsonLd?: Record<string, unknown>;
+  /** Page-specific RSS feed, advertised in <head> alongside the site-wide blog feed. */
+  feed?: { title: string; href: string };
   meta?: {
     title?: string;
     description?: string;

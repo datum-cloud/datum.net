@@ -1,8 +1,9 @@
 // Client-side filters, sorting and paging for /changelog. Every entry is server-rendered into the
 // list (so search, deep links and no-JS readers still see all of them); this module only decides
-// which ones are visible and keeps that choice in the URL (?page=&tag=&product=&sort=).
+// which ones are visible and keeps that choice in the URL (?page=&tag=&product=&range=&sort=).
 import {
   ALL,
+  CHANGELOG_RANGES,
   PAGE_SIZE,
   DEFAULT_VIEW_STATE,
   facetCounts,
@@ -12,6 +13,7 @@ import {
   pageItems,
   parseViewState,
   toQueryString,
+  type ChangelogRange,
   type EntryMeta,
   type ViewState,
 } from '@libs/changelogView';
@@ -34,7 +36,12 @@ function metaOf(entry: HTMLElement): EntryMeta {
   return {
     product: entry.dataset.product ?? '',
     tags: JSON.parse(entry.dataset.tags ?? '[]') as string[],
+    date: Date.parse(entry.dataset.date ?? '') || 0,
   };
+}
+
+function toRange(value: string): ChangelogRange {
+  return CHANGELOG_RANGES.find((range) => range === value) ?? DEFAULT_VIEW_STATE.range;
 }
 
 function reducedMotion(): boolean {
@@ -132,6 +139,12 @@ function renderControls(matchCount: number, metas: EntryMeta[]) {
     select.dataset.active = String(value !== ALL);
   }
 
+  const range = $<HTMLSelectElement>('[data-changelog-range]');
+  if (range) {
+    range.value = view.range;
+    range.dataset.active = String(view.range !== DEFAULT_VIEW_STATE.range);
+  }
+
   const sort = $<HTMLElement>('[data-changelog-sort]');
   if (sort) sort.dataset.order = view.sort;
   const sortLabel = $<HTMLElement>('[data-changelog-sort-label]');
@@ -189,7 +202,7 @@ function jumpToTop() {
 }
 
 function update(next: Partial<ViewState>, { scroll = false } = {}) {
-  const resetsPage = 'tag' in next || 'product' in next || 'sort' in next;
+  const resetsPage = 'tag' in next || 'product' in next || 'range' in next || 'sort' in next;
   view = { ...view, page: resetsPage ? 1 : view.page, ...next };
   render();
   commit('push');
@@ -202,7 +215,7 @@ export function revealEntry(entry: HTMLElement) {
   const all = entries();
   let position = filterIndexes(all.map(metaOf), view).indexOf(all.indexOf(entry));
   if (position < 0) {
-    view = { ...view, tag: ALL, product: ALL };
+    view = { ...view, tag: ALL, product: ALL, range: DEFAULT_VIEW_STATE.range };
     position = all.indexOf(entry);
   }
   view = { ...view, page: indexToPage(position) };
@@ -232,6 +245,11 @@ function onClick(event: MouseEvent) {
     return;
   }
 
+  if (target.closest('[data-changelog-clear-all]')) {
+    update({ tag: ALL, product: ALL, range: DEFAULT_VIEW_STATE.range }, { scroll: true });
+    return;
+  }
+
   if (target.closest('[data-changelog-clear]')) {
     update({ tag: ALL, product: ALL }, { scroll: true });
     return;
@@ -246,6 +264,7 @@ function onChange(event: Event) {
   const select = event.target as HTMLSelectElement | null;
   if (select?.matches?.('[data-changelog-product]')) update({ product: select.value });
   if (select?.matches?.('[data-changelog-tag]')) update({ tag: select.value });
+  if (select?.matches?.('[data-changelog-range]')) update({ range: toRange(select.value) });
 }
 
 function onPopState() {

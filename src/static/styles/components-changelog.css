@@ -21,7 +21,7 @@
   }
 
   .changelog-toolbar-actions {
-    @apply flex items-center gap-8 md:gap-10;
+    @apply flex flex-wrap items-center gap-x-8 gap-y-4 md:gap-x-10;
   }
 
   /* Native <select> (best mobile + a11y) dressed as a pill with a custom chevron. */
@@ -30,8 +30,10 @@
   }
 
   .changelog-select select {
-    @apply datum-text-sm text-midnight-fjord border-silver-mist hover:border-midnight-fjord w-full min-w-36 cursor-pointer appearance-none rounded-lg border bg-white py-2 pr-9 pl-3.5 font-medium transition-colors duration-150;
-    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+    @apply datum-text-sm text-midnight-fjord border-silver-mist hover:border-midnight-fjord w-full min-w-36 cursor-pointer appearance-none rounded-lg border bg-white py-2 pr-9 pl-3.5 font-medium transition-[color,background-color,border-color] duration-150;
+    /* Chrome marks a clicked <select> as :focus-visible, which draws a second ring around the
+       border. The active filter already darkens its own border, so suppress that ring. */
+    @apply focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230c1d31' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
@@ -111,6 +113,15 @@
 
   .changelog-toolbar-search {
     @apply relative;
+  }
+
+  .changelog-toolbar-subscribe {
+    @apply flex items-center gap-4;
+  }
+
+  .changelog-toolbar-subscribe-link {
+    @apply datum-text-sm text-app---dark---utility-4 hover:text-midnight-fjord flex items-center gap-1.5 font-medium no-underline transition-colors duration-150;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 
   .changelog-toolbar-search-field {
@@ -234,6 +245,11 @@
     @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
+  .changelog-entry-permalink {
+    @apply text-inherit no-underline decoration-1 underline-offset-4 hover:underline;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
   /* Date as the kicker above the title; -mb-2 tightens the nav-content gap to pair it with the title */
   .changelog-entry-nav-date {
     @apply datum-text-smallcaps text-canyon-clay -mb-2 uppercase;
@@ -241,14 +257,6 @@
 
   .changelog-entry-card {
     @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-12 lg:px-16 lg:pt-16 lg:pb-28;
-  }
-
-  .changelog-entry-card-header {
-    @apply flex justify-end;
-  }
-
-  .changelog-entry-card-link {
-    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 underline hover:no-underline;
   }
 
   .changelog-entry-card-body {

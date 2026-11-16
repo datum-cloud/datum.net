@@ -201,7 +201,7 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
             </time>
             <h3 class="changelog-entry-nav-title">
               <a href={`#changelog-${entry.id}`} class="changelog-entry-permalink">
-                {entry.title}
+                <Fragment set:html={marked.parseInline(entry.title) as string} />
               </a>
             </h3>
             {entryTags(entry).length > 0 && (

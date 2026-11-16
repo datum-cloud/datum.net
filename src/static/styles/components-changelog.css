@@ -11,22 +11,36 @@
     @apply max-width max-w-320;
   }
 
-  /* One calm row: filters + count on the left, sort + search on the right. */
+  /* The bar stays up: feed, Markdown, search, then the filter icon at the far right. */
   .changelog-toolbar {
-    @apply border-silver-mist mb-10 flex flex-col gap-x-10 gap-y-5 border-b pb-6 md:mb-16 lg:flex-row lg:items-center lg:justify-between;
+    @apply border-silver-mist mb-10 flex flex-col gap-5 border-b pb-6 md:mb-16;
   }
 
-  .changelog-toolbar-filters {
-    @apply flex flex-wrap items-center gap-x-3 gap-y-3;
+  .changelog-toolbar-bar {
+    @apply flex items-center justify-end gap-4;
   }
 
-  .changelog-toolbar-actions {
-    @apply flex flex-wrap items-center gap-x-8 gap-y-4 md:gap-x-10;
+  .changelog-toolbar-filter {
+    @apply text-app---dark---utility-4 hover:text-midnight-fjord flex cursor-pointer items-center border-0 bg-transparent p-0;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    &[aria-expanded='true'],
+    &[data-active='true'] {
+      @apply text-midnight-fjord;
+    }
+  }
+
+  .changelog-toolbar-panel {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-3 md:flex-nowrap;
+
+    &[hidden] {
+      @apply hidden;
+    }
   }
 
   /* Native <select> (best mobile + a11y) dressed as a pill with a custom chevron. */
   .changelog-select {
-    @apply min-w-0 flex-1 lg:flex-none;
+    @apply min-w-36 flex-1;
   }
 
   .changelog-select select {
@@ -45,7 +59,7 @@
   }
 
   .changelog-summary {
-    @apply datum-text-sm text-app---dark---utility-4 flex w-full items-center gap-3 outline-none lg:ml-1 lg:w-auto;
+    @apply datum-text-sm text-app---dark---utility-4 flex shrink-0 items-center gap-3 outline-none;
   }
 
   .changelog-clear {
@@ -104,7 +118,7 @@
   }
 
   .changelog-toolbar-sort {
-    @apply cursor-pointer;
+    @apply shrink-0 cursor-pointer;
 
     span span {
       @apply text-midnight-fjord;
@@ -112,7 +126,7 @@
   }
 
   .changelog-toolbar-search {
-    @apply relative;
+    @apply relative shrink-0;
   }
 
   .changelog-toolbar-subscribe {
@@ -125,13 +139,10 @@
   }
 
   .changelog-toolbar-search-field {
-    @apply cursor-text;
+    @apply w-full cursor-text;
 
     input {
-      /* w-12 (48px) hugs the 47px "Search" placeholder so its right edge meets the end of the
-         toolbar line; the field grows (to the left) to 128px on focus. */
-      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-12 bg-transparent font-medium outline-none focus:w-32;
-      @apply transition-[width] duration-200;
+      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-28 bg-transparent font-medium outline-none;
 
       /* Chrome/Safari reserve room for the native clear button, which clips a placeholder this
          tight. Esc still clears the field. */
@@ -246,7 +257,7 @@
   }
 
   .changelog-entry-permalink {
-    @apply text-inherit no-underline decoration-1 underline-offset-4 hover:underline;
+    @apply text-app---dark---utility-4 hover:text-midnight-fjord ml-1.5 inline-block align-middle text-lg font-normal no-underline;
     @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 

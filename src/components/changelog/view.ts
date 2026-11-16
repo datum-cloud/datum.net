@@ -116,6 +116,24 @@ function renderPager(total: number) {
   );
 }
 
+function filtersNarrowed(): boolean {
+  return (
+    view.tag !== ALL ||
+    view.product !== ALL ||
+    view.range !== DEFAULT_VIEW_STATE.range ||
+    view.sort !== DEFAULT_VIEW_STATE.sort
+  );
+}
+
+function setFiltersOpen(open: boolean) {
+  const panel = document.getElementById('changelog-filters');
+  const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
+  if (!panel || !toggle) return;
+  panel.hidden = !open;
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.dataset.active = String(open || filtersNarrowed());
+}
+
 function renderControls(matchCount: number, metas: EntryMeta[]) {
   const filtered = view.tag !== ALL || view.product !== ALL;
 
@@ -157,6 +175,11 @@ function renderControls(matchCount: number, metas: EntryMeta[]) {
   }
   const clear = $<HTMLElement>('[data-changelog-clear]');
   if (clear) clear.hidden = !filtered;
+  const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
+  if (toggle) {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.dataset.active = String(open || filtersNarrowed());
+  }
   const empty = $<HTMLElement>('[data-changelog-empty]');
   if (empty) empty.hidden = matchCount > 0;
 }
@@ -229,6 +252,13 @@ function onClick(event: MouseEvent) {
   const target = event.target as HTMLElement | null;
   if (!target) return;
 
+  const filtersToggle = target.closest('[data-changelog-filters-toggle]');
+  if (filtersToggle) {
+    const panel = document.getElementById('changelog-filters');
+    setFiltersOpen(panel?.hidden !== false);
+    return;
+  }
+
   const page = target.closest<HTMLAnchorElement>('a[data-page]');
   if (page && !event.metaKey && !event.ctrlKey && !event.shiftKey && event.button === 0) {
     event.preventDefault();
@@ -242,6 +272,7 @@ function onClick(event: MouseEvent) {
     const key = entryTag.dataset.changelogFilter === 'product' ? 'product' : 'tag';
     const value = entryTag.dataset.value ?? ALL;
     update({ [key]: view[key] === value ? ALL : value }, { scroll: true });
+    setFiltersOpen(true);
     return;
   }
 
@@ -290,6 +321,7 @@ export function initChangelogView() {
     container.dataset.viewReady = 'true';
     view = parseViewState(location.search);
     render();
+    if (filtersNarrowed()) setFiltersOpen(true);
     commit('replace', true); // normalise bad params without dropping a #changelog-… deep link
   }
   return true;

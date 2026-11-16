@@ -1,0 +1,19 @@
+src/components/changelog/Card.astro
+  s_89b4c3f17efe75::t_67ade21a05059c 204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f1b465a710d41b3c83e8103be0964cbbdf7622ba",
+  "prompts": {},
+  "sessions": {
+    "s_89b4c3f17efe75": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1362f465-6111-4385-81b4-f0de9398110b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

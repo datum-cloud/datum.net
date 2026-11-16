@@ -21,6 +21,32 @@ function embedGithubVideos(html: string): string {
   );
 }
 
+const ISSUE_LINK =
+  /<a href="https:\/\/github\.com\/[^"]+\/(?:issues|pull|discussions)\/\d+"[^>]*>[\s\S]*?<\/a>(?:\s*\(#\d+\))?/gi;
+
+// "Details: [A](…) (#1), [B](…) (#2)" is one comma-separated paragraph, which wraps with the
+// chain icon stranded at a line end. Turn it into a label plus a list so each issue gets its own
+// line (one issue included, for consistency). Anything else in the paragraph keeps it as written.
+function listIssueDetails(html: string): string {
+  return html.replace(/<p>(Details:)\s*([\s\S]*?)<\/p>/gi, (match, label: string, rest: string) => {
+    const items = rest.match(ISSUE_LINK) ?? [];
+    const leftover = rest.replace(ISSUE_LINK, '').replace(/[\s,;]|and|&amp;/g, '');
+    if (items.length < 1 || leftover) return match;
+    const rows = items.map((item) => `<li>${item}</li>`).join('');
+    return `<p>${label}</p><ul class="changelog-details">${rows}</ul>`;
+  });
+}
+
+// The "(#896)" after a "Details:" issue link is bare text in the markdown, so CSS can't reach
+// it. Wrap it in <small> so it can take the muted, smaller treatment.
+function dimIssueRefs(html: string): string {
+  return html.replace(
+    /(<a href="https:\/\/github\.com\/[^"]+\/(?:issues|pull|discussions)\/\d+"[^>]*>[\s\S]*?<\/a>)(\s*)\((#\d+)\)/gi,
+    (_match, link: string, space: string, ref: string) =>
+      `${link}${space}<small class="changelog-issue-ref">(${ref})</small>`
+  );
+}
+
 type EntryTag = { name: string; description?: string; kind: 'product' | 'tag' };
 
 // The <Update> description (product name) leads the tag list, ahead of the type tags.
@@ -54,6 +80,46 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
 
 <div class="changelog-toolbar">
   <div class="changelog-toolbar-bar">
+    <div class="changelog-toolbar-tools">
+      <button
+        type="button"
+        class="changelog-toolbar-filter"
+        data-changelog-filters-toggle
+        aria-expanded="false"
+        aria-controls="changelog-filters"
+      >
+        <Icon name="funnel" size="sm" class="size-4.5!" />
+        <span data-changelog-filters-label>Filters</span>
+        <span class="changelog-toolbar-filter-count" data-changelog-filters-count hidden></span>
+      </button>
+      <div class="changelog-toolbar-search" data-changelog-search-root>
+        <label class="changelog-toolbar-search-field">
+          <Icon name="search" size="sm" class="size-4.5!" />
+          <span class="sr-only">Search changelog</span>
+          <input
+            type="search"
+            placeholder="Search"
+            data-changelog-search
+            autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="changelog-search-results"
+          />
+        </label>
+        <ul
+          id="changelog-search-results"
+          class="changelog-search-results"
+          role="listbox"
+          aria-label="Changelog results"
+          data-changelog-results
+          hidden
+        >
+        </ul>
+        <p class="sr-only" role="status" data-changelog-status></p>
+      </div>
+    </div>
     <nav class="changelog-toolbar-subscribe" aria-label="Subscribe to the changelog">
       <a href="/changelog.xml" class="changelog-toolbar-subscribe-link" title="RSS feed">
         <Icon name="rss" size="sm" class="size-4.5!" />
@@ -64,43 +130,6 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
         <span>Markdown</span>
       </a>
     </nav>
-    <div class="changelog-toolbar-search" data-changelog-search-root>
-      <label class="changelog-toolbar-search-field">
-        <Icon name="search" size="sm" class="size-4.5!" />
-        <span class="sr-only">Search changelog</span>
-        <input
-          type="search"
-          placeholder="Search"
-          data-changelog-search
-          autocomplete="off"
-          role="combobox"
-          aria-autocomplete="list"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-controls="changelog-search-results"
-        />
-      </label>
-      <ul
-        id="changelog-search-results"
-        class="changelog-search-results"
-        role="listbox"
-        aria-label="Changelog results"
-        data-changelog-results
-        hidden
-      >
-      </ul>
-      <p class="sr-only" role="status" data-changelog-status></p>
-    </div>
-    <button
-      type="button"
-      class="changelog-toolbar-filter"
-      data-changelog-filters-toggle
-      aria-expanded="false"
-      aria-controls="changelog-filters"
-    >
-      <Icon name="funnel" size="sm" class="size-4.5!" />
-      <span class="sr-only">Filters</span>
-    </button>
   </div>
   <div id="changelog-filters" class="changelog-toolbar-panel" hidden>
     <label class="changelog-select">
@@ -140,7 +169,7 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
       </select>
     </label>
     <button type="button" class="changelog-toolbar-sort" data-changelog-sort data-order="recent">
-      <Icon name="list-filter" size="sm" class="size-4.5!" />
+      <Icon name="arrow-down-up" size="sm" class="size-4.5!" />
       <span>Sort by: <span data-changelog-sort-label>Recent</span></span>
     </button>
   </div>
@@ -171,13 +200,8 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
               })}
             </time>
             <h3 class="changelog-entry-nav-title">
-              <span class="changelog-entry-title-text">{entry.title}</span>
-              <a
-                href={`#changelog-${entry.id}`}
-                class="changelog-entry-permalink"
-                aria-label={`Link to ${entry.title}`}
-              >
-                ∞
+              <a href={`#changelog-${entry.id}`} class="changelog-entry-permalink">
+                {entry.title}
               </a>
             </h3>
             {entryTags(entry).length > 0 && (
@@ -206,7 +230,9 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
         <article class="changelog-entry-card">
           <div
             class="changelog-entry-card-body"
-            set:html={embedGithubVideos(marked.parse(entry.body) as string)}
+            set:html={dimIssueRefs(
+              listIssueDetails(embedGithubVideos(marked.parse(entry.body) as string))
+            )}
           />
         </article>
       </div>
@@ -262,7 +288,7 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
 
     const found: SearchResult[] = [];
     for (const entry of list.querySelectorAll<HTMLElement>('.changelog-entry')) {
-      const title = entry.querySelector('.changelog-entry-title-text')?.textContent?.trim() ?? '';
+      const title = entry.querySelector('.changelog-entry-nav-title')?.textContent?.trim() ?? '';
       const date = entry.querySelector('time')?.textContent?.trim() ?? '';
       const body = (entry.querySelector('.changelog-entry-card-body')?.textContent ?? '')
         .replace(/\s+/g, ' ')

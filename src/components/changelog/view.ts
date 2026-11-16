@@ -125,13 +125,34 @@ function filtersNarrowed(): boolean {
   );
 }
 
-function setFiltersOpen(open: boolean) {
-  const panel = document.getElementById('changelog-filters');
+// Narrowing filters only (sort reorders, it doesn't narrow), so the badge counts what's hiding entries.
+function activeFilterCount(): number {
+  return [view.tag !== ALL, view.product !== ALL, view.range !== DEFAULT_VIEW_STATE.range].filter(
+    Boolean
+  ).length;
+}
+
+function syncFiltersToggle(open: boolean) {
   const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
-  if (!panel || !toggle) return;
-  panel.hidden = !open;
+  if (!toggle) return;
   toggle.setAttribute('aria-expanded', String(open));
   toggle.dataset.active = String(open || filtersNarrowed());
+  const label = $<HTMLElement>('[data-changelog-filters-label]');
+  if (label) label.textContent = open ? 'Hide filters' : 'Filters';
+  const count = $<HTMLElement>('[data-changelog-filters-count]');
+  if (count) {
+    const active = activeFilterCount();
+    count.textContent = String(active);
+    // The badge is for the collapsed state; once the panel is open the selects show what's on.
+    count.hidden = open || active === 0;
+  }
+}
+
+function setFiltersOpen(open: boolean) {
+  const panel = document.getElementById('changelog-filters');
+  if (!panel) return;
+  panel.hidden = !open;
+  syncFiltersToggle(open);
 }
 
 function renderControls(matchCount: number, metas: EntryMeta[]) {
@@ -176,10 +197,7 @@ function renderControls(matchCount: number, metas: EntryMeta[]) {
   const clear = $<HTMLElement>('[data-changelog-clear]');
   if (clear) clear.hidden = !filtered;
   const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
-  if (toggle) {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.dataset.active = String(open || filtersNarrowed());
-  }
+  if (toggle) syncFiltersToggle(toggle.getAttribute('aria-expanded') === 'true');
   const empty = $<HTMLElement>('[data-changelog-empty]');
   if (empty) empty.hidden = matchCount > 0;
 }

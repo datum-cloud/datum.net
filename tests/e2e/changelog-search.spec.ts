@@ -11,6 +11,9 @@ test.describe('Changelog search', () => {
       .waitFor({ timeout: 15000 })
       .catch(() => undefined);
     test.skip((await entries.count()) === 0, 'No changelog entries available in this environment');
+    // The entries are server-rendered before the page script runs, so typing right away can beat
+    // the search handlers. The script marks the list ready only after they are bound.
+    await page.locator('[data-changelog-list][data-view-ready="true"]').waitFor();
     await page.getByRole('button', { name: 'Filters' }).click();
   });
 
@@ -18,6 +21,9 @@ test.describe('Changelog search', () => {
     const title = (await page.locator('.changelog-entry-nav-title').first().innerText()).trim();
     const word = title.split(/\s+/).find((w) => w.length > 3) ?? title;
     const entryId = await page.locator('.changelog-entry').first().getAttribute('id');
+    // Paging already hides entries on other pages; searching must not hide any more.
+    const hiddenEntries = page.locator('.changelog-entry[hidden]');
+    const hiddenBefore = await hiddenEntries.count();
 
     const input = page.getByRole('combobox', { name: 'Search changelog' });
     await input.click();
@@ -28,7 +34,7 @@ test.describe('Changelog search', () => {
     await expect(input).toHaveAttribute('aria-expanded', 'true');
     expect(await listbox.getByRole('option').count()).toBeGreaterThan(0);
     // Searching no longer hides entries from the page.
-    await expect(page.locator('.changelog-entry[hidden]')).toHaveCount(0);
+    await expect(hiddenEntries).toHaveCount(hiddenBefore);
 
     await input.press('ArrowDown');
     await expect(input).toHaveAttribute('aria-activedescendant', /changelog-option-0/);

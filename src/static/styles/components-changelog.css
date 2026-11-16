@@ -279,7 +279,7 @@
   }
 
   .changelog-entry-card {
-    @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-12 lg:px-16 lg:pt-16 lg:pb-28;
+    @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-8;
   }
 
   .changelog-entry-card-body {
@@ -287,6 +287,11 @@
 
     & > :first-child {
       @apply mt-0;
+    }
+
+    /* The last block's bottom margin would stack on the card padding and fatten the bottom edge. */
+    & > :last-child {
+      @apply mb-0;
     }
 
     h2 {

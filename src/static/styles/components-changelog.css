@@ -11,27 +11,55 @@
     @apply max-width max-w-320;
   }
 
-  /* One calm row: filters + count on the left, sort + search on the right. */
+  /* The bar stays up: search + filters on the left, the feed/Markdown exports on the right. */
   .changelog-toolbar {
-    @apply border-silver-mist mb-10 flex flex-col gap-x-10 gap-y-5 border-b pb-6 md:mb-16 lg:flex-row lg:items-center lg:justify-between;
+    @apply border-silver-mist mb-10 flex flex-col gap-5 border-b pb-6 md:mb-16;
   }
 
-  .changelog-toolbar-filters {
-    @apply flex flex-wrap items-center gap-x-3 gap-y-3;
+  .changelog-toolbar-bar {
+    @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-3;
   }
 
-  .changelog-toolbar-actions {
-    @apply flex items-center gap-8 md:gap-10;
+  .changelog-toolbar-tools {
+    @apply flex items-center gap-6;
+  }
+
+  .changelog-toolbar-filter {
+    @apply datum-text-sm text-app---dark---utility-4 hover:text-midnight-fjord flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-medium;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    &[aria-expanded='true'],
+    &[data-active='true'] {
+      @apply text-midnight-fjord;
+    }
+  }
+
+  .changelog-toolbar-filter-count {
+    @apply bg-midnight-fjord inline-flex size-5 items-center justify-center rounded-full text-xs font-semibold text-white;
+
+    &[hidden] {
+      @apply hidden;
+    }
+  }
+
+  .changelog-toolbar-panel {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-3 md:flex-nowrap;
+
+    &[hidden] {
+      @apply hidden;
+    }
   }
 
   /* Native <select> (best mobile + a11y) dressed as a pill with a custom chevron. */
   .changelog-select {
-    @apply min-w-0 flex-1 lg:flex-none;
+    @apply min-w-36 flex-1;
   }
 
   .changelog-select select {
-    @apply datum-text-sm text-midnight-fjord border-silver-mist hover:border-midnight-fjord w-full min-w-36 cursor-pointer appearance-none rounded-lg border bg-white py-2 pr-9 pl-3.5 font-medium transition-colors duration-150;
-    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+    @apply datum-text-sm text-midnight-fjord border-silver-mist hover:border-midnight-fjord w-full min-w-36 cursor-pointer appearance-none rounded-lg border bg-white py-2 pr-9 pl-3.5 font-medium transition-[color,background-color,border-color] duration-150;
+    /* Chrome marks a clicked <select> as :focus-visible, which draws a second ring around the
+       border. The active filter already darkens its own border, so suppress that ring. */
+    @apply focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230c1d31' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
@@ -43,7 +71,7 @@
   }
 
   .changelog-summary {
-    @apply datum-text-sm text-app---dark---utility-4 flex w-full items-center gap-3 outline-none lg:ml-1 lg:w-auto;
+    @apply datum-text-sm text-app---dark---utility-4 flex shrink-0 items-center gap-3 outline-none;
   }
 
   .changelog-clear {
@@ -102,7 +130,7 @@
   }
 
   .changelog-toolbar-sort {
-    @apply cursor-pointer;
+    @apply shrink-0 cursor-pointer;
 
     span span {
       @apply text-midnight-fjord;
@@ -110,17 +138,23 @@
   }
 
   .changelog-toolbar-search {
-    @apply relative;
+    @apply relative shrink-0;
+  }
+
+  .changelog-toolbar-subscribe {
+    @apply flex items-center gap-4;
+  }
+
+  .changelog-toolbar-subscribe-link {
+    @apply datum-text-sm text-app---dark---utility-4 hover:text-midnight-fjord flex items-center gap-1.5 font-medium no-underline transition-colors duration-150;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 
   .changelog-toolbar-search-field {
-    @apply cursor-text;
+    @apply w-full cursor-text;
 
     input {
-      /* w-12 (48px) hugs the 47px "Search" placeholder so its right edge meets the end of the
-         toolbar line; the field grows (to the left) to 128px on focus. */
-      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-12 bg-transparent font-medium outline-none focus:w-32;
-      @apply transition-[width] duration-200;
+      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-28 bg-transparent font-medium outline-none;
 
       /* Chrome/Safari reserve room for the native clear button, which clips a placeholder this
          tight. Esc still clears the field. */
@@ -133,7 +167,7 @@
 
   /* Search results dropdown (ARIA combobox listbox) */
   .changelog-search-results {
-    @apply border-glacier-mist-900 shadow-modal absolute top-full right-0 z-30 m-0 mt-3 max-h-80 list-none overflow-y-auto overscroll-contain border bg-white p-0;
+    @apply border-glacier-mist-900 shadow-modal absolute top-full left-0 z-30 m-0 mt-3 max-h-80 list-none overflow-y-auto overscroll-contain border bg-white p-0;
     width: min(26rem, calc(100vw - 3.5rem));
   }
 
@@ -207,7 +241,7 @@
   }
 
   .changelog-entry-dot {
-    @apply relative z-10 mt-2 size-6 shrink-0;
+    @apply relative z-10 size-6 shrink-0;
 
     svg {
       @apply size-full;
@@ -215,8 +249,8 @@
   }
 
   .changelog-entry-line {
-    /* left: 0.75rem = center of the 24px dot; top: 2rem = dot offset (8px) plus dot height (24px) */
-    @apply bg-midnight-fjord absolute top-8 bottom-0 left-3 hidden w-px md:block;
+    /* left: 0.75rem = center of the 24px dot; top: 1.5rem = dot height, so the line starts right under it */
+    @apply bg-midnight-fjord absolute top-6 bottom-0 left-3 hidden w-px md:block;
   }
 
   .changelog-entry--last {
@@ -234,21 +268,18 @@
     @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
+  .changelog-entry-permalink {
+    @apply text-inherit no-underline decoration-1 underline-offset-4 hover:underline;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
   /* Date as the kicker above the title; -mb-2 tightens the nav-content gap to pair it with the title */
   .changelog-entry-nav-date {
     @apply datum-text-smallcaps text-canyon-clay -mb-2 uppercase;
   }
 
   .changelog-entry-card {
-    @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-12 lg:px-16 lg:pt-16 lg:pb-28;
-  }
-
-  .changelog-entry-card-header {
-    @apply flex justify-end;
-  }
-
-  .changelog-entry-card-link {
-    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 underline hover:no-underline;
+    @apply bg-platinum flex min-w-0 flex-1 flex-col gap-5 p-6 md:p-8;
   }
 
   .changelog-entry-card-body {
@@ -256,6 +287,11 @@
 
     & > :first-child {
       @apply mt-0;
+    }
+
+    /* The last block's bottom margin would stack on the card padding and fatten the bottom edge. */
+    & > :last-child {
+      @apply mb-0;
     }
 
     h2 {
@@ -272,6 +308,58 @@
 
     a {
       @apply text-canyon-clay---links underline hover:no-underline;
+    }
+
+    /* The "Details: <issue>" link opens in the same tab, so it gets a chain (not an
+       external-link arrow). The mask takes the link colour via currentColor. */
+    --issue-link-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 17H7A5 5 0 0 1 7 7h2'/%3E%3Cpath d='M15 7h2a5 5 0 1 1 0 10h-2'/%3E%3Cline x1='8' x2='16' y1='12' y2='12'/%3E%3C/svg%3E");
+
+    /* :where() keeps this rule's specificity low so the list rule below can switch it off. */
+    a:where(
+        [href*='github.com/'][href*='/issues/'],
+        [href*='github.com/'][href*='/pull/'],
+        [href*='github.com/'][href*='/discussions/']
+      )::before {
+      content: '';
+      @apply mr-1.5 inline-block size-4 bg-current align-[-0.15em] no-underline;
+      mask: var(--issue-link-icon) center / contain no-repeat;
+    }
+
+    /* One issue per row. The title truncates with an ellipsis so a row never wraps; the
+       (#123) ref stays visible after it. */
+    ul.changelog-details {
+      @apply mt-0 list-none pl-0;
+
+      li {
+        @apply relative flex items-baseline pl-6;
+      }
+
+      a {
+        @apply min-w-0 truncate;
+      }
+
+      .changelog-issue-ref {
+        @apply ml-1.5 shrink-0;
+      }
+
+      li::before {
+        content: '';
+        @apply text-canyon-clay---links absolute top-[0.35em] left-0 size-4 bg-current;
+        mask: var(--issue-link-icon) center / contain no-repeat;
+      }
+
+      a::before {
+        @apply hidden;
+      }
+    }
+
+    p:has(+ ul.changelog-details) {
+      @apply mb-2;
+    }
+
+    /* "(#896)" after an issue link: small, in the same muted grey the toolbar and card tags use. */
+    .changelog-issue-ref {
+      @apply datum-text-sm text-app---dark---utility-4;
     }
 
     img {

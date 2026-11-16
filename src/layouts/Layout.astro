@@ -23,6 +23,7 @@ const {
   bodyClass = 'template',
   meta,
   jsonLd,
+  feed,
 } = Astro.props as LayoutProps;
 
 const mode = process.env.NODE_ENV || process.env.MODE || import.meta.env.MODE;
@@ -55,6 +56,11 @@ const twitterImageUrl = toAbsoluteUrl(twitterImage?.src ?? imageContent.src);
     <meta charset="UTF-8" />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {
+      feed && (
+        <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
+      )
+    }
     <link rel="alternate" type="application/rss+xml" title="Datum RSS Feed" href="/rss.xml" />
     <Favicons />
 

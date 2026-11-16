@@ -6,13 +6,19 @@ import type { ChangelogProps } from './datum';
 
 export const DOCS_CHANGELOG_SOURCE_URL =
   'https://raw.githubusercontent.com/datum-cloud/docs/main/changelog.mdx';
-export const CHANGELOG_DISCUSSIONS_URL =
-  'https://github.com/orgs/datum-cloud/discussions/categories/changelog';
 
 const DOCS_BASE_PATH = '/docs';
 const UPDATE_OPEN_TAG = /<Update\b/g;
 const UPDATE_BLOCK = /<Update\s+([^>]*?)>\r?\n([\s\S]*?)\r?\n\s*<\/Update>/g;
-const DISCUSSION_LINK = /https:\/\/github\.com\/orgs\/datum-cloud\/discussions\/\d+/;
+const GITHUB_REFERENCE =
+  /https:\/\/github\.com\/(?:orgs\/datum-cloud\/discussions|datum-cloud\/[\w.-]+\/(?:issues|pull|discussions))\/\d+/g;
+
+// An entry gets a GitHub link only when it cites exactly one issue, PR or discussion; with
+// several, the body already lists each one and no single link speaks for the entry.
+function singleGithubReference(body: string): string | undefined {
+  const references = new Set(body.match(GITHUB_REFERENCE) ?? []);
+  return references.size === 1 ? [...references][0] : undefined;
+}
 
 function readStringAttr(attrs: string, name: string): string | undefined {
   return attrs.match(new RegExp(`${name}="([^"]*)"`))?.[1];
@@ -73,7 +79,7 @@ function parseBlock(attrs: string, content: string): ChangelogProps {
     id: `${createdAt.toISOString().slice(0, 10)}-${slugify(title)}`,
     title,
     body: bodyWithoutTitle,
-    url: body.match(DISCUSSION_LINK)?.[0] ?? CHANGELOG_DISCUSSIONS_URL,
+    url: singleGithubReference(body),
     createdAt,
     product: readStringAttr(attrs, 'description'),
     labels: { nodes: readTags(attrs).map((name) => ({ name, color: '' })) },

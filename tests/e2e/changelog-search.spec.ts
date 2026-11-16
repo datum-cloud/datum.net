@@ -11,6 +11,7 @@ test.describe('Changelog search', () => {
       .waitFor({ timeout: 15000 })
       .catch(() => undefined);
     test.skip((await entries.count()) === 0, 'No changelog entries available in this environment');
+    await page.getByRole('button', { name: 'Filters' }).click();
   });
 
   test('shows results in a dropdown and jumps to the entry with the keyboard', async ({ page }) => {

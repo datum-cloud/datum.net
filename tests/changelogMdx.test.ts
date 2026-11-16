@@ -4,7 +4,7 @@
 // loudly here instead of silently dropping or mangling entries on the site.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseDocsChangelog, CHANGELOG_DISCUSSIONS_URL } from '../src/libs/changelogMdx.ts';
+import { parseDocsChangelog } from '../src/libs/changelogMdx.ts';
 
 const FIXTURE = `---
 title: "Changelog"
@@ -51,10 +51,29 @@ test('rewrites docs-relative links to /docs so they resolve from www.datum.net/c
   assert.ok(entry.body.includes('](https://cloud.datum.net)'), 'absolute links are untouched');
 });
 
-test('links to the entry discussion when present, otherwise to the changelog discussions category', () => {
-  const [withoutAnnouncement, withAnnouncement] = parseDocsChangelog(FIXTURE);
+test('links to GitHub only when the entry cites exactly one issue, PR or discussion', () => {
+  const [, withAnnouncement] = parseDocsChangelog(FIXTURE);
   assert.equal(withAnnouncement.url, 'https://github.com/orgs/datum-cloud/discussions/306');
-  assert.equal(withoutAnnouncement.url, CHANGELOG_DISCUSSIONS_URL);
+
+  const entryWith = (body: string) =>
+    parseDocsChangelog(
+      `<Update label="November 12, 2026" description="datumctl" tags={["Fix"]}>\n  ## Title\n\n  ${body}\n</Update>\n`
+    )[0].url;
+
+  const issue = 'https://github.com/datum-cloud/dns-operator/issues/419';
+  const pull = 'https://github.com/datum-cloud/network-services-operator/pull/892';
+  assert.equal(entryWith(`Details: [Issue](${issue}) (#419)`), issue);
+  assert.equal(entryWith(`Details: [PR](${pull}) (#892)`), pull);
+  assert.equal(entryWith(`[A](${issue}) and again [A](${issue})`), issue, 'repeats count once');
+  assert.equal(entryWith(`[A](${issue}), [B](${pull})`), undefined, 'several: no single link');
+  assert.equal(
+    entryWith(
+      'See the [discussions](https://github.com/orgs/datum-cloud/discussions/categories/changelog)'
+    ),
+    undefined,
+    'the category page is not a specific reference'
+  );
+  assert.equal(entryWith('No links here.'), undefined);
 });
 
 test('maps docs tags to labels and the label date to a timezone-safe createdAt', () => {

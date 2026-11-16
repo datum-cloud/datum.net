@@ -1,8 +1,9 @@
 // Client-side filters, sorting and paging for /changelog. Every entry is server-rendered into the
 // list (so search, deep links and no-JS readers still see all of them); this module only decides
-// which ones are visible and keeps that choice in the URL (?page=&tag=&product=&sort=).
+// which ones are visible and keeps that choice in the URL (?page=&tag=&product=&range=&sort=).
 import {
   ALL,
+  CHANGELOG_RANGES,
   PAGE_SIZE,
   DEFAULT_VIEW_STATE,
   facetCounts,
@@ -12,6 +13,7 @@ import {
   pageItems,
   parseViewState,
   toQueryString,
+  type ChangelogRange,
   type EntryMeta,
   type ViewState,
 } from '@libs/changelogView';
@@ -34,7 +36,12 @@ function metaOf(entry: HTMLElement): EntryMeta {
   return {
     product: entry.dataset.product ?? '',
     tags: JSON.parse(entry.dataset.tags ?? '[]') as string[],
+    date: Date.parse(entry.dataset.date ?? '') || 0,
   };
+}
+
+function toRange(value: string): ChangelogRange {
+  return CHANGELOG_RANGES.find((range) => range === value) ?? DEFAULT_VIEW_STATE.range;
 }
 
 function reducedMotion(): boolean {
@@ -109,6 +116,45 @@ function renderPager(total: number) {
   );
 }
 
+function filtersNarrowed(): boolean {
+  return (
+    view.tag !== ALL ||
+    view.product !== ALL ||
+    view.range !== DEFAULT_VIEW_STATE.range ||
+    view.sort !== DEFAULT_VIEW_STATE.sort
+  );
+}
+
+// Narrowing filters only (sort reorders, it doesn't narrow), so the badge counts what's hiding entries.
+function activeFilterCount(): number {
+  return [view.tag !== ALL, view.product !== ALL, view.range !== DEFAULT_VIEW_STATE.range].filter(
+    Boolean
+  ).length;
+}
+
+function syncFiltersToggle(open: boolean) {
+  const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
+  if (!toggle) return;
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.dataset.active = String(open || filtersNarrowed());
+  const label = $<HTMLElement>('[data-changelog-filters-label]');
+  if (label) label.textContent = open ? 'Hide filters' : 'Filters';
+  const count = $<HTMLElement>('[data-changelog-filters-count]');
+  if (count) {
+    const active = activeFilterCount();
+    count.textContent = String(active);
+    // The badge is for the collapsed state; once the panel is open the selects show what's on.
+    count.hidden = open || active === 0;
+  }
+}
+
+function setFiltersOpen(open: boolean) {
+  const panel = document.getElementById('changelog-filters');
+  if (!panel) return;
+  panel.hidden = !open;
+  syncFiltersToggle(open);
+}
+
 function renderControls(matchCount: number, metas: EntryMeta[]) {
   const filtered = view.tag !== ALL || view.product !== ALL;
 
@@ -132,6 +178,12 @@ function renderControls(matchCount: number, metas: EntryMeta[]) {
     select.dataset.active = String(value !== ALL);
   }
 
+  const range = $<HTMLSelectElement>('[data-changelog-range]');
+  if (range) {
+    range.value = view.range;
+    range.dataset.active = String(view.range !== DEFAULT_VIEW_STATE.range);
+  }
+
   const sort = $<HTMLElement>('[data-changelog-sort]');
   if (sort) sort.dataset.order = view.sort;
   const sortLabel = $<HTMLElement>('[data-changelog-sort-label]');
@@ -144,6 +196,8 @@ function renderControls(matchCount: number, metas: EntryMeta[]) {
   }
   const clear = $<HTMLElement>('[data-changelog-clear]');
   if (clear) clear.hidden = !filtered;
+  const toggle = $<HTMLButtonElement>('[data-changelog-filters-toggle]');
+  if (toggle) syncFiltersToggle(toggle.getAttribute('aria-expanded') === 'true');
   const empty = $<HTMLElement>('[data-changelog-empty]');
   if (empty) empty.hidden = matchCount > 0;
 }
@@ -189,7 +243,7 @@ function jumpToTop() {
 }
 
 function update(next: Partial<ViewState>, { scroll = false } = {}) {
-  const resetsPage = 'tag' in next || 'product' in next || 'sort' in next;
+  const resetsPage = 'tag' in next || 'product' in next || 'range' in next || 'sort' in next;
   view = { ...view, page: resetsPage ? 1 : view.page, ...next };
   render();
   commit('push');
@@ -202,7 +256,7 @@ export function revealEntry(entry: HTMLElement) {
   const all = entries();
   let position = filterIndexes(all.map(metaOf), view).indexOf(all.indexOf(entry));
   if (position < 0) {
-    view = { ...view, tag: ALL, product: ALL };
+    view = { ...view, tag: ALL, product: ALL, range: DEFAULT_VIEW_STATE.range };
     position = all.indexOf(entry);
   }
   view = { ...view, page: indexToPage(position) };
@@ -215,6 +269,13 @@ export function revealEntry(entry: HTMLElement) {
 function onClick(event: MouseEvent) {
   const target = event.target as HTMLElement | null;
   if (!target) return;
+
+  const filtersToggle = target.closest('[data-changelog-filters-toggle]');
+  if (filtersToggle) {
+    const panel = document.getElementById('changelog-filters');
+    setFiltersOpen(panel?.hidden !== false);
+    return;
+  }
 
   const page = target.closest<HTMLAnchorElement>('a[data-page]');
   if (page && !event.metaKey && !event.ctrlKey && !event.shiftKey && event.button === 0) {
@@ -229,6 +290,12 @@ function onClick(event: MouseEvent) {
     const key = entryTag.dataset.changelogFilter === 'product' ? 'product' : 'tag';
     const value = entryTag.dataset.value ?? ALL;
     update({ [key]: view[key] === value ? ALL : value }, { scroll: true });
+    setFiltersOpen(true);
+    return;
+  }
+
+  if (target.closest('[data-changelog-clear-all]')) {
+    update({ tag: ALL, product: ALL, range: DEFAULT_VIEW_STATE.range }, { scroll: true });
     return;
   }
 
@@ -246,6 +313,7 @@ function onChange(event: Event) {
   const select = event.target as HTMLSelectElement | null;
   if (select?.matches?.('[data-changelog-product]')) update({ product: select.value });
   if (select?.matches?.('[data-changelog-tag]')) update({ tag: select.value });
+  if (select?.matches?.('[data-changelog-range]')) update({ range: toRange(select.value) });
 }
 
 function onPopState() {
@@ -271,6 +339,7 @@ export function initChangelogView() {
     container.dataset.viewReady = 'true';
     view = parseViewState(location.search);
     render();
+    if (filtersNarrowed()) setFiltersOpen(true);
     commit('replace', true); // normalise bad params without dropping a #changelog-… deep link
   }
   return true;

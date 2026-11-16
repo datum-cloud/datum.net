@@ -19,7 +19,7 @@ type ChangelogProps = {
   id: string;
   title: string;
   body: string;
-  url: string;
+  url?: string;
   createdAt: Date;
   product?: string;
   labels?: { nodes: Array<{ name: string; color: string; description?: string }> };

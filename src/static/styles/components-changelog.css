@@ -17,11 +17,11 @@
   }
 
   .changelog-toolbar-bar {
-    @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-3;
+    @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-3 md:gap-x-6;
   }
 
   .changelog-toolbar-tools {
-    @apply flex items-center gap-6;
+    @apply flex items-center gap-4 md:gap-6;
   }
 
   .changelog-toolbar-filter {
@@ -154,7 +154,7 @@
     @apply w-full cursor-text;
 
     input {
-      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-28 bg-transparent font-medium outline-none;
+      @apply placeholder:text-app---dark---utility-4 text-midnight-fjord w-20 bg-transparent font-medium outline-none sm:w-28;
 
       /* Chrome/Safari reserve room for the native clear button, which clips a placeholder this
          tight. Esc still clears the field. */
@@ -268,9 +268,28 @@
     @apply datum-text-3xl text-midnight-fjord m-0 font-semibold;
   }
 
+  /* Deep link, mirroring the handbook heading anchor (components-handbook.css): only the chain is
+     the link, in midnight-fjord, revealed when the heading is hovered or the link is focused. */
+  /* The handbook injects its anchor with no whitespace before it, so its gap is exactly 0.375em.
+     Here the markup leaves one space (~0.25em) before the link, so 0.375em - 0.25em remains. */
   .changelog-entry-permalink {
-    @apply text-inherit no-underline decoration-1 underline-offset-4 hover:underline;
+    @apply text-midnight-fjord ml-[0.125em] inline-flex items-center align-middle no-underline transition-opacity duration-200;
     @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    svg {
+      @apply size-4;
+    }
+  }
+
+  @media (hover: hover) {
+    .changelog-entry-permalink {
+      @apply opacity-0;
+    }
+
+    .changelog-entry-nav-title:hover .changelog-entry-permalink,
+    .changelog-entry-permalink:focus {
+      @apply opacity-100;
+    }
   }
 
   /* Date as the kicker above the title; -mb-2 tightens the nav-content gap to pair it with the title */
@@ -325,27 +344,13 @@
       mask: var(--issue-link-icon) center / contain no-repeat;
     }
 
-    /* One issue per row. The title truncates with an ellipsis so a row never wraps; the
-       (#123) ref stays visible after it. */
+    /* One issue per row, with the standard prose bullet. The title truncates so a row never
+       wraps; the (#123) ref stays visible after it. */
     ul.changelog-details {
-      @apply mt-0 list-none pl-0;
-
-      li {
-        @apply relative flex items-baseline pl-6;
-      }
+      @apply mt-0;
 
       a {
-        @apply min-w-0 truncate;
-      }
-
-      .changelog-issue-ref {
-        @apply ml-1.5 shrink-0;
-      }
-
-      li::before {
-        content: '';
-        @apply text-canyon-clay---links absolute top-[0.35em] left-0 size-4 bg-current;
-        mask: var(--issue-link-icon) center / contain no-repeat;
+        @apply inline-block max-w-[calc(100%-5rem)] truncate align-bottom;
       }
 
       a::before {

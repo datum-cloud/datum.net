@@ -123,11 +123,11 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
     <nav class="changelog-toolbar-subscribe" aria-label="Subscribe to the changelog">
       <a href="/changelog.xml" class="changelog-toolbar-subscribe-link" title="RSS feed">
         <Icon name="rss" size="sm" class="size-4.5!" />
-        <span>RSS</span>
+        <span class="max-sm:sr-only">RSS</span>
       </a>
       <a href="/changelog.md" class="changelog-toolbar-subscribe-link" title="Markdown for agents">
         <Icon name="file-text" size="sm" class="size-4.5!" />
-        <span>Markdown</span>
+        <span class="max-sm:sr-only">Markdown</span>
       </a>
     </nav>
   </div>
@@ -200,8 +200,20 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
               })}
             </time>
             <h3 class="changelog-entry-nav-title">
-              <a href={`#changelog-${entry.id}`} class="changelog-entry-permalink">
+              <span class="changelog-entry-title-text">
                 <Fragment set:html={marked.parseInline(entry.title) as string} />
+              </span>
+              <a
+                href={`#changelog-${entry.id}`}
+                class="changelog-entry-permalink"
+                aria-label="Link to this section"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="currentcolor"
+                    d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z"
+                  />
+                </svg>
               </a>
             </h3>
             {entryTags(entry).length > 0 && (
@@ -288,7 +300,7 @@ const RANGE_OPTIONS: Array<{ value: ChangelogRange; label: string }> = [
 
     const found: SearchResult[] = [];
     for (const entry of list.querySelectorAll<HTMLElement>('.changelog-entry')) {
-      const title = entry.querySelector('.changelog-entry-nav-title')?.textContent?.trim() ?? '';
+      const title = entry.querySelector('.changelog-entry-title-text')?.textContent?.trim() ?? '';
       const date = entry.querySelector('time')?.textContent?.trim() ?? '';
       const body = (entry.querySelector('.changelog-entry-card-body')?.textContent ?? '')
         .replace(/\s+/g, ' ')

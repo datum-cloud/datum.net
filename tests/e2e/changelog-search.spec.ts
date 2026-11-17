@@ -18,7 +18,7 @@ test.describe('Changelog search', () => {
   });
 
   test('shows results in a dropdown and jumps to the entry with the keyboard', async ({ page }) => {
-    const title = (await page.locator('.changelog-entry-nav-title').first().innerText()).trim();
+    const title = (await page.locator('.changelog-entry-title-text').first().innerText()).trim();
     const word = title.split(/\s+/).find((w) => w.length > 3) ?? title;
     const entryId = await page.locator('.changelog-entry').first().getAttribute('id');
     // Paging already hides entries on other pages; searching must not hide any more.

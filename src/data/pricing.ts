@@ -21,8 +21,9 @@ export const hero = {
 
 export const banner = {
   icon: 'party-popper' as IconName,
-  emphasis: 'Free to use until billing begins on February 1st, 2027.',
-  text: 'We’ll notify you before any charges!',
+  emphasis: 'Free during public beta until February 1st, 2027.',
+  text: 'Interested in our approach? See our',
+  link: { text: 'blog about pricing', href: '/blog/how-we-think-about-pricing' },
 };
 
 /** One monospace price line. Rendered as a regular `$`, a bold `amount`, then

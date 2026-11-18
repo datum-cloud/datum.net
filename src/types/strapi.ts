@@ -27,6 +27,8 @@ export interface StrapiAuthor {
   documentId?: string;
   slug?: string;
   name: string;
+  /** Job title, shown under the name in the article sidebar. */
+  title?: string;
   isTeam?: boolean;
   avatar?: StrapiImage;
 }

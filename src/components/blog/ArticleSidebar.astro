@@ -1,0 +1,251 @@
+---
+// src/components/blog/ArticleSidebar.astro
+// Left column of the blog detail page (Figma 13:146793): back link, author, TL;DR, an
+// "On this page" nav, agent tools and share links.
+
+import { Image } from 'astro:assets';
+import Icon from '@components/Icon.astro';
+import claudeSvg from '@assets/icons/ai/claude.svg?raw';
+import chatgptSvg from '@assets/icons/ai/chatgpt.svg?raw';
+import googleSvg from '@assets/icons/ai/google.svg?raw';
+import xSvg from '@assets/icons/x.svg?raw';
+import linkedinSvg from '@assets/icons/linkedin.svg?raw';
+import type { ArticleHeading } from '@utils/articleHeadings';
+
+interface Props {
+  title: string;
+  pageUrl: string;
+  markdownUrl: string;
+  tldr?: string;
+  headings?: ArticleHeading[];
+  authorName?: string;
+  authorTitle?: string;
+  authorHref?: string;
+  authorAvatar?: string;
+  authorBgColor?: string;
+}
+
+const {
+  title,
+  pageUrl,
+  markdownUrl,
+  tldr,
+  headings = [],
+  authorName,
+  authorTitle,
+  authorHref,
+  authorAvatar,
+  authorBgColor,
+} = Astro.props as Props;
+
+const askPrompt = encodeURIComponent(
+  `Read ${pageUrl} so I can ask questions about "${title}" and Datum.`
+);
+const agentTools = [
+  { label: 'Ask ChatGPT', href: `https://chatgpt.com/?q=${askPrompt}`, icon: chatgptSvg },
+  { label: 'Ask Claude', href: `https://claude.ai/new?q=${askPrompt}`, icon: claudeSvg },
+  {
+    label: 'Prefer on Google',
+    href: 'https://www.google.com/preferences/source?q=datum.net',
+    icon: googleSvg,
+  },
+];
+const shareLinks = [
+  {
+    label: 'Share on X',
+    href: `https://x.com/intent/post?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(title)}`,
+    icon: xSvg,
+  },
+  {
+    label: 'LinkedIn',
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`,
+    icon: linkedinSvg,
+  },
+];
+
+const AuthorTag = authorHref ? 'a' : 'div';
+---
+
+<aside class="blog-aside" data-blog-sidebar data-page-url={pageUrl} data-markdown-url={markdownUrl}>
+  <div class="blog-aside-content">
+    <a href="/blog" class="blog-aside-back">
+      <Icon name="arrow-left" size="sm" />
+      Back to Blog
+    </a>
+
+    {
+      authorName && (
+        <AuthorTag href={authorHref} class="blog-aside-author">
+          <span
+            class="blog-article-author-avatar"
+            style={authorBgColor ? `background-color: ${authorBgColor}` : undefined}
+          >
+            {authorAvatar ? (
+              <Image
+                src={authorAvatar}
+                alt=""
+                width={68}
+                height={68}
+                class="h-full w-full object-cover"
+              />
+            ) : (
+              <span class="blog-aside-author-initial">{authorName.charAt(0)}</span>
+            )}
+          </span>
+          <span class="blog-aside-author-text">
+            <span class="blog-aside-author-name">{authorName}</span>
+            {authorTitle && <span class="blog-aside-author-title">{authorTitle}</span>}
+          </span>
+        </AuthorTag>
+      )
+    }
+
+    {
+      tldr && (
+        <section class="blog-aside-section blog-aside-section--tldr">
+          <p class="blog-aside-label">TL;DR</p>
+          <p class="blog-aside-tldr">{tldr}</p>
+        </section>
+      )
+    }
+
+    {
+      headings.length > 0 && (
+        <nav class="blog-aside-section" aria-labelledby="blog-aside-toc">
+          <p id="blog-aside-toc" class="blog-aside-label">
+            On this page:
+          </p>
+          <ul class="blog-aside-toc">
+            {headings.map((heading) => (
+              <li>
+                <a href={`#${heading.id}`} class="blog-aside-link" data-toc-link={heading.id}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <section class="blog-aside-section">
+      <p class="blog-aside-label">Agent tools:</p>
+      <ul class="blog-aside-list">
+        <li>
+          <button type="button" class="blog-aside-link" data-copy-markdown>
+            <Icon name="copy" size="sm" />
+            <span data-copy-label>Copy as markdown</span>
+          </button>
+        </li>
+        {
+          agentTools.map((tool) => (
+            <li>
+              <a href={tool.href} class="blog-aside-link" target="_blank" rel="noopener noreferrer">
+                <span class="blog-aside-icon" set:html={tool.icon} />
+                <span>{tool.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="blog-aside-section">
+      <p class="blog-aside-label">Share:</p>
+      <ul class="blog-aside-list">
+        {
+          shareLinks.map((link) => (
+            <li>
+              <a href={link.href} class="blog-aside-link" target="_blank" rel="noopener noreferrer">
+                <span class="blog-aside-icon" set:html={link.icon} />
+                <span>{link.label}</span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <button type="button" class="blog-aside-link" data-copy-url>
+            <Icon name="copy" size="sm" />
+            <span data-copy-label>Copy URL</span>
+          </button>
+        </li>
+      </ul>
+    </section>
+  </div>
+</aside>
+
+<script>
+  const COPIED_MS = 2000;
+
+  function flash(button: HTMLElement, text: string) {
+    const label = button.querySelector<HTMLElement>('[data-copy-label]');
+    if (!label) return;
+    const original = label.dataset.original ?? label.textContent ?? '';
+    label.dataset.original = original;
+    label.textContent = text;
+    window.setTimeout(() => {
+      label.textContent = original;
+    }, COPIED_MS);
+  }
+
+  function initSidebar(sidebar: HTMLElement) {
+    const pageUrl = sidebar.dataset.pageUrl ?? window.location.href;
+    const markdownUrl = sidebar.dataset.markdownUrl;
+
+    const copyUrl = sidebar.querySelector<HTMLElement>('[data-copy-url]');
+    copyUrl?.addEventListener('click', () => {
+      navigator.clipboard
+        .writeText(pageUrl)
+        .then(() => flash(copyUrl, 'Copied!'))
+        .catch(() => flash(copyUrl, 'Copy failed'));
+    });
+
+    const copyMarkdown = sidebar.querySelector<HTMLElement>('[data-copy-markdown]');
+    copyMarkdown?.addEventListener('click', async () => {
+      try {
+        if (!markdownUrl) throw new Error('No markdown URL');
+        const response = await fetch(markdownUrl);
+        if (!response.ok) throw new Error(`Markdown request failed: ${response.status}`);
+        await navigator.clipboard.writeText(await response.text());
+        flash(copyMarkdown, 'Copied!');
+      } catch {
+        flash(copyMarkdown, 'Copy failed');
+      }
+    });
+
+    // Highlight the section being read in "On this page".
+    const links = new Map(
+      Array.from(sidebar.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')).map((link) => [
+        link.dataset.tocLink ?? '',
+        link,
+      ])
+    );
+    const headings = Array.from(links.keys())
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (headings.length === 0) return;
+
+    const setActive = (id: string) => {
+      links.forEach((link, linkId) => {
+        if (linkId === id) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    setActive(headings[0].id);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) setActive(visible[0].target.id);
+      },
+      { rootMargin: '0px 0px -70% 0px' }
+    );
+    headings.forEach((heading) => observer.observe(heading));
+  }
+
+  for (const sidebar of document.querySelectorAll<HTMLElement>('[data-blog-sidebar]')) {
+    initSidebar(sidebar);
+  }
+</script>

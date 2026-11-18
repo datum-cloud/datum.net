@@ -74,8 +74,7 @@
     @apply max-w-245 min-w-0 flex-grow;
   }
 
-  .blog-article-header,
-  .blog-article-image {
+  .blog-article-header {
     @apply mb-4 md:mb-6 lg:mb-10;
   }
 
@@ -84,7 +83,11 @@
   }
 
   .blog-aside-content {
-    @apply sticky top-0 z-10 flex w-full flex-col items-start gap-10 self-start lg:w-60;
+    @apply sticky top-0 z-10 flex w-full flex-col items-start gap-10 self-start lg:w-60 xl:w-77;
+    /* Short windows: scroll the sidebar on its own. The 4px side padding keeps focus outlines
+       from being clipped by the overflow. */
+    @apply -mx-1 max-h-dvh overflow-y-auto overscroll-contain px-1 pb-6;
+    scrollbar-width: thin;
   }
 
   .blog-article-meta {
@@ -95,14 +98,6 @@
     @apply datum-text-9xl max-w-215 text-wrap;
   }
 
-  .blog-article-image {
-    @apply overflow-hidden;
-
-    img {
-      @apply h-auto w-full rounded-[4px] object-cover;
-    }
-  }
-
   .blog-article-content {
     @apply datum-prose-article;
 
@@ -110,14 +105,17 @@
       @apply datum-text-3xl font-semibold;
     }
 
-    /* The two intro paragraphs lead at 20/34, the rest of the body stays 18/28 (Figma). */
-    & > div:first-child > p:nth-of-type(-n + 2) {
+    /* The opening run of paragraphs (up to the first heading, image or code block) leads at 20/34;
+       the rest of the body stays 18/28 (Figma). Keying on the run, not a fixed count, keeps
+       a three-paragraph intro consistent. */
+    & > div:first-child > p:not(:not(p) ~ p) {
       @apply text-xl leading-8.5;
     }
   }
 
   .blog-aside-author {
-    @apply flex items-center gap-4 no-underline;
+    /* mt-1.5 levels the block with the first line of the (taller) title next to it. */
+    @apply mt-1.5 flex items-center gap-4 no-underline;
   }
 
   .blog-article-author-avatar {
@@ -136,8 +134,9 @@
     @apply font-semibold;
   }
 
+  /* The sidebar column is 308px; sections stay 240px wide, only the author row uses the full width. */
   .blog-aside-section {
-    @apply flex w-full flex-col gap-4;
+    @apply flex w-full max-w-60 flex-col gap-4;
   }
 
   .blog-aside-section--tldr {

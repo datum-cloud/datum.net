@@ -1,4 +1,8 @@
 ---
+// SSR (not server:defer) so the entries ship in the initial HTML for crawlers,
+// while still picking up new docs changelog entries without a rebuild.
+export const prerender = false;
+
 import '@styles/page-changelog.css';
 
 import Layout from '@layouts/Layout.astro';
@@ -7,7 +11,6 @@ import Footer from '@components/Footer.astro';
 import Card from '@components/changelog/Card.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionLine from '@components/SectionLine.astro';
-import Skeleton from '@components/changelog/Skeleton.astro';
 import ScrollToTop from '@components/changelog/ScrollToTop.astro';
 import ReleaseTabs from '@components/roadmap/ReleaseTabs.astro';
 
@@ -47,9 +50,7 @@ const description = fm.description ? fm.description : '';
         <div class="max-width-nav bottom-pad relative">
           <SectionLine left right bottom />
           <div class="changelog-container">
-            <Card server:defer>
-              <Skeleton slot="fallback" />
-            </Card>
+            <Card />
           </div>
         </div>
       </div>

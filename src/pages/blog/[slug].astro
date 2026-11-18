@@ -3,7 +3,6 @@
 export const prerender = false;
 
 import '@styles/page-blog.css';
-import { Image } from 'astro:assets';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
@@ -445,23 +444,6 @@ const { blocks: contentBlocks, headings: articleHeadings } = processedBlocks.red
                       />
                     </div>
                   </header>
-
-                  {/* Featured Image */}
-                  {fm?.featuredImage && (
-                    <div class="blog-article-image">
-                      <Image
-                        src={fm.featuredImage}
-                        alt={article?.cover?.alternativeText || fm?.title}
-                        width={1200}
-                        height={630}
-                        widths={[400, 800, 1200]}
-                        sizes="(max-width: 768px) 400px, (max-width: 1200px) 800px, 1200px"
-                        format="webp"
-                        loading="eager"
-                        fetchpriority="high"
-                      />
-                    </div>
-                  )}
 
                   {/* Article Content */}
                   <div class="blog-article-content">

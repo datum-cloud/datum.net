@@ -7,11 +7,11 @@ import { Image } from 'astro:assets';
 import Layout from '@layouts/Layout.astro';
 import Hero from '@components/Hero.astro';
 import Footer from '@components/Footer.astro';
-import Button from '@components/Button.astro';
-import Icon from '@components/Icon.astro';
 import ArticleNavigation from '@components/ArticleNavigation.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
 import DiagramTabs from '@components/DiagramTabs.astro';
+import ArticleSidebar from '@components/blog/ArticleSidebar.astro';
+import ArticleImageFit from '@components/blog/ArticleImageFit.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionLine from '@components/SectionLine.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
@@ -27,6 +27,8 @@ import { getAuthorBgColorFromStrapi } from '@utils/authorUtils';
 import defaultOgImage from '@content/images/og/blog.png';
 import { truncateByWords } from '@libs/string';
 import { renderMarkdownWithExpressiveCode } from '@utils/expressiveCode';
+import { addHeadingIds } from '@utils/articleHeadings';
+import type { ArticleHeading } from '@utils/articleHeadings';
 import { STRAPI_SSR_CACHE_CONTROL } from '@libs/strapi/httpCache';
 import { getBlogListingPageFromNumericSlug, isNumericBlogSlug } from '@utils/blogPagination';
 
@@ -101,7 +103,6 @@ const authorName = article?.author?.name || '';
 const authorSlug = article?.author?.slug ?? article?.author?.documentId;
 const authorHref =
   authorSlug && article?.author?.isTeam === true ? `/authors/${authorSlug}` : undefined;
-const hasAuthorHref = Boolean(authorHref && authorHref.length > 0);
 
 const authorAvatar = article?.author?.avatar
   ? getStrapiMediaUrl(article.author.avatar.url)
@@ -292,6 +293,25 @@ const processedBlocks: ProcessedBlock[] =
         )
       ).filter((block): block is ProcessedBlock => block !== null)
     : [];
+
+// Give each h2 an id so the sidebar's "On this page" nav can link to it.
+const { blocks: contentBlocks, headings: articleHeadings } = processedBlocks.reduce<{
+  blocks: ProcessedBlock[];
+  headings: ArticleHeading[];
+}>(
+  (acc, block) => {
+    if (block.kind !== 'rich') return { ...acc, blocks: [...acc.blocks, block] };
+    const { html, headings } = addHeadingIds(
+      block.html,
+      acc.headings.map((heading) => heading.id)
+    );
+    return {
+      blocks: [...acc.blocks, { ...block, html }],
+      headings: [...acc.headings, ...headings],
+    };
+  },
+  { blocks: [], headings: [] }
+);
 ---
 
 {
@@ -352,115 +372,19 @@ const processedBlocks: ProcessedBlock[] =
           <section class="section--block section--block--x-pad bg-glacier-mist-700">
             <div class="max-width-nav relative pt-6 md:pt-10 xl:pt-16">
               <SectionLine left right top />
-              <div class="max-width blog-detail max-w-256.5 pb-14 md:pb-20 lg:pb-28">
-                <aside class="blog-aside">
-                  <div class="blog-aside-content sticky top-0">
-                    <Button
-                      class="btn btn--alpha btn--fluid mb-11"
-                      text="Back to Blog"
-                      icon={{ name: 'arrow-left', size: 'md' }}
-                      iconPosition="left"
-                      iconClass="stroke-1.5"
-                      href="/blog"
-                    />
-
-                    {/* Author Information */}
-                    {authorName && (
-                      <div class="blog-article-author">
-                        <div class="blog-article-author-avatar">
-                          {authorAvatar ? (
-                            hasAuthorHref ? (
-                              <a href={authorHref} class="blog-article-author-image">
-                                <Image
-                                  src={authorAvatar}
-                                  alt={authorName}
-                                  width={64}
-                                  height={64}
-                                  class="h-full w-full object-cover"
-                                  style={
-                                    authorBgColor ? `background-color: ${authorBgColor}` : undefined
-                                  }
-                                />
-                              </a>
-                            ) : (
-                              <div class="blog-article-author-image">
-                                <Image
-                                  src={authorAvatar}
-                                  alt={authorName}
-                                  width={64}
-                                  height={64}
-                                  class="h-full w-full object-cover"
-                                  style={
-                                    authorBgColor ? `background-color: ${authorBgColor}` : undefined
-                                  }
-                                />
-                              </div>
-                            )
-                          ) : hasAuthorHref ? (
-                            <a
-                              href={authorHref}
-                              class="blog-article-author-image"
-                              style={
-                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
-                              }
-                            >
-                              <span class="text-lg font-bold text-gray-600">
-                                {authorName.charAt(0)}
-                              </span>
-                            </a>
-                          ) : (
-                            <div
-                              class="blog-article-author-image"
-                              style={
-                                authorBgColor ? `background-color: ${authorBgColor}` : undefined
-                              }
-                            >
-                              <span class="text-lg font-bold text-gray-600">
-                                {authorName.charAt(0)}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        {hasAuthorHref ? (
-                          <a href={authorHref} class="blog-article-author-name">
-                            {authorName}
-                          </a>
-                        ) : (
-                          <span class="blog-article-author-name">{authorName}</span>
-                        )}
-                      </div>
-                    )}
-
-                    <span class="icon-label">
-                      <div class="icon-bg">
-                        <Icon name="clock" size="sm" />
-                      </div>
-                      <span class="icon-label-text">{readingTime.text}</span>
-                    </span>
-
-                    <span class="icon-label">
-                      <div class="icon-bg">
-                        <Icon name="calendar" size="sm" />
-                      </div>
-                      <span class="icon-label-text">{formattedDate}</span>
-                    </span>
-
-                    <span class="icon-label">
-                      <div class="icon-bg">
-                        <Icon name="copy" size="sm" />
-                      </div>
-                      <span class="icon-label-text">
-                        <button
-                          type="button"
-                          class="border-b hover:cursor-pointer"
-                          x-data="{ copied: false }"
-                          @click={`navigator.clipboard.writeText('${pageCanonicalUrl}').then(() => { copied = true; setTimeout(() => { copied = false; }, 2000); })`}
-                          x-text="copied ? 'Copied!' : 'Copy URL'"
-                        />
-                      </span>
-                    </span>
-                  </div>
-                </aside>
+              <div class="max-width blog-detail max-w-343 pb-14 md:pb-20 lg:pb-28">
+                <ArticleSidebar
+                  title={fm?.title ?? ''}
+                  pageUrl={pageCanonicalUrl}
+                  markdownUrl={`/blog/${slugStr}.md`}
+                  tldr={fm?.description}
+                  headings={articleHeadings}
+                  authorName={authorName}
+                  authorTitle={article?.author?.title}
+                  authorHref={authorHref}
+                  authorAvatar={authorAvatar}
+                  authorBgColor={authorBgColor}
+                />
 
                 <article class="blog-article">
                   <span class="hidden" style="display: none;">
@@ -500,6 +424,11 @@ const processedBlocks: ProcessedBlock[] =
                         </svg>
                       </Breadcrumbs>
                     </div>
+                    <p class="blog-article-meta">
+                      <time datetime={fm?.date}>{formattedDate}</time>
+                      <span aria-hidden="true">•</span>
+                      <span>{readingTime.minutes} minute read</span>
+                    </p>
                     <h1 class="blog-article-title">{fm?.title}</h1>
                     <div class="datum-text-sm mt-4 flex flex-wrap gap-1 opacity-60 md:hidden">
                       <a href={authorHref ?? '#'} class="blog-article-author-name">
@@ -536,7 +465,7 @@ const processedBlocks: ProcessedBlock[] =
 
                   {/* Article Content */}
                   <div class="blog-article-content">
-                    {processedBlocks.map((block) => {
+                    {contentBlocks.map((block) => {
                       if (block.kind === 'quote') {
                         return (
                           <blockquote class="blog-article-quote">
@@ -581,6 +510,7 @@ const processedBlocks: ProcessedBlock[] =
               </div>
 
               <DiagramTabs />
+              <ArticleImageFit />
               <MediaLightbox
                 selector=".blog-article-content img"
                 videoSelector=""

@@ -1,0 +1,28 @@
+---
+// src/components/blog/ArticleImageFit.astro
+// The wider article column stretches small images: older posts have 480-625px images that now
+// render at 980px. Cap each image at 1.25x its natural width and centre it when it is capped.
+// 2x diagram PNGs are unaffected (their natural width is far above the column).
+---
+
+<script>
+  const MAX_UPSCALE = 1.25;
+
+  function fit(img: HTMLImageElement): void {
+    if (!img.naturalWidth) return;
+    // Floated figures keep their own sizing.
+    if (img.closest('.figure--left, .figure--right')) return;
+
+    const cap = Math.round(img.naturalWidth * MAX_UPSCALE);
+    img.style.maxWidth = `${cap}px`;
+    if (img.getBoundingClientRect().width >= cap - 1) {
+      img.style.display = 'block';
+      img.style.marginInline = 'auto';
+    }
+  }
+
+  for (const img of document.querySelectorAll<HTMLImageElement>('.blog-article-content img')) {
+    if (img.complete) fit(img);
+    else img.addEventListener('load', () => fit(img), { once: true });
+  }
+</script>

@@ -49,6 +49,10 @@
     strong {
       @apply font-semibold;
     }
+
+    a {
+      @apply text-canyon-clay---links underline hover:no-underline;
+    }
   }
 
   .pricing-banner-icon {

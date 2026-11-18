@@ -113,6 +113,7 @@ export const ARTICLE_BY_SLUG_QUERY = `
         documentId
         slug
         name
+        title
         isTeam
         avatar {
           url

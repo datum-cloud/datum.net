@@ -61,58 +61,139 @@
     @apply border-white bg-white/15;
   }
 
-  /* Blog Detail Styles */
+  /* Blog Detail Styles (Figma 13:146793): 308px sidebar + 980px article inside a 1316px frame (+ 28px page padding each side) */
   .blog-detail {
-    @apply flex gap-0 md:gap-9 lg:gap-12 xl:gap-20;
+    @apply flex justify-between gap-0 md:gap-9 lg:gap-12 xl:gap-7;
   }
 
   .blog-aside {
-    @apply hidden w-43.5 md:inline-flex;
+    @apply hidden w-43.5 shrink-0 md:inline-flex lg:w-60 xl:w-77;
   }
 
   .blog-article {
-    @apply max-w-179 min-w-0 flex-grow;
+    @apply max-w-245 min-w-0 flex-grow;
   }
 
-  .blog-article-header,
-  .blog-article-image {
+  .blog-article-header {
     @apply mb-4 md:mb-6 lg:mb-10;
-  }
-
-  .blog-aside-content {
-    @apply z-10 block w-full space-y-4 self-start pt-3;
-  }
-
-  .blog-article-title {
-    @apply datum-text-8xl;
-  }
-
-  .blog-article-image {
-    @apply overflow-hidden;
-
-    img {
-      @apply h-auto w-full rounded-[4px] object-cover;
-    }
-  }
-
-  .blog-article-content {
-    @apply datum-prose-article;
-  }
-
-  .blog-article-author {
-    @apply flex w-full items-center gap-4;
-  }
-
-  .blog-article-author-avatar {
-    @apply h-8.5 w-8.5 overflow-hidden rounded-[4px] bg-gray-200;
-  }
-
-  .blog-article-author-image {
-    @apply h-full w-full object-cover;
   }
 
   .blog-article-author-name {
     @apply datum-text-sm font-medium;
+  }
+
+  .blog-aside-content {
+    @apply sticky top-0 z-10 flex w-full flex-col items-start gap-10 self-start lg:w-60 xl:w-77;
+    /* Short windows: scroll the sidebar on its own. The 4px side padding keeps focus outlines
+       from being clipped by the overflow. */
+    @apply -mx-1 max-h-dvh overflow-y-auto overscroll-contain px-1 pb-6;
+    scrollbar-width: thin;
+  }
+
+  .blog-article-meta {
+    @apply font-dejavu datum-text-sm text-canyon-clay---links mb-8 hidden items-center gap-5 uppercase md:flex;
+  }
+
+  .blog-article-title {
+    @apply datum-text-9xl max-w-215 text-wrap;
+  }
+
+  .blog-article-content {
+    @apply datum-prose-article;
+
+    h2 {
+      @apply datum-text-3xl font-semibold;
+    }
+
+    /* The opening run of paragraphs (up to the first heading, image or code block) leads at 20/34;
+       the rest of the body stays 18/28 (Figma). Keying on the run, not a fixed count, keeps
+       a three-paragraph intro consistent. */
+    & > div:first-child > p:not(:not(p) ~ p) {
+      @apply text-xl leading-8.5;
+    }
+  }
+
+  .blog-aside-author {
+    /* mt-1.5 levels the block with the first line of the (taller) title next to it. */
+    @apply mt-1.5 flex items-center gap-4 no-underline;
+  }
+
+  .blog-article-author-avatar {
+    @apply flex h-8.5 w-8.5 shrink-0 items-center justify-center overflow-hidden rounded-[6px] bg-gray-200;
+  }
+
+  .blog-aside-author-initial {
+    @apply text-lg font-bold text-gray-600;
+  }
+
+  .blog-aside-author-text {
+    @apply datum-text-sm text-midnight-fjord flex flex-col;
+  }
+
+  .blog-aside-author-name {
+    @apply font-semibold;
+  }
+
+  /* The sidebar column is 308px; sections stay 240px wide, only the author row uses the full width. */
+  .blog-aside-section {
+    @apply flex w-full max-w-60 flex-col gap-4;
+  }
+
+  .blog-aside-section--tldr {
+    @apply border-silver-mist gap-1 border-t pt-5;
+  }
+
+  .blog-aside-back {
+    @apply datum-text-sm text-canyon-clay---links flex items-center gap-2.5 no-underline hover:underline;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
+  .blog-aside-label {
+    @apply datum-text-xs text-midnight-fjord m-0 font-normal opacity-60;
+  }
+
+  .blog-aside-tldr {
+    @apply datum-text-sm text-midnight-fjord m-0;
+  }
+
+  .blog-aside-toc {
+    @apply border-midnight-fjord m-0 flex list-none flex-col gap-2 border-l p-0 pl-4;
+  }
+
+  .blog-aside-list {
+    @apply m-0 flex list-none flex-col gap-2 p-0;
+  }
+
+  .blog-aside-link {
+    @apply datum-text-sm text-midnight-fjord flex cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-left no-underline opacity-60 transition-opacity duration-150;
+    @apply hover:opacity-100 focus-visible:opacity-100;
+    @apply focus-visible:outline-canyon-clay---links focus-visible:outline-2 focus-visible:outline-offset-2;
+
+    &[aria-current='true'] {
+      @apply opacity-100;
+    }
+  }
+
+  /* Active "On this page" item: a small square sits on the rail beside it. */
+  .blog-aside-toc li {
+    @apply relative;
+  }
+
+  .blog-aside-toc .blog-aside-link[aria-current='true']::before {
+    content: '';
+    @apply bg-midnight-fjord absolute top-1/2 -left-5 size-2 -translate-y-1/2 rounded-[2px];
+  }
+
+  .blog-aside-icon {
+    @apply flex size-4 shrink-0 items-center justify-center;
+
+    svg {
+      @apply size-full;
+    }
+
+    svg path {
+      fill: currentColor;
+    }
   }
 
   body.page-blog {

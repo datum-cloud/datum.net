@@ -1,0 +1,16 @@
+.github/workflows/ci.yaml
+  h_c7951bc64db670 13
+.github/workflows/publish.yml
+  h_c7951bc64db670 28,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ea3a68f06c2cc2584fe2cc4112c8cd5eb5f3bc77",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

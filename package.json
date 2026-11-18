@@ -28,7 +28,7 @@
     "test:e2e:report": "playwright show-report",
     "test:server": "node --test tests/server.test.mjs",
     "test:changelog": "node --test tests/changelogMdx.test.ts tests/changelogView.test.ts",
-    "test:article": "node --test tests/articleHeadings.test.ts"
+    "test:article": "node --test tests/articleHeadings.test.ts tests/markdownFigure.test.ts"
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.17.1",

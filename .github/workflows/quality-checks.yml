@@ -51,8 +51,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Test the audit gate
+        run: scripts/npm-audit.test.sh
+
+      # GHSA-fc5q-39xc-vjpf: picomatch ReDoS with no patched release (https://github.com/advisories/GHSA-fc5q-39xc-vjpf).
+      # Ignored until 2026-12-01, or until picomatch ships a release past 4.0.7, whichever comes first.
+      # Holds only while no code passes user-supplied strings to picomatch/micromatch/globby as patterns.
+      # Upstream fixes: https://github.com/micromatch/picomatch/pull/254, https://github.com/micromatch/picomatch/pull/246,
+      # https://github.com/micromatch/picomatch/pull/194
       - name: Audit Dependencies
-        run: npm audit --audit-level=high
+        env:
+          NPM_AUDIT_LEVEL: high
+        run: scripts/npm-audit.sh GHSA-fc5q-39xc-vjpf=2026-12-01
 
       - name: Run Type Check
         run: npm run typecheck

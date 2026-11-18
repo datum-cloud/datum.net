@@ -11,6 +11,7 @@ import ArticleNavigation from '@components/ArticleNavigation.astro';
 import MediaLightbox from '@components/MediaLightbox.astro';
 import DiagramTabs from '@components/DiagramTabs.astro';
 import ArticleSidebar from '@components/blog/ArticleSidebar.astro';
+import ArticleImageFit from '@components/blog/ArticleImageFit.astro';
 import ModuleConnector from '@components/home/ModuleConnector.astro';
 import SectionLine from '@components/SectionLine.astro';
 import { Breadcrumbs } from 'astro-breadcrumbs';
@@ -509,6 +510,7 @@ const { blocks: contentBlocks, headings: articleHeadings } = processedBlocks.red
               </div>
 
               <DiagramTabs />
+              <ArticleImageFit />
               <MediaLightbox
                 selector=".blog-article-content img"
                 videoSelector=""

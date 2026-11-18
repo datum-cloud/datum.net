@@ -39,7 +39,7 @@ Key facts for agent understanding:
 - **Fully programmatic, agent-first interfaces** — every resource is accessible via API, CLI (\`datumctl\`), or MCP server
 - **Kubernetes-native control plane** — all resources are Kubernetes Custom Resource Definitions (CRDs); if you know \`kubectl\`, you know Datum
 - **Open source** — core platform licensed under AGPLv3; you can audit, fork, or self-host
-- **Free during public beta** — the entire platform is $0 to use until billing begins on February 1st, 2027; we will notify you before any charges
+- **Free during public beta** — the entire platform is $0 to use until February 1st, 2027, when billing begins; we will notify you before any charges
 - **Founded late 2024** by infrastructure veterans from Packet, Voxel, SoftLayer, StackPath, Highwinds, Zscaler; backed by Amplify Partners, CRV, Cervin Ventures, and others
 
 ---
@@ -242,7 +242,7 @@ To talk to a founder: https://www.datum.net/contact. To start building for free:
 
 Start with Galactic VPC, add resources, pay for what you use. No feature gates, no seat limits, no hidden fees. Every rate is published per unit at https://www.datum.net/pricing (markdown: https://www.datum.net/pricing.md).
 
-**Datum is free to use until billing begins on February 1st, 2027.** A credit card is required at sign-up (fraud prevention), but you are not charged. We will notify you before any charges, with a grace period to review rates — no surprise bill.
+**Datum is free during public beta until February 1st, 2027.** A credit card is required at sign-up (fraud prevention), but you are not charged. We will notify you before any charges, with a grace period to review rates — no surprise bill.
 
 ### Galactic VPC
 

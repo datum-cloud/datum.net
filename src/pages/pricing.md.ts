@@ -73,7 +73,11 @@ export const GET: APIRoute = async () => {
     for (const item of hero.highlights) {
       sections.push(`- ${item}`);
     }
-    sections.push('', `**${banner.emphasis}** ${banner.text}`, '');
+    sections.push(
+      '',
+      `**${banner.emphasis}** ${banner.text} [${banner.link.text}](https://www.datum.net${banner.link.href}).`,
+      ''
+    );
 
     sections.push('## Rates');
     for (const card of rates.cards) {

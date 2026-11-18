@@ -29,7 +29,7 @@ Everything that helps teams adopt best practices is free for every account: datu
 
 ## Where we are today
 
-Datum Cloud is in public beta and free to use until billing begins on February 1st, 2027. We will notify users before any charges.
+Datum Cloud is free during public beta until February 1st, 2027. We will notify users before any charges.
 
 ## Providers and dedicated infrastructure
 

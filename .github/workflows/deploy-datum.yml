@@ -189,7 +189,8 @@ jobs:
       # A Secret value that is not plain text makes the instance fail with
       # ConfigurationError and block the rollout, so check before deploying.
       # Never decode with errors="ignore": it hides the bad bytes. Only
-      # APP_PRIVATE_KEY (a PEM) may contain newlines. Values are never printed.
+      # APP_PRIVATE_KEY (a PEM) and NEWSLETTER_SA_CREDENTIALS (a JSON file) may
+      # contain newlines. Values are never printed.
       - name: Check the Secret
         run: |
           datumctl get secret "$SECRET_NAME" -n default --project "$DATUM_PROJECT" -o json |
@@ -197,7 +198,7 @@ jobs:
           import base64, json, sys
           required = ["API_URL", "APP_ID", "APP_INSTALLATION_ID", "APP_PRIVATE_KEY",
                       "STRAPI_URL", "STRAPI_TOKEN", "STRAPI_WEBHOOK_SECRET"]
-          multiline = {"APP_PRIVATE_KEY"}
+          multiline = {"APP_PRIVATE_KEY", "NEWSLETTER_SA_CREDENTIALS"}
           data = json.load(sys.stdin).get("data") or {}
           problems = [f"{k}: missing" for k in required if k not in data]
           for key, value in data.items():

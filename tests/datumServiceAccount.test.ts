@@ -39,6 +39,25 @@ test('parseCredentials names the missing field instead of failing at signup time
   assert.throws(() => parseCredentials('not json'), /not valid JSON/);
 });
 
+// The key in the staging and production Secrets was downloaded without token_uri and
+// api_endpoint, so the form failed before it ever reached auth.datum.net.
+test('parseCredentials fills token_uri and api_endpoint for an older credentials file', () => {
+  const older = { ...CREDS, token_uri: undefined, api_endpoint: undefined };
+  const creds = parseCredentials(JSON.stringify(older), { apiEndpoint: 'https://api.example' });
+  assert.equal(creds.token_uri, 'https://auth.datum.net/oauth/v2/token');
+  assert.equal(creds.api_endpoint, 'https://api.example');
+});
+
+test('values in the credentials file win over the defaults', () => {
+  const creds = parseCredentials(JSON.stringify(CREDS), { apiEndpoint: 'https://api.example' });
+  assert.equal(creds.api_endpoint, 'https://api.datum.net');
+});
+
+test('without api_endpoint in the file or a default, parseCredentials says which is missing', () => {
+  const older = { ...CREDS, api_endpoint: undefined };
+  assert.throws(() => parseCredentials(JSON.stringify(older)), /api_endpoint/);
+});
+
 test('parseCredentials refuses a token_uri that would send the signed JWT in clear text', () => {
   const plain = { ...CREDS, token_uri: 'http://auth.datum.net/oauth/v2/token' };
   assert.throws(() => parseCredentials(JSON.stringify(plain)), /https/);

@@ -1,0 +1,21 @@
+.github/workflows/ci.yaml
+  s_b3c052bb134699::t_cfa886e0760174 13
+.github/workflows/publish.yml
+  s_b3c052bb134699::t_5d652400ddbb98 28,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d9bd50c012c0de6d2241132dc8013642056c7295",
+  "prompts": {},
+  "sessions": {
+    "s_b3c052bb134699": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "56f3c315-1991-4c1d-8ee5-c0af52947d0d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

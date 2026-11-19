@@ -1,0 +1,24 @@
+src/actions/newsletter.ts
+  s_4fe7dedcc34afd::t_037dfe0eac5a7e 27-29
+src/libs/datumServiceAccount.ts
+  s_4fe7dedcc34afd::t_21ee56df2beed4 29-36,38-41,51-56
+  s_4fe7dedcc34afd::t_4341e742ad07f7 66
+tests/datumServiceAccount.test.ts
+  s_4fe7dedcc34afd::t_04c29babb46b22 42-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "baa9cd8186c2f0828b2fd7b599168cf05870eae6",
+  "prompts": {},
+  "sessions": {
+    "s_4fe7dedcc34afd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d78f4f26-dd31-4754-8657-09f52ad48a72",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

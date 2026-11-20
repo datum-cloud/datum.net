@@ -26,8 +26,19 @@ const ASSERTION_LIFETIME_SECONDS = 60;
 const EXPIRY_MARGIN_MS = 60_000;
 const DEFAULT_SCOPE = 'openid profile email';
 
+// Older credentials files have no token_uri or api_endpoint.
+const DEFAULT_TOKEN_URI = 'https://auth.datum.net/oauth/v2/token';
+
+interface CredentialDefaults {
+  /** Used when the file has no api_endpoint, e.g. the API_URL env. */
+  apiEndpoint?: string;
+}
+
 /** Parse and check the credentials JSON the Datum portal downloads. */
-export function parseCredentials(raw: string): ServiceAccountCredentials {
+export function parseCredentials(
+  raw: string,
+  { apiEndpoint }: CredentialDefaults = {}
+): ServiceAccountCredentials {
   let data: unknown;
   try {
     data = JSON.parse(raw);
@@ -37,7 +48,12 @@ export function parseCredentials(raw: string): ServiceAccountCredentials {
   if (!data || typeof data !== 'object') {
     throw new Error('Service account credentials must be a JSON object');
   }
-  const record = data as Record<string, unknown>;
+  const parsed = data as Record<string, unknown>;
+  const record: Record<string, unknown> = {
+    ...parsed,
+    token_uri: parsed.token_uri || DEFAULT_TOKEN_URI,
+    api_endpoint: parsed.api_endpoint || apiEndpoint,
+  };
   const missing = REQUIRED_FIELDS.filter(
     (field) => typeof record[field] !== 'string' || record[field] === ''
   );
@@ -47,7 +63,7 @@ export function parseCredentials(raw: string): ServiceAccountCredentials {
   if (!String(record.token_uri).startsWith('https://')) {
     throw new Error('Service account token_uri must use https');
   }
-  return data as ServiceAccountCredentials;
+  return record as unknown as ServiceAccountCredentials;
 }
 
 const base64url = (value: object): string =>

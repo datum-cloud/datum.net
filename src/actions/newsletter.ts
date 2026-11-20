@@ -24,7 +24,9 @@ function getServiceAccount(): ServiceAccount | undefined {
   const raw = process.env.NEWSLETTER_SA_CREDENTIALS || import.meta.env.NEWSLETTER_SA_CREDENTIALS;
   if (!raw) return undefined;
   if (!serviceAccount) {
-    const creds = parseCredentials(raw);
+    const creds = parseCredentials(raw, {
+      apiEndpoint: process.env.API_URL || import.meta.env.API_URL,
+    });
     serviceAccount = { creds, getToken: createTokenSource(creds) };
   }
   return serviceAccount;

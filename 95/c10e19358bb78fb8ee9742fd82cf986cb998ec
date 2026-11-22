@@ -1,0 +1,34 @@
+src/types/k8s-resources.ts
+  s_b84507ca87a9e4::t_8bd44c89fb5e31 43-83
+src/actions/newsletter.ts
+  s_b84507ca87a9e4::t_b7c7e230ab090f 41-62,69,74,79-111
+  s_b84507ca87a9e4::t_81f901e37bd023 178-186
+  s_b84507ca87a9e4::t_fb1b598f90a10e 5-11
+.env.example
+  s_b84507ca87a9e4::t_b87b320f4c6d47 22-25
+package.json
+  s_b84507ca87a9e4::t_46737f6c42c489 31
+tests/contactGroupMembership.test.ts
+  s_b84507ca87a9e4::t_0bba1c67c3691e 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "95c10e19358bb78fb8ee9742fd82cf986cb998ec",
+  "prompts": {},
+  "humans": {
+    "h_c7951bc64db670": {
+      "author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b84507ca87a9e4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a1031539-c207-443d-a7d3-f0ff24006cbb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AriaEdo <aria.edo@gmail.com>"
+    }
+  }
+}

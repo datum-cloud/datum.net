@@ -16,8 +16,8 @@
 // The old avatar stays valid until the PUT succeeds — no blank-avatar gap.
 //
 // Usage:
-//   STRAPI_TOKEN=... npx tsx scripts/add-team-avatar.mjs <slug> <color> <path-to-png>
-//   npx tsx scripts/add-team-avatar.mjs jon-wick canyon-clay ~/Downloads/jon-wick-canyon-clay.png
+//   STRAPI_TOKEN=... pnpm exec tsx scripts/add-team-avatar.mjs <slug> <color> <path-to-png>
+//   pnpm exec tsx scripts/add-team-avatar.mjs jon-wick canyon-clay ~/Downloads/jon-wick-canyon-clay.png
 //
 // Pass --confirm to actually write; omit it to dry-run (looks up the
 // person, validates the file, makes zero Strapi writes).
@@ -35,7 +35,9 @@ const LIVE = rest.includes('--confirm');
 
 async function main() {
   if (!slug || !color || !filePath) {
-    console.error('Usage: npx tsx scripts/add-team-avatar.mjs <slug> <color> <path-to-png> [--confirm]');
+    console.error(
+      'Usage: pnpm exec tsx scripts/add-team-avatar.mjs <slug> <color> <path-to-png> [--confirm]'
+    );
     process.exit(1);
   }
   if (!VALID_COLORS.includes(color)) {
@@ -107,7 +109,9 @@ async function main() {
   console.log(
     'Local dev: clear .cache/strapi-authors* and .cache/strapi-team-members* to see the change on localhost.'
   );
-  console.log('Production: Strapi\'s own webhook auto-invalidates the site cache on this content update.');
+  console.log(
+    "Production: Strapi's own webhook auto-invalidates the site cache on this content update."
+  );
 }
 
 main().catch((err) => {

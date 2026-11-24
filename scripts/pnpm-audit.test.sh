@@ -1,35 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-script="$(cd "$(dirname "$0")" && pwd)/npm-audit.sh"
+script="$(cd "$(dirname "$0")" && pwd)/pnpm-audit.sh"
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 
 mkdir "$work/bin"
-cat >"$work/bin/npm" <<'EOF'
+cat >"$work/bin/pnpm" <<'EOF'
 #!/usr/bin/env bash
 case $1 in
   audit) cat "$FAKE_AUDIT" ;;
   view)
     case ${FAKE_VIEW:-} in
-      E404) echo "npm error code E404" >&2; exit 1 ;;
-      ETIMEDOUT) echo "npm error code ETIMEDOUT" >&2; exit 1 ;;
+      NOT_FOUND) echo "Error: ERR_PNPM_PACKAGE_NOT_FOUND" >&2; exit 1 ;;
+      ETIMEDOUT) echo "Error: ERR_PNPM_META_FETCH_FAIL ETIMEDOUT" >&2; exit 1 ;;
       *) printf '%s' "${FAKE_VIEW:-}" ;;
     esac ;;
   *) exit 64 ;;
 esac
 EOF
-chmod +x "$work/bin/npm"
+chmod +x "$work/bin/pnpm"
 
+# Same shape as `pnpm audit --json` in pnpm 12.
 advisory() {
   jq -n --arg id "$1" --arg sev "$2" --arg name "$3" --arg range "$4" '{
-    source: 1, name: $name, dependency: $name, title: "fixture \($id)",
-    url: "https://github.com/advisories/\($id)", severity: $sev, range: $range
+    id: 1, title: "fixture \($id)", module_name: $name, vulnerable_versions: $range,
+    severity: $sev, github_advisory_id: $id, url: "https://github.com/advisories/\($id)"
   }'
 }
 
 report() {
-  jq -s '{auditReportVersion: 2, vulnerabilities: (map({(.name): {name: .name, via: [.]}}) | add // {})}'
+  jq -s '{advisories: (to_entries | map({key: (.key + 1 | tostring), value: .value}) | from_entries), metadata: {}}'
 }
 
 pico=$(advisory GHSA-fc5q-39xc-vjpf high picomatch '<=4.0.7')
@@ -40,7 +41,8 @@ printf '%s\n' "$pico" | report >"$work/pico.json"
 printf '%s\n' "$pico" "$other" | report >"$work/pico-other.json"
 printf '%s\n' "$pico" "$minor" | report >"$work/pico-minor.json"
 printf '%s\n' "$other" | report >"$work/other.json"
-echo '{"error": {"code": "ENOLOCK"}}' >"$work/broken.json"
+advisory GHSA-fc5q-39xc-vjpf high picomatch '<= 4.0.7' | report >"$work/pico-spaced.json"
+echo '{"error": {"code": "ERR_PNPM_AUDIT_NO_LOCKFILE"}}' >"$work/broken.json"
 
 pass=0
 fail=0
@@ -49,7 +51,7 @@ check() {
   shift 6
   local out got=0
   out=$(PATH="$work/bin:$PATH" FAKE_AUDIT="$work/$fixture" FAKE_VIEW="$view" \
-    NPM_AUDIT_TODAY="$today" NPM_AUDIT_LEVEL="${LEVEL:-low}" bash "$script" "$@" 2>&1) || got=$?
+    PNPM_AUDIT_TODAY="$today" PNPM_AUDIT_LEVEL="${LEVEL:-low}" bash "$script" "$@" 2>&1) || got=$?
   if [[ $got -ne $want ]] || ! grep -qE -- "$pattern" <<<"$out" \
     || { [[ -n ${ABSENT:-} ]] && grep -qE -- "$ABSENT" <<<"$out"; }; then
     echo "FAIL: $name (exit $got, want $want, pattern '$pattern')"
@@ -73,12 +75,12 @@ check "dated ignore lapses after the expiry date" 1 pico.json 2027-01-15 "" \
   "ignore expired" "$ignore"
 check "dated ignore ends early once a patched release ships" 1 pico.json 2026-11-17 "4.0.8" \
   "release past the vulnerable range exists: picomatch@4.0.8" "$ignore"
-check "dated ignore ends early with several newer releases" 1 pico.json 2026-11-17 \
-  "$(printf "picomatch@4.0.8 '4.0.8'\npicomatch@4.1.0 '4.1.0'\n")" "picomatch@4.1.0" "$ignore"
-check "no newer release on the registry keeps the ignore" 0 pico.json 2026-11-17 E404 \
+check "dated ignore ends early with a spaced range" 1 pico-spaced.json 2026-11-17 "4.1.0" \
+  "release past the vulnerable range exists: picomatch@4.1.0" "$ignore"
+check "no newer release on the registry keeps the ignore" 0 pico.json 2026-11-17 NOT_FOUND \
   "ignoring GHSA-fc5q-39xc-vjpf" "$ignore"
 check "registry error fails loudly" 1 pico.json 2026-11-17 ETIMEDOUT \
-  "npm view picomatch@>4.0.7 failed" "$ignore"
+  "pnpm view picomatch@>4.0.7 failed" "$ignore"
 check "another high advisory still fails" 1 pico-other.json 2026-11-17 "" \
   "GHSA-rv95-896h-c2vc	high	express" "$ignore"
 ABSENT=picomatch check "the ignored advisory is not among the failures" 1 pico-other.json 2026-11-17 "" \

@@ -41,7 +41,7 @@ export default defineConfig([
     '**/*.njsproj',
     '**/*.sln',
     '**/*.sw?',
-    '**/package-lock.json',
+    '**/pnpm-lock.yaml',
     '**/yarn.lock',
     '**/pnpm-lock.yaml',
     '**/public/',

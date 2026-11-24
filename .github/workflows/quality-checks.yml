@@ -25,14 +25,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 26
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
   quality:
     needs: install
@@ -42,17 +45,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 26
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Test the audit gate
-        run: scripts/npm-audit.test.sh
+        run: scripts/pnpm-audit.test.sh
 
       # GHSA-fc5q-39xc-vjpf: picomatch ReDoS with no patched release (https://github.com/advisories/GHSA-fc5q-39xc-vjpf).
       # Ignored until 2026-12-01, or until picomatch ships a release past 4.0.7, whichever comes first.
@@ -61,20 +67,20 @@ jobs:
       # https://github.com/micromatch/picomatch/pull/194
       - name: Audit Dependencies
         env:
-          NPM_AUDIT_LEVEL: high
-        run: scripts/npm-audit.sh GHSA-fc5q-39xc-vjpf=2026-12-01
+          PNPM_AUDIT_LEVEL: high
+        run: scripts/pnpm-audit.sh GHSA-fc5q-39xc-vjpf=2026-12-01
 
       - name: Run Type Check
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Run ESLint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Run Prettier Check
-        run: npm run format:check
+        run: pnpm run format:check
 
       - name: Run Markdown Lint Check
-        run: npm run lint:md
+        run: pnpm run lint:md
 
   build:
     needs: quality
@@ -84,17 +90,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 26
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
 

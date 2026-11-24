@@ -171,7 +171,7 @@ The preview workflow builds the selected branch, because `publish.yml` does not.
   both jobs comes from the ref the run was started on, not from the branch
   being previewed.
 
-The `production` target runs `npm run build:cache` with
+The `production` target runs `pnpm run build:cache` with
 `STRAPI_CACHE_ENABLED=true`, and no Strapi token is passed to the build. Whether
 that build succeeds and what content the image then carries is **unverified**
 until the first run. If it needs a token, pass a read-only one with `--secret`,

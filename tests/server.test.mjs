@@ -6,10 +6,10 @@
 // server.mjs at all, so these behaviors (Vary headers, the agent-friendly
 // markdown 404, agent Link headers) need their own coverage here instead.
 //
-// Requires a prior `npm run build` (not run automatically — this suite is
+// Requires a prior `pnpm run build` (not run automatically — this suite is
 // about verifying server.mjs's own logic, not paying for a full site build
 // on every invocation). Run with:
-//   npm run build && npm run test:server
+//   pnpm run build && pnpm run test:server
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,7 +25,7 @@ let serverProcess;
 
 before(async () => {
   if (!existsSync(DIST_CLIENT)) {
-    throw new Error('dist/client not found — run `npm run build` before `npm run test:server`.');
+    throw new Error('dist/client not found — run `pnpm run build` before `pnpm run test:server`.');
   }
 
   serverProcess = spawn(process.execPath, ['./server.mjs'], {

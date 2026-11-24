@@ -9,7 +9,7 @@
  * Cache strategy (stale-while-revalidate):
  *  - Redis (when REDIS_URL is set): key `${redisKeyPrefix}github:backlog`
  *  - File (`.cache/github-backlog.json`): fallback when Redis is absent/down,
- *    and — critically — pre-populated by `npm run build:cache` at image build
+ *    and — critically — pre-populated by `pnpm run build:cache` at image build
  *    time (see `scripts/warmup-cache.ts` and the Dockerfile's `.cache` COPY),
  *    so the very first request after a deploy already has warm data instead
  *    of paying for a live GitHub fetch.

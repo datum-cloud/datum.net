@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     networks:
       - datum-network
-    command: sh -c "npm install && npm run dev --"
+    command: sh -c "pnpm install && pnpm run dev"
 
   prod:
     build:

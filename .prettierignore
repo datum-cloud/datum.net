@@ -36,7 +36,7 @@ yarn-error.log*
 *.sw?
 
 # Package manager files
-package-lock.json
+pnpm-lock.yaml
 yarn.lock
 pnpm-lock.yaml
 

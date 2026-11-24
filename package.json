@@ -5,8 +5,8 @@
   "scripts": {
     "dev:astro": "astro dev --host --typecheck",
     "build:astro": "astro check --skip-playwright && astro build",
-    "dev": "npm run dev:astro",
-    "build": "npm run build:astro",
+    "dev": "pnpm run dev:astro",
+    "build": "pnpm run build:astro",
     "build:cache": "tsx scripts/warmup-cache.ts",
     "start": "node ./server.mjs",
     "start:dev": "node --env-file=.env ./server.mjs",
@@ -15,13 +15,13 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:md": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\"",
-    "lint:md:fix": "npx markdownlint-cli \"src/content/**/*.{md,mdx}\" --fix",
+    "lint:md": "markdownlint \"src/content/**/*.{md,mdx}\"",
+    "lint:md:fix": "markdownlint \"src/content/**/*.{md,mdx}\" --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css,scss}\"",
     "prepare": "husky",
     "typecheck": "astro check",
-    "precommit": "npm run typecheck && npm run lint && npm run lint:md",
+    "precommit": "pnpm run typecheck && pnpm run lint && pnpm run lint:md",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
@@ -40,6 +40,7 @@
     "@astrojs/node": "^11.1.7",
     "@astrojs/rss": "^4.0.19",
     "@datum-cloud/strapi-revalidate": "^0.3.1",
+    "@expressive-code/core": "^0.44.3",
     "@kubernetes/client-node": "^1.4.0",
     "@lucide/astro": "^1.41.0",
     "@octokit/auth-app": "^8.3.1",
@@ -74,6 +75,7 @@
     "slugify": "^1.6.9",
     "tailwindcss": "^4.3.3",
     "unified": "^11.0.5",
+    "vite": "^8.3.8",
     "zod": "^4.5.4"
   },
   "devDependencies": {
@@ -88,6 +90,7 @@
     "@types/node": "^24.13.3",
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.69.0",
+    "astro-eslint-parser": "^1.4.0",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.7.0",
@@ -110,27 +113,6 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-arm64-gnu": "4.63.1"
   },
-  "overrides": {
-    "braces": "file:vendor/braces",
-    "deepmerge-ts": "^8.0.2",
-    "http-cache-semantics": "^4.3.0",
-    "minimatch@9": "^11.0.1",
-    "minimatch@10": "^11.0.1",
-    "glob@10": "^14.0.4",
-    "markdownlint-cli": {
-      "js-yaml": "^5.4.1",
-      "smol-toml": "^1.9.0"
-    },
-    "postcss-selector-parser": "^7.1.6",
-    "sharp": "^0.35.4",
-    "svgo": "^4.1.0",
-    "mermaid": {
-      "katex": "0.18.10"
-    },
-    "micromark-extension-math": {
-      "katex": "0.18.10"
-    }
-  },
   "lint-staged": {
     "*": [
       "secretlint --maskSecrets"
@@ -140,11 +122,12 @@
       "prettier --write"
     ],
     "*.{md,mdx}": [
-      "npx markdownlint-cli --fix",
+      "markdownlint --fix",
       "prettier --write"
     ],
     "*.{json,css,scss}": [
       "prettier --write"
     ]
-  }
+  },
+  "packageManager": "pnpm@12.23.0"
 }

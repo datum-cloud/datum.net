@@ -6,7 +6,7 @@
  * Fetches from GitHub (stargazer/roadmaps/changelogs, Projects backlog), and Strapi,
  * then writes to .cache/ so the build can use cached data instead of hitting APIs.
  *
- * Run: npm run build:cache (or tsx scripts/warmup-cache.ts)
+ * Run: pnpm run build:cache (or tsx scripts/warmup-cache.ts)
  * Env: STRAPI_URL, STRAPI_TOKEN, APP_ID, APP_PRIVATE_KEY, APP_INSTALLATION_ID
  */
 

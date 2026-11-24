@@ -42,13 +42,14 @@ This is the official website for Datum Inc., built with Astro.
 ### Prerequisites
 
 - Node.js 24.15+ (matches the version pinned in [`Dockerfile`](./Dockerfile))
+- pnpm 12.23.0, the version `packageManager` pins in [`package.json`](./package.json). Node 26 ships without corepack, so install it with `npm install -g pnpm@12.23.0`.
 
 ### Installation
 
 1. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 2. Set up environment variables:
@@ -61,7 +62,7 @@ cp .env.example .env
 3. Start the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 For detailed information about the project structure, see [PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md).
@@ -70,30 +71,30 @@ For detailed information about the project structure, see [PROJECT_STRUCTURE.md]
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                                                            |
-| :------------------------ | :-------------------------------------------------------------------------------- |
-| `npm install`             | Installs dependencies                                                             |
-| `npm run dev`             | Starts local dev server at `localhost:4321`                                       |
-| `npm run build`           | Build your production site to `./dist/`                                           |
-| `npm run build:cache`     | Warm up the Strapi cache (see `docs/STRAPI_CACHE_API.md`)                         |
-| `npm run preview`         | Preview your build locally, before deploying                                      |
-| `npm run start`           | Run the production Node server entry (`./server.mjs`)                             |
-| `npm run start:dev`       | Run the Node server entry with `.env` loaded, without rebuilding                  |
-| `npm run start:original`  | Run the raw Astro-generated server entry (`./dist/server/entry.mjs`)              |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                  |
-| `npm run astro -- --help` | Get help using the Astro CLI                                                      |
-| `npm run lint`            | Check for linting and formatting issues                                           |
-| `npm run lint:fix`        | Automatically fix linting and formatting issues                                   |
-| `npm run lint:md`         | Check for markdown linting issues                                                 |
-| `npm run lint:md:fix`     | Automatically fix markdown linting issues                                         |
-| `npm run format`          | Format all files using Prettier                                                   |
-| `npm run format:check`    | Check if files are formatted correctly                                            |
-| `npm run typecheck`       | Astro typescript check                                                            |
-| `npm run precommit`       | Typecheck, ESLint, and markdown lint (Husky formats/lints staged files on commit) |
-| `npm run test:e2e`        | Run Playwright E2E tests in headless mode                                         |
-| `npm run test:e2e:ui`     | Run Playwright E2E tests in interactive UI mode                                   |
-| `npm run test:e2e:debug`  | Run Playwright E2E tests in debug mode                                            |
-| `npm run test:e2e:report` | Show the last Playwright HTML report                                              |
+| Command                    | Action                                                                            |
+| :------------------------- | :-------------------------------------------------------------------------------- |
+| `pnpm install`             | Installs dependencies                                                             |
+| `pnpm run dev`             | Starts local dev server at `localhost:4321`                                       |
+| `pnpm run build`           | Build your production site to `./dist/`                                           |
+| `pnpm run build:cache`     | Warm up the Strapi cache (see `docs/STRAPI_CACHE_API.md`)                         |
+| `pnpm run preview`         | Preview your build locally, before deploying                                      |
+| `pnpm run start`           | Run the production Node server entry (`./server.mjs`)                             |
+| `pnpm run start:dev`       | Run the Node server entry with `.env` loaded, without rebuilding                  |
+| `pnpm run start:original`  | Run the raw Astro-generated server entry (`./dist/server/entry.mjs`)              |
+| `pnpm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                  |
+| `pnpm run astro -- --help` | Get help using the Astro CLI                                                      |
+| `pnpm run lint`            | Check for linting and formatting issues                                           |
+| `pnpm run lint:fix`        | Automatically fix linting and formatting issues                                   |
+| `pnpm run lint:md`         | Check for markdown linting issues                                                 |
+| `pnpm run lint:md:fix`     | Automatically fix markdown linting issues                                         |
+| `pnpm run format`          | Format all files using Prettier                                                   |
+| `pnpm run format:check`    | Check if files are formatted correctly                                            |
+| `pnpm run typecheck`       | Astro typescript check                                                            |
+| `pnpm run precommit`       | Typecheck, ESLint, and markdown lint (Husky formats/lints staged files on commit) |
+| `pnpm run test:e2e`        | Run Playwright E2E tests in headless mode                                         |
+| `pnpm run test:e2e:ui`     | Run Playwright E2E tests in interactive UI mode                                   |
+| `pnpm run test:e2e:debug`  | Run Playwright E2E tests in debug mode                                            |
+| `pnpm run test:e2e:report` | Show the last Playwright HTML report                                              |
 
 ---
 
@@ -318,7 +319,7 @@ The package does not accept the legacy `X-Webhook-Secret` header that
 
 ## API Documentation
 
-> ⚠️ **Currently disabled.** The `npm run generate:api-docs` script is no longer present in `package.json` and the previously generated `src/content/docs/docs/api/reference.mdx` is not in the tree. The pipeline below describes the historical setup and is kept for reference until it is either restored or formally retired. File an issue if you need API reference docs regenerated.
+> ⚠️ **Currently disabled.** The `pnpm run generate:api-docs` script is no longer present in `package.json` and the previously generated `src/content/docs/docs/api/reference.mdx` is not in the tree. The pipeline below describes the historical setup and is kept for reference until it is either restored or formally retired. File an issue if you need API reference docs regenerated.
 
 The API reference documentation is auto-generated from the CRD (Custom Resource Definition) source code in the operator repositories.
 
@@ -333,7 +334,7 @@ The API reference documentation is auto-generated from the CRD (Custom Resource 
 To regenerate the API reference documentation:
 
 ```bash
-npm run generate:api-docs
+pnpm run generate:api-docs
 ```
 
 This single command:
@@ -367,7 +368,7 @@ Renovate automatically:
 
 A GitHub Actions workflow automatically regenerates the API documentation when Renovate opens a PR that modifies `.api-docs-config.yaml`, committing the updated docs to the same PR.
 
-For manual updates, edit version numbers in `.api-docs-config.yaml` and run `npm run generate:api-docs`.
+For manual updates, edit version numbers in `.api-docs-config.yaml` and run `pnpm run generate:api-docs`.
 
 ---
 
@@ -411,13 +412,13 @@ The markdownlint configuration (`.markdownlint.json`) is optimized for MDX and R
 To check markdown files:
 
 ```bash
-npm run lint:md
+pnpm run lint:md
 ```
 
 To automatically fix markdown issues:
 
 ```bash
-npm run lint:md:fix
+pnpm run lint:md:fix
 ```
 
 The linter will only check files in the `/src/content/` directory, including:
@@ -454,23 +455,23 @@ This project uses Playwright for end-to-end testing, providing reliable testing 
 1. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 2. Install Playwright browsers:
 
 ```bash
-npx playwright install
+pnpm exec playwright install
 ```
 
 #### Running Tests
 
-| Command                   | Action                                       |
-| :------------------------ | :------------------------------------------- |
-| `npm run test:e2e`        | Run all tests in headless mode               |
-| `npm run test:e2e:ui`     | Run tests with UI mode (recommended for dev) |
-| `npm run test:e2e:debug`  | Run tests in debug mode                      |
-| `npm run test:e2e:report` | Show the last test report                    |
+| Command                    | Action                                       |
+| :------------------------- | :------------------------------------------- |
+| `pnpm run test:e2e`        | Run all tests in headless mode               |
+| `pnpm run test:e2e:ui`     | Run tests with UI mode (recommended for dev) |
+| `pnpm run test:e2e:debug`  | Run tests in debug mode                      |
+| `pnpm run test:e2e:report` | Show the last test report                    |
 
 #### Test Structure
 
@@ -627,7 +628,7 @@ The setup uses a multi-stage Dockerfile:
 All browser-side third-party scripts are loaded from
 [`src/components/LayoutEmbedScripts.astro`](./src/components/LayoutEmbedScripts.astro).
 Most are gated to production (`NODE_ENV=production`) so they do not run during
-`npm run dev` or local preview without the flag set.
+`pnpm run dev` or local preview without the flag set.
 
 | Service   | Purpose                                     | Loader file                        | Production-only |
 | --------- | ------------------------------------------- | ---------------------------------- | --------------- |
@@ -645,12 +646,12 @@ Most are gated to production (`NODE_ENV=production`) so they do not run during
 
 ### Testing third-party widgets locally
 
-Production-gated widgets do not load on `npm run dev`. Two ways to verify:
+Production-gated widgets do not load on `pnpm run dev`. Two ways to verify:
 
 ```bash
 # Full prod simulation (build then preview)
-npm run build
-NODE_ENV=production npm run preview
+pnpm run build
+NODE_ENV=production pnpm run preview
 ```
 
 or temporarily flip the `if (!isProduction) return;` guard in

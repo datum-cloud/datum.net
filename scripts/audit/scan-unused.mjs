@@ -698,7 +698,7 @@ function writeJsReport(js) {
   out.push('- [ ] Confirm no dynamic `import()` / string path');
   out.push('- [ ] Check `server.mjs` and API routes');
   out.push('- [ ] For Astro, search MDX content + relative `./X.astro` imports');
-  out.push('- [ ] For types, try removing and run `npm run typecheck`');
+  out.push('- [ ] For types, try removing and run `pnpm run typecheck`');
   out.push('');
 
   const dest = path.join(ROOT, 'docs', 'UNUSED_JS_AUDIT.md');

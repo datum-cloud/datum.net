@@ -20,6 +20,7 @@
           "title": "For humans",
           "items": [
             { "text": "Docs", "href": "/docs" },
+            { "text": "Guides", "href": "/docs/guides" },
             { "text": "Releases", "href": "/releases" },
             { "text": "Blog", "href": "/blog" },
             { "text": "Changelog", "href": "/changelog" },

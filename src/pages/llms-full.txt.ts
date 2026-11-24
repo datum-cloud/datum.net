@@ -288,7 +288,7 @@ No charge for teammates, logs, or access controls:
 - [Datum MCP](https://www.datum.net/docs/agents/datum-mcp): official MCP server for Claude, Cursor, and other AI tools
 - [AI Assistant](https://www.datum.net/docs/operations/datum-assistant): ask Patch about your resources in natural language
 - [Domains](https://www.datum.net/docs/domain-dns/domains): track and verify domains wherever they are registered
-- [Desktop Apps](https://www.datum.net/docs/desktop-apps): macOS, Linux, and Windows apps that expose local environments through a secure tunnel
+- [Desktop Apps](https://www.datum.net/docs/connectors/desktop-apps): macOS, Linux, and Windows apps that expose local environments through a secure tunnel
 
 ---
 

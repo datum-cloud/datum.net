@@ -19,7 +19,7 @@ Docs:
 https://datum.net/docs
 https://datum.net/docs/overview
 https://datum.net/docs/platform/setup
-https://datum.net/docs/desktop-apps
+https://datum.net/docs/connectors/desktop-apps
 https://datum.net/docs/alb/overview
 https://datum.net/docs/connectors/tunnels
 https://datum.net/docs/galactic-vpc/overview

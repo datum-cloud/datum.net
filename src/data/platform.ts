@@ -195,7 +195,7 @@ export const features = {
       icon: 'laptop',
       title: 'Desktop Apps',
       description: 'macOS, Windows, and Linux apps for exposing localhost to the internet.',
-      href: docs('desktop-apps'),
+      href: docs('connectors/desktop-apps'),
     },
   ] satisfies PlatformFeature[],
 };

@@ -241,7 +241,7 @@ export const batteries = {
       },
       {
         name: 'Desktop Apps',
-        href: '/docs/desktop-apps',
+        href: '/docs/connectors/desktop-apps',
         info: 'Native apps for macOS, Linux, and Windows that expose local environments to the internet through a secure tunnel.',
       },
     ],

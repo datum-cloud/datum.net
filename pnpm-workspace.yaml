@@ -1,0 +1,45 @@
+# pnpm settings for this repo. It is a single package, not a workspace: there
+# is no `packages:` list.
+
+# Don't install a version until it has been public for one day (in minutes).
+minimumReleaseAge: 1440
+
+# Our own packages are published and consumed across repos on the same day, so
+# the one-day release delay must not hold them back.
+minimumReleaseAgeExclude:
+  - '@datum-cloud/*'
+
+# Reject a version published with weaker provenance than the versions before
+# it, such as a release pushed with a stolen token.
+trustPolicy: no-downgrade
+
+# Exact versions no-downgrade rejects that we already ran under npm.
+trustPolicyExclude:
+  # Published by hand with less trust evidence than an earlier release, so
+  # no-downgrade rejects it. Lint-only: @types/node@22 through
+  # eslint-plugin-mdx > unified-engine. npm installed this same version.
+  - undici-types@6.21.0
+
+# Dependencies whose install scripts may run on a local install. Anything not
+# listed is skipped. CI and the image install with --ignore-scripts.
+allowBuilds:
+  # Checks that its platform binary is installed (used by Vite and tsx).
+  esbuild: true
+
+# Moved from package.json `overrides`.
+overrides:
+  # GHSA-vfj7-8cjw-p6xm: braces 3.0.3 with a nesting-depth cap, vendored until
+  # upstream publishes a fix.
+  braces: file:vendor/braces
+  deepmerge-ts: ^8.0.2
+  http-cache-semantics: ^4.3.0
+  minimatch@9: ^11.0.1
+  minimatch@10: ^11.0.1
+  glob@10: ^14.0.4
+  markdownlint-cli>js-yaml: ^5.4.1
+  markdownlint-cli>smol-toml: ^1.9.0
+  postcss-selector-parser: ^7.1.6
+  sharp: ^0.35.4
+  svgo: ^4.1.0
+  mermaid>katex: 0.18.10
+  micromark-extension-math>katex: 0.18.10

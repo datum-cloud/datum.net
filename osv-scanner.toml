@@ -1,0 +1,4 @@
+[[IgnoredVulns]]
+id = "GHSA-grv7-fg5c-xmjg"
+ignoreUntil = 2027-05-24
+reason = "False positive. braces resolves to vendor/braces (3.0.4: braces 3.0.3 plus a nesting-depth cap), which already has the 3.0.3 fix. osv-scanner reads no version from the file: entry in pnpm-lock.yaml, so it matches every braces release. Drop with the vendored copy."

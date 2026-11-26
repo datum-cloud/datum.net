@@ -103,18 +103,18 @@ Used for GitHub API responses (5-10 min TTL)
 ### Commands
 
 ```bash
-npm run dev              # Dev server at localhost:4321
-npm run build            # Production build
-npm run lint             # ESLint check
-npm run lint:fix         # Auto-fix linting issues
-npm run lint:md:fix      # Fix markdown issues (MDX in src/content/)
-npm run format           # Prettier formatting
-npm run test:e2e         # Playwright E2E tests
+pnpm run dev              # Dev server at localhost:4321
+pnpm run build            # Production build
+pnpm run lint             # ESLint check
+pnpm run lint:fix         # Auto-fix linting issues
+pnpm run lint:md:fix      # Fix markdown issues (MDX in src/content/)
+pnpm run format           # Prettier formatting
+pnpm run test:e2e         # Playwright E2E tests
 ```
 
 ### Critical Build Steps
 
-1. Must run `npm run build`
+1. Must run `pnpm run build`
 2. Dev mode copies these to `public/` directory
 
 ### Environment Variables

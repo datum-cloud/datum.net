@@ -19,8 +19,8 @@ Automated SEO and meta-data review with two triggers:
 ```mermaid
 flowchart TD
     A([PR opened or updated]) --> B[Checkout repo<br/>fetch-depth: 0]
-    B --> C[npm ci]
-    C --> D[npm run build<br/>→ dist/client/**/*.html]
+    B --> C[pnpm install --frozen-lockfile]
+    C --> D[pnpm run build<br/>→ dist/client/**/*.html]
     D --> E[git diff base..head<br/>src/pages, src/content]
     E --> F[scripts/seo-review.mjs]
     F --> G{Mode?}
@@ -76,7 +76,7 @@ flowchart TD
 
 ### 1. Build
 
-The workflow runs `npm run build` so that the same HTML shipped to users is what's analyzed. `dist/client/**/*.html` is the source of truth — not `src/pages`.
+The workflow runs `pnpm run build` so that the same HTML shipped to users is what's analyzed. `dist/client/**/*.html` is the source of truth — not `src/pages`.
 
 ### 2. Changed files
 
@@ -101,7 +101,7 @@ Broad-change detector (triggers skip in `changed-only` mode only):
 
 ```
 src/layouts/**, src/components/**, src/styles/**, src/middleware/**,
-astro.config.*, tailwind.config.*, src/consts*, package.json, package-lock.json
+astro.config.*, tailwind.config.*, src/consts*, package.json, pnpm-lock.yaml
 ```
 
 A hard cap of `MAX_PAGES` (default `25`) keeps the Claude payload bounded.
@@ -188,7 +188,7 @@ Add `ANTHROPIC_API_KEY` under **Settings → Secrets and variables → Actions**
 ## Running locally
 
 ```bash
-npm run build
+pnpm run build
 
 # Weekly-style full audit (incl. broken-link & redirect-chain checks)
 ANTHROPIC_API_KEY=sk-... SCAN_MODE=full node scripts/seo-review.mjs
@@ -232,7 +232,7 @@ Wrote .tmp/seo-review.md (4550 bytes, 25 pages).
 | Symptom                                                        | Likely cause / fix                                                                                           |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Step fails with `ANTHROPIC_API_KEY is not set`                 | Repo secret missing, or running locally without exporting it                                                 |
-| `Build dir not found: dist/client`                             | `npm run build` was skipped or failed; check earlier step logs                                               |
+| `Build dir not found: dist/client`                             | `pnpm run build` was skipped or failed; check earlier step logs                                              |
 | PR comment says `skipped-broad-change`                         | Diff includes a layout/component/style/config file. Trigger `workflow_dispatch` with `full` for a one-off.   |
 | Mode `skipped-no-match`                                        | Page renamed/moved, or content collection slug differs from filename — confirm against `dist/client/**`      |
 | Excluded page still appears                                    | Exclusion lives at walk time; verify config file path and JSON is valid                                      |

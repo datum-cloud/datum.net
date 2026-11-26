@@ -424,7 +424,7 @@ function toUrlPath(file, root) {
 }
 
 const BROAD_CHANGE_RE =
-  /^(src\/(layouts|components|styles|middleware)\/|astro\.config|tailwind\.config|src\/consts|package\.json|package-lock\.json)/;
+  /^(src\/(layouts|components|styles|middleware)\/|astro\.config|tailwind\.config|src\/consts|package\.json|pnpm-lock\.yaml)/;
 
 function mapChangedToSlugs(changed) {
   const fromPages = changed
@@ -666,7 +666,7 @@ async function main() {
   try {
     await stat(DIST_DIR);
   } catch {
-    throw new Error(`Build dir not found: ${DIST_DIR}. Run \`npm run build\` first.`);
+    throw new Error(`Build dir not found: ${DIST_DIR}. Run \`pnpm run build\` first.`);
   }
 
   const cfg = await loadConfig();

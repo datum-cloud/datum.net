@@ -39,9 +39,9 @@ Feature suggestions are welcome! Please create an issue with:
 3. **Test your changes**:
 
    ```bash
-   npm run typecheck
-   npm run lint
-   npm run test:e2e
+   pnpm run typecheck
+   pnpm run lint
+   pnpm run test:e2e
    ```
 
 4. **Commit your changes** using our commit message conventions (see below)
@@ -55,7 +55,7 @@ Feature suggestions are welcome! Please create an issue with:
 ### Prerequisites
 
 - Node.js (version specified in `package.json`)
-- npm or compatible package manager
+- pnpm (the version `packageManager` pins in `package.json`)
 
 ### Getting Started
 
@@ -69,7 +69,7 @@ Feature suggestions are welcome! Please create an issue with:
 2. **Install dependencies**:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Set up environment variables**:
@@ -82,12 +82,12 @@ Feature suggestions are welcome! Please create an issue with:
 4. **Build** (required for dev mode):
 
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 5. **Start the development server**:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 The site will be available at `http://localhost:4321`
@@ -219,20 +219,20 @@ Examples:
 On `git commit`, Husky runs [lint-staged](https://github.com/lint-staged/lint-staged) (ESLint + Prettier on staged source, markdownlint on staged `.md` / `.mdx`). Run a full check manually when useful:
 
 ```bash
-npm run precommit
+pnpm run precommit
 ```
 
-This runs typecheck, ESLint, and `lint:md` (content Markdown). It does not run Prettier on the whole tree; use `npm run format` / `format:check` for that.
+This runs typecheck, ESLint, and `lint:md` (content Markdown). It does not run Prettier on the whole tree; use `pnpm run format` / `format:check` for that.
 
 ### Manual Checks
 
 You can run individual checks:
 
 ```bash
-npm run typecheck  # TypeScript checking
-npm run lint       # Linting
-npm run lint:md    # Markdown linting
-npm run format:check  # Format checking
+pnpm run typecheck  # TypeScript checking
+pnpm run lint       # Linting
+pnpm run lint:md    # Markdown linting
+pnpm run format:check  # Format checking
 ```
 
 ### Auto-fix
@@ -240,9 +240,9 @@ npm run format:check  # Format checking
 Many issues can be auto-fixed:
 
 ```bash
-npm run lint:fix      # Fix linting issues
-npm run lint:md:fix   # Fix markdown issues
-npm run format        # Format code
+pnpm run lint:fix      # Fix linting issues
+pnpm run lint:md:fix   # Fix markdown issues
+pnpm run format        # Format code
 ```
 
 ## Testing
@@ -253,16 +253,16 @@ We use Playwright for end-to-end testing:
 
 ```bash
 # Run all tests
-npm run test:e2e
+pnpm run test:e2e
 
 # Run tests with UI (recommended for development)
-npm run test:e2e:ui
+pnpm run test:e2e:ui
 
 # Run tests in debug mode
-npm run test:e2e:debug
+pnpm run test:e2e:debug
 
 # Show test report
-npm run test:e2e:report
+pnpm run test:e2e:report
 ```
 
 ### Writing Tests

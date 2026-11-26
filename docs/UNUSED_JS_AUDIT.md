@@ -177,4 +177,4 @@ Not “unused” — inventory of client/inline JS surfaces.
 - [ ] Confirm no dynamic `import()` / string path
 - [ ] Check `server.mjs` and API routes
 - [ ] For Astro, search MDX content + relative `./X.astro` imports
-- [ ] For types, try removing and run `npm run typecheck`
+- [ ] For types, try removing and run `pnpm run typecheck`

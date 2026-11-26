@@ -191,7 +191,7 @@ overrides:
   markdownlint-cli>js-yaml: ^5.4.1
   markdownlint-cli>smol-toml: ^1.9.0
   postcss-selector-parser: ^7.1.6
-  sharp: ^0.35.4
+  sharp: ^0.35.5
   svgo: ^4.1.0
   mermaid>katex: 0.18.10
   micromark-extension-math>katex: 0.18.10

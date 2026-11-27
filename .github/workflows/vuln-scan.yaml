@@ -18,4 +18,4 @@ concurrency:
 
 jobs:
   vuln-scan:
-    uses: datum-cloud/actions/.github/workflows/vuln-scan.yaml@v1.29.0
+    uses: datum-cloud/actions/.github/workflows/vuln-scan.yaml@v1.31.0

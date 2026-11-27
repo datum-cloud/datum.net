@@ -288,7 +288,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(supports-color@10.2.2)
       marked:
-        specifier: ^18.2.1
+        specifier: ^18.3.0
         version: 18.3.0
       mermaid:
         specifier: ^11.17.2

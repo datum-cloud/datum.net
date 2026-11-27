@@ -87,7 +87,7 @@
     "@types/alpinejs": "^3.17.0",
     "@types/alpinejs__collapse": "^3.13.4",
     "@types/hast": "^3.0.5",
-    "@types/node": "^24.19.2",
+    "@types/node": "^24.19.3",
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.69.0",
     "astro-eslint-parser": "^1.4.0",
